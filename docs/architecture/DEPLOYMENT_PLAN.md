@@ -1,6 +1,6 @@
 # Website and shared API deployment plan
 
-Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. Backend v0.1.0 and the pinned Flutter web build automatically deployed from Git and passed live verification. Future OCR, rule analysis and evidence packaging remain plans.
+Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. The initial backend v0.1.0 and pinned Flutter web build passed live verification. Backend v0.2.0 adds nutrition lookup/confirmed-value normalization; its current production gate is recorded in the release review. Future OCR, rule analysis and evidence packaging remain plans.
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 
@@ -9,7 +9,7 @@ Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unla
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | OFF product lookup now; reviewed rules and optional Gemini later. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | OFF product/nutrition lookup and confirmed normalization now; reviewed rules and optional Gemini later. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
@@ -19,7 +19,7 @@ There is no need to split every route into a separate function or create an extr
 [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi).
 
 The native apps are built through Flutter's platform tooling; Vercel hosts their API, not their installable packages.
-Use platform-specific OCR adapters in the same frontend: native ML Kit, future browser OCR with capture/upload first.
+Use platform-specific OCR adapters in the same frontend: native ML Kit, future browser OCR with capture/image import first.
 Tesseract.js through browser interop is a candidate, not an installed dependency or implemented feature.
 Send confirmed label text and region IDs to the backend. Photos and bounding-box coordinates remain local. Every target uses the same `contracts/`.
 The product is online-first. Python owns reviewed rule evaluation; Flutter receives stable reports and source-tagged OFF product snapshots. Limited offline scope is saved dated results, local preferences and an optional glossary. No second Dart rule engine or cross-evaluator parity system is required for the MVP.
@@ -136,4 +136,4 @@ Exercise browser and native calls against the same backend; test missing/invalid
 Test provider failure, quota exhaustion, serverless restart and backend outage without relying on stored server state.
 Verify saved-content access offline and separately verify the website's cached app/content after an initial load. New backend analysis must clearly defer when connectivity is absent.
 Measure cold-start response time and bundle size; keep the laptop/LAN demonstration ready if hosted limits pause service.
-Project imports/configuration and the website build script are now part of v0.1.0 hosting setup. See [Vercel setup](../planning/VERCEL_SETUP.md) and [backend review](../planning/BACKEND_V0_1_0_REVIEW.md) for current evidence. The additional gates above apply when their planned features are implemented.
+Project imports/configuration and the website build script are now part of v0.1.0 hosting setup. See [Vercel setup](../planning/VERCEL_SETUP.md) and [v0.1.0 historical review](../planning/BACKEND_V0_1_0_REVIEW.md) and [v0.2.0 review](../planning/BACKEND_V0_2_0_REVIEW.md) for version-specific evidence. The additional gates above apply when their planned features are implemented.

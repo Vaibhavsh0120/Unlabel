@@ -36,7 +36,14 @@ One bounded India-tagged v2 search returned HTTP 503, no identities. The officia
 
 ## Production gate
 
-Pending Git deployment of this source version. Before GitHub publication, verify both automatic deployments, public health/meta/OpenAPI, successful confirmed POST, OFF-backed nutrition lookup, exact-origin POST preflight, invalid/private/numeric input 422 and oversize 413. Record deployment/commit evidence here before the final documentation push.
+Source commit `2d6763674f737b3b171e207b915f24f1ee33a227` automatically produced READY production deployments for both projects:
+
+- Backend `dpl_Dc6jieG7Z1ARefhDF4aXFyhUUznR`, aliased to [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
+- Website `dpl_67K6LAYYWGxBNk8uTYHLuZdPQGXZ`, aliased to [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Flutter source/version remain 0.0.0+1; public HTML/title and release JavaScript returned 200.
+
+Public HTTPS checks used no Vercel login/bypass cookie: health/meta returned 200 and backend version 0.2.0; live OpenAPI exactly matched the exported schema; confirmed POST returned 200 and the expected synthetic 10 g/100 g; private fields and exceptional numeric tokens returned sanitized 422; oversized body returned 413 with exact-origin CORS; POST/Content-Type preflight passed; an unrelated origin was not allowed. Invalid nutrition barcode returned 422. OFF-backed Coca-Cola nutrition returned 200 with three preserved tables and correction status; the existing Nutella product route returned 200.
+
+Markdown local links were checked across 43 tracked files, with no missing targets. This evidence is recorded before the final documentation push. That docs-only push redeploys identical backend/frontend source; the GitHub release records its final tag/commit and publication state. These checks establish this release's production behavior, not Indian export feasibility, device integration or provider uptime guarantees.
 
 ## Deferred gates
 

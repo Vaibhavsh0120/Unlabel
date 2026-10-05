@@ -15,7 +15,7 @@ Unlabel can now fetch nutrition tables and normalize user-confirmed nutrient row
 
 120 pytest cases pass; Ruff checks/format and dependency consistency pass. Source review findings were fixed with regression tests. Live OFF nutrition retrieval was verified before implementing against it; a real local HTTP smoke also exercised the new routes. One existing Starlette/HTTPX TestClient deprecation warning remains recorded. See [full review](BACKEND_V0_2_0_REVIEW.md).
 
-Production v0.2.0 verification is pending the authorized Git push at the time of this source commit; the review record will be updated before the final documentation push and GitHub publication. Current public destinations: [Backend API](https://unlabel-api.vercel.app/v1/meta), [API docs](https://unlabel-api.vercel.app/docs), [Flutter starter website](https://unlabel-india.vercel.app).
+Production backend v0.2.0 and the unchanged Flutter starter passed public HTTPS checks after automatic Git deployment. Health/meta/OpenAPI, confirmed POST, live OFF nutrition/product reads, CORS and invalid/oversized input checks passed. The [review](BACKEND_V0_2_0_REVIEW.md) records the source SHA and both READY deployments before the final documentation push. GitHub records final tag/publication state. Public destinations: [Backend API](https://unlabel-api.vercel.app/v1/meta), [API docs](https://unlabel-api.vercel.app/docs), [Flutter starter website](https://unlabel-india.vercel.app).
 
 ## Limits and next version
 

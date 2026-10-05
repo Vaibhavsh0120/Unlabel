@@ -1,6 +1,6 @@
 # Working on the Unlabel foundation
 
-The current phase includes the Flutter v0.0.0 starter, backend v0.1.0 product lookup, shared contracts/docs, manual APK/unsigned-IPA releases and user-authorized Vercel hosting setup. Work on backend features in the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one version at a time. Flutter feature work belongs to the frontend teammate; hosting config/docs may change. Keep ₹0/no-card and update docs before every push.
+The current phase includes the Flutter v0.0.0 starter, backend v0.2.0 product/nutrition lookup and confirmed-value normalization, shared contracts/docs, manual APK/unsigned-IPA releases and user-authorized Vercel hosting setup. Work on backend features in the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one version at a time. Flutter feature work belongs to the frontend teammate; hosting config/docs may change. Keep ₹0/no-card and update docs before every push.
 
 ## Team boundaries
 
@@ -13,7 +13,7 @@ The current phase includes the Flutter v0.0.0 starter, backend v0.1.0 product lo
 ## Data and secrets
 
 - Never commit API keys, private allergy profiles, real user scan history, runtime databases or unreviewed source downloads.
-- backend/.env.example documents future settings. Real values belong in an ignored backend/.env file when implementation starts.
+- backend/.env.example documents active public settings and reserved AI fields. Real values belong in the ignored backend/.env file; preserve existing values.
 - Do not put Gemini keys into the mobile app, its assets, build arguments or client-side environment files.
 - Fixtures must be synthetic or explicitly reusable, with source/rights recorded. Legal thresholds need a reviewed source, effective date and food-category applicability.
 - Never turn unknown or missing data into zero, a passed claim or an allergy-safe verdict.

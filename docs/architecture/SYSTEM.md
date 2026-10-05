@@ -1,12 +1,12 @@
 # System architecture
 
-Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.1.0 implements FastAPI health/meta and normalized live OFF lookup. Scanning, rule evaluation and deployment remain planned.
+Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.0 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
 
 ## Product and delivery boundary
 
 Unlabel explains packaged food labels through claim checks, ingredient highlighting, local personal suitability and plain English/Hindi explanations. The college project must work within **₹0 additional platform cost, no credit card and no billing upgrade**.
 
-One Flutter project lives directly in `frontend/`, targeting Android, iOS and web. Its generated `web/` directory is a platform directory. Later, two separate Vercel projects serve the Flutter static website and the shared FastAPI backend. Native apps call that same API. An existing laptop provides an optional private local demo backend.
+One Flutter project lives directly in `frontend/`, targeting Android, iOS and web. Its generated `web/` directory is a platform directory. Two configured Vercel projects serve the Flutter static website and the shared FastAPI backend. Native apps call that same API. An existing laptop provides an optional private local demo backend.
 
 The MVP is online-first. Open Food Facts supplies most product data and available source-tagged computed insights; the Python backend applies reviewed FSSAI/ingredient criteria. OCR captures package claims and fills missing or conflicting fields. No custom model training or second Dart rule engine is required. Optional generative AI rewrites established explanations. See [deployment](DEPLOYMENT_PLAN.md) and [training research](../research/AI_TRAINING.md).
 

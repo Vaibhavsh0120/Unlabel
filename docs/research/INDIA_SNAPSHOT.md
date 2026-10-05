@@ -1,6 +1,6 @@
 # India product snapshot proposal
 
-Updated: 5 October 2026. User preference: download available India product records and refresh manually every **six months**. This is planned for a separate backend version; v0.1.0 uses live product reads. No dataset has been downloaded or import job scheduled.
+Updated: 5 October 2026. User preference: download available India product records and refresh manually every **six months**. This is planned for a separate backend version; v0.2.0 uses live product/nutrition reads. Direct product access is verified; the bounded India-filtered listing check returned 503, so dedicated India export access/size/completeness remains unverified. See [dated feasibility research](OFF_NUTRITION_V3_6.md). No dataset has been downloaded or import job scheduled.
 
 ## Scope and source
 
