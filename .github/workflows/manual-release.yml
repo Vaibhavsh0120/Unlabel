@@ -1,0 +1,319 @@
+name: Manual APK and unsigned IPA release
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Branch, tag, or commit to build (same workflow as default branch)
+        required: true
+        default: main
+        type: string
+      release_version:
+        description: Product version (overrides pubspec version for both artifacts)
+        required: true
+        default: 0.0.0
+        type: string
+      build_number:
+        description: Positive mobile build number; increase for each new build
+        required: true
+        default: '1'
+        type: string
+      backend_url:
+        description: Optional public HTTPS backend URL; leave empty for this starter
+        required: false
+        default: ''
+        type: string
+      publish_release:
+        description: Publish after every asset is verified (false keeps a draft)
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-mobile-release
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: '3.47.4'
+  RELEASE_VERSION: ${{ inputs.release_version }}
+  BUILD_NUMBER: ${{ inputs.build_number }}
+  SOURCE_REF: ${{ inputs.source_ref }}
+  BACKEND_BASE_URL: ${{ inputs.backend_url }}
+  PUBLISH_RELEASE: ${{ inputs.publish_release }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+      pubspec_version: ${{ steps.source.outputs.pubspec_version }}
+    steps:
+      - name: Validate manual inputs without shell interpolation
+        run: |
+          python3 - <<'PY'
+          import os, re
+          from urllib.parse import urlsplit
+          version, build, ref = (os.environ[k] for k in ('RELEASE_VERSION', 'BUILD_NUMBER', 'SOURCE_REF'))
+          if not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
+              raise SystemExit('release_version must have three SemVer numbers, such as 0.0.0.')
+          if not re.fullmatch(r'[1-9][0-9]{0,9}', build) or int(build) > 2100000000:
+              raise SystemExit('build_number must be a positive Android-compatible integer.')
+          if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._/-]{0,199}', ref) or '..' in ref or '//' in ref or ref.endswith(('/', '.')):
+              raise SystemExit('source_ref must be a plain branch, tag, or commit reference.')
+          url = os.environ['BACKEND_BASE_URL']
+          parsed = urlsplit(url)
+          if url and (len(url) > 500 or any(c.isspace() for c in url) or parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment):
+              raise SystemExit('backend_url must be an HTTPS base URL without credentials, query, or fragment.')
+          if os.environ['PUBLISH_RELEASE'] not in ('true', 'false'):
+              raise SystemExit('publish_release must be a boolean.')
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.source_ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Resolve one source commit and preserve workflow authorization
+        id: source
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          git diff --quiet "origin/$DEFAULT_BRANCH" "$SOURCE_SHA" -- .github/workflows/ || {
+            echo 'Source workflow files must match the default branch for GITHUB_TOKEN release authorization.'
+            exit 1
+          }
+          printf 'sha=%s\n' "$SOURCE_SHA" >> "$GITHUB_OUTPUT"
+          python3 - <<'PY'
+          import os, pathlib, re
+          pubspec = pathlib.Path('frontend/pubspec.yaml').read_text()
+          match = re.search(r'^version:\s*(\S+)\s*$', pubspec, re.MULTILINE)
+          if not match:
+              raise SystemExit('frontend/pubspec.yaml must declare its canonical version.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'pubspec_version={match[1]}\n')
+          PY
+      - name: Reject an existing tag before building
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_API_URL: ${{ github.api_url }}
+        run: |
+          python3 - <<'PY'
+          import os, urllib.error, urllib.request
+          endpoint = f"{os.environ['GH_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/git/ref/tags/v{os.environ['RELEASE_VERSION']}"
+          request = urllib.request.Request(endpoint, headers={'Authorization': f"Bearer {os.environ['GH_TOKEN']}", 'Accept': 'application/vnd.github+json'})
+          try:
+              urllib.request.urlopen(request, timeout=30).close()
+          except urllib.error.HTTPError as error:
+              if error.code != 404:
+                  raise
+          else:
+              raise SystemExit('Release tag already exists; use a new version. Existing assets will not be overwritten.')
+          PY
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: false
+      - name: Check the Flutter starter
+        working-directory: frontend
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter analyze
+          flutter test
+
+  android:
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.checks.outputs.source_sha }}
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: false
+      - name: Build and verify demo APK
+        working-directory: frontend
+        env:
+          COMMIT_SHA: ${{ needs.checks.outputs.source_sha }}
+        run: |
+          export JAVA_HOME="$JAVA_HOME_17_X64"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          flutter pub get --enforce-lockfile
+          flutter build apk --release --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="APP_VERSION=$RELEASE_VERSION" --dart-define="BUILD_NUMBER=$BUILD_NUMBER" --dart-define="COMMIT_SHA=$COMMIT_SHA"
+          APK_PATH='build/app/outputs/flutter-apk/app-release.apk'
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
+          "$APKSIGNER" verify --print-certs "$APK_PATH" > apk-signing.txt
+          grep -q 'CN=Android Debug' apk-signing.txt || { echo 'Expected starter debug signing; review the production signing plan before changing this lane.'; exit 1; }
+          "$(dirname "$APKSIGNER")/aapt" dump badging "$APK_PATH" > apk-metadata.txt
+          python3 - <<'PY'
+          import os, pathlib, re
+          metadata = pathlib.Path('apk-metadata.txt').read_text()
+          expected = {'versionName': os.environ['RELEASE_VERSION'], 'versionCode': os.environ['BUILD_NUMBER']}
+          for field, value in expected.items():
+              match = re.search(rf"{field}='([^']+)'", metadata)
+              if not match or match[1] != value:
+                  raise SystemExit(f'Android {field} does not match release inputs.')
+          PY
+          mkdir -p dist
+          cp "$APK_PATH" "dist/unlabel-${RELEASE_VERSION}+${BUILD_NUMBER}-android-demo.apk"
+          flutter --version --machine > dist/android-toolchain.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: android-release
+          path: frontend/dist/*
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+  ios:
+    needs: checks
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.checks.outputs.source_sha }}
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: false
+      - name: Build device app and package an explicitly unsigned IPA
+        working-directory: frontend
+        env:
+          COMMIT_SHA: ${{ needs.checks.outputs.source_sha }}
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter build ios --release --no-codesign --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="APP_VERSION=$RELEASE_VERSION" --dart-define="BUILD_NUMBER=$BUILD_NUMBER" --dart-define="COMMIT_SHA=$COMMIT_SHA"
+          test -f build/ios/iphoneos/Runner.app/Info.plist
+          if codesign -d build/ios/iphoneos/Runner.app >/dev/null 2>&1; then
+            echo 'This lane must produce an unsigned device app.'
+            exit 1
+          fi
+          mkdir -p release-payload/Payload dist
+          cp -R build/ios/iphoneos/Runner.app release-payload/Payload/
+          (cd release-payload && zip -r -y "../dist/unlabel-${RELEASE_VERSION}+${BUILD_NUMBER}-ios-unsigned.ipa" Payload)
+          flutter --version --machine > dist/ios-toolchain.json
+          python3 - <<'PY'
+          import json, os, pathlib, plistlib, subprocess
+          info = plistlib.loads(pathlib.Path('build/ios/iphoneos/Runner.app/Info.plist').read_bytes())
+          if info['CFBundleShortVersionString'] != os.environ['RELEASE_VERSION'] or info['CFBundleVersion'] != os.environ['BUILD_NUMBER']:
+              raise SystemExit('iOS version metadata does not match release inputs.')
+          if info.get('CFBundleSupportedPlatforms') != ['iPhoneOS']:
+              raise SystemExit('Expected a device build, not a simulator artifact.')
+          toolchain = pathlib.Path('dist/ios-toolchain.json')
+          data = json.loads(toolchain.read_text())
+          data['xcode'] = subprocess.check_output(['xcodebuild', '-version'], text=True).strip()
+          toolchain.write_text(json.dumps(data, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ios-release
+          path: frontend/dist/*
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+  release:
+    needs: [checks, android, ios]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: '*-release'
+          path: dist
+          merge-multiple: true
+      - name: Verify assets and release only after complete upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_API_URL: ${{ github.api_url }}
+          SOURCE_SHA: ${{ needs.checks.outputs.source_sha }}
+          PUBSPEC_VERSION: ${{ needs.checks.outputs.pubspec_version }}
+          WORKFLOW_SHA: ${{ github.workflow_sha }}
+        run: |
+          python3 - <<'PY'
+          import datetime, hashlib, json, os, pathlib, urllib.error, urllib.parse, urllib.request, zipfile
+          out, version, build = pathlib.Path('dist'), os.environ['RELEASE_VERSION'], os.environ['BUILD_NUMBER']
+          names = [f'unlabel-{version}+{build}-android-demo.apk', f'unlabel-{version}+{build}-ios-unsigned.ipa']
+          for name, member in zip(names, ['AndroidManifest.xml', 'Payload/Runner.app/Info.plist']):
+              path = out / name
+              if not path.is_file() or not path.stat().st_size:
+                  raise SystemExit(f'Missing required asset: {name}')
+              with zipfile.ZipFile(path) as archive:
+                  if member not in archive.namelist() or archive.testzip() is not None:
+                      raise SystemExit(f'Invalid artifact structure: {name}')
+          toolchains = {p: json.loads((out / f'{p}-toolchain.json').read_text()) for p in ['android', 'ios']}
+          assets = [{'file': n, 'bytes': (out / n).stat().st_size, 'sha256': hashlib.sha256((out / n).read_bytes()).hexdigest()} for n in names]
+          manifest = {'product_version': version, 'build_number': build, 'pubspec_version': os.environ['PUBSPEC_VERSION'], 'source_sha': os.environ['SOURCE_SHA'], 'workflow_sha': os.environ['WORKFLOW_SHA'], 'workflow_run': os.environ['GITHUB_RUN_ID'], 'built_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'toolchains': toolchains, 'backend_base_url': os.environ['BACKEND_BASE_URL'] or None, 'api_major_planned': '/v1', 'contract_schema_planned': '1', 'knowledge_version': 'not_populated', 'deployment': 'not_deployed_by_this_workflow', 'gates': {'flutter_analyze': 'passed', 'flutter_test': 'passed', 'android_build': 'passed', 'ios_device_build': 'passed', 'backend_contract_checks': 'not_implemented', 'web_build': 'not_in_this_workflow'}, 'android_signing': 'demo_debug_key_not_production_identity', 'ios_signing': 'unsigned_not_directly_installable', 'assets': assets}
+          manifest['publication_requested'] = os.environ['PUBLISH_RELEASE'] == 'true'
+          (out / 'build-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          checksum_files = names + ['build-manifest.json', 'android-toolchain.json', 'ios-toolchain.json']
+          (out / 'SHA256SUMS.txt').write_text(''.join(f"{hashlib.sha256((out / n).read_bytes()).hexdigest()}  {n}\n" for n in checksum_files))
+          root = f"{os.environ['GH_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}"
+          headers = {'Authorization': f"Bearer {os.environ['GH_TOKEN']}", 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2026-03-10'}
+          def api(url, data=None, method=None, content_type='application/json', allow_missing=False):
+              request = urllib.request.Request(url, data=data, method=method, headers={**headers, 'Content-Type': content_type})
+              try:
+                  with urllib.request.urlopen(request, timeout=60) as response:
+                      return json.load(response)
+              except urllib.error.HTTPError as error:
+                  if allow_missing and error.code == 404:
+                      return None
+                  raise
+          tag = f'v{version}'
+          if api(f'{root}/git/ref/tags/{tag}', allow_missing=True) is not None:
+              raise SystemExit('Tag already exists; refusing to overwrite it.')
+          page = 1
+          while True:
+              releases = api(f'{root}/releases?per_page=100&page={page}')
+              if any(r['tag_name'] == tag for r in releases):
+                  raise SystemExit('A release/draft already exists; use a new version or review it manually.')
+              if len(releases) < 100:
+                  break
+              page += 1
+          notes = f"Unlabel starter {version}+{build}, built from {os.environ['SOURCE_SHA']}.\n\nAndroid APK uses the generated demo debug signing key, not a production update identity. The iOS IPA is UNSIGNED and NOT directly installable; valid signing/provisioning is needed for device installation.\n\nFlutter analysis/tests and both mobile builds passed. Backend contracts, live deployment and real-device behavior are not validated. Asset hashes and build details are recorded in SHA256SUMS.txt and build-manifest.json."
+          payload = {'tag_name': tag, 'target_commitish': os.environ['SOURCE_SHA'], 'name': f'Unlabel {version} — demo APK / unsigned iOS', 'body': notes, 'draft': True, 'prerelease': True}
+          release = api(f'{root}/releases', json.dumps(payload).encode(), 'POST')
+          upload_url = release['upload_url'].split('{')[0]
+          for path in sorted(out.iterdir()):
+              if path.is_file():
+                  uploaded = api(f"{upload_url}?{urllib.parse.urlencode({'name': path.name})}", path.read_bytes(), 'POST', 'application/octet-stream')
+                  if uploaded.get('state') != 'uploaded' or uploaded.get('size') != path.stat().st_size:
+                      raise SystemExit(f'Upload verification failed; review the incomplete draft: {path.name}')
+          remote = api(f"{root}/releases/{release['id']}")
+          expected = {p.name: p for p in out.iterdir() if p.is_file()}
+          actual = {a['name']: a for a in remote['assets']}
+          if set(actual) != set(expected):
+              raise SystemExit('Remote asset set does not match; release remains a draft.')
+          for name, path in expected.items():
+              asset = actual[name]
+              if asset.get('state') != 'uploaded' or asset.get('size') != path.stat().st_size:
+                  raise SystemExit(f'Remote asset verification failed: {name}')
+              digest = asset.get('digest')
+              if digest and digest != f"sha256:{hashlib.sha256(path.read_bytes()).hexdigest()}":
+                  raise SystemExit(f'Remote asset checksum mismatch: {name}')
+          published = os.environ['PUBLISH_RELEASE'] == 'true'
+          if published:
+              release = api(f"{root}/releases/{release['id']}", json.dumps({'draft': False}).encode(), 'PATCH')
+              if release['draft']:
+                  raise SystemExit('GitHub did not publish the verified draft.')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              state = 'Published' if published else 'Draft created'
+              summary.write(f"{state}: [{tag}]({release['html_url']}). iOS is unsigned; no deployment was performed.\n")
+          PY

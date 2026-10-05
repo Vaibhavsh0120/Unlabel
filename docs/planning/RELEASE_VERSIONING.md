@@ -1,0 +1,172 @@
+# Release and versioning plan
+
+Status: Flutter starter and manual mobile release workflow implemented;
+production signing and deployment remain future work. Remote build results
+are recorded by GitHub Actions and the resulting release manifest.
+Official documentation checked: 2026-10-05 (Asia/Calcutta), with Context7 used
+for Flutter and GitHub Actions documentation.
+
+## Targets and current boundary
+
+Plan one product with Android APK, iOS, and website targets.
+Later hosting uses two Vercel projects: backend and web.
+Native artifacts are handled by
+[manual-release.yml](../../.github/workflows/manual-release.yml), which runs
+only through a manual dispatch after being committed to the default branch.
+It creates a draft prerelease, verifies all remote assets, then publishes when
+the manual `publish_release` input is true (the default). False retains a draft.
+
+An iOS build artifact and an installable iPhone distribution are different
+deliverables. The strict zero-cost, no-card requirement limits the initial
+iOS release commitment as described below.
+
+## Version identities
+
+| Identity | Planned meaning | Compatibility rule |
+| --- | --- | --- |
+| Product release | Repository-wide SemVer, such as `1.2.0`, with tag `v1.2.0` | Identifies one reviewed release and source commit |
+| Android build | Increasing integer mapped to `versionCode`; product version maps to `versionName` | Preserve application ID and release signing identity for updates |
+| iOS build | Increasing build identifier mapped to `CFBundleVersion`; product version maps to `CFBundleShortVersionString` | Preserve bundle ID and applicable signing/provisioning requirements |
+| API major | Routes begin with `/v1` | Additive changes within the supported major; breaking changes require a new major |
+| Contract schema | Independently recorded schema version | Parsers accept compatible additions and tolerate unknown fields |
+| Knowledge version | Reviewed corpus/rule release identifier | Every analysis records the knowledge version used |
+| Deployment commit | Full Git SHA for each backend/web deployment | Records running code independently of a native app's frozen build |
+
+Flutter supports separate build-name and build-number overrides and the
+platform mappings above. See the official
+[Android release guide](https://docs.flutter.dev/deployment/android) and
+[iOS release guide](https://docs.flutter.dev/deployment/ios).
+Allocate a new mobile build number for a new distributable build; retain it
+in the release manifest. Never silently replace a published artifact.
+
+## Manual release workflow design
+
+The release entry point is `workflow_dispatch`, with source reference,
+product version (default `0.0.0`), mobile build number (default `1`), optional
+public backend URL, and a `publish_release` boolean (default true).
+Python validates environment values without shell interpolation. Version and
+build number override pubspec for both artifacts; the manifest records both.
+The starter uses a fixed unsigned iOS lane and a demo debug-signed APK lane.
+
+GitHub requires the dispatch workflow to exist on the default branch and
+requires write access to run it. A selected reference is allowed, but the
+build plan must resolve that reference once to a full immutable commit SHA.
+See [GitHub's manual workflow documentation](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow).
+
+All jobs check out that same SHA. Do not let individual jobs follow a moving
+branch or derive their code from independently selected references.
+The manifest records workflow SHA as well. Flutter 3.47.4 and action commit
+SHAs are pinned. Source workflow files must match the default branch, because
+the automatic token cannot create releases for divergent workflow targets.
+
+1. Validate reference, version, build number, URL, and tag uniqueness.
+2. Resolve one commit SHA and expose it as the sole source for all jobs.
+3. Run Flutter analysis and tests against that SHA. Backend/web contract
+   checks remain future work and are recorded as not implemented.
+4. Build the demo APK on Linux and unsigned device IPA on macOS/Xcode.
+   Backend/web builds and deployments remain separate future gates.
+5. Check artifact presence, version metadata, signing status, and file format;
+   generate SHA-256 checksums and a build manifest.
+6. Create a draft GitHub Release targeting that SHA and attach verified assets.
+7. Verify the complete uploaded asset set, sizes/states, and available remote
+   hashes; publish only when requested by the manual input. Otherwise keep it
+   draft. Failed builds create no release; upload failures can leave a draft.
+
+A retry must use the original pinned SHA and compatible build identity, or
+start a clearly identified new build. Concurrent runs must not publish or
+overwrite the same version. Release publication is separate from a Vercel
+deployment; a GitHub asset does not establish backend availability.
+
+## Required gates and build manifest
+
+Future gates include meaningful checks for extraction, uncertainty, evidence
+references, and request/response contracts. Check both the new client and
+supported older native client fixtures against the proposed backend.
+The starter workflow currently checks Flutter tests/analysis and native builds.
+Platform compilation alone does not establish camera or real-device behavior.
+
+The manifest should identify:
+
+- Product version/tag, full source SHA, workflow revision, run ID, and date.
+- Flutter/Dart, Android, Xcode/macOS, backend, and web toolchain versions.
+- Android/iOS build numbers and target architectures/operating systems.
+- Contract schema, supported API major, and reviewed knowledge version.
+- Environment name and non-secret backend base URL compiled into each client.
+- Asset filenames, sizes, SHA-256 checksums, and test gate results.
+- iOS signing/export mode, installation limitations, and any unavailable gate.
+- Backend/web deployment SHAs and verification state when deployed later.
+
+Do not include keys, certificates, private provisioning material, or personal
+profile data in artifacts, manifests, logs, or repository files.
+
+## Honest iOS delivery under zero cost
+
+[Flutter's iOS guide](https://docs.flutter.dev/deployment/ios) requires macOS
+and Xcode for iOS builds. A successful signed export produces an IPA; an
+`.xcarchive` is an archive used in that process, not proof of installation.
+
+The no-card lane compiles an iPhoneOS device app with `--no-codesign`, then
+packages `Payload/Runner.app` with symlinks preserved into a named unsigned
+IPA. It checks platform/version metadata and absence of app code signing.
+This is a device developer artifact, not an installable signed export.
+No simulator test or physical-device test is claimed by this workflow.
+
+Apple permits a free Personal Team to sign and test on personal devices using
+Xcode, with periodic reprovisioning. It is not a general distribution path.
+See [Apple's developer account overview](https://developer.apple.com/help/account/basics/about-your-developer-account).
+That local testing path also requires access to suitable Apple hardware.
+
+Normal distribution membership costs USD 99 per year, subject to local prices.
+An eligible educational institution can request a fee waiver; approval and
+institutional signing access must be verified rather than assumed.
+See [Apple Developer Program enrollment](https://developer.apple.com/programs/enroll/).
+Installable IPA distribution remains conditional on a valid signing route.
+An IPA attached to GitHub does not bypass device/profile installation rules.
+
+Under the strict zero-cost scope, the required iOS gate is compilation and
+clearly labeled development artifacts. The release manifest must say when a
+signed installable IPA is unavailable; it must not advertise that gate as met.
+
+The generated Android release configuration uses the debug key. The workflow
+verifies that identity and labels the APK as a demo artifact. A stable private
+release key and update-signature validation are required before production use.
+
+## GitHub Actions budget boundary
+
+Standard GitHub-hosted runners are free for public repositories, including
+available standard macOS runners. Private repositories share plan allowances
+for minutes/storage; macOS usage consumes that limited budget more quickly.
+Larger runners are charged even for public repositories.
+Without a payment method, GitHub blocks use after quota exhaustion.
+See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
+
+Use standard runners, manual releases, short intermediate-artifact retention,
+and bounded caches. Recheck repository visibility, current allowances, runner
+availability, and account policy before implementation; do not promise an
+unlimited private CI service. No card or paid runner is a prerequisite here.
+
+## Client/backend compatibility and deployment order
+
+Compile a stable production backend HTTPS base URL into production clients
+through environment configuration. Preview clients use a separate preview
+backend and must not silently redirect production apps to a preview deployment.
+Provider keys remain on the backend. Native URL changes require a new build.
+
+A proposed `/v1/meta` handshake can expose backend product version, deploy SHA,
+API/contract compatibility, capabilities, and knowledge version. Keep health
+checks separate or expose equivalent non-secret metadata through them.
+Clients use capabilities and schema compatibility, not an exact product-version
+equality check. Unsupported functionality receives a clear fallback.
+
+The MVP is online-first. Python owns reviewed rule evaluation; OFF's changing
+provider schema remains behind a stable backend adapter. Offline saved reports
+retain their original source, date and versions; viewing them does not refresh
+criteria or compute new findings. No Dart rule engine/parity system is required.
+No provider integration, rules or knowledge updates are active in the foundation.
+
+Deploy additive backend changes first and verify old-client compatibility.
+Deploy the web project next, then release native assets against the stable URL.
+Installed native apps remain frozen until users update, so keep supported old
+contracts/routes operational. Rollback must pass the same compatibility checks;
+do not roll back to a backend that cannot serve already released clients.
+Defer breaking API removal until a documented migration and support decision.

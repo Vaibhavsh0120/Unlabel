@@ -1,0 +1,87 @@
+# Secrets: commit examples only.
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*service-account*.json
+*service_account*.json
+credentials.json
+*.p12
+*.mobileprovision
+
+# Flutter/Dart and generated platform build output.
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+android/.gradle/
+android/.cxx/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+**/Flutter/ephemeral/
+**/xcuserdata/
+*.apk
+*.aab
+*.ipa
+*.xcarchive/
+DerivedData/
+
+# Python, local environments, tooling caches.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+node_modules/
+.vercel/
+.vite/
+*.tsbuildinfo
+
+# Derived stores, private scans, provider caches and source downloads.
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+backend/storage/runtime/**
+!backend/storage/runtime/.gitkeep
+data/private/**
+!data/private/.gitkeep
+knowledge/sources/downloads/**
+!knowledge/sources/downloads/.gitkeep
+*.log
+logs/
+tmp/
+temp/
+
+# Local editors and OS files; shared editor settings can be added deliberately.
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Intentionally keep future application dependency lockfiles tracked.
+# The Flutter starter's pubspec.lock is tracked for reproducible builds.
