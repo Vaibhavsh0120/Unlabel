@@ -1,6 +1,8 @@
 # Flutter frontend
 
-One Flutter application lives directly here: lib, android, ios and web. It targets Android, iPhone/iPad and the website. The backend is a separate FastAPI application and later a separate Vercel project.
+One Flutter application lives directly here: lib, android, ios and web. It targets Android, iPhone/iPad and the website. The backend is a separate FastAPI application and Vercel project.
+
+Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. Backend: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)**. Vercel project `unlabel-frontend` uses root `frontend`, `vercel.json`, and `tool/vercel-build.sh` to build release web assets on each `main` push. This hosting configuration leaves the Flutter app at **v0.0.0+1**. See [deployment settings](../docs/planning/VERCEL_SETUP.md) for environment, verification state and preview behavior.
 
 ## What works now
 

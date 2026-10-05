@@ -2,7 +2,7 @@
 
 Status: planned core features. The foundation includes a minimal Flutter starter and manual GitHub build/release workflow; the four scanning/analysis features below are not implemented. Product name: **Unlabel**. Tagline: **Label Padhega India**.
 
-One Flutter app directly in `frontend/` targets Android/iOS/web. Open Food Facts does the primary online barcode-product lookup and supplies source-tagged computed insights. FastAPI applies reviewed FSSAI criteria; the MVP needs no Dart regulatory engine or evaluator-parity work. OCR captures front claims or missing/conflicting current-package information when needed. Local preferences add individual reasons; Gemini only improves wording. Website/API target separate later Vercel projects; `frontend/web/` is Flutter's platform folder.
+One Flutter app directly in `frontend/` targets Android/iOS/web. Backend v0.1.0 implements Open Food Facts barcode lookup and source-tagged computed grades. Reviewed FSSAI criteria, OCR, local preference matching and optional Gemini wording remain later versions; the MVP needs no Dart regulatory engine or evaluator-parity work. Website/API use separate configured Vercel projects; `frontend/web/` is Flutter's platform folder. See [URLs and deployment settings](VERCEL_SETUP.md).
 
 Shared features and platform adapters live under `frontend/lib/features/` and `core/`. Reserved `core/analysis/` can manage result state/mapping, not an MVP legal-rule engine; `core/knowledge/` can serve an optional glossary. Native OCR will use ML Kit; web OCR will use future Tesseract.js interop. Native live overlays are later capability work; web is capture-first. English/Hindi use reviewed content; Devanagari recognition needs separate validation. See `UI_REQUIREMENTS.md`.
 

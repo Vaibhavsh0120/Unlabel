@@ -1,6 +1,6 @@
 # Working on the Unlabel foundation
 
-The current phase includes architecture, a basic Flutter starter and a manual APK/unsigned-IPA workflow. Core scanning, the backend and deployment are not implemented. Do not expand into those features or activate paid billing without the next implementation request.
+The current phase includes the Flutter v0.0.0 starter, backend v0.1.0 product lookup, shared contracts/docs, manual APK/unsigned-IPA releases and user-authorized Vercel hosting setup. Work on backend features in the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one version at a time. Flutter feature work belongs to the frontend teammate; hosting config/docs may change. Keep ₹0/no-card and update docs before every push.
 
 ## Team boundaries
 

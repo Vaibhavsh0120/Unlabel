@@ -1,6 +1,6 @@
 # Unlabel data flow and ownership
 
-Status: planned feature architecture. The minimal Flutter starter and manual build/release workflow are foundation work; barcode lookup, OCR, backend analysis, report storage, and AI connections below are not implemented.
+Status: backend v0.1.0 implements live barcode product lookup and service metadata; the Flutter starter has no API adapter yet. OCR, nutrition/claim analysis, report storage and AI connections below remain planned feature architecture. See the [backend guide](../../backend/README.md) for current behavior and [hosting URLs](../planning/VERCEL_SETUP.md) for deployments.
 
 One Flutter app directly in `frontend/` targets Android, iOS, and the responsive website; `frontend/web/` is its web platform directory. Open Food Facts is the primary online source of barcode product facts and source-tagged computed insights. FastAPI normalizes those facts and applies reviewed FSSAI criteria. OCR fills gaps, captures front claims, and resolves differences from the current package. Later website/API are separate Vercel projects. Local preferences map backend-issued neutral facts to individual reasons; Gemini optionally improves wording.
 

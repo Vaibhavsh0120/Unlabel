@@ -1,6 +1,6 @@
 # Documentation map
 
-Scanner/backend documents describe planned behavior. The Flutter starter and manual release workflow are implemented. Research was checked on 5 October 2026; provider/source eligibility must be reviewed before use.
+Frontend remains v0.0.0. Backend v0.1.0 implements health/meta and normalized live OFF product lookup. Scanner/analysis documents describe later behavior; the backend README and OpenAPI describe today's API. Research was checked on 5 October 2026; provider/source eligibility must be reviewed before use.
 
 | Document | Read it for |
 | --- | --- |
@@ -9,7 +9,11 @@ Scanner/backend documents describe planned behavior. The Flutter starter and man
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
 | [API plan](architecture/API_PLAN.md) | Proposed frontend/backend contracts and errors |
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
-| [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two future Vercel projects and stateless bundles |
+| [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
+| [Backend validation](planning/BACKEND_V0_1_0_REVIEW.md) | Tests, live smoke and exact current limits |
+| [Vercel setup and URLs](planning/VERCEL_SETUP.md) | Actual project roots/builds, free domains, environment and Git deployments |
+| [India snapshot](research/INDIA_SNAPSHOT.md) | Future official export import, six-month refresh and storage budgets |
+| [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two Vercel projects, stateless runtime and future evidence bundles |
 | [Features](planning/FEATURES.md) | End-to-end behavior of each requested feature |
 | [Roadmap](planning/ROADMAP.md) | Future implementation order and acceptance gates |
 | [Teammate handoff](planning/TEAM_HANDOFF.md) | What is finished now and how to divide later work |

@@ -1,0 +1,266 @@
+{
+  "$defs": {
+    "Product": {
+      "additionalProperties": false,
+      "properties": {
+        "barcode": {
+          "title": "Barcode",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "brands": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brands"
+        },
+        "quantity_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity Text"
+        },
+        "ingredients_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ingredients Text"
+        },
+        "allergen_tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allergen Tags",
+          "type": "array"
+        },
+        "trace_tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Trace Tags",
+          "type": "array"
+        },
+        "insights": {
+          "$ref": "#/$defs/ProviderInsights"
+        }
+      },
+      "required": [
+        "barcode"
+      ],
+      "title": "Product",
+      "type": "object"
+    },
+    "ProviderInsights": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "const": "open_food_facts",
+          "default": "open_food_facts",
+          "title": "Provider",
+          "type": "string"
+        },
+        "nutri_score_grade": {
+          "anyOf": [
+            {
+              "enum": [
+                "a",
+                "b",
+                "c",
+                "d",
+                "e"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nutri Score Grade"
+        },
+        "nova_group": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nova Group"
+        }
+      },
+      "title": "ProviderInsights",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "const": "open_food_facts",
+          "default": "open_food_facts",
+          "title": "Provider",
+          "type": "string"
+        },
+        "upstream_api_version": {
+          "const": "3.6",
+          "default": "3.6",
+          "title": "Upstream Api Version",
+          "type": "string"
+        },
+        "adapter_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Adapter Version",
+          "type": "string"
+        },
+        "product_url": {
+          "title": "Product Url",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "provider_modified_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Modified At"
+        },
+        "provider_schema_version": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Schema Version"
+        },
+        "attribution": {
+          "default": "Product data from Open Food Facts",
+          "title": "Attribution",
+          "type": "string"
+        },
+        "database_license": {
+          "const": "ODbL-1.0",
+          "default": "ODbL-1.0",
+          "title": "Database License",
+          "type": "string"
+        },
+        "contents_license": {
+          "const": "DbCL-1.0",
+          "default": "DbCL-1.0",
+          "title": "Contents License",
+          "type": "string"
+        },
+        "license_url": {
+          "default": "https://openfoodfacts.org/terms-of-use",
+          "title": "License Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_url",
+        "retrieved_at"
+      ],
+      "title": "Source",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "requested_barcode": {
+      "title": "Requested Barcode",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "found",
+        "not_found",
+        "rate_limited",
+        "unavailable",
+        "incompatible_response"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "product": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Product"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "requested_barcode",
+    "status",
+    "source"
+  ],
+  "title": "ProductLookup",
+  "type": "object"
+}

@@ -1,0 +1,442 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Unlabel Backend",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Health",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/meta": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Meta",
+        "operationId": "meta_v1_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/products/{barcode}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Product",
+        "operationId": "product_v1_products__barcode__get",
+        "parameters": [
+          {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "title": "Barcode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Product": {
+        "properties": {
+          "barcode": {
+            "type": "string",
+            "title": "Barcode"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "brands": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brands"
+          },
+          "quantity_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity Text"
+          },
+          "ingredients_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredients Text"
+          },
+          "allergen_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Allergen Tags"
+          },
+          "trace_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Trace Tags"
+          },
+          "insights": {
+            "$ref": "#/components/schemas/ProviderInsights"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "barcode"
+        ],
+        "title": "Product"
+      },
+      "ProductLookup": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "requested_barcode": {
+            "type": "string",
+            "title": "Requested Barcode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "rate_limited",
+              "unavailable",
+              "incompatible_response"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Product"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requested_barcode",
+          "status",
+          "source"
+        ],
+        "title": "ProductLookup"
+      },
+      "ProviderInsights": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "open_food_facts",
+            "title": "Provider",
+            "default": "open_food_facts"
+          },
+          "nutri_score_grade": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b",
+                  "c",
+                  "d",
+                  "e"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nutri Score Grade"
+          },
+          "nova_group": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nova Group"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ProviderInsights"
+      },
+      "Source": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "open_food_facts",
+            "title": "Provider",
+            "default": "open_food_facts"
+          },
+          "upstream_api_version": {
+            "type": "string",
+            "const": "3.6",
+            "title": "Upstream Api Version",
+            "default": "3.6"
+          },
+          "adapter_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Adapter Version",
+            "default": "1"
+          },
+          "product_url": {
+            "type": "string",
+            "title": "Product Url"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Retrieved At"
+          },
+          "provider_modified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Modified At"
+          },
+          "provider_schema_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Schema Version"
+          },
+          "attribution": {
+            "type": "string",
+            "title": "Attribution",
+            "default": "Product data from Open Food Facts"
+          },
+          "database_license": {
+            "type": "string",
+            "const": "ODbL-1.0",
+            "title": "Database License",
+            "default": "ODbL-1.0"
+          },
+          "contents_license": {
+            "type": "string",
+            "const": "DbCL-1.0",
+            "title": "Contents License",
+            "default": "DbCL-1.0"
+          },
+          "license_url": {
+            "type": "string",
+            "title": "License Url",
+            "default": "https://openfoodfacts.org/terms-of-use"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product_url",
+          "retrieved_at"
+        ],
+        "title": "Source"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

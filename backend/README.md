@@ -1,33 +1,79 @@
-# Backend — planned FastAPI service
+# Unlabel backend v0.1.0
 
-Python/FastAPI is selected. No backend entrypoint, package manifest, dependency installation or database exists yet. The Flutter starter/manual native-artifact workflow is separate and already scaffolded.
+Frontend remains **v0.0.0**. This backend version implements live Open Food Facts barcode lookup and service metadata. No nutrition analysis, FSSAI claim evaluator, AI explanation, comparison or database import exists yet. The [version plan](../docs/superpowers/plans/2026-10-05-backend-versions.md) keeps these as separate deliverables.
 
-Later deploy this directory as one stateless Vercel project; the Flutter website uses another project. An existing laptop/private LAN is an optional development/demo fallback. See [deployment plan](../docs/architecture/DEPLOYMENT_PLAN.md).
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both Vercel projects are configured; corrected builds/live verification await this version's first push. [Deployment settings](../docs/planning/VERCEL_SETUP.md).
 
-| Area | Planned responsibility |
+## Run locally
+
+Python 3.12+; commands from `backend/`:
+
+~~~powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements-dev.txt
+Copy-Item .env.example .env  # only if .env does not already exist
+.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+~~~
+
+On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.txt` when tests/tooling are unnecessary. Swagger is at `http://127.0.0.1:8000/docs`; OpenAPI is `/openapi.json`. A device's localhost is that device, not the laptop; later private-LAN testing needs a deliberate reachable host binding and firewall setup.
+
+## Current endpoints
+
+| Endpoint | Behavior |
 | --- | --- |
-| `app/api/v1` | Thin handlers, health and `/v1/meta` compatibility/capabilities |
-| `app/core` | Settings, auth boundaries, limits, redacted logging and errors |
-| `app/schemas` | Validated language-neutral contract models |
-| `app/services/parsing` | Corrected label extraction, units and provenance |
-| `app/services/analysis` | Main reviewed FSSAI/ingredient rule evaluator with explicit unknowns |
-| `app/services/knowledge` | Canonical aliases and approved source lookup |
-| `app/services/personalization` | Neutral reason catalog/facts; no personal profile storage |
-| `app/providers/ai` | Template baseline and optional protected Gemini wording |
-| `app/providers/products` | Selected Open Food Facts read-only barcode adapter; source-tagged community enrichment |
-| `app/prompts` | Future evidence-constrained wording instructions |
-| `app/repositories`, `db` | Read-only packaged lookup; optional local derived index ownership |
-| `storage/runtime` | Ignored local-laptop SQLite/cache artifacts, not hosted persistence |
-| `tests/unit`, `tests/integration` | Future rule, contract and provider-failure checks |
+| `GET /v1/health` | Backend readiness/version; external provider connectivity explicitly not checked |
+| `GET /v1/meta` | Backend version, API/schema/adapter versions and enabled capabilities; only product lookup is enabled |
+| `GET /v1/products/{barcode}` | Fixed OFF v3.6 product read; stable typed source-tagged response |
 
-The deployed function uses **bundled read-only JSON** derived from root `knowledge/`. A future packaging script must validate/stage required knowledge and version metadata; access to files outside the Vercel root does not itself package them. Do not store scans, profiles or durable counters in SQLite, memory or `/tmp` on Vercel.
+Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Returned identity must match the requested code, permitting leading-zero normalization only.
 
-The product is online-first. Open Food Facts supplies most online product data; Python applies reviewed criteria. No duplicate Dart rule evaluator is required for the MVP. Backend absence permits saved results/local preferences and an optional bundled glossary, but new analysis waits for connectivity. `/v1/meta` exposes contract, knowledge/rule versions and capabilities; reports retain input origins and evidence scope/version.
+~~~powershell
+Invoke-RestMethod http://127.0.0.1:8000/v1/meta
+Invoke-RestMethod http://127.0.0.1:8000/v1/products/3017620422003
+~~~
 
-Only confirmed public text/fields and region IDs cross the API. Images, preferences, history and personal suitability stay local. Gemini may rewrite generic public findings using approved evidence; never alter deterministic numbers/outcomes/references. Reviewed English/Hindi templates remain usable when AI fails or is disabled.
+| HTTP | Lookup status | Meaning |
+| --- | --- | --- |
+| 200 | `found` | Available community facts, which may still be sparse |
+| 404 | `not_found` | No provider record; not a food safety verdict |
+| 429 | `rate_limited` | Upstream quota response; no automatic retry |
+| 503 | `unavailable` | Provider/network/redirect unavailable; defer lookup |
+| 502 | `incompatible_response` | Malformed/oversized data or mismatched product identity |
+| 422 | FastAPI validation error | Unsupported barcode input; no provider call |
 
-[.env.example](.env.example) is an inert future-settings template. Gemini remains disabled until verified individual access for an eligible adult beta and bounded requests exist. A development `LOCAL_API_TOKEN` is not public authentication and must not ship in apps. CORS is not auth; clients receive only public `BACKEND_BASE_URL` configuration, never provider or shared access secrets.
+The product has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. No invented 0–100 score, nutrient amounts or compliance result is returned. Source metadata applies to every product field in this version and contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. No raw provider internals or remote product images are exposed. Product responses use `Cache-Control: no-store`; local saved-report policy is future client work.
 
-Open Food Facts is the selected product-data provider. Its lookup returns Unlabel's stable product schema, with explicit missing/unavailable states, attribution and provenance. See the [integration plan](../docs/architecture/OPEN_FOOD_FACTS.md). The adapter is planned, not implemented.
+## Configuration and key handling
 
-No account creation, cloud deployment or paid billing setup is part of the current foundation. Hosted caches and request counters are disposable and cannot guarantee global quota protection.
+Settings load the ignored `.env` at this backend root; environment variables override the file. Do not overwrite a teammate's existing file. `.env.example` contains safe defaults. Current settings:
+
+- `OFF_USER_AGENT`: public application identity, never a user token.
+- `OFF_TIMEOUT_SECONDS`: total lookup deadline (default 8; bounded 1–15 seconds).
+- `OFF_MAX_RESPONSE_BYTES`: decoded response budget (default 512 KiB; bounded 1 KiB–1 MiB).
+- `CORS_ORIGINS`: JSON array of exact HTTP(S) website origins, default `[]`; no wildcard or credentialed CORS.
+
+OFF reads require no API key. Gemini is disabled/unimplemented; the empty reserved Gemini fields in `.env` are not used by v0.1.0. Secrets must never appear in logs, API output, contracts or Git. CORS is a browser control, not authentication; native API access is not protected by it. Public cloud AI will need a separate access/budget design before activation.
+
+## Modules and constraints
+
+- `app/main.py`: app composition, lifespan-owned HTTP client and three small routes.
+- `app/core/config.py`: validated non-secret request/CORS settings.
+- `app/providers/products/open_food_facts.py`: fixed official HTTPS origin, selected fields, bounded read/deadline, identity checks and failure mapping.
+- `app/schemas/products.py`: versioned normalized product/status/provenance models.
+- `tests/`: synthetic mocked-provider and ASGI contract tests; no corpus copied from OFF.
+- `requirements*.txt`, `pyproject.toml`: tested dependency versions and backend metadata/tooling.
+
+HTTPX connection pool is bounded to six connections. There is no automatic retry, durable cache, process-wide global quota guarantee, profile/history storage or image upload. OFF records remain community data; confirmed package facts and reviewed criteria are later analysis inputs.
+
+The [India snapshot/storage proposal](../docs/research/INDIA_SNAPSHOT.md) is a future data milestone: official bulk export, India market filter, compact read-only index, manual six-month refresh and measured storage budget. No dataset was downloaded. Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. Local `.env` stays ignored; hosted settings live in the backend project's environment.
+
+## Validate
+
+~~~powershell
+.venv/Scripts/python.exe -m pytest -q
+.venv/Scripts/python.exe -m ruff check app tests
+.venv/Scripts/python.exe -m ruff format --check app tests
+.venv/Scripts/python.exe -m pip check
+~~~
+
+See [v0.1.0 review](../docs/planning/BACKEND_V0_1_0_REVIEW.md) for the actual results and remaining gates. Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.

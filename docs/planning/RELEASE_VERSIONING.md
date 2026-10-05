@@ -1,7 +1,7 @@
 # Release and versioning plan
 
 Status: Flutter starter and manual mobile release workflow implemented;
-production signing and deployment remain future work. Remote build results
+production signing remains future work. Separate Git-connected Vercel projects are configured for automatic website/backend deployment; see [settings and URLs](VERCEL_SETUP.md). Remote native build results
 are recorded by GitHub Actions and the resulting release manifest.
 Official documentation checked: 2026-10-05 (Asia/Calcutta), with Context7 used
 for Flutter and GitHub Actions documentation.
@@ -9,7 +9,7 @@ for Flutter and GitHub Actions documentation.
 ## Targets and current boundary
 
 Plan one product with Android APK, iOS, and website targets.
-Later hosting uses two Vercel projects: backend and web.
+Hosting uses two Vercel projects: backend and web, with independent frontend/backend versions.
 Native artifacts are handled by
 [manual-release.yml](../../.github/workflows/manual-release.yml), which runs
 only through a manual dispatch after being committed to the default branch.
@@ -21,6 +21,8 @@ deliverables. The strict zero-cost, no-card requirement limits the initial
 iOS release commitment as described below.
 
 ## Version identities
+
+Current versions are independent: frontend **0.0.0+1**, backend **0.1.0**. The `v0.1.0` release is explicitly titled Backend and carries no APK/IPA; the mobile `v0.0.0` tag/assets remain on their original build commit. For later backend-only releases, use `backend-vX.Y.Z` tags to avoid collisions with independently versioned frontend releases.
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |

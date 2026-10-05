@@ -1,11 +1,11 @@
 # Folder structure and root responsibilities
 
-The root is the shared product repository. It coordinates the frontend, future backend, knowledge, contracts, documentation and releases. It is not another application.
+The root is the shared product repository. It coordinates the frontend, backend, knowledge, contracts, documentation and releases. It is not another application.
 
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | Future FastAPI API, expanded rules and optional providers |
+| backend | FastAPI v0.1.0 product lookup/configuration; future rules and optional AI |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Shared synthetic fixtures; ignored private investigation data |
@@ -48,9 +48,10 @@ frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is t
 
 ## Backend
 
-| Path | Future responsibility |
+| Path | Responsibility / implementation status |
 | --- | --- |
-| app/api/v1 | Thin versioned HTTP routes |
+| app/main.py | Implemented app composition, lifespan and three versioned routes |
+| app/api/v1 | Reserved route modules as future endpoints grow |
 | app/core, schemas | Configuration/bounds/errors and validated contract models |
 | app/services/parsing | Extract/normalize fields, units, bases and provenance |
 | app/services/analysis | Main online rule evaluator using reviewed FSSAI/evidence definitions |
@@ -59,10 +60,10 @@ frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is t
 | app/providers/ai, products | Optional constrained AI and selected Open Food Facts read-only product lookup |
 | app/prompts | Reviewed evidence-constrained AI instructions |
 | app/repositories, db | Read-only bundles; optional local derived-store abstraction |
-| tests/unit, integration | Future rules/contracts/provider-failure checks |
+| tests/unit, integration | Implemented product/provider/API tests; rules follow later |
 | storage/runtime | Ignored local stores/cache, never durable Vercel storage |
 
-backend/.env.example is inert. No backend executable or dependencies exist yet.
+backend/.env.example documents implemented settings; ignored backend/.env holds local values. pyproject.toml and requirements files declare the runnable service. backend/vercel.json, .python-version and .vercelignore configure hosted packaging. frontend/vercel.json and tool/vercel-build.sh supply the pinned release web build; Flutter source/version are unchanged.
 
 ## Knowledge and shared inputs
 
@@ -75,7 +76,7 @@ backend/.env.example is inert. No backend executable or dependencies exist yet.
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Reserved machine definitions and validated examples |
+| contracts/schemas, examples | Exported v0.1.0 OpenAPI/product schema and synthetic example; later analysis schemas reserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
@@ -86,4 +87,4 @@ design/tokens and assets reserve shared future roles/branding. ai/datasets, expe
 
 docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
 
-Empty future folders use .gitkeep. Reserved folders are not implemented features. Only the Flutter starter and manual release workflow execute now.
+Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product service, Vercel web build and manual mobile workflow now execute; food analysis remains future work.

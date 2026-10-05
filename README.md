@@ -6,12 +6,15 @@
 
 **Understand the label. Know what is inside.**
 
-![Version](https://img.shields.io/badge/version-0.0.0-59636e?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.1.0-59636e?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Stage](https://img.shields.io/badge/stage-foundation-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
 [Architecture](docs/architecture/SYSTEM.md) · [Data workflow](docs/architecture/DATA_FLOW.md) · [Folder guide](docs/architecture/FOLDER_STRUCTURE.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md)
+
+[Website](https://unlabel-india.vercel.app) · [Backend API](https://unlabel-api.vercel.app/v1/meta) · [API docs](https://unlabel-api.vercel.app/docs)
 
 </div>
 
@@ -21,17 +24,20 @@ Unlabel is a college mini-project that will turn packaged food labels into simpl
 
 ## What is ready
 
-**This is the v0.0.0 foundation, not a working food scanner.**
+**Frontend is v0.0.0; backend is v0.1.0.** The app is still a starter. The backend now supports live barcode product lookup, not full food analysis.
 
 | Ready now | Planned next |
 | --- | --- |
 | One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
+| FastAPI health/meta and normalized OFF product lookup | Nutrition normalization, reviewed FSSAI checks and comparison |
 | Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
 | Platform projects and tracked dependency lockfile | Versioned nutrition, claim and allergen rules |
-| Manual APK + unsigned IPA release workflow | Optional FastAPI, Gemini and product enrichment |
+| Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
 | Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
 
-The color theme is undecided. The starter uses temporary stock Material styles. Backend, knowledge corpus, trained models and Vercel deployment do not exist yet.
+The color theme is undecided. The starter uses temporary stock Material styles. The backend is runnable locally. Both Vercel projects are configured for automatic Git deployments; corrected live builds await this version's push. Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+
+[Backend version plan](docs/superpowers/plans/2026-10-05-backend-versions.md) · [API/run guide](backend/README.md) · [India snapshot/storage proposal](docs/research/INDIA_SNAPSHOT.md)
 
 ## Four connected features
 
@@ -71,16 +77,16 @@ New product lookup and rule analysis use the backend. Offline scope is limited t
 
 No duplicate Dart rule engine is required for the MVP. On-device OCR may still capture a draft when supported, but fresh analysis waits for the backend. Website offline access needs an initial load and explicit app/saved-content caching; it is not implemented or automatic now. [Complete data flow →](docs/architecture/DATA_FLOW.md)
 
-## One frontend, two future Vercel projects
+## One frontend, two Vercel projects
 
 | Part | Stack | Deployment |
 | --- | --- | --- |
-| Frontend | One Flutter app: Android, iPhone/iPad and web | Website Vercel project rooted at frontend; native apps call the same API |
-| Backend | Python + FastAPI, selected for quicker development | Separate Vercel project rooted at backend |
+| Frontend | One Flutter app: Android, iPhone/iPad and web | [unlabel-india.vercel.app](https://unlabel-india.vercel.app), rooted at frontend |
+| Backend | Python + FastAPI, selected for quicker development | [unlabel-api.vercel.app](https://unlabel-api.vercel.app), rooted at backend; native apps use this same API |
 | Product data | Open Food Facts, selected as primary online product-data provider | Read-only backend adapter; missing records permit package-data entry; backend outages defer new analysis |
 | Knowledge | Reviewed JSON/CSV sources, aliases, rules and translations | Read-only client/server bundles; optional local SQLite index |
 
-The backend will be stateless. A writable SQLite file cannot be treated as durable Vercel storage. Flutter web needs a pinned custom build/prebuilt path. [Deployment plan →](docs/architecture/DEPLOYMENT_PLAN.md)
+The backend is stateless. A writable SQLite file cannot be treated as durable Vercel storage. The website build supplies pinned Flutter 3.47.4 and release output. Pushes to `main` automatically deploy both projects; APK/IPA releases remain manual. [Deployment configuration →](docs/planning/VERCEL_SETUP.md)
 
 **₹0 and no credit card remain the baseline.** Stay within eligible free tiers, keep billing disabled, and preserve local/template fallbacks. Hosted AI and unlimited private CI are not guarantees. [Free-stack research →](docs/research/FREE_STACK.md)
 
@@ -94,7 +100,7 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             Future FastAPI modules; not implemented
+├── backend/             FastAPI v0.1.0: live product lookup/service metadata
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Synthetic fixtures; private data ignored
@@ -124,11 +130,11 @@ flutter build web --release
 flutter build apk --release
 ~~~
 
-There is no backend to run and no API key needed for this starter.
+No API key is needed for the starter or backend OFF reads. See [backend setup](backend/README.md) for Python installation, local `.env` and run commands. Gemini remains disabled.
 
 ## Manual releases and version sync
 
-Open [GitHub Actions](https://github.com/Vaibhavsh0120/Unlabel/actions), select **Manual APK and unsigned IPA release**, and choose **Run workflow**. Supply the product version, increasing build number and source reference. Leave the backend URL empty until deployment exists.
+Open [GitHub Actions](https://github.com/Vaibhavsh0120/Unlabel/actions), select **Manual APK and unsigned IPA release**, and choose **Run workflow**. Supply the frontend version, increasing build number and source reference. For future API-enabled app builds, use `https://unlabel-api.vercel.app` as the backend URL. Existing v0.0.0 assets are unchanged.
 
 The workflow resolves one source commit, checks Flutter, builds both platforms with the same version/build, verifies uploaded artifacts, and attaches APK, unsigned IPA, checksums and a manifest to a release. Existing tags/assets are never overwritten.
 

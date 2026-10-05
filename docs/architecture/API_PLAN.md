@@ -1,6 +1,6 @@
 # Frontend/backend API plan
 
-This is a proposed online-first contract; the FastAPI backend and machine-readable schemas are not implemented. Later definitions belong in `contracts/schemas/`, provider/client examples in `contracts/examples/`, and compatibility policy in `contracts/versioning/`.
+Backend v0.1.0 implements `GET /v1/health`, `GET /v1/meta` and `GET /v1/products/{barcode}`. Current machine-readable definitions are exported to `contracts/schemas/` and the [backend README](../../backend/README.md) specifies actual fields/status codes. The analysis/ingredient/evidence routes below remain proposals and are not advertised as enabled capabilities.
 
 ## Proposed endpoints
 

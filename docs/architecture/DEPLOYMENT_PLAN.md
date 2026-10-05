@@ -1,20 +1,20 @@
 # Website and shared API deployment plan
 
-Checked: **2026-10-05**. Backend and Vercel hosting remain planned; no hosting accounts, Vercel configuration or deployments are created.
-The user separately authorized a basic Flutter scaffold and a manual GitHub APK/unsigned-IPA artifact workflow.
-Later deployment will use **two separate Vercel projects from this repository** and one shared API for every client.
+Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. Backend v0.1.0 and a pinned Flutter web build now have tracked deployment configuration; live verification follows the first push containing it. Future OCR, rule analysis and evidence packaging remain plans.
+
+Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 
 ## Project boundaries
 
-| Target | Repository root | Planned runtime | Calls |
+| Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on the Python runtime | Local evidence/rules and optional Gemini Developer API. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | OFF product lookup now; reviewed rules and optional Gemini later. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
 `frontend/web/` is Flutter's generated web platform folder, not a separate React/Vite application or Vercel project root.
-FastAPI is directly supported and becomes one Vercel Function; `app/main.py` is a supported future entrypoint.
+FastAPI is directly supported and becomes one Vercel Function; `app/main.py` is the implemented entrypoint.
 There is no need to split every route into a separate function or create an extra Node API.
 [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi).
 
@@ -28,24 +28,24 @@ The product is online-first. Python owns reviewed rule evaluation; Flutter recei
 
 Flutter documents `flutter build web` as a release build that generates `build/web/` under the project root.
 [Flutter web deployment](https://docs.flutter.dev/deployment/web).
-Vercel's static build settings can serve this output, but the plan must supply the Flutter toolchain rather than assuming it is preinstalled.
-Later choose one of these paths and pin the same exact Flutter version used by the application:
+Vercel's static build settings serve this output. `frontend/tool/vercel-build.sh` supplies and checks Flutter 3.47.4, resolves the tracked lockfile and builds release web assets with public backend URL/version/commit metadata.
+The chosen path and alternative are:
 
-- Custom Vercel build: use the Other framework preset, install/cache the pinned SDK during the build, run Flutter's web build, serve `build/web`.
-- Prebuilt static deployment: build in an authorized GitHub/local job with the pinned SDK, package Vercel Build Output API assets and deploy that artifact.
+- **Configured:** custom Vercel build using Other, a supplied pinned SDK and `build/web` output.
+- **Alternative:** prebuilt static deployment from an authorized GitHub/local job with the pinned SDK and Vercel Build Output API assets.
 
 For the prebuilt path, `build/web/` alone is not a Vercel prebuilt artifact: include `.vercel/output/config.json` and place assets under `.vercel/output/static/`.
 Keep generated SDKs and build outputs out of Git. Validate root hosting/base URL, browser refresh and asset paths before publishing.
 Keep hash routing initially or configure/test a navigation fallback for path routing; avoid treating missing assets as successful page loads.
 [Build settings](https://vercel.com/docs/builds/configure-a-build), [static output layout](https://vercel.com/docs/build-output-api/primitives).
-This is a future deployment plan. The current manual native artifact workflow does not connect to or deploy either Vercel project.
+Both projects deploy automatically from Git pushes to `main`. The manual native artifact workflow does not deploy either Vercel project.
 
 ## ₹0 and no-card boundary
 
 Select Hobby only for an eligible personal/non-commercial college demo; do not select Pro trials or upgrades.
 Hobby has finite resource allowances, limited collaboration features and may pause service when limits are exceeded.
 Use default Vercel domains; domain purchases, paid seats, add-ons and AI Gateway credits are not prerequisites.
-Verify no-card signup/import eligibility before deploying; no account or signup flow has been tested in this foundation phase.
+The user's existing account shows Hobby and both imports are connected. No signup/payment flow or billing upgrade was performed.
 If the actual account requires paid/card-backed access, retain the local demo instead of changing the cost constraint.
 [Hobby plan](https://vercel.com/docs/plans/hobby), [function pricing](https://vercel.com/docs/functions/usage-and-pricing).
 
@@ -57,7 +57,7 @@ Keep request bodies, profiles, history, tokens and secrets out of application lo
 ## Bundle shared evidence during the build
 
 Canonical `knowledge/` and `contracts/` sit outside the backend project's root. Build access is not runtime availability.
-Enable “Include source files outside of the Root Directory in the Build Step” for the backend project when configuring it later.
+“Include source files outside of the Root Directory in the Build Step” is enabled. Future evidence packaging still needs its own implementation and artifact verification.
 [Outside-root build access](https://vercel.com/docs/monorepos/monorepo-faq).
 
 The future backend build must validate canonical files and copy only required JSON into a generated, ignored backend bundle.
@@ -76,7 +76,7 @@ Treat every hosted request as able to land in a fresh instance. Read evidence; d
 Vercel Functions provide a read-only filesystem with temporary scratch space:
 [function runtimes](https://vercel.com/docs/functions/runtimes).
 Do not store scan history, mutable SQLite databases, user accounts, quota counters or permanent caches in that filesystem.
-The hosted baseline uses read-only JSON; a laptop may optionally use derived SQLite for local lookup/cache.
+The current backend uses live OFF reads. Future evidence is read-only JSON; an immutable SQLite catalogue may be bundled only after size/read-access checks. A laptop may also use a derived SQLite index.
 Profiles, history and pending scans remain in browser/device storage and do not sync between clients in the initial scope.
 
 ## Limited offline access and optional model hosting
@@ -129,11 +129,11 @@ Gemini's actual project quota remains a provider limit; authorized users can sti
 If adequate protection cannot fit ₹0/no-card, keep hosted Gemini disabled and demonstrate it through the private local backend.
 See [FREE_STACK.md](../research/FREE_STACK.md) for public-only provider inputs and deterministic failure behavior.
 
-## Validation before a later deployment
+## Validation and later feature gates
 
 Confirm account/plan eligibility, evidence artifact contents, HTTPS URLs, CORS/preflight and API contract compatibility.
 Exercise browser and native calls against the same backend; test missing/invalid identity before enabling hosted AI.
 Test provider failure, quota exhaustion, serverless restart and backend outage without relying on stored server state.
 Verify saved-content access offline and separately verify the website's cached app/content after an initial load. New backend analysis must clearly defer when connectivity is absent.
 Measure cold-start response time and bundle size; keep the laptop/LAN demonstration ready if hosted limits pause service.
-Actual Vercel project import, secrets, build scripts, deployment configuration and deployments belong to the implementation phase.
+Project imports/configuration and the website build script are now part of v0.1.0 hosting setup. See [Vercel setup](../planning/VERCEL_SETUP.md) and [backend review](../planning/BACKEND_V0_1_0_REVIEW.md) for current evidence. The additional gates above apply when their planned features are implemented.

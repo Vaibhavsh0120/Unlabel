@@ -1,6 +1,6 @@
 # Open Food Facts integration plan
 
-Decision: **selected by the user on 5 October 2026**. This is foundation planning; no barcode plugin, provider adapter, cache or endpoint is implemented yet.
+Decision: **selected by the user on 5 October 2026**. Backend v0.1.0 implements live barcode lookup with identity/ingredients/allergen tags and provider computed grades. Nutrition normalization, analysis, cache/importer and client barcode capture remain planned.
 
 Open Food Facts (OFF) does the primary online product-data heavy lifting: identity, ingredients, nutrition and available computed insights. Python applies reviewed FSSAI/ingredient criteria. The physical package takes priority when confirmed facts differ from a community record. The MVP is online-first; a second Dart rule engine is not required.
 
@@ -61,4 +61,4 @@ Keep OFF snapshots source-separated and read-only. Do not automatically upload u
 
 Ownership: backend teammate owns the provider adapter and schema/failure fixtures; Flutter teammate owns barcode capture, conflict review and dated local snapshots; the evidence owner reviews attribution/provenance and source distinctions. Acceptance covers found/missing/conflicting records, nutrition bases, leading-zero barcodes, schema changes, quota failure, offline behavior and stable old-client responses.
 
-The architecture is selected; actual API behavior, integration, Indian-product coverage and offline cache behavior remain to be validated during implementation.
+The v0.1.0 adapter and failure behavior are tested; a small live lookup succeeded. Broad Indian-product coverage, nutrition interpretation, deployment and offline cache behavior remain unvalidated. See the [separate India snapshot proposal](../research/INDIA_SNAPSHOT.md): manual six-month refresh and bounded storage, not a v0.1.0 dataset download.

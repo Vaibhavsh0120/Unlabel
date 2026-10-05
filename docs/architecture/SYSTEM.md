@@ -1,6 +1,6 @@
 # System architecture
 
-Decision updated: **2026-10-05**. Python/FastAPI is selected for quicker implementation. The Flutter Material starter and manual native-artifact workflow exist; scanning, rule evaluation, API services and deployment remain planned.
+Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.1.0 implements FastAPI health/meta and normalized live OFF lookup. Scanning, rule evaluation and deployment remain planned.
 
 ## Product and delivery boundary
 
