@@ -14,7 +14,9 @@ The installed Starlette test client emits one deprecation warning for HTTPX 0.x.
 
 A read-only peer source review found malformed provider Unicode causing a response serialization error. Two failing regression cases reproduced it; the adapter now marks invalid text/tags as unknown with warnings, and both pass. Unsupported text never becomes an allergen-free finding.
 
-Vercel project roots, framework/build settings, preview-only protection, exact public CORS and verified free domains are configured. Corrected cloud builds/endpoint smoke are pending the first source push; READY initial imports are not evidence that this new version is running.
+Vercel project roots, framework/build settings, preview-only protection, exact public CORS and verified free domains are configured. Push `0c10e0b807948d70d3327517387f1db8cddc52c7` automatically deployed both projects to production and both reached READY. Public health/meta/OpenAPI returned 200, the live schema matched the exported contract, invalid input returned 422, exact-origin CORS/preflight passed and an unrelated origin received no CORS permission. One live OFF product lookup returned 200/found in a 0.91-second sample; this is not a general performance benchmark.
+
+The website returned HTML/release JavaScript 200 and rendered the existing Flutter starter in Chrome. Unpublished `.env`/Dart source and missing assets returned 404. Build defines are supplied but currently unconsumed `BuildInfo` constants can be tree-shaken; no app-to-API user flow has been implemented or verified. Tests used ordinary public HTTP, without Vercel authentication cookies/bypass. APK/IPA artifacts were not rebuilt.
 
 ## Limits and next version
 

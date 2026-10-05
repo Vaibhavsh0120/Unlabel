@@ -14,7 +14,7 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - Framework: **Other**; install command skipped.
 - Build: `bash tool/vercel-build.sh`; output: `build/web`.
 - The tracked build script supplies Flutter **3.47.4** from the official SDK Git tag, checks that version, uses the tracked dependency lockfile and builds web in **release** mode.
-- Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is compiled through `--dart-define`. App version/build come from `pubspec.yaml`, currently **0.0.0+1**; Vercel injects the source commit SHA.
+- Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is supplied through `--dart-define`. Version/build come from `pubspec.yaml`, currently **0.0.0+1**; Vercel supplies the source commit SHA. The starter does not consume `BuildInfo` yet, so release tree shaking can remove unused constants; no API client or visible version panel is claimed.
 - `frontend/vercel.json` stores reproducible build settings. SDK/build output stays ignored. Hash routing uses the existing starter; no blanket rewrite turns missing assets into successful HTML responses.
 
 The starter contains no product API request yet. Passing the URL config prepares the teammate's future API adapter; it does not implement scanning or analysis.
@@ -36,6 +36,11 @@ Update docs and run relevant checks before each push. Both projects use their ow
 
 After pushing, match each deployment's Git SHA to the intended commit. Check the website, `/v1/health`, `/v1/meta`, `/openapi.json`, one bounded product lookup, exact-origin CORS/preflight and invalid input. A READY build alone is not endpoint evidence.
 
-Initial imports deployed the foundation commit without the new service/build script. Corrected builds and live smoke are pending the first push containing those files. Record their result in [backend validation](BACKEND_V0_1_0_REVIEW.md) before publishing the backend release.
+Initial imports deployed the foundation commit without the new service/build script. The first corrected push, `0c10e0b807948d70d3327517387f1db8cddc52c7`, automatically produced READY production deployments for both projects:
+
+- Website: `dpl_in9NzBZaSEsZdSfT8XVFoQmWcfK2`; pinned SDK/lockfile and release web compilation succeeded. The public page and JavaScript returned 200, and Chrome rendered the Flutter starter. Unpublished source/environment and missing JavaScript paths returned 404.
+- Backend: `dpl_6uCtKb2CbnMtFWu6U35jLarubt3R`; public health/meta/OpenAPI returned 200, live schema matched the export, invalid barcode returned 422, and a live OFF lookup returned 200/found. Exact frontend CORS and preflight passed; an unrelated origin was not allowed.
+
+These HTTP checks used no Vercel login cookie or bypass token. This verifies initial production deployment and provider connectivity, not future scanner/analysis behavior or Indian-market coverage. Later docs-only pushes redeploy the same service/frontend source. See [backend validation](BACKEND_V0_1_0_REVIEW.md) for remaining gates.
 
 References: [Vercel monorepos](https://vercel.com/docs/monorepos), [FastAPI deployment](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime/version](https://vercel.com/docs/functions/runtimes/python), [Flutter web release](https://docs.flutter.dev/deployment/web), [Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication).

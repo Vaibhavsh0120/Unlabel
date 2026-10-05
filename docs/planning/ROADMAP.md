@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Phase 0 now includes a basic Flutter app and manual unsigned release automation. Core scanner work awaits a future implementation request.
+Phase 0 includes the Flutter v0.0.0 starter and manual unsigned release automation. Backend work now follows the [small version plan](../superpowers/plans/2026-10-05-backend-versions.md): v0.1.0 implements service metadata/OFF product lookup and hosting setup, while nutrition, claim checks, glossary, comparison and the India snapshot remain separate milestones. Frontend feature work belongs to the teammate. The phase table below remains the wider product roadmap; [hosting URLs and status](VERCEL_SETUP.md) distinguish today's setup from later offline/analysis features.
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |

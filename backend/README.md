@@ -2,7 +2,7 @@
 
 Frontend remains **v0.0.0**. This backend version implements live Open Food Facts barcode lookup and service metadata. No nutrition analysis, FSSAI claim evaluator, AI explanation, comparison or database import exists yet. The [version plan](../docs/superpowers/plans/2026-10-05-backend-versions.md) keeps these as separate deliverables.
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both Vercel projects are configured; corrected builds/live verification await this version's first push. [Deployment settings](../docs/planning/VERCEL_SETUP.md).
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both automatically deployed from Git and passed live verification. [Deployment settings](../docs/planning/VERCEL_SETUP.md).
 
 ## Run locally
 

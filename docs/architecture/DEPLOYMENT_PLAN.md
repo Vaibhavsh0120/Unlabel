@@ -1,6 +1,6 @@
 # Website and shared API deployment plan
 
-Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. Backend v0.1.0 and a pinned Flutter web build now have tracked deployment configuration; live verification follows the first push containing it. Future OCR, rule analysis and evidence packaging remain plans.
+Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. Backend v0.1.0 and the pinned Flutter web build automatically deployed from Git and passed live verification. Future OCR, rule analysis and evidence packaging remain plans.
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 

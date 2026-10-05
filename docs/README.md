@@ -11,6 +11,7 @@ Frontend remains v0.0.0. Backend v0.1.0 implements health/meta and normalized li
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
 | [Backend validation](planning/BACKEND_V0_1_0_REVIEW.md) | Tests, live smoke and exact current limits |
+| [Backend release notes](planning/BACKEND_V0_1_0_RELEASE.md) | v0.1.0 deliverables, validation and next versions |
 | [Vercel setup and URLs](planning/VERCEL_SETUP.md) | Actual project roots/builds, free domains, environment and Git deployments |
 | [India snapshot](research/INDIA_SNAPSHOT.md) | Future official export import, six-month refresh and storage budgets |
 | [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two Vercel projects, stateless runtime and future evidence bundles |

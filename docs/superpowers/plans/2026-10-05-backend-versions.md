@@ -53,7 +53,8 @@ Later versions are plans, not features promised by v0.1.0. A future version can 
 - [x] Test API input/status mappings, metadata disabled capabilities, independent health readiness, CORS and OpenAPI schema.
 - [x] Export validated contracts/examples for the Flutter teammate; document environment/run commands and limitations.
 - [x] Run pytest, Ruff, dependency consistency, schema checks and local HTTP smoke. Perform only a small public OFF smoke if reachable; record failure honestly.
-- [ ] Review diff/source and key hygiene, push and verify user-authorized automatic Vercel deployments, then tag/publish backend v0.1.0 release notes. No mobile action.
+- [x] Review diff/source and key hygiene, push and verify user-authorized automatic Vercel deployments. No mobile action.
+- [x] Prepare [Backend v0.1.0 release notes](../../planning/BACKEND_V0_1_0_RELEASE.md) with checks/limits. Tag/publication follows the final documentation commit; the GitHub release records publication state.
 
 ## Review focus
 

@@ -35,7 +35,7 @@ Unlabel is a college mini-project that will turn packaged food labels into simpl
 | Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
 | Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
 
-The color theme is undecided. The starter uses temporary stock Material styles. The backend is runnable locally. Both Vercel projects are configured for automatic Git deployments; corrected live builds await this version's push. Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are live and were checked after an automatic Git deployment: the website renders the starter, and the backend serves v0.1.0 product lookup. Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
 
 [Backend version plan](docs/superpowers/plans/2026-10-05-backend-versions.md) · [API/run guide](backend/README.md) · [India snapshot/storage proposal](docs/research/INDIA_SNAPSHOT.md)
 
