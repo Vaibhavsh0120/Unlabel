@@ -33,8 +33,8 @@
 
 | Version | Deliverable | Gate |
 | --- | --- | --- |
-| **v0.1.0 — this sitting** | Runnable API; `/v1/health`, `/v1/meta`, `/v1/products/{barcode}`; OFF identity/ingredients/allergen tags/computed grades; provenance/failure states; OpenAPI | Found/sparse/missing records, input and identity validation, malformed/oversized responses, timeout/rate limit, CORS, version/schema tests |
-| v0.2.0 | Nutrition normalization/snapshot and confirmed-input analysis intake | Verify upstream nutrition schema; units, 100 g/100 mL/serving, zero vs missing, total vs added sugar, sodium vs salt |
+| **v0.1.0 — complete** | Runnable API; `/v1/health`, `/v1/meta`, `/v1/products/{barcode}`; OFF identity/ingredients/allergen tags/computed grades; provenance/failure states; verified Vercel hosting | Found/sparse/missing records, input and identity validation, malformed/oversized responses, timeout/rate limit, CORS, version/schema tests |
+| **v0.2.0 — this version** | Separate OFF nutrition lookup and confirmed structured nutrition-row normalization; preserved original rows/bases/sources; no health/claim analysis | Verified live upstream nutrition, strict units/numbers, 100 g/100 mL/serving, zero vs missing, total/added sugar and sodium/salt separation, 32 KiB intake/64-row/16-upstream-table bounds; [review](../../planning/BACKEND_V0_2_0_REVIEW.md) |
 | v0.2.1 — separate data milestone | India-tagged official export importer and read-only snapshot | Measure export completeness/size and hosting fit, licenses, barcode index, export dates and manual six-month refresh; see [snapshot proposal](../../research/INDIA_SNAPSHOT.md) |
 | v0.3.0 | Small reviewed FSSAI claim-check scope and evidence endpoints | Current authoritative provisions, effective dates/category exceptions; supported/contradicted/insufficient-information fixtures |
 | v0.4.0 | Ingredient glossary/INS aliases and reviewed English/Hindi explanation templates | Reuse rights, allergen uncertainty and translation preserving facts/units |
@@ -42,7 +42,7 @@
 | v0.6.0 | Optional Gemini wording | User-supplied backend-only key, eligible free quota, public facts only, immutable numbers/verdicts/references, template fallback |
 | v0.7.0 | Hosting hardening and optional reviewed insight feed | Vercel staging, HTTPS/old-client compatibility, request/abuse bounds, source review and measured provider availability |
 
-Later versions are plans, not features promised by v0.1.0. A future version can split further if research or tests justify it.
+Later versions are plans, not features enabled by v0.2.0. A future version can split further if research or tests justify it. The frontend remains v0.0.0, and backend releases do not rebuild mobile assets.
 
 ## v0.1.0 tasks
 
@@ -63,3 +63,9 @@ Later versions are plans, not features promised by v0.1.0. A future version can 
 - Returned barcode identity must match requested code, allowing only documented leading-zero normalization.
 - Provider strings are untrusted data; do not expose arbitrary URLs/schema or execute embedded content.
 - Health/meta must work without a successful external call and must report future analysis/AI capabilities disabled.
+
+## v0.2.0 handoff
+
+Current code adds `GET /v1/products/{barcode}/nutrition` and `POST /v1/nutrition/normalize`, preserving the strict ProductLookup v1 response. The [API plan](../../architecture/API_PLAN.md), [backend guide](../../../backend/README.md), and [shared contract index](../../../contracts/README.md) describe actual input/output models and capability flags. The release-specific review records local checks, public provider feasibility and deployment verification without assuming successful publication from a build alone.
+
+OFF v3.6 `nutrition.input_sets` is verified with bounded live Nutella/Coca-Cola reads. Only eligible direct values from packaging/manufacturer tables enter normalization; provider computed sets, estimates and qualified modifiers are excluded. Source/preparation/bases remain visible. A normalization result is a data transformation, not a health score, allergy judgment or FSSAI verdict. Bulk India download/replacement stays outside this release.

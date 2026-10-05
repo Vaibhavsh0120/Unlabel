@@ -22,15 +22,15 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Current versions are independent: frontend **0.0.0+1**, backend **0.1.0**. The `v0.1.0` release is explicitly titled Backend and carries no APK/IPA; the mobile `v0.0.0` tag/assets remain on their original build commit. For later backend-only releases, use `backend-vX.Y.Z` tags to avoid collisions with independently versioned frontend releases.
+Current source versions are independent: frontend **0.0.0+1**, backend **0.2.0**. The published `v0.1.0` release is explicitly titled Backend and carries no APK/IPA; v0.2.0 follows the same backend-only naming convention, with publication state recorded by GitHub and the release review. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve those existing `v0.x` tags as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |
-| Product release | Repository-wide SemVer, such as `1.2.0`, with tag `v1.2.0` | Identifies one reviewed release and source commit |
+| Component release | Independent frontend/backend SemVer and unambiguous release title/tag | Identifies the released component and reviewed source commit |
 | Android build | Increasing integer mapped to `versionCode`; product version maps to `versionName` | Preserve application ID and release signing identity for updates |
 | iOS build | Increasing build identifier mapped to `CFBundleVersion`; product version maps to `CFBundleShortVersionString` | Preserve bundle ID and applicable signing/provisioning requirements |
 | API major | Routes begin with `/v1` | Additive changes within the supported major; breaking changes require a new major |
-| Contract schema | Independently recorded schema version | Parsers accept compatible additions and tolerate unknown fields |
+| Contract schema | Independently recorded schema version | Preserve strict existing response shapes; new shapes use separate routes/models or a new schema |
 | Knowledge version | Reviewed corpus/rule release identifier | Every analysis records the knowledge version used |
 | Deployment commit | Full Git SHA for each backend/web deployment | Records running code independently of a native app's frozen build |
 
@@ -64,9 +64,9 @@ the automatic token cannot create releases for divergent workflow targets.
 1. Validate reference, version, build number, URL, and tag uniqueness.
 2. Resolve one commit SHA and expose it as the sole source for all jobs.
 3. Run Flutter analysis and tests against that SHA. Backend/web contract
-   checks remain future work and are recorded as not implemented.
+   checks are outside this mobile workflow; backend releases run their own tests and contract checks.
 4. Build the demo APK on Linux and unsigned device IPA on macOS/Xcode.
-   Backend/web builds and deployments remain separate future gates.
+   Backend/web builds and deployments are separate Git-triggered gates.
 5. Check artifact presence, version metadata, signing status, and file format;
    generate SHA-256 checksums and a build manifest.
 6. Create a draft GitHub Release targeting that SHA and attach verified assets.
@@ -96,7 +96,7 @@ The manifest should identify:
 - Environment name and non-secret backend base URL compiled into each client.
 - Asset filenames, sizes, SHA-256 checksums, and test gate results.
 - iOS signing/export mode, installation limitations, and any unavailable gate.
-- Backend/web deployment SHAs and verification state when deployed later.
+- Backend/web deployment SHAs and release-specific verification state.
 
 Do not include keys, certificates, private provisioning material, or personal
 profile data in artifacts, manifests, logs, or repository files.
@@ -154,9 +154,10 @@ through environment configuration. Preview clients use a separate preview
 backend and must not silently redirect production apps to a preview deployment.
 Provider keys remain on the backend. Native URL changes require a new build.
 
-A proposed `/v1/meta` handshake can expose backend product version, deploy SHA,
-API/contract compatibility, capabilities, and knowledge version. Keep health
-checks separate or expose equivalent non-secret metadata through them.
+The implemented `/v1/meta` handshake exposes backend version, API/contract
+compatibility, adapter/normalization versions, capabilities, and knowledge
+version. It does not currently expose a deployment SHA; the Vercel deployment
+record identifies that SHA. `/v1/health` stays separate from provider checks.
 Clients use capabilities and schema compatibility, not an exact product-version
 equality check. Unsupported functionality receives a clear fallback.
 
@@ -164,7 +165,14 @@ The MVP is online-first. Python owns reviewed rule evaluation; OFF's changing
 provider schema remains behind a stable backend adapter. Offline saved reports
 retain their original source, date and versions; viewing them does not refresh
 criteria or compute new findings. No Dart rule engine/parity system is required.
-No provider integration, rules or knowledge updates are active in the foundation.
+Product/nutrition provider reads and confirmed-row normalization are active
+in backend v0.2.0. Reviewed rules, knowledge updates and AI remain disabled.
+
+The strict ProductLookup v1 model/route is unchanged by v0.2.0. Nutrition has
+separate lookup/request/response schemas; historical v0.1.0 OpenAPI stays
+available. Clients can enable `nutrition_lookup`/`nutrition_normalization`
+through metadata while leaving future `nutrition_analysis` disabled. A complete
+normalization result is not complete nutrient coverage or a health verdict.
 
 Deploy additive backend changes first and verify old-client compatibility.
 Deploy the web project next, then release native assets against the stable URL.

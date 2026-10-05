@@ -1,0 +1,149 @@
+{
+  "schema_version": "1",
+  "nutrition_adapter_version": "1",
+  "requested_barcode": "0123456789012",
+  "product_barcode": "0123456789012",
+  "status": "found",
+  "source": {
+    "provider": "open_food_facts",
+    "upstream_api_version": "3.6",
+    "adapter_version": "1",
+    "product_url": "https://world.openfoodfacts.org/product/0123456789012",
+    "retrieved_at": "2026-10-05T12:00:00Z",
+    "provider_modified_at": null,
+    "provider_schema_version": null,
+    "attribution": "Product data from Open Food Facts",
+    "database_license": "ODbL-1.0",
+    "contents_license": "DbCL-1.0",
+    "license_url": "https://openfoodfacts.org/terms-of-use"
+  },
+  "assessment_basis": "open_food_facts_community_data",
+  "input_tables": [
+    {
+      "table_id": "back-panel",
+      "provider_source": "packaging"
+    }
+  ],
+  "snapshot": {
+    "normalization_version": "1",
+    "status": "partial",
+    "tables": [
+      {
+        "source_table_id": "back-panel",
+        "preparation": "as_sold",
+        "original_basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "normalized_basis": {
+          "kind": "quantity",
+          "amount": 100.0,
+          "unit": "g"
+        },
+        "nutrients": {
+          "energy": {
+            "value": null,
+            "unit": "kcal",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "saturated_fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates_total": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "sugars": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "added_sugars": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fibre": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "protein": {
+            "value": 10.0,
+            "unit": "g",
+            "reason": null,
+            "source_row_ids": [
+              "protein-line"
+            ],
+            "conversion": "g unchanged; scaled from 40 g to 100 g"
+          },
+          "sodium": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "salt": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          }
+        }
+      }
+    ],
+    "original_rows": [
+      {
+        "row_id": "protein-line",
+        "table_id": "back-panel",
+        "nutrient": "protein",
+        "value": 4.0,
+        "unit": "g",
+        "basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "preparation": "as_sold"
+      }
+    ],
+    "warnings": [
+      "partial_capture"
+    ]
+  },
+  "warnings": [
+    "synthetic_example_not_a_real_product"
+  ]
+}

@@ -7,9 +7,9 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.1.0-59636e?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.2.0-59636e?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
-![Stage](https://img.shields.io/badge/stage-foundation-59636e?style=flat-square)
+![Stage](https://img.shields.io/badge/stage-backend%20core-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
 [Architecture](docs/architecture/SYSTEM.md) · [Data workflow](docs/architecture/DATA_FLOW.md) · [Folder guide](docs/architecture/FOLDER_STRUCTURE.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md)
@@ -24,18 +24,19 @@ Unlabel is a college mini-project that will turn packaged food labels into simpl
 
 ## What is ready
 
-**Frontend is v0.0.0; backend is v0.1.0.** The app is still a starter. The backend now supports live barcode product lookup, not full food analysis.
+**Frontend is v0.0.0; backend is v0.2.0.** The app is still a starter. The backend supports live barcode product lookup, source-tagged nutrition lookup, and normalization of confirmed label values. Nutrition normalization prepares facts; health scores and FSSAI claim checks come later.
 
 | Ready now | Planned next |
 | --- | --- |
 | One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
-| FastAPI health/meta and normalized OFF product lookup | Nutrition normalization, reviewed FSSAI checks and comparison |
+| FastAPI health/meta, OFF product and nutrition lookup | Reviewed FSSAI checks and comparison |
+| Confirmed nutrient rows normalized with original values and provenance | OCR-to-API integration and nutrition visualizations |
 | Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
 | Platform projects and tracked dependency lockfile | Versioned nutrition, claim and allergen rules |
 | Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
 | Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
 
-The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are live and were checked after an automatic Git deployment: the website renders the starter, and the backend serves v0.1.0 product lookup. Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; release-specific backend checks are recorded in the [v0.2.0 review](docs/planning/BACKEND_V0_2_0_REVIEW.md). Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
 
 [Backend version plan](docs/superpowers/plans/2026-10-05-backend-versions.md) · [API/run guide](backend/README.md) · [India snapshot/storage proposal](docs/research/INDIA_SNAPSHOT.md)
 
@@ -67,7 +68,9 @@ flowchart LR
   Knowledge["Reviewed canonical knowledge"] --> Rules
 ~~~
 
-**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. The backend applies reviewed FSSAI criteria to available evidence; no live FSSAI verification API or official certification is assumed. The confirmed physical package takes priority when its facts differ from the community record. Missing fields stay uncertain, and a record-only assessment is identified as such. [Open Food Facts integration plan →](docs/architecture/OPEN_FOOD_FACTS.md)
+**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. Backend v0.2.0 accepts a narrow set of directly entered nutrition tables and preserves their source, basis and preparation. Separate tables are never silently combined. Confirmed physical-package values use a separate endpoint and remain distinct from community data. Reviewed FSSAI criteria are planned; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
+
+Normalization preserves zero, marks missing values as unknown, and converts compatible values to per 100 g or per 100 mL. It keeps an unmeasured serving as a serving, without guessing density or portion size. It does not infer added sugar from total sugar or salt from sodium. [Current API and examples →](backend/README.md)
 
 Structured rules and ingredient/alias lookup are enough initially. No vector RAG or custom model training is required. Gemini only explains established findings; it cannot change numbers, verdicts or sources. [Evidence strategy →](docs/research/EVIDENCE_STRATEGY.md) · [AI/training options →](docs/research/AI_TRAINING.md)
 
@@ -100,13 +103,13 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.1.0: live product lookup/service metadata
+├── backend/             FastAPI v0.2.0: product/nutrition lookup + normalization
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Synthetic fixtures; private data ignored
 ├── design/              Shared token/asset folders; palette undecided
 ├── ai/                  Optional experiments; no training
-├── scripts/             Reserved maintenance/export tools
+├── scripts/             Contract export + reserved evidence maintenance tools
 ├── docs/                Architecture, research and teammate handoff
 └── .github/workflows/   Manual APK + unsigned IPA release
 ~~~

@@ -1,23 +1,44 @@
 # Frontend/backend API plan
 
-Backend v0.1.0 implements `GET /v1/health`, `GET /v1/meta` and `GET /v1/products/{barcode}`. Current machine-readable definitions are exported to `contracts/schemas/` and the [backend README](../../backend/README.md) specifies actual fields/status codes. The analysis/ingredient/evidence routes below remain proposals and are not advertised as enabled capabilities.
+Backend v0.2.0 implements the five routes below. Current definitions are exported in `contracts/schemas/backend-v0.2.0.openapi.json`; the [backend README](../../backend/README.md) documents actual behavior. The strict v0.1 ProductLookup response and historical OpenAPI remain preserved. Analysis, claims, ingredient/evidence and comparison endpoints remain proposals.
 
-## Proposed endpoints
+## Implemented endpoints and nutrition contract
+
+| Endpoint | Actual behavior |
+| --- | --- |
+| `GET /v1/health` | Ready/version; provider connectivity explicitly not checked |
+| `GET /v1/meta` | API/contract/product-adapter/nutrition-adapter/normalization versions and capabilities |
+| `GET /v1/products/{barcode}` | Unchanged typed OFF identity/ingredient/tag/computed-grade lookup |
+| `GET /v1/products/{barcode}/nutrition` | Separate OFF direct-input nutrition lookup with community origin and table source metadata |
+| `POST /v1/nutrition/normalize` | Structured user-confirmed nutrient normalization, independent of OFF connectivity |
+
+Metadata enables product lookup, nutrition lookup and nutrition normalization. `nutrition_analysis`, claim checks, ingredient explanations, comparison and AI remain disabled; `knowledge_version` is `not_populated`.
+
+`NormalizeRequest` contains schema `1`, UUID request/session IDs, bounded strict integer revision, actual boolean `confirmed: true`, completeness `complete`/`partial`, and 1–64 unique-ID nutrient rows. A row contains table ID, supported nutrient, finite nonnegative numeric value or null, compatible unit, basis and as-sold/as-prepared state. Quantity bases require positive amount plus `g`/`mL`; serving bases require both amount/unit or neither. Strings, booleans and nonfinite/precision-losing numeric tokens do not become nutrient values. All models forbid extra fields; no image/OCR/profile/secret fields are accepted.
+
+The response echoes request/session/revision and normalization time, identifies `assessment_basis: user_confirmed_label`, and returns a `NutritionSnapshot`. OFF lookup identifies `assessment_basis: open_food_facts_community_data`, provider/date/licenses and each accepted packaging/manufacturer table. OFF estimates/computed sets/qualified values are excluded. At most 16 upstream tables and 64 accepted rows are processed; whole tables exceeding the row budget are omitted with warnings. Origins and separate tables are never merged.
+
+A snapshot retains original rows, source-row IDs, preparation, original/normalized bases, canonical cells, conversion descriptions and warnings. Cells use kcal for energy and g for the other ten supported nutrient types. The adapter distinguishes available/total carbohydrates, total/added sugars and sodium/salt. Known mass/volume bases scale to per 100 g/per 100 mL within the same unit; no density or unknown portion size is inferred. Unknown serving size stays per serving. Missing cells remain null with a reason; zero remains zero.
+
+`complete` means submitted rows normalized successfully with a complete submission declaration, not that every nutrient is known. Explicit unknowns/incomplete capture/unmeasured serving yield `partial`; contradictory duplicates or inconsistent table contexts yield `needs_correction`, preserving inputs. Comparable OFF tables with differing known values produce `provider_tables_disagree` and `needs_correction`, retaining both values without an invented rounding tolerance. These statuses are data-processing results, not food-quality, allergy or regulatory verdicts.
+
+The actual body limit is 32 KiB before JSON parsing, including chunked transfers (413). Validation failures return 422 with a maximum of 32 redacted error entries and `errors_truncated`; submitted values, request bodies and arbitrary unknown field names are excluded. Lookup failures retain 404/429/502/503 source-tagged states. Nutrition and product responses are `no-store`; the backend persists no scan or profile and logs no request content. CORS permits GET/POST only for exact configured origins and is not authentication. No AI call is enabled.
+
+Use the [export/example index](../../contracts/README.md) for actual schema files and validated synthetic requests/responses. Raw text interpretation, capture geometry, health scoring and reviewed claims are outside this slice.
+
+## Future endpoints
 
 | Endpoint | Purpose | Output |
 | --- | --- | --- |
-| `GET /v1/health` | Minimal service readiness; no scan/profile | Ready/degraded status without secrets |
-| `GET /v1/meta` | Client compatibility and available capability handshake | Contract, knowledge/rule/policy versions, evaluator scope and enabled capabilities |
 | `POST /v1/analyze` | Backend evaluation of source-tagged OFF facts and/or confirmed package fields | Normalized product, assessed criteria, findings, evidence and neutral suitability facts |
 | `GET /v1/ingredients/{ingredient_id}` | Explain a matched canonical ingredient | Reviewed bilingual content and references |
 | `GET /v1/evidence/{source_id}` | Show provenance | Public source metadata, provision locator, permitted excerpt/link and review state |
-| `GET /v1/products/{barcode}` | Selected Open Food Facts read-only barcode lookup | Stable Unlabel product snapshot with provenance, attribution and explicit lookup status |
 
-Routes, access scopes and limits are implemented later. Metadata must not expose provider secrets. Public Gemini capability remains disabled until proper individual authentication for an eligible adult beta is in place. Validate token issuer, audience, signature, expiry and access allowlist; CORS is not authentication. A private development token may protect local tooling/LAN experiments, but must never be embedded in a distributed app or reused as public authentication.
+These routes, their access scopes and additional limits are implemented later. Metadata must not expose provider secrets. Public Gemini capability remains disabled until proper individual authentication for an eligible adult beta is in place. Validate token issuer, audience, signature, expiry and access allowlist; CORS is not authentication. A private development token may protect local tooling/LAN experiments, but must never be embedded in a distributed app or reused as public authentication.
 
 No profile, image upload, scan-history, per-frame or generic chat endpoints are required. Charts and product comparison use existing normalized reports locally.
 
-The Open Food Facts endpoint is part of the selected provider plan, not a prerequisite for every scan. Preserve barcode strings/leading zeros and any upstream normalization. Return normalized fields with units/bases, source URL, retrieval time, available provider revision, adapter/schema version and attribution. Separate `found`, `not_found`, `rate_limited`, `unavailable` and `incompatible_response`; these lookup statuses do not change analysis outcomes. Never treat a missing product/field as a zero nutrient or absent allergen. Raw OFF response shapes remain behind the backend adapter. See [Open Food Facts](OPEN_FOOD_FACTS.md).
+The implemented OFF endpoints are optional enrichment, not prerequisites for confirmed-value normalization or every future scan. Preserve barcode strings/leading zeros and any allowed upstream identity normalization. Keep source URL, retrieval time, available provider revision, adapter/schema version and attribution. Separate `found`, `not_found`, `rate_limited`, `unavailable` and `incompatible_response` from nutrition processing/future claim outcomes. Never treat a missing record/field as zero or absent allergen. Raw OFF response shapes stay behind the adapter. See [Open Food Facts](OPEN_FOOD_FACTS.md).
 
 ## Proposed input
 

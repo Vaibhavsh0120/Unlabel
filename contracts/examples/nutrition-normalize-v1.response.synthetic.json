@@ -1,0 +1,125 @@
+{
+  "schema_version": "1",
+  "client_request_id": "4ca97170-4077-4af4-bc75-b1d4b632f01f",
+  "capture_session_id": "960f1c01-981d-4fe6-8394-31c4470e7936",
+  "input_revision": 2,
+  "normalized_at": "2026-10-05T12:00:00Z",
+  "assessment_basis": "user_confirmed_label",
+  "snapshot": {
+    "normalization_version": "1",
+    "status": "complete",
+    "tables": [
+      {
+        "source_table_id": "back-panel",
+        "preparation": "as_sold",
+        "original_basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "normalized_basis": {
+          "kind": "quantity",
+          "amount": 100.0,
+          "unit": "g"
+        },
+        "nutrients": {
+          "energy": {
+            "value": null,
+            "unit": "kcal",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "saturated_fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates_total": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "sugars": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "added_sugars": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fibre": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "protein": {
+            "value": 10.0,
+            "unit": "g",
+            "reason": null,
+            "source_row_ids": [
+              "protein-line"
+            ],
+            "conversion": "g unchanged; scaled from 40 g to 100 g"
+          },
+          "sodium": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "salt": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          }
+        }
+      }
+    ],
+    "original_rows": [
+      {
+        "row_id": "protein-line",
+        "table_id": "back-panel",
+        "nutrient": "protein",
+        "value": 4.0,
+        "unit": "g",
+        "basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "preparation": "as_sold"
+      }
+    ],
+    "warnings": []
+  }
+}

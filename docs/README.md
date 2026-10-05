@@ -1,17 +1,20 @@
 # Documentation map
 
-Frontend remains v0.0.0. Backend v0.1.0 implements health/meta and normalized live OFF product lookup. Scanner/analysis documents describe later behavior; the backend README and OpenAPI describe today's API. Research was checked on 5 October 2026; provider/source eligibility must be reviewed before use.
+Frontend remains v0.0.0. Backend v0.2.0 implements health/meta, live OFF product/nutrition lookup, and confirmed nutrition-row normalization. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Research was checked on 5 October 2026; provider/source eligibility must be reviewed before use.
 
 | Document | Read it for |
 | --- | --- |
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
 | [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
-| [API plan](architecture/API_PLAN.md) | Proposed frontend/backend contracts and errors |
+| [API plan](architecture/API_PLAN.md) | Five current routes, confirmed-input contract, and later analysis proposals |
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
-| [Backend validation](planning/BACKEND_V0_1_0_REVIEW.md) | Tests, live smoke and exact current limits |
-| [Backend release notes](planning/BACKEND_V0_1_0_RELEASE.md) | v0.1.0 deliverables, validation and next versions |
+| [Backend v0.2.0 validation](planning/BACKEND_V0_2_0_REVIEW.md) | Current normalization checks, release-specific live verification and limits |
+| [Backend v0.2.0 release notes](planning/BACKEND_V0_2_0_RELEASE.md) | Product/nutrition contracts and the next separate data milestone |
+| [Backend v0.1.0 review](planning/BACKEND_V0_1_0_REVIEW.md) | Historical product-lookup release evidence |
+| [Backend v0.1.0 release notes](planning/BACKEND_V0_1_0_RELEASE.md) | Historical product-lookup deliverables |
+| [OFF v3.6 nutrition research](research/OFF_NUTRITION_V3_6.md) | Verified upstream nutrition structure and narrow adapter scope |
 | [Vercel setup and URLs](planning/VERCEL_SETUP.md) | Actual project roots/builds, free domains, environment and Git deployments |
 | [India snapshot](research/INDIA_SNAPSHOT.md) | Future official export import, six-month refresh and storage budgets |
 | [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two Vercel projects, stateless runtime and future evidence bundles |

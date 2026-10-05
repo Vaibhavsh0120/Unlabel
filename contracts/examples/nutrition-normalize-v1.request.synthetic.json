@@ -1,0 +1,23 @@
+{
+  "schema_version": "1",
+  "client_request_id": "4ca97170-4077-4af4-bc75-b1d4b632f01f",
+  "capture_session_id": "960f1c01-981d-4fe6-8394-31c4470e7936",
+  "input_revision": 2,
+  "confirmed": true,
+  "completeness": "complete",
+  "rows": [
+    {
+      "row_id": "protein-line",
+      "table_id": "back-panel",
+      "nutrient": "protein",
+      "value": 4.0,
+      "unit": "g",
+      "basis": {
+        "kind": "serving",
+        "amount": 40.0,
+        "unit": "g"
+      },
+      "preparation": "as_sold"
+    }
+  ]
+}

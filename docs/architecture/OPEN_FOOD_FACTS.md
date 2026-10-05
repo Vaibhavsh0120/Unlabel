@@ -1,10 +1,10 @@
 # Open Food Facts integration plan
 
-Decision: **selected by the user on 5 October 2026**. Backend v0.1.0 implements live barcode lookup with identity/ingredients/allergen tags and provider computed grades. Nutrition normalization, analysis, cache/importer and client barcode capture remain planned.
+Decision: **selected by the user on 5 October 2026**. Backend v0.2.0 implements live product lookup and separate direct-input nutrition lookup/normalization. The strict product v1 response remains unchanged. Health/claim analysis, cache/importer and Flutter barcode capture remain planned.
 
-Open Food Facts (OFF) does the primary online product-data heavy lifting: identity, ingredients, nutrition and available computed insights. Python applies reviewed FSSAI/ingredient criteria. The physical package takes priority when confirmed facts differ from a community record. The MVP is online-first; a second Dart rule engine is not required.
+Open Food Facts (OFF) does the primary online product-data heavy lifting: identity, ingredients, nutrition and available computed insights. Python will later apply reviewed FSSAI/ingredient criteria. Current OFF nutrition and user-confirmed label input have separate origin wrappers and are never silently combined. The future review flow preserves differences from the physical package. The MVP is online-first; a second Dart rule engine is not required.
 
-## Barcode-to-result workflow
+## Planned barcode-to-result workflow
 
 1. The future Flutter scanner reads a barcode or accepts a manually entered code. Keep it as a string, preserving leading zeros. Retain both the captured code and any returned normalized code; verify identity before using a different code.
 2. When online lookup is requested, the client sends only the barcode and necessary public lookup options to `GET /v1/products/{barcode}`. Photos, OCR streams, allergy/diet preferences, history and user identifiers are excluded.
@@ -17,27 +17,37 @@ Open Food Facts (OFF) does the primary online product-data heavy lifting: identi
 
 ## Provider and client contract
 
-The current [official API documentation](https://openfoodfacts.github.io/openfoodfacts-server/api/) recommends the v3 family for new integrations and identifies v3.6 as current. Recheck and pin the supported response schema with fixtures before implementation. Nutrition and tag schemas have changed; see the [provider changelog](https://openfoodfacts.github.io/openfoodfacts-server/api/ref-api-and-product-schema-change-log/).
+The current [official API documentation](https://openfoodfacts.github.io/openfoodfacts-server/api/) recommends the v3 family for new integrations and identifies v3.6 as current. The adapter pins v3.6 and uses synthetic fixtures for its supported shape. Nutrition and tag schemas have changed; see the [provider changelog](https://openfoodfacts.github.io/openfoodfacts-server/api/ref-api-and-product-schema-change-log/) and [verified nutrition research](../research/OFF_NUTRITION_V3_6.md).
 
 OFF's version is independent of Unlabel's `/v1` routes. Provider changes are absorbed by the backend adapter. If an update requires a breaking normalized contract, use Unlabel's existing API compatibility policy rather than assuming installed APKs/IPA builds update with the server.
 
-Each proposed snapshot includes:
+Each current product/nutrition lookup includes:
 
 - Lookup state: `found`, `not_found`, `rate_limited`, `unavailable` or `incompatible_response`.
 - Captured barcode, returned code and product identity when supplied.
-- Available normalized fields with units, serving/100 g/100 mL basis and explicit unknowns.
+- Available normalized fields; the separate nutrition endpoint preserves serving/100 g/100 mL basis and explicit unknowns.
 - Provider ID `open_food_facts`, canonical product link and attribution/license metadata.
 - Retrieval time and any available provider modification/revision metadata; these are different dates.
-- Unlabel adapter/schema version and freshness state.
-- Per-field provenance and warnings for absent, incompatible or conflicting data.
+- Unlabel adapter/schema/normalization versions where applicable; dates remain available for client freshness policy.
+- Source metadata and nutrient row/table references, with warnings for absent, incompatible or conflicting data.
 
-Lookup states are separate from analysis outcomes (`supported`, `contradicted`, `insufficient_information`). A missing database record says nothing about a product's safety. Community allergen tags, vegetarian inferences and nutritional scores do not replace package declarations or reviewed policy.
+Lookup states are separate from normalization status (`complete`, `partial`, `needs_correction`) and future claim outcomes (`supported`, `contradicted`, `insufficient_information`). A missing database record says nothing about product safety. Community allergen tags, vegetarian inferences and nutritional scores do not replace package declarations or reviewed policy.
+
+## Current narrow nutrition adapter
+
+`GET /v1/products/{barcode}/nutrition` reads `nutrition.input_sets` and accepts direct `value` entries only from `packaging`/`manufacturer` tables. It supports declared per-100 g, per-100 mL and serving bases with supported as-sold/prepared state. Computed sets, estimated-source tables, qualified `<`/`>` values and absent direct values are excluded, with warnings. It does not fall back to old `nutriments` or expose guessed/computed rows as label evidence. Empty accepted tables have unknown cells without a fabricated original row.
+
+The adapter supports energy kcal/kJ, fat, saturated fat, available/total carbohydrates, total/added sugars, fibre, protein, sodium and salt. Canonical energy is kcal; other cells use g. Original direct rows, original/normalized bases, preparation and input table source remain visible. Equivalent duplicates retain row IDs; conflicts require correction. Comparable tables with differing known values produce `provider_tables_disagree` and `needs_correction`, preserving both tables; no rounding tolerance is invented. Total/added sugar, available/total carbohydrates and sodium/salt remain separate. There is no density conversion or unknown serving-size estimate.
+
+At most 16 upstream tables and 64 accepted rows are processed. A table that would exceed the row budget is excluded as a whole with `nutrition_row_budget_exceeded`. Unsupported/sparse data stays unknown/partial; found is not a promise of complete nutrition. A snapshot's `complete` status concerns successful normalization of submitted rows, not complete coverage or a health/legal verdict. OFF lookups remain community-data assessments and use partial completeness.
+
+Direct public feasibility reads on 5 October 2026 fetched schema-1004 nutrition records with four input tables for Nutella `3017620422003` (0.68 seconds) and Coca-Cola `5449000000996` (0.18 seconds). These two samples prove retrievability without a key, not Indian coverage or general performance. The [release review](../planning/BACKEND_V0_2_0_REVIEW.md) records actual endpoint/deployment checks separately.
 
 ## Requests, failure and offline behavior
 
-Production product reads do not require a provider API key or account authentication. Send the documented application identity; identify Unlabel rather than an individual user. Follow OFF's API-use onboarding guidance before live integration. This foundation creates no account, submits no form and makes no product-data request.
+Public product reads do not require a provider API key or account authentication. The backend sends a bounded public application User-Agent identifying Unlabel rather than an individual. Live read feasibility has been checked; no OFF account/form/contribution flow was created. Recheck OFF's current API-use guidance as traffic and scope grow.
 
-The backend proxy gives Android, iOS and web the same adapter behavior and User-Agent. It also means requests can share upstream outgoing-IP quotas. Bound request volume, response sizes, concurrency, timeouts and retries; deduplicate repeated barcode lookups, respect rate-limit/backoff guidance, and stop retries after a small limit. Recheck current limits before deployment instead of promising unlimited free reads.
+The backend proxy gives future Android/iOS/web clients the same adapter behavior and User-Agent. Requests may share upstream outgoing-IP quotas. Current reads have an eight-second default total deadline, 512 KiB default decoded-response budget, six-connection client pool, redirects disabled and no automatic retry/cache. Client deduplication and shared traffic controls are later work. Recheck current limits rather than promising unlimited free reads.
 
 Do not use a writable Vercel SQLite database or instance-local counter as durable storage/global quota enforcement. A bounded in-memory cache is disposable. No cache is necessary for correctness, and a cold instance must still have a safe failure path.
 
@@ -61,4 +71,4 @@ Keep OFF snapshots source-separated and read-only. Do not automatically upload u
 
 Ownership: backend teammate owns the provider adapter and schema/failure fixtures; Flutter teammate owns barcode capture, conflict review and dated local snapshots; the evidence owner reviews attribution/provenance and source distinctions. Acceptance covers found/missing/conflicting records, nutrition bases, leading-zero barcodes, schema changes, quota failure, offline behavior and stable old-client responses.
 
-The v0.1.0 adapter and failure behavior are tested; a small live lookup succeeded. Broad Indian-product coverage, nutrition interpretation, deployment and offline cache behavior remain unvalidated. See the [separate India snapshot proposal](../research/INDIA_SNAPSHOT.md): manual six-month refresh and bounded storage, not a v0.1.0 dataset download.
+The product and narrow nutrition adapters have synthetic regression tests and bounded live provider reads. Release-specific production verification is recorded in [v0.2.0 review](../planning/BACKEND_V0_2_0_REVIEW.md); broad Indian coverage, health interpretation and offline cache behavior remain unproven. The India-filtered search check did not establish a usable export or its size. See the [separate v0.2.1 snapshot proposal](../research/INDIA_SNAPSHOT.md): official export investigation, measured storage and manual six-month refresh. No country database was downloaded.

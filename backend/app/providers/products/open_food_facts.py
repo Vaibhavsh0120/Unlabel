@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 import httpx
 
 from app.core.config import Settings
+from app.core.json_numbers import checked_float, reject_constant
 from app.schemas.products import Product, ProductLookup, ProviderInsights, Source
 
 BARCODE_PATTERN = r"^(?:[0-9]{8}|[0-9]{12,14})$"
@@ -31,7 +32,10 @@ class OpenFoodFactsProvider:
         self.client = client
         self.settings = settings
 
-    async def lookup(self, barcode: str) -> ProductLookup:
+    async def read_product(
+        self, barcode: str, fields: str = FIELDS
+    ) -> tuple[ProductLookup, dict | None]:
+        """Bounded identity-checked transport, shared by separate public adapters."""
         if not re.fullmatch(BARCODE_PATTERN, barcode):
             raise ValueError("Unsupported barcode format")
         source = Source(
@@ -44,7 +48,7 @@ class OpenFoodFactsProvider:
                 async with self.client.stream(
                     "GET",
                     f"https://world.openfoodfacts.org/api/v3.6/product/{barcode}.json",
-                    params={"fields": FIELDS},
+                    params={"fields": fields},
                     headers={
                         "User-Agent": self.settings.off_user_agent,
                         "Accept": "application/json",
@@ -53,35 +57,37 @@ class OpenFoodFactsProvider:
                 ) as response:
                     if response.status_code == 404:
                         result.status = "not_found"
-                        return result
+                        return result, None
                     if response.status_code == 429:
                         result.status = "rate_limited"
-                        return result
+                        return result, None
                     if response.status_code != 200:
-                        return result
+                        return result, None
                     body = bytearray()
                     async for chunk in response.aiter_bytes():
                         body.extend(chunk)
                         if len(body) > self.settings.off_max_response_bytes:
                             result.status = "incompatible_response"
-                            return result
-                    data = json.loads(body)
+                            return result, None
+                    data = json.loads(
+                        body, parse_float=checked_float, parse_constant=reject_constant
+                    )
         except (httpx.HTTPError, TimeoutError):
-            return result
+            return result, None
         except (ValueError, UnicodeDecodeError, RecursionError):
             result.status = "incompatible_response"
-            return result
+            return result, None
 
         if not isinstance(data, dict):
             result.status = "incompatible_response"
-            return result
+            return result, None
         if isinstance(data.get("result"), dict) and data["result"].get("id") == "product_not_found":
             result.status = "not_found"
-            return result
+            return result, None
         product = data.get("product")
         if data.get("status") != "success" or not isinstance(product, dict):
             result.status = "incompatible_response"
-            return result
+            return result, None
         code = product.get("code")
         if (
             not isinstance(code, str)
@@ -89,7 +95,18 @@ class OpenFoodFactsProvider:
             or code.lstrip("0") != barcode.lstrip("0")
         ):
             result.status = "incompatible_response"
+            return result, None
+
+        result.status = "found"
+        result.source.product_url = f"https://world.openfoodfacts.org/product/{code}"
+        return result, product
+
+    async def lookup(self, barcode: str) -> ProductLookup:
+        result, product = await self.read_product(barcode)
+        if product is None:
             return result
+        source = result.source
+        code = product["code"]
 
         warnings = ["community_record_not_package_verified", "allergen_safety_not_assessed"]
 

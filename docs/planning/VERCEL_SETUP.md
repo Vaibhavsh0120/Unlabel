@@ -28,7 +28,7 @@ The starter contains no product API request yet. Passing the URL config prepares
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
 - Backend environment holds `OFF_USER_AGENT`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Public OFF reads require no key. No Gemini key is configured or required.
 
-No live FSSAI requests, Indian snapshot import, permanent cloud database or new subscription is required for v0.1.0. The [six-month snapshot proposal](../research/INDIA_SNAPSHOT.md) is a separate data milestone. A future immutable catalogue is built and checked before deploying; never run a bulk import inside a scan request.
+No live FSSAI requests, Indian snapshot import, permanent cloud database or new subscription is required for v0.2.0. Confirmed nutrition POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The public OFF User-Agent is updated to Unlabel/0.2.0 in local/hosted settings. The [six-month snapshot proposal](../research/INDIA_SNAPSHOT.md) is a separate data milestone. A future immutable catalogue is built and checked before deploying; never run a bulk import inside a scan request.
 
 ## Push and verification
 
@@ -41,6 +41,6 @@ Initial imports deployed the foundation commit without the new service/build scr
 - Website: `dpl_in9NzBZaSEsZdSfT8XVFoQmWcfK2`; pinned SDK/lockfile and release web compilation succeeded. The public page and JavaScript returned 200, and Chrome rendered the Flutter starter. Unpublished source/environment and missing JavaScript paths returned 404.
 - Backend: `dpl_6uCtKb2CbnMtFWu6U35jLarubt3R`; public health/meta/OpenAPI returned 200, live schema matched the export, invalid barcode returned 422, and a live OFF lookup returned 200/found. Exact frontend CORS and preflight passed; an unrelated origin was not allowed.
 
-These HTTP checks used no Vercel login cookie or bypass token. This verifies initial production deployment and provider connectivity, not future scanner/analysis behavior or Indian-market coverage. Later docs-only pushes redeploy the same service/frontend source. See [backend validation](BACKEND_V0_1_0_REVIEW.md) for remaining gates.
+These HTTP checks used no Vercel login cookie or bypass token. This verifies initial production deployment and provider connectivity, not future scanner/analysis behavior or Indian-market coverage. Later docs-only pushes redeploy the same service/frontend source. See [v0.1.0 historical validation](BACKEND_V0_1_0_REVIEW.md) and [v0.2.0 validation](BACKEND_V0_2_0_REVIEW.md) for version-specific gates.
 
 References: [Vercel monorepos](https://vercel.com/docs/monorepos), [FastAPI deployment](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime/version](https://vercel.com/docs/functions/runtimes/python), [Flutter web release](https://docs.flutter.dev/deployment/web), [Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication).

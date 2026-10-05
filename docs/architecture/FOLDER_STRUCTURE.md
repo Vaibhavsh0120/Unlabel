@@ -5,13 +5,13 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.1.0 product lookup/configuration; future rules and optional AI |
+| backend | FastAPI v0.2.0 product/nutrition lookup and normalization; future rules and optional AI |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Shared synthetic fixtures; ignored private investigation data |
 | design | Future shared semantic tokens/assets; palette undecided |
 | ai | Optional dataset/experiment/evaluation/export/hosting research |
-| scripts | Future knowledge validation/export and contract tools |
+| scripts | Current backend contract exporter and reserved evidence maintenance tools |
 | docs | Architecture, planning, source research and decisions |
 | .github/workflows | Manual APK/unsigned IPA build and release |
 
@@ -50,17 +50,19 @@ frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is t
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | Implemented app composition, lifespan and three versioned routes |
+| app/main.py | App composition/lifespan, five versioned routes and redacted validation errors |
 | app/api/v1 | Reserved route modules as future endpoints grow |
-| app/core, schemas | Configuration/bounds/errors and validated contract models |
-| app/services/parsing | Extract/normalize fields, units, bases and provenance |
-| app/services/analysis | Main online rule evaluator using reviewed FSSAI/evidence definitions |
-| app/services/knowledge | Public evidence/ingredient lookup |
-| app/services/personalization | Neutral reason catalog; no private profile store |
-| app/providers/ai, products | Optional constrained AI and selected Open Food Facts read-only product lookup |
-| app/prompts | Reviewed evidence-constrained AI instructions |
-| app/repositories, db | Read-only bundles; optional local derived-store abstraction |
-| tests/unit, integration | Implemented product/provider/API tests; rules follow later |
+| app/core | Validated environment/CORS settings and actual-byte request-body limit |
+| app/schemas/products.py | Unchanged strict product lookup v1 contract and OFF provenance |
+| app/schemas/nutrition.py, nutrition_products.py | Confirmed nutrient rows, basis/unit validation, snapshots and separate origin wrappers |
+| app/services/parsing/nutrition.py | Pure unit/basis normalization, missing values, conflicts and source-row references |
+| app/services/analysis | Reserved for reviewed FSSAI/evidence evaluation |
+| app/services/knowledge | Reserved for public evidence/ingredient lookup |
+| app/services/personalization | Reserved neutral reason catalog; no private profile store |
+| app/providers/products | Fixed-origin OFF product read and narrow direct-input nutrition adapter |
+| app/providers/ai, app/prompts | Reserved optional constrained AI; no provider call enabled |
+| app/repositories, db | Reserved read-only bundle/derived-store abstraction |
+| tests/unit, integration | Product/provider/API and nutrition/bounds/contract regression tests |
 | storage/runtime | Ignored local stores/cache, never durable Vercel storage |
 
 backend/.env.example documents implemented settings; ignored backend/.env holds local values. pyproject.toml and requirements files declare the runnable service. backend/vercel.json, .python-version and .vercelignore configure hosted packaging. frontend/vercel.json and tool/vercel-build.sh supply the pinned release web build; Flutter source/version are unchanged.
@@ -76,15 +78,15 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Exported v0.1.0 OpenAPI/product schema and synthetic example; later analysis schemas reserved |
+| contracts/schemas, examples | Current v0.2.0 OpenAPI/nutrition schemas and synthetic examples; historical v0.1.0 and product v1 preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
 
 ## Design, AI and docs
 
-design/tokens and assets reserve shared future roles/branding. ai/datasets, experiments, evaluation, export and spaces reserve optional AI research; no data/model/training exists. scripts will export/validate evidence instead of scraping regulations per scan.
+design/tokens and assets reserve shared future roles/branding. ai/datasets, experiments, evaluation, export and spaces reserve optional AI research; no data/model/training exists. scripts/export_backend_contracts.py regenerates current backend contracts and synthetic examples without overwriting historical OpenAPI/product v1. Future scripts will export/validate reviewed evidence instead of scraping regulations per scan.
 
 docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
 
-Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product service, Vercel web build and manual mobile workflow now execute; food analysis remains future work.
+Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; health/claim analysis remains future work. Normalization does not fill the regulatory knowledge folders or train a model.

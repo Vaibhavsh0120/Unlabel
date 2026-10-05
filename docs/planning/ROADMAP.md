@@ -1,6 +1,6 @@
 # Implementation roadmap
 
-Phase 0 includes the Flutter v0.0.0 starter and manual unsigned release automation. Backend work now follows the [small version plan](../superpowers/plans/2026-10-05-backend-versions.md): v0.1.0 implements service metadata/OFF product lookup and hosting setup, while nutrition, claim checks, glossary, comparison and the India snapshot remain separate milestones. Frontend feature work belongs to the teammate. The phase table below remains the wider product roadmap; [hosting URLs and status](VERCEL_SETUP.md) distinguish today's setup from later offline/analysis features.
+Phase 0 includes the Flutter v0.0.0 starter and manual unsigned release automation. Backend work follows the [small version plan](../superpowers/plans/2026-10-05-backend-versions.md): v0.1.0 product lookup/hosting is complete; v0.2.0 adds separate nutrition lookup and confirmed-value normalization. The India snapshot is the separate v0.2.1 data milestone; reviewed claim checks, glossary, comparison and AI follow later. Frontend features belong to the teammate. [Release-specific validation](BACKEND_V0_2_0_REVIEW.md) and [hosting settings](VERCEL_SETUP.md) distinguish implemented code from live verification.
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |
