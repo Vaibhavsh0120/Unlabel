@@ -98,6 +98,28 @@ def test_source_hash_uses_complete_decoded_jsonl_and_export_date_is_preserved(tm
     assert store_type(directory).manifest == manifest
 
 
+@pytest.mark.parametrize(
+    "expectation",
+    [
+        {"expected_source_sha256": "0" * 64},
+        {"expected_rows_read": 10},
+        {"expected_indexed_products": 10},
+    ],
+)
+def test_bundle_expectation_mismatch_preserves_active_database(tmp_path, expectation):
+    importer, store_type = catalogue_api()
+    original, _, directory = build(tmp_path)
+    active = directory / "catalogue.sqlite3"
+    previous_bytes = active.read_bytes()
+    source = tmp_path / "replacement.jsonl"
+    write_rows(source, [india_product("8900000000001")])
+    with pytest.raises(ValueError, match="expected bundle"):
+        importer(source, directory, source_url=SOURCE_URL, exported_at=EXPORTED_AT, **expectation)
+    assert active.read_bytes() == previous_bytes
+    assert store_type(directory).manifest == original
+    assert not (directory / ".catalogue-import.lock").exists()
+
+
 def test_csv_projection_provenance_has_no_api_wrapper(tmp_path):
     manifest, store, _ = build(tmp_path, source_format="off_csv_projection")
     assert manifest.source_format == "off_csv_projection"

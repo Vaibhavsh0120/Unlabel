@@ -1,0 +1,166 @@
+import gzip
+import hashlib
+import importlib.util
+import json
+import socket
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[3]
+
+
+def module(name, monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    spec = importlib.util.spec_from_file_location(f"workspace_{name}", ROOT / f"scripts/{name}.py")
+    result = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+
+
+@pytest.fixture
+def clone(tmp_path):
+    (tmp_path / "backend").mkdir()
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts/workspace.json").write_bytes(
+        (ROOT / "scripts/workspace.json").read_bytes()
+    )
+    (tmp_path / "backend/.env.example").write_text("GEMINI_API_KEY=\n")
+    (tmp_path / "backend/.env.age").write_bytes(b"synthetic ciphertext")
+    return tmp_path
+
+
+def test_setup_preserves_existing_env_without_prompt(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    (clone / "backend/.env").write_bytes(b"existing private values")
+    monkeypatch.setattr("builtins.input", lambda _: pytest.fail("Existing env must not prompt"))
+    assert setup.ensure_env(clone, None, False) == "existing"
+    assert (clone / "backend/.env").read_bytes() == b"existing private values"
+
+
+def test_noninteractive_setup_uses_example_without_key(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    monkeypatch.delenv("AGE_IDENTITY_FILE", raising=False)
+    assert setup.ensure_env(clone, None, True) == "example"
+    assert (clone / "backend/.env").read_bytes() == (clone / "backend/.env.example").read_bytes()
+
+
+def test_prompt_file_and_hidden_paste_paths(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    monkeypatch.delenv("AGE_IDENTITY_FILE", raising=False)
+    monkeypatch.setattr(setup.sys.stdin, "isatty", lambda: True)
+    responses = iter(["1", '"C:/outside/key.txt"'])
+    monkeypatch.setattr("builtins.input", lambda _: next(responses))
+    calls = []
+    monkeypatch.setattr(setup, "decrypt_env", lambda root, key: calls.append((root, key)))
+    assert setup.ensure_env(clone, None, False) == "decrypted"
+    assert calls == [(clone, Path("C:/outside/key.txt"))]
+    monkeypatch.setattr("builtins.input", lambda _: "2")
+    monkeypatch.setattr(setup, "prompt_identity", lambda: "private fixture")
+    monkeypatch.setattr(setup, "decrypt_env_text", lambda root, key: calls.append((root, key)))
+    assert setup.ensure_env(clone, None, False) == "decrypted"
+    assert calls[-1] == (clone, "private fixture")
+
+
+def test_setup_refuses_implicit_key_prompt_in_non_terminal(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    monkeypatch.delenv("AGE_IDENTITY_FILE", raising=False)
+    monkeypatch.setattr(setup.sys.stdin, "isatty", lambda: False)
+    with pytest.raises(ValueError, match="No interactive terminal"):
+        setup.ensure_env(clone, None, False)
+    assert not (clone / "backend/.env").exists()
+
+
+def source_bundle(clone):
+    directory = clone / "data/catalogue"
+    directory.mkdir(parents=True)
+    decoded = (
+        json.dumps({"code": "8900000000001", "countries_tags": ["en:india"]}) + "\n"
+    ).encode()
+    compressed = gzip.compress(decoded, mtime=0)
+    (directory / "india-products.jsonl.gz").write_bytes(compressed)
+    metadata = {
+        "schema_version": "1",
+        "source_file": "india-products.jsonl.gz",
+        "source_format": "off_csv_projection",
+        "coverage": "unverified",
+        "source_url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+        "exported_at": "2026-10-05T12:19:34Z",
+        "compressed_bytes": len(compressed),
+        "compressed_sha256": hashlib.sha256(compressed).hexdigest(),
+        "decoded_bytes": len(decoded),
+        "decoded_sha256": hashlib.sha256(decoded).hexdigest(),
+        "expected_input_rows": 1,
+        "indexed_products": 1,
+    }
+    (directory / "bundle.json").write_text(json.dumps(metadata))
+    return directory, metadata
+
+
+def test_setup_rebuilds_then_reuses_index_and_retains_different_valid_index(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    directory, _ = source_bundle(clone)
+    assert setup.prepare_catalogue(clone) == "built"
+    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    original = active.read_bytes()
+    assert setup.prepare_catalogue(clone) == "reused"
+    assert active.read_bytes() == original
+    metadata = json.loads((directory / "bundle.json").read_text())
+    metadata["exported_at"] = "2026-10-06T12:19:34Z"
+    (directory / "bundle.json").write_text(json.dumps(metadata))
+    assert setup.prepare_catalogue(clone) == "preserved"
+    assert active.read_bytes() == original
+
+
+def test_setup_rejects_tampered_bundle_before_replacing_index(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    directory, _ = source_bundle(clone)
+    assert setup.prepare_catalogue(clone) == "built"
+    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    previous = active.read_bytes()
+    with (directory / "india-products.jsonl.gz").open("ab") as stream:
+        stream.write(b"damage")
+    with pytest.raises(ValueError, match="compressed checksum"):
+        setup.prepare_catalogue(clone, replace=True)
+    assert active.read_bytes() == previous
+
+
+def test_setup_wrong_expected_counts_preserve_active_index(clone, monkeypatch):
+    setup = module("setup", monkeypatch)
+    directory, metadata = source_bundle(clone)
+    assert setup.prepare_catalogue(clone) == "built"
+    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    previous = active.read_bytes()
+    metadata["indexed_products"] = 2
+    (directory / "bundle.json").write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match="expected bundle"):
+        setup.prepare_catalogue(clone, replace=True)
+    assert active.read_bytes() == previous
+
+
+def test_runner_rejects_occupied_port(monkeypatch):
+    runner = module("run_local", monkeypatch)
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        listener.listen()
+        with pytest.raises(ValueError, match="already in use"):
+            runner.check_port_available(listener.getsockname()[1])
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "http://user:private@host",
+        "https://host/?token=private",
+        "javascript:private",
+        "https://host&echo",
+        "https://host%PATH%",
+        'https://host"quoted',
+        "https://host|echo",
+        "https://host^echo",
+    ],
+)
+def test_backend_origin_rejects_credentials_and_non_origin_urls(monkeypatch, url):
+    workspace = module("_workspace", monkeypatch)
+    with pytest.raises(ValueError, match="without credentials"):
+        workspace.public_origin(url)

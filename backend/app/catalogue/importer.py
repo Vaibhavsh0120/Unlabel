@@ -221,6 +221,9 @@ def build_catalogue(
     source_format: SourceFormat = "off_jsonl",
     max_artifact_bytes: int = 100 * 1024**2,
     max_work_bytes: int = 1024**3,
+    expected_source_sha256: str | None = None,
+    expected_rows_read: int | None = None,
+    expected_indexed_products: int | None = None,
 ) -> Manifest:
     """Index an existing local plain/gzip JSONL input, publishing only after full EOF.
 
@@ -261,6 +264,9 @@ def build_catalogue(
             max_artifact_bytes=max_artifact_bytes,
             max_work_bytes=max_work_bytes,
             ensure_lock_owned=ensure_lock_owned,
+            expected_source_sha256=expected_source_sha256,
+            expected_rows_read=expected_rows_read,
+            expected_indexed_products=expected_indexed_products,
         )
 
 
@@ -275,6 +281,9 @@ def _build_locked(
     max_artifact_bytes: int,
     max_work_bytes: int,
     ensure_lock_owned: Callable[[], None],
+    expected_source_sha256: str | None,
+    expected_rows_read: int | None,
+    expected_indexed_products: int | None,
 ) -> Manifest:
     active = directory / DATABASE_FILENAME
     initial_signature = _active_signature(active)
@@ -366,6 +375,13 @@ def _build_locked(
                 indexed_at=datetime.now(UTC),
                 **counts,
             )
+            for expected, actual in (
+                (expected_source_sha256, manifest.source_sha256),
+                (expected_rows_read, manifest.rows_read),
+                (expected_indexed_products, manifest.indexed_products),
+            ):
+                if expected is not None and expected != actual:
+                    raise ValueError("Staged catalogue differs from expected bundle hash/counts")
             connection.execute(
                 "INSERT INTO catalogue_manifest (id, data) VALUES (1, ?)",
                 (manifest.model_dump_json(),),

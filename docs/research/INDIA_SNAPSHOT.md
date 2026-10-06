@@ -10,6 +10,8 @@ This is every matching row in this particular export, not every product sold in 
 
 ## Placement comparison
 
+The identity projection is now retained in Git as an 840,099-byte gzip with hashes, provenance and licenses. [Setup](../planning/LOCAL_DEVELOPMENT.md) rebuilds ignored SQLite from this [bundle](../../data/catalogue/README.md). Local recovery does not enable hosted distribution or frontend offline support.
+
 | Placement | Benefit | Cost or limitation |
 | --- | --- | --- |
 | India identity database in app | Indexed lookup without a backend connection | The measured file adds about 11.44 MiB before packaging; richer nutrition/images add unmeasured size. Every device needs updates and a database reader. |

@@ -22,6 +22,24 @@
 
 Unlabel is a college mini-project that will turn packaged food labels into simple, evidence-backed explanations in English or Hindi. Scan the front and back, check marketing claims, understand ingredients, and see how a food fits your preferences.
 
+## Clone and run
+
+Install Git and Python 3.12+, then run from the project folder:
+
+~~~powershell
+./scripts/setup.ps1
+./scripts/run-local.ps1
+~~~
+
+Setup restores settings, dependencies and product data. Choose a key file, hidden key paste or safe defaults.
+
+| Local service | Open |
+| --- | --- |
+| Website | http://127.0.0.1:7357 |
+| API docs | http://127.0.0.1:8000/docs |
+
+[Platform options and encryption guide →](docs/planning/LOCAL_DEVELOPMENT.md)
+
 ## What is ready
 
 **Frontend is v0.0.0; backend is v0.2.1.** The app is still a starter. The backend supports live barcode product lookup, source-tagged nutrition lookup, and normalization of confirmed label values. Nutrition normalization prepares facts; health scores and FSSAI claim checks come later. v0.2.1 also acquires and indexes India identity data locally, with a separate optional catalogue API.
@@ -110,7 +128,7 @@ Unlabel/
 ├── data/                Synthetic fixtures; private data ignored
 ├── design/              Shared token/asset folders; palette undecided
 ├── ai/                  Optional experiments; no training
-├── scripts/             Contract export + reserved evidence maintenance tools
+├── scripts/             Setup, local run, encryption and catalogue maintenance
 ├── docs/                Architecture, research and teammate handoff
 └── .github/workflows/   Manual APK + unsigned IPA release
 ~~~
@@ -134,7 +152,7 @@ flutter build web --release
 flutter build apk --release
 ~~~
 
-No API key is needed for the starter or backend OFF reads. See [backend setup](backend/README.md) for Python installation, local `.env` and run commands. Gemini remains disabled.
+No API key is needed for the starter or backend OFF reads. Gemini remains disabled.
 
 ## Manual releases and version sync
 
@@ -152,4 +170,4 @@ Backend/web deployment versions can differ while remaining compatible with insta
 
 UI targets include iPhone, iPad portrait/landscape and MacBook sizes in both modes, with touch/keyboard access and readable text. [UI requirements →](docs/planning/UI_REQUIREMENTS.md)
 
-Research checked **5 October 2026**. Recheck provider terms and source applicability before use. The supplied compliance reference is background for a later extension, not official certification. Keep secrets/private scans out of Git. [Contribution boundaries →](CONTRIBUTING.md)
+Source research checked **5–6 October 2026**. Recheck provider terms and source applicability before use. The supplied compliance reference is background for a later extension, not official certification. Keep plaintext secrets/private scans out of Git. [Contribution boundaries →](CONTRIBUTING.md)

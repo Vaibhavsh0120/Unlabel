@@ -22,7 +22,7 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Current source versions are independent: frontend **0.0.0+1**, backend **0.2.0**. The published `v0.1.0` release is explicitly titled Backend and carries no APK/IPA; v0.2.0 follows the same backend-only naming convention, with publication state recorded by GitHub and the release review. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve `v0.1.0` and `v0.2.0` as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
+Current source versions are independent: frontend **0.0.0+1**, backend **0.2.1**. Published `v0.1.0`, `v0.2.0` and `v0.2.1` releases are explicitly titled Backend and carry no APK/IPA; GitHub and the version-specific reviews record their publication/verification. Recovery maintenance keeps these versions and tags unchanged. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve the existing tags as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |

@@ -11,3 +11,5 @@
 *.jpg binary
 *.jpeg binary
 *.ico binary
+*.age binary
+*.gz binary

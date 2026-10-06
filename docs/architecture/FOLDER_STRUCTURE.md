@@ -8,10 +8,10 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | backend | FastAPI v0.2.1 product/nutrition lookup, normalization and optional indexed catalogue; future rules and optional AI |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
-| data | Shared synthetic fixtures; ignored private investigation data |
-| design | Future shared semantic tokens/assets; palette undecided |
+| data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
+| design | Supplied concept references and reserved shared tokens/assets; palette undecided |
 | ai | Optional dataset/experiment/evaluation/export/hosting research |
-| scripts | Current backend contract exporter and reserved evidence maintenance tools |
+| scripts | Setup/local launcher, encrypted env recovery, catalogue acquisition/import and contract/dependency maintenance |
 | docs | Architecture, planning, source research and decisions |
 | .github/workflows | Manual APK/unsigned IPA build and release |
 
@@ -47,6 +47,8 @@ Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore prote
 frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is tracked. build and .dart_tool are ignored.
 
 ## Backend
+
+Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and private identities stay outside Git. `scripts/setup.py` restores dependencies/env/catalogue; `run_local.py` runs local services and `env.py` handles age. PowerShell wrappers support direct Windows use. `workspace.json` stores shared toolchain/port defaults; `age-recipient.txt` is public. `data/catalogue/` holds the reusable public bundle; `design/references/` retains supplied concepts. [Clone guide](../planning/LOCAL_DEVELOPMENT.md).
 
 | Path | Responsibility / implementation status |
 | --- | --- |
@@ -91,4 +93,4 @@ docs/architecture covers system/data/API/deployment/folders; planning covers fea
 
 Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; health/claim analysis remains future work. Normalization does not fill the regulatory knowledge folders or train a model.
 
-Active catalogue modules are under `backend/app/catalogue/`: `models.py` holds independent export contracts, `importer.py` validates/stages atomic replacements, and `store.py` provides indexed read-only queries. Ignored `backend/storage/runtime/india/` holds the local active SQLite database; ignored dated source directories hold acquisition evidence/projections. `scripts/acquire_india_catalogue.py` acquires/filter-projects the official TSV; `scripts/import_india_catalogue.py` builds the index. No corpus is committed or automatically uploaded to Vercel. [Catalogue guide](CATALOGUE.md).
+Active catalogue modules are under `backend/app/catalogue/`: `models.py` holds independent export contracts, `importer.py` validates/stages atomic replacements, and `store.py` provides indexed read-only queries. Ignored `backend/storage/runtime/india/` holds the local active SQLite database; ignored dated source directories hold acquisition evidence/projections. `scripts/acquire_india_catalogue.py` acquires/filter-projects the official TSV; `scripts/import_india_catalogue.py` builds the index. The compact public source/provenance/licenses are tracked in data/catalogue; setup regenerates ignored SQLite. Hosted catalogue remains inactive. [Catalogue guide](CATALOGUE.md).

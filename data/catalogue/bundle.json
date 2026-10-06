@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "source_file": "india-products.jsonl.gz",
+  "source_format": "off_csv_projection",
+  "source_url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+  "exported_at": "2026-10-05T12:19:34Z",
+  "coverage": "unverified",
+  "compressed_sha256": "61414b95e7cd32d8795098b1969022903662a3b978cdf5fc2d3d7e8dab2a877f",
+  "compressed_bytes": 840099,
+  "decoded_sha256": "9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2",
+  "decoded_bytes": 6588910,
+  "expected_input_rows": 21188,
+  "indexed_products": 21138,
+  "unsupported_barcodes": 50,
+  "market_tag": "en:india",
+  "database_license": "ODbL-1.0",
+  "contents_license": "DbCL-1.0",
+  "attribution": "Product data from Open Food Facts",
+  "refresh_interval_months": 9
+}

@@ -1,8 +1,13 @@
-# Secrets: commit examples only.
+# Plaintext secrets stay local; authenticated age ciphertext is recoverable from Git.
 .env
 .env.*
 !.env.example
 !.env.*.example
+!.env.age
+.env-*.tmp
+*.agekey
+age-key*.txt
+master-age-key.txt
 *.pem
 *.key
 *service-account*.json
@@ -41,6 +46,7 @@ DerivedData/
 __pycache__/
 *.py[cod]
 .venv/
+.local-tools/
 venv/
 .pytest_cache/
 .mypy_cache/

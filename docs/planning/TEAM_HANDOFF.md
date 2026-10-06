@@ -1,5 +1,7 @@
 # Teammate handoff
 
+Fresh clone: `./scripts/setup.ps1`, then `./scripts/run-local.ps1` from root. Setup preserves `.env` or offers key-file/hidden-paste/example restoration, verifies the committed India source and regenerates SQLite. Python equivalents support macOS/Linux. [Recovery guide](LOCAL_DEVELOPMENT.md) · [Supplied concepts](../../design/references/README.md).
+
 > Unlabel has a Flutter v0.0.0 starter and FastAPI backend v0.2.1 product/nutrition lookup plus confirmed-value normalization. Both Vercel projects are configured for automatic `main` deployments. Camera/OCR, health scores and FSSAI claim checks remain future work.
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)**. [Hosting settings/verification](VERCEL_SETUP.md).
@@ -11,7 +13,7 @@ Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. API: 
 - Data/API/offline/deployment/release plans and checked provider/source research.
 - Manual build/checksum/manifest/release workflow and v0.0.0 app version.
 
-Backend v0.2.1 exposes six routes: health, metadata, product lookup, separate nutrition lookup, and POST normalization of confirmed nutrient rows, and optional separate indexed catalogue lookup. Frontend stays v0.0.0 and has no API adapter yet. No OCR plugin, rule engine or trained model has been added. A local India identity catalogue was acquired/indexed; it is excluded from Git and not yet packaged for Vercel. No API key is required. See the [backend guide](../../backend/README.md), [version plan](../superpowers/plans/2026-10-05-backend-versions.md) and release-specific [validation record](BACKEND_V0_2_1_REVIEW.md).
+Backend v0.2.1 exposes six routes: health, metadata, product lookup, separate nutrition lookup, and POST normalization of confirmed nutrient rows, and optional separate indexed catalogue lookup. Frontend stays v0.0.0 and has no API adapter yet. No OCR plugin, rule engine or trained model has been added. A local India identity catalogue was acquired/indexed; its compact source is tracked for clone recovery; generated SQLite is ignored and not yet packaged for Vercel. No API key is required. See the [backend guide](../../backend/README.md), [version plan](../superpowers/plans/2026-10-05-backend-versions.md) and release-specific [validation record](BACKEND_V0_2_1_REVIEW.md).
 
 | Topic | Direction |
 | --- | --- |

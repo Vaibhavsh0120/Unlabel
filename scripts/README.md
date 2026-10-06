@@ -4,6 +4,10 @@ Backend v0.2.1 includes the tools below. Run them from the repository root with 
 
 | Tool | Responsibility |
 | --- | --- |
+| `setup.py` / `setup.ps1` | Restore env/dependencies, verified committed source to SQLite and pinned Flutter tooling. |
+| `run_local.py` / `run-local.ps1` | Run localhost API/web services with process-only settings and owned-process cleanup. |
+| `env.py` | Encrypt env to age ciphertext or restore using a key file/hidden terminal paste. |
+| `lock_backend.py` | Record tested backend development dependency versions; run with backend `.venv` Python after deliberate dependency updates. |
 | `export_backend_contracts.py` | Regenerate current OpenAPI/model schemas and owned synthetic examples, preserving historical OpenAPI and the product v1 contract. See [contract exports](../contracts/README.md). |
 | `acquire_india_catalogue.py` | Stream the official global compressed OFF CSV through EOF into an India-tagged identity JSONL projection and acquisition metadata. It retains no global raw dump, nutrition aggregates or product images. |
 | `import_india_catalogue.py` | Validate local OFF JSONL or the CSV-derived projection and build an immutable SQLite identity catalogue with counts, dates, hashes and attribution. See [backend setup](../backend/README.md) for commands and optional catalogue configuration. |

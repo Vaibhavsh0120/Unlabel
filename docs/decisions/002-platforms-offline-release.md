@@ -2,6 +2,8 @@
 
 Date: 5 October 2026. This supersedes the client/deployment assumptions in Decision 001 as the user refined the scope. Its required offline-evaluator scope is subsequently superseded by [Decision 003](003-open-food-facts.md); retained below as decision history.
 
+Implementation has since progressed beyond this historical foundation decision. Use the [current status and recovery guide](../planning/LOCAL_DEVELOPMENT.md) and [Vercel record](../planning/VERCEL_SETUP.md) for today's backend/deployment state.
+
 ## Accepted scope
 
 - One Flutter app directly in frontend, targeting Android, iOS and web.

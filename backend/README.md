@@ -6,6 +6,8 @@ Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · 
 
 ## Run locally
 
+Recommended from root: `./scripts/setup.ps1 -Scope backend`, then `./scripts/run-local.ps1 -Scope backend`. Python equivalents: `python scripts/setup.py --scope backend`, then `python scripts/run_local.py --scope backend`. Setup regenerates the catalogue from committed data and offers encrypted env restoration. The runner supplies local catalogue/CORS settings without rewriting `.env`. [Clone guide](../docs/planning/LOCAL_DEVELOPMENT.md). Manual installation follows.
+
 Python 3.12+; commands from `backend/`:
 
 ~~~powershell

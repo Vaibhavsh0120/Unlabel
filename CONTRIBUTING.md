@@ -1,6 +1,6 @@
 # Working on the Unlabel foundation
 
-The current phase includes the Flutter v0.0.0 starter, backend v0.2.0 product/nutrition lookup and confirmed-value normalization, shared contracts/docs, manual APK/unsigned-IPA releases and user-authorized Vercel hosting setup. Work on backend features in the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one version at a time. Flutter feature work belongs to the frontend teammate; hosting config/docs may change. Keep ₹0/no-card and update docs before every push.
+The current phase includes Flutter v0.0.0, backend v0.2.1 live APIs and optional local catalogue, shared contracts/docs, manual mobile releases and Vercel setup. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card and update docs before every push.
 
 ## Team boundaries
 
@@ -12,7 +12,8 @@ The current phase includes the Flutter v0.0.0 starter, backend v0.2.0 product/nu
 
 ## Data and secrets
 
-- Never commit API keys, private allergy profiles, real user scan history, runtime databases or unreviewed source downloads.
+- Never commit plaintext API keys, private age identities, allergy profiles, scan history, runtime databases or unreviewed downloads. Tracked `backend/.env.age` is authenticated ciphertext; refresh it with `python scripts/env.py encrypt` after changing local settings. Public recipient data is safe to track.
+- Keep reviewed reusable acquired source bundles, hashes, provenance and licenses in Git. The India source lives in data/catalogue; setup regenerates SQLite. Retain attribution and unknown/coverage semantics.
 - backend/.env.example documents active public settings and reserved AI fields. Real values belong in the ignored backend/.env file; preserve existing values.
 - Do not put Gemini keys into the mobile app, its assets, build arguments or client-side environment files.
 - Fixtures must be synthetic or explicitly reusable, with source/rights recorded. Legal thresholds need a reviewed source, effective date and food-category applicability.

@@ -1,9 +1,11 @@
 # Documentation map
 
-Frontend remains v0.0.0. Backend v0.2.1 implements health/meta, live OFF product/nutrition lookup, and confirmed nutrition-row normalization, and optional local indexed catalogue lookup. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Research was checked on 5 October 2026; provider/source eligibility must be reviewed before use.
+Frontend remains v0.0.0. Backend v0.2.1 implements health/meta, live OFF product/nutrition lookup, confirmed nutrition-row normalization and optional local indexed catalogue lookup. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Source research was checked on 5–6 October 2026; provider/source eligibility must be reviewed before use.
 
 | Document | Read it for |
 | --- | --- |
+| [Clone, restore, run](planning/LOCAL_DEVELOPMENT.md) | Setup/local-run commands, encrypted settings and committed catalogue recovery |
+| [Recovery review](planning/RECOVERABLE_WORKSPACE_REVIEW.md) | Clean-copy, encryption and local process validation |
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
 | [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |

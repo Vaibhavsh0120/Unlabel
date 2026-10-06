@@ -1,6 +1,6 @@
 # Website and shared API deployment plan
 
-Checked: **2026-10-05**. The user imported two Git-connected Vercel projects and authorized their configuration. The initial backend v0.1.0 and pinned Flutter web build passed live verification. Backend v0.2.0 adds nutrition lookup/confirmed-value normalization; its current production gate is recorded in the release review. Future OCR, rule analysis and evidence packaging remain plans.
+Updated: **2026-10-06**. Two Git-connected Vercel projects are configured for automatic deployment. Backend is v0.2.1; pinned Flutter remains v0.0.0+1. Live product/nutrition lookup and confirmed-value normalization passed production checks; the optional catalogue is currently local and inactive on Vercel. Hosted catalogue distribution/coverage is the v0.2.2 gate. Future OCR, rule analysis and evidence packaging remain plans. See the [release review](../planning/BACKEND_V0_2_1_REVIEW.md) and [recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 

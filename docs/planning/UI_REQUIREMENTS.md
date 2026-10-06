@@ -4,6 +4,8 @@ Status: requirements for later feature UI. A minimal responsive Flutter starter 
 
 ## Device and layout coverage
 
+The five [supplied references](../../design/references/README.md) are tracked for teammate recovery. Their values are illustrative; the color theme remains undecided.
+
 | Surface | Required coverage | Layout intent |
 | --- | --- | --- |
 | iPhone | Website and iOS app, portrait/landscape | Readable single flow; safe-area-aware controls; short landscape height must remain usable |

@@ -33,6 +33,8 @@ Set `CATALOGUE_DIRECTORY=storage/runtime/india` in ignored `backend/.env` only a
 
 ## Finite storage and refresh
 
+For a clone, [setup](../planning/LOCAL_DEVELOPMENT.md) verifies the tracked [compact bundle](../../data/catalogue/README.md) and regenerates SQLite without a world download. Expected source hash/counts are checked inside the importer before publication. `run_local.py` activates this local directory through a process environment override, leaving `.env` unchanged.
+
 Acquisition caps compressed transfer at 2 GiB, decoded source at 32 GiB, a physical record at 2 MiB and retained India projection at 100 MiB. It never stores the world file. Use a fresh existing source directory; an exclusive lock and exclusive publication refuse competing producers. A crash may leave a lock/part file; remove only the identified invocation-owned files after checking no acquisition is running.
 
 SQLite defaults to 100 MiB artifact and 1 GiB immediate work-directory files, with SQLite page limits also bounded by remaining directory space. Raw source storage outside that directory must be budgeted separately; the catalogue limit is not a recursive whole-disk quota. Check free disk before acquisition/import. No image cache is present.

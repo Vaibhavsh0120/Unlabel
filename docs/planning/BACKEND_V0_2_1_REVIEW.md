@@ -2,6 +2,8 @@
 
 Checked **6 October 2026**. Frontend remains v0.0.0+1. The [baseline repository review](PROJECT_REVIEW_V0_2_0.md) completes the earlier docs/files request; this record covers the new source and real acquisition.
 
+This is the original tagged release's verification record. Later maintenance adds the compact public source, supplied concept references and encrypted settings to Git, plus clone recovery tools. See the [current recovery review](RECOVERABLE_WORKSPACE_REVIEW.md); original release measurements and deployment IDs below remain historical evidence.
+
 ## Real acquisition and import
 
 The documented official global CSV URL returned 200 via OFF's S3 mirror. The actual 3,346-byte header and primary writer confirmed unquoted UTF-8 TSV. Compressed source length/checksum and gzip EOF were verified. Transfer ran from 05:15:46 to 05:22:19 UTC; no world file was retained. Source HTTP Last-Modified: **5 October 2026, 12:19:34 UTC**.

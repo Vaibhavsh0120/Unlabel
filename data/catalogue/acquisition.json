@@ -1,0 +1,23 @@
+{
+  "source_format": "off_csv_projection",
+  "source_url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+  "started_at": "2026-10-06T05:15:46.339546+00:00",
+  "completed_at": "2026-10-06T05:22:19.330856+00:00",
+  "source_last_modified_http": "Mon, 05 Oct 2026 12:19:34 GMT",
+  "compressed_bytes": 1275171186,
+  "compressed_sha256": "f72687ee8bc6522054fe69dbfda6b91902c16af1ec2e043cde27bc6c29ad8176",
+  "gzip_eof_verified": true,
+  "projection_bytes": 6588910,
+  "projection_sha256": "9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2",
+  "rows_read": 4535553,
+  "india_rows": 21188,
+  "scope": "all en:india rows in this export; not every product sold in India",
+  "omitted": [
+    "nutrition",
+    "images",
+    "provider record modification dates",
+    "legacy bare allergens; no canonical allergens_tags column"
+  ],
+  "database_license": "ODbL-1.0",
+  "contents_license": "DbCL-1.0"
+}
