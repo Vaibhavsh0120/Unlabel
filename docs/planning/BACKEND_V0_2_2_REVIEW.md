@@ -25,6 +25,7 @@ The bundle builder validates gzip EOF/trailer, bytes/hashes, strict metadata, so
 | Static/dependency checks | Ruff lint passes for app/tests/build/scripts; format passes for 34 backend and 9 script files using their respective configurations; `pip check` clean |
 | Encryption/recovery | Actual external-key restoration matches the updated local `.env` bytes; no plaintext/key content displayed |
 | Tracked boundary | Plaintext `.env`, generated SQLite/receipt and runtime files are ignored; no private identity/PEM content found in tracked/new files |
+| Documentation links before source push | 57 tracked Markdown files, 245 local targets, zero missing; staged whitespace review clean |
 
 These timings are local samples, not a cloud/network latency guarantee. Documentation links are checked again after the final documentation edits, before pushing. The broader script lint found two existing path-bootstrap imports without an explicit exception; their `E402` annotations now document that intentional ordering without changing behavior.
 
@@ -32,10 +33,19 @@ These timings are local samples, not a cloud/network latency guarantee. Document
 
 Current READMEs, architecture/workflows, API/contract map, clone instructions, roadmap, hosting settings and release notes are updated for this scope. Earlier review/release files remain historical records. The source and licenses are tracked; generated SQLite/receipts remain ignored. The local non-secret application identity was updated and `.env.age` refreshed without printing plaintext or identities. No frontend code, mobile workflow, APK/IPA assets or historical tags are changed.
 
-## Production gate
+## Production verification
 
-**Pending the first v0.2.2 push.** Backend project settings now select `app/catalogue/data`, require a receipt and allow access to committed source outside the backend root. The actual Git build must prove the build hook and bundle inclusion. Existing v0.2.1 production evidence does not establish this version's catalogue readiness.
+**Passed on 6 October 2026 at 12:19 UTC.** Source commit `2df4fb9be0d1cca4440ad659c677250dacd379e5` automatically produced READY production deployments for both projects:
 
-Required public checks: exact Git commit in READY deployments for both projects; backend health/meta/status and matching source hash/count/date; found/absent/invalid catalogue cases; live product/nutrition and confirmed normalization; CORS and no-store; OpenAPI agreement; private artifact/env paths unavailable; website still the frontend starter. Build failure must leave the prior production deployment usable. No AI, mobile offline functionality, native builds or regulatory verdict is claimed by these checks.
+- Backend: `dpl_898Km4txv66J7GA5bRTCFrPmrRrd`.
+- Website: `dpl_8aTkrJancwVP4i9P22fEBx9b9drf`.
+
+Backend build logs show Python 3.12 and `Executing: python build_catalogue.py`, followed by successful packaging/deployment. The emitted receipt and public startup-verified artifact match: database SHA-256 `b04504e8e6f5b71e45fcfff0ed9f5c5a1463d4ffa1899fb7aeee7edb13521c6f`, 11,993,088 bytes, snapshot `3c0cb046-3201-4cb7-8b3a-acb71118b624`, source SHA-256 `9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2`. Status reports 21,138 indexed products, the original source date, `unverified` coverage and the unchanged July 2027 due date. Each later build has its own receipt/hash; these values describe this dated deployment.
+
+Unauthenticated public HTTP checks passed: health/meta/status, found rice-flour catalogue record, absent chocolate 404, invalid code 422, OpenAPI equal to the current export, live product and direct nutrition lookups, synthetic confirmed-input POST, POST preflight, exact frontend CORS and rejection of an unrelated origin. Catalogue/product/nutrition/POST responses use `no-store`; health/meta retain their existing platform cache headers. Plaintext/ciphertext env and database/receipt URL paths returned 404. The website returned 200 with its Flutter bootstrap; frontend source/version remains unchanged. [Dated production evidence](../research/BACKEND_V0_2_2_PRODUCTION.json).
+
+The first health probe took 0.8772 seconds and first catalogue lookup 0.5514 seconds from this machine. Five subsequent rice-flour round trips ranged from **0.2927 to 0.3274 seconds**, median **0.2997 seconds**. They include network/request overhead and do not establish platform cold-start timing, cache lifetime or an SLA.
+
+Build failure preserves prior-deployment availability by the documented deployment strategy; an actual failed-production-build or rollback drill was not performed. Corruption/failure boundaries were tested locally. No AI, phone offline capability, native build, scanner or regulatory verdict is established. This review records the implementation commit; a later documentation-only push keeps the same application/source and is rechecked separately before tagging.
 
 Production API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). See [release notes](BACKEND_V0_2_2_RELEASE.md) and [hosting configuration](VERCEL_SETUP.md).

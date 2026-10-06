@@ -14,7 +14,7 @@
 
 [Architecture](docs/architecture/SYSTEM.md) · [Data workflow](docs/architecture/DATA_FLOW.md) · [Folder guide](docs/architecture/FOLDER_STRUCTURE.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md)
 
-[Website](https://unlabel-india.vercel.app) · [Backend API](https://unlabel-api.vercel.app/v1/meta) · [API docs](https://unlabel-api.vercel.app/docs)
+[Website](https://unlabel-india.vercel.app) · [Backend API](https://unlabel-api.vercel.app/v1/meta) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue) · [API docs](https://unlabel-api.vercel.app/docs)
 
 </div>
 

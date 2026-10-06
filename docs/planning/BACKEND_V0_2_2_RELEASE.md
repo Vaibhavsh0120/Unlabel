@@ -21,6 +21,6 @@ AI, OCR, claim rules, scores, comparison and account/history APIs are future mil
 
 ## Verification and release
 
-Local suite: **297 passed**, including source/receipt tampering, refresh boundaries, unchanged contract and graceful failure regressions. Independent focused review: **65 passed**, no remaining actionable code findings. Production build/public smoke is pending the first push and will be recorded separately in the [v0.2.2 review](BACKEND_V0_2_2_REVIEW.md).
+Local suite: **297 passed**, including source/receipt tampering, refresh boundaries, unchanged contract and graceful failure regressions. Independent focused review: **65 passed**, no remaining actionable code findings. Both production deployments for implementation commit `2df4fb9` are READY. Build-time receipt and public startup-verified SQLite hash/size agree; status/count/date, found/404/422, existing live APIs/POST, CORS, OpenAPI and excluded URL paths passed. [Full v0.2.2 review](BACKEND_V0_2_2_REVIEW.md) · [Dated production report](../research/BACKEND_V0_2_2_PRODUCTION.json).
 
 This is a source-only backend prerelease using tag `v0.2.2`. Mobile release workflow is not dispatched. Public services: [API status](https://unlabel-api.vercel.app/v1/catalogue), [API docs](https://unlabel-api.vercel.app/docs), [website](https://unlabel-india.vercel.app).

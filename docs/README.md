@@ -16,6 +16,7 @@ Frontend remains v0.0.0. Backend v0.2.2 implements health/meta, live OFF product
 | [Backend v0.2.2 release notes](planning/BACKEND_V0_2_2_RELEASE.md) | Hosted identity catalogue, integrity and source-age contract |
 | [Backend v0.2.2 build plan](superpowers/plans/2026-10-06-backend-v0.2.2.md) | Bounded implementation scope and completion gates |
 | [Dated catalogue coverage](research/CATALOGUE_V0_2_2_COVERAGE.json) | Recounted fields and bounded live/export count gap |
+| [v0.2.2 production evidence](research/BACKEND_V0_2_2_PRODUCTION.json) | Exact implementation SHA/deployments, hosted receipt and public HTTP samples |
 | [Backend v0.2.1 review](planning/BACKEND_V0_2_1_REVIEW.md) | Historical source checks, actual export/import metrics and then-pending hosted gate |
 | [Backend v0.2.1 release notes](planning/BACKEND_V0_2_1_RELEASE.md) | Catalogue tooling and independent backend version |
 | [Repository review](planning/PROJECT_REVIEW_V0_2_0.md) | Requested baseline files/docs review and resolved drift |

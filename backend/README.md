@@ -31,7 +31,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `GET /v1/catalogue` | Ready/unavailable/not-configured status, manifest, artifact hash/size, source age, refresh date and field limits; 503 if unavailable |
 | `GET /v1/catalogue/products/{barcode}` | Separate export-origin indexed identity lookup; 503 when catalogue is inactive/unavailable |
 
-Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Returned identity must match the requested code, permitting leading-zero normalization only.
+Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Live OFF lookup identity must match the requested code, permitting leading-zero normalization only. Catalogue lookups use exact keys; leading-zero variants remain distinct.
 
 ~~~powershell
 Invoke-RestMethod http://127.0.0.1:8000/v1/meta
@@ -121,7 +121,7 @@ $env:CATALOGUE_REQUIRE_RECEIPT = "true"
 
 The builder checks compressed/decoded hashes, byte budgets and expected counts before publishing. The database and receipt are two file replacements inside the unpublished build; a failed build must not be deployed. Startup verifies the entire SQLite once, then lookups use indexed read-only connections. Builds produce their own UUID/indexing timestamp and SQLite hash; unchanged source/content does not promise byte-identical databases. The receipt is an integrity record, not a cryptographic OFF signature.
 
-`GET /v1/catalogue` and `/v1/meta.catalogue` report source age. Nine calendar months from this export is **2027-07-05T12:19:34Z**. At that time the state becomes `refresh_due`; overdue lookups stay available with a warning. A future source date is flagged, not silently fresh. Age follows export time, never rebuild time. All catalogue responses are `no-store`; lookup never calls OFF or silently falls back to live data. The client can explicitly request the separate live endpoint after a snapshot 404.
+`GET /v1/catalogue` and `/v1/meta.catalogue` report source age. Nine calendar months from this export is **2027-07-05T12:19:34Z**. At that time the state becomes `refresh_due`; overdue lookups stay available with a warning. A future source date is flagged, not silently fresh. Age follows export time, never rebuild time. `/v1/catalogue` and its product route return `no-store`; `/v1/meta` retains its existing cache header. Lookup never calls OFF or silently falls back to live data. The client can explicitly request the separate live endpoint after a snapshot 404.
 
 ## Manual nine-month refresh
 

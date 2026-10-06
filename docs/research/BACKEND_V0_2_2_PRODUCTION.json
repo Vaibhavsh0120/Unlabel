@@ -1,0 +1,246 @@
+{
+  "checked_at": "2026-10-06T12:19:14Z",
+  "backend_version": "0.2.2",
+  "website_http_status": 200,
+  "catalogue": {
+    "schema_version": "1",
+    "status": "ready",
+    "manifest": {
+      "schema_version": "1",
+      "snapshot_id": "3c0cb046-3201-4cb7-8b3a-acb71118b624",
+      "source_url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+      "source_sha256": "9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2",
+      "source_format": "off_csv_projection",
+      "coverage": "unverified",
+      "exported_at": "2026-10-05T12:19:34Z",
+      "indexed_at": "2026-10-06T12:18:36.540159Z",
+      "market_tag": "en:india",
+      "rows_read": 21188,
+      "india_rows": 21188,
+      "indexed_products": 21138,
+      "duplicate_barcodes": 0,
+      "unsupported_barcodes": 50,
+      "missing_name": 3442,
+      "missing_ingredients": 15780,
+      "database_license": "ODbL-1.0",
+      "contents_license": "DbCL-1.0",
+      "attribution": "Product data from Open Food Facts",
+      "license_url": "https://openfoodfacts.org/terms-of-use"
+    },
+    "freshness": {
+      "status": "within_refresh_window",
+      "evaluated_at": "2026-10-06T12:19:08.906895Z",
+      "age_seconds": 86374,
+      "refresh_due_at": "2027-07-05T12:19:34Z",
+      "refresh_interval_months": 9
+    },
+    "artifact": {
+      "database_sha256": "b04504e8e6f5b71e45fcfff0ed9f5c5a1463d4ffa1899fb7aeee7edb13521c6f",
+      "database_bytes": 11993088,
+      "source_sha256": "9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2",
+      "snapshot_id": "3c0cb046-3201-4cb7-8b3a-acb71118b624"
+    },
+    "data_kind": "product_identity",
+    "field_limits": [
+      "nutrition_tables_not_included",
+      "images_not_included",
+      "per_product_modified_at_not_included",
+      "missing_allergen_tags_do_not_mean_allergen_free"
+    ]
+  },
+  "checks": [
+    {
+      "path": "/v1/health",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.8772,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.5803,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/meta",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.5119,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.5514,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/7622202842450",
+      "method": "GET",
+      "http_status": 404,
+      "seconds": 0.3304,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/invalid",
+      "method": "GET",
+      "http_status": 422,
+      "seconds": 0.3002,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/openapi.json",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.4183,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/products/3017620422003",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.7754,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/products/3017620422003/nutrition",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.4007,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/nutrition/normalize",
+      "method": "POST",
+      "http_status": 200,
+      "seconds": 0.3141,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/nutrition/normalize",
+      "method": "OPTIONS",
+      "http_status": 200,
+      "seconds": 0.3201,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/health",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.3037,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": null
+    },
+    {
+      "path": "/.env",
+      "method": "GET",
+      "http_status": 404,
+      "seconds": 0.3288,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/.env.age",
+      "method": "GET",
+      "http_status": 404,
+      "seconds": 0.2884,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/app/catalogue/data/catalogue.sqlite3",
+      "method": "GET",
+      "http_status": 404,
+      "seconds": 0.3101,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/app/catalogue/data/receipt.json",
+      "method": "GET",
+      "http_status": 404,
+      "seconds": 0.3014,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.2997,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.2983,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.2927,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.3274,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "path": "/v1/catalogue/products/8904083506393",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.3264,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    }
+  ],
+  "timing_note": "Observed public round trips after deployment; no platform cold-start claim.",
+  "source_commit_sha": "2df4fb9be0d1cca4440ad659c677250dacd379e5",
+  "deployments": [
+    {
+      "project": "unlabel-backend",
+      "id": "dpl_898Km4txv66J7GA5bRTCFrPmrRrd",
+      "state": "READY",
+      "git_sha": "2df4fb9be0d1cca4440ad659c677250dacd379e5"
+    },
+    {
+      "project": "unlabel-frontend",
+      "id": "dpl_8aTkrJancwVP4i9P22fEBx9b9drf",
+      "state": "READY",
+      "git_sha": "2df4fb9be0d1cca4440ad659c677250dacd379e5"
+    }
+  ],
+  "build_evidence": {
+    "python": "3.12",
+    "command": "python build_catalogue.py",
+    "completed": true,
+    "database_sha256": "b04504e8e6f5b71e45fcfff0ed9f5c5a1463d4ffa1899fb7aeee7edb13521c6f",
+    "snapshot_id": "3c0cb046-3201-4cb7-8b3a-acb71118b624",
+    "database_bytes": 11993088,
+    "indexed_products": 21138
+  }
+}

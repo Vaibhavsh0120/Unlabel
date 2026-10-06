@@ -39,7 +39,7 @@ The decoded projection hash, compressed projection hash and original global down
 | `GET /v1/catalogue/products/{barcode}` | Existing `CatalogLookup` v1 contract with export manifest. 200 found, 404 absent from this snapshot, 503 inactive/unavailable; invalid code 422. |
 | `GET /v1/meta` | The same catalogue status metadata and `catalogue_lookup` capability. |
 
-Catalogue responses use `Cache-Control: no-store`. Codes match exactly; leading-zero variants are distinct keys. A snapshot miss does **not** trigger an OFF request. Call the separate live `/v1/products/...` routes deliberately when current community data is needed. An overdue snapshot remains queryable with warnings; `within_refresh_window` is a policy age state, not proof that a product matches today's package.
+The `/v1/catalogue` status and product routes use `Cache-Control: no-store`; metadata retains its existing cache header. Codes match exactly; leading-zero variants are distinct keys. A snapshot miss does **not** trigger an OFF request. Call the separate live `/v1/products/...` routes deliberately when current community data is needed. An overdue snapshot remains queryable with warnings; `within_refresh_window` is a policy age state, not proof that a product matches today's package.
 
 Local settings use `CATALOGUE_DIRECTORY=storage/runtime/india` and receipt checks off. Hosted settings use `CATALOGUE_DIRECTORY=app/catalogue/data` and receipt checks on. Relative paths resolve from backend; an empty directory disables the catalogue. These hosted settings take effect only in a new deployment. Secret env files are excluded from the function; no key is needed for this catalogue.
 
