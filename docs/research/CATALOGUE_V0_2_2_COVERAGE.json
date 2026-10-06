@@ -1,0 +1,50 @@
+{
+  "schema_version": "1",
+  "checked_at": "2026-10-06T11:56:21.008647+00:00",
+  "source_exported_at": "2026-10-05T12:19:34Z",
+  "source_decoded_sha256": "9930e846978729e7fcbb753b1ef6ad1df2da8fa84bfbc94b43e3463bccaf6cc2",
+  "source_rows": 21188,
+  "supported_unique_barcodes": 21138,
+  "unsupported_barcodes": 50,
+  "missing_name": 3442,
+  "missing_ingredients": 15780,
+  "canonical_allergens_tags_present_rows": 0,
+  "nutrition_tables_included": false,
+  "images_included": false,
+  "per_product_modified_at_included": false,
+  "coverage": "unverified",
+  "live_comparison": {
+    "checked_at": "2026-10-06T11:56:21.015650+00:00",
+    "url": "https://world.openfoodfacts.org/api/v2/search?countries_tags=en%3Aindia&page_size=1&page=1&fields=code%2Ccountries_tags%2Clast_modified_t&sort_by=last_modified_t",
+    "response_limit_bytes": 1048576,
+    "http_status": 200,
+    "bytes_read": 159,
+    "seconds": 0.531,
+    "count": 24715,
+    "sample": [
+      {
+        "code": "8909081003127",
+        "countries_tags": [
+          "en:india"
+        ],
+        "last_modified_t": 1791287255
+      }
+    ]
+  },
+  "samples": [
+    {
+      "barcode": "8904083506393",
+      "in_snapshot": true
+    },
+    {
+      "barcode": "7622202842450",
+      "in_snapshot": false
+    }
+  ],
+  "conclusions": [
+    "Every exact en:india row in this dated export was retained; unsupported formats were counted.",
+    "Live search count and source row count are dated different datasets; mismatch cause remains unresolved.",
+    "Missing India tags can exclude products sold in India; neither count measures the complete Indian market.",
+    "Use the existing live OFF routes for nutrition or records absent from this snapshot; no silent source fallback."
+  ]
+}

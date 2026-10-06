@@ -7,7 +7,7 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.2.1-59636e?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.2.2-59636e?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Stage](https://img.shields.io/badge/stage-backend%20core-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -42,20 +42,21 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
-**Frontend is v0.0.0; backend is v0.2.1.** The app is still a starter. The backend supports live barcode product lookup, source-tagged nutrition lookup, and normalization of confirmed label values. Nutrition normalization prepares facts; health scores and FSSAI claim checks come later. v0.2.1 also acquires and indexes India identity data locally, with a separate optional catalogue API.
+**Frontend is v0.0.0; backend is v0.2.2.** The app is still a starter. The backend supports live barcode product lookup, source-tagged nutrition lookup, and normalization of confirmed label values. v0.2.2 packages the India identity catalogue for Vercel and exposes its verified source, age and refresh date. Nutrition normalization prepares facts; health scores and FSSAI claim checks come later.
 
 | Ready now | Planned next |
 | --- | --- |
 | One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
 | FastAPI health/meta, OFF product and nutrition lookup | Reviewed FSSAI checks and comparison |
-| Local India SQLite catalogue: 21,138 indexed barcodes, 11.44 MiB; source gaps recorded | Verified hosted catalogue distribution |
+| India SQLite catalogue: 21,138 indexed barcodes, 11.44 MiB; verified deployment bundle | Richer nutrition and record-level source data |
+| Catalogue status, source age and nine-month refresh date | Camera integration with explicit live/snapshot selection |
 | Confirmed nutrient rows normalized with original values and provenance | OCR-to-API integration and nutrition visualizations |
 | Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
 | Platform projects and tracked dependency lockfile | Versioned nutrition, claim and allergen rules |
 | Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
 | Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
 
-The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; current backend checks are recorded in the [v0.2.1 review](docs/planning/BACKEND_V0_2_1_REVIEW.md). Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; local and production evidence is recorded separately in the [v0.2.2 review](docs/planning/BACKEND_V0_2_2_REVIEW.md). Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
 
 [Backend version plan](docs/superpowers/plans/2026-10-05-backend-versions.md) · [API/run guide](backend/README.md) · [Catalogue storage: CSV to SQLite](docs/architecture/CATALOGUE.md)
 
@@ -75,7 +76,9 @@ Unknown chemicals are not automatically dangerous. “Allergen not detected” i
 ~~~mermaid
 flowchart LR
   Barcode["Product barcode"] --> API["FastAPI · Vercel backend"]
-  API --> OFF["Open Food Facts product data"]
+  API --> Snapshot["Bundled India catalogue: identity lookup"]
+  Snapshot --> Review["Review product facts"]
+  API --> OFF["Live Open Food Facts: product / nutrition"]
   OFF --> Review["Review product facts"]
   Label["Package claims / missing fields"] --> OCR["Local OCR + correction"]
   OCR --> Review
@@ -87,7 +90,7 @@ flowchart LR
   Knowledge["Reviewed canonical knowledge"] --> Rules
 ~~~
 
-**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. Backend v0.2.1 accepts a narrow set of directly entered nutrition tables and preserves their source, basis and preparation. Separate tables are never silently combined. Confirmed physical-package values use a separate endpoint and remain distinct from community data. Reviewed FSSAI criteria are planned; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
+**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. The separate catalogue route reads the bundled India snapshot without an OFF request. It contains selected identity fields; live product/nutrition routes still query OFF. Coverage is unverified and a missing snapshot record stays a dated 404. Nutrition tables retain their source, basis and preparation; separate tables are never silently combined. Confirmed physical-package values remain distinct from community data. Reviewed FSSAI criteria are planned; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
 
 Normalization preserves zero, marks missing values as unknown, and converts compatible values to per 100 g or per 100 mL. It keeps an unmeasured serving as a serving, without guessing density or portion size. It does not infer added sugar from total sugar or salt from sodium. [Current API and examples →](backend/README.md)
 
@@ -105,10 +108,10 @@ No duplicate Dart rule engine is required for the MVP. On-device OCR may still c
 | --- | --- | --- |
 | Frontend | One Flutter app: Android, iPhone/iPad and web | [unlabel-india.vercel.app](https://unlabel-india.vercel.app), rooted at frontend |
 | Backend | Python + FastAPI, selected for quicker development | [unlabel-api.vercel.app](https://unlabel-api.vercel.app), rooted at backend; native apps use this same API |
-| Product data | Open Food Facts, selected as primary online product-data provider | Read-only backend adapter; missing records permit package-data entry; backend outages defer new analysis |
+| Product data | Open Food Facts live APIs + compact India snapshot | Separate live and read-only snapshot routes; source gaps remain visible |
 | Knowledge | Reviewed JSON/CSV sources, aliases, rules and translations | Read-only client/server bundles; optional local SQLite index |
 
-The backend is stateless. A writable SQLite file cannot be treated as durable Vercel storage. The website build supplies pinned Flutter 3.47.4 and release output. Pushes to `main` automatically deploy both projects; APK/IPA releases remain manual. [Deployment configuration →](docs/planning/VERCEL_SETUP.md)
+The backend is stateless. Each deployment generates and verifies its read-only SQLite bundle from committed source. Refresh replaces the source through a new deployment every nine calendar months; the running database is never updated in place. A writable SQLite file cannot be treated as durable Vercel storage. The website build supplies pinned Flutter 3.47.4 and release output. Pushes to `main` automatically deploy both projects; APK/IPA releases remain manual. [Deployment configuration →](docs/planning/VERCEL_SETUP.md)
 
 **₹0 and no credit card remain the baseline.** Stay within eligible free tiers, keep billing disabled, and preserve local/template fallbacks. Hosted AI and unlimited private CI are not guarantees. [Free-stack research →](docs/research/FREE_STACK.md)
 
@@ -122,11 +125,11 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.2.1: live APIs + optional indexed catalogue
+├── backend/             FastAPI v0.2.2: live APIs + verified catalogue bundle
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
-├── data/                Synthetic fixtures; private data ignored
-├── design/              Shared token/asset folders; palette undecided
+├── data/                Reusable India source, provenance/licenses and fixtures
+├── design/              Concept references and future tokens; palette undecided
 ├── ai/                  Optional experiments; no training
 ├── scripts/             Setup, local run, encryption and catalogue maintenance
 ├── docs/                Architecture, research and teammate handoff

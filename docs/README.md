@@ -1,6 +1,6 @@
 # Documentation map
 
-Frontend remains v0.0.0. Backend v0.2.1 implements health/meta, live OFF product/nutrition lookup, confirmed nutrition-row normalization and optional local indexed catalogue lookup. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Source research was checked on 5–6 October 2026; provider/source eligibility must be reviewed before use.
+Frontend remains v0.0.0. Backend v0.2.2 implements health/meta, live OFF product/nutrition lookup, confirmed nutrition-row normalization, verified catalogue bundling and dated catalogue status/lookup. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Source research was checked on 5–6 October 2026; provider/source eligibility must be reviewed before use.
 
 | Document | Read it for |
 | --- | --- |
@@ -9,10 +9,14 @@ Frontend remains v0.0.0. Backend v0.2.1 implements health/meta, live OFF product
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
 | [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
-| [API plan](architecture/API_PLAN.md) | Six current routes, confirmed-input contract, and later analysis proposals |
+| [API plan](architecture/API_PLAN.md) | Seven current routes, confirmed-input contract, and later analysis proposals |
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
-| [Backend v0.2.1 review](planning/BACKEND_V0_2_1_REVIEW.md) | Current source checks, actual export/import metrics and hosted-data gate |
+| [Backend v0.2.2 review](planning/BACKEND_V0_2_2_REVIEW.md) | Current tests, source/code/docs review and separately recorded deployment proof |
+| [Backend v0.2.2 release notes](planning/BACKEND_V0_2_2_RELEASE.md) | Hosted identity catalogue, integrity and source-age contract |
+| [Backend v0.2.2 build plan](superpowers/plans/2026-10-06-backend-v0.2.2.md) | Bounded implementation scope and completion gates |
+| [Dated catalogue coverage](research/CATALOGUE_V0_2_2_COVERAGE.json) | Recounted fields and bounded live/export count gap |
+| [Backend v0.2.1 review](planning/BACKEND_V0_2_1_REVIEW.md) | Historical source checks, actual export/import metrics and then-pending hosted gate |
 | [Backend v0.2.1 release notes](planning/BACKEND_V0_2_1_RELEASE.md) | Catalogue tooling and independent backend version |
 | [Repository review](planning/PROJECT_REVIEW_V0_2_0.md) | Requested baseline files/docs review and resolved drift |
 | [Catalogue storage](architecture/CATALOGUE.md) | CSV/JSONL inputs, SQLite serving, Firestore tradeoffs and bounded refresh |

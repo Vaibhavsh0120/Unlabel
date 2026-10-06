@@ -1,6 +1,6 @@
 # Working on the Unlabel foundation
 
-The current phase includes Flutter v0.0.0, backend v0.2.1 live APIs and optional local catalogue, shared contracts/docs, manual mobile releases and Vercel setup. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card and update docs before every push.
+The current phase includes Flutter v0.0.0, backend v0.2.2 live APIs and a verified catalogue bundle, shared contracts/docs, manual mobile releases and Vercel setup. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [version plan](docs/superpowers/plans/2026-10-05-backend-versions.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card and update docs before every push.
 
 ## Team boundaries
 

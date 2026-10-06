@@ -1,5 +1,7 @@
 # Recoverable workspace review
 
+Historical maintenance record for backend 0.2.1. Current backend 0.2.2 bundling/deployment evidence is in the [v0.2.2 review](BACKEND_V0_2_2_REVIEW.md); the results below describe the earlier checkout.
+
 Maintenance checked on **6 October 2026**. Backend remains 0.2.1; frontend remains 0.0.0+1. Release tags and APK/IPA assets are untouched.
 
 The acquired India projection is committed as deterministic gzip: 840,099 compressed bytes, 6,588,910 decoded bytes; 21,188 rows, 21,138 supported records. The bundle manifest, original provenance and official ODbL/DbCL texts travel with it. Hashes distinguish this gzip from the original global source. Coverage remains unverified; nutrition tables/images are absent. Supplied concept references are retained for teammate recovery and are not authoritative product facts.

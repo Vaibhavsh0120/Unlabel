@@ -3,7 +3,8 @@
   "framework": "fastapi",
   "functions": {
     "app/main.py": {
-      "maxDuration": 15
+      "maxDuration": 15,
+      "excludeFiles": "{tests/**,.env*,.venv/**,storage/runtime/**,__pycache__/**,*.log}"
     }
   }
 }

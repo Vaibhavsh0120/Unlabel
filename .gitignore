@@ -70,6 +70,7 @@ node_modules/
 *.sqlite3-wal
 backend/storage/runtime/**
 !backend/storage/runtime/.gitkeep
+backend/app/catalogue/data/
 data/private/**
 !data/private/.gitkeep
 knowledge/sources/downloads/**

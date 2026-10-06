@@ -9,8 +9,8 @@ from pathlib import Path
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPOSITORY_ROOT / "backend"))
 
-from app.catalogue.importer import build_catalogue
-from app.catalogue.store import DATABASE_FILENAME
+from app.catalogue.importer import build_catalogue  # noqa: E402
+from app.catalogue.store import DATABASE_FILENAME  # noqa: E402
 
 
 def aware_datetime(value: str) -> datetime:

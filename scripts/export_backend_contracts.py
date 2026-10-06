@@ -16,6 +16,7 @@ normalize_rows = import_module("app.services.parsing.nutrition").normalize_rows
 Settings = import_module("app.core.config").Settings
 Source = import_module("app.schemas.products").Source
 catalogue = import_module("app.catalogue.models")
+catalogue_status = import_module("app.catalogue.status")
 errors = import_module("app.schemas.errors")
 
 
@@ -38,6 +39,7 @@ def main():
         "nutrition-normalize-response-v1.schema.json": products.NormalizeResponse,
         "catalogue-lookup-v1.schema.json": catalogue.CatalogLookup,
         "catalogue-manifest-v1.schema.json": catalogue.Manifest,
+        "catalogue-status-v1.schema.json": catalogue_status.CatalogueStatus,
         "validation-failure-v1.schema.json": errors.ValidationFailure,
     }.items():
         write("schemas", filename, model.model_json_schema())
@@ -124,8 +126,24 @@ def main():
         "catalogue-lookup-v1.synthetic.json",
         catalogue_example.model_dump(mode="json"),
     )
+    status_example = catalogue_status.CatalogueStatus(
+        status="ready",
+        manifest=catalogue_example.manifest,
+        freshness=catalogue_status.snapshot_freshness(date, now=date),
+        artifact=catalogue_status.CatalogueArtifact(
+            database_sha256="0" * 64,
+            database_bytes=4096,
+            source_sha256=catalogue_example.manifest.source_sha256,
+            snapshot_id=catalogue_example.manifest.snapshot_id,
+        ),
+    )
+    write(
+        "examples",
+        "catalogue-status-v1.synthetic.json",
+        status_example.model_dump(mode="json"),
+    )
     print(
-        f"Exported backend v{version} contracts and four validated synthetic examples."
+        f"Exported backend v{version} contracts and five validated synthetic examples."
     )
 
 

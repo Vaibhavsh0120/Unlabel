@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 
 from app import __version__
 from app.catalogue.models import CatalogLookup
+from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
 from app.catalogue.store import CatalogueStore
 from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
@@ -38,10 +39,20 @@ def create_app(
             application.state.products = OpenFoodFactsProvider(client, config)
             application.state.nutrition = NutritionProvider(application.state.products)
             application.state.catalogue = None
+            application.state.catalogue_artifact = None
             directory = config.catalogue_path()
             if directory is not None:
                 try:
+                    artifact = None
+                    if config.catalogue_require_receipt:
+                        from app.catalogue.bundle import verify_bundle
+
+                        receipt = verify_bundle(directory)
+                        artifact = CatalogueArtifact.model_validate(
+                            {key: receipt[key] for key in CatalogueArtifact.model_fields}
+                        )
                     application.state.catalogue = CatalogueStore(directory)
+                    application.state.catalogue_artifact = artifact
                 except (ValueError, OSError):
                     pass  # Live endpoints remain usable; catalogue reports unavailable.
             yield
@@ -88,19 +99,38 @@ def create_app(
     def catalogue_metadata(request: Request):
         directory = config.catalogue_path()
         if directory is None:
-            return {"status": "not_configured", "manifest": None}
+            return CatalogueStatus(status="not_configured")
         try:
             store = request.app.state.catalogue
             if store is None:
-                return {"status": "unavailable", "manifest": None}
+                return CatalogueStatus(status="unavailable")
             manifest = store.manifest
-            return {"status": "ready", "manifest": manifest.model_dump(mode="json")}
+            return CatalogueStatus(
+                status="ready",
+                manifest=manifest,
+                freshness=snapshot_freshness(manifest.exported_at),
+                artifact=request.app.state.catalogue_artifact,
+            )
         except (ValueError, OSError):
-            return {"status": "unavailable", "manifest": None}
+            return CatalogueStatus(status="unavailable")
+
+    @application.get(
+        "/v1/catalogue",
+        response_model=CatalogueStatus,
+        tags=["Catalogue"],
+        responses={503: {"model": CatalogueStatus}},
+    )
+    def catalogue_status(request: Request):
+        result = catalogue_metadata(request)
+        return JSONResponse(
+            result.model_dump(mode="json"),
+            status_code=200 if result.status == "ready" else 503,
+            headers={"Cache-Control": "no-store"},
+        )
 
     @application.get("/v1/meta", tags=["Service"])
     def meta(request: Request):
-        catalogue = catalogue_metadata(request)
+        catalogue = catalogue_metadata(request).model_dump(mode="json")
         return {
             "backend_version": __version__,
             "api_major": 1,
@@ -144,6 +174,25 @@ def create_app(
                 if store is None:
                     raise ValueError("Catalogue unavailable")
                 result = store.lookup(barcode)
+                artifact = request.app.state.catalogue_artifact
+                if artifact is not None and (
+                    result.manifest.snapshot_id != artifact.snapshot_id
+                    or result.manifest.source_sha256 != artifact.source_sha256
+                ):
+                    raise ValueError("A bundled catalogue cannot change inside a deployment")
+                freshness = snapshot_freshness(result.manifest.exported_at)
+                warnings = list(result.warnings)
+                additional_warnings = []
+                if freshness.status == "refresh_due":
+                    additional_warnings.append("snapshot_refresh_due")
+                elif freshness.status == "source_date_in_future":
+                    additional_warnings.append("snapshot_source_date_in_future")
+                if result.manifest.coverage == "unverified":
+                    additional_warnings.append("snapshot_coverage_unverified")
+                for warning in additional_warnings:
+                    if warning not in warnings and len(warnings) < 100:
+                        warnings.append(warning)
+                result = CatalogLookup.model_validate({**result.model_dump(), "warnings": warnings})
             except (ValueError, OSError):
                 result = CatalogLookup(
                     requested_barcode=barcode,

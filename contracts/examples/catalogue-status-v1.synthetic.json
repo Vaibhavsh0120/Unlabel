@@ -1,0 +1,46 @@
+{
+  "schema_version": "1",
+  "status": "ready",
+  "manifest": {
+    "schema_version": "1",
+    "snapshot_id": "synthetic-catalogue",
+    "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+    "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "source_format": "off_jsonl",
+    "coverage": "sample",
+    "exported_at": "2026-10-05T12:00:00Z",
+    "indexed_at": "2026-10-05T12:00:00Z",
+    "market_tag": "en:india",
+    "rows_read": 1,
+    "india_rows": 1,
+    "indexed_products": 1,
+    "duplicate_barcodes": 0,
+    "unsupported_barcodes": 0,
+    "missing_name": 0,
+    "missing_ingredients": 1,
+    "database_license": "ODbL-1.0",
+    "contents_license": "DbCL-1.0",
+    "attribution": "Product data from Open Food Facts",
+    "license_url": "https://openfoodfacts.org/terms-of-use"
+  },
+  "freshness": {
+    "status": "within_refresh_window",
+    "evaluated_at": "2026-10-05T12:00:00Z",
+    "age_seconds": 0,
+    "refresh_due_at": "2027-07-05T12:00:00Z",
+    "refresh_interval_months": 9
+  },
+  "artifact": {
+    "database_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "database_bytes": 4096,
+    "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "snapshot_id": "synthetic-catalogue"
+  },
+  "data_kind": "product_identity",
+  "field_limits": [
+    "nutrition_tables_not_included",
+    "images_not_included",
+    "per_product_modified_at_not_included",
+    "missing_allergen_tags_do_not_mean_allergen_free"
+  ]
+}

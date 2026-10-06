@@ -1,6 +1,6 @@
 # Website and shared API deployment plan
 
-Updated: **2026-10-06**. Two Git-connected Vercel projects are configured for automatic deployment. Backend is v0.2.1; pinned Flutter remains v0.0.0+1. Live product/nutrition lookup and confirmed-value normalization passed production checks; the optional catalogue is currently local and inactive on Vercel. Hosted catalogue distribution/coverage is the v0.2.2 gate. Future OCR, rule analysis and evidence packaging remain plans. See the [release review](../planning/BACKEND_V0_2_1_REVIEW.md) and [recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
+Updated: **2026-10-06**. Two Git-connected Vercel projects are configured for automatic deployment. Backend v0.2.2 adds receipt-verified immutable catalogue packaging and source-age status; pinned Flutter remains v0.0.0+1. Existing live product/nutrition lookup and confirmed normalization remain separate. Actual v0.2.2 deployment verification is recorded in the [current release review](../planning/BACKEND_V0_2_2_REVIEW.md); local validation alone does not prove hosted reads. Future OCR, rule analysis and regulatory evidence packaging remain plans. [Historical recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 
@@ -9,7 +9,7 @@ Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unla
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | OFF product/nutrition lookup and confirmed normalization now; reviewed rules and optional Gemini later. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Live OFF product/nutrition, confirmed normalization and verified snapshot identity/status; reviewed rules and optional Gemini later. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
@@ -60,6 +60,8 @@ Canonical `knowledge/` and `contracts/` sit outside the backend project's root. 
 “Include source files outside of the Root Directory in the Build Step” is enabled. Future evidence packaging still needs its own implementation and artifact verification.
 [Outside-root build access](https://vercel.com/docs/monorepos/monorepo-faq).
 
+For the current product catalogue, `[tool.vercel.scripts]` in `backend/pyproject.toml` runs `python build_catalogue.py` after dependency installation. It reads tracked `data/catalogue/`, verifies compressed/decoded source hashes and counts, and generates SQLite plus `receipt.json` under ignored `backend/app/catalogue/data/`. No network acquisition or env decryption runs in this build. A project-level build override must not suppress the hook. Hosted `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true` require startup hash/manifest/integrity/count verification. The generated database and receipt are written separately inside the unpublished build; any failed build must not be promoted. [FastAPI build command](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
+
 The future backend build must validate canonical files and copy only required JSON into a generated, ignored backend bundle.
 Include source IDs, rule/knowledge versions and a manifest of source hashes. Do not maintain those copies manually.
 Verify the final Python function artifact contains that evidence and reads it from a known packaged path.
@@ -76,7 +78,7 @@ Treat every hosted request as able to land in a fresh instance. Read evidence; d
 Vercel Functions provide a read-only filesystem with temporary scratch space:
 [function runtimes](https://vercel.com/docs/functions/runtimes).
 Do not store scan history, mutable SQLite databases, user accounts, quota counters or permanent caches in that filesystem.
-The current backend uses live OFF reads. Future evidence is read-only JSON; an immutable SQLite catalogue may be bundled only after size/read-access checks. A laptop may also use a derived SQLite index.
+The current backend keeps live OFF routes and a separate immutable SQLite identity catalogue. The catalogue build/runtime validate its receipt and source manifest; actual production file/hash/read checks remain a release gate. Future regulatory evidence uses its own read-only JSON bundle. A laptop can also use a regenerated local SQLite index. Nine-calendar-month source replacement creates a new Git/Vercel deployment; rollback restores the prior validated deployment and matching source/configuration. Never hot-swap packaged runtime files.
 Profiles, history and pending scans remain in browser/device storage and do not sync between clients in the initial scope.
 
 ## Limited offline access and optional model hosting

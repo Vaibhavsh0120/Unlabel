@@ -1,6 +1,6 @@
 # Backend contracts and catalogue tools
 
-Backend v0.2.1 includes the tools below. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
+Backend v0.2.2 includes the tools below. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
 
 | Tool | Responsibility |
 | --- | --- |
@@ -11,10 +11,11 @@ Backend v0.2.1 includes the tools below. Run them from the repository root with 
 | `export_backend_contracts.py` | Regenerate current OpenAPI/model schemas and owned synthetic examples, preserving historical OpenAPI and the product v1 contract. See [contract exports](../contracts/README.md). |
 | `acquire_india_catalogue.py` | Stream the official global compressed OFF CSV through EOF into an India-tagged identity JSONL projection and acquisition metadata. It retains no global raw dump, nutrition aggregates or product images. |
 | `import_india_catalogue.py` | Validate local OFF JSONL or the CSV-derived projection and build an immutable SQLite identity catalogue with counts, dates, hashes and attribution. See [backend setup](../backend/README.md) for commands and optional catalogue configuration. |
+| `../backend/build_catalogue.py` | Networkless deployment build: verify the tracked source bundle and generate/verify ignored `backend/app/catalogue/data/` SQLite/receipt. Run from `backend/` with its Python environment. |
 
 The CSV projection is an identity catalogue source, not a v3.6 nutrition-table export. Live OFF nutrition lookup remains separate. A successful import measures records present in its input; it does not prove every product sold in India is covered. Acquisition progress and final coverage/storage measurements belong in the [feasibility record](../docs/research/INDIA_EXPORT_FEASIBILITY.md).
 
-Large network acquisition is authorized, but transfer, decoded-record, work-directory and output limits remain finite. Use a dedicated source/output directory outside Git, preserve the current valid catalogue during replacement, and refresh manually every nine months after validation. Catalogue lookup stays disabled unless a valid local catalogue directory is configured. A generated local SQLite catalogue is read-only product data; no Firestore or dynamic user-cloud store has been selected.
+Large network acquisition is authorized, but transfer, decoded-record, work-directory and output limits remain finite. Use a dedicated owned source/output directory, preserve the current valid catalogue during local import, and refresh manually every nine calendar months from source export. Keep reusable reviewed source/provenance/licenses in Git; regenerated SQLite stays ignored. Hosted refresh creates a new verified immutable deployment and supports previous-deployment rollback; it never writes packaged runtime files in place. Catalogue lookup requires a valid configured index, with a receipt also required on Vercel. No Firestore or dynamic user-cloud store has been selected. [Build/status/refresh workflow](../docs/architecture/CATALOGUE.md).
 
 Future tools will validate reviewed knowledge records/references and stage a reproducible read-only backend evidence bundle. A small versioned preinstalled Flutter glossary export is optional; no offline Dart rule bundle or mandatory Dart/Python evaluator-parity tool is required. The manual release workflow already contains its own artifact-validation steps.
 

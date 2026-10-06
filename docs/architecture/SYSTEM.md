@@ -1,6 +1,6 @@
 # System architecture
 
-Decision updated: **2026-10-06**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.1 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
+Decision updated: **2026-10-06**. Frontend v0.0.0+1 remains the Flutter starter. Backend v0.2.2 implements FastAPI health/meta, separate live OFF product/nutrition lookup, confirmed-value normalization and a receipt-verified India identity catalogue with typed source-age status. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; the [v0.2.2 review](../planning/BACKEND_V0_2_2_REVIEW.md) records the hosted verification gate.
 
 ## Product and delivery boundary
 
@@ -79,7 +79,7 @@ Native OCR requires bundled device models. Browser OCR needs its own supported a
 
 `GET /v1/meta` exposes contract/knowledge/rule versions and capabilities. Reports identify source origins, assessed criteria and versions. The client suppresses incompatible affected findings rather than merging conflicting results. Saved reports retain their original analysis/evidence dates; viewing them offline needs no handshake, but does not recompute or refresh rules.
 
-Vercel uses bundled read-only JSON knowledge. Build access to root `knowledge/` does not include it automatically in the deployed function: a future staging step validates and packages required files and a version manifest. SQLite remains an optional rebuildable local-laptop index. `/tmp`, instance caches and counters are disposable; none supplies durable hosted storage or global quota protection. [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime](https://vercel.com/docs/functions/runtimes/python).
+Future regulatory knowledge will use bundled read-only JSON. Build access to root `knowledge/` does not include it automatically in the deployed function: a later staging step must validate and package required files and a version manifest. The current catalogue build validates the tracked OFF gzip and generates ignored SQLite plus a receipt under `backend/app/catalogue/data/`; hosted startup verifies that immutable artifact before enabling catalogue reads. `/tmp`, instance caches and counters are disposable; none supplies durable hosted storage or global quota protection. [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime](https://vercel.com/docs/functions/runtimes/python).
 
 Client `BACKEND_BASE_URL` is public configuration, never a credential. Gemini keys stay in backend environment settings. `AI_PROVIDER=disabled` and an empty model are the baseline. Public AI stays disabled until verified individual access for an eligible adult beta and bounded requests exist. CORS and an embedded shared app token cannot provide authentication.
 
@@ -87,4 +87,4 @@ Preferences, personal suitability and scan history stay in the phone/browser. On
 
 The starter/workflow does not prove OCR quality, saved-content caching, legal criteria, live providers, hosted behavior or dietary suitability. Validate those during implementation.
 
-Backend v0.2.1 also provides a separate optional export-origin identity catalogue: official TSV stream -> India JSONL projection -> atomic read-only SQLite index. It does not replace the current live OFF product/nutrition routes. The verified local index is ignored; hosted artifact distribution remains a v0.2.2 gate. Source dates/unknowns stay visible and manual replacement is every nine months. [Implemented catalogue workflow](CATALOGUE.md).
+Backend v0.2.2 provides a separate export-origin identity catalogue: official TSV stream -> tracked India JSONL gzip -> verified build-time SQLite/receipt. It does not replace the live OFF product/nutrition routes or fetch OFF on a snapshot miss. `/v1/catalogue` and metadata expose manifest, artifact summary, field limits and freshness based on the source export date. Manual replacement is every nine calendar months through reviewed source changes and a new immutable deployment, with previous-deployment rollback. Coverage remains unverified. [Implemented catalogue workflow](CATALOGUE.md).

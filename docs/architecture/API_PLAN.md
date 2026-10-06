@@ -1,6 +1,6 @@
 # Frontend/backend API plan
 
-Backend v0.2.1 implements the six routes below. Current definitions are exported in `contracts/schemas/backend-v0.2.1.openapi.json`; the [backend README](../../backend/README.md) documents actual behavior. The strict v0.1 ProductLookup response and historical OpenAPI remain preserved. Analysis, claims, ingredient/evidence and comparison endpoints remain proposals.
+Backend v0.2.2 implements the seven routes below. Current definitions are exported in `contracts/schemas/backend-v0.2.2.openapi.json`; the [backend README](../../backend/README.md) documents actual behavior. Strict product/catalogue lookup v1 response shapes and historical OpenAPI remain preserved. Analysis, claims, ingredient/evidence and comparison endpoints remain proposals.
 
 ## Implemented endpoints and nutrition contract
 
@@ -11,9 +11,12 @@ Backend v0.2.1 implements the six routes below. Current definitions are exported
 | `GET /v1/products/{barcode}` | Unchanged typed OFF identity/ingredient/tag/computed-grade lookup |
 | `GET /v1/products/{barcode}/nutrition` | Separate OFF direct-input nutrition lookup with community origin and table source metadata |
 | `POST /v1/nutrition/normalize` | Structured user-confirmed nutrient normalization, independent of OFF connectivity |
+| `GET /v1/catalogue` | Typed status/manifest, source-age policy, receipt artifact summary and excluded-field limits; 503 when not ready |
 | `GET /v1/catalogue/products/{barcode}` | Optional exact indexed lookup with separate export manifest, no OFF call; 503 when inactive |
 
-Metadata enables product lookup, nutrition lookup and nutrition normalization. Catalogue lookup is enabled only for a readable configured index; production remains inactive until artifact distribution is verified. [Catalogue contract and storage](CATALOGUE.md). All 422 responses use the shared strict redacted ValidationFailure contract. `nutrition_analysis`, claim checks, ingredient explanations, comparison and AI remain disabled; `knowledge_version` is `not_populated`.
+Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses the new `CatalogueStatus` model; catalogue lookup is enabled only for a validated configured index. Hosted configuration also requires a verified build receipt. The [v0.2.2 review](../planning/BACKEND_V0_2_2_REVIEW.md) records actual deployment checks; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use the shared strict redacted ValidationFailure contract. `nutrition_analysis`, claim checks, ingredient explanations, comparison and AI remain disabled; `knowledge_version` is `not_populated`.
+
+`CatalogueStatus` reports `ready`, `not_configured` or `unavailable`, with nullable manifest/freshness/artifact and explicit identity-data limits. Freshness is `within_refresh_window`, `refresh_due` or `source_date_in_future`; it uses nine calendar months from `exported_at`, not the build timestamp. Unconfigured/unavailable status returns 503 and claims no verified manifest. A ready but overdue catalogue remains readable with warnings. Existing `CatalogLookup` keys are unchanged; warnings remain within its 100-item bound. A 404 snapshot miss makes no upstream request. Catalogue status/lookup responses are `no-store`.
 
 `NormalizeRequest` contains schema `1`, UUID request/session IDs, bounded strict integer revision, actual boolean `confirmed: true`, completeness `complete`/`partial`, and 1–64 unique-ID nutrient rows. A row contains table ID, supported nutrient, finite nonnegative numeric value or null, compatible unit, basis and as-sold/as-prepared state. Quantity bases require positive amount plus `g`/`mL`; serving bases require both amount/unit or neither. Strings, booleans and nonfinite/precision-losing numeric tokens do not become nutrient values. All models forbid extra fields; no image/OCR/profile/secret fields are accepted.
 

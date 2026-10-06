@@ -128,6 +128,7 @@ def main() -> int:
             )
             if (ROOT / "backend/storage/runtime/india/catalogue.sqlite3").is_file():
                 environment["CATALOGUE_DIRECTORY"] = "storage/runtime/india"
+                environment["CATALOGUE_REQUIRE_RECEIPT"] = "false"
             command = [
                 python,
                 "-m",

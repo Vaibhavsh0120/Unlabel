@@ -22,19 +22,19 @@ The starter contains no product API request yet. Passing the URL config prepares
 ## Backend settings
 
 - Framework: **FastAPI**, Python **3.12**, entrypoint `app.main:app`.
-- No custom install/build/output command; Vercel installs the declared Python runtime dependencies and packages the application as one Function.
+- Vercel installs the declared Python runtime dependencies. `[tool.vercel.scripts]` in `backend/pyproject.toml` then runs `python build_catalogue.py`; project-level build overrides must not suppress this hook. It generates verified SQLite/receipt before the application is packaged as one Function.
 - `backend/vercel.json` limits this Function to 15 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
-- `backend/.vercelignore` excludes local environment files, development environments/tests/caches and private runtime storage.
+- `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` is ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- Backend environment holds `OFF_USER_AGENT`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Public OFF reads require no key. No Gemini key is configured or required.
+- Backend environment holds `OFF_USER_AGENT=Unlabel/0.2.2 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
-No live FSSAI requests, Indian snapshot import, permanent cloud database or new subscription is required for v0.2.0. Confirmed nutrition POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The v0.2.0 release used Unlabel/0.2.0; current local/hosted settings use Unlabel/0.2.1. The [nine-month snapshot policy](../research/INDIA_SNAPSHOT.md) is a separate data milestone. A future immutable catalogue is built and checked before deploying; never run a bulk import inside a scan request.
+No live FSSAI requests, permanent writable cloud database or new subscription is required. Confirmed nutrition POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
 ## Push and verification
 
 Update docs and run relevant checks before each push. Both projects use their own root-level config files; no repository-root `vercel.json` competes with them. Unaffected-project skipping is disabled to match the requested every-push deployment behavior. Free build/hosting allowances remain finite.
 
-After pushing, match each deployment's Git SHA to the intended commit. Check the website, `/v1/health`, `/v1/meta`, `/openapi.json`, one bounded product lookup, exact-origin CORS/preflight and invalid input. A READY build alone is not endpoint evidence.
+After pushing, match each deployment's Git SHA to the intended commit. Check the website, `/v1/health`, `/v1/meta`, `/openapi.json`, `/v1/catalogue`, representative found/absent catalogue codes, one bounded live product/nutrition lookup, confirmed normalization, exact-origin CORS/preflight and invalid input. Check source date/hash/counts and the receipt-verified artifact summary, and confirm env/database paths are not served publicly. A READY build alone is not endpoint evidence.
 
 Initial imports deployed the foundation commit without the new service/build script. The first corrected push, `0c10e0b807948d70d3327517387f1db8cddc52c7`, automatically produced READY production deployments for both projects:
 
@@ -47,6 +47,12 @@ Backend v0.2.0 source commit `2d6763674f737b3b171e207b915f24f1ee33a227` also aut
 
 References: [Vercel monorepos](https://vercel.com/docs/monorepos), [FastAPI deployment](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime/version](https://vercel.com/docs/functions/runtimes/python), [Flutter web release](https://docs.flutter.dev/deployment/web), [Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication).
 
-## Backend v0.2.1 configuration
+## Historical backend v0.2.1 configuration
 
-The backend User-Agent is updated to Unlabel/0.2.1 in all environments. `CATALOGUE_DIRECTORY` is explicitly empty on Vercel; optional catalogue lookup reports inactive while live product/nutrition APIs remain enabled. The compact public India projection is tracked in `data/catalogue/`; setup regenerates its 11.44 MiB SQLite index in ignored local runtime storage. A Git push carries public source and encrypted recovery settings, but the backend project excludes `.env*` and runtime stores; it does not build or activate the hosted catalogue. Plaintext credentials, private identities and scans stay outside Git. Verify reproducible artifact distribution in v0.2.2 before enabling a hosted index. Replacement policy is every nine months, changed by the user on 6 October. [Recovery guide](LOCAL_DEVELOPMENT.md).
+At v0.2.1, the backend used Unlabel/0.2.1 and an explicitly empty hosted `CATALOGUE_DIRECTORY`; snapshot lookup remained inactive. The public source was tracked for clone recovery while generated local SQLite stayed excluded from Git deployments. [Historical recovery guide/review](RECOVERABLE_WORKSPACE_REVIEW.md).
+
+## Backend v0.2.2 catalogue configuration
+
+The new backend build reads tracked `data/catalogue/` through outside-root build access, validates the gzip/metadata and writes `app/catalogue/data/catalogue.sqlite3` plus `receipt.json`. Startup requires receipt/hash/manifest/integrity/count validation before enabling catalogue reads. The published source date remains 2026-10-05T12:19:34Z; rebuilding does not reset its nine-calendar-month age or resolve unverified coverage. Failure leaves catalogue unavailable while health/meta/live adapters remain usable.
+
+Source settings and local build validation are implemented; the [v0.2.2 review](BACKEND_V0_2_2_REVIEW.md) records pending/completed exact-SHA production verification. A source refresh creates a new immutable deployment; failed builds must not be promoted and rollback restores the prior deployment with matching source/configuration. No runtime file replacement, automatic refresh schedule or upstream bulk download runs on a push. Plaintext credentials/private identities/scans stay outside Git; `.env.age` is clone recovery ciphertext and is excluded from the function. [Catalogue guide](../architecture/CATALOGUE.md) · [Local restore/run](LOCAL_DEVELOPMENT.md).
