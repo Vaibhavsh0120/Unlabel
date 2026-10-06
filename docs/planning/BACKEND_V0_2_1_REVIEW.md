@@ -1,6 +1,6 @@
 # Backend v0.2.1 review
 
-Historical release record. Current hosted bundling and source-age work is recorded in the [v0.2.2 review](BACKEND_V0_2_2_REVIEW.md); preserve the measurements and gates below as evidence for their original checkout.
+Historical release record. Current hosted bundling and rich-facts work is recorded in the [v0.2.3 review](BACKEND_V0_2_3_REVIEW.md); preserve the measurements and gates below as evidence for their original checkout.
 
 Checked **6 October 2026**. Frontend remains v0.0.0+1. The [baseline repository review](PROJECT_REVIEW_V0_2_0.md) completes the earlier docs/files request; this record covers the new source and real acquisition.
 

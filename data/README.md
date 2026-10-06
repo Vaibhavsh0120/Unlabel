@@ -5,6 +5,6 @@
 - fixtures/expected: reviewed expected rule results with source/rule versions.
 - private: ignored local-only package photographs and manual investigation data.
 
-The [catalogue/](catalogue/README.md) directory contains the compact public OFF India identity source, manifest, acquisition provenance and license texts. Setup verifies it and regenerates SQLite. It includes no nutrition tables, source product images, personal scans or legal verdicts. Future shared fixtures must record reuse rights and contain no personal information. Real user history belongs on the device.
+The [catalogue/](catalogue/README.md) directory contains the compact public OFF India source, manifest, acquisition provenance and license texts. v0.2.3 retains bounded direct nutrition inputs, canonical tags, dates and selected-image descriptors. Setup verifies it and regenerates SQLite. Image bytes, legacy nutrient aggregates, personal scans and legal verdicts are excluded. Future shared fixtures must record reuse rights and contain no personal information. Real user history belongs on the device.
 
 Fixtures should cover missing fields, mixed nutrition bases, ambiguous additives, may-contain warnings, front/back mismatch, stale evidence and provider outages. They will support backend rules and frontend contract tests without requiring a paid service.

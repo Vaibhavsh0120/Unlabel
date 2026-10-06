@@ -1,0 +1,794 @@
+{
+  "checked_at": "2026-10-06T18:32:43.974594+00:00",
+  "backend_version": "0.2.3",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/v1/health",
+      "http_status": 200,
+      "seconds": 1.344,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meta",
+      "http_status": 200,
+      "seconds": 0.266,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue",
+      "http_status": 200,
+      "seconds": 0.265,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/00024907/facts",
+      "http_status": 200,
+      "seconds": 0.235,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/00024907",
+      "http_status": 200,
+      "seconds": 0.25,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/0070970474088/facts",
+      "http_status": 200,
+      "seconds": 0.234,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/0070970474088",
+      "http_status": 200,
+      "seconds": 0.25,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/8904083506393/facts",
+      "http_status": 200,
+      "seconds": 0.25,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/8904083506393",
+      "http_status": 200,
+      "seconds": 0.234,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/9999999999999/facts",
+      "http_status": 404,
+      "seconds": 0.235,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/invalid-private-input/facts",
+      "http_status": 422,
+      "seconds": 0.25,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "http_status": 200,
+      "seconds": 0.625,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/nutrition/normalize",
+      "http_status": 200,
+      "seconds": 0.25,
+      "cache_control": "no-store",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/v1/nutrition/normalize",
+      "http_status": 200,
+      "seconds": 0.234,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meta",
+      "http_status": 200,
+      "seconds": 0.25,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": null
+    },
+    {
+      "method": "GET",
+      "path": "/.env",
+      "http_status": 404,
+      "seconds": 0.25,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/.env.age",
+      "http_status": 404,
+      "seconds": 0.469,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/app/catalogue/data/catalogue.sqlite3",
+      "http_status": 404,
+      "seconds": 0.25,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/app/catalogue/data/receipt.json",
+      "http_status": 404,
+      "seconds": 0.234,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/claims/rules",
+      "http_status": 404,
+      "seconds": 0.235,
+      "cache_control": "public, max-age=0, must-revalidate",
+      "cors": "https://unlabel-india.vercel.app"
+    }
+  ],
+  "catalogue": {
+    "schema_version": "1",
+    "status": "ready",
+    "manifest": {
+      "schema_version": "1",
+      "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1",
+      "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+      "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+      "source_format": "off_jsonl",
+      "coverage": "unverified",
+      "exported_at": "2026-10-06T06:53:46Z",
+      "indexed_at": "2026-10-06T18:32:15.967643Z",
+      "market_tag": "en:india",
+      "rows_read": 24695,
+      "india_rows": 24695,
+      "indexed_products": 24641,
+      "duplicate_barcodes": 0,
+      "unsupported_barcodes": 54,
+      "missing_name": 3545,
+      "missing_ingredients": 18088,
+      "database_license": "ODbL-1.0",
+      "contents_license": "DbCL-1.0",
+      "attribution": "Product data from Open Food Facts",
+      "license_url": "https://openfoodfacts.org/terms-of-use"
+    },
+    "freshness": {
+      "status": "within_refresh_window",
+      "evaluated_at": "2026-10-06T18:32:46.135642Z",
+      "age_seconds": 41940,
+      "refresh_due_at": "2027-07-06T06:53:46Z",
+      "refresh_interval_months": 9
+    },
+    "artifact": {
+      "database_sha256": "fb194302905d55d182572988d894ca86d5653d6b9c623c880d99325ecafea165",
+      "database_bytes": 62472192,
+      "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+      "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1"
+    },
+    "data_kind": "product_identity",
+    "field_limits": [
+      "nutrition_direct_tables_only",
+      "images_are_source_urls_only",
+      "per_product_dates_may_be_missing",
+      "missing_allergen_tags_do_not_mean_allergen_free"
+    ]
+  },
+  "samples": [
+    {
+      "schema_version": "1",
+      "requested_barcode": "00024907",
+      "status": "found",
+      "manifest": {
+        "schema_version": "1",
+        "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1",
+        "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+        "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+        "source_format": "off_jsonl",
+        "coverage": "unverified",
+        "exported_at": "2026-10-06T06:53:46Z",
+        "indexed_at": "2026-10-06T18:32:15.967643Z",
+        "market_tag": "en:india",
+        "rows_read": 24695,
+        "india_rows": 24695,
+        "indexed_products": 24641,
+        "duplicate_barcodes": 0,
+        "unsupported_barcodes": 54,
+        "missing_name": 3545,
+        "missing_ingredients": 18088,
+        "database_license": "ODbL-1.0",
+        "contents_license": "DbCL-1.0",
+        "attribution": "Product data from Open Food Facts",
+        "license_url": "https://openfoodfacts.org/terms-of-use"
+      },
+      "product": {
+        "barcode": "00024907",
+        "name": "Teriyaki Dip Sauce Marinade",
+        "brands": "Marks & Spencer",
+        "quantity_text": "305 g",
+        "ingredients_text": "Sugar - Water Dark Soy Sauce (20%) (contains Water Soybeans. Roasted Wheat (contains Cluten)) Ginger Pur\u00e9e (10%) Garlic Pur\u00e9e. Cornflour Concentrated Lime Juice. Smoked Salt Crushed Red Chillies. Ground Ginger Mirin Rice Wine (contains Rice Water Alcohol Glucose Syrup).",
+        "allergen_tags": [
+          "en:gluten"
+        ],
+        "trace_tags": [],
+        "insights": {
+          "provider": "open_food_facts",
+          "nutri_score_grade": "e",
+          "nova_group": null
+        }
+      },
+      "details": {
+        "schema_version": "1",
+        "provider_schema_version": 1003,
+        "last_modified_at": "2026-03-27T16:57:50Z",
+        "categories": {
+          "availability": "available",
+          "values": [
+            "en:condiments",
+            "en:sauces",
+            "en:barbecue-sauces"
+          ]
+        },
+        "labels": {
+          "availability": "available",
+          "values": [
+            "en:vegetarian",
+            "en:vegan",
+            "en:green-dot"
+          ]
+        },
+        "allergens": {
+          "availability": "available",
+          "values": [
+            "en:gluten"
+          ]
+        },
+        "traces": {
+          "availability": "available",
+          "values": []
+        },
+        "image": {
+          "url": "https://images.openfoodfacts.org/images/products/000/000/002/4907/front_en.32.400.jpg",
+          "language": "en",
+          "revision": 32,
+          "size": 400,
+          "width": 219,
+          "height": 400,
+          "provider": "open_food_facts",
+          "attribution": "Product image from Open Food Facts contributors",
+          "license": "CC-BY-SA-3.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+        },
+        "nutrition": {
+          "availability": "direct_tables",
+          "nutrition_adapter_version": "1",
+          "assessment_basis": "open_food_facts_community_data",
+          "input_tables": [
+            {
+              "table_id": "off-table-0",
+              "provider_source": "packaging"
+            }
+          ],
+          "snapshot": {
+            "normalization_version": "1",
+            "status": "partial",
+            "tables": [
+              {
+                "source_table_id": "off-table-0",
+                "preparation": "as_sold",
+                "original_basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "normalized_basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "nutrients": {
+                  "energy": {
+                    "value": 170.0,
+                    "unit": "kcal",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-energy-kcal"
+                    ],
+                    "conversion": "kcal unchanged; scaled from 100 g to 100 g"
+                  },
+                  "fat": {
+                    "value": 0.3,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-fat"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "saturated_fat": {
+                    "value": 0.1,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-saturated-fat"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "carbohydrates": {
+                    "value": 39.4,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-carbohydrates"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "carbohydrates_total": {
+                    "value": null,
+                    "unit": "g",
+                    "reason": "not_reported",
+                    "source_row_ids": [],
+                    "conversion": null
+                  },
+                  "sugars": {
+                    "value": 33.9,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-sugars"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "added_sugars": {
+                    "value": null,
+                    "unit": "g",
+                    "reason": "not_reported",
+                    "source_row_ids": [],
+                    "conversion": null
+                  },
+                  "fibre": {
+                    "value": 0.8,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-fiber"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "protein": {
+                    "value": 2.0,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-proteins"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "sodium": {
+                    "value": 1.032,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-sodium"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  },
+                  "salt": {
+                    "value": 2.58,
+                    "unit": "g",
+                    "reason": null,
+                    "source_row_ids": [
+                      "off-table-0-salt"
+                    ],
+                    "conversion": "g unchanged; scaled from 100 g to 100 g"
+                  }
+                }
+              }
+            ],
+            "original_rows": [
+              {
+                "row_id": "off-table-0-energy-kcal",
+                "table_id": "off-table-0",
+                "nutrient": "energy",
+                "value": 170.0,
+                "unit": "kcal",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-fat",
+                "table_id": "off-table-0",
+                "nutrient": "fat",
+                "value": 0.3,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-saturated-fat",
+                "table_id": "off-table-0",
+                "nutrient": "saturated_fat",
+                "value": 0.1,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-carbohydrates",
+                "table_id": "off-table-0",
+                "nutrient": "carbohydrates",
+                "value": 39.4,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-sugars",
+                "table_id": "off-table-0",
+                "nutrient": "sugars",
+                "value": 33.9,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-fiber",
+                "table_id": "off-table-0",
+                "nutrient": "fibre",
+                "value": 0.8,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-proteins",
+                "table_id": "off-table-0",
+                "nutrient": "protein",
+                "value": 2.0,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-sodium",
+                "table_id": "off-table-0",
+                "nutrient": "sodium",
+                "value": 1.032,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              },
+              {
+                "row_id": "off-table-0-salt",
+                "table_id": "off-table-0",
+                "nutrient": "salt",
+                "value": 2.58,
+                "unit": "g",
+                "basis": {
+                  "kind": "quantity",
+                  "amount": 100.0,
+                  "unit": "g"
+                },
+                "preparation": "as_sold"
+              }
+            ],
+            "warnings": [
+              "partial_capture"
+            ]
+          },
+          "warnings": [
+            "computed_or_missing_value_excluded",
+            "unsupported_table_source"
+          ]
+        }
+      },
+      "warnings": [
+        "community_record_not_package_verified",
+        "allergen_safety_not_assessed",
+        "snapshot_age_needs_review",
+        "snapshot_coverage_unverified"
+      ]
+    },
+    {
+      "schema_version": "1",
+      "requested_barcode": "0070970474088",
+      "status": "found",
+      "manifest": {
+        "schema_version": "1",
+        "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1",
+        "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+        "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+        "source_format": "off_jsonl",
+        "coverage": "unverified",
+        "exported_at": "2026-10-06T06:53:46Z",
+        "indexed_at": "2026-10-06T18:32:15.967643Z",
+        "market_tag": "en:india",
+        "rows_read": 24695,
+        "india_rows": 24695,
+        "indexed_products": 24641,
+        "duplicate_barcodes": 0,
+        "unsupported_barcodes": 54,
+        "missing_name": 3545,
+        "missing_ingredients": 18088,
+        "database_license": "ODbL-1.0",
+        "contents_license": "DbCL-1.0",
+        "attribution": "Product data from Open Food Facts",
+        "license_url": "https://openfoodfacts.org/terms-of-use"
+      },
+      "product": {
+        "barcode": "0070970474088",
+        "name": "Chewy spicy candies",
+        "brands": "Hot Tamale, Hot Tamales",
+        "quantity_text": null,
+        "ingredients_text": "Sugar, corn syrup, modified food starch, contains less than 0.5% of the following ingredients; fumaric acid, natural and artificial flavors, sodium citrate, dextrin, citric acid, malic acid, artificial color, confectioners glaze, red #40, carnauba wax, medium chain triglycerides, yellow #5 (tartrazine), yellow #6, blue #1.",
+        "allergen_tags": [],
+        "trace_tags": [],
+        "insights": {
+          "provider": "open_food_facts",
+          "nutri_score_grade": "e",
+          "nova_group": 4
+        }
+      },
+      "details": {
+        "schema_version": "1",
+        "provider_schema_version": 1002,
+        "last_modified_at": "2026-02-16T19:28:58Z",
+        "categories": {
+          "availability": "available",
+          "values": [
+            "en:snacks",
+            "en:sweet-snacks",
+            "en:confectioneries",
+            "en:candies"
+          ]
+        },
+        "labels": {
+          "availability": "available",
+          "values": [
+            "en:no-gluten"
+          ]
+        },
+        "allergens": {
+          "availability": "available",
+          "values": []
+        },
+        "traces": {
+          "availability": "available",
+          "values": []
+        },
+        "image": {
+          "url": "https://images.openfoodfacts.org/images/products/007/097/047/4088/front_en.5.400.jpg",
+          "language": "en",
+          "revision": 5,
+          "size": 400,
+          "width": 400,
+          "height": 225,
+          "provider": "open_food_facts",
+          "attribution": "Product image from Open Food Facts contributors",
+          "license": "CC-BY-SA-3.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+        },
+        "nutrition": {
+          "availability": "legacy_unsupported",
+          "nutrition_adapter_version": "1",
+          "assessment_basis": "open_food_facts_community_data",
+          "input_tables": [],
+          "snapshot": {
+            "normalization_version": "1",
+            "status": "partial",
+            "tables": [],
+            "original_rows": [],
+            "warnings": [
+              "partial_capture",
+              "nutrition_not_reported"
+            ]
+          },
+          "warnings": [
+            "nutrition_input_sets_missing",
+            "legacy_aggregated_nutrition_not_used"
+          ]
+        }
+      },
+      "warnings": [
+        "community_record_not_package_verified",
+        "allergen_safety_not_assessed",
+        "snapshot_age_needs_review",
+        "snapshot_coverage_unverified"
+      ]
+    },
+    {
+      "schema_version": "1",
+      "requested_barcode": "8904083506393",
+      "status": "found",
+      "manifest": {
+        "schema_version": "1",
+        "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1",
+        "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+        "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+        "source_format": "off_jsonl",
+        "coverage": "unverified",
+        "exported_at": "2026-10-06T06:53:46Z",
+        "indexed_at": "2026-10-06T18:32:15.967643Z",
+        "market_tag": "en:india",
+        "rows_read": 24695,
+        "india_rows": 24695,
+        "indexed_products": 24641,
+        "duplicate_barcodes": 0,
+        "unsupported_barcodes": 54,
+        "missing_name": 3545,
+        "missing_ingredients": 18088,
+        "database_license": "ODbL-1.0",
+        "contents_license": "DbCL-1.0",
+        "attribution": "Product data from Open Food Facts",
+        "license_url": "https://openfoodfacts.org/terms-of-use"
+      },
+      "product": {
+        "barcode": "8904083506393",
+        "name": "Organic Rice Flour-500g",
+        "brands": null,
+        "quantity_text": "500g",
+        "ingredients_text": null,
+        "allergen_tags": [],
+        "trace_tags": [],
+        "insights": {
+          "provider": "open_food_facts",
+          "nutri_score_grade": null,
+          "nova_group": null
+        }
+      },
+      "details": {
+        "schema_version": "1",
+        "provider_schema_version": 1002,
+        "last_modified_at": "2026-02-02T11:55:33Z",
+        "categories": {
+          "availability": "missing",
+          "values": []
+        },
+        "labels": {
+          "availability": "available",
+          "values": [
+            "en:no-gluten"
+          ]
+        },
+        "allergens": {
+          "availability": "available",
+          "values": []
+        },
+        "traces": {
+          "availability": "available",
+          "values": []
+        },
+        "image": {
+          "url": "https://images.openfoodfacts.org/images/products/890/408/350/6393/front_en.4.400.jpg",
+          "language": "en",
+          "revision": 4,
+          "size": 400,
+          "width": 400,
+          "height": 202,
+          "provider": "open_food_facts",
+          "attribution": "Product image from Open Food Facts contributors",
+          "license": "CC-BY-SA-3.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+        },
+        "nutrition": {
+          "availability": "legacy_unsupported",
+          "nutrition_adapter_version": "1",
+          "assessment_basis": "open_food_facts_community_data",
+          "input_tables": [],
+          "snapshot": {
+            "normalization_version": "1",
+            "status": "partial",
+            "tables": [],
+            "original_rows": [],
+            "warnings": [
+              "partial_capture",
+              "nutrition_not_reported"
+            ]
+          },
+          "warnings": [
+            "nutrition_input_sets_missing",
+            "legacy_aggregated_nutrition_not_used"
+          ]
+        }
+      },
+      "warnings": [
+        "community_record_not_package_verified",
+        "allergen_safety_not_assessed",
+        "snapshot_age_needs_review",
+        "ingredients_missing",
+        "categories_tags_missing",
+        "snapshot_coverage_unverified"
+      ]
+    }
+  ],
+  "website_http_status": 200,
+  "deployment": {
+    "backend_id": "dpl_HgRKWoonZJSoGRr1ZaoHDwThSbrF",
+    "backend_url": "https://unlabel-backend-1faupv40e-vaibhav0120s-projects.vercel.app",
+    "frontend_id": "dpl_64ccpc7XUCW8CkCEpChAk1SR1kSe",
+    "frontend_url": "https://unlabel-frontend-4ccggui6m-vaibhav0120s-projects.vercel.app",
+    "source_commit": "56064d7fd13d585c949eb2d31a53eb3884a5d520",
+    "backend_state": "READY",
+    "frontend_state": "READY"
+  },
+  "build_receipt": {
+    "coverage": "unverified",
+    "database_bytes": 62472192,
+    "database_file": "catalogue.sqlite3",
+    "database_sha256": "fb194302905d55d182572988d894ca86d5653d6b9c623c880d99325ecafea165",
+    "exported_at": "2026-10-06T06:53:46Z",
+    "indexed_products": 24641,
+    "schema_version": "1",
+    "snapshot_id": "eea89670-b5e7-4980-b49c-d5e49eaebdb1",
+    "source_compressed_sha256": "bbdd13097ede75777b2356e27910ae01aff38d7ad0c59598af6868dcf447db24",
+    "source_format": "off_jsonl",
+    "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f"
+  }
+}

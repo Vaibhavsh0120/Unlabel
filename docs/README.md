@@ -21,7 +21,8 @@ Frontend remains 0.0.0+1. Backend source v0.2.3 implements health/meta, live OFF
 | [Backend v0.2.2 build plan](superpowers/plans/2026-10-06-backend-v0.2.2.md) | Bounded implementation scope and completion gates |
 | [Current catalogue coverage](research/CATALOGUE_V0_2_3_COVERAGE.json) | Full JSONL acquisition, strict indexed-field counts and local receipt |
 | [Historical CSV coverage](research/CATALOGUE_V0_2_2_COVERAGE.json) | Earlier fields and bounded live/export count gap |
-| [v0.2.2 production evidence](research/BACKEND_V0_2_2_PRODUCTION.json) | Exact implementation SHA/deployments, hosted receipt and public HTTP samples |
+| [Current v0.2.3 production evidence](research/BACKEND_V0_2_3_PRODUCTION.json) | Exact implementation SHA/deployments, actual build receipt and 20 public HTTP checks |
+| [Historical v0.2.2 production evidence](research/BACKEND_V0_2_2_PRODUCTION.json) | Earlier implementation SHA/deployments and hosted receipt |
 | [Backend v0.2.1 review](planning/BACKEND_V0_2_1_REVIEW.md) | Historical source checks, actual export/import metrics and then-pending hosted gate |
 | [Backend v0.2.1 release notes](planning/BACKEND_V0_2_1_RELEASE.md) | Catalogue tooling and independent backend version |
 | [Repository review](planning/PROJECT_REVIEW_V0_2_0.md) | Requested baseline files/docs review and resolved drift |

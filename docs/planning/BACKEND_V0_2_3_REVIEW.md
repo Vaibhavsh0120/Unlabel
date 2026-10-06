@@ -1,6 +1,6 @@
 # Backend v0.2.3 review
 
-Review date: **6 October 2026**. Backend source becomes **0.2.3**; Flutter stays **0.0.0+1**. This record separates code/contract checks, complete source acquisition, local artifacts, hosted reads and publication. A preceding deployment or READY build does not verify this version.
+Review updated: **7 October 2026 (Asia/Calcutta)**; acquisition/source timestamps below use UTC. Backend source becomes **0.2.3**; Flutter stays **0.0.0+1**. This record separates code/contract checks, complete source acquisition, local artifacts, hosted reads and publication. A preceding deployment or READY build does not verify this version.
 
 ## Source acquisition and measured coverage
 
@@ -72,9 +72,9 @@ Generated SQLite stores a bounded optional facts table with identity-key/count v
 | Setup restore and packaged sample reads | Actual `scripts/setup.py --catalogue-only --replace-catalogue` restored 24,641 products; three packaged facts reads passed with upstream transport forbidden |
 | Selected-image remote check | [Dated HEAD checks](../research/CATALOGUE_V0_2_3_IMAGE_CHECK.json) returned 200 `image/jpeg` for two sampled canonical URLs; remaining images were not individually requested |
 | Ruff/format/dependencies | Scoped lint/format pass for **39 files**; `pip check` clean |
-| Encryption and tracked-secret boundary | Public `OFF_USER_AGENT` advanced to 0.2.3 and `.env.age` refreshed successfully. Actual AGE/PEM private-key marker scan: **zero**; plaintext env and generated SQLite remain ignored. Env-tool boundary regressions pass in the 400-test suite |
+| Encryption and tracked-secret boundary | Public `OFF_USER_AGENT` advanced to 0.2.3 and `.env.age` refreshed successfully. Actual AGE/PEM private-key marker scan: **zero**; plaintext env and generated SQLite remain ignored. Env-tool boundary regressions pass in the 402-test suite |
 | Actual private-key decrypt/recovery | **Not rerun in this continuation**; do not infer successful current restoration from encryption or regression tests |
-| Current Markdown links and whitespace | Final repository-wide scan: **61 Markdown files**, **291 local targets**, zero missing links or UTF-8 replacement characters; whitespace check clean |
+| Current Markdown links and whitespace | Final repository-wide scan: **61 Markdown files**, **306 local targets**, zero missing links or UTF-8 replacement characters; whitespace check clean |
 
 Synthetic fixtures verify contract behavior; actual dataset/build tests verify this candidate's source. Neither establishes production reads, native integration, OCR, scores, compliance certification or offline phone behavior.
 
@@ -82,8 +82,25 @@ Synthetic fixtures verify contract behavior; actual dataset/build tests verify t
 
 Current READMEs, architecture, API/contracts, local setup, handoff, source workflow and roadmap describe this version. Earlier release/review records stay unchanged. Acquired public source/provenance/licenses are tracked; SQLite, receipts, environments, builds, private keys and plaintext `.env` stay generated/ignored. The 20-group tracker records remaining frontend integration and later backend slices independently.
 
-**Production verification pending.** Record the exact implementation commit and both deployment IDs, then verify public health/meta/OpenAPI, facts-enabled status, source hashes/counts/date, a sparse and a rich facts lookup, absent/invalid codes, existing APIs, confirmed-input POST, CORS and excluded env/database URLs. Compare hosted receipt/database values with that deployment's build logs. Test an actual image URL separately if recording image availability; constructing a valid URL alone does not prove the remote image currently returns 200.
+## Production verification
 
-**Publication pending.** v0.2.3 is pushed/released independently before v0.3.0. Keep Flutter **0.0.0+1**, existing APK/IPA assets and published tags unchanged. This review must replace pending fields with evidence before claiming those gates passed. [Release notes](BACKEND_V0_2_3_RELEASE.md) · [Accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
+**Passed on 7 October 2026 at approximately 00:02 IST** (dated report starts **2026-10-06T18:32:43Z**). Implementation commit `56064d7fd13d585c949eb2d31a53eb3884a5d520` was pushed independently and produced READY deployments for both Git-connected projects:
+
+| Project | Deployment | Exact deployment URL |
+| --- | --- | --- |
+| Backend | `dpl_HgRKWoonZJSoGRr1ZaoHDwThSbrF` | [Verified backend deployment](https://unlabel-backend-1faupv40e-vaibhav0120s-projects.vercel.app) |
+| Frontend | `dpl_64ccpc7XUCW8CkCEpChAk1SR1kSe` | [Verified starter deployment](https://unlabel-frontend-4ccggui6m-vaibhav0120s-projects.vercel.app) |
+
+The actual Vercel build log receipt agrees with public startup-verified artifact metadata: **62,472,192 bytes**, database SHA-256 `fb194302905d55d182572988d894ca86d5653d6b9c623c880d99325ecafea165`, snapshot `eea89670-b5e7-4980-b49c-d5e49eaebdb1`. Source compressed/decoded hashes, 24,695 India rows, 24,641 indexed records, 54 unsupported codes, source timestamp and July 2027 due date agree with the tracked bundle. The hosted hash differs from the local build as expected; each build has its own snapshot/index timestamp.
+
+All **20 dated public HTTP checks** passed: health/meta/catalogue status, current OpenAPI agreement, rich and sparse facts plus preserved identity reads for `00024907`, `0070970474088` and `8904083506393`, snapshot miss 404, redacted invalid input 422, confirmed normalization, exact-origin CORS/preflight, unrelated-origin denial and excluded env/database/receipt URLs. `/v1/claims/rules` returned 404 and claim capability remains false for this version. The website returned 200 with its Flutter bootstrap; frontend remains **0.0.0+1**. Facts/status/identity/normalization responses retain `no-store`. [Dated production checks and build receipt](../research/BACKEND_V0_2_3_PRODUCTION.json).
+
+These checks prove this implementation's packaged catalogue reads and source integrity. Two separate [sample image HEAD checks](../research/CATALOGUE_V0_2_3_IMAGE_CHECK.json) returned 200 `image/jpeg`; other image URLs were not individually fetched. This does not establish complete market coverage, every image's availability, fresh physical-package agreement, scanner/OCR integration, native/offline behavior or regulatory findings. No failed-production-build or rollback drill was performed.
+
+**Source-only tag published.** `v0.2.3` points to tested implementation `56064d7fd13d585c949eb2d31a53eb3884a5d520`. The independent implementation push and production gate are complete. Keep Flutter **0.0.0+1**, existing APK/IPA assets and historical tags unchanged. The [GitHub source-only prerelease](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.2.3) is published with zero binary assets. [Release notes](BACKEND_V0_2_3_RELEASE.md) · [Accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
 
 Final script review found and fixed setup reuse of a same-source JSONL identity-only database. Default setup preserves that valid legacy store; `--replace-catalogue` now rebuilds its facts table. Intact JSONL facts stores and CSV identity stores still reuse. The CSV acquisition identity was refreshed, and both acquisition network mocks assert the current backend application identity. Final scoped suite: **402 passed**, including migration/reuse regressions.
+
+Publication verified: [v0.2.3 source-only prerelease](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.2.3), tag56064d7, published with zero assets.
+
+Final pre-push semantic review covered all 61 Markdown files and operational scripts/workflows. Corrected stale current pointers/counts, preserved historical evidence, and checked 306 local Markdown targets with zero missing links or encoding defects. The final publication instruction was replaced by verified release evidence.

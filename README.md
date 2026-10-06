@@ -48,7 +48,7 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 | --- | --- |
 | One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
 | FastAPI health/meta, OFF product and nutrition lookup | Reviewed FSSAI checks and comparison |
-| Rich snapshot facts: 24,641 validated barcodes, 59.58 MiB generated SQLite | Actual hosted facts/receipt verification and release publication |
+| Hosted rich facts: 24,641 validated barcodes, verified 59.58 MiB SQLite | Reviewed confirmed-label claim subset in v0.3.0 |
 | Catalogue status, source age and nine-month refresh date | Camera integration with explicit live/snapshot selection |
 | Confirmed nutrient rows normalized with original values and provenance | OCR-to-API integration and nutrition visualizations |
 | Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
@@ -58,7 +58,7 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; local and production evidence is recorded separately in the [v0.2.3 review](docs/planning/BACKEND_V0_2_3_REVIEW.md). Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
 
-[20-group feature tracker](docs/planning/FEATURE_TRACKER.md) · [Next two versions](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [API/run guide](backend/README.md) · [Catalogue storage: CSV to SQLite](docs/architecture/CATALOGUE.md)
+[20-group feature tracker](docs/planning/FEATURE_TRACKER.md) · [Next two versions](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [API/run guide](backend/README.md) · [Catalogue storage: JSONL facts to SQLite](docs/architecture/CATALOGUE.md)
 
 ## Four connected features
 

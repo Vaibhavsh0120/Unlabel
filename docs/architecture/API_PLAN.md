@@ -43,7 +43,7 @@ Raw text interpretation, capture geometry, health scoring and reviewed claims ar
 
 These routes, their access scopes and additional limits are implemented later. Metadata must not expose provider secrets. Public Gemini capability remains disabled until proper individual authentication for an eligible adult beta is in place. Validate token issuer, audience, signature, expiry and access allowlist; CORS is not authentication. A private development token may protect local tooling/LAN experiments, but must never be embedded in a distributed app or reused as public authentication.
 
-No profile, image upload, scan-history, per-frame or generic chat endpoints are required. Charts and product comparison use existing normalized reports locally.
+No profile, image upload, scan-history, per-frame or generic chat endpoints are required. Client comparison charts can use existing normalized reports locally. A later backend comparison endpoint remains planned.
 
 The implemented OFF endpoints are optional enrichment, not prerequisites for confirmed-value normalization or every future scan. Preserve barcode strings/leading zeros and any allowed upstream identity normalization. Keep source URL, retrieval time, available provider revision, adapter/schema version and attribution. Separate `found`, `not_found`, `rate_limited`, `unavailable` and `incompatible_response` from nutrition processing/future claim outcomes. Never treat a missing record/field as zero or absent allergen. Raw OFF response shapes stay behind the adapter. See [Open Food Facts](OPEN_FOOD_FACTS.md).
 
