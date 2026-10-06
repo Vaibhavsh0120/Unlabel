@@ -1,53 +1,39 @@
-# India product snapshot proposal
+# India snapshot: measured storage and nine-month refresh
 
-Updated: 5 October 2026. User preference: download available India product records and refresh manually every **six months**. This is planned for a separate backend version; v0.2.0 uses live product/nutrition reads. Direct product access is verified; the bounded India-filtered listing check returned 503, so dedicated India export access/size/completeness remains unverified. See [dated feasibility research](OFF_NUTRITION_V3_6.md). No dataset has been downloaded or import job scheduled.
+Updated 6 October 2026. The user changed the manual replacement policy from six to **nine months**. Backend v0.2.1 acquired the complete official nightly global CSV stream and selected exact India country tags. A local index is ready; hosted distribution remains a separate v0.2.2 gate. [Acquisition evidence](INDIA_EXPORT_FEASIBILITY.md), [implemented catalogue](../architecture/CATALOGUE.md), and [release review](../planning/BACKEND_V0_2_1_REVIEW.md).
 
-## Scope and source
+## What was actually measured
 
-Filter OFF's country/market classification for records tagged as sold in India (`en:india` under the documented country tags). This is not a list of every product sold in India, nor proof of Indian manufacture or current regulatory applicability. Coverage, missing country tags, incomplete nutrition and duplicate/normalized barcodes require measurement.
+The compressed world source was 1,275,171,186 bytes. Streaming checked 4,535,553 rows without retaining the world file. The India identity projection is 6,588,910 bytes; the SQLite index is **11,993,088 bytes (11.44 MiB)**. It contains 21,138 supported barcode records out of 21,188 India-tagged rows; 50 unsupported codes are counted. Missing ingredients affect 74.65% of indexed products. No exact duplicates or leading-zero equivalence collisions were found.
 
-For bulk acquisition use the [official data export service](https://world.openfoodfacts.org/data), not one product call per barcode or paginated search scraping. OFF explicitly directs bulk users to CSV/JSONL exports in its [API documentation](https://openfoodfacts.github.io/openfoodfacts-server/api/). A country-specific complete export URL/size was not verified during this version; the data page returned crawler restrictions to the research tool.
+This is every matching row in this particular export, not every product sold in India. Live search reported 24,706 matches; the discrepancy remains unexplained. Global exports can include obsolete records and source timestamps differ. Coverage stays `unverified`; a live-found chocolate sample is absent from the snapshot. The selected identity dataset excludes aggregate nutrition, images and record modification dates. Canonical allergen data is unknown when its exact export column is absent.
 
-Preferred future path: an official filtered export if available; otherwise stream an official global CSV/JSONL dump and select India-tagged records without loading the world dataset into RAM. CSV provides a subset of fields; full JSONL can be much larger. Choose based on actual fields, byte sizes and disk space. Do not assume a country-search result or CSV contains all product facts. Images are separate and need not be downloaded.
+## Placement comparison
 
-## Future import and hosting
-
-1. Record exact export URL, download/export times, checksum, source format/schema, selection predicate and licenses.
-2. Stream/filter India records, preserve barcode strings, provider facts/revisions and unknown values. Do not modify OFF snapshots with private scans or FSSAI-derived findings.
-3. Build a read-only barcode index (SQLite is suitable locally), with import counts and quality/coverage metrics. Keep raw downloads/generated databases out of Git.
-4. Validate fixtures against the importer and normalizer, publish a versioned snapshot manifest and update attribution.
-5. Serve snapshot lookup first, with a bounded live OFF fallback for missing records or an explicitly requested refresh. Responses distinguish export age, record modification date and live retrieval time; do not call an old snapshot freshly fetched data.
-6. Rebuild the snapshot manually every six months, validate counts/schema/checksums and representative lookups, then switch atomically to its immutable artifact. Retain the old copy only during validation and a short rollback window; remove importer-owned old local artifacts after the replacement is healthy. Keep one active catalogue, not an indefinitely growing collection. This is a release operation, not a long-running Vercel request.
-
-A read-only bundled SQLite index can be deployed only after measuring bundle size and the chosen runtime's packaging/read access. It is not a writable durable Vercel database. Standard Python bundles currently have a 500 MB limit including dependencies; eligible Fluid-compute large-function beta behavior differs and must be verified for the actual account. Do not rely on beta eligibility or larger limits for the no-card baseline. [Python runtime](https://vercel.com/docs/functions/runtimes/python), [large-function announcement](https://vercel.com/changelog/vercel-functions-can-now-be-up-to-5-gb-in-package-size-7yAwSyCig0IQDXUIDistvS/eadf06d6c3).
-
-If the compact India artifact fits comfortably, stage it into the backend build with a checksum. Otherwise keep the importer/index for local demos and use the live API on Vercel until a verified free storage path is chosen. Do not add a paid database, download a multi-GB dump per API request, or promise deployment before measuring.
-
-## Storage and speed budget
-
-The backend's indexed snapshot should reduce upstream latency; this is a performance expectation to benchmark, not a measured result yet. Mobile clients still need backend connectivity for uncached products. Start with backend placement and a small client cache; evaluate a full app snapshot only after measuring its actual size/update overhead. A backend index does not make the phone fully offline.
-
-Proposed importer budgets, subject to measured source size/coverage:
-
-- Target at most **100 MB** for the compact indexed snapshot; keep only fields required by implemented APIs. If it exceeds the target, measure field/index overhead and split the hosting decision before adding more data; do not silently drop products and call it a complete India export.
-- Retain one active snapshot, with the previous copy only during replacement/rollback validation. Build the replacement in a temporary directory; budget for temporary overlap and check free disk space before starting. A failed import keeps the current snapshot usable.
-- Start with a **1 GB local work-directory budget**, including retained indexes and temporary output. Prefer streaming/filtering the export instead of retaining the full global raw dump. If an import cannot complete inside the budget, fail clearly and choose a filtered source or revised explicit budget.
-- Do not download full product photos for the catalogue. Future thumbnails require a separate bounded cache and applicable image attribution.
-- Keep raw exports/generated indexes outside Git and outside unrelated workspace folders. Clean only importer-owned expired artifacts after validating the replacement; never erase private scans or files belonging to the user.
-- A future mobile/browser metadata cache can begin with a **10 MB / 100-product maximum**, evicting unpinned least-recently-used entries and showing saved data age. User-saved history needs its own visible limit/delete controls. These are client requirements for the teammate, not backend work implemented here.
-
-Benchmark cold/warm barcode lookup latency, index size, product count, missing-field coverage and live fallback frequency before deciding whether the snapshot improves the actual demo. Do not copy the world dataset into every serverless instance or reload the index into RAM for every request.
-
-| Placement | Benefit | Trade-off |
+| Placement | Benefit | Cost or limitation |
 | --- | --- | --- |
-| Full India snapshot in app | Low-latency complete-snapshot lookup offline | Adds the actual measured database bytes/indexes to each device; requires download/update and local migration; images can dominate storage |
-| India snapshot on backend | Small app, central indexed lookup and six-month replacement; no OFF/FSSAI call for each cached analysis | Phone still needs backend connectivity; hosting/storage size and latency must be measured |
-| Backend snapshot plus small app cache | Central updates and offline saved/recent content | Cache eviction/stale-data handling needed; uncached products still online |
+| India identity database in app | Indexed lookup without a backend connection | The measured file adds about 11.44 MiB before packaging; richer nutrition/images add unmeasured size. Every device needs updates and a database reader. |
+| SQLite catalogue on backend | Small client, central updates, indexed barcode reads without OFF per cached identity request | Requires verified file packaging/distribution and backend connectivity. Not a durable writable serverless database. |
+| Backend plus small client cache | Central source with offline saved/recent products | Frontend cache limits/eviction/freshness still need implementation. |
 
-Recommended planned direction: backend snapshot plus small metadata cache, consistent with the accepted online-first scope. A full app snapshot remains technically possible if measured size and client update UX justify it; no oversized-data conclusion has been measured. Reviewed FSSAI criteria are separately bundled/versioned on the backend, not queried live per scan. Updating product facts every six months does not mean regulatory updates can wait if applicable criteria change.
+The measured identity database is not intrinsically too large to bundle in an app. Size alone does not justify a full offline conclusion: nutrition/source richness, missing fields, runtime support and nine-month device updates also matter. Retain the chosen online-first backend with a future small client cache; the teammate can evaluate offline catalogue download later. No corpus is bundled into Flutter now.
 
-## Refresh and evidence policy
+CSV/JSONL are acquisition formats; **SQLite is selected for serving**. Firestore adds shared cloud document operations and finite quotas without improving this read-only snapshot's core requirement. [Detailed comparison and current official quota links](../architecture/CATALOGUE.md).
 
-Six-month refresh is acceptable for a college-project reference catalogue. It does not promise current ingredients, allergens or FSSAI compliance. Confirmed package fields take priority, missing fields remain unknown, and record-based assessments identify their data age. Users can review a live result when connected; fresh rule/evidence versions remain independently tracked.
+## Bounded storage
 
-Retain OFF attribution, ODbL/database-content obligations and applicable sharing requirements. Keep reviewed FSSAI rules and private scan inputs separate from the source snapshot. No automatic contribution uploads are part of this importer. See [OFF cache guidance](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorials/creating-a-local-cache-of-open-food-facts-data/) and [license guidance](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorials/license-be-on-the-legal-side/).
+Acquisition retains only an India projection, with 100 MiB output, 2 GiB compressed-transfer and 32 GiB decoded-stream caps. The importer defaults to a 100 MiB SQLite artifact and 1 GiB immediate work-directory file budget. Current projection plus index occupy about 17.72 MiB locally; a new projection/index and deliberate short rollback copy fit well within that budget. These are operation-directory bounds, not a recursive quota over all user files. Keep source/rollback files in known owned directories and check free disk before refreshing. No images are downloaded.
+
+Ignored runtime data does not reach Vercel through Git. The documented standard Python function bundle limit is 500 MB uncompressed including dependencies; eligibility for larger beta bundles is separate. A measured small local index does not establish private artifact download/build inclusion or live cloud reads. Verify that reproducible free deployment path before enabling snapshot preference. [Vercel Python runtime](https://vercel.com/docs/functions/runtimes/python).
+
+## Nine-month replacement procedure
+
+1. Use a fresh source directory and keep the active catalogue serving. Stream the documented official export, verifying header/dialect, full EOF, byte count and checksums. Do not scrape per barcode or retain the world dump.
+2. Compare country/index counts, unsupported/duplicate codes, dates and field gaps with the active manifest. Review a large unexplained reduction before promotion. Preserve source attribution/licenses and keep private scans/regulatory findings separate.
+3. Make a deliberate short rollback copy of the active validated index if needed. Build a unique staging database beside the active file, with an exclusive import lock and artifact/work/free-disk bounds. Validate integrity, manifest, count and representative products before publication.
+4. Atomically replace the single active file. Each lookup's read-only transaction reads its manifest and product together; cached store reads see the new file on subsequent connections. A failed acquisition/import keeps the active catalogue unchanged. Crash/busy locks require operator review rather than automatic reclamation.
+5. Check source/hash/count, representative found/absent lookups and the exact hosted artifact after deployment. Clean only identified importer-owned source/rollback artifacts after success; retain one active catalogue rather than an ever-growing history.
+
+The current source timestamp is 5 October 2026; target the next manual refresh around **July 2027**. This is a documented operating policy, not a scheduled job. Preserve data age between updates and keep live lookup available separately. Confirmed package fields take priority for current ingredients/allergens. Reviewed FSSAI evidence needs its own effective-date checks whenever rules change, independently of product-data cadence.
+
+Retain OFF attribution and applicable ODbL/DbCL/share-alike requirements. Private scans and reviewed regulatory findings are separate; no contribution upload is implemented. [OFF cache guidance](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorials/creating-a-local-cache-of-open-food-facts-data/) and [license guidance](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorials/license-be-on-the-legal-side/).

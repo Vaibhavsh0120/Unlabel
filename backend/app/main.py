@@ -9,10 +9,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import __version__
+from app.catalogue.models import CatalogLookup
+from app.catalogue.store import CatalogueStore
 from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import BARCODE_PATTERN, OpenFoodFactsProvider
+from app.schemas.errors import ValidationFailure
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
 from app.schemas.products import ProductLookup
@@ -34,9 +37,21 @@ def create_app(
         ) as client:
             application.state.products = OpenFoodFactsProvider(client, config)
             application.state.nutrition = NutritionProvider(application.state.products)
+            application.state.catalogue = None
+            directory = config.catalogue_path()
+            if directory is not None:
+                try:
+                    application.state.catalogue = CatalogueStore(directory)
+                except (ValueError, OSError):
+                    pass  # Live endpoints remain usable; catalogue reports unavailable.
             yield
 
-    application = FastAPI(title="Unlabel Backend", version=__version__, lifespan=lifespan)
+    application = FastAPI(
+        title="Unlabel Backend",
+        version=__version__,
+        lifespan=lifespan,
+        responses={422: {"model": ValidationFailure, "description": "Invalid request data"}},
+    )
     application.add_middleware(RequestBodyLimit)
     application.add_middleware(
         CORSMiddleware,
@@ -70,8 +85,22 @@ def create_app(
             "provider_connectivity": "not_checked",
         }
 
+    def catalogue_metadata(request: Request):
+        directory = config.catalogue_path()
+        if directory is None:
+            return {"status": "not_configured", "manifest": None}
+        try:
+            store = request.app.state.catalogue
+            if store is None:
+                return {"status": "unavailable", "manifest": None}
+            manifest = store.manifest
+            return {"status": "ready", "manifest": manifest.model_dump(mode="json")}
+        except (ValueError, OSError):
+            return {"status": "unavailable", "manifest": None}
+
     @application.get("/v1/meta", tags=["Service"])
-    async def meta():
+    def meta(request: Request):
+        catalogue = catalogue_metadata(request)
         return {
             "backend_version": __version__,
             "api_major": 1,
@@ -80,10 +109,12 @@ def create_app(
             "nutrition_adapter_version": "1",
             "normalization_version": "1",
             "knowledge_version": "not_populated",
+            "catalogue": catalogue,
             "capabilities": {
                 "product_lookup": True,
                 "nutrition_lookup": True,
                 "nutrition_normalization": True,
+                "catalogue_lookup": catalogue["status"] == "ready",
                 "nutrition_analysis": False,
                 "claim_checks": False,
                 "ingredient_explanations": False,
@@ -91,6 +122,39 @@ def create_app(
                 "ai_explanations": False,
             },
         }
+
+    @application.get(
+        "/v1/catalogue/products/{barcode}",
+        response_model=CatalogLookup,
+        tags=["Catalogue"],
+        responses={code: {"model": CatalogLookup} for code in (404, 503)},
+    )
+    def catalogue_product(request: Request, barcode: Annotated[str, Path(pattern=BARCODE_PATTERN)]):
+        # Sync routes run in FastAPI's thread pool; SQLite never blocks the event loop.
+        directory = config.catalogue_path()
+        if directory is None:
+            result = CatalogLookup(
+                requested_barcode=barcode,
+                status="unavailable",
+                warnings=["catalogue_not_configured"],
+            )
+        else:
+            try:
+                store = request.app.state.catalogue
+                if store is None:
+                    raise ValueError("Catalogue unavailable")
+                result = store.lookup(barcode)
+            except (ValueError, OSError):
+                result = CatalogLookup(
+                    requested_barcode=barcode,
+                    status="unavailable",
+                    warnings=["catalogue_unavailable"],
+                )
+        return JSONResponse(
+            result.model_dump(mode="json"),
+            status_code={"found": 200, "not_found": 404, "unavailable": 503}[result.status],
+            headers={"Cache-Control": "no-store"},
+        )
 
     @application.get(
         "/v1/products/{barcode}",

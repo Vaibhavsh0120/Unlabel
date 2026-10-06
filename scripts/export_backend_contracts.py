@@ -15,6 +15,8 @@ products = import_module("app.schemas.nutrition_products")
 normalize_rows = import_module("app.services.parsing.nutrition").normalize_rows
 Settings = import_module("app.core.config").Settings
 Source = import_module("app.schemas.products").Source
+catalogue = import_module("app.catalogue.models")
+errors = import_module("app.schemas.errors")
 
 
 def write(directory: str, name: str, value):
@@ -34,6 +36,9 @@ def main():
         "nutrition-lookup-v1.schema.json": products.NutritionLookup,
         "nutrition-normalize-request-v1.schema.json": nutrition.NormalizeRequest,
         "nutrition-normalize-response-v1.schema.json": products.NormalizeResponse,
+        "catalogue-lookup-v1.schema.json": catalogue.CatalogLookup,
+        "catalogue-manifest-v1.schema.json": catalogue.Manifest,
+        "validation-failure-v1.schema.json": errors.ValidationFailure,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -88,8 +93,39 @@ def main():
         "nutrition-lookup-v1.synthetic.json": lookup,
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
+    catalogue_example = catalogue.CatalogLookup(
+        requested_barcode="0123456789012",
+        status="found",
+        manifest=catalogue.Manifest(
+            snapshot_id="synthetic-catalogue",
+            source_url="https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+            source_sha256="0" * 64,
+            source_format="off_jsonl",
+            coverage="sample",
+            exported_at=date,
+            indexed_at=date,
+            rows_read=1,
+            india_rows=1,
+            indexed_products=1,
+            unsupported_barcodes=0,
+            missing_name=0,
+            missing_ingredients=1,
+        ),
+        product=import_module("app.schemas.products").Product(
+            barcode="0123456789012", name="Synthetic oats"
+        ),
+        warnings=[
+            "synthetic_example_not_a_real_catalogue",
+            "allergen_safety_not_assessed",
+        ],
+    )
+    write(
+        "examples",
+        "catalogue-lookup-v1.synthetic.json",
+        catalogue_example.model_dump(mode="json"),
+    )
     print(
-        f"Exported backend v{version} contracts and three validated synthetic examples."
+        f"Exported backend v{version} contracts and four validated synthetic examples."
     )
 
 

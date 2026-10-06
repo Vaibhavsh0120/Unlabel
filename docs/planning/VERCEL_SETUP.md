@@ -28,7 +28,7 @@ The starter contains no product API request yet. Passing the URL config prepares
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
 - Backend environment holds `OFF_USER_AGENT`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Public OFF reads require no key. No Gemini key is configured or required.
 
-No live FSSAI requests, Indian snapshot import, permanent cloud database or new subscription is required for v0.2.0. Confirmed nutrition POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The public OFF User-Agent is updated to Unlabel/0.2.0 in local/hosted settings. The [six-month snapshot proposal](../research/INDIA_SNAPSHOT.md) is a separate data milestone. A future immutable catalogue is built and checked before deploying; never run a bulk import inside a scan request.
+No live FSSAI requests, Indian snapshot import, permanent cloud database or new subscription is required for v0.2.0. Confirmed nutrition POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The v0.2.0 release used Unlabel/0.2.0; current local/hosted settings use Unlabel/0.2.1. The [nine-month snapshot policy](../research/INDIA_SNAPSHOT.md) is a separate data milestone. A future immutable catalogue is built and checked before deploying; never run a bulk import inside a scan request.
 
 ## Push and verification
 
@@ -46,3 +46,7 @@ These HTTP checks used no Vercel login cookie or bypass token. This verifies ini
 Backend v0.2.0 source commit `2d6763674f737b3b171e207b915f24f1ee33a227` also automatically produced READY deployments: backend `dpl_Dc6jieG7Z1ARefhDF4aXFyhUUznR`, website `dpl_67K6LAYYWGxBNk8uTYHLuZdPQGXZ`. Public health/meta/OpenAPI, nutrition/legacy product reads, confirmed POST, POST preflight, sanitized 422/413 and website assets passed. [Detailed release evidence](BACKEND_V0_2_0_REVIEW.md). A later documentation-only commit uses the same application source; no mobile action was dispatched.
 
 References: [Vercel monorepos](https://vercel.com/docs/monorepos), [FastAPI deployment](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime/version](https://vercel.com/docs/functions/runtimes/python), [Flutter web release](https://docs.flutter.dev/deployment/web), [Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication).
+
+## Backend v0.2.1 configuration
+
+The backend User-Agent is updated to Unlabel/0.2.1 in all environments. `CATALOGUE_DIRECTORY` is explicitly empty on Vercel; optional catalogue lookup reports inactive while live product/nutrition APIs remain enabled. A verified 11.44 MiB SQLite index exists only in ignored local runtime storage. No corpus/key/private scan is uploaded by a Git push. Verify reproducible artifact distribution in v0.2.2 before enabling a hosted index. Replacement policy is now every nine months, changed by the user on 6 October.

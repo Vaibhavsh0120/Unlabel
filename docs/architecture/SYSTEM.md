@@ -1,6 +1,6 @@
 # System architecture
 
-Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.0 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
+Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.1 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
 
 ## Product and delivery boundary
 
@@ -86,3 +86,5 @@ Client `BACKEND_BASE_URL` is public configuration, never a credential. Gemini ke
 Preferences, personal suitability and scan history stay in the phone/browser. Only public barcodes, necessary public label fields and generic product evidence go to the API/provider. Hosted services need HTTPS, minimal redacted logs and the choices recorded in [SAFETY_PRIVACY.md](../SAFETY_PRIVACY.md).
 
 The starter/workflow does not prove OCR quality, saved-content caching, legal criteria, live providers, hosted behavior or dietary suitability. Validate those during implementation.
+
+Backend v0.2.1 also provides a separate optional export-origin identity catalogue: official TSV stream -> India JSONL projection -> atomic read-only SQLite index. It does not replace the current live OFF product/nutrition routes. The verified local index is ignored; hosted artifact distribution remains a v0.2.2 gate. Source dates/unknowns stay visible and manual replacement is every nine months. [Implemented catalogue workflow](CATALOGUE.md).

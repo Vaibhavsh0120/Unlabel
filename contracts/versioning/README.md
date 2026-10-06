@@ -1,5 +1,7 @@
-# Future compatibility metadata
+# Compatibility metadata
 
 Reserve the shared API-major/contract-schema definitions and release-manifest schemas here. The Flutter starter declares `0.0.0+1` in `frontend/pubspec.yaml`. The manual release workflow injects the selected product version, build number and source commit into both mobile artifacts and records them in `build-manifest.json`.
 
-Backend v0.1.0 exports product/OpenAPI schemas and `/v1/meta` with API major 1, contract schema 1 and product adapter 1. Knowledge remains `not_populated`; future capabilities are disabled. Frontend stays 0.0.0+1. [Release/versioning](../../docs/planning/RELEASE_VERSIONING.md) specifies which versions align and which remain independently compatible.
+Backend v0.2.1 preserves API major 1, contract schema 1, product adapter 1 and the strict product v1 response. Nutrition lookup and confirmed-row normalization retain their separate contracts and version metadata. An optional, separately modeled catalogue lookup uses a validated read-only local SQLite identity snapshot; it stays disabled unless a valid catalogue directory is configured. Live OFF product/nutrition reads remain separate from snapshot lookup.
+
+Snapshot metadata records source format, export/index dates, hash, counts and coverage state. An imported India-tagged source is not proof of every product sold in India or current package facts. Historical v0.1.0/v0.2.0 OpenAPI files remain release records. Knowledge stays `not_populated`; reviewed nutrition analysis, claims, ingredient explanations, comparison and AI remain disabled. Frontend stays **0.0.0+1**, and its APK/unsigned IPA artifacts are unchanged. [Release/versioning](../../docs/planning/RELEASE_VERSIONING.md) specifies which versions align and which remain independently compatible.

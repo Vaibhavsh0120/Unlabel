@@ -1,11 +1,11 @@
 # Zero-cost stack and AI plan
 
-Research checked: **2026-10-05**. Status: backend/hosting architecture proposal; the Flutter scaffold and manual artifact workflow have separate implementation scope.
+Provider/cost research checked: **2026-10-05**. Current implementation status: frontend **0.0.0+1**, backend **v0.2.1**, separate deployed Vercel website/API projects, and the manual native artifact workflow. Live product/nutrition lookup and confirmed-value normalization are implemented. v0.2.1 adds local acquisition/import tooling and an optional read-only identity catalogue; full India coverage and hosted catalogue availability require separate verification. Reviewed rules, OCR, templates and AI remain proposals below.
 
 Unlabel's college demo must require **₹0 service charges, no credit card and no paid billing setup**.
-The planned hosted path uses two Vercel Hobby projects: the website and one shared FastAPI backend.
+The hosted path uses the existing two Vercel Hobby projects: the website and one shared FastAPI backend.
 One Flutter project directly under `frontend/` targets Android, iOS and the website; all clients call the same backend.
-The product is online-first: Open Food Facts supplies product data and its own computed insights; the backend performs Unlabel's reviewed FSSAI-related checks.
+The product is online-first: Open Food Facts supplies product data and its own computed insights; the backend normalizes nutrition facts. Reviewed FSSAI-related checks follow in a later version.
 Vercel hosts the compiled Flutter web assets, not the installable native packages.
 The local fallback assumes the team already has an Android phone, a laptop and a local network.
 Ordinary device, electricity and Internet costs are not newly purchased project infrastructure.
@@ -19,11 +19,11 @@ Free-tier offerings can change; optional cloud AI must never be required for cor
 | Website hosting | Flutter static output from `frontend/build/web/` | A separate Vercel Hobby project hosts compiled web assets after a custom/pinned Flutter build. |
 | Mobile camera/OCR | Bundled on-device ML Kit text recognition | Process label images on the phone; bundled models avoid a first-use model download. |
 | Browser OCR | Future browser adapter; Tesseract.js worker is a candidate | Capture/upload first; do not assume native ML Kit works on Flutter web. No OCR package is added by this plan. |
-| Shared backend | FastAPI under `backend/`, Vercel Hobby planned | One hosted API serves the website and both native apps; the same code can run on the laptop/LAN. |
+| Shared backend | Implemented FastAPI under `backend/`, separate Vercel Hobby project | One hosted API is available for all Flutter targets; the same code can run on the laptop/LAN. The starter has no API adapter yet. |
 | Product data | Open Food Facts read-only barcode API, selected | Public reads need no product API key; use application identity, attribution, bounded requests and missing/unavailable fallback. See [integration plan](../architecture/OPEN_FOOD_FACTS.md). |
 | Knowledge | Versioned, reviewed files under `knowledge/` | Store ingredient aliases, bilingual explanations, rule definitions and source metadata in Git. |
 | Hosted knowledge lookup | Bundled read-only JSON derived from `knowledge/` | No database service or mutable filesystem is needed for the hosted baseline. |
-| Optional local lookup/cache | Derived SQLite on the laptop | A local optimization only; do not use a Vercel function's filesystem as a durable database. |
+| Optional identity catalogue | Immutable SQLite built locally from OFF JSONL or an official-CSV projection | v0.2.1 tooling keeps India-tagged source records and attribution separate from live nutrition. Enable only a validated directory; measure coverage and bundle fit before hosted use. No dynamic user-cloud database is selected. |
 | Core analysis | Python backend evaluator using reviewed canonical rules | Apply evidence-linked checks to confirmed package fields and source-tagged OFF data; no duplicate Dart rule engine required. |
 | Limited offline access | Saved dated reports, local preferences, optional small preinstalled glossary | Preserve useful local content; new analysis requires a reachable backend. |
 | Explanation baseline | Backend-rendered reviewed English/Hindi templates | Preserve usable online/backend analysis when Gemini is disabled or fails. |

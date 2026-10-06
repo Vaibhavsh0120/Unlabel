@@ -1,0 +1,60 @@
+{
+  "$defs": {
+    "ValidationErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "title": "Loc",
+          "type": "array"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "msg": {
+          "const": "Invalid request data",
+          "title": "Msg",
+          "type": "string"
+        }
+      },
+      "required": [
+        "loc",
+        "type",
+        "msg"
+      ],
+      "title": "ValidationErrorDetail",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "detail": {
+      "items": {
+        "$ref": "#/$defs/ValidationErrorDetail"
+      },
+      "maxItems": 32,
+      "title": "Detail",
+      "type": "array"
+    },
+    "errors_truncated": {
+      "title": "Errors Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "detail",
+    "errors_truncated"
+  ],
+  "title": "ValidationFailure",
+  "type": "object"
+}

@@ -1,8 +1,8 @@
-# Unlabel backend v0.2.0
+# Unlabel backend v0.2.1
 
-Frontend remains **v0.0.0**. This backend version implements live Open Food Facts product/nutrition lookup, service metadata, and normalization of confirmed structured nutrient rows. It does not score foods or evaluate claims. FSSAI checks, ingredient explanations, comparison, AI and database imports remain separate [versions](../docs/superpowers/plans/2026-10-05-backend-versions.md).
+Frontend remains **v0.0.0**. This version adds bounded India catalogue acquisition/import and optional read-only SQLite lookup to the live OFF product/nutrition APIs. FSSAI checks, ingredient explanations, comparison and AI remain separate [versions](../docs/superpowers/plans/2026-10-05-backend-versions.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.2.0 verification record](../docs/planning/BACKEND_V0_2_0_REVIEW.md) for actual local/provider/production evidence.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.2.1 verification record](../docs/planning/BACKEND_V0_2_1_REVIEW.md) for actual local/provider/production evidence.
 
 ## Run locally
 
@@ -26,6 +26,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `GET /v1/products/{barcode}` | Fixed OFF v3.6 product read; stable typed source-tagged response |
 | `GET /v1/products/{barcode}/nutrition` | Separate source-tagged direct-input nutrition tables; strict product lookup v1 remains unchanged |
 | `POST /v1/nutrition/normalize` | Normalize user-confirmed structured nutrient rows without calling OFF |
+| `GET /v1/catalogue/products/{barcode}` | Separate export-origin indexed identity lookup; 503 when catalogue is inactive/unavailable |
 
 Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Returned identity must match the requested code, permitting leading-zero normalization only.
 
@@ -75,12 +76,15 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `OFF_TIMEOUT_SECONDS`: total lookup deadline (default 8; bounded 1–15 seconds).
 - `OFF_MAX_RESPONSE_BYTES`: decoded response budget (default 512 KiB; bounded 1 KiB–1 MiB).
 - `CORS_ORIGINS`: JSON array of exact HTTP(S) website origins, default `[]`; no wildcard or credentialed CORS.
+- `CATALOGUE_DIRECTORY`: optional read-only index directory, relative to backend or absolute; empty disables catalogue. Local verified index is `storage/runtime/india`; hosted catalogue remains inactive until packaging is verified.
 
 OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Gemini is disabled/unimplemented; reserved Gemini fields in `.env` are unused. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication. Public cloud AI needs a separate access/budget design before activation.
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP client, five routes and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP client/store, six routes and redacted validation failures.
+- `app/catalogue/`: bounded manifest/product models, atomic offline importer and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
+- `app/schemas/errors.py`: shared strict redacted 422 response, including raw-number middleware rejections.
 - `app/core/config.py`: validated non-secret request/CORS settings.
 - `app/core/body_limit.py`: actual-byte input limit before parsing.
 - `app/providers/products/open_food_facts.py`: fixed official HTTPS origin, selected fields, bounded read/deadline, identity checks and failure mapping.
@@ -93,7 +97,26 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 
 HTTPX connection pool is bounded to six connections. There is no automatic retry, durable cache, process-wide global quota guarantee, profile/history storage or image upload. The POST normalizer works independently of OFF connectivity. OFF and user-confirmed facts remain inputs for later reviewed analysis.
 
-The [India snapshot/storage proposal](../docs/research/INDIA_SNAPSHOT.md) is a future data milestone: official bulk export, India market filter, compact read-only index, manual six-month refresh and measured storage budget. No dataset was downloaded. Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. Local `.env` stays ignored; hosted settings live in the backend project's environment.
+Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. Local `.env` stays ignored; hosted settings live in the backend project's environment. Ignored runtime data is excluded from Git deployments; it does not appear on Vercel merely because a local index exists.
+
+## India catalogue — measured, local
+
+The complete official nightly CSV stream was acquired on 6 October: **1,275,171,186 compressed bytes**, **4,535,553 source rows**, **21,188 exact India-tagged rows**. No world file was retained. The compact identity projection is 6,588,910 bytes; SQLite is **11,993,088 bytes (11.44 MiB)**, indexing 21,138 supported barcode records and counting 50 unsupported codes. There were no duplicate supported barcodes. Missing names: 3,442; missing ingredient text: 15,780. Live India search had 24,706 matches; the source/count difference remains unexplained, so coverage is labelled `unverified`. Rice flour `8904083506393` is found locally; live-found chocolate `7622202842450` is absent from this snapshot.
+
+Warm read-only lookup measured 0.334 ms median / 0.548 ms p95 across 100 local rice-flour reads; initial integrity validation took 21.27 ms. These are local observations, not mobile/network/serverless performance guarantees. The catalogue excludes aggregate nutrition, images and record-level modification dates. Legacy bare allergen fields are not converted into full canonical allergen tags. Existing live nutrition remains the source for direct package/manufacturer tables.
+
+From repo root, using a new existing source directory and an existing index directory:
+
+~~~powershell
+New-Item -ItemType Directory -Force backend/storage/runtime/new-source
+New-Item -ItemType Directory -Force backend/storage/runtime/india
+backend/.venv/Scripts/python.exe scripts/acquire_india_catalogue.py --directory backend/storage/runtime/new-source
+backend/.venv/Scripts/python.exe scripts/import_india_catalogue.py --input backend/storage/runtime/new-source/india-products.jsonl --directory backend/storage/runtime/india --source-url https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz --source-format off_csv_projection --coverage unverified --exported-at <source-Last-Modified-in-ISO-format>
+~~~
+
+Replace the final placeholder with the recorded source timestamp, including timezone; indexing time is not export time. Acquisition prints source/hash/count evidence. Import prints the manifest and artifact size. Set local `.env` to `CATALOGUE_DIRECTORY=storage/runtime/india` after validation and restart. The importer accepts supplied plain/gzip JSONL too; pass its actual source URL/format and use `sample` for small samples. No automatic schedule or full-market guarantee is added.
+
+See [catalogue storage/workflow](../docs/architecture/CATALOGUE.md), [acquisition evidence](../docs/research/INDIA_EXPORT_FEASIBILITY.md) and [v0.2.1 review](../docs/planning/BACKEND_V0_2_1_REVIEW.md). SQLite is selected for serving; CSV/JSONL are inputs. Firestore is deferred. Full-source acquisition is now proven, while source coverage, richer fields and reproducible hosted artifact distribution remain v0.2.2 gates.
 
 ## Validate
 
@@ -104,4 +127,4 @@ The [India snapshot/storage proposal](../docs/research/INDIA_SNAPSHOT.md) is a f
 .venv/Scripts/python.exe -m pip check
 ~~~
 
-See [v0.2.0 review](../docs/planning/BACKEND_V0_2_0_REVIEW.md) for actual checks and remaining gates; the [v0.1.0 review](../docs/planning/BACKEND_V0_1_0_REVIEW.md) remains a historical record. Current exports/examples are indexed in [contracts](../contracts/README.md). Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.
+See [v0.2.1 review](../docs/planning/BACKEND_V0_2_1_REVIEW.md) for actual checks and remaining gates; the [v0.1.0 review](../docs/planning/BACKEND_V0_1_0_REVIEW.md) remains a historical record. Current exports/examples are indexed in [contracts](../contracts/README.md). Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.

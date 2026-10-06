@@ -1,6 +1,6 @@
 # Backend language options
 
-Research checked: **2026-10-05**. **Python/FastAPI is selected** by the user for quicker implementation. Keep `backend/app/`; Rust is a viable later alternative. The backend remains planned, while the separate Flutter starter and manual native-artifact workflow exist.
+Language/provider research checked: **2026-10-05**. Implementation status updated for **backend v0.2.1**: **Python/FastAPI is selected** and implemented under `backend/app/`; Rust remains a deliberate later alternative. The backend supports live OFF product/nutrition lookup, confirmed-value normalization and an optional read-only identity catalogue. Frontend stays **0.0.0+1** with no API adapter; its mobile artifacts are unchanged. Reviewed rules, explanation templates and AI remain future work.
 
 ## Comparison
 
@@ -12,7 +12,7 @@ Research checked: **2026-10-05**. **Python/FastAPI is selected** by the user for
 
 Neither language requires custom model training. Camera/OCR belongs in platform-specific Flutter adapters. Neither language guarantees free hosting or unlimited provider requests. [FastAPI deployment](https://fastapi.tiangolo.com/deployment/), [Axum reference](https://docs.rs/axum/latest/axum/).
 
-The selected later deployment is a stateless FastAPI Vercel project, separate from the Flutter website. An existing laptop/private LAN remains a fallback. Hobby eligibility and quotas must meet the ₹0/no-card constraint; do not upgrade to make a demo work. [Deployment plan](../architecture/DEPLOYMENT_PLAN.md).
+The FastAPI backend and Flutter website already have separate Git-connected Vercel projects. An existing laptop/private LAN remains a fallback. Version-specific production checks and catalogue availability are recorded separately from local source/import checks. Hobby eligibility and quotas must meet the ₹0/no-card constraint; do not upgrade to make a demo work. [Deployment plan](../architecture/DEPLOYMENT_PLAN.md).
 
 ## Shared architecture
 
@@ -20,7 +20,7 @@ Use language-neutral contracts in `contracts/` and canonical declarative rules/e
 
 Open Food Facts is the selected read-only product-data provider. Its normalized product fields and computed insights do much of the product lookup/ingredient-data work, with explicit source/freshness. They remain distinct from Unlabel's backend FSSAI-related findings; confirmed package evidence cannot be silently overwritten. See [OFF integration plan](../architecture/OPEN_FOOD_FACTS.md).
 
-Package required public knowledge as read-only JSON in the deployed function. Root build access alone does not guarantee runtime inclusion. SQLite is an optional rebuildable local-laptop index, not a hosted mutable database; instance memory and `/tmp` are disposable.
+Future public knowledge is packaged as read-only JSON in the deployed function; root build access alone does not guarantee runtime inclusion. The v0.2.1 product catalogue uses immutable SQLite built from validated local OFF JSONL or an official-CSV identity projection. It is enabled only with a valid configured catalogue directory. Full India coverage and hosted bundle fit require acquisition/import measurements. SQLite is not a hosted mutable user database; Firestore has not been selected, and instance memory and `/tmp` remain disposable.
 
 Clients send confirmed public label fields/region IDs and public barcode lookup requests. Preferences, personal suitability, images and history remain local. `/v1/meta` exposes versions/capabilities. New analysis requires a reachable backend. Without it, retain local drafts and show dated saved reports, local preferences and an optional small preinstalled glossary.
 
@@ -35,7 +35,7 @@ Gemini receives only public product text, approved public snippets and generic f
 - Use the official `google-genai` SDK behind a provider boundary; credentials remain backend-only.
 - Bound provider input/output, concurrency, timeouts and retries; invalid/quota-failed calls retain templates.
 - Test provider missing/unavailable data, dated saved reports, API compatibility and reviewed rule outcomes; do not require a second client-side rule engine.
-- Add actual backend entrypoint, dependency manifest, packaging and tests in the implementation phase.
+- Preserve the implemented entrypoint, dependency manifests, packaging and regression tests while adding reviewed feature slices. Keep catalogue tooling and snapshot lookup separate from live nutrition and future rule evaluation.
 
 Official guidance: [Gemini SDKs](https://ai.google.dev/gemini-api/docs/libraries), [Python SDK](https://github.com/googleapis/python-genai), [free-stack research](FREE_STACK.md).
 

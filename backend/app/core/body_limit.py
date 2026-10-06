@@ -49,9 +49,10 @@ class RequestBodyLimit:
                             {
                                 "loc": ["body"],
                                 "type": "invalid_json_number",
-                                "msg": "Unsupported JSON number or nesting",
+                                "msg": "Invalid request data",
                             }
-                        ]
+                        ],
+                        "errors_truncated": False,
                     },
                     status_code=422,
                     headers={"Cache-Control": "no-store"},

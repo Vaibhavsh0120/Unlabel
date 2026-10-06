@@ -1,7 +1,7 @@
 # AI training, Hugging Face and limited offline access
 
-Checked: **2026-10-05**. This is a future plan; no model is trained, account created or inference service deployed.
-The current authorized implementation is the Flutter starter and manual native artifact workflow, not the scanner/analysis engines.
+AI/provider research checked: **2026-10-05**. This remains a future AI plan; no model is trained, AI account created or inference service deployed.
+Current implementation includes the Flutter **0.0.0+1** starter, manual native artifact workflow, deployed website/API projects and **backend v0.2.1** product/nutrition lookup, confirmed-value normalization and optional read-only identity catalogue tooling. Camera/OCR, reviewed health/claim analysis, explanation templates and cloud AI remain future features. Complete India acquisition/coverage and catalogue hosting are separate measured gates; no trained model follows from a product-data import.
 
 ## What needs training?
 

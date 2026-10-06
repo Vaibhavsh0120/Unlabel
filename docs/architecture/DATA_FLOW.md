@@ -1,6 +1,6 @@
 # Unlabel data flow and ownership
 
-Status: backend v0.2.0 implements health/meta, live barcode product/nutrition lookup and confirmed structured nutrition-row normalization. Frontend remains v0.0.0 with no API adapter. OCR, health/claim analysis, report storage and AI connections remain planned. See the [backend guide](../../backend/README.md), release-specific [verification record](../planning/BACKEND_V0_2_0_REVIEW.md), and [hosting URLs](../planning/VERCEL_SETUP.md).
+Status: backend v0.2.1 implements health/meta, live barcode product/nutrition lookup and confirmed structured nutrition-row normalization. Frontend remains v0.0.0 with no API adapter. OCR, health/claim analysis, report storage and AI connections remain planned. See the [backend guide](../../backend/README.md), release-specific [verification record](../planning/BACKEND_V0_2_0_REVIEW.md), and [hosting URLs](../planning/VERCEL_SETUP.md).
 
 One Flutter app directly in `frontend/` targets Android, iOS, and the responsive website; `frontend/web/` is its web platform directory. Open Food Facts is the primary online source of product facts and source-tagged computed insights. FastAPI normalizes direct nutrition facts; reviewed FSSAI criteria follow later. Future OCR captures gaps/front claims and supports package review. Website/API are already separate Vercel projects. Local preferences and Gemini wording are later features.
 
@@ -117,3 +117,5 @@ New analysis is online-first and needs the API within free limits; laptop/LAN re
 ## Validation planned for implementation
 
 Current synthetic tests cover product/provider states, strict nutrition input, provenance, unit/basis conversion, zero/unknown distinctions, conflicting contexts, bounded/redacted failures and unchanged product contracts. Release-specific live checks are recorded separately. Future fixtures cover package conflicts, OCR, reviewed criteria and saved-report dates. Platform adapters share models; device checks measure boxes/browser OCR. Offline checks must prove saved data is readable without new provider/AI calls. Starter builds do not prove scanning or regulatory evaluation.
+
+Backend v0.2.1 also provides a separate optional export-origin identity catalogue: official TSV stream -> India JSONL projection -> atomic read-only SQLite index. It does not replace the current live OFF product/nutrition routes. The verified local index is ignored; hosted artifact distribution remains a v0.2.2 gate. Source dates/unknowns stay visible and manual replacement is every nine months. [Implemented catalogue workflow](CATALOGUE.md).

@@ -1,6 +1,6 @@
 # Open Food Facts integration plan
 
-Decision: **selected by the user on 5 October 2026**. Backend v0.2.0 implements live product lookup and separate direct-input nutrition lookup/normalization. The strict product v1 response remains unchanged. Health/claim analysis, cache/importer and Flutter barcode capture remain planned.
+Decision: **selected by the user on 5 October 2026**. Backend v0.2.1 implements live product lookup and separate direct-input nutrition lookup/normalization. The strict product v1 response remains unchanged. It also implements local India export acquisition/import and a separate optional catalogue endpoint. Health/claim analysis and Flutter barcode capture remain planned.
 
 Open Food Facts (OFF) does the primary online product-data heavy lifting: identity, ingredients, nutrition and available computed insights. Python will later apply reviewed FSSAI/ingredient criteria. Current OFF nutrition and user-confirmed label input have separate origin wrappers and are never silently combined. The future review flow preserves differences from the physical package. The MVP is online-first; a second Dart rule engine is not required.
 
@@ -71,4 +71,6 @@ Keep OFF snapshots source-separated and read-only. Do not automatically upload u
 
 Ownership: backend teammate owns the provider adapter and schema/failure fixtures; Flutter teammate owns barcode capture, conflict review and dated local snapshots; the evidence owner reviews attribution/provenance and source distinctions. Acceptance covers found/missing/conflicting records, nutrition bases, leading-zero barcodes, schema changes, quota failure, offline behavior and stable old-client responses.
 
-The product and narrow nutrition adapters have synthetic regression tests and bounded live provider reads. Release-specific production verification is recorded in [v0.2.0 review](../planning/BACKEND_V0_2_0_REVIEW.md); broad Indian coverage, health interpretation and offline cache behavior remain unproven. The India-filtered search check did not establish a usable export or its size. See the [separate v0.2.1 snapshot proposal](../research/INDIA_SNAPSHOT.md): official export investigation, measured storage and manual six-month refresh. No country database was downloaded.
+The product and narrow nutrition adapters have regression tests and bounded live provider evidence. The complete official nightly CSV stream has now been acquired and filtered: 21,188 India rows, 21,138 supported indexed records, 11.44 MiB SQLite. Coverage remains independently unverified: live search count differs, ingredients are frequently missing and one live-found sample is absent. CSV aggregate nutrients and legacy incomplete allergen fields are not mapped to direct label evidence. [Catalogue workflow](CATALOGUE.md), [actual acquisition](../research/INDIA_EXPORT_FEASIBILITY.md), and [v0.2.1 review](../planning/BACKEND_V0_2_1_REVIEW.md).
+
+Manual refresh is now every nine months, changed by the user on 6 October. Hosted snapshot packaging/distribution remains a separate gate; current production product/nutrition routes retain live OFF provenance. Local SQLite does not prove phone offline capability.

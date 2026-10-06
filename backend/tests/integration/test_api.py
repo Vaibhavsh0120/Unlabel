@@ -28,7 +28,7 @@ def test_service_endpoints_do_not_call_provider_and_future_features_are_disabled
     with TestClient(create_app(Settings(_env_file=None), httpx.MockTransport(forbidden))) as client:
         assert client.get("/v1/health").json()["provider_connectivity"] == "not_checked"
         meta = client.get("/v1/meta").json()
-        assert meta["backend_version"] == "0.2.0"
+        assert meta["backend_version"] == "0.2.1"
         assert meta["capabilities"]["product_lookup"] is True
         assert {key for key, enabled in meta["capabilities"].items() if enabled} == {
             "product_lookup",
@@ -36,7 +36,7 @@ def test_service_endpoints_do_not_call_provider_and_future_features_are_disabled
             "nutrition_normalization",
         }
         assert client.get("/v1/analyze").status_code == 404
-        assert client.get("/openapi.json").json()["info"]["version"] == "0.2.0"
+        assert client.get("/openapi.json").json()["info"]["version"] == "0.2.1"
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,7 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.2.0 product/nutrition lookup and normalization; future rules and optional AI |
+| backend | FastAPI v0.2.1 product/nutrition lookup, normalization and optional indexed catalogue; future rules and optional AI |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Shared synthetic fixtures; ignored private investigation data |
@@ -78,7 +78,7 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Current v0.2.0 OpenAPI/nutrition schemas and synthetic examples; historical v0.1.0 and product v1 preserved |
+| contracts/schemas, examples | Current v0.2.1 OpenAPI/catalogue/nutrition/error schemas and synthetic examples; historical v0.1.0 and product v1 preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
@@ -90,3 +90,5 @@ design/tokens and assets reserve shared future roles/branding. ai/datasets, expe
 docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
 
 Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; health/claim analysis remains future work. Normalization does not fill the regulatory knowledge folders or train a model.
+
+Active catalogue modules are under `backend/app/catalogue/`: `models.py` holds independent export contracts, `importer.py` validates/stages atomic replacements, and `store.py` provides indexed read-only queries. Ignored `backend/storage/runtime/india/` holds the local active SQLite database; ignored dated source directories hold acquisition evidence/projections. `scripts/acquire_india_catalogue.py` acquires/filter-projects the official TSV; `scripts/import_india_catalogue.py` builds the index. No corpus is committed or automatically uploaded to Vercel. [Catalogue guide](CATALOGUE.md).
