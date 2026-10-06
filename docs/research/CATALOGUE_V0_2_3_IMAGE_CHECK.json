@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-06T18:26:01.210115+00:00",
+  "method": "HEAD",
+  "checks": [
+    {
+      "barcode": "00024907",
+      "url": "https://images.openfoodfacts.org/images/products/000/000/002/4907/front_en.32.400.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "barcode": "8904083506393",
+      "url": "https://images.openfoodfacts.org/images/products/890/408/350/6393/front_en.4.400.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    }
+  ]
+}

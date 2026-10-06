@@ -13,6 +13,7 @@ from contextlib import closing, contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
+from app.catalogue.facts import project_facts
 from app.catalogue.models import (
     BARCODE_PATTERN,
     Coverage,
@@ -328,6 +329,10 @@ def _build_locked(
                 "CREATE TABLE catalogue_manifest (id INTEGER PRIMARY KEY CHECK(id = 1), "
                 "data TEXT NOT NULL)"
             )
+            if source_format == "off_jsonl":
+                connection.execute(
+                    "CREATE TABLE catalogue_facts (barcode TEXT PRIMARY KEY, data TEXT NOT NULL)"
+                )
             connection.commit()
             _check_work_budget(directory, max_work_bytes)
             for row in _stream_rows(source, digest):
@@ -357,6 +362,20 @@ def _build_locked(
                     )
                 except sqlite3.IntegrityError as error:
                     raise ValueError("Duplicate exact barcode in India source rows") from error
+                if source_format == "off_jsonl":
+                    details, fact_warnings = project_facts(row, code)
+                    facts_data = json.dumps(
+                        {"details": details.model_dump(mode="json"), "warnings": fact_warnings},
+                        ensure_ascii=False,
+                        separators=(",", ":"),
+                        allow_nan=False,
+                    )
+                    if len(facts_data.encode("utf-8")) > MAX_ROW_BYTES:
+                        raise ValueError("Projected product facts exceed the record-size limit")
+                    connection.execute(
+                        "INSERT INTO catalogue_facts (barcode, data) VALUES (?, ?)",
+                        (code, facts_data),
+                    )
                 counts["indexed_products"] += 1
                 counts["missing_name"] += product.name is None
                 counts["missing_ingredients"] += product.ingredients_text is None

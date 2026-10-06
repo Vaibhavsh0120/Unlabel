@@ -1,66 +1,61 @@
 # Product catalogue: tracked source, verified SQLite
 
-Backend **v0.2.2**, frontend **v0.0.0+1**. This is an export-origin product identity catalogue. Live OFF nutrition, user-confirmed label values and future reviewed FSSAI findings remain separate. Hosted verification is recorded in the [v0.2.2 review](../planning/BACKEND_V0_2_2_REVIEW.md); implementing a build hook alone does not prove a successful deployment.
+Backend **v0.2.3**, frontend **0.0.0+1**. The separate export-origin facts route adds direct nutrition, canonical tag availability, optional provider schema/record dates and official image references to the identity catalogue. Live OFF reads, user-confirmed values and future reviewed FSSAI findings retain independent origins. [Current source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).
 
-## Storage choice
+## Storage and source
 
-| Format/service | Role in Unlabel |
+| Format/service | Role |
 | --- | --- |
-| OFF CSV/TSV | Official bulk acquisition input. The verified nightly export is unquoted UTF-8 TSV inside gzip. Aggregate nutrient columns are excluded from the current projection. |
-| OFF JSONL | Richer local input supported by the importer; richer acquisition is planned for v0.2.3. |
-| SQLite | Selected indexed serving format: exact barcode primary key and short read-only transactions without a database account or key. |
-| Firestore | Deferred until a shared mutable user-data requirement exists. A remote document store adds credentials, operations and quotas to this immutable snapshot. |
+| Official OFF JSONL gzip | Rich bulk input streamed through validated EOF; retain only the compact exact-India projection. |
+| OFF CSV/TSV | Earlier identity acquisition remains supported; its aggregate nutrients are not direct package tables. |
+| SQLite | Generated exact-barcode index and bounded optional facts table, served with read-only parameterized queries. |
+| Firestore | Deferred; the immutable snapshot does not require a database account, credential or writable cloud store. |
 
-CSV is an acquisition format, not an efficient indexed barcode service. SQLite connections use read-only URI mode and parameterized exact-key queries. [Python SQLite documentation](https://docs.python.org/3.12/library/sqlite3.html#how-to-work-with-sqlite-uris).
+The [tracked bundle](../../data/catalogue/README.md) keeps the projected gzip, compressed/decoded hashes and lengths, original acquisition provenance, source date, expected counts and ODbL/DbCL notices. SQLite/receipts are generated, ignored outputs. Image metadata has separate CC-BY-SA attribution; image bytes and the global dump are not retained.
 
-## Source and measured coverage
+The full v0.2.3 JSONL stream reached validated EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source rows**, **24,695 exact India rows** and **24,641 supported unique codes**. Candidate projection is **2,098,225 gzip bytes / 15,084,130 decoded bytes**. Source date **2026-10-06T06:53:46Z** sets refresh due **2027-07-06T06:53:46Z**. The [current review](../planning/BACKEND_V0_2_3_REVIEW.md) records hashes, raw gaps, strict facts/local build evidence and remaining hosted gates. All **24,641** supported facts pass strict validation; **4,657** have direct tables (**4,519** with reported values), **18,682** have official image descriptors and all have record dates. The network-free local build verifies **62,472,192 SQLite bytes (59.58 MiB)** and its receipt. [Full field/local build report](../research/CATALOGUE_V0_2_3_COVERAGE.json). Local scope has **400 passing tests** and independent review has **103 passing tests**, no actionable findings and no demonstrably dead v0.2.3 code. Actual private-key restoration was not rerun; hosted verification and publication remain pending. The [v0.2.2 CSV coverage report](../research/CATALOGUE_V0_2_2_COVERAGE.json) remains historical. Coverage stays `unverified`: a complete dated India-tagged OFF export is not every product sold in India.
 
-The [tracked source bundle](../../data/catalogue/README.md) contains an **840,099-byte gzip**, **6,588,910 decoded bytes**, provenance and ODbL/DbCL notices. Source export time is **2026-10-05T12:19:34Z**. Its exact `en:india` selection contains **21,188 rows**, indexing **21,138 unique supported barcodes** and counting **50 unsupported barcode rows**. The local generated SQLite artifact is **11,993,088 bytes**; final hosted size/hash must be verified against its own receipt.
+## Acquire, restore and build
 
-The bounded 6 October follow-up counted **24,715 live India-tagged OFF records**, compared with the earlier measurement of 24,706. The **3,527-row** difference from this dated export remains unexplained. Do not force the counts to agree or describe either as every product sold in India. [Measured coverage record](../research/CATALOGUE_V0_2_2_COVERAGE.json).
+1. `scripts/acquire_india_jsonl.py` streams the fixed official full JSONL gzip through validated compressed length, gzip CRC/EOF and bounded strict objects. A range feasibility sample cannot replace full-source proof. Acquisition retains only the selected India fields and records original/source/projection measurements. It is an explicit maintenance operation outside requests and deployment builds.
+2. `scripts/import_india_catalogue.py` validates plain/gzip local input and stages SQLite. Exact duplicate supported codes fail. Optional facts are bounded and must match identity keys/counts. Integrity/count checks finish before replacing the single local database; failed import preserves the active file.
+3. `scripts/setup.py` verifies tracked source hashes/counts and rebuilds `backend/storage/runtime/india/catalogue.sqlite3` without another bulk download. `run_local.py` activates this local index through process settings with receipt checks off.
+4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]`. Outside-root build access supplies tracked `data/catalogue/`. The build downloads nothing, decrypts no env, verifies input, generates SQLite/receipt under ignored `app/catalogue/data/`, then checks integrity/hash/manifest/counts before succeeding.
+5. Hosted startup requires `CATALOGUE_REQUIRE_RECEIPT=true`, validates the full database once and opens a read-only store. Failure disables catalogue access while health/meta/live APIs remain usable. Each lookup reads identity, facts and manifest in one short transaction.
 
-Coverage remains `unverified`: ingredients are missing in 15,780 indexed records, names in 3,442, and a live-found chocolate sample is absent. This projection excludes nutrition tables, images and per-product modification dates. The canonical `allergens_tags` column was absent; missing allergen tags remain unknown. Provider grades are source-tagged classifications, not Unlabel legal or health verdicts.
+The original global hash, compressed projection hash and decoded projection hash identify different artifacts. Receipt values verify the trusted Git/build bundle, not an independent OFF signature. Build UUIDs/index timestamps can change SQLite bytes between builds; source content/counts stay validated. Two generated files are replaced separately inside an unpublished build, so a failed build must not be promoted.
 
-## Acquisition, local restore and hosted build
-
-1. `scripts/acquire_india_catalogue.py` explicitly streams the fixed official global gzip through EOF, validates its dialect/header/byte count and records source provenance. It retains the India projection rather than a world dump. Acquisition is never an API-request or deployment-build operation.
-2. `scripts/import_india_catalogue.py` validates local input and stages SQLite with supported counts, source hash, attribution and manifest. Duplicate exact barcodes fail. Integrity/count checks finish before the single database file is replaced; a failed local import preserves the active database.
-3. `scripts/setup.py` verifies the committed compressed/decoded source hashes and regenerates `backend/storage/runtime/india/catalogue.sqlite3` for local work without another global download. `run_local.py` activates it with process-only settings and `CATALOGUE_REQUIRE_RECEIPT=false`.
-4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]` in `backend/pyproject.toml`. Outside-root build access supplies tracked `data/catalogue/`. The build performs no network download, env decryption or acquisition. It validates the bundle, generates SQLite and `receipt.json` under ignored `backend/app/catalogue/data/`, then verifies hashes, manifest, integrity and counts before succeeding. [FastAPI build commands](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
-5. At hosted startup, `CATALOGUE_REQUIRE_RECEIPT=true` requires that receipt. The backend hashes the SQLite artifact once, validates receipt/manifest/counts and opens a read-only catalogue store. Failed validation disables only catalogue access; health/meta and existing live product/nutrition routes remain usable. Each lookup reads manifest and product together in a short read-only transaction.
-
-The decoded projection hash, compressed projection hash and original global download hash identify different artifacts. Receipts verify the trusted Git/build artifact; they are not independent signatures or proof of OFF authenticity. Generated snapshot IDs/build timestamps can vary between builds, so a repeated build is not promised to produce byte-identical SQLite. Source content/hash/counts remain checked.
-
-## API and configuration
+## API and client integration
 
 | Route | Behavior |
 | --- | --- |
-| `GET /v1/catalogue` | Typed status, manifest, source freshness, artifact summary when receipt-verified, and explicit field limits. 200 for ready; 503 for unconfigured/unavailable. |
-| `GET /v1/catalogue/products/{barcode}` | Existing `CatalogLookup` v1 contract with export manifest. 200 found, 404 absent from this snapshot, 503 inactive/unavailable; invalid code 422. |
-| `GET /v1/meta` | The same catalogue status metadata and `catalogue_lookup` capability. |
+| `GET /v1/catalogue` | Ready/unconfigured/unavailable status, manifest, source age, receipt artifact summary and loaded-store field limits. |
+| `GET /v1/catalogue/products/{barcode}` | Preserved identity `CatalogLookup` v1: 200 found, dated 404 absent, 503 inactive/unavailable. |
+| `GET /v1/catalogue/products/{barcode}/facts` | Separate `FactsLookup` v1: identity/manifest plus strict `details`; found older identity-only stores report facts unavailable. |
+| `GET /v1/meta` | `catalogue_lookup` and additive `catalogue_facts` capabilities; facts requires a validated facts-enabled store. |
 
-The `/v1/catalogue` status and product routes use `Cache-Control: no-store`; metadata retains its existing cache header. Codes match exactly; leading-zero variants are distinct keys. A snapshot miss does **not** trigger an OFF request. Call the separate live `/v1/products/...` routes deliberately when current community data is needed. An overdue snapshot remains queryable with warnings; `within_refresh_window` is a policy age state, not proof that a product matches today's package.
+Codes match exactly and preserve leading-zero variants. Invalid barcode input returns 422. Status/identity/facts responses are `no-store`; metadata retains its existing cache header. Snapshot misses make no OFF request. Explicit live product/nutrition routes remain available when current community facts are wanted.
 
-Local settings use `CATALOGUE_DIRECTORY=storage/runtime/india` and receipt checks off. Hosted settings use `CATALOGUE_DIRECTORY=app/catalogue/data` and receipt checks on. Relative paths resolve from backend; an empty directory disables the catalogue. These hosted settings take effect only in a new deployment. Secret env files are excluded from the function; no key is needed for this catalogue.
+`details` distinguishes available/missing/invalid category, label, allergen and trace fields. Available empty tags do not prove absence of allergens. Direct nutrition accepts packaging/manufacturer tables only, using the shared bounded parser; `missing`, `legacy_unsupported` and `invalid` do not become zero. Tables preserve origins, rows, bases, preparation, unknowns and conflicts. Optional `last_modified_at` is a record date, distinct from source export and build dates.
 
-## Nine-month replacement and rollback
+An image is null or an official selected-front 400-size URL descriptor with language/revision, optional dimensions, attribution and CC-BY-SA-3.0 metadata. Arbitrary URLs, proxies and image bytes are excluded. OFF's [canonical image-path implementation](https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/lib/ProductOpener/Products.pm) normalizes/pads/splits the code for image storage; exact catalogue lookup identity remains unchanged. Clients need attribution, a fallback and a separate image fetch; a descriptor does not prove the remote image currently exists.
 
-Freshness uses `manifest.exported_at`, never `indexed_at` or a new deployment date. The interval is **nine calendar months**, with month-end/leap-year clamping. This snapshot is due at **2027-07-05T12:19:34Z**; the exact due boundary is `refresh_due`. A future source timestamp is flagged `source_date_in_future` and has unknown age. Dates outside the representable refresh range are refused.
+Local settings use `CATALOGUE_DIRECTORY=storage/runtime/india` and receipt checks off. Hosted settings use `CATALOGUE_DIRECTORY=app/catalogue/data` and receipt checks on. Relative paths resolve from backend; empty disables the catalogue. Hosted configuration changes activate through a new deployment, with secret env files excluded from the function.
 
-Refresh is an explicit maintenance operation:
+## Nine-calendar-month replacement and rollback
 
-1. Acquire a fresh source in a new owned directory. Verify full transfer/EOF, hashes, provenance and redistribution rights.
-2. Compare dates, row/index counts, missing fields, representative found/absent codes and the live-count gap. Record unresolved differences; richer source fields need separate adapter/provenance work.
-3. Replace the tracked gzip, `bundle.json`, `acquisition.json` and matching notices/docs together after local validation. Keep only a deliberate temporary local rollback copy; clean only known owned files.
-4. Push the reviewed source. A new immutable Vercel deployment builds and verifies its own SQLite/receipt. The two generated files are replaced separately inside the unpublished build; there is no atomic two-file filesystem swap. A failed build must not be promoted.
-5. Verify the exact production commit, source hash/date/counts, receipt status, found/missing routes and existing APIs. If needed, restore the prior Vercel deployment and matching source/configuration. Packaged runtime files are never updated in place; a changed packaged manifest is rejected rather than accepted as a hot swap.
+Freshness uses actual `manifest.exported_at`, never indexing/deployment time. Nine calendar months clamp month-end/leap-year dates; the exact due boundary is `refresh_due`. Overdue records remain available with warnings. Future/out-of-range source dates are flagged/refused. This age is a maintenance policy, not evidence that OFF matches today's physical package.
 
-There is no nine-month scheduled job. Git retains old source versions, so replacement does not erase repository history. The deployment owner must initiate and review each refresh.
+1. Acquire into a new owned directory; verify complete EOF/length/hashes, provenance and redistribution rights.
+2. Compare source dates/counts, field rates, direct/legacy nutrition, representative sparse/rich/absent codes and dated live-count differences. Record unresolved gaps.
+3. Replace tracked gzip/metadata/provenance/licenses and docs together after validation; retain only a deliberate owned local rollback copy when needed.
+4. Run local suite/build/review and push the source. A new immutable deployment generates its own verified SQLite/receipt; no acquisition or database update runs in an API request.
+5. Match production commit/source/date/hash/counts and receipt; verify status, identity/facts and existing APIs. Rollback selects the previous verified deployment/source/configuration. Packaged manifests are never hot-swapped.
 
-## Finite storage and offline boundary
+There is no scheduled refresh job. Git keeps old source versions and repository history. Remove only verified owned temporary files after the rollback window.
 
-Acquisition caps compressed transfer at 2 GiB, decoded global source at 32 GiB, physical records at 2 MiB and retained projection at 100 MiB. The bundle builder also bounds compressed/decoded input and SQLite to 100 MiB. Local import work-directory defaults are 1 GiB for immediate files; raw source outside that directory and repository history require separate budgeting. No image cache exists. Check free disk and remove only owned temporary artifacts.
+## Finite budgets and offline boundary
 
-The generated hosted SQLite is an immutable function asset, not a durable writable cloud database. Vercel's standard Python bundle limit is 500 MB uncompressed including dependencies; successful source validation and local size are separate from actual hosted packaging/read evidence. [Python runtime](https://vercel.com/docs/functions/runtimes/python).
+The JSONL acquisition caps compressed transfer at 16 GiB, decoded stream at 160 GiB, source records at 16 MiB, projected records at 512 KiB, retained projection at 100 MiB and elapsed time at three hours. Older CSV acquisition retains its own smaller bounds. Bundle/source/SQLite limits remain 100 MiB; local immediate-work-directory defaults are 1 GiB. Check free disk separately for source and repository history. No image cache exists.
 
-Backend-held data avoids an upstream request for catalogue identity lookups but still requires app-to-backend connectivity. Flutter has no catalogue/cache integration yet. Saved dated results, local preferences and an optional glossary are future limited offline features; this release does not make phones or the website fully offline. Reviewed FSSAI rules have their own sources/effective dates. Keep OFF attribution, private scans and regulatory findings separate.
+The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual Vercel artifact size/read verification remains a release gate. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter has no catalogue/cache integration yet; saved dated results, preferences and glossary are later limited offline features. Claim checks, scores, comparison and AI remain disabled for v0.2.3. [API contracts](../../contracts/README.md) · [20-group tracker](../planning/FEATURE_TRACKER.md).

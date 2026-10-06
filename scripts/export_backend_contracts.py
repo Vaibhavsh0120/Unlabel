@@ -17,6 +17,7 @@ Settings = import_module("app.core.config").Settings
 Source = import_module("app.schemas.products").Source
 catalogue = import_module("app.catalogue.models")
 catalogue_status = import_module("app.catalogue.status")
+catalogue_facts = import_module("app.catalogue.facts")
 errors = import_module("app.schemas.errors")
 
 
@@ -40,6 +41,7 @@ def main():
         "catalogue-lookup-v1.schema.json": catalogue.CatalogLookup,
         "catalogue-manifest-v1.schema.json": catalogue.Manifest,
         "catalogue-status-v1.schema.json": catalogue_status.CatalogueStatus,
+        "catalogue-facts-v1.schema.json": catalogue_facts.FactsLookup,
         "validation-failure-v1.schema.json": errors.ValidationFailure,
     }.items():
         write("schemas", filename, model.model_json_schema())
@@ -142,8 +144,43 @@ def main():
         "catalogue-status-v1.synthetic.json",
         status_example.model_dump(mode="json"),
     )
+    facts = catalogue_facts.FactsLookup(
+        requested_barcode=catalogue_example.requested_barcode,
+        status="found",
+        manifest=catalogue_example.manifest,
+        product=catalogue_example.product.model_copy(
+            update={"allergen_tags": ["en:milk"]}
+        ),
+        details=catalogue_facts.project_facts(
+            {
+                "schema_version": 1004,
+                "allergens_tags": ["en:milk"],
+                "traces_tags": [],
+                "nutrition": {
+                    "input_sets": [
+                        {
+                            "source": "packaging",
+                            "per": "100g",
+                            "per_quantity": 100,
+                            "per_unit": "g",
+                            "preparation": "as_sold",
+                            "nutrients": {"proteins": {"value": 4, "unit": "g"}},
+                        }
+                    ]
+                },
+            },
+            catalogue_example.requested_barcode,
+        )[0],
+        warnings=[
+            "synthetic_example_not_a_real_catalogue",
+            "allergen_safety_not_assessed",
+        ],
+    )
+    write(
+        "examples", "catalogue-facts-v1.synthetic.json", facts.model_dump(mode="json")
+    )
     print(
-        f"Exported backend v{version} contracts and five validated synthetic examples."
+        f"Exported backend v{version} contracts and six validated synthetic examples."
     )
 
 

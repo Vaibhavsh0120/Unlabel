@@ -1,52 +1,46 @@
 # Recoverable India product catalogue
 
-Product data from [Open Food Facts](https://world.openfoodfacts.org/), made available under the [Open Database License 1.0](licenses/ODbL-1.0.txt). Individual database contents are licensed under the [Database Contents License 1.0](licenses/DbCL-1.0.txt).
+Product data from [Open Food Facts](https://world.openfoodfacts.org/) is retained under [ODbL 1.0](licenses/ODbL-1.0.txt), with individual contents under [DbCL 1.0](licenses/DbCL-1.0.txt). The compact public source, provenance and license notices belong in Git; generated SQLite/receipts do not.
 
-This directory keeps the compact source projection in Git so a fresh clone can rebuild the same indexed catalogue without downloading the global export again. SQLite is generated locally and during the backend v0.2.2 deployment build; it is not a second copy in Git. The hosted build also emits a verified receipt under ignored `backend/app/catalogue/data/`.
-
-## Files
+Backend v0.2.3 can rebuild identity plus rich facts from a bounded India JSONL projection without another global download. No world dump, image bytes, contributor identities, private scans, credentials or history are bundled. Selected-front image metadata supplies attributed official URL descriptors with separate CC-BY-SA licensing.
 
 | File | Purpose |
 | --- | --- |
-| `india-products.jsonl.gz` | Deterministic gzip of the acquired India projection: 840,099 compressed bytes; 6,588,910 decoded bytes. |
-| `bundle.json` | Checked compressed/decoded hashes, lengths, source date and expected import counts used by setup. |
-| `acquisition.json` | Provenance of the original global download, including its separate compressed SHA-256, HTTP source date, rows scanned and omitted fields. |
-| `licenses/` | Official ODbL and DbCL text, retained with the dataset for redistribution. |
+| `india-products.jsonl.gz` | Deterministic gzip of the accepted India projection. |
+| `bundle.json` | Checked compressed/decoded hashes/lengths, source date and expected import counts. |
+| `acquisition.json` | Original global-stream URL/date/hash/byte/row evidence, field projection and availability measurements. |
+| `licenses/` | Retained ODbL/DbCL texts; image licensing is supplied in facts descriptors. |
 
-`bundle.json` describes the small gzip in this directory. `acquisition.json` describes the original **1,275,171,186-byte global gzip** streamed on 6 October 2026. Their compressed hashes and sizes refer to different artifacts. The decoded bundle SHA-256 is the importer's source hash.
+The complete official JSONL acquisition verified **13,084,464,175 compressed bytes**, gzip EOF, **83,007,975,584 decoded bytes** and **4,795,607 source records**. Exact India projection: **24,695 rows**, **24,641 supported unique barcodes**, **54 unsupported codes**, **0 duplicates**. Candidate gzip: **2,098,225 bytes**; decoded projection: **15,084,130 bytes**. Source time **2026-10-06T06:53:46Z** sets refresh due **2027-07-06T06:53:46Z**.
 
-## Coverage and fields
+The original source, compressed India gzip and decoded India JSONL have different hashes/lengths. Original compressed SHA-256: `26d5bb5538838f531e406fe73e9070a502bc2070e5bc0a9bda60869bd091d693`; projected compressed SHA-256: `bbdd13097ede75777b2356e27910ae01aff38d7ad0c59598af6868dcf447db24`; decoded projection/import-source SHA-256: `e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f`.
 
-The source was last modified on **5 October 2026 at 12:19:34 UTC**. Its exact `en:india` filter yielded **21,188 rows**. The importer indexes **21,138 unique supported barcodes** and reports **50 unsupported barcode rows**. All source rows are retained here so those counts can be independently reproduced.
+The tracked replacement validates all **24,641 supported fact records** and generates a verified **62,472,192-byte SQLite (59.58 MiB)** with local receipt. **4,657** records have direct tables (**4,519** with reported values), **15,486** are legacy-unsupported, **4,050** missing and **448** invalid; **18,682** have official image descriptors. All indexed records have validated modification dates. [Full indexed-field and local receipt report](../../docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Raw acquisition counts, strict API facts and actual hosted reads remain distinct evidence. The [v0.2.3 review](../../docs/planning/BACKEND_V0_2_3_REVIEW.md) records complete-source and remaining artifact/hosted gates; preceding [v0.2.2 CSV measurements](../../docs/planning/BACKEND_V0_2_2_REVIEW.md) remain historical.
 
-This covers India-tagged records in this specific OFF export. It does not claim to contain every product sold in India. The bounded v0.2.2 follow-up counted 24,715 live India-tagged records, leaving a 3,527-row gap from this dated export; the cause remains unresolved. Coverage stays `unverified`. [Current measurement](../../docs/research/CATALOGUE_V0_2_2_COVERAGE.json).
+## Projected facts and coverage
 
-Each JSONL record contains only these projected public product fields:
+The rich projection preserves selected public identity fields, exact `countries_tags`, canonical category/label/allergen/trace tags, optional schema/modification time and product language. It retains bounded direct `nutrition.input_sets` from packaging/manufacturer sources and selected-front revision/size descriptors. Arbitrary image URLs, uploaded-image/contributor metadata, computed nutrient values and aggregate nutrient values are omitted; a legacy-presence marker allows the API to identify unsupported nutrition explicitly.
 
-- `code`, `countries_tags`, `product_name`, `brands`, `quantity`;
-- `ingredients_text`, `allergens_tags`, `traces_tags`;
-- `nutriscore_grade`, `nova_group`.
+Missing/invalid fields remain unavailable, never zero. Present empty community allergen tags do not prove allergen absence. Direct tables preserve source, bases, preparation and original row references; no current-package or FSSAI verdict is implied. Every exact India-tagged source row is retained within the validated projection limits so supported/unsupported counts remain reproducible.
 
-Missing values remain unknown. In this source, legacy bare allergens were excluded because they can omit ingredient-derived tags; `allergens_tags` therefore remains unknown. Nutrition tables, product photos, contributor details, private scans, credentials and user history are not bundled. This snapshot cannot establish allergen safety or FSSAI compliance.
+Coverage stays `unverified`. Complete processing of a dated OFF export does not establish all products sold in India, accurate current package facts or agreement with a differently timed live count. Measure gaps and representative sparse/rich/absent records before accepting a replacement.
 
-## Rebuild and refresh
+## Rebuild and manual refresh
 
-Use the repository's setup command to verify this bundle and regenerate `backend/storage/runtime/india/catalogue.sqlite3`. The generated database and Python environment can be recreated; the acquired source, its provenance and license notices belong in Git. A clone does not need an OFF key or another bulk download to rebuild this index.
+Setup verifies tracked hashes/counts and regenerates the local index. The network-free hosted build reads this same source and creates ignored `app/catalogue/data/catalogue.sqlite3` plus receipt; hosted startup verifies its artifact before enabling reads. [Catalogue workflow](../../docs/architecture/CATALOGUE.md) · [Current validation gates](../../docs/planning/BACKEND_V0_2_3_REVIEW.md).
 
-The separate hosted build reads this same bundle without network acquisition or env decryption, verifies hashes/counts and generates SQLite/receipt for immutable function packaging. [Catalogue workflow](../../docs/architecture/CATALOGUE.md) and [v0.2.2 production verification](../../docs/planning/BACKEND_V0_2_2_REVIEW.md) distinguish local build evidence from live deployment proof.
+Replace the source manually every **nine calendar months** from its actual export time; rebuilding does not reset age:
 
-Replace the entire source bundle manually every **nine calendar months**; its source timestamp **2026-10-05T12:19:34Z** sets the exact due boundary to **2027-07-05T12:19:34Z**. New build timestamps never reset this source age:
+1. Acquire the complete official JSONL into a new owned directory using `scripts/acquire_india_jsonl.py`. Validate transfer length, gzip EOF/CRC, bounded objects and source hashes without retaining the world dump.
+2. Measure India/indexed/unsupported/duplicate counts, field availability, direct versus legacy nutrition, source date, sizes and dated live-count differences.
+3. Package with gzip `mtime=0`, empty filename and compression level 9. Replace the accepted gzip, `bundle.json`, `acquisition.json`, notices and review evidence together.
+4. Run setup/import, actual hosted-build checks and meaningful tests. Local import replaces one validated staged SQLite; hosted SQLite/receipt use separate writes inside an unpublished build. Reject failed builds.
+5. Push the reviewed replacement, verify its exact deployment/source/hash/date/counts/receipt and identity/facts reads, then accept the refresh. Rollback uses the previous verified deployment/source/configuration; never hot-swap packaged runtime files.
 
-1. Acquire a fresh official source into a new owned directory and validate its complete download.
-2. Project the India rows and compare coverage, counts, missing fields and representative lookups with the active snapshot.
-3. Package the JSONL with gzip `mtime=0`, empty filename and compression level 9. Update `bundle.json`, `acquisition.json`, this README and the review evidence together.
-4. Run setup/import and hosted-build verification against the proposed source. The local importer stages and validates SQLite before replacing the single active database; failed imports preserve it. Hosted builds generate SQLite/receipt with two separate file replacements inside an unpublished build; a failed build must not be promoted.
-5. Commit/push the reviewed replacement bundle to create a new immutable deployment. Verify its exact source/date/hash/counts, receipt status and lookups before treating the refresh as complete. Roll back to the prior deployment with matching source/configuration when needed; never hot-swap packaged runtime files. Keep an explicit temporary local rollback copy only when needed and remove known owned artifacts after the rollback window.
-
-No scheduled job or request-time bulk download is configured. Git keeps historical source versions; a normal clone also receives repository history. If future bundles become substantially larger, review Git growth before adopting an artifact store or Git LFS.
+No scheduled job or request-time bulk download exists. Git keeps previous source versions and history; review repository growth for later substantially larger bundles. Keep only deliberate owned temporary rollback artifacts and remove them safely after the rollback window.
 
 ## Reuse and attribution
 
-Redistribution of this projected database is permitted under ODbL 1.0, subject to its attribution, notice, access and share-alike conditions. This projection and any redistributed derivative database retain **ODbL-1.0**; its individual contents retain **DbCL-1.0**. Preserve this directory's notices and provide the machine-readable source or required alterations when publicly using a derivative database. Display OFF attribution in product results. Keep personal data and independently maintained regulatory rules separate.
+OFF-derived projected databases retain **ODbL-1.0** and individual contents **DbCL-1.0**. Preserve notices and satisfy attribution, source/access and share-alike conditions when distributing or publicly using derivative databases. Show OFF attribution with product facts. Keep independently maintained regulatory rules and personal data separate.
 
-These dataset licenses apply to OFF-derived data, not automatically to Unlabel's source code. Product photographs have a separate license and are absent from this bundle. The [official OFF licensing guide](https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/) and [terms of use](https://world.openfoodfacts.org/terms-of-use) describe the upstream conditions; the included license texts govern reuse.
+Product photographs use a separate license. This source retains metadata rather than photo bytes; facts descriptors carry CC-BY-SA-3.0 attribution/license and clients must preserve appropriate image attribution. These dataset/image licenses do not automatically apply to Unlabel source code. [Official OFF licensing guide](https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/) · [Terms of use](https://world.openfoodfacts.org/terms-of-use).

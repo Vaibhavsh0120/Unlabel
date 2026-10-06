@@ -1,8 +1,8 @@
-# Unlabel backend v0.2.2
+# Unlabel backend v0.2.3
 
-Frontend remains **v0.0.0**. This version packages the committed India identity source into a verified read-only SQLite bundle for Vercel, and adds catalogue status/source-age metadata. Live OFF product/nutrition and confirmed-input contracts retain their separate origins. FSSAI checks, ingredient explanations, comparison and AI remain separate [versions](../docs/superpowers/plans/2026-10-05-backend-versions.md).
+Frontend remains **0.0.0+1**. This version adds a separate rich-facts route to the backend-held India catalogue: direct nutrition, canonical tag availability, provider schema/record date and an attributed official image URL. Existing identity, live OFF nutrition, status and confirmed-input contracts preserve their shapes and origins. FSSAI checks remain disabled until the next independent v0.3.0 slice. [Accepted two-version plan](../docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [20-group feature tracker](../docs/planning/FEATURE_TRACKER.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.2.2 verification record](../docs/planning/BACKEND_V0_2_2_REVIEW.md) for actual local/provider/production evidence.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.2.3 verification record](../docs/planning/BACKEND_V0_2_3_REVIEW.md) for actual local/provider/production evidence.
 
 ## Run locally
 
@@ -30,6 +30,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `POST /v1/nutrition/normalize` | Normalize user-confirmed structured nutrient rows without calling OFF |
 | `GET /v1/catalogue` | Ready/unavailable/not-configured status, manifest, artifact hash/size, source age, refresh date and field limits; 503 if unavailable |
 | `GET /v1/catalogue/products/{barcode}` | Separate export-origin indexed identity lookup; 503 when catalogue is inactive/unavailable |
+| `GET /v1/catalogue/products/{barcode}/facts` | Exact identity/manifest plus optional rich facts; older identity-only catalogues report facts unavailable |
 
 Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Live OFF lookup identity must match the requested code, permitting leading-zero normalization only. Catalogue lookups use exact keys; leading-zero variants remain distinct.
 
@@ -48,7 +49,19 @@ Invoke-RestMethod http://127.0.0.1:8000/v1/products/3017620422003/nutrition
 | 502 | `incompatible_response` | Malformed/oversized data or mismatched product identity |
 | 422 | FastAPI validation error | Unsupported barcode input; no provider call |
 
-The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. No raw provider internals or remote images are exposed. Product/nutrition responses use `Cache-Control: no-store`; saved-result policy is future client work.
+The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. This identity route exposes no raw provider internals or image fields; the separate snapshot facts route can expose a validated official image URL descriptor. Product/nutrition responses use `Cache-Control: no-store`; saved-result policy is future client work.
+
+## Snapshot rich facts
+
+Use `/v1/meta.capabilities.catalogue_facts` before requesting `/v1/catalogue/products/{barcode}/facts`. The response keeps the old `product` identity and export `manifest`, and adds a separate `details` model. Exact catalogue keys preserve leading zeros; image disk paths follow OFF's canonical code normalization independently of identity lookup.
+
+`details.categories`, `labels`, `allergens` and `traces` pair `availability: available|missing|invalid` with bounded values. A present empty tag list differs from a missing field, but neither establishes absence of allergens. `provider_schema_version` and `last_modified_at` are optional source values, distinct from export/index/request dates.
+
+`details.nutrition.availability` is `direct_tables`, `missing`, `legacy_unsupported` or `invalid`. Direct packaging/manufacturer tables use the same bounded parser and normalizer as live nutrition, with separate export provenance. Legacy aggregate nutrients are not reclassified as direct label tables. Preserve unknown cells, warnings, preparation, original bases and row/table sources.
+
+`details.image` is null or a validated official selected-front 400-size URL descriptor with language, revision, optional dimensions, attribution and CC-BY-SA-3.0 metadata. URLs are constructed from selected-image metadata; arbitrary URLs, image proxies and bytes are excluded. Show attribution and an image fallback. A valid descriptor does not guarantee the remote image currently exists. OFF's [official image-path implementation](https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/lib/ProductOpener/Products.pm) strips leading zeros, pads short codes and splits the resulting path; catalogue identity still matches the exact requested key.
+
+A missing snapshot record returns dated 404 with its checked manifest; inactive/invalid or older identity-only facts storage returns 503. Older stores keep their previous identity/status routes. Responses are `no-store`; lookup never calls OFF or silently substitutes live facts. Claims and health analysis remain disabled.
 
 ## Nutrition facts and confirmed input
 
@@ -86,14 +99,14 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP client/store, seven routes and redacted validation failures.
-- `app/catalogue/`: bounded models, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
+- `app/main.py`: app composition, lifespan-owned HTTP client/store, eight routes and redacted validation failures.
+- `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
 - `build_catalogue.py`: network-free deployment build entrypoint; validates tracked source and generates SQLite plus a receipt in the ignored `app/catalogue/data/` directory.
 - `app/schemas/errors.py`: shared strict redacted 422 response, including raw-number middleware rejections.
 - `app/core/config.py`: validated non-secret request/CORS settings.
 - `app/core/body_limit.py`: actual-byte input limit before parsing.
 - `app/providers/products/open_food_facts.py`: fixed official HTTPS origin, selected fields, bounded read/deadline, identity checks and failure mapping.
-- `app/providers/products/nutrition.py`: narrow direct-input nutrition adapter and table/row budgets.
+- `app/providers/products/nutrition.py`: live direct-input wrapper; `app/services/parsing/off_nutrition.py` shares its bounded parser with snapshot facts.
 - `app/schemas/products.py`: versioned normalized product/status/provenance models.
 - `app/schemas/nutrition.py`, `nutrition_products.py`: strict rows, bases, snapshots and independent source wrappers.
 - `app/services/parsing/nutrition.py`: pure deterministic unit/basis conversion; no health/regulatory evaluator.
@@ -104,11 +117,11 @@ HTTPX connection pool is bounded to six connections. There is no automatic retry
 
 Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. The project allows build access to files outside its root, and `pyproject.toml` runs `python build_catalogue.py` after dependency installation. The generated owned bundle is included in the Python function. Local `.env*`, tests, environments and `storage/runtime` are excluded; hosted settings live in the project's environment. See [Vercel's build-hook documentation](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
 
-## India catalogue — measured source and deployment bundle
+## India catalogue and measured-source gate
 
-The official nightly CSV stream was acquired on 6 October: **1,275,171,186 compressed bytes**, **4,535,553 source rows**, **21,188 exact India-tagged rows**. Its source export timestamp is **2026-10-05T12:19:34Z**. No world file was retained. The committed gzip is 840,099 bytes and decodes to 6,588,910 bytes; SQLite is **11,993,088 bytes (11.44 MiB)**, indexing 21,138 supported barcode records and counting 50 unsupported codes. There were no duplicate supported barcodes. Missing names: 3,442; missing ingredient text: 15,780. A bounded live count on 6 October returned **24,715**, compared with the earlier 24,706 observation. The source/count difference remains unexplained, so coverage is `unverified`. [Dated coverage evidence](../docs/research/CATALOGUE_V0_2_2_COVERAGE.json). Rice flour `8904083506393` is indexed; live-found chocolate `7622202842450` is absent from this snapshot.
+v0.2.3 acquired the complete official JSONL through validated gzip EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source records** and **24,695 exact India rows**. There are **24,641 supported unique barcodes**, **54 unsupported codes** and **0 duplicates**. The candidate gzip is **2,098,225 bytes**, decoding to **15,084,130 bytes**. Source **2026-10-06T06:53:46Z** is due **2027-07-06T06:53:46Z**. [Hashes and raw-field evidence](../docs/planning/BACKEND_V0_2_3_REVIEW.md).
 
-For this version, local bundle verification took 31.2 ms; 100 local read-only lookups had a 0.341 ms median and 0.550 ms maximum. These are local observations, not mobile/network/serverless performance guarantees. The catalogue excludes nutrition tables, images and record-level modification dates. Canonical allergen tags were absent from this source; legacy bare allergen fields are not converted into full canonical tags. Existing live nutrition remains the source for direct package/manufacturer tables.
+All **24,641 indexed fact records** pass strict validation. **4,657** have direct tables (**4,519** with reported nutrient values); **15,486** are legacy-unsupported, **4,050** missing and **448** invalid. **18,682** have official image descriptors; all supported records have a validated modification date. Local SQLite is **62,472,192 bytes (59.58 MiB)** with a verified receipt. [Dated field/build report](../docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Local suite **400 passed**; independent code/security/dead-code review found no actionable issues, with **103** reviewer tests passing. **Pending:** actual hosted reads and release publication. Actual private-key restoration was not rerun in this continuation. Descriptors do not establish remote image availability. Coverage remains `unverified`; India-tagged OFF records are not every product sold in India. The preceding CSV measurements remain in the [v0.2.2 review](../docs/planning/BACKEND_V0_2_2_REVIEW.md).
 
 Build and exercise the hosted bundle locally from `backend/`:
 
@@ -119,26 +132,24 @@ $env:CATALOGUE_REQUIRE_RECEIPT = "true"
 .venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ~~~
 
-The builder checks compressed/decoded hashes, byte budgets and expected counts before publishing. The database and receipt are two file replacements inside the unpublished build; a failed build must not be deployed. Startup verifies the entire SQLite once, then lookups use indexed read-only connections. Builds produce their own UUID/indexing timestamp and SQLite hash; unchanged source/content does not promise byte-identical databases. The receipt is an integrity record, not a cryptographic OFF signature.
+The network-free builder checks compressed/decoded hashes, byte budgets and expected counts before publishing. SQLite and receipt use two file replacements inside an unpublished build; any failure rejects that build. Startup verifies the database once, then uses indexed read-only transactions. Each build has its own UUID/indexing timestamp/hash; the receipt records integrity, not an OFF cryptographic signature.
 
-`GET /v1/catalogue` and `/v1/meta.catalogue` report source age. Nine calendar months from this export is **2027-07-05T12:19:34Z**. At that time the state becomes `refresh_due`; overdue lookups stay available with a warning. A future source date is flagged, not silently fresh. Age follows export time, never rebuild time. `/v1/catalogue` and its product route return `no-store`; `/v1/meta` retains its existing cache header. Lookup never calls OFF or silently falls back to live data. The client can explicitly request the separate live endpoint after a snapshot 404.
+`GET /v1/catalogue` and `/v1/meta.catalogue` report source age. Nine calendar months uses the actual export timestamp, never rebuild time; overdue lookups remain available with a warning, and future dates are flagged. Identity/status/facts reads are `no-store`; metadata retains its existing cache policy. A snapshot miss makes no OFF request. Clients may deliberately request the separate live endpoint.
 
 ## Manual nine-month refresh
 
-From repo root, using a new existing source directory and an existing index directory:
+From repository root, acquire into a new existing owned directory:
 
 ~~~powershell
 New-Item -ItemType Directory -Force backend/storage/runtime/new-source
-New-Item -ItemType Directory -Force backend/storage/runtime/india
-backend/.venv/Scripts/python.exe scripts/acquire_india_catalogue.py --directory backend/storage/runtime/new-source
-backend/.venv/Scripts/python.exe scripts/import_india_catalogue.py --input backend/storage/runtime/new-source/india-products.jsonl --directory backend/storage/runtime/india --source-url https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz --source-format off_csv_projection --coverage unverified --exported-at <source-Last-Modified-in-ISO-format>
+backend/.venv/Scripts/python.exe scripts/acquire_india_jsonl.py --directory backend/storage/runtime/new-source
 ~~~
 
-Replace the final placeholder with the recorded source timestamp, including timezone; indexing time is not export time. Acquisition prints source/hash/count evidence. Import prints the manifest and artifact size. Set local `.env` to `CATALOGUE_DIRECTORY=storage/runtime/india` after validation and restart. The importer accepts supplied plain/gzip JSONL too; pass its actual source URL/format and use `sample` for small samples. No automatic schedule or full-market guarantee is added.
+Validate complete transfer/gzip EOF, compressed/decoded hashes, source date, exact India/counts, field rates, representative sparse/rich records and size budgets. Record unresolved export/live-count differences. Update the tracked gzip, `bundle.json`, `acquisition.json`, license notices and current evidence together; do not retain the world dump or image bytes. Setup regenerates the local SQLite; the hosted build generates its own immutable SQLite/receipt without network acquisition. Plain/gzip JSONL imports also remain supported for explicit local inputs and samples; supply the actual source URL/format and use `coverage: sample` for samples.
 
-For production, validate the candidate and update the committed gzip, bundle metadata, acquisition provenance and licenses together. Run tests/build, update docs, then push; Vercel generates a new immutable bundle. Verify status, source/hash/counts and lookup before accepting the replacement. A failed build keeps the previous deployment; rollback selects a previously verified deployment/source. No bulk fetch or database write occurs in an API request. [Full refresh checklist](../docs/architecture/CATALOGUE.md).
+Run tests/build, update docs, then push. Verify the exact deployed commit, source/hash/date/counts, receipt, status and identity/facts routes before accepting the replacement. Failed builds must not be promoted; rollback uses the previous verified deployment/source/configuration. No request-time bulk import, automatic schedule or packaged-runtime hot swap exists. [Full catalogue workflow](../docs/architecture/CATALOGUE.md).
 
-SQLite is selected for serving; CSV/JSONL are acquisition inputs. Firestore is deferred. Richer bulk nutrition/per-record provenance is a separate v0.2.3 milestone; full India-market coverage remains unproven.
+SQLite serves the immutable snapshot; JSONL/CSV are acquisition inputs. Firestore remains deferred. No backend snapshot makes phones or the website fully offline.
 
 ## Validate
 
@@ -149,4 +160,4 @@ SQLite is selected for serving; CSV/JSONL are acquisition inputs. Firestore is d
 .venv/Scripts/python.exe -m pip check
 ~~~
 
-See [v0.2.2 review](../docs/planning/BACKEND_V0_2_2_REVIEW.md) for actual checks and remaining gates; earlier reviews remain historical records. Current exports/examples are indexed in [contracts](../contracts/README.md). Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.
+See [v0.2.3 review](../docs/planning/BACKEND_V0_2_3_REVIEW.md) for actual checks and remaining gates; earlier reviews remain historical records. Current exports/examples are indexed in [contracts](../contracts/README.md). Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.

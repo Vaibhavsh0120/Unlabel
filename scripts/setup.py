@@ -115,13 +115,16 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
     directory.mkdir(parents=True, exist_ok=True)
     active = directory / "catalogue.sqlite3"
     if active.exists():
-        current = CatalogueStore(directory).manifest
+        store = CatalogueStore(directory)
+        current = store.manifest
         if (
             current.source_sha256 == metadata["decoded_sha256"]
             and current.indexed_products == metadata["indexed_products"]
             and current.source_format == metadata["source_format"]
             and current.source_url == metadata["source_url"]
             and current.exported_at == datetime.fromisoformat(metadata["exported_at"])
+            # Earlier importers could index the same JSONL without rich facts.
+            and (metadata["source_format"] != "off_jsonl" or store.supports_facts)
         ):
             print(
                 f"Reusing validated catalogue: {current.indexed_products} products.",

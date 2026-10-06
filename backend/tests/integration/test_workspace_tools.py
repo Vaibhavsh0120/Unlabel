@@ -3,6 +3,8 @@ import hashlib
 import importlib.util
 import json
 import socket
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -71,20 +73,36 @@ def test_setup_refuses_implicit_key_prompt_in_non_terminal(clone, monkeypatch):
     assert not (clone / "backend/.env").exists()
 
 
-def source_bundle(clone):
+def source_bundle(clone, *, source_format="off_jsonl"):
     directory = clone / "data/catalogue"
     directory.mkdir(parents=True)
-    decoded = (
-        json.dumps({"code": "8900000000001", "countries_tags": ["en:india"]}) + "\n"
-    ).encode()
+    product = {"code": "8900000000001", "countries_tags": ["en:india"]}
+    if source_format == "off_jsonl":
+        product["nutrition"] = {
+            "input_sets": [
+                {
+                    "source": "packaging",
+                    "preparation": "as_sold",
+                    "per": "100g",
+                    "per_quantity": 100,
+                    "per_unit": "g",
+                    "nutrients": {"sugars": {"value": 0, "unit": "g"}},
+                }
+            ]
+        }
+    decoded = (json.dumps(product) + "\n").encode()
     compressed = gzip.compress(decoded, mtime=0)
     (directory / "india-products.jsonl.gz").write_bytes(compressed)
     metadata = {
         "schema_version": "1",
         "source_file": "india-products.jsonl.gz",
-        "source_format": "off_csv_projection",
+        "source_format": source_format,
         "coverage": "unverified",
-        "source_url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+        "source_url": (
+            "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz"
+            if source_format == "off_jsonl"
+            else "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz"
+        ),
         "exported_at": "2026-10-05T12:19:34Z",
         "compressed_bytes": len(compressed),
         "compressed_sha256": hashlib.sha256(compressed).hexdigest(),
@@ -97,19 +115,56 @@ def source_bundle(clone):
     return directory, metadata
 
 
-def test_setup_rebuilds_then_reuses_index_and_retains_different_valid_index(clone, monkeypatch):
+@pytest.mark.parametrize("source_format", ["off_jsonl", "off_csv_projection"])
+def test_setup_rebuilds_then_reuses_index_and_retains_different_valid_index(
+    clone, monkeypatch, source_format
+):
     setup = module("setup", monkeypatch)
-    directory, _ = source_bundle(clone)
+    directory, _ = source_bundle(clone, source_format=source_format)
     assert setup.prepare_catalogue(clone) == "built"
     active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
     original = active.read_bytes()
     assert setup.prepare_catalogue(clone) == "reused"
     assert active.read_bytes() == original
+    from app.catalogue.store import CatalogueStore
+
+    assert CatalogueStore(active.parent).supports_facts == (source_format == "off_jsonl")
     metadata = json.loads((directory / "bundle.json").read_text())
     metadata["exported_at"] = "2026-10-06T12:19:34Z"
     (directory / "bundle.json").write_text(json.dumps(metadata))
     assert setup.prepare_catalogue(clone) == "preserved"
     assert active.read_bytes() == original
+
+
+def test_setup_migrates_same_source_identity_only_jsonl_index_with_explicit_replacement(
+    clone, monkeypatch
+):
+    from app.catalogue.store import CatalogueStore
+
+    setup = module("setup", monkeypatch)
+    _, metadata = source_bundle(clone)
+    assert setup.prepare_catalogue(clone) == "built"
+    directory = clone / "backend/storage/runtime/india"
+    active = directory / "catalogue.sqlite3"
+    # An older importer can legitimately have indexed the same JSONL identities
+    # before the optional facts table was implemented.
+    with closing(sqlite3.connect(active)) as connection:
+        connection.execute("DROP TABLE catalogue_facts")
+        connection.commit()
+    old_store = CatalogueStore(directory)
+    assert old_store.manifest.source_sha256 == metadata["decoded_sha256"]
+    assert old_store.supports_facts is False
+    previous = active.read_bytes()
+    assert setup.prepare_catalogue(clone) == "preserved"
+    assert active.read_bytes() == previous
+    assert setup.prepare_catalogue(clone, replace=True) == "built"
+    restored = CatalogueStore(directory)
+    assert restored.supports_facts is True
+    assert restored.manifest.source_sha256 == metadata["decoded_sha256"]
+    facts = restored.lookup_facts("8900000000001")
+    assert facts.status == "found"
+    assert facts.details.nutrition.snapshot.tables[0].nutrients["sugars"].value == 0
+    assert setup.prepare_catalogue(clone, replace=True) == "reused"
 
 
 def test_setup_rejects_tampered_bundle_before_replacing_index(clone, monkeypatch):

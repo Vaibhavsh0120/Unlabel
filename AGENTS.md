@@ -1,10 +1,10 @@
 # Unlabel workspace instructions
 
-- Work on one accepted backend version at a time. Backend is currently 0.2.2; Flutter remains 0.0.0+1. Do not rebuild APK/IPA or move historical release tags for backend/tooling work.
+- Work on one accepted backend version at a time. Backend is currently 0.2.3; Flutter remains 0.0.0+1. Complete and push this rich-facts slice before enabling v0.3.0 claim checks. Do not rebuild APK/IPA or move historical release tags for backend/tooling work.
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.
 - Restore with `python scripts/setup.py`; run with `python scripts/run_local.py`. `--scope backend` selects backend-only work. See docs/planning/LOCAL_DEVELOPMENT.md.
 - Never commit plaintext `.env`, private identities, real scans or credentials. Track authenticated `backend/.env.age` and its public recipient; refresh ciphertext with `python scripts/env.py encrypt` after changing local settings. Private key paste belongs in the hidden local terminal prompt.
-- Track reusable acquired source bundles, provenance, licenses and hashes. SQLite, SDKs, environments and builds are generated. The current OFF projection excludes nutrition/images; coverage is unverified. Replace snapshots manually every nine calendar months after validation. Vercel builds the tracked source into a verified read-only bundle; see docs/planning/BACKEND_V0_2_2_REVIEW.md for actual deployment evidence.
+- Track reusable acquired source bundles, provenance, licenses and hashes. SQLite, SDKs, environments and builds are generated. Rich OFF facts accept direct packaging/manufacturer nutrition only; legacy aggregates stay unavailable. Images are validated official URL descriptors, never bundled bytes. Coverage is unverified. Replace snapshots manually every nine calendar months after validation. Vercel builds the tracked source into a verified read-only bundle; see docs/planning/BACKEND_V0_2_3_REVIEW.md for current measured-source and deployment gates. Earlier reviews remain historical evidence.
 - Keep OFF facts separate from confirmed-label facts and reviewed FSSAI knowledge. Missing data is unknown, not zero or an allergy-safe/compliance verdict.
 - Run backend tests with backend `.venv` Python and Flutter checks from frontend. Validate meaningful importer/secret/process boundaries, docs links and current contracts before pushing.
 

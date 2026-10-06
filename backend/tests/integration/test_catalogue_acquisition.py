@@ -8,6 +8,8 @@ from pathlib import Path
 
 import pytest
 
+from app import __version__
+
 SCRIPT = Path(__file__).resolve().parents[3] / "scripts/acquire_india_catalogue.py"
 
 
@@ -79,7 +81,10 @@ def test_acquisition_never_overwrites_files_appearing_during_download(tmp_path, 
         url = "https://openfoodfacts-ds.s3.eu-west-3.amazonaws.com/en.openfoodfacts.org.products.csv.gz"
         headers = {"Content-Length": str(len(payload))}
 
-    def response(*args, **kwargs):
+    def response(request, **kwargs):
+        assert request.get_header("User-agent") == (
+            f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)"
+        )
         (tmp_path / "india-products.jsonl").write_bytes(b"existing source")
         (tmp_path / "acquisition.json").write_bytes(b"existing manifest")
         return Response(payload)

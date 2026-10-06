@@ -1,38 +1,36 @@
 # Shared API contracts
 
-Backend v0.2.2 exports the following from `app.main.create_app().openapi()` and the named Pydantic models. Backend models/routes are the source of truth; regenerate current exports after a contract change. Preserve historical OpenAPI files.
+Backend **v0.2.3** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.2.2.openapi.json` | Seven current routes, catalogue status and strict nutrition contracts |
-| `schemas/catalogue-status-v1.schema.json` | Ready/unavailable status, source age, refresh date, optional artifact integrity summary and field limits |
-| `schemas/product-lookup-v1.schema.json` | Unchanged `app.schemas.products.ProductLookup` |
-| `schemas/nutrition-lookup-v1.schema.json` | `app.schemas.nutrition_products.NutritionLookup` |
-| `schemas/nutrition-normalize-request-v1.schema.json` | `app.schemas.nutrition.NormalizeRequest` |
-| `schemas/nutrition-normalize-response-v1.schema.json` | `app.schemas.nutrition_products.NormalizeResponse` |
-| `schemas/catalogue-lookup-v1.schema.json` | Optional indexed product with independent export Manifest |
-| `schemas/catalogue-manifest-v1.schema.json` | Source hash/date/format, exact market selection, counts, coverage and licenses |
-| `schemas/validation-failure-v1.schema.json` | Actual bounded redacted 422 responses |
-| `schemas/backend-v0.2.1.openapi.json` | Historical local-catalogue release; do not replace |
-| `schemas/backend-v0.2.0.openapi.json` | Historical nutrition release; do not replace |
-| `schemas/backend-v0.1.0.openapi.json` | Historical product-lookup release; do not replace |
+| `schemas/backend-v0.2.3.openapi.json` | Eight current routes, separate rich facts, catalogue status and strict nutrition contracts. |
+| `schemas/catalogue-facts-v1.schema.json` | `FactsLookup`: exact identity/manifest, availability-aware tags, direct nutrition, record dates and official image descriptor. |
+| `schemas/catalogue-status-v1.schema.json` | Ready/unavailable status, source age, optional receipt artifact summary and field limits. |
+| `schemas/product-lookup-v1.schema.json` | Unchanged live `ProductLookup` v1. |
+| `schemas/nutrition-lookup-v1.schema.json` | Source-tagged live `NutritionLookup`. |
+| `schemas/nutrition-normalize-request-v1.schema.json` | Strict confirmed-input `NormalizeRequest`. |
+| `schemas/nutrition-normalize-response-v1.schema.json` | Independent confirmed-origin `NormalizeResponse`. |
+| `schemas/catalogue-lookup-v1.schema.json` | Preserved exact indexed identity with export manifest. |
+| `schemas/catalogue-manifest-v1.schema.json` | Source hash/date/format, market selection, counts, coverage and licenses. |
+| `schemas/validation-failure-v1.schema.json` | Bounded redacted 422 response. |
+| `schemas/backend-v0.2.2.openapi.json` | Historical hosted identity/status release. |
+| `schemas/backend-v0.2.1.openapi.json` | Historical local catalogue release. |
+| `schemas/backend-v0.2.0.openapi.json` | Historical nutrition release. |
+| `schemas/backend-v0.1.0.openapi.json` | Historical product release. |
 
-`examples/product-lookup-v1.synthetic.json` is a validated synthetic lookup response for client development. It is not a real product or a food-quality verdict. Product fields retain Open Food Facts provenance, unknown values and explicit lookup failure states.
+The validated synthetic examples support integration without a provider key or real scan. `catalogue-facts-v1.synthetic.json` demonstrates the separate `details` model; product, catalogue/status and live nutrition examples preserve independent origins. The normalize request/response pair demonstrates confirmed rows. These fixtures are not real product facts, approved health policies or regulatory verdicts.
 
-`examples/nutrition-normalize-v1.request.synthetic.json` and `examples/nutrition-normalize-v1.response.synthetic.json` form a confirmed-input integration pair. `examples/nutrition-lookup-v1.synthetic.json` demonstrates separate OFF origin/table source metadata. All examples are synthetic, not provider exports or approved nutritional policies.
+Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. Add separate client models instead of modifying the strict v1 identity parser. Claims, `nutrition_analysis`, glossary, comparison and AI remain disabled. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md).
 
-The [backend guide](../backend/README.md) documents seven implemented routes; the [API plan](../docs/architecture/API_PLAN.md) separates normalization from future analysis endpoints. Nutrition facts use kcal/g canonical units, preserve original rows, keep table bases/preparation/source distinct, and return null plus reasons for unknown values. A complete normalization result does not mean every nutrient is reported, healthy, allergy-safe or legally compliant.
+Facts nutrition uses direct packaging/manufacturer inputs only, preserving kcal/g units, rows, sources, bases, preparation, conflicts and unknown reasons. `legacy_unsupported`, `missing` and `invalid` remain explicit. Tags distinguish present empty arrays from missing/invalid fields; none establishes allergy safety. Optional dates identify record modification separately from export age. Official image descriptors include language/revision/400-size and attribution/license; no arbitrary URL or bundled image bytes. Exact lookup keys preserve leading zeros while OFF image disk paths use their canonical normalization.
 
-The v0.1 strict ProductLookup response has no added nutrition fields. Add separate nutrition client models instead of depending on raw OFF data or changing the old response parser. Metadata enables `nutrition_lookup` and `nutrition_normalization`, while `nutrition_analysis`, claims, comparison, glossary and AI remain disabled. Both teammates must agree on future schema changes and fixture expectations before coding independently.
+Snapshot found/missing/unavailable states stay separate from live OFF states and normalized `complete|partial|needs_correction`. A complete normalization does not mean every nutrient is known or that a food is healthy/compliant. Snapshot misses make no OFF request; coverage remains `unverified`. Source-age metadata describes maintenance policy, not current-package verification. Local status may have `artifact: null`; a hosted verified receipt supplies its integrity summary.
 
-Backend validation models and Dart client models should follow this boundary. Do not create two independently maintained interpretations of the rules. A contract change requires both consumers and shared fixtures to be updated together.
-
-Regenerate current exports from the repository root with the backend environment:
+Regenerate from root with the backend environment:
 
 ~~~powershell
 backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py
 ~~~
 
-On macOS/Linux use `backend/.venv/bin/python`. The exporter validates synthetic models and preserves historical OpenAPI/product v1 files; regression tests verify the unchanged product schema and synthetic examples. OpenAPI/model agreement is also checked during release validation. A JSON Schema alone cannot express every strict numeric, unique-row-ID or semantic basis/unit rule enforced by the backend.
-
-Catalogue lookup keeps export provenance separate from live OFF API3.6 Source. Exact leading-zero variants are distinct keys. The capability is false without a valid configured index; samples/independently unverified coverage stay explicit. No nutrition aggregates or private scans are added to the catalogue. v0.2.2 preserves all existing strict lookup/normalization schemas and adds `/v1/catalogue` plus additive `/v1/meta.catalogue` metadata. `examples/catalogue-status-v1.synthetic.json` illustrates this status; its artifact hash/size is synthetic. Source-age status describes maintenance policy, not freshness of an individual package or a safety verdict. A local index may have `artifact: null`; hosted receipt verification supplies the integrity summary.
+On macOS/Linux use `backend/.venv/bin/python`. The exporter validates synthetic models and preserves historical exports. JSON Schema alone cannot encode every strict numeric, unique-ID, source/image-identity or semantic unit/basis rule enforced by the backend. Shared fixtures and regression tests verify those boundaries. No private scans, profile, credentials or raw provider internals belong in contracts.

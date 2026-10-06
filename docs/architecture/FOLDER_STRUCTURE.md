@@ -5,7 +5,7 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.2.2 product/nutrition lookup, normalization and verified catalogue/status; future rules and optional AI |
+| backend | FastAPI v0.2.3 product/nutrition lookup, normalization and verified catalogue/status/rich facts; future rules and optional AI |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
@@ -52,7 +52,7 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | App composition/lifespan, seven versioned routes, verified catalogue activation and redacted validation errors |
+| app/main.py | App composition/lifespan, eight versioned routes, verified catalogue activation and redacted validation errors |
 | app/api/v1 | Reserved route modules as future endpoints grow |
 | app/core | Validated environment/CORS settings and actual-byte request-body limit |
 | app/schemas/products.py | Unchanged strict product lookup v1 contract and OFF provenance |
@@ -85,7 +85,7 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Current v0.2.2 OpenAPI/status/catalogue/nutrition/error schemas and synthetic examples; historical exports and product/catalogue v1 preserved |
+| contracts/schemas, examples | Current v0.2.3 OpenAPI/status/catalogue/facts/nutrition/error schemas and synthetic examples; historical exports and product/catalogue v1 preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
@@ -98,4 +98,4 @@ docs/architecture covers system/data/API/deployment/folders; planning covers fea
 
 Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; health/claim analysis remains future work. Normalization does not fill the regulatory knowledge folders or train a model.
 
-`data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.2 hosted verification](../planning/BACKEND_V0_2_2_REVIEW.md).
+`data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.3 source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).

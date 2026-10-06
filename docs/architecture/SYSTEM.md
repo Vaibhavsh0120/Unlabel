@@ -1,6 +1,6 @@
 # System architecture
 
-Decision updated: **2026-10-06**. Frontend v0.0.0+1 remains the Flutter starter. Backend v0.2.2 implements FastAPI health/meta, separate live OFF product/nutrition lookup, confirmed-value normalization and a receipt-verified India identity catalogue with typed source-age status. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; the [v0.2.2 review](../planning/BACKEND_V0_2_2_REVIEW.md) records the hosted verification gate.
+Decision updated: **2026-10-06**. Frontend v0.0.0+1 remains the Flutter starter. Backend v0.2.3 implements FastAPI health/meta, separate live OFF product/nutrition lookup, confirmed-value normalization and a receipt-verified India catalogue with typed status and a separate rich-facts route. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) records current source/build/hosted gates.
 
 ## Product and delivery boundary
 
@@ -87,4 +87,4 @@ Preferences, personal suitability and scan history stay in the phone/browser. On
 
 The starter/workflow does not prove OCR quality, saved-content caching, legal criteria, live providers, hosted behavior or dietary suitability. Validate those during implementation.
 
-Backend v0.2.2 provides a separate export-origin identity catalogue: official TSV stream -> tracked India JSONL gzip -> verified build-time SQLite/receipt. It does not replace the live OFF product/nutrition routes or fetch OFF on a snapshot miss. `/v1/catalogue` and metadata expose manifest, artifact summary, field limits and freshness based on the source export date. Manual replacement is every nine calendar months through reviewed source changes and a new immutable deployment, with previous-deployment rollback. Coverage remains unverified. [Implemented catalogue workflow](CATALOGUE.md).
+Backend v0.2.3 provides a separate export-origin rich-facts catalogue: complete official JSONL stream -> bounded tracked India projection -> verified build-time SQLite/receipt. The separate facts route preserves direct nutrition sources, tag availability, optional record dates and official image attribution. Legacy aggregate nutrients remain unavailable as direct evidence; no image bytes are bundled. It does not replace the live OFF product/nutrition routes or fetch OFF on a snapshot miss. `/v1/catalogue` and metadata expose manifest, artifact summary, field limits and freshness based on the source export date. Manual replacement is every nine calendar months through reviewed source changes and a new immutable deployment, with previous-deployment rollback. Coverage remains unverified. [Implemented catalogue workflow](CATALOGUE.md).

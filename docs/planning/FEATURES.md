@@ -1,5 +1,7 @@
 # Unlabel feature workflows
 
+The [20-group tracker](FEATURE_TRACKER.md) records backend readiness, frontend ownership and acceptance gates for the five concept screens. These broader workflows are separate from completed API capabilities.
+
 Status: planned core features. The foundation includes a minimal Flutter starter and manual GitHub build/release workflow; the four scanning/analysis features below are not implemented. Product name: **Unlabel**. Tagline: **Label Padhega India**.
 
 One Flutter app directly in `frontend/` targets Android/iOS/web. Backend v0.2.2 implements Open Food Facts product/nutrition lookup, source-tagged computed grades, confirmed-value normalization and separate catalogue status/lookup. Setup rebuilds local SQLite from the tracked public projection; the hosted build generates a verified immutable SQLite/receipt without network acquisition. [The current release review](BACKEND_V0_2_2_REVIEW.md) records actual hosted verification. Catalogue data is identity-only, coverage remains unverified, and a snapshot miss makes no OFF request. Nutrition charts and reviewed analysis remain frontend/later backend work. Reviewed FSSAI criteria, OCR, local preference matching and optional Gemini wording remain later versions; the MVP needs no Dart regulatory engine or evaluator-parity work. Website/API use separate configured Vercel projects; `frontend/web/` is Flutter's platform folder. See [URLs and deployment settings](VERCEL_SETUP.md).

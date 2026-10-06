@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import __version__
+from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
 from app.catalogue.store import CatalogueStore
@@ -110,6 +111,18 @@ def create_app(
                 manifest=manifest,
                 freshness=snapshot_freshness(manifest.exported_at),
                 artifact=request.app.state.catalogue_artifact,
+                **(
+                    {
+                        "field_limits": [
+                            "nutrition_direct_tables_only",
+                            "images_are_source_urls_only",
+                            "per_product_dates_may_be_missing",
+                            "missing_allergen_tags_do_not_mean_allergen_free",
+                        ]
+                    }
+                    if store.supports_facts
+                    else {}
+                ),
             )
         except (ValueError, OSError):
             return CatalogueStatus(status="unavailable")
@@ -145,6 +158,8 @@ def create_app(
                 "nutrition_lookup": True,
                 "nutrition_normalization": True,
                 "catalogue_lookup": catalogue["status"] == "ready",
+                "catalogue_facts": catalogue["status"] == "ready"
+                and request.app.state.catalogue.supports_facts,
                 "nutrition_analysis": False,
                 "claim_checks": False,
                 "ingredient_explanations": False,
@@ -153,28 +168,21 @@ def create_app(
             },
         }
 
-    @application.get(
-        "/v1/catalogue/products/{barcode}",
-        response_model=CatalogLookup,
-        tags=["Catalogue"],
-        responses={code: {"model": CatalogLookup} for code in (404, 503)},
-    )
-    def catalogue_product(request: Request, barcode: Annotated[str, Path(pattern=BARCODE_PATTERN)]):
-        # Sync routes run in FastAPI's thread pool; SQLite never blocks the event loop.
-        directory = config.catalogue_path()
-        if directory is None:
-            result = CatalogLookup(
+    def snapshot_result(request: Request, barcode: str, *, facts: bool = False):
+        model = FactsLookup if facts else CatalogLookup
+        if config.catalogue_path() is None:
+            return model(
                 requested_barcode=barcode,
                 status="unavailable",
                 warnings=["catalogue_not_configured"],
             )
-        else:
-            try:
-                store = request.app.state.catalogue
-                if store is None:
-                    raise ValueError("Catalogue unavailable")
-                result = store.lookup(barcode)
-                artifact = request.app.state.catalogue_artifact
+        try:
+            store = request.app.state.catalogue
+            if store is None:
+                raise ValueError("Catalogue unavailable")
+            result = store.lookup_facts(barcode) if facts else store.lookup(barcode)
+            artifact = request.app.state.catalogue_artifact
+            if result.manifest is not None:
                 if artifact is not None and (
                     result.manifest.snapshot_id != artifact.snapshot_id
                     or result.manifest.source_sha256 != artifact.source_sha256
@@ -192,18 +200,38 @@ def create_app(
                 for warning in additional_warnings:
                     if warning not in warnings and len(warnings) < 100:
                         warnings.append(warning)
-                result = CatalogLookup.model_validate({**result.model_dump(), "warnings": warnings})
-            except (ValueError, OSError):
-                result = CatalogLookup(
-                    requested_barcode=barcode,
-                    status="unavailable",
-                    warnings=["catalogue_unavailable"],
-                )
+                result = model.model_validate({**result.model_dump(), "warnings": warnings})
+            return result
+        except (ValueError, OSError):
+            return model(
+                requested_barcode=barcode, status="unavailable", warnings=["catalogue_unavailable"]
+            )
+
+    def snapshot_response(result):
         return JSONResponse(
             result.model_dump(mode="json"),
             status_code={"found": 200, "not_found": 404, "unavailable": 503}[result.status],
             headers={"Cache-Control": "no-store"},
         )
+
+    @application.get(
+        "/v1/catalogue/products/{barcode}/facts",
+        response_model=FactsLookup,
+        tags=["Catalogue"],
+        responses={code: {"model": FactsLookup} for code in (404, 503)},
+    )
+    def catalogue_facts(request: Request, barcode: Annotated[str, Path(pattern=BARCODE_PATTERN)]):
+        return snapshot_response(snapshot_result(request, barcode, facts=True))
+
+    @application.get(
+        "/v1/catalogue/products/{barcode}",
+        response_model=CatalogLookup,
+        tags=["Catalogue"],
+        responses={code: {"model": CatalogLookup} for code in (404, 503)},
+    )
+    def catalogue_product(request: Request, barcode: Annotated[str, Path(pattern=BARCODE_PATTERN)]):
+        # Sync routes run in FastAPI's thread pool; SQLite never blocks the event loop.
+        return snapshot_response(snapshot_result(request, barcode))
 
     @application.get(
         "/v1/products/{barcode}",

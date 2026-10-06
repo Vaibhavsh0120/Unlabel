@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
@@ -20,5 +21,6 @@ def test_nutrition_examples_validate_for_teammate_consumers():
         "nutrition-normalize-v1.response.synthetic.json": NormalizeResponse,
         "nutrition-lookup-v1.synthetic.json": NutritionLookup,
         "catalogue-lookup-v1.synthetic.json": CatalogLookup,
+        "catalogue-facts-v1.synthetic.json": FactsLookup,
     }.items():
         model.model_validate_json((CONTRACTS / "examples" / filename).read_text())

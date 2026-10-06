@@ -1,6 +1,6 @@
 # Website and shared API deployment plan
 
-Updated: **2026-10-06**. Two Git-connected Vercel projects are configured for automatic deployment. Backend v0.2.2 adds receipt-verified immutable catalogue packaging and source-age status; pinned Flutter remains v0.0.0+1. Existing live product/nutrition lookup and confirmed normalization remain separate. Actual v0.2.2 deployment verification is recorded in the [current release review](../planning/BACKEND_V0_2_2_REVIEW.md); local validation alone does not prove hosted reads. Future OCR, rule analysis and regulatory evidence packaging remain plans. [Historical recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
+Updated: **2026-10-06**. Two Git-connected Vercel projects are configured for automatic deployment. Backend v0.2.3 adds rich snapshot facts to receipt-verified immutable catalogue packaging and source-age status; pinned Flutter remains v0.0.0+1. Existing live product/nutrition lookup and confirmed normalization remain separate. Actual v0.2.3 source/build/deployment gates are recorded in the [current release review](../planning/BACKEND_V0_2_3_REVIEW.md); local validation alone does not prove hosted reads. Future OCR, rule analysis and regulatory evidence packaging remain plans. [Historical recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
 
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
 
@@ -9,7 +9,7 @@ Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unla
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Live OFF product/nutrition, confirmed normalization and verified snapshot identity/status; reviewed rules and optional Gemini later. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Live OFF product/nutrition, confirmed normalization and verified snapshot identity/status/rich facts; reviewed rules and optional Gemini later. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
@@ -78,7 +78,7 @@ Treat every hosted request as able to land in a fresh instance. Read evidence; d
 Vercel Functions provide a read-only filesystem with temporary scratch space:
 [function runtimes](https://vercel.com/docs/functions/runtimes).
 Do not store scan history, mutable SQLite databases, user accounts, quota counters or permanent caches in that filesystem.
-The current backend keeps live OFF routes and a separate immutable SQLite identity catalogue. The catalogue build/runtime validate its receipt and source manifest; actual production file/hash/read checks remain a release gate. Future regulatory evidence uses its own read-only JSON bundle. A laptop can also use a regenerated local SQLite index. Nine-calendar-month source replacement creates a new Git/Vercel deployment; rollback restores the prior validated deployment and matching source/configuration. Never hot-swap packaged runtime files.
+The current backend keeps live OFF routes and a separate immutable SQLite identity/facts catalogue. Rich facts may include direct-table nutrition and attributed official image URL descriptors; no photos or world dump enter the function bundle. The catalogue build/runtime validate its receipt and source manifest; actual production file/hash/read checks remain a release gate. Future regulatory evidence uses its own read-only JSON bundle. A laptop can also use a regenerated local SQLite index. Nine-calendar-month source replacement creates a new Git/Vercel deployment; rollback restores the prior validated deployment and matching source/configuration. Never hot-swap packaged runtime files.
 Profiles, history and pending scans remain in browser/device storage and do not sync between clients in the initial scope.
 
 ## Limited offline access and optional model hosting
