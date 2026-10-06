@@ -1,6 +1,6 @@
 # Unlabel workspace instructions
 
-- Work on one accepted backend version at a time. Backend is currently 0.3.0; Flutter remains 0.0.0+1. The rich-facts v0.2.3 slice was pushed and verified independently; finish the separate reviewed-claims slice with its own review, hosted verification and source-only release. Do not rebuild APK/IPA or move historical release tags for backend/tooling work.
+- Work on one accepted backend version at a time. Backend is currently 0.3.0; Flutter remains 0.0.0+1. The rich-facts v0.2.3 and reviewed-claims v0.3.0 slices were separately reviewed, pushed, hosted-verified and published as source-only releases. Use the feature tracker to scope later accepted versions. Do not rebuild APK/IPA or move historical release tags for backend/tooling work.
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.
 - Restore with `python scripts/setup.py`; run with `python scripts/run_local.py`. `--scope backend` selects backend-only work. See docs/planning/LOCAL_DEVELOPMENT.md.
 - Never commit plaintext `.env`, private identities, real scans or credentials. Track authenticated `backend/.env.age` and its public recipient; refresh ciphertext with `python scripts/env.py encrypt` after changing local settings. Private key paste belongs in the hidden local terminal prompt.

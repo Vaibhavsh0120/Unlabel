@@ -6,7 +6,7 @@ Baseline: published **backend v0.2.2**, frontend **0.0.0+1**. Backend scope has 
 
 After verified v0.2.3: **6 ready, 0 partial and 8 planned backend groups**, plus **6 frontend-owned groups**. All frontend integration remains pending.
 
-After locally verified v0.3.0: **6 ready, 1 partial and 7 planned backend groups**, plus **6 frontend-owned groups**. Claim checks now cover seven reviewed numeric claim types; broader claim evidence remains incomplete. Exact production and publication checks are the remaining release gates.
+After released v0.3.0: **6 ready, 1 partial and 7 planned backend groups**, plus **6 frontend-owned groups**. Claim checks now cover seven reviewed numeric claim types; broader claim evidence remains incomplete. Both backend versions were reviewed, pushed, verified in production and published independently. This measures capabilities, not the percentage of development effort completed.
 
 | ID | Feature / screen | Backend current | Frontend work | Acceptance or milestone |
 | --- | --- | --- | --- | --- |
@@ -36,7 +36,7 @@ After locally verified v0.3.0: **6 ready, 1 partial and 7 planned backend groups
 | Version | Goal | Completion evidence | State |
 | --- | --- | --- | --- |
 | v0.2.3 | Rich India snapshot product facts | Full JSONL EOF/hash/counts; compact source; typed facts API; nutrition/image/tag/date boundaries; old contracts; actual hosted reads | Verified and pushed |
-| v0.3.0 | First evidence-backed claim checks | Current reviewed FSSAI sources; strict confirmed-input API; boundaries/unknowns/applicability; rule/evidence APIs; exact deployment smoke | Reviewed; 543 tests and static checks passed; source push/hosted release pending |
+| v0.3.0 | First evidence-backed claim checks | 543 tests; zero static errors/warnings; current reviewed FSSAI sources; strict confirmed-input/rule/evidence APIs; 72 hosted HTTP checks and exact build receipts | Verified, pushed and published |
 
 Each version is reviewed, documented, pushed and verified before the next is published. Rows advance only after their stated behavior is checked. A broad claim feature remains partial while other claim families or manufacturing/category evidence are unresolved.
 

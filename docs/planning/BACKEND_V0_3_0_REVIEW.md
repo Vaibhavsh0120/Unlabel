@@ -29,10 +29,12 @@ Canonical [rules](../../knowledge/rules/claims/reviewed-v1.json) and [registry](
 
 | Approved packaged JSON | Bytes | SHA-256 |
 | --- | --- | --- |
-| `rules/claims/reviewed-v1.json` | 11,754 | `5977bc482e105931deb79858430894e330b23ef682c93b9c4aa25d1a14a39128` |
+| `rules/claims/reviewed-v1.json` | 11,477 | `2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e` |
 | `sources/registry/fssai-claims-v1.json` | 2,913 | `6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d` |
 
 With `VERCEL=1`, startup verifies a knowledge receipt even when `CLAIMS_KNOWLEDGE_DIRECTORY` explicitly selects another directory. An invalid existing package never falls back to canonical source. Local development may load canonical root knowledge only when the default package is absent; verified packaged knowledge exposes `/v1/meta.knowledge_artifact`, while direct canonical loading has a null artifact. Knowledge failure leaves health, live OFF and catalogue readiness independent.
+
+The table records committed LF source bytes and the actual hosted package. An earlier Windows working copy used CRLF for the rules JSON and had a different byte count/hash; its parsed rules agreed. Hosted verification compares exact committed bytes and each build's own receipt. The local knowledge package was rebuilt from those LF bytes and verified separately.
 
 ## Checks before source push
 
@@ -45,18 +47,25 @@ With `VERCEL=1`, startup verifies a knowledge receipt even when `CLAIMS_KNOWLEDG
 | Dependencies | `pip check` passed |
 | Contract exports | Current eleven-route OpenAPI and five added schemas compare with runtime; all eleven owned examples validate |
 | Actual network-free build | Final combined catalogue plus approved JSON knowledge build/receipt verification passed; the two knowledge hashes above match |
-| Actual local setup | `setup.py --scope backend --non-interactive` passed, preserving existing env and reusing the validated **24,641-record** index |
+| Actual local setup | `setup.py --scope backend --non-interactive` passed, preserving existing env and reusing the validated **24,641-record** index. A real terminal `--catalogue-only` run also displayed measured byte bars and the indeterminate validation stage successfully |
 | Independent code/dead-code review | Fresh independent review passed **150 focused tests** with no remaining findings. Hosted explicit-override receipt gap fixed with RED→GREEN regression; unused duplicate router knowledge loader removed. Fractional-basis threshold rounding was fixed with exact rational comparisons; nine boundary/outside cases reproduced failures then passed. An extreme tiny positive energy overflow regression passed after bounded conversion was fixed |
 | All Markdown/scripts | All **63 Markdown files** checked for current versus historical scope; guides match v0.3.0 routes, knowledge, build/progress output and remaining work. All **11 maintained Python scripts**, both PowerShell wrappers, application/build/progress source and existing workflow/web script boundaries reviewed |
 | Syntax/artifacts | All maintained Python AST, **49 JSON**, **1 TOML**, **3 YAML** and **11 XML/plist** parsed; both PowerShell parsers, web Bash syntax, **7 workflow Bash blocks** and **6 embedded Python snippets** passed |
-| Docs links/whitespace | Final links checked after current Markdown updates; zero missing targets. `git diff --check` passed with line-ending advisories only |
+| Docs links/whitespace | **63 Markdown files / 363 local links**, zero missing targets before source push. `git diff --check` passed with line-ending advisories only; proof links rechecked before the documentation push |
 | Settings/secrets | Public OFF identity updated to 0.3.0; ciphertext refreshed; no tracked private keys. Generated SQLite/knowledge/receipts and plaintext env are ignored. Actual private-key restoration was not rerun |
 | Frontend/native boundary | Flutter analysis reported zero issues and all **3 tests passed**; source remains 0.0.0+1 with no frontend integration, APK/IPA rebuild or historical tag movement |
 
 ## Hosted and publication gates
 
-Source push, exact-commit production deployments, build-log receipt/public metadata agreement, claim/rule/evidence HTTP behavior, invalid/oversized/unknown/conflicting cases, current OpenAPI, compatibility, CORS and website/bootstrap checks are pending. A local build or READY deployment alone is insufficient endpoint proof. Confirm excluded env, database, receipt and knowledge paths are not publicly served.
+Implementation **`ba44cbd26cf3c5ee306449c28fbb0c40dea0ba2e`** was pushed independently after all local checks and reviews. Both exact-source production deployments reached **READY**:
 
-After verified source push and hosted behavior, publish a source-only Backend v0.3.0 prerelease for the tested commit, preserving earlier tags/assets. Record the exact implementation SHA, deployment IDs, public receipts and dated HTTP evidence here. Do not represent this pending production/publication gate as complete.
+- Backend: `dpl_7mE2QodTDT6NicE3gz1K7yuWuFqH`.
+- Frontend: `dpl_CpKhKmJ3qDSBZqRqqsx1iyp2UmAg`; the same unchanged Flutter starter is deployed.
+
+**72 public HTTP checks passed** against [the API](https://unlabel-api.vercel.app). All seven claims passed exact solid/liquid thresholds and contradicted immediately outside them. Fractional-basis and statutory kJ boundaries, tiny positive energy, unknown nutrient, all four unreviewed claims, conflicting rows and special-food scope behaved correctly. Unconfirmed/invalid-number/deep JSON requests returned sanitized 422; both normal and trailing-slash oversized POST paths returned 413. Rule/evidence records, current OpenAPI, earlier catalogue/normalization behavior, CORS and the website bootstrap passed. Env, SQLite, receipts and packaged knowledge URLs returned 404. [Dated production evidence](../research/BACKEND_V0_3_0_PRODUCTION.json).
+
+The public **62,472,192-byte** SQLite matched the actual hosted build: SHA-256 `363a53eb215b42c21617107eef4ccbf2e56edeb657d874c6620bd3ed8ba488ab`, snapshot `d51ede50-dd54-40ec-870f-7ca309a9ce10`. Both public knowledge hashes/lengths exactly matched the actual hosted build receipt and committed source bytes. OFF source, export date and 24,641 indexed products remain unchanged; market coverage is still unverified.
+
+Published [source-only v0.3.0 prerelease](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.3.0) at tag `v0.3.0`, pointing to verified implementation `ba44cbd26cf3c5ee306449c28fbb0c40dea0ba2e`; **zero binary assets**. Earlier tags/assets and Flutter 0.0.0+1 remain unchanged. The subsequent documentation commit records these completed gates without moving the source tag.
 
 The wider full report/health score, claim coverage beyond this subset, glossary, comparison, saved/history/preferences, camera/OCR and frontend wiring remain future work. Missing data stays unknown; numerical support never establishes allergy safety or complete legal compliance.

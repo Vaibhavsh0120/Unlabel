@@ -4,6 +4,8 @@ Fresh clone: `./scripts/setup.ps1`, then `./scripts/run-local.ps1` from root. Se
 
 > Unlabel has a Flutter v0.0.0+1 starter and FastAPI backend v0.3.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
 
+The rich-facts v0.2.3 and reviewed-claims v0.3.0 releases were reviewed, pushed, verified in production and published separately. The latter passed 543 backend tests, static checks and 72 public HTTP checks with actual hosted build receipts. Use the [current API guide](../../backend/README.md), [synthetic request/response contracts](../../contracts/README.md) and [dated production proof](../research/BACKEND_V0_3_0_PRODUCTION.json) when connecting the client. Wider feature and client work remains explicit in the [20-group tracker](FEATURE_TRACKER.md).
+
 Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)**. [Hosting settings/verification](VERCEL_SETUP.md).
 
 ## What exists
