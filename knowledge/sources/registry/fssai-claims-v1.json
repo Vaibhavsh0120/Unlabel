@@ -1,0 +1,65 @@
+{
+  "schema_version": "1",
+  "knowledge_version": "claims-2026-10-06.1",
+  "reviewed_on": "2026-10-06",
+  "amendment_index_url": "https://fssai.gov.in/food-law/regulations/amendments/advertising-claims",
+  "sources": [
+    {
+      "source_id": "fssai-ac-2022-schedule-i",
+      "title": "Food Safety and Standards (Advertising and Claims) Amendment Regulations, 2022: revised Schedule I",
+      "url": "https://fssai.gov.in/docs/food-law/regulations/amendments/advertising-claims/Gazette_Notification_Amendment_14_12_2022.pdf",
+      "source_kind": "gazette",
+      "pdf_sha256": "9e516f3fa689955ecd3eda3f4f9c07511d89b68a4272bfebc277cbb10be6da72",
+      "pdf_bytes": 1654559,
+      "pdf_pages": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "publication_date": "2022-12-13",
+      "effective_date": "2022-12-13",
+      "verified_on": "2026-10-06",
+      "verification_status": "reviewed_current",
+      "qualification": "Authoritative Gazette amendment. English Schedule I rows 10, 13 and 14 supply the selected fibre, total sugars and sodium numerical criteria. PDF page numbers are one-based."
+    },
+    {
+      "source_id": "fssai-ac-2018-general",
+      "title": "Food Safety and Standards (Advertising and Claims) Regulations, 2018: general requirements and non-addition claims",
+      "url": "https://fssai.gov.in/docs/food-law/regulations/Gazette_Notification_Advertising_Claims_27_11_2018.pdf",
+      "source_kind": "gazette",
+      "pdf_sha256": "58184c716ad254e2ec698e3c4d212dfaacea4bf43cc09dcd48daeb590e94d9f4",
+      "pdf_bytes": 1178339,
+      "pdf_pages": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "publication_date": null,
+      "effective_date": null,
+      "verified_on": "2026-10-06",
+      "verification_status": "reviewed_current",
+      "qualification": "Principal Gazette regulations provide general applicability and advertising requirements; regulation 6(1) concerns no-added-sugar claims. This numerical engine does not establish full regulatory compliance."
+    },
+    {
+      "source_id": "fssai-ac-compendium-v4",
+      "title": "FSSAI Advertising and Claims Regulations compendium, version IV, 14 December 2022",
+      "url": "https://www.fssai.gov.in/upload/uploadfiles/files/Compendium_Advertising_Claims_Regulations_14_12_2022.pdf",
+      "source_kind": "compendium",
+      "pdf_sha256": "4bfe17ba6fe59a3a8ffc7326ad723014b19d69b68cebffdc68717cdfff5cb191",
+      "pdf_bytes": 787091,
+      "pdf_pages": [
+        4,
+        9,
+        10
+      ],
+      "publication_date": "2022-12-14",
+      "effective_date": null,
+      "verified_on": "2026-10-06",
+      "verification_status": "reviewed_current",
+      "qualification": "Convenience cross-check of the principal regulations and amendments; the Gazette is the legal authority. This repository stores reviewed metadata and threshold facts, not redistributed PDFs."
+    }
+  ]
+}

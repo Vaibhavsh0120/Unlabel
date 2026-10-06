@@ -1,0 +1,26 @@
+{
+  "schema_version": "1",
+  "status": "found",
+  "requested_source_id": "fssai-ac-2022-schedule-i",
+  "knowledge_version": "claims-2026-10-06.1",
+  "source": {
+    "source_id": "fssai-ac-2022-schedule-i",
+    "title": "Food Safety and Standards (Advertising and Claims) Amendment Regulations, 2022: revised Schedule I",
+    "url": "https://fssai.gov.in/docs/food-law/regulations/amendments/advertising-claims/Gazette_Notification_Amendment_14_12_2022.pdf",
+    "source_kind": "gazette",
+    "pdf_sha256": "9e516f3fa689955ecd3eda3f4f9c07511d89b68a4272bfebc277cbb10be6da72",
+    "pdf_bytes": 1654559,
+    "pdf_pages": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "publication_date": "2022-12-13",
+    "effective_date": "2022-12-13",
+    "verified_on": "2026-10-06",
+    "verification_status": "reviewed_current",
+    "qualification": "Authoritative Gazette amendment. English Schedule I rows 10, 13 and 14 supply the selected fibre, total sugars and sodium numerical criteria. PDF page numbers are one-based."
+  },
+  "warnings": []
+}

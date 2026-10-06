@@ -13,13 +13,14 @@ def payload(**fields):
     }
 
 
-async def lookup(response=None, exception=None):
-    def handle(request):
+async def lookup(response: httpx.Response | None = None, exception: Exception | None = None):
+    def handle(request: httpx.Request) -> httpx.Response:
         assert request.url.host == "world.openfoodfacts.org"
         assert request.url.path == "/api/v3.6/product/0123456789012.json"
         assert request.headers["User-Agent"].startswith("Unlabel/")
         if exception:
             raise exception
+        assert response is not None
         return response
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handle)) as client:
@@ -42,6 +43,7 @@ async def test_found_preserves_origin_missing_information_and_provider_insights(
     )
     assert result.status == "found"
     assert result.requested_barcode == "0123456789012"
+    assert result.product is not None
     assert result.product.name == "Synthetic oats"
     assert result.product.insights.nutri_score_grade == "b"
     assert result.product.allergen_tags == ["en:milk"]
@@ -56,6 +58,7 @@ async def test_found_preserves_origin_missing_information_and_provider_insights(
 async def test_sparse_product_does_not_invent_missing_fields():
     result = await lookup(httpx.Response(200, json=payload()))
     assert result.status == "found"
+    assert result.product is not None
     assert result.product.ingredients_text is None
     assert result.product.insights.nutri_score_grade is None
     assert "ingredients_missing" in result.warnings
@@ -91,6 +94,7 @@ async def test_timeout_is_recoverable():
 @pytest.mark.asyncio
 async def test_leading_zero_normalization_is_allowed_but_retained():
     result = await lookup(httpx.Response(200, json=payload(code="123456789012")))
+    assert result.product is not None
     assert result.product.barcode == "123456789012"
     assert result.requested_barcode == "0123456789012"
 
@@ -109,6 +113,7 @@ async def test_invalid_optional_values_are_unknown_not_truthy_or_fabricated():
         )
     )
     assert result.status == "found"
+    assert result.product is not None
     assert result.product.ingredients_text is None
     assert result.product.allergen_tags == []
     assert result.product.insights.nova_group is None

@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "EvidenceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "enum": [
+            "fssai-ac-2022-schedule-i",
+            "fssai-ac-2018-general",
+            "fssai-ac-compendium-v4"
+          ],
+          "title": "Source Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "gazette",
+            "compendium"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "pdf_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Pdf Sha256",
+          "type": "string"
+        },
+        "pdf_bytes": {
+          "exclusiveMinimum": 0,
+          "maximum": 10000000,
+          "title": "Pdf Bytes",
+          "type": "integer"
+        },
+        "pdf_pages": {
+          "items": {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Pdf Pages",
+          "type": "array"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Publication Date"
+        },
+        "effective_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Effective Date"
+        },
+        "verified_on": {
+          "format": "date",
+          "title": "Verified On",
+          "type": "string"
+        },
+        "verification_status": {
+          "enum": [
+            "reviewed_current",
+            "needs_review",
+            "superseded"
+          ],
+          "title": "Verification Status",
+          "type": "string"
+        },
+        "qualification": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Qualification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "url",
+        "source_kind",
+        "pdf_sha256",
+        "pdf_bytes",
+        "pdf_pages",
+        "publication_date",
+        "effective_date",
+        "verified_on",
+        "verification_status",
+        "qualification"
+      ],
+      "title": "EvidenceSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "found",
+        "not_found",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "requested_source_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Requested Source Id",
+      "type": "string"
+    },
+    "knowledge_version": {
+      "anyOf": [
+        {
+          "const": "claims-2026-10-06.1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Knowledge Version"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EvidenceSource"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "requested_source_id",
+    "knowledge_version",
+    "source",
+    "warnings"
+  ],
+  "title": "EvidenceResponse",
+  "type": "object"
+}

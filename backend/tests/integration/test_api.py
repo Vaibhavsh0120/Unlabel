@@ -28,15 +28,16 @@ def test_service_endpoints_do_not_call_provider_and_future_features_are_disabled
     with TestClient(create_app(Settings(_env_file=None), httpx.MockTransport(forbidden))) as client:
         assert client.get("/v1/health").json()["provider_connectivity"] == "not_checked"
         meta = client.get("/v1/meta").json()
-        assert meta["backend_version"] == "0.2.3"
+        assert meta["backend_version"] == __version__
         assert meta["capabilities"]["product_lookup"] is True
         assert {key for key, enabled in meta["capabilities"].items() if enabled} == {
             "product_lookup",
             "nutrition_lookup",
             "nutrition_normalization",
+            "claim_checks",
         }
         assert client.get("/v1/analyze").status_code == 404
-        assert client.get("/openapi.json").json()["info"]["version"] == "0.2.3"
+        assert client.get("/openapi.json").json()["info"]["version"] == __version__
 
 
 @pytest.mark.parametrize(
@@ -131,6 +132,19 @@ def test_exact_origin_cors_does_not_treat_cors_as_auth():
 def test_invalid_cors_config_is_rejected(origins):
     with pytest.raises(ValidationError):
         Settings(_env_file=None, cors_origins=origins)
+
+
+def test_settings_dotenv_default_can_be_disabled_and_direct_values_take_precedence(
+    tmp_path, monkeypatch
+):
+    dotenv = tmp_path / "synthetic.env"
+    dotenv.write_text("OFF_TIMEOUT_SECONDS=11\n", encoding="utf-8")
+    monkeypatch.delenv("OFF_TIMEOUT_SECONDS", raising=False)
+    monkeypatch.setitem(Settings.model_config, "env_file", dotenv)
+
+    assert Settings().off_timeout_seconds == 11
+    assert Settings(_env_file=None).off_timeout_seconds == 8
+    assert Settings(off_timeout_seconds=6.5).off_timeout_seconds == 6.5
 
 
 def test_backend_version_matches_manifest_without_changing_frontend():

@@ -7,6 +7,7 @@ gzip CRC/EOF, valid bounded JSON objects, and an India projection within budget.
 import argparse
 import gzip
 import hashlib
+import io
 import json
 import math
 import os
@@ -21,6 +22,7 @@ from datetime import UTC, datetime
 from decimal import Decimal, DecimalException
 from email.utils import parsedate_to_datetime
 from pathlib import Path
+from typing import Protocol
 from urllib.parse import urlsplit
 
 SOURCE = "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz"
@@ -221,8 +223,18 @@ def project_record(raw):
     return _selected(result)
 
 
+class BinaryReader(Protocol):
+    def read(self, size: int = -1, /) -> bytes: ...
+
+
 class MeteredReader:
-    def __init__(self, stream, *, max_bytes=MAX_COMPRESSED_BYTES, progress=False):
+    def __init__(
+        self,
+        stream: BinaryReader,
+        *,
+        max_bytes: int = MAX_COMPRESSED_BYTES,
+        progress: bool = False,
+    ) -> None:
         self.stream = stream
         self.max_bytes = max_bytes
         self.bytes_read = 0
@@ -231,7 +243,7 @@ class MeteredReader:
         self.last_report_bytes = 0
         self.progress = progress
 
-    def read(self, size=-1):
+    def read(self, size: int = -1) -> bytes:
         if not 0 <= size <= 1024**2:
             raise ValueError("Unbounded compressed read refused")
         if time.monotonic() - self.started > MAX_SECONDS:
@@ -258,6 +270,10 @@ class MeteredReader:
             self.last_report = now
             self.last_report_bytes = self.bytes_read
         return data
+
+    def seek(self, offset: int, whence: int = 0) -> int:
+        # Rewinding would invalidate the acquisition byte count and digest.
+        raise io.UnsupportedOperation("Compressed acquisition stream cannot seek")
 
 
 def project_jsonl(source, target):
@@ -426,7 +442,7 @@ def acquire(directory):
         request = urllib.request.Request(
             SOURCE,
             headers={
-                "User-Agent": "Unlabel/0.2.3 (https://github.com/Vaibhavsh0120/Unlabel)",
+                "User-Agent": "Unlabel/0.3.0 (https://github.com/Vaibhavsh0120/Unlabel)",
                 "Accept-Encoding": "identity",
             },
         )

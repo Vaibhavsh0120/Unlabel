@@ -1,19 +1,40 @@
-# Canonical knowledge — no corpus populated yet
+# Reviewed claim knowledge
 
-This area will hold small, reviewed JSON/CSV records rather than a scraped website or trained model. They are the canonical input to the backend's reviewed rule/evidence bundle and an optional small Flutter ingredient glossary. Open Food Facts supplies primary online product data separately. Optional local SQLite indexes are derived, not durable Vercel storage. Those exports will be created later by tools in scripts.
+Backend **v0.3.0** loads the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Ingredient aliases, allergen rules, nutrition classifications and bilingual glossary content remain reserved work. Open Food Facts product facts and user-confirmed package rows retain separate origins.
 
-| Folder | Future content |
+| Canonical file | Current content |
 | --- | --- |
-| sources/registry | Publisher, URL, version, provision, dates, review state and reuse rights |
-| sources/downloads | Ignored local source files, only when permitted and needed |
-| ingredients | Canonical names, INS/E-number aliases, purpose, uncertainty and evidence IDs |
-| rules/claims | Reviewed claim criteria and applicability, including required fields |
-| rules/nutrition | Unit/basis criteria and distinct educational versus regulatory references |
-| rules/allergens | Declared/may-contain aliases and uncertainty rules |
-| translations/en, hi | Reviewed glossary and result templates; preserve allergen names and numbers |
+| [rules/claims/reviewed-v1.json](rules/claims/reviewed-v1.json) | Seven numerical fibre, sugar and sodium claims with applicability, alternatives, evidence locators and bounded wording |
+| [sources/registry/fssai-claims-v1.json](sources/registry/fssai-claims-v1.json) | Three reviewed official source metadata records, PDF hashes/sizes/pages, known dates, review status and qualifications |
 
-Every active finding must trace to its input origin (OFF record or confirmed package field) and a reviewed rule/source. Publication date is not necessarily effective date. No legal threshold or claim rule is active in this foundation. Backend fixtures test missing information, applicability and source conflicts; no second device rule engine is required for the MVP.
+The reviewed source date is **6 October 2026**; v0.3.0 implementation/release work continues on **7 October 2026** in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
 
-Use exact identifiers and aliases first. Evidence-passage retrieval can later use SQLite full-text search; semantic/vector RAG is not needed for the initial small corpus. If later added, it retrieves text only and does not replace deterministic criteria.
+## Reviewed sources
 
-Free-to-read does not imply permission to redistribute a document. Read the [evidence strategy](../docs/research/EVIDENCE_STRATEGY.md) before copying source content. Community product records from Open Food Facts remain separately identified enrichment, not regulatory evidence.
+| ID | Official source | Acquired PDF bytes | SHA-256 |
+| --- | --- | --- | --- |
+| `fssai-ac-2022-schedule-i` | [2022 Advertising and Claims Gazette amendment](https://fssai.gov.in/docs/food-law/regulations/amendments/advertising-claims/Gazette_Notification_Amendment_14_12_2022.pdf) | 1,654,559 | `9e516f3fa689955ecd3eda3f4f9c07511d89b68a4272bfebc277cbb10be6da72` |
+| `fssai-ac-2018-general` | [2018 principal Gazette regulations](https://fssai.gov.in/docs/food-law/regulations/Gazette_Notification_Advertising_Claims_27_11_2018.pdf) | 1,178,339 | `58184c716ad254e2ec698e3c4d212dfaacea4bf43cc09dcd48daeb590e94d9f4` |
+| `fssai-ac-compendium-v4` | [Advertising and Claims compendium, Version IV](https://www.fssai.gov.in/upload/uploadfiles/files/Compendium_Advertising_Claims_Regulations_14_12_2022.pdf) | 787,091 | `4bfe17ba6fe59a3a8ffc7326ad723014b19d69b68cebffdc68717cdfff5cb191` |
+
+These hashes record the acquired source PDFs used for review; the PDFs are not committed or shipped in the function. The repository packages reviewed threshold facts and source metadata only. The Gazette is authoritative; the compendium is a reference cross-check. The [official amendment index](https://fssai.gov.in/food-law/regulations/amendments/advertising-claims) was reviewed for this version. [Fresh byte/hash verification](../docs/research/FSSAI_CLAIMS_V0_3_0_SOURCE_CHECK.json) matches all three registry records. Complete Legal Metrology or FSSAI certification is outside scope.
+
+Fibre criteria cite Schedule I **row 14, Gazette PDF page 13**; sugar cites **row 10, page 12**; sodium cites **row 13, page 13**. Energy alternatives cite **Schedule I Note 2, page 13** and use **4.2 kJ per kcal** from original selected confirmed rows. The existing normalization-v1 snapshot preserves its separate 4.184 conversion. The API exposes claim-specific conversion version `fssai-schedule-i-note2-v1`.
+
+## Scope and packaging
+
+The engine checks `source_of_fibre`, `high_fibre`, `low_sugar`, `sugar_free`, `low_sodium`, `very_low_sodium` and `sodium_free` for confirmed ordinary general foods with matching selected table, form and preparation. It accepts only strict structured rows and identified claims. One applicable fibre alternative may support the numerical criterion; contradiction requires all applicable alternatives to be known and fail. Missing, conflicting or unsuitable evidence stays `insufficient_information`.
+
+`high_protein`, `source_of_protein`, `no_added_sugar` and `multigrain` are recognized but unreviewed, and always return `insufficient_information`. The engine does not derive manufacturing non-addition from total sugar, judge ingredient safety, score health or certify full legal compliance. [Current API/criteria](../backend/README.md).
+
+`backend/build_catalogue.py` validates and packages only the two approved JSON files under ignored `backend/app/claims/data/`, alongside a strict hash/length receipt. It copies no source PDF, scan, arbitrary file or credential and makes no network request. Its successful stdout contains both `catalogue` and `claims_knowledge` receipts. With `VERCEL=1`, startup requires a valid receipt even for an explicit knowledge-directory override. Missing/damaged knowledge disables claim/rule/evidence routes without disabling health, live OFF or catalogue routes. A verified receipt is summarized by `/v1/meta.knowledge_artifact`; direct local canonical-source loading has no artifact receipt. [Build/run guide](../docs/planning/LOCAL_DEVELOPMENT.md).
+
+| Folder | Remaining content |
+| --- | --- |
+| `sources/downloads` | Ignored local source files, only when needed and permitted |
+| `ingredients` | Reviewed names, INS/E-number aliases, purpose and uncertainty |
+| `rules/nutrition` | Educational classifications with reviewed applicability and provenance |
+| `rules/allergens` | Declared/may-contain aliases and conservative uncertainty rules |
+| `translations/en`, `translations/hi` | Reviewed glossary/result wording that preserves numbers and uncertainty |
+
+Use exact identifiers and reviewed rules first. A future small ingredient corpus can use structured lookup or SQLite full-text search; semantic/vector RAG is not required. Read the [evidence strategy](../docs/research/EVIDENCE_STRATEGY.md) before copying source content. Free-to-read does not automatically grant redistribution rights.

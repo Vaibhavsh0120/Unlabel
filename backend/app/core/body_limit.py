@@ -37,7 +37,10 @@ class RequestBodyLimit:
                 break
         consumed = False
 
-        if scope["path"] == "/v1/nutrition/normalize" and scope["method"] == "POST":
+        if (
+            scope["path"].rstrip("/") in {"/v1/nutrition/normalize", "/v1/claims/check"}
+            and scope["method"] == "POST"
+        ):
             try:
                 json.loads(body, parse_float=checked_float, parse_constant=reject_constant)
             except (json.JSONDecodeError, UnicodeDecodeError):

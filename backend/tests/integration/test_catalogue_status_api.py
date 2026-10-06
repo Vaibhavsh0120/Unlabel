@@ -77,9 +77,12 @@ def test_verified_bundle_status_and_lookup_keep_age_artifact_and_no_upstream(pac
         response = client.get("/v1/catalogue", headers={"Origin": "https://unlabel.example"})
         assert response.status_code == 200
         result = CatalogueStatus.model_validate_json(response.content)
+        assert result.manifest is not None
         assert result.manifest.indexed_products == 1
+        assert result.freshness is not None
         assert result.freshness.status == "refresh_due"
         assert result.freshness.refresh_due_at == datetime(2020, 10, 31, 12, tzinfo=UTC)
+        assert result.artifact is not None
         assert result.artifact.database_sha256 == receipt["database_sha256"]
         assert result.artifact.database_bytes == (directory / "catalogue.sqlite3").stat().st_size
         assert "nutrition_tables_not_included" in result.field_limits

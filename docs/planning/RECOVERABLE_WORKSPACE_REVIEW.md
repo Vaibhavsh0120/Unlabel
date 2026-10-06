@@ -1,6 +1,6 @@
 # Recoverable workspace review
 
-Historical maintenance record for backend 0.2.1. Current backend 0.2.3 bundling/deployment evidence is in the [v0.2.3 review](BACKEND_V0_2_3_REVIEW.md); the results below describe the earlier checkout.
+Historical maintenance record for backend 0.2.1. Current backend 0.3.0 claim/bundle/deployment gates are in the [v0.3.0 review](BACKEND_V0_3_0_REVIEW.md), with independently released catalogue proof in the [v0.2.3 review](BACKEND_V0_2_3_REVIEW.md); the results below describe the earlier checkout.
 
 Maintenance checked on **6 October 2026**. Backend remains 0.2.1; frontend remains 0.0.0+1. Release tags and APK/IPA assets are untouched.
 

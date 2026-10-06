@@ -1,6 +1,6 @@
 # Working on the Unlabel foundation
 
-The current phase includes Flutter **0.0.0+1**, backend **v0.2.3** live APIs and a verified rich-facts catalogue bundle, shared contracts/docs, manual mobile releases and Vercel setup. The dated India snapshot has **24,641 supported records**; [current verification](docs/planning/BACKEND_V0_2_3_REVIEW.md) separates source, local and hosted evidence. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [accepted next-version plan](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card, review Markdown/scripts, remove demonstrably dead code and update docs before every push.
+The current phase includes Flutter **0.0.0+1**, backend **v0.3.0** live APIs, verified rich-facts catalogue and reviewed confirmed-label numerical claim subset, shared contracts/docs, manual mobile releases and Vercel setup. The dated India snapshot has **24,641 supported records**; [current verification](docs/planning/BACKEND_V0_3_0_REVIEW.md) separates source, local and hosted evidence. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [accepted next-version plan](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card, review Markdown/scripts, remove demonstrably dead code and update docs before every push.
 
 ## Team boundaries
 

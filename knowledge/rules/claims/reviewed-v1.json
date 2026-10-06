@@ -1,0 +1,277 @@
+{
+  "schema_version": "1",
+  "knowledge_version": "claims-2026-10-06.1",
+  "reviewed_on": "2026-10-06",
+  "rules": [
+    {
+      "rule_id": "fssai.claims.source_of_fibre.v1",
+      "claim": "source_of_fibre",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "source_of_fibre.per_100_g",
+          "nutrient": "fibre",
+          "basis": "per_100_g",
+          "operator": "gte",
+          "threshold": 3,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "source_of_fibre.per_100_mL",
+          "nutrient": "fibre",
+          "basis": "per_100_mL",
+          "operator": "gte",
+          "threshold": 1.5,
+          "unit": "g",
+          "applicable_form": "liquid"
+        },
+        {
+          "criterion_id": "source_of_fibre.per_100_kcal",
+          "nutrient": "fibre",
+          "basis": "per_100_kcal",
+          "operator": "gte",
+          "threshold": 1.5,
+          "unit": "g",
+          "applicable_form": "either"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 14, PDF page 13; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for source of fibre. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for source of fibre. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.high_fibre.v1",
+      "claim": "high_fibre",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "high_fibre.per_100_g",
+          "nutrient": "fibre",
+          "basis": "per_100_g",
+          "operator": "gte",
+          "threshold": 6,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "high_fibre.per_100_mL",
+          "nutrient": "fibre",
+          "basis": "per_100_mL",
+          "operator": "gte",
+          "threshold": 3,
+          "unit": "g",
+          "applicable_form": "liquid"
+        },
+        {
+          "criterion_id": "high_fibre.per_100_kcal",
+          "nutrient": "fibre",
+          "basis": "per_100_kcal",
+          "operator": "gte",
+          "threshold": 3,
+          "unit": "g",
+          "applicable_form": "either"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 14, PDF page 13; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for high fibre. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for high fibre. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.low_sugar.v1",
+      "claim": "low_sugar",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "low_sugar.per_100_g",
+          "nutrient": "sugars",
+          "basis": "per_100_g",
+          "operator": "lte",
+          "threshold": 5,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "low_sugar.per_100_mL",
+          "nutrient": "sugars",
+          "basis": "per_100_mL",
+          "operator": "lte",
+          "threshold": 2.5,
+          "unit": "g",
+          "applicable_form": "liquid"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 10, PDF page 12; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for low sugar. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for low sugar. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.sugar_free.v1",
+      "claim": "sugar_free",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "sugar_free.per_100_g",
+          "nutrient": "sugars",
+          "basis": "per_100_g",
+          "operator": "lte",
+          "threshold": 0.5,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "sugar_free.per_100_mL",
+          "nutrient": "sugars",
+          "basis": "per_100_mL",
+          "operator": "lte",
+          "threshold": 0.5,
+          "unit": "g",
+          "applicable_form": "liquid"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 10, PDF page 12; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for sugar free. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for sugar free. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.low_sodium.v1",
+      "claim": "low_sodium",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "low_sodium.per_100_g",
+          "nutrient": "sodium",
+          "basis": "per_100_g",
+          "operator": "lte",
+          "threshold": 0.12,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "low_sodium.per_100_mL",
+          "nutrient": "sodium",
+          "basis": "per_100_mL",
+          "operator": "lte",
+          "threshold": 0.12,
+          "unit": "g",
+          "applicable_form": "liquid"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 13, PDF page 13; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for low sodium. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for low sodium. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.very_low_sodium.v1",
+      "claim": "very_low_sodium",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "very_low_sodium.per_100_g",
+          "nutrient": "sodium",
+          "basis": "per_100_g",
+          "operator": "lte",
+          "threshold": 0.04,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "very_low_sodium.per_100_mL",
+          "nutrient": "sodium",
+          "basis": "per_100_mL",
+          "operator": "lte",
+          "threshold": 0.04,
+          "unit": "g",
+          "applicable_form": "liquid"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 13, PDF page 13; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for very low sodium. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for very low sodium. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    },
+    {
+      "rule_id": "fssai.claims.sodium_free.v1",
+      "claim": "sodium_free",
+      "combination": "any",
+      "criteria": [
+        {
+          "criterion_id": "sodium_free.per_100_g",
+          "nutrient": "sodium",
+          "basis": "per_100_g",
+          "operator": "lte",
+          "threshold": 0.005,
+          "unit": "g",
+          "applicable_form": "solid"
+        },
+        {
+          "criterion_id": "sodium_free.per_100_mL",
+          "nutrient": "sodium",
+          "basis": "per_100_mL",
+          "operator": "lte",
+          "threshold": 0.005,
+          "unit": "g",
+          "applicable_form": "liquid"
+        }
+      ],
+      "source_ids": [
+        "fssai-ac-2022-schedule-i",
+        "fssai-ac-2018-general",
+        "fssai-ac-compendium-v4"
+      ],
+      "evidence_locator": "2022 Gazette Schedule I row 13, PDF page 13; general applicability: 2018 regulations; energy alternatives: Schedule I Note 2, PDF page 13",
+      "supported_wording": "The selected confirmed nutrition table meets a reviewed numerical criterion for sodium free. This assessment covers that numerical criterion only; it is not a health rating or legal certification.",
+      "contradicted_wording": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for sodium free. This numerical result does not establish a legal violation.",
+      "scope": "numeric_criterion_only",
+      "preparation_policy": "confirmed_matching_table",
+      "food_category_policy": "ordinary_general_food_only"
+    }
+  ]
+}

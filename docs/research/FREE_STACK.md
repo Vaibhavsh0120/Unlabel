@@ -1,11 +1,11 @@
 # Zero-cost stack and AI plan
 
-Provider/cost research checked: **2026-10-05**. Current implementation status: frontend **0.0.0+1**, backend **v0.2.1**, separate deployed Vercel website/API projects, and the manual native artifact workflow. Live product/nutrition lookup and confirmed-value normalization are implemented. v0.2.1 adds local acquisition/import tooling and an optional read-only identity catalogue; full India coverage and hosted catalogue availability require separate verification. Reviewed rules, OCR, templates and AI remain proposals below.
+Provider/cost research checked: **2026-10-05**. Current implementation status: frontend **0.0.0+1**, backend **v0.3.0**, separate deployed Vercel website/API projects, and the manual native artifact workflow. Live product/nutrition lookup and confirmed-value normalization are implemented. The independently released v0.2.3 catalogue holds 24,641 validated rich-facts records; coverage remains unverified. v0.3.0 adds seven reviewed numerical confirmed-label claims, rules and public evidence metadata, using a verified two-file JSON bundle. Local/source/hosted gates are recorded in the current review. Broader rules, OCR, bilingual templates and AI remain proposals below.
 
 Unlabel's college demo must require **₹0 service charges, no credit card and no paid billing setup**.
 The hosted path uses the existing two Vercel Hobby projects: the website and one shared FastAPI backend.
 One Flutter project directly under `frontend/` targets Android, iOS and the website; all clients call the same backend.
-The product is online-first: Open Food Facts supplies product data and its own computed insights; the backend normalizes nutrition facts. Reviewed FSSAI-related checks follow in a later version.
+The product is online-first: Open Food Facts supplies product data and its own computed insights; the backend normalizes nutrition facts. The confirmed-label v0.3.0 subset applies seven reviewed numerical FSSAI checks; broader criteria remain later work.
 Vercel hosts the compiled Flutter web assets, not the installable native packages.
 The local fallback assumes the team already has an Android phone, a laptop and a local network.
 Ordinary device, electricity and Internet costs are not newly purchased project infrastructure.
@@ -23,7 +23,7 @@ Free-tier offerings can change; optional cloud AI must never be required for cor
 | Product data | Open Food Facts read-only barcode API, selected | Public reads need no product API key; use application identity, attribution, bounded requests and missing/unavailable fallback. See [integration plan](../architecture/OPEN_FOOD_FACTS.md). |
 | Knowledge | Versioned, reviewed files under `knowledge/` | Store ingredient aliases, bilingual explanations, rule definitions and source metadata in Git. |
 | Hosted knowledge lookup | Bundled read-only JSON derived from `knowledge/` | No database service or mutable filesystem is needed for the hosted baseline. |
-| Optional identity catalogue | Immutable SQLite built locally from OFF JSONL or an official-CSV projection | v0.2.1 tooling keeps India-tagged source records and attribution separate from live nutrition. Enable only a validated directory; measure coverage and bundle fit before hosted use. No dynamic user-cloud database is selected. |
+| Rich India catalogue | Immutable SQLite built from the tracked bounded OFF JSONL projection; CSV identity input remains supported | The independently released v0.2.3 snapshot validates 24,641 facts and its hosted receipt. Live nutrition/confirmed rows remain separate; market coverage is unverified. No dynamic user-cloud database is selected. |
 | Core analysis | Python backend evaluator using reviewed canonical rules | Apply evidence-linked checks to confirmed package fields and source-tagged OFF data; no duplicate Dart rule engine required. |
 | Limited offline access | Saved dated reports, local preferences, optional small preinstalled glossary | Preserve useful local content; new analysis requires a reachable backend. |
 | Explanation baseline | Backend-rendered reviewed English/Hindi templates | Preserve usable online/backend analysis when Gemini is disabled or fails. |
@@ -38,7 +38,7 @@ Verify the eventual Flutter bridge actually bundles the intended native models b
 FastAPI deployment is a server process the team can run locally: [deployment concepts](https://fastapi.tiangolo.com/deployment/).
 SQLite operates without a separate database server: [SQLite architecture](https://www.sqlite.org/serverless.html).
 Any local database is a rebuildable artifact, not a second source of truth. Do not commit generated databases or scan caches.
-No backend database, model download or server process is created by this architecture plan.
+The backend and immutable catalogue are implemented; this AI architecture plan creates no model download, separate inference service or paid database.
 
 Vercel Hobby is free for personal/non-commercial use, with finite allowances and no paid overage assumption.
 Before deploying, verify actual no-card account/import eligibility; do not upgrade if a card or paid feature is required.

@@ -1,6 +1,6 @@
 # Safety, evidence and privacy boundaries
 
-These requirements cover the planned scanner/evaluators. The current Flutter starter is not a medical or legal assessment engine.
+These requirements cover the implemented backend v0.3.0 numerical claim subset and planned broader scanner/evaluators. The current Flutter starter has no API integration and is not a medical or legal assessment engine. Seven reviewed numerical claim types have explicit input/rule/source references and limited applicability; numerical support does not establish complete legal compliance. [Current source and release gates](planning/BACKEND_V0_3_0_REVIEW.md).
 
 ## Findings and uncertainty
 

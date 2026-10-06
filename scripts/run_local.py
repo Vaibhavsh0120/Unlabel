@@ -59,16 +59,19 @@ def stop_process(process: subprocess.Popen) -> None:
 def spawn(
     command: list[str | Path], cwd: Path, environment: dict[str, str]
 ) -> subprocess.Popen:
-    options = (
-        {
-            "creationflags": subprocess.CREATE_NEW_PROCESS_GROUP
-            | subprocess.CREATE_NO_WINDOW
-        }
-        if os.name == "nt"
-        else {"start_new_session": True}
-    )
+    if os.name == "nt":
+        return subprocess.Popen(
+            [str(value) for value in command],
+            cwd=cwd,
+            env=environment,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_NO_WINDOW,
+        )
     return subprocess.Popen(
-        [str(value) for value in command], cwd=cwd, env=environment, **options
+        [str(value) for value in command],
+        cwd=cwd,
+        env=environment,
+        start_new_session=True,
     )
 
 

@@ -25,7 +25,7 @@ def catalogue_api():
     return build_catalogue, CatalogueStore
 
 
-def india_product(code="0123456789012", **fields):
+def india_product(code: object = "0123456789012", **fields):
     return {
         "code": code,
         "countries_tags": ["en:india"],
@@ -67,6 +67,7 @@ def test_streaming_import_filters_exact_india_tag_and_retains_exact_barcode(tmp_
     assert manifest.indexed_products == 1
     result = store.lookup("0123456789012")
     assert result.status == "found"
+    assert result.product is not None
     assert result.product.barcode == "0123456789012"
     assert store.lookup("123456789012").status == "not_found"
     assert result.manifest == manifest
@@ -123,8 +124,13 @@ def test_bundle_expectation_mismatch_preserves_active_database(tmp_path, expecta
 def test_csv_projection_provenance_has_no_api_wrapper(tmp_path):
     manifest, store, _ = build(tmp_path, source_format="off_csv_projection")
     assert manifest.source_format == "off_csv_projection"
-    assert "csv_projection" in store.lookup("0123456789012").manifest.source_format
-    assert "3.6" not in store.lookup("0123456789012").model_dump_json()
+    result = store.lookup("0123456789012")
+    assert result.manifest is not None
+    assert "csv_projection" in result.manifest.source_format
+    serialized = result.model_dump(mode="json")
+    assert "source" not in serialized
+    assert "upstream_api_version" not in serialized["manifest"]
+    assert "retrieved_at" not in serialized["manifest"]
 
 
 def test_zero_prefixes_identify_separate_products_without_normalization(tmp_path):
@@ -133,8 +139,11 @@ def test_zero_prefixes_identify_separate_products_without_normalization(tmp_path
         [india_product("123456789012"), india_product("0123456789012", product_name="Other")],
     )
     assert manifest.indexed_products == 2
-    assert store.lookup("123456789012").product.name == "Synthetic oats"
-    assert store.lookup("0123456789012").product.name == "Other"
+    first = store.lookup("123456789012")
+    second = store.lookup("0123456789012")
+    assert first.product is not None and second.product is not None
+    assert first.product.name == "Synthetic oats"
+    assert second.product.name == "Other"
     assert store.lookup("00123456789012").status == "not_found"
 
 
@@ -174,6 +183,7 @@ def test_missing_invalid_and_oversized_optional_fields_remain_unknown(tmp_path):
     result = store.lookup("0123456789012")
     assert manifest.missing_name == 1
     assert manifest.missing_ingredients == 1
+    assert result.product is not None
     assert result.product.name is None
     assert result.product.brands is None
     assert result.product.quantity_text is None
@@ -198,6 +208,7 @@ def test_missing_allergen_data_is_marked_missing_instead_of_allergen_free(tmp_pa
     del row["traces_tags"]
     _, store, _ = build(tmp_path, [row])
     result = store.lookup("0123456789012")
+    assert result.product is not None
     assert result.product.allergen_tags == []
     assert "allergens_tags_missing" in result.warnings
     assert "traces_tags_missing" in result.warnings
@@ -298,7 +309,9 @@ def test_concurrent_import_is_rejected_before_staging_while_first_waits_to_publi
             release_publish.set()
             first.result(timeout=5)
     store = store_type(directory)
-    assert store.lookup("123456789012").product.name == "First importer"
+    first = store.lookup("123456789012")
+    assert first.product is not None
+    assert first.product.name == "First importer"
     assert store.lookup("876543210987").status == "not_found"
     assert list(directory.iterdir()) == [active]
 
@@ -434,10 +447,14 @@ def test_supported_optional_field_boundaries_and_unicode_surrogates(tmp_path):
         ],
     )
     valid = store.lookup("123456789012")
+    assert valid.product is not None
+    assert valid.product.name is not None
+    assert valid.product.ingredients_text is not None
     assert len(valid.product.name) == 2000
     assert len(valid.product.ingredients_text) == 16000
     assert len(valid.product.allergen_tags) == 100
     invalid = store.lookup("0123456789012")
+    assert invalid.product is not None
     assert invalid.product.name is None
     assert invalid.product.allergen_tags == []
     assert "product_name_invalid" in invalid.warnings
@@ -565,7 +582,9 @@ def test_sql_injection_barcode_is_rejected_without_any_database_mutation(tmp_pat
 )
 def test_corrupt_stored_optional_values_are_rejected_at_lookup(tmp_path, field, value):
     _, store, directory = build(tmp_path)
-    product = store.lookup("0123456789012").product.model_dump(mode="json")
+    result = store.lookup("0123456789012")
+    assert result.product is not None
+    product = result.product.model_dump(mode="json")
     product[field] = value
     record = json.dumps({"product": product, "warnings": ["allergen_safety_not_assessed"]})
     with sqlite3.connect(directory / "catalogue.sqlite3") as connection:

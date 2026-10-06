@@ -1,5 +1,7 @@
+import os
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
+from pathlib import Path as FilePath
 from typing import Annotated
 
 import httpx
@@ -9,10 +11,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import __version__
+from app.api.v1.claims import build_router
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
 from app.catalogue.store import CatalogueStore
+from app.claims.knowledge import KnowledgeStore
 from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
@@ -28,6 +32,21 @@ def create_app(
     settings: Settings | None = None, transport: httpx.AsyncBaseTransport | None = None
 ) -> FastAPI:
     config = settings or Settings()
+    knowledge_artifact = None
+    try:
+        knowledge_path = config.claims_knowledge_path()
+        if (
+            os.environ.get("VERCEL") == "1"
+            or knowledge_path == FilePath(__file__).resolve().parent / "claims/data"
+            or (knowledge_path / "receipt.json").exists()
+        ):
+            from app.claims.bundle import verify_knowledge_bundle
+
+            knowledge_artifact = verify_knowledge_bundle(knowledge_path)
+        claim_store = KnowledgeStore(knowledge_path)
+    except (OSError, ValueError):
+        claim_store = None
+        knowledge_artifact = None
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -64,6 +83,7 @@ def create_app(
         lifespan=lifespan,
         responses={422: {"model": ValidationFailure, "description": "Invalid request data"}},
     )
+    application.include_router(build_router(store=claim_store))
     application.add_middleware(RequestBodyLimit)
     application.add_middleware(
         CORSMiddleware,
@@ -106,23 +126,24 @@ def create_app(
             if store is None:
                 return CatalogueStatus(status="unavailable")
             manifest = store.manifest
+            field_limits = (
+                [
+                    "nutrition_direct_tables_only",
+                    "images_are_source_urls_only",
+                    "per_product_dates_may_be_missing",
+                    "missing_allergen_tags_do_not_mean_allergen_free",
+                ]
+                if store.supports_facts
+                else CatalogueStatus.model_fields["field_limits"].get_default(
+                    call_default_factory=True
+                )
+            )
             return CatalogueStatus(
                 status="ready",
                 manifest=manifest,
                 freshness=snapshot_freshness(manifest.exported_at),
                 artifact=request.app.state.catalogue_artifact,
-                **(
-                    {
-                        "field_limits": [
-                            "nutrition_direct_tables_only",
-                            "images_are_source_urls_only",
-                            "per_product_dates_may_be_missing",
-                            "missing_allergen_tags_do_not_mean_allergen_free",
-                        ]
-                    }
-                    if store.supports_facts
-                    else {}
-                ),
+                field_limits=field_limits,
             )
         except (ValueError, OSError):
             return CatalogueStatus(status="unavailable")
@@ -151,7 +172,8 @@ def create_app(
             "product_adapter_version": "1",
             "nutrition_adapter_version": "1",
             "normalization_version": "1",
-            "knowledge_version": "not_populated",
+            "knowledge_version": claim_store.knowledge_version if claim_store else "not_populated",
+            "knowledge_artifact": knowledge_artifact,
             "catalogue": catalogue,
             "capabilities": {
                 "product_lookup": True,
@@ -161,7 +183,7 @@ def create_app(
                 "catalogue_facts": catalogue["status"] == "ready"
                 and request.app.state.catalogue.supports_facts,
                 "nutrition_analysis": False,
-                "claim_checks": False,
+                "claim_checks": claim_store is not None,
                 "ingredient_explanations": False,
                 "comparison": False,
                 "ai_explanations": False,

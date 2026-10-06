@@ -1,6 +1,6 @@
 # Decision 003: Open Food Facts and online-first analysis
 
-Date: 5 October 2026. The user selected Open Food Facts for product-data heavy lifting, reviewed FSSAI criteria for backend checks, and limited offline features. This supersedes Decision 002's required device-side rule evaluator/parity scope.
+Date: 5 October 2026. Historical decision record. The user selected Open Food Facts for product-data heavy lifting, reviewed FSSAI criteria for backend checks, and limited offline features. This supersedes Decision 002's required device-side rule evaluator/parity scope. Later implementation and release authorization are recorded in the [current development guide](../planning/LOCAL_DEVELOPMENT.md) and [current review](../planning/BACKEND_V0_3_0_REVIEW.md); the foundation-only authorization below describes the original decision date.
 
 ## Accepted direction
 

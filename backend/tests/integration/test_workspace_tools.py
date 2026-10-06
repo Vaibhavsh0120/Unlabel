@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[3]
 def module(name, monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / "scripts"))
     spec = importlib.util.spec_from_file_location(f"workspace_{name}", ROOT / f"scripts/{name}.py")
+    assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
     return result
@@ -115,6 +116,21 @@ def source_bundle(clone, *, source_format="off_jsonl"):
     return directory, metadata
 
 
+@pytest.mark.parametrize("layer", ["compressed", "decoded"])
+def test_setup_progress_reports_failed_hash_without_verification(clone, monkeypatch, capsys, layer):
+    setup = module("setup", monkeypatch)
+    directory, metadata = source_bundle(clone)
+    metadata[f"{layer}_sha256"] = "0" * 64
+    (directory / "bundle.json").write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match="checksum/size mismatch"):
+        setup.verified_bundle(clone)
+    output = capsys.readouterr().err
+    label = f"Validate {layer} catalogue"
+    assert f"Stopped: {label}" in output
+    assert f"Verified: {label}" not in output
+    assert not (clone / "backend/storage/runtime/india/catalogue.sqlite3").exists()
+
+
 @pytest.mark.parametrize("source_format", ["off_jsonl", "off_csv_projection"])
 def test_setup_rebuilds_then_reuses_index_and_retains_different_valid_index(
     clone, monkeypatch, source_format
@@ -163,6 +179,7 @@ def test_setup_migrates_same_source_identity_only_jsonl_index_with_explicit_repl
     assert restored.manifest.source_sha256 == metadata["decoded_sha256"]
     facts = restored.lookup_facts("8900000000001")
     assert facts.status == "found"
+    assert facts.details is not None
     assert facts.details.nutrition.snapshot.tables[0].nutrients["sugars"].value == 0
     assert setup.prepare_catalogue(clone, replace=True) == "reused"
 

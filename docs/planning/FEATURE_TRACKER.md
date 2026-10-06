@@ -6,6 +6,8 @@ Baseline: published **backend v0.2.2**, frontend **0.0.0+1**. Backend scope has 
 
 After verified v0.2.3: **6 ready, 0 partial and 8 planned backend groups**, plus **6 frontend-owned groups**. All frontend integration remains pending.
 
+After locally verified v0.3.0: **6 ready, 1 partial and 7 planned backend groups**, plus **6 frontend-owned groups**. Claim checks now cover seven reviewed numeric claim types; broader claim evidence remains incomplete. Exact production and publication checks are the remaining release gates.
+
 | ID | Feature / screen | Backend current | Frontend work | Acceptance or milestone |
 | --- | --- | --- | --- | --- |
 | F01 | Barcode identity / Home, Scan | Ready: live and snapshot | Camera/manual entry and results pending | Found/missing/unavailable; exact snapshot keys |
@@ -14,7 +16,7 @@ After verified v0.2.3: **6 ready, 0 partial and 8 planned backend groups**, plus
 | F04 | Nutrition and normalization / Results | Ready | Correction form/table pending | Preserve origins, bases, zero/unknown and conflicts |
 | F05 | OFF Nutri-Score/NOVA / Home, Results | Ready | Grade/source display pending | Optional provider values; separate from an Unlabel score |
 | F06 | Unified report/reasons / Results | Planned | Report layout pending | Evidence-backed report; scoring method needs review |
-| F07 | Claim checks / Results, Ingredients | Planned | Capture/edit/verdict pending | v0.3.0: reviewed numeric subset; wider claims incomplete |
+| F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Capture/edit/verdict pending | v0.3.0: strict confirmed input, rule/evidence references; wider claims incomplete |
 | F08 | Ingredient explanations / Ingredients | Planned | Explorer pending | Reviewed aliases/INS, English/Hindi and evidence |
 | F09 | Allergens/traces / Scan, Ingredients | Ready: live and snapshot availability | Correction/warnings pending | v0.2.3: snapshot field availability; no allergy-safety claim |
 | F10 | Personal suitability / Results | Planned | Local preferences/reasons pending | Unknowns and conflicts; neutral preference facts |
@@ -34,7 +36,7 @@ After verified v0.2.3: **6 ready, 0 partial and 8 planned backend groups**, plus
 | Version | Goal | Completion evidence | State |
 | --- | --- | --- | --- |
 | v0.2.3 | Rich India snapshot product facts | Full JSONL EOF/hash/counts; compact source; typed facts API; nutrition/image/tag/date boundaries; old contracts; actual hosted reads | Verified and pushed |
-| v0.3.0 | First evidence-backed claim checks | Current reviewed FSSAI sources; strict confirmed-input API; boundaries/unknowns/applicability; rule/evidence APIs; exact deployment smoke | Planned after v0.2.3 push |
+| v0.3.0 | First evidence-backed claim checks | Current reviewed FSSAI sources; strict confirmed-input API; boundaries/unknowns/applicability; rule/evidence APIs; exact deployment smoke | Reviewed; 543 tests and static checks passed; source push/hosted release pending |
 
 Each version is reviewed, documented, pushed and verified before the next is published. Rows advance only after their stated behavior is checked. A broad claim feature remains partial while other claim families or manufacturing/category evidence are unresolved.
 

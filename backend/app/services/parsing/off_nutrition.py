@@ -7,10 +7,12 @@ from pydantic import ValidationError
 from app.schemas.nutrition import (
     NUTRIENT_NAMES,
     NutrientCell,
+    NutrientName,
     NutrientRow,
     NutritionBasis,
     NutritionSnapshot,
     NutritionTable,
+    Preparation,
 )
 from app.schemas.nutrition_products import InputTableSource
 from app.services.parsing.nutrition import normalize_rows
@@ -23,7 +25,7 @@ class DirectNutritionResult:
     warnings: list[str] = field(default_factory=list)
 
 
-NUTRIENTS = {
+NUTRIENTS: dict[str, NutrientName] = {
     "energy-kcal": "energy",
     "energy-kj": "energy",
     "fat": "fat",
@@ -89,8 +91,13 @@ def _table(table, index, rows, empty_tables, result):
     if source not in ("packaging", "manufacturer"):
         result.warnings.append("unsupported_table_source")
         return
-    preparation = {"as_sold": "as_sold", "prepared": "as_prepared"}.get(
-        table.get("preparation") if isinstance(table.get("preparation"), str) else ""
+    raw_preparation = table.get("preparation")
+    preparation: Preparation | None = (
+        "as_sold"
+        if raw_preparation == "as_sold"
+        else "as_prepared"
+        if raw_preparation == "prepared"
+        else None
     )
     if preparation is None:
         result.warnings.append("unsupported_table_preparation")
@@ -141,14 +148,16 @@ def _table(table, index, rows, empty_tables, result):
             result.warnings.append("invalid_nutrient_value")
             continue
         try:
-            row = NutrientRow(
-                row_id=f"{table_id}-{key}",
-                table_id=table_id,
-                nutrient=nutrient,
-                value=value["value"],
-                unit=value.get("unit"),
-                basis=basis,
-                preparation=preparation,
+            row = NutrientRow.model_validate(
+                {
+                    "row_id": f"{table_id}-{key}",
+                    "table_id": table_id,
+                    "nutrient": nutrient,
+                    "value": value["value"],
+                    "unit": value.get("unit"),
+                    "basis": basis,
+                    "preparation": preparation,
+                }
             )
         except ValidationError:
             result.warnings.append("invalid_nutrient_value")

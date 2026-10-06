@@ -4,14 +4,17 @@ import argparse
 import csv
 import gzip
 import hashlib
+import io
 import json
 import os
 import shutil
 import tempfile
 import time
 import urllib.request
+import uuid
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Protocol
 from urllib.parse import urlsplit
 
 SOURCE = "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz"
@@ -20,8 +23,18 @@ MAX_LINE_BYTES = 2 * 1024**2
 MAX_DECODED_BYTES = 32 * 1024**3
 
 
+class BinaryReader(Protocol):
+    def read(self, size: int = -1, /) -> bytes: ...
+
+
 class MeteredReader:
-    def __init__(self, stream, *, max_bytes=2 * 1024**3, progress=False):
+    def __init__(
+        self,
+        stream: BinaryReader,
+        *,
+        max_bytes: int = 2 * 1024**3,
+        progress: bool = False,
+    ) -> None:
         self.stream = stream
         self.max_bytes = max_bytes
         self.bytes_read = 0
@@ -29,7 +42,7 @@ class MeteredReader:
         self.started = self.last_report = time.monotonic()
         self.progress = progress
 
-    def read(self, size=-1):
+    def read(self, size: int = -1) -> bytes:
         if size < 0 or size > 1024 * 1024:
             raise ValueError("Unbounded compressed read refused")
         if time.monotonic() - self.started > 3600:
@@ -51,6 +64,10 @@ class MeteredReader:
             )
             self.last_report = time.monotonic()
         return data
+
+    def seek(self, offset: int, whence: int = 0) -> int:
+        # Rewinding would invalidate the acquisition byte count and digest.
+        raise io.UnsupportedOperation("Compressed acquisition stream cannot seek")
 
 
 class BoundedLines:
@@ -153,8 +170,20 @@ def acquire(directory):
     ):
         raise ValueError("Insufficient work budget or free disk")
     lock = directory / ".acquisition.lock"
-    descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-    os.close(descriptor)
+    descriptor = os.open(
+        lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_BINARY", 0), 0o600
+    )
+    identity = os.fstat(descriptor)
+    marker = f"pid={os.getpid()} token={uuid.uuid4().hex}\n".encode("ascii")
+    try:
+        written = 0
+        while written < len(marker):
+            count = os.write(descriptor, marker[written:])
+            if not count:
+                raise OSError("Could not write acquisition lock")
+            written += count
+    finally:
+        os.close(descriptor)
     started = datetime.now(UTC)
     staging = metadata_staging = None
     try:
@@ -165,7 +194,7 @@ def acquire(directory):
         request = urllib.request.Request(
             SOURCE,
             headers={
-        "User-Agent": "Unlabel/0.2.3 (https://github.com/Vaibhavsh0120/Unlabel)",
+                "User-Agent": "Unlabel/0.3.0 (https://github.com/Vaibhavsh0120/Unlabel)",
                 "Accept-Encoding": "identity",
             },
         )
@@ -240,7 +269,18 @@ def acquire(directory):
             staging.unlink()
         if metadata_staging is not None and metadata_staging.exists():
             metadata_staging.unlink()
-        lock.unlink()
+        try:
+            current = lock.lstat()
+            if not lock.is_symlink() and (current.st_dev, current.st_ino) == (
+                identity.st_dev,
+                identity.st_ino,
+            ):
+                with lock.open("rb") as owned:
+                    content = owned.read(len(marker) + 1)
+                if content == marker:
+                    lock.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def main():

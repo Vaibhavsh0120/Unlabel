@@ -69,7 +69,9 @@ def test_facts_reads_snapshot_provenance_and_direct_zero_without_network(databas
         )
         assert result.status_code == 200
         facts = FactsLookup.model_validate_json(result.content)
+        assert facts.product is not None
         assert facts.product.barcode == CODE
+        assert facts.details is not None
         assert facts.details.nutrition.snapshot.tables[0].nutrients["sugars"].value == 0
         assert facts.details.allergens.values == ["en:milk"]
         assert "snapshot_refresh_due" in facts.warnings

@@ -71,6 +71,7 @@ node_modules/
 backend/storage/runtime/**
 !backend/storage/runtime/.gitkeep
 backend/app/catalogue/data/
+backend/app/claims/data/
 data/private/**
 !data/private/.gitkeep
 knowledge/sources/downloads/**

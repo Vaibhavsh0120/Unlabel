@@ -14,7 +14,9 @@ from app.catalogue.status import snapshot_freshness
         ((2026, 12, 31), (2027, 9, 30)),
     ],
 )
-def test_refresh_uses_nine_calendar_months_and_clamps_month_end(exported, due):
+def test_refresh_uses_nine_calendar_months_and_clamps_month_end(
+    exported: tuple[int, int, int], due: tuple[int, int, int]
+):
     source = datetime(*exported, 12, 19, 34, tzinfo=UTC)
     result = snapshot_freshness(source, now=source)
     assert result.refresh_due_at == datetime(*due, 12, 19, 34, tzinfo=UTC)

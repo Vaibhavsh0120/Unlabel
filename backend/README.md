@@ -1,8 +1,8 @@
-# Unlabel backend v0.2.3
+# Unlabel backend v0.3.0
 
-Frontend remains **0.0.0+1**. This version adds a separate rich-facts route to the backend-held India catalogue: direct nutrition, canonical tag availability, provider schema/record date and an attributed official image URL. Existing identity, live OFF nutrition, status and confirmed-input contracts preserve their shapes and origins. FSSAI checks remain disabled until the next independent v0.3.0 slice. [Accepted two-version plan](../docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [20-group feature tracker](../docs/planning/FEATURE_TRACKER.md).
+Frontend remains **0.0.0+1**. This version adds reviewed numerical FSSAI claim checks for user-confirmed nutrient rows, a rules endpoint and public evidence metadata. Seven fibre, sugar and sodium claim types are implemented; four recognized claim types remain explicitly unreviewed. Existing identity, live OFF nutrition, catalogue facts and normalization contracts preserve their shapes and origins. The rich-facts v0.2.3 release was pushed and verified separately. [Accepted two-version plan](../docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [20-group feature tracker](../docs/planning/FEATURE_TRACKER.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.2.3 verification record](../docs/planning/BACKEND_V0_2_3_REVIEW.md) for actual local/provider/production evidence.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.3.0 verification record](../docs/planning/BACKEND_V0_3_0_REVIEW.md) for actual local/provider/production gates. Local completion does not establish that production already runs this version.
 
 ## Run locally
 
@@ -31,6 +31,9 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `GET /v1/catalogue` | Ready/unavailable/not-configured status, manifest, artifact hash/size, source age, refresh date and field limits; 503 if unavailable |
 | `GET /v1/catalogue/products/{barcode}` | Separate export-origin indexed identity lookup; 503 when catalogue is inactive/unavailable |
 | `GET /v1/catalogue/products/{barcode}/facts` | Exact identity/manifest plus optional rich facts; older identity-only catalogues report facts unavailable |
+| `POST /v1/claims/check` | Check identified claims against one selected user-confirmed nutrition table and explicit applicability context |
+| `GET /v1/claims/rules` | Seven reviewed numerical rules, four recognized unsupported claim types, knowledge version and statutory energy conversion |
+| `GET /v1/evidence/{source_id}` | Public reviewed source metadata; found, not-found or unavailable without fetching a PDF |
 
 Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Live OFF lookup identity must match the requested code, permitting leading-zero normalization only. Catalogue lookups use exact keys; leading-zero variants remain distinct.
 
@@ -61,7 +64,7 @@ Use `/v1/meta.capabilities.catalogue_facts` before requesting `/v1/catalogue/pro
 
 `details.image` is null or a validated official selected-front 400-size URL descriptor with language, revision, optional dimensions, attribution and CC-BY-SA-3.0 metadata. URLs are constructed from selected-image metadata; arbitrary URLs, image proxies and bytes are excluded. Show attribution and an image fallback. A valid descriptor does not guarantee the remote image currently exists. OFF's [official image-path implementation](https://raw.githubusercontent.com/openfoodfacts/openfoodfacts-server/main/lib/ProductOpener/Products.pm) strips leading zeros, pads short codes and splits the resulting path; catalogue identity still matches the exact requested key.
 
-A missing snapshot record returns dated 404 with its checked manifest; inactive/invalid or older identity-only facts storage returns 503. Older stores keep their previous identity/status routes. Responses are `no-store`; lookup never calls OFF or silently substitutes live facts. Claims and health analysis remain disabled.
+A missing snapshot record returns dated 404 with its checked manifest; inactive/invalid or older identity-only facts storage returns 503. Older stores keep their previous identity/status routes. Responses are `no-store`; lookup never calls OFF or silently substitutes live facts. The separate claims API accepts confirmed rows; it does not turn community tags or snapshot nutrition into an automatic current-package verdict. Health scoring remains unimplemented.
 
 ## Nutrition facts and confirmed input
 
@@ -84,6 +87,32 @@ The POST actual body limit is **32 KiB**, including chunked requests, enforced b
 
 Use the validated [synthetic request](../contracts/examples/nutrition-normalize-v1.request.synthetic.json) and [response](../contracts/examples/nutrition-normalize-v1.response.synthetic.json) as an integration pair. They are illustrative facts, not a real product, regulatory rule or health verdict.
 
+## Reviewed confirmed-label claim checks
+
+Check `/v1/meta.capabilities.claim_checks` before submitting to `/v1/claims/check`. A valid loaded knowledge store reports `knowledge_version: claims-2026-10-06.1`; invalid or missing knowledge disables only claim/rule/evidence access. A verified package also exposes the two-file hash/length receipt in `knowledge_artifact`; direct local canonical-source loading has a null artifact. Health, live OFF reads and catalogue operations retain their independent readiness.
+
+`ClaimsRequest` extends the strict confirmed normalization request. Supply 1–16 unique identified claims (`claim_id`, recognized `claim`, required nullable `region_id`), `selected_table_id` and `context` with food category, solid/liquid form and preparation. The selected table must exist and match the confirmed context for an applicable assessment. UUID request/session IDs, correction revision, `confirmed: true`, completeness and 1–64 nutrient rows remain required. Photos, raw OCR, personal profiles and arbitrary claim text are excluded. The same **32 KiB** actual-body limit and strict numeric-token/redacted-422 handling cover both POST routes.
+
+| Reviewed claim | Selected numerical criterion |
+| --- | --- |
+| `source_of_fibre` | At least 3 g/100 g for solids, 1.5 g/100 mL for liquids, or 1.5 g/100 kcal |
+| `high_fibre` | At least 6 g/100 g for solids, 3 g/100 mL for liquids, or 3 g/100 kcal |
+| `low_sugar` | Total sugars at most 5 g/100 g for solids or 2.5 g/100 mL for liquids |
+| `sugar_free` | Total sugars at most 0.5 g/100 g or 100 mL for the matching form |
+| `low_sodium` | Sodium at most 0.12 g/100 g or 100 mL for the matching form |
+| `very_low_sodium` | Sodium at most 0.04 g/100 g or 100 mL for the matching form |
+| `sodium_free` | Sodium at most 0.005 g/100 g or 100 mL for the matching form |
+
+The source is the reviewed 2022 Schedule I amendment plus principal 2018 requirements, cross-checked against the compendium. [Reviewed source register and hashes](../knowledge/README.md). Scope is `numeric_criterion_only` for confirmed ordinary general foods. Unknown/special categories, unknown form/preparation, conflicting tables/rows, unsupported bases and missing values cannot establish applicability or a contradiction. For fibre alternatives, one applicable pass supports the numerical claim; contradiction requires every applicable alternative to be known and fail. An unknown remaining alternative keeps the result `insufficient_information`.
+
+`high_protein`, `source_of_protein`, `no_added_sugar` and `multigrain` are recognized but unreviewed and always return `insufficient_information`, with explicit reasons/missing inputs. Total sugar alone cannot establish manufacturing non-addition. A claim assessment is `supported`, `contradicted` or `insufficient_information`; it includes applicability, selected criteria, input row/region IDs, rule/source IDs and bounded explanatory wording. It is neither a health score nor complete legal certification.
+
+All claim criteria compare exact rational values constructed from the original numeric decimal strings and unit/basis factors, so a non-terminating per-100 conversion does not shift an exact threshold. For fibre energy alternatives, statutory Schedule I Note 2 uses **1 kcal = 4.2 kJ**. The engine calculates this from original selected confirmed rows with exact rational arithmetic, scales only known compatible quantities and exposes `energy_conversion.version: fssai-schedule-i-note2-v1`. The existing normalization-v1 snapshot keeps its scientific **4.184 kJ/kcal** conversion unchanged. Conflicting regulatory energy values remain unknown rather than choosing a row; bounded output conversion rejects values outside its representable limits. Clients should retain both the snapshot and the claim-specific conversion metadata.
+
+`GET /v1/claims/rules` returns the actual loaded rules and unsupported list. `/v1/evidence/{source_id}` returns one of the three reviewed metadata records with URL, PDF hash/size/pages, known publication/effective dates, verification date/status and qualifications. Unknown valid IDs return 404; malformed IDs return redacted 422. Missing/invalid knowledge returns typed 503 responses; known future publication/effective dates, non-current/future review status or unsupported applicability suppress affected assessments. Review status is maintained explicitly; no automatic statutory expiry is inferred from age. These endpoints make no OFF, Gemini or FSSAI request and persist no scan. Claim/rule/evidence responses use `no-store`.
+
+Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter still needs capture/correction, API models, stale-response handling and result screens.
+
 ## Configuration and key handling
 
 Settings load the ignored `.env` at this backend root; environment variables override the file. Do not overwrite a teammate's existing file. `.env.example` contains safe defaults. Current settings:
@@ -94,14 +123,16 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `CORS_ORIGINS`: JSON array of exact HTTP(S) website origins, default `[]`; no wildcard or credentialed CORS.
 - `CATALOGUE_DIRECTORY`: read-only index directory, relative to backend or absolute; empty disables catalogue. Local generated index is `storage/runtime/india`; hosted build output is `app/catalogue/data`.
 - `CATALOGUE_REQUIRE_RECEIPT`: `false` for an explicitly configured local runtime index; `true` for hosted bundles. Startup verifies the SQLite hash/size, receipt and manifest before enabling catalogue access. Invalid/missing files disable the catalogue while health/live APIs remain available.
+- `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source/bundle directory, relative to backend or absolute. Local default uses `app/claims/data` when it exists, otherwise canonical root `knowledge/`. An existing invalid packaged bundle never falls back to source. With `VERCEL=1`, the default selects the packaged path and every selected directory requires a verified knowledge receipt, including an explicit override; no source fallback is permitted.
 
 OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Gemini is disabled/unimplemented; reserved Gemini fields in `.env` are unused. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication. Public cloud AI needs a separate access/budget design before activation.
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP client/store, eight routes and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP client/catalogue/knowledge stores, eleven routes and redacted validation failures.
+- `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
-- `build_catalogue.py`: network-free deployment build entrypoint; validates tracked source and generates SQLite plus a receipt in the ignored `app/catalogue/data/` directory.
+- `build_catalogue.py`: network-free deployment build entrypoint; validates tracked catalogue source and the two reviewed JSON projections, then generates SQLite/receipt in `app/catalogue/data/` and approved knowledge JSON/receipt in `app/claims/data/`. Both directories are ignored generated outputs. Successful stdout is one JSON object with `catalogue` and `claims_knowledge` receipts.
 - `app/schemas/errors.py`: shared strict redacted 422 response, including raw-number middleware rejections.
 - `app/core/config.py`: validated non-secret request/CORS settings.
 - `app/core/body_limit.py`: actual-byte input limit before parsing.
@@ -113,7 +144,7 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 - `tests/`: synthetic mocked-provider and ASGI contract tests; no corpus copied from OFF.
 - `requirements*.txt`, `pyproject.toml`: tested dependency versions and backend metadata/tooling.
 
-HTTPX connection pool is bounded to six connections. There is no automatic retry, durable cache, process-wide global quota guarantee, profile/history storage or image upload. The POST normalizer works independently of OFF connectivity. OFF and user-confirmed facts remain inputs for later reviewed analysis.
+HTTPX connection pool is bounded to six connections. There is no automatic retry, durable cache, process-wide global quota guarantee, profile/history storage or image upload. Both confirmed-input POST routes work independently of OFF connectivity. The current claim subset requires confirmed rows; a broader combined analysis report remains future work.
 
 Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. The project allows build access to files outside its root, and `pyproject.toml` runs `python build_catalogue.py` after dependency installation. The generated owned bundle is included in the Python function. Local `.env*`, tests, environments and `storage/runtime` are excluded; hosted settings live in the project's environment. See [Vercel's build-hook documentation](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
 
@@ -132,7 +163,7 @@ $env:CATALOGUE_REQUIRE_RECEIPT = "true"
 .venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ~~~
 
-The network-free builder checks compressed/decoded hashes, byte budgets and expected counts before publishing. SQLite and receipt use two file replacements inside an unpublished build; any failure rejects that build. Startup verifies the database once, then uses indexed read-only transactions. Each build has its own UUID/indexing timestamp/hash; the receipt records integrity, not an OFF cryptographic signature.
+The network-free builder checks compressed/decoded catalogue hashes, byte budgets and expected counts before publishing. It also validates exactly `rules/claims/reviewed-v1.json` and `sources/registry/fssai-claims-v1.json`, packages those files with a hash/length receipt and verifies the result. `--knowledge-directory` and `--knowledge-output-directory` can select explicit build paths; catalogue options remain `--source-directory` and `--output-directory`. Generated files are replaced inside an unpublished build; any failure rejects that build. Startup verifies each bundle before enabling its capability. Each catalogue build has its own UUID/indexing timestamp/hash; receipts identify trusted source/build artifacts, not OFF or FSSAI cryptographic signatures.
 
 `GET /v1/catalogue` and `/v1/meta.catalogue` report source age. Nine calendar months uses the actual export timestamp, never rebuild time; overdue lookups remain available with a warning, and future dates are flagged. Identity/status/facts reads are `no-store`; metadata retains its existing cache policy. A snapshot miss makes no OFF request. Clients may deliberately request the separate live endpoint.
 
@@ -160,4 +191,12 @@ SQLite serves the immutable snapshot; JSONL/CSV are acquisition inputs. Firestor
 .venv/Scripts/python.exe -m pip check
 ~~~
 
-See [v0.2.3 review](../docs/planning/BACKEND_V0_2_3_REVIEW.md) for actual checks and remaining gates; earlier reviews remain historical records. Current exports/examples are indexed in [contracts](../contracts/README.md). Update docs before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.
+Optional static type checking from repository root uses the checked-in [pyrightconfig.json](../pyrightconfig.json):
+
+~~~powershell
+npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json --pythonpath backend/.venv/Scripts/python.exe
+~~~
+
+This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
+
+See [v0.3.0 review](../docs/planning/BACKEND_V0_3_0_REVIEW.md) for current checks and remaining gates; earlier reviews remain historical records. Current exports/examples are indexed in [contracts](../contracts/README.md). Review all Markdown/scripts, update affected tests/contracts/docs and remove demonstrably dead code before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.

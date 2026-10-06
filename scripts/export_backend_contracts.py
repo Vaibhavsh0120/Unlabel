@@ -19,6 +19,9 @@ catalogue = import_module("app.catalogue.models")
 catalogue_status = import_module("app.catalogue.status")
 catalogue_facts = import_module("app.catalogue.facts")
 errors = import_module("app.schemas.errors")
+claims = import_module("app.claims.models")
+claim_knowledge = import_module("app.claims.knowledge")
+assess_claims = import_module("app.claims.engine").assess_claims
 
 
 def write(directory: str, name: str, value):
@@ -43,6 +46,11 @@ def main():
         "catalogue-status-v1.schema.json": catalogue_status.CatalogueStatus,
         "catalogue-facts-v1.schema.json": catalogue_facts.FactsLookup,
         "validation-failure-v1.schema.json": errors.ValidationFailure,
+        "claims-check-request-v1.schema.json": claims.ClaimsRequest,
+        "claims-check-response-v1.schema.json": claims.ClaimsResponse,
+        "claims-rules-v1.schema.json": claims.ClaimsRulesResponse,
+        "claims-unavailable-v1.schema.json": claims.ClaimsUnavailable,
+        "evidence-v1.schema.json": claims.EvidenceResponse,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -179,8 +187,64 @@ def main():
     write(
         "examples", "catalogue-facts-v1.synthetic.json", facts.model_dump(mode="json")
     )
+    store = claim_knowledge.KnowledgeStore(ROOT / "knowledge")
+    claim_request = claims.ClaimsRequest.model_validate(
+        {
+            **request.model_dump(mode="json"),
+            "selected_table_id": request.rows[0].table_id,
+            "context": {
+                "food_category": "ordinary_general_food",
+                "form": "solid",
+                "preparation": "as_sold",
+            },
+            "claims": [
+                {
+                    "claim_id": "synthetic-low-sugar",
+                    "claim": "low_sugar",
+                    "region_id": "synthetic-front-region",
+                }
+            ],
+            "rows": [
+                {
+                    **request.rows[0].model_dump(mode="json"),
+                    "row_id": "sugar-line",
+                    "nutrient": "sugars",
+                    "value": 1.0,
+                }
+            ],
+        }
+    )
+    claim_response = assess_claims(
+        claim_request, store, now=datetime(2026, 10, 6, 18, tzinfo=UTC)
+    )
+    rule_example = claims.ClaimsRulesResponse(
+        status="ready",
+        knowledge_version=store.knowledge_version,
+        reviewed_on=store.reviewed_on,
+        rules=list(store.rules.values()),
+        unsupported_claims=list(claim_knowledge.UNSUPPORTED_CLAIMS),
+        warnings=["numeric_criteria_only", "not_legal_certification"],
+    )
+    source_id = "fssai-ac-2022-schedule-i"
+    evidence = claims.EvidenceResponse(
+        status="found",
+        requested_source_id=source_id,
+        knowledge_version=store.knowledge_version,
+        source=store.sources[source_id],
+        warnings=[],
+    )
+    for filename, model in {
+        "claims-check-v1.request.synthetic.json": claim_request,
+        "claims-check-v1.response.synthetic.json": claim_response,
+        "claims-rules-v1.synthetic.json": rule_example,
+        "evidence-v1.synthetic.json": evidence,
+        "claims-unavailable-v1.synthetic.json": claims.ClaimsUnavailable(
+            warnings=["reviewed_claim_knowledge_unavailable"]
+        ),
+    }.items():
+        write("examples", filename, model.model_dump(mode="json"))
     print(
-        f"Exported backend v{version} contracts and six validated synthetic examples."
+        f"Exported backend v{version} contracts and eleven validated synthetic examples."
     )
 
 

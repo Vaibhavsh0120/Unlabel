@@ -10,6 +10,7 @@ RECIPIENT = "age19ml0m6z9prakmc2jfhtpu4d8gn8kyn7t3g2td79gl30l7cs97qsqspu45g"
 
 def module():
     spec = importlib.util.spec_from_file_location("env_tool", SCRIPT)
+    assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
     return result

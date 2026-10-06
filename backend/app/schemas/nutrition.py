@@ -18,7 +18,7 @@ NutrientName = Literal[
     "sodium",
     "salt",
 ]
-NUTRIENT_NAMES: tuple[str, ...] = get_args(NutrientName)
+NUTRIENT_NAMES: tuple[NutrientName, ...] = get_args(NutrientName)
 Preparation = Literal["as_sold", "as_prepared"]
 Completeness = Literal["complete", "partial"]
 NormalizationStatus = Literal["complete", "partial", "needs_correction"]

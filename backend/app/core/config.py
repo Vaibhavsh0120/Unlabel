@@ -1,8 +1,11 @@
+import os
 from pathlib import Path
+from typing import Any
 from urllib.parse import urlsplit
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings.sources import ENV_FILE_SENTINEL, DotenvType
 
 
 class Settings(BaseSettings):
@@ -11,12 +14,30 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
-    off_user_agent: str = "Unlabel/0.2.3 (https://github.com/Vaibhavsh0120/Unlabel)"
+    off_user_agent: str = "Unlabel/0.3.0 (https://github.com/Vaibhavsh0120/Unlabel)"
     off_timeout_seconds: float = Field(default=8, ge=1, le=15)
     off_max_response_bytes: int = Field(default=524_288, ge=1024, le=1_048_576)
     cors_origins: list[str] = Field(default_factory=list)
     catalogue_directory: str = Field(default="", max_length=1024)
     catalogue_require_receipt: bool = False
+    claims_knowledge_directory: str = Field(default="", max_length=1024)
+
+    def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
+        # Preserve BaseSettings' supported dotenv override in its typed signature.
+        super().__init__(_env_file=_env_file, **values)
+
+    def claims_knowledge_path(self) -> Path:
+        backend = Path(__file__).resolve().parents[2]
+        if self.claims_knowledge_directory.strip():
+            path = Path(self.claims_knowledge_directory)
+            return path if path.is_absolute() else backend / path
+        packaged = backend / "app/claims/data"
+        # An invalid existing deployment bundle must not fall back to source.
+        return (
+            packaged
+            if packaged.exists() or os.environ.get("VERCEL") == "1"
+            else backend.parent / "knowledge"
+        )
 
     def catalogue_path(self) -> Path | None:
         if not self.catalogue_directory.strip():

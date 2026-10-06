@@ -165,7 +165,9 @@ class OpenFoodFactsProvider:
             ingredients_text=ingredients,
             allergen_tags=tags("allergens_tags"),
             trace_tags=tags("traces_tags"),
-            insights=ProviderInsights(nutri_score_grade=grade, nova_group=nova),
+            insights=ProviderInsights.model_validate(
+                {"nutri_score_grade": grade, "nova_group": nova}
+            ),
         )
         result.warnings = warnings
         return result

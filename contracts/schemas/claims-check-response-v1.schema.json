@@ -1,0 +1,761 @@
+{
+  "$defs": {
+    "ClaimAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim": {
+          "enum": [
+            "source_of_fibre",
+            "high_fibre",
+            "low_sugar",
+            "sugar_free",
+            "low_sodium",
+            "very_low_sodium",
+            "sodium_free",
+            "high_protein",
+            "source_of_protein",
+            "no_added_sugar",
+            "multigrain"
+          ],
+          "title": "Claim",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Region Id"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "contradicted",
+            "insufficient_information"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "not_established",
+            "not_reviewed"
+          ],
+          "title": "Applicability",
+          "type": "string"
+        },
+        "scope": {
+          "const": "numeric_criterion_only",
+          "default": "numeric_criterion_only",
+          "title": "Scope",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Reasons",
+          "type": "array"
+        },
+        "missing_inputs": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Missing Inputs",
+          "type": "array"
+        },
+        "row_ids": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Row Ids",
+          "type": "array"
+        },
+        "criteria": {
+          "items": {
+            "$ref": "#/$defs/CriterionAssessment"
+          },
+          "maxItems": 3,
+          "title": "Criteria",
+          "type": "array"
+        },
+        "combination": {
+          "const": "any",
+          "default": "any",
+          "title": "Combination",
+          "type": "string"
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rule Id"
+        },
+        "source_ids": {
+          "items": {
+            "enum": [
+              "fssai-ac-2022-schedule-i",
+              "fssai-ac-2018-general",
+              "fssai-ac-compendium-v4"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "claim",
+        "region_id",
+        "status",
+        "applicability",
+        "reasons",
+        "missing_inputs",
+        "row_ids",
+        "criteria",
+        "rule_id",
+        "source_ids",
+        "explanation"
+      ],
+      "title": "ClaimAssessment",
+      "type": "object"
+    },
+    "ClaimContext": {
+      "additionalProperties": false,
+      "properties": {
+        "food_category": {
+          "enum": [
+            "ordinary_general_food",
+            "special_food",
+            "unknown"
+          ],
+          "title": "Food Category",
+          "type": "string"
+        },
+        "form": {
+          "enum": [
+            "solid",
+            "liquid",
+            "unknown"
+          ],
+          "title": "Form",
+          "type": "string"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared",
+            "unknown"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "food_category",
+        "form",
+        "preparation"
+      ],
+      "title": "ClaimContext",
+      "type": "object"
+    },
+    "ClaimEnergyConversion": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "fssai-schedule-i-note2-v1",
+          "default": "fssai-schedule-i-note2-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "kj_per_kcal": {
+          "default": 4.2,
+          "maximum": 4.2,
+          "minimum": 4.2,
+          "title": "Kj Per Kcal",
+          "type": "number"
+        },
+        "source_id": {
+          "const": "fssai-ac-2022-schedule-i",
+          "default": "fssai-ac-2022-schedule-i",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "evidence_locator": {
+          "const": "Schedule I Note 2, Gazette PDF page 13",
+          "default": "Schedule I Note 2, Gazette PDF page 13",
+          "title": "Evidence Locator",
+          "type": "string"
+        }
+      },
+      "title": "ClaimEnergyConversion",
+      "type": "object"
+    },
+    "CriterionAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "criterion_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Criterion Id",
+          "type": "string"
+        },
+        "nutrient": {
+          "enum": [
+            "fibre",
+            "sugars",
+            "sodium"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "per_100_g",
+            "per_100_mL",
+            "per_100_kcal"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "operator": {
+          "enum": [
+            "gte",
+            "lte"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "threshold": {
+          "maximum": 1000000000,
+          "minimum": 0,
+          "title": "Threshold",
+          "type": "number"
+        },
+        "unit": {
+          "const": "g",
+          "title": "Unit",
+          "type": "string"
+        },
+        "alternative": {
+          "const": true,
+          "default": true,
+          "title": "Alternative",
+          "type": "boolean"
+        },
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "row_ids": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Row Ids",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "criterion_id",
+        "nutrient",
+        "basis",
+        "operator",
+        "threshold",
+        "unit",
+        "applicable",
+        "outcome",
+        "value",
+        "row_ids",
+        "reason"
+      ],
+      "title": "CriterionAssessment",
+      "type": "object"
+    },
+    "NutrientCell": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "kcal"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "not_reported",
+                "unknown_value",
+                "conflicting_values",
+                "conversion_missing_basis",
+                "conversion_out_of_bounds"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "source_row_ids": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Source Row Ids",
+          "type": "array"
+        },
+        "conversion": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversion"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "NutrientCell",
+      "type": "object"
+    },
+    "NutrientRow": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Table Id",
+          "type": "string"
+        },
+        "nutrient": {
+          "enum": [
+            "energy",
+            "fat",
+            "saturated_fat",
+            "carbohydrates",
+            "carbohydrates_total",
+            "sugars",
+            "added_sugars",
+            "fibre",
+            "protein",
+            "sodium",
+            "salt"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "mg",
+            "ug",
+            "kcal",
+            "kJ"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row_id",
+        "table_id",
+        "nutrient",
+        "value",
+        "unit",
+        "basis",
+        "preparation"
+      ],
+      "title": "NutrientRow",
+      "type": "object"
+    },
+    "NutritionBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "quantity",
+            "serving"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "mL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "NutritionBasis",
+      "type": "object"
+    },
+    "NutritionSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "normalization_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "needs_correction"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tables": {
+          "items": {
+            "$ref": "#/$defs/NutritionTable"
+          },
+          "maxItems": 64,
+          "title": "Tables",
+          "type": "array"
+        },
+        "original_rows": {
+          "items": {
+            "$ref": "#/$defs/NutrientRow"
+          },
+          "maxItems": 64,
+          "title": "Original Rows",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "NutritionSnapshot",
+      "type": "object"
+    },
+    "NutritionTable": {
+      "additionalProperties": false,
+      "properties": {
+        "source_table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Source Table Id",
+          "type": "string"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        },
+        "original_basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "normalized_basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "nutrients": {
+          "additionalProperties": {
+            "$ref": "#/$defs/NutrientCell"
+          },
+          "propertyNames": {
+            "enum": [
+              "energy",
+              "fat",
+              "saturated_fat",
+              "carbohydrates",
+              "carbohydrates_total",
+              "sugars",
+              "added_sugars",
+              "fibre",
+              "protein",
+              "sodium",
+              "salt"
+            ]
+          },
+          "title": "Nutrients",
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_table_id",
+        "preparation",
+        "original_basis",
+        "normalized_basis",
+        "nutrients"
+      ],
+      "title": "NutritionTable",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "client_request_id": {
+      "format": "uuid",
+      "title": "Client Request Id",
+      "type": "string"
+    },
+    "capture_session_id": {
+      "format": "uuid",
+      "title": "Capture Session Id",
+      "type": "string"
+    },
+    "input_revision": {
+      "maximum": 2147483647,
+      "minimum": 0,
+      "title": "Input Revision",
+      "type": "integer"
+    },
+    "selected_table_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Selected Table Id",
+      "type": "string"
+    },
+    "context": {
+      "$ref": "#/$defs/ClaimContext"
+    },
+    "knowledge_version": {
+      "const": "claims-2026-10-06.1",
+      "title": "Knowledge Version",
+      "type": "string"
+    },
+    "assessed_at": {
+      "format": "date-time",
+      "title": "Assessed At",
+      "type": "string"
+    },
+    "assessment_basis": {
+      "const": "user_confirmed_label",
+      "default": "user_confirmed_label",
+      "title": "Assessment Basis",
+      "type": "string"
+    },
+    "energy_conversion": {
+      "$ref": "#/$defs/ClaimEnergyConversion"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/NutritionSnapshot"
+    },
+    "assessments": {
+      "items": {
+        "$ref": "#/$defs/ClaimAssessment"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Assessments",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "client_request_id",
+    "capture_session_id",
+    "input_revision",
+    "selected_table_id",
+    "context",
+    "knowledge_version",
+    "assessed_at",
+    "snapshot",
+    "assessments",
+    "warnings"
+  ],
+  "title": "ClaimsResponse",
+  "type": "object"
+}

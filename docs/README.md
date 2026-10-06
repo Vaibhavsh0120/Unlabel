@@ -1,6 +1,6 @@
 # Documentation map
 
-Frontend remains 0.0.0+1. Backend source v0.2.3 implements health/meta, live OFF product/nutrition lookup, confirmed nutrition-row normalization, verified catalogue bundling, dated catalogue status/lookup and a separate rich-facts route. Final source and deployment gates are recorded in the current review. Scanner, claims, scoring and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Source research was checked on 5–6 October 2026; provider/source eligibility must be reviewed before use.
+Frontend remains 0.0.0+1. Backend source v0.3.0 implements eleven routes: health/meta, live OFF product/nutrition lookup, confirmed normalization, verified catalogue status/identity/rich facts, reviewed numerical claim checks, loaded rules and public evidence metadata. Current review records local/source/hosted gates separately. Scanner, broad analysis/scoring, glossary, comparison and AI documents describe later behavior; the backend README and current OpenAPI describe today's API. Source research was checked on 5–6 October 2026; provider/source eligibility must be reviewed before use.
 
 | Document | Read it for |
 | --- | --- |
@@ -9,19 +9,23 @@ Frontend remains 0.0.0+1. Backend source v0.2.3 implements health/meta, live OFF
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
 | [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
-| [API plan](architecture/API_PLAN.md) | Eight current routes, confirmed-input contract, and later analysis proposals |
+| [API plan](architecture/API_PLAN.md) | Eleven current routes, confirmed claim/rule/evidence contracts, and later analysis proposals |
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
 | [20-group feature tracker](planning/FEATURE_TRACKER.md) | Backend readiness, pending client work and separate version goals |
-| [Backend v0.2.3 review](planning/BACKEND_V0_2_3_REVIEW.md) | Current code/source/build/hosted gates and their evidence |
+| [Backend v0.3.0 review](planning/BACKEND_V0_3_0_REVIEW.md) | Current reviewed-claim/code/build/hosted gates and evidence |
+| [Backend v0.3.0 release notes](planning/BACKEND_V0_3_0_RELEASE.md) | Separate confirmed-label numerical claim release and preserved boundaries |
+| [Reviewed knowledge](../knowledge/README.md) | Actual seven-rule scope, three sources, hashes and packaging |
+| [Fresh FSSAI source check](research/FSSAI_CLAIMS_V0_3_0_SOURCE_CHECK.json) | Bounded fresh PDF byte/hash verification against the registry |
+| [Backend v0.2.3 review](planning/BACKEND_V0_2_3_REVIEW.md) | Historical rich-facts source/build/hosted evidence |
 | [Backend v0.2.3 release notes](planning/BACKEND_V0_2_3_RELEASE.md) | Rich snapshot facts contract and separate backend release |
-| [Accepted next two versions](superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) | Rich facts first, reviewed confirmed-label claims next |
+| [Accepted two-version plan](superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) | Independently released rich facts, then reviewed confirmed-label claims |
 | [Backend v0.2.2 review](planning/BACKEND_V0_2_2_REVIEW.md) | Historical CSV-source and deployment proof |
 | [Backend v0.2.2 release notes](planning/BACKEND_V0_2_2_RELEASE.md) | Historical hosted identity catalogue and source-age contract |
 | [Backend v0.2.2 build plan](superpowers/plans/2026-10-06-backend-v0.2.2.md) | Bounded implementation scope and completion gates |
 | [Current catalogue coverage](research/CATALOGUE_V0_2_3_COVERAGE.json) | Full JSONL acquisition, strict indexed-field counts and local receipt |
 | [Historical CSV coverage](research/CATALOGUE_V0_2_2_COVERAGE.json) | Earlier fields and bounded live/export count gap |
-| [Current v0.2.3 production evidence](research/BACKEND_V0_2_3_PRODUCTION.json) | Exact implementation SHA/deployments, actual build receipt and 20 public HTTP checks |
+| [Historical v0.2.3 production evidence](research/BACKEND_V0_2_3_PRODUCTION.json) | Exact implementation SHA/deployments, actual build receipt and 20 public HTTP checks |
 | [Historical v0.2.2 production evidence](research/BACKEND_V0_2_2_PRODUCTION.json) | Earlier implementation SHA/deployments and hosted receipt |
 | [Backend v0.2.1 review](planning/BACKEND_V0_2_1_REVIEW.md) | Historical source checks, actual export/import metrics and then-pending hosted gate |
 | [Backend v0.2.1 release notes](planning/BACKEND_V0_2_1_RELEASE.md) | Catalogue tooling and independent backend version |
@@ -35,7 +39,7 @@ Frontend remains 0.0.0+1. Backend source v0.2.3 implements health/meta, live OFF
 | [OFF v3.6 nutrition research](research/OFF_NUTRITION_V3_6.md) | Verified upstream nutrition structure and narrow adapter scope |
 | [Vercel setup and URLs](planning/VERCEL_SETUP.md) | Actual project roots/builds, free domains, environment and Git deployments |
 | [India snapshot](research/INDIA_SNAPSHOT.md) | Actual local index, nine-month refresh and storage budgets |
-| [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two Vercel projects, stateless runtime and future evidence bundles |
+| [Deployment plan](architecture/DEPLOYMENT_PLAN.md) | Two Vercel projects, stateless runtime and verified catalogue/claim bundles |
 | [Features](planning/FEATURES.md) | End-to-end behavior of each requested feature |
 | [Roadmap](planning/ROADMAP.md) | Future implementation order and acceptance gates |
 | [Teammate handoff](planning/TEAM_HANDOFF.md) | What is finished now and how to divide later work |

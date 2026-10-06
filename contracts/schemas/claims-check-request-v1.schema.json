@@ -1,0 +1,302 @@
+{
+  "$defs": {
+    "ClaimContext": {
+      "additionalProperties": false,
+      "properties": {
+        "food_category": {
+          "enum": [
+            "ordinary_general_food",
+            "special_food",
+            "unknown"
+          ],
+          "title": "Food Category",
+          "type": "string"
+        },
+        "form": {
+          "enum": [
+            "solid",
+            "liquid",
+            "unknown"
+          ],
+          "title": "Form",
+          "type": "string"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared",
+            "unknown"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "food_category",
+        "form",
+        "preparation"
+      ],
+      "title": "ClaimContext",
+      "type": "object"
+    },
+    "IdentifiedClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim": {
+          "enum": [
+            "source_of_fibre",
+            "high_fibre",
+            "low_sugar",
+            "sugar_free",
+            "low_sodium",
+            "very_low_sodium",
+            "sodium_free",
+            "high_protein",
+            "source_of_protein",
+            "no_added_sugar",
+            "multigrain"
+          ],
+          "title": "Claim",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Region Id"
+        }
+      },
+      "required": [
+        "claim_id",
+        "claim",
+        "region_id"
+      ],
+      "title": "IdentifiedClaim",
+      "type": "object"
+    },
+    "NutrientRow": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Table Id",
+          "type": "string"
+        },
+        "nutrient": {
+          "enum": [
+            "energy",
+            "fat",
+            "saturated_fat",
+            "carbohydrates",
+            "carbohydrates_total",
+            "sugars",
+            "added_sugars",
+            "fibre",
+            "protein",
+            "sodium",
+            "salt"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "mg",
+            "ug",
+            "kcal",
+            "kJ"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row_id",
+        "table_id",
+        "nutrient",
+        "value",
+        "unit",
+        "basis",
+        "preparation"
+      ],
+      "title": "NutrientRow",
+      "type": "object"
+    },
+    "NutritionBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "quantity",
+            "serving"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "mL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "NutritionBasis",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "client_request_id": {
+      "format": "uuid",
+      "title": "Client Request Id",
+      "type": "string"
+    },
+    "capture_session_id": {
+      "format": "uuid",
+      "title": "Capture Session Id",
+      "type": "string"
+    },
+    "input_revision": {
+      "maximum": 2147483647,
+      "minimum": 0,
+      "title": "Input Revision",
+      "type": "integer"
+    },
+    "confirmed": {
+      "const": true,
+      "title": "Confirmed",
+      "type": "boolean"
+    },
+    "completeness": {
+      "enum": [
+        "complete",
+        "partial"
+      ],
+      "title": "Completeness",
+      "type": "string"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/NutrientRow"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Rows",
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/IdentifiedClaim"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Claims",
+      "type": "array"
+    },
+    "selected_table_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Selected Table Id",
+      "type": "string"
+    },
+    "context": {
+      "$ref": "#/$defs/ClaimContext"
+    }
+  },
+  "required": [
+    "client_request_id",
+    "capture_session_id",
+    "input_revision",
+    "confirmed",
+    "completeness",
+    "rows",
+    "claims",
+    "selected_table_id",
+    "context"
+  ],
+  "title": "ClaimsRequest",
+  "type": "object"
+}

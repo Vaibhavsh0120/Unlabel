@@ -285,6 +285,8 @@ def test_cli_builds_without_environment_decryption_and_prints_only_the_receipt(t
             str(source),
             "--output-directory",
             str(output),
+            "--knowledge-output-directory",
+            str(tmp_path / "knowledge-package"),
         ],
         cwd=script.parent,
         capture_output=True,
@@ -292,7 +294,11 @@ def test_cli_builds_without_environment_decryption_and_prints_only_the_receipt(t
         check=False,
     )
     assert result.returncode == 0, result.stderr
-    receipt = json.loads(result.stdout)
+    build = json.loads(result.stdout)
+    receipt = build["catalogue"]
+    from app.claims.bundle import verify_knowledge_bundle
+
+    assert build["claims_knowledge"] == verify_knowledge_bundle(tmp_path / "knowledge-package")
     assert receipt["indexed_products"] == 1
     assert receipt["database_file"] == "catalogue.sqlite3"
     assert "Synthetic oats" not in result.stdout

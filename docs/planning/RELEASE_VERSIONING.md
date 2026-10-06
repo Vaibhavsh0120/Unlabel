@@ -22,7 +22,7 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Current source versions are independent: frontend **0.0.0+1**, backend **0.2.3**. Historical `v0.1.0`, `v0.2.0`, `v0.2.1` and `v0.2.2` releases are explicitly titled Backend and carry no APK/IPA; GitHub and version-specific reviews record publication/verification. The v0.2.3 source-only backend release follows the current [review](BACKEND_V0_2_3_REVIEW.md) and [release notes](BACKEND_V0_2_3_RELEASE.md); publication is a separate gate from local checks or a Vercel build. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve the existing tags as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
+Current source versions are independent: frontend **0.0.0+1**, backend **0.3.0**. Historical `v0.1.0`, `v0.2.0`, `v0.2.1`, `v0.2.2` and `v0.2.3` releases are explicitly titled Backend and carry no APK/IPA; GitHub and version-specific reviews record publication/verification. The v0.3.0 source-only backend release follows the current [review](BACKEND_V0_3_0_REVIEW.md) and [release notes](BACKEND_V0_3_0_RELEASE.md); publication is a separate gate from local checks or a Vercel build. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve the existing tags as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |
@@ -166,11 +166,11 @@ provider schema remains behind a stable backend adapter. Offline saved reports
 retain their original source, date and versions; viewing them does not refresh
 criteria or compute new findings. No Dart rule engine/parity system is required.
 Product/nutrition provider reads and confirmed-row normalization remain active
-in backend v0.2.3. Separate catalogue status/lookup uses an export-origin contract,
+in backend v0.3.0. Separate catalogue status/lookup uses an export-origin contract,
 verified deployment receipt and nine-calendar-month source age. Its separate rich-facts route preserves direct-table nutrition, tag availability,
 optional record dates and official image URL attribution; legacy aggregates and
 missing fields stay unknown. Coverage is unverified; a snapshot miss makes no
-OFF request. Reviewed rules, knowledge updates and AI remain disabled.
+OFF request. The separate confirmed-label numerical claim API uses reviewed knowledge `claims-2026-10-06.1`; metadata exposes actual claim readiness and a verified knowledge receipt summary when packaged. Affected unsupported/missing/conflicting/future-dated evidence stays insufficient. Broader analysis, glossary and AI remain disabled.
 
 The strict ProductLookup v1 model/route is unchanged by v0.2.0. Nutrition has
 separate lookup/request/response schemas; historical v0.1.0 OpenAPI stays

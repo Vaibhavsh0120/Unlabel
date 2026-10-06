@@ -7,7 +7,7 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.2.3-59636e?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.3.0-59636e?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Stage](https://img.shields.io/badge/stage-backend%20core-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -42,23 +42,24 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
-**Frontend remains 0.0.0+1; backend source is v0.2.3.** The app is still a starter. The backend supports live barcode lookup, source-tagged direct nutrition, confirmed-value normalization and a separate India snapshot. v0.2.3 adds typed snapshot facts: nutrition availability, canonical tag availability, record dates and an attributed official image URL. [Current review](docs/planning/BACKEND_V0_2_3_REVIEW.md) records source/build/hosted completion separately. Health scores and FSSAI claim checks come later.
+**Frontend remains 0.0.0+1; backend source is v0.3.0.** The app is still a starter. The backend supports live barcode lookup, source-tagged direct nutrition, confirmed-value normalization and the independently released rich India snapshot. v0.3.0 adds seven reviewed numerical FSSAI claim checks for confirmed rows, loaded rules and public evidence metadata. [Current review](docs/planning/BACKEND_V0_3_0_REVIEW.md) records local/source/hosted gates separately. Health scores, a full analysis report and frontend integration remain tracked work.
 
 | Ready now | Planned next |
 | --- | --- |
 | One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
-| FastAPI health/meta, OFF product and nutrition lookup | Reviewed FSSAI checks and comparison |
-| Hosted rich facts: 24,641 validated barcodes, verified 59.58 MiB SQLite | Reviewed confirmed-label claim subset in v0.3.0 |
-| Catalogue status, source age and nine-month refresh date | Camera integration with explicit live/snapshot selection |
+| FastAPI health/meta, OFF product/nutrition lookup and confirmed normalization | Full analysis report, health-score policy and comparison |
+| Rich facts: 24,641 validated barcodes, verified 59.58 MiB SQLite | Camera integration with explicit live/snapshot selection |
+| Seven reviewed confirmed-label numerical claims, rules and evidence metadata | Broader claim coverage, ingredients and bilingual explanations |
+| Catalogue status, source age and nine-month refresh date | Saved results, history and local preferences |
 | Confirmed nutrient rows normalized with original values and provenance | OCR-to-API integration and nutrition visualizations |
 | Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
-| Platform projects and tracked dependency lockfile | Versioned nutrition, claim and allergen rules |
+| Platform projects and tracked dependency lockfile | Reviewed nutrition classifications and allergen policies |
 | Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
 | Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
 
-The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; local and production evidence is recorded separately in the [v0.2.3 review](docs/planning/BACKEND_V0_2_3_REVIEW.md). Rule/glossary corpus and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; local and production evidence is recorded separately in the [v0.3.0 review](docs/planning/BACKEND_V0_3_0_REVIEW.md). The small reviewed claim corpus is implemented; glossary, wider rules and trained models remain future work. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
 
-[20-group feature tracker](docs/planning/FEATURE_TRACKER.md) · [Next two versions](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [API/run guide](backend/README.md) · [Catalogue storage: JSONL facts to SQLite](docs/architecture/CATALOGUE.md)
+[20-group feature tracker](docs/planning/FEATURE_TRACKER.md) · [Accepted two-version plan](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [API/run guide](backend/README.md) · [Catalogue storage: JSONL facts to SQLite](docs/architecture/CATALOGUE.md)
 
 ## Four connected features
 
@@ -90,7 +91,7 @@ flowchart LR
   Knowledge["Reviewed canonical knowledge"] --> Rules
 ~~~
 
-**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. The separate catalogue route reads the bundled India snapshot without an OFF request. The separate facts route returns selected direct nutrition, availability-aware tags, record dates and a validated official image reference; live product/nutrition routes still query OFF. Legacy aggregate nutrition is unavailable as direct label evidence. Coverage is unverified and a missing snapshot record stays a dated 404. Nutrition tables retain their source, basis and preparation; separate tables are never silently combined. Confirmed physical-package values remain distinct from community data. Reviewed FSSAI criteria are planned; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
+**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. The separate catalogue route reads the bundled India snapshot without an OFF request. The separate facts route returns selected direct nutrition, availability-aware tags, record dates and a validated official image reference; live product/nutrition routes still query OFF. Legacy aggregate nutrition is unavailable as direct label evidence. Coverage is unverified and a missing snapshot record stays a dated 404. Nutrition tables retain their source, basis and preparation; separate tables are never silently combined. Confirmed physical-package values remain distinct from community data. Reviewed FSSAI numerical criteria run through a separate confirmed-label API; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
 
 Normalization preserves zero, marks missing values as unknown, and converts compatible values to per 100 g or per 100 mL. It keeps an unmeasured serving as a serving, without guessing density or portion size. It does not infer added sugar from total sugar or salt from sodium. [Current API and examples →](backend/README.md)
 
@@ -111,7 +112,7 @@ No duplicate Dart rule engine is required for the MVP. On-device OCR may still c
 | Product data | Open Food Facts live APIs + compact India snapshot | Separate live and read-only snapshot routes; source gaps remain visible |
 | Knowledge | Reviewed JSON/CSV sources, aliases, rules and translations | Read-only client/server bundles; optional local SQLite index |
 
-The backend is stateless. Each deployment generates and verifies its read-only SQLite bundle from committed source. Refresh replaces the source through a new deployment every nine calendar months; the running database is never updated in place. A writable SQLite file cannot be treated as durable Vercel storage. The website build supplies pinned Flutter 3.47.4 and release output. Pushes to `main` automatically deploy both projects; APK/IPA releases remain manual. [Deployment configuration →](docs/planning/VERCEL_SETUP.md)
+The backend is stateless. Each deployment generates and verifies its read-only SQLite and approved claim-knowledge bundles from committed source. Refresh replaces the source through a new deployment every nine calendar months; the running database is never updated in place. A writable SQLite file cannot be treated as durable Vercel storage. The website build supplies pinned Flutter 3.47.4 and release output. Pushes to `main` automatically deploy both projects; APK/IPA releases remain manual. [Deployment configuration →](docs/planning/VERCEL_SETUP.md)
 
 **₹0 and no credit card remain the baseline.** Stay within eligible free tiers, keep billing disabled, and preserve local/template fallbacks. Hosted AI and unlimited private CI are not guarantees. [Free-stack research →](docs/research/FREE_STACK.md)
 
@@ -125,7 +126,7 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.2.3: live APIs + rich snapshot facts
+├── backend/             FastAPI v0.3.0: live APIs + rich facts + reviewed claim subset
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Reusable India source, provenance/licenses and fixtures
@@ -174,3 +175,5 @@ Backend/web deployment versions can differ while remaining compatible with insta
 UI targets include iPhone, iPad portrait/landscape and MacBook sizes in both modes, with touch/keyboard access and readable text. [UI requirements →](docs/planning/UI_REQUIREMENTS.md)
 
 Source research checked **5–6 October 2026**. Recheck provider terms and source applicability before use. The supplied compliance reference is background for a later extension, not official certification. Keep plaintext secrets/private scans out of Git. [Contribution boundaries →](CONTRIBUTING.md)
+
+Claim results retain selected table/context, row/region IDs, rule/source IDs and knowledge version. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal; normalization-v1 remains 4.184. Unknown alternatives or conflicts stay insufficient. High/source protein, no added sugar and multigrain are recognized but unreviewed. Numerical support does not certify health, allergy safety or complete compliance. [Claim API and synthetic examples](backend/README.md#reviewed-confirmed-label-claim-checks).

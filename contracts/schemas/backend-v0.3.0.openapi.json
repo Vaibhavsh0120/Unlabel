@@ -1,0 +1,3159 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Unlabel Backend",
+    "version": "0.3.0"
+  },
+  "paths": {
+    "/v1/claims/check": {
+      "post": {
+        "tags": [
+          "Claim checks"
+        ],
+        "summary": "Check Claims",
+        "operationId": "check_claims_v1_claims_check_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaimsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimsUnavailable"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32 KiB"
+          }
+        }
+      }
+    },
+    "/v1/claims/rules": {
+      "get": {
+        "tags": [
+          "Claim checks"
+        ],
+        "summary": "Claim Rules",
+        "operationId": "claim_rules_v1_claims_rules_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimsRulesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimsRulesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evidence/{source_id}": {
+      "get": {
+        "tags": [
+          "Claim checks"
+        ],
+        "summary": "Evidence",
+        "operationId": "evidence_v1_evidence__source_id__get",
+        "parameters": [
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[a-z][a-z0-9-]*$",
+              "title": "Source Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Health",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalogue": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Catalogue Status",
+        "operationId": "catalogue_status_v1_catalogue_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogueStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogueStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/meta": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Meta",
+        "operationId": "meta_v1_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/catalogue/products/{barcode}/facts": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Catalogue Facts",
+        "operationId": "catalogue_facts_v1_catalogue_products__barcode__facts_get",
+        "parameters": [
+          {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "title": "Barcode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactsLookup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactsLookup"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactsLookup"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/catalogue/products/{barcode}": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Catalogue Product",
+        "operationId": "catalogue_product_v1_catalogue_products__barcode__get",
+        "parameters": [
+          {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "title": "Barcode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogLookup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogLookup"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogLookup"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/products/{barcode}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Product",
+        "operationId": "product_v1_products__barcode__get",
+        "parameters": [
+          {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "title": "Barcode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductLookup"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/products/{barcode}/nutrition": {
+      "get": {
+        "tags": [
+          "Nutrition"
+        ],
+        "summary": "Nutrition",
+        "operationId": "nutrition_v1_products__barcode__nutrition_get",
+        "parameters": [
+          {
+            "name": "barcode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "title": "Barcode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionLookup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionLookup"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionLookup"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionLookup"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionLookup"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/nutrition/normalize": {
+      "post": {
+        "tags": [
+          "Nutrition"
+        ],
+        "summary": "Normalize",
+        "operationId": "normalize_v1_nutrition_normalize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NormalizeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NormalizeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFailure"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Actual request body exceeds 32 KiB"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AvailableTags": {
+        "properties": {
+          "availability": {
+            "type": "string",
+            "enum": [
+              "available",
+              "missing",
+              "invalid"
+            ],
+            "title": "Availability"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Values"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "availability"
+        ],
+        "title": "AvailableTags"
+      },
+      "CatalogLookup": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "requested_barcode": {
+            "type": "string",
+            "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+            "title": "Requested Barcode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "manifest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Manifest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Product"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requested_barcode",
+          "status"
+        ],
+        "title": "CatalogLookup"
+      },
+      "CatalogueArtifact": {
+        "properties": {
+          "database_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Database Sha256"
+          },
+          "database_bytes": {
+            "type": "integer",
+            "maximum": 104857600.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Database Bytes"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Sha256"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Snapshot Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "database_sha256",
+          "database_bytes",
+          "source_sha256",
+          "snapshot_id"
+        ],
+        "title": "CatalogueArtifact"
+      },
+      "CatalogueStatus": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "not_configured",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "manifest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Manifest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SnapshotFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "artifact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CatalogueArtifact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_kind": {
+            "type": "string",
+            "const": "product_identity",
+            "title": "Data Kind",
+            "default": "product_identity"
+          },
+          "field_limits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Field Limits"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "CatalogueStatus"
+      },
+      "ClaimAssessment": {
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Claim Id"
+          },
+          "claim": {
+            "type": "string",
+            "enum": [
+              "source_of_fibre",
+              "high_fibre",
+              "low_sugar",
+              "sugar_free",
+              "low_sodium",
+              "very_low_sodium",
+              "sodium_free",
+              "high_protein",
+              "source_of_protein",
+              "no_added_sugar",
+              "multigrain"
+            ],
+            "title": "Claim"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "contradicted",
+              "insufficient_information"
+            ],
+            "title": "Status"
+          },
+          "applicability": {
+            "type": "string",
+            "enum": [
+              "applicable",
+              "not_established",
+              "not_reviewed"
+            ],
+            "title": "Applicability"
+          },
+          "scope": {
+            "type": "string",
+            "const": "numeric_criterion_only",
+            "title": "Scope",
+            "default": "numeric_criterion_only"
+          },
+          "reasons": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Reasons"
+          },
+          "missing_inputs": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Missing Inputs"
+          },
+          "row_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Row Ids"
+          },
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/CriterionAssessment"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Criteria"
+          },
+          "combination": {
+            "type": "string",
+            "const": "any",
+            "title": "Combination",
+            "default": "any"
+          },
+          "rule_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Id"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "fssai-ac-2022-schedule-i",
+                "fssai-ac-2018-general",
+                "fssai-ac-compendium-v4"
+              ]
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Source Ids"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Explanation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "claim_id",
+          "claim",
+          "region_id",
+          "status",
+          "applicability",
+          "reasons",
+          "missing_inputs",
+          "row_ids",
+          "criteria",
+          "rule_id",
+          "source_ids",
+          "explanation"
+        ],
+        "title": "ClaimAssessment"
+      },
+      "ClaimContext": {
+        "properties": {
+          "food_category": {
+            "type": "string",
+            "enum": [
+              "ordinary_general_food",
+              "special_food",
+              "unknown"
+            ],
+            "title": "Food Category"
+          },
+          "form": {
+            "type": "string",
+            "enum": [
+              "solid",
+              "liquid",
+              "unknown"
+            ],
+            "title": "Form"
+          },
+          "preparation": {
+            "type": "string",
+            "enum": [
+              "as_sold",
+              "as_prepared",
+              "unknown"
+            ],
+            "title": "Preparation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "food_category",
+          "form",
+          "preparation"
+        ],
+        "title": "ClaimContext"
+      },
+      "ClaimEnergyConversion": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "const": "fssai-schedule-i-note2-v1",
+            "title": "Version",
+            "default": "fssai-schedule-i-note2-v1"
+          },
+          "kj_per_kcal": {
+            "type": "number",
+            "maximum": 4.2,
+            "minimum": 4.2,
+            "title": "Kj Per Kcal",
+            "default": 4.2
+          },
+          "source_id": {
+            "type": "string",
+            "const": "fssai-ac-2022-schedule-i",
+            "title": "Source Id",
+            "default": "fssai-ac-2022-schedule-i"
+          },
+          "evidence_locator": {
+            "type": "string",
+            "const": "Schedule I Note 2, Gazette PDF page 13",
+            "title": "Evidence Locator",
+            "default": "Schedule I Note 2, Gazette PDF page 13"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ClaimEnergyConversion"
+      },
+      "ClaimRule": {
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Rule Id"
+          },
+          "claim": {
+            "type": "string",
+            "enum": [
+              "source_of_fibre",
+              "high_fibre",
+              "low_sugar",
+              "sugar_free",
+              "low_sodium",
+              "very_low_sodium",
+              "sodium_free"
+            ],
+            "title": "Claim"
+          },
+          "combination": {
+            "type": "string",
+            "const": "any",
+            "title": "Combination"
+          },
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCriterion"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 2,
+            "title": "Criteria"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "fssai-ac-2022-schedule-i",
+                "fssai-ac-2018-general",
+                "fssai-ac-compendium-v4"
+              ]
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 2,
+            "title": "Source Ids"
+          },
+          "evidence_locator": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Evidence Locator"
+          },
+          "supported_wording": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Supported Wording"
+          },
+          "contradicted_wording": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Contradicted Wording"
+          },
+          "scope": {
+            "type": "string",
+            "const": "numeric_criterion_only",
+            "title": "Scope"
+          },
+          "preparation_policy": {
+            "type": "string",
+            "const": "confirmed_matching_table",
+            "title": "Preparation Policy"
+          },
+          "food_category_policy": {
+            "type": "string",
+            "const": "ordinary_general_food_only",
+            "title": "Food Category Policy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rule_id",
+          "claim",
+          "combination",
+          "criteria",
+          "source_ids",
+          "evidence_locator",
+          "supported_wording",
+          "contradicted_wording",
+          "scope",
+          "preparation_policy",
+          "food_category_policy"
+        ],
+        "title": "ClaimRule"
+      },
+      "ClaimsRequest": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "client_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Request Id"
+          },
+          "capture_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Capture Session Id"
+          },
+          "input_revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Input Revision"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true,
+            "title": "Confirmed"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ],
+            "title": "Completeness"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/NutrientRow"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Rows"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/IdentifiedClaim"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Claims"
+          },
+          "selected_table_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Selected Table Id"
+          },
+          "context": {
+            "$ref": "#/components/schemas/ClaimContext"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "client_request_id",
+          "capture_session_id",
+          "input_revision",
+          "confirmed",
+          "completeness",
+          "rows",
+          "claims",
+          "selected_table_id",
+          "context"
+        ],
+        "title": "ClaimsRequest"
+      },
+      "ClaimsResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "client_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Request Id"
+          },
+          "capture_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Capture Session Id"
+          },
+          "input_revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Input Revision"
+          },
+          "selected_table_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Selected Table Id"
+          },
+          "context": {
+            "$ref": "#/components/schemas/ClaimContext"
+          },
+          "knowledge_version": {
+            "type": "string",
+            "const": "claims-2026-10-06.1",
+            "title": "Knowledge Version"
+          },
+          "assessed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Assessed At"
+          },
+          "assessment_basis": {
+            "type": "string",
+            "const": "user_confirmed_label",
+            "title": "Assessment Basis",
+            "default": "user_confirmed_label"
+          },
+          "energy_conversion": {
+            "$ref": "#/components/schemas/ClaimEnergyConversion"
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/NutritionSnapshot"
+          },
+          "assessments": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimAssessment"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Assessments"
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "client_request_id",
+          "capture_session_id",
+          "input_revision",
+          "selected_table_id",
+          "context",
+          "knowledge_version",
+          "assessed_at",
+          "snapshot",
+          "assessments",
+          "warnings"
+        ],
+        "title": "ClaimsResponse"
+      },
+      "ClaimsRulesResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "knowledge_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "claims-2026-10-06.1"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knowledge Version"
+          },
+          "reviewed_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed On"
+          },
+          "energy_conversion": {
+            "$ref": "#/components/schemas/ClaimEnergyConversion"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimRule"
+            },
+            "type": "array",
+            "maxItems": 7,
+            "title": "Rules"
+          },
+          "unsupported_claims": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "source_of_fibre",
+                "high_fibre",
+                "low_sugar",
+                "sugar_free",
+                "low_sodium",
+                "very_low_sodium",
+                "sodium_free",
+                "high_protein",
+                "source_of_protein",
+                "no_added_sugar",
+                "multigrain"
+              ]
+            },
+            "type": "array",
+            "maxItems": 4,
+            "title": "Unsupported Claims"
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "knowledge_version",
+          "reviewed_on",
+          "rules",
+          "unsupported_claims",
+          "warnings"
+        ],
+        "title": "ClaimsRulesResponse"
+      },
+      "ClaimsUnavailable": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "status": {
+            "type": "string",
+            "const": "unavailable",
+            "title": "Status",
+            "default": "unavailable"
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "warnings"
+        ],
+        "title": "ClaimsUnavailable"
+      },
+      "CriterionAssessment": {
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Criterion Id"
+          },
+          "nutrient": {
+            "type": "string",
+            "enum": [
+              "fibre",
+              "sugars",
+              "sodium"
+            ],
+            "title": "Nutrient"
+          },
+          "basis": {
+            "type": "string",
+            "enum": [
+              "per_100_g",
+              "per_100_mL",
+              "per_100_kcal"
+            ],
+            "title": "Basis"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "gte",
+              "lte"
+            ],
+            "title": "Operator"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "unit": {
+            "type": "string",
+            "const": "g",
+            "title": "Unit"
+          },
+          "alternative": {
+            "type": "boolean",
+            "const": true,
+            "title": "Alternative",
+            "default": true
+          },
+          "applicable": {
+            "type": "boolean",
+            "title": "Applicable"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "unknown",
+              "not_applicable"
+            ],
+            "title": "Outcome"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "row_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Row Ids"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80,
+                "minLength": 1,
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "criterion_id",
+          "nutrient",
+          "basis",
+          "operator",
+          "threshold",
+          "unit",
+          "applicable",
+          "outcome",
+          "value",
+          "row_ids",
+          "reason"
+        ],
+        "title": "CriterionAssessment"
+      },
+      "DirectNutrition": {
+        "properties": {
+          "availability": {
+            "type": "string",
+            "enum": [
+              "direct_tables",
+              "missing",
+              "legacy_unsupported",
+              "invalid"
+            ],
+            "title": "Availability"
+          },
+          "nutrition_adapter_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Nutrition Adapter Version",
+            "default": "1"
+          },
+          "assessment_basis": {
+            "type": "string",
+            "const": "open_food_facts_community_data",
+            "title": "Assessment Basis",
+            "default": "open_food_facts_community_data"
+          },
+          "input_tables": {
+            "items": {
+              "$ref": "#/components/schemas/InputTableSource"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "title": "Input Tables"
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/NutritionSnapshot"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "availability",
+          "snapshot"
+        ],
+        "title": "DirectNutrition"
+      },
+      "EvidenceResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "requested_source_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Requested Source Id"
+          },
+          "knowledge_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "claims-2026-10-06.1"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knowledge Version"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceSource"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "requested_source_id",
+          "knowledge_version",
+          "source",
+          "warnings"
+        ],
+        "title": "EvidenceResponse"
+      },
+      "EvidenceSource": {
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "enum": [
+              "fssai-ac-2022-schedule-i",
+              "fssai-ac-2018-general",
+              "fssai-ac-compendium-v4"
+            ],
+            "title": "Source Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Url"
+          },
+          "source_kind": {
+            "type": "string",
+            "enum": [
+              "gazette",
+              "compendium"
+            ],
+            "title": "Source Kind"
+          },
+          "pdf_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Pdf Sha256"
+          },
+          "pdf_bytes": {
+            "type": "integer",
+            "maximum": 10000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Pdf Bytes"
+          },
+          "pdf_pages": {
+            "items": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Pdf Pages"
+          },
+          "publication_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Date"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date"
+          },
+          "verified_on": {
+            "type": "string",
+            "format": "date",
+            "title": "Verified On"
+          },
+          "verification_status": {
+            "type": "string",
+            "enum": [
+              "reviewed_current",
+              "needs_review",
+              "superseded"
+            ],
+            "title": "Verification Status"
+          },
+          "qualification": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Qualification"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_id",
+          "title",
+          "url",
+          "source_kind",
+          "pdf_sha256",
+          "pdf_bytes",
+          "pdf_pages",
+          "publication_date",
+          "effective_date",
+          "verified_on",
+          "verification_status",
+          "qualification"
+        ],
+        "title": "EvidenceSource"
+      },
+      "FactsLookup": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "requested_barcode": {
+            "type": "string",
+            "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+            "title": "Requested Barcode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "manifest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Manifest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Product"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProductFacts"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requested_barcode",
+          "status"
+        ],
+        "title": "FactsLookup"
+      },
+      "FrontImage": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Url"
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 3,
+            "pattern": "^[a-z]{2,3}$",
+            "title": "Language"
+          },
+          "revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "size": {
+            "type": "integer",
+            "const": 400,
+            "title": "Size",
+            "default": 400
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 400.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 400.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height"
+          },
+          "provider": {
+            "type": "string",
+            "const": "open_food_facts",
+            "title": "Provider",
+            "default": "open_food_facts"
+          },
+          "attribution": {
+            "type": "string",
+            "const": "Product image from Open Food Facts contributors",
+            "title": "Attribution",
+            "default": "Product image from Open Food Facts contributors"
+          },
+          "license": {
+            "type": "string",
+            "const": "CC-BY-SA-3.0",
+            "title": "License",
+            "default": "CC-BY-SA-3.0"
+          },
+          "license_url": {
+            "type": "string",
+            "const": "https://creativecommons.org/licenses/by-sa/3.0/",
+            "title": "License Url",
+            "default": "https://creativecommons.org/licenses/by-sa/3.0/"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "url",
+          "language",
+          "revision"
+        ],
+        "title": "FrontImage"
+      },
+      "IdentifiedClaim": {
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Claim Id"
+          },
+          "claim": {
+            "type": "string",
+            "enum": [
+              "source_of_fibre",
+              "high_fibre",
+              "low_sugar",
+              "sugar_free",
+              "low_sodium",
+              "very_low_sodium",
+              "sodium_free",
+              "high_protein",
+              "source_of_protein",
+              "no_added_sugar",
+              "multigrain"
+            ],
+            "title": "Claim"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "claim_id",
+          "claim",
+          "region_id"
+        ],
+        "title": "IdentifiedClaim"
+      },
+      "InputTableSource": {
+        "properties": {
+          "table_id": {
+            "type": "string",
+            "title": "Table Id"
+          },
+          "provider_source": {
+            "type": "string",
+            "enum": [
+              "packaging",
+              "manufacturer"
+            ],
+            "title": "Provider Source"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "table_id",
+          "provider_source"
+        ],
+        "title": "InputTableSource"
+      },
+      "Manifest": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._:-]+$",
+            "title": "Snapshot Id"
+          },
+          "source_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "minLength": 1,
+            "title": "Source Url"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Sha256"
+          },
+          "source_format": {
+            "type": "string",
+            "enum": [
+              "off_jsonl",
+              "off_csv_projection"
+            ],
+            "title": "Source Format",
+            "default": "off_jsonl"
+          },
+          "coverage": {
+            "type": "string",
+            "enum": [
+              "sample",
+              "unverified"
+            ],
+            "title": "Coverage",
+            "default": "sample"
+          },
+          "exported_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Exported At"
+          },
+          "indexed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Indexed At"
+          },
+          "market_tag": {
+            "type": "string",
+            "const": "en:india",
+            "title": "Market Tag",
+            "default": "en:india"
+          },
+          "rows_read": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Rows Read"
+          },
+          "india_rows": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "India Rows"
+          },
+          "indexed_products": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Indexed Products"
+          },
+          "duplicate_barcodes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Duplicate Barcodes",
+            "default": 0
+          },
+          "unsupported_barcodes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Unsupported Barcodes"
+          },
+          "missing_name": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Missing Name"
+          },
+          "missing_ingredients": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Missing Ingredients"
+          },
+          "database_license": {
+            "type": "string",
+            "const": "ODbL-1.0",
+            "title": "Database License",
+            "default": "ODbL-1.0"
+          },
+          "contents_license": {
+            "type": "string",
+            "const": "DbCL-1.0",
+            "title": "Contents License",
+            "default": "DbCL-1.0"
+          },
+          "attribution": {
+            "type": "string",
+            "const": "Product data from Open Food Facts",
+            "title": "Attribution",
+            "default": "Product data from Open Food Facts"
+          },
+          "license_url": {
+            "type": "string",
+            "const": "https://openfoodfacts.org/terms-of-use",
+            "title": "License Url",
+            "default": "https://openfoodfacts.org/terms-of-use"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "snapshot_id",
+          "source_url",
+          "source_sha256",
+          "exported_at",
+          "indexed_at",
+          "rows_read",
+          "india_rows",
+          "indexed_products",
+          "unsupported_barcodes",
+          "missing_name",
+          "missing_ingredients"
+        ],
+        "title": "Manifest",
+        "description": "Source SHA-256 covers every decoded byte of the local import input, through EOF.\n\n``unverified`` does not assert independent completeness of products sold in India.\nA CSV projection has separate upstream acquisition proof outside this contract."
+      },
+      "NormalizeRequest": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "client_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Request Id"
+          },
+          "capture_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Capture Session Id"
+          },
+          "input_revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Input Revision"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true,
+            "title": "Confirmed"
+          },
+          "completeness": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial"
+            ],
+            "title": "Completeness"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/NutrientRow"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Rows"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "client_request_id",
+          "capture_session_id",
+          "input_revision",
+          "confirmed",
+          "completeness",
+          "rows"
+        ],
+        "title": "NormalizeRequest"
+      },
+      "NormalizeResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "client_request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Request Id"
+          },
+          "capture_session_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Capture Session Id"
+          },
+          "input_revision": {
+            "type": "integer",
+            "title": "Input Revision"
+          },
+          "normalized_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Normalized At"
+          },
+          "assessment_basis": {
+            "type": "string",
+            "const": "user_confirmed_label",
+            "title": "Assessment Basis",
+            "default": "user_confirmed_label"
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/NutritionSnapshot"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "client_request_id",
+          "capture_session_id",
+          "input_revision",
+          "normalized_at",
+          "snapshot"
+        ],
+        "title": "NormalizeResponse"
+      },
+      "NutrientCell": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "g",
+              "kcal"
+            ],
+            "title": "Unit"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "not_reported",
+                  "unknown_value",
+                  "conflicting_values",
+                  "conversion_missing_basis",
+                  "conversion_out_of_bounds"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "source_row_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Source Row Ids"
+          },
+          "conversion": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversion"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value",
+          "unit"
+        ],
+        "title": "NutrientCell"
+      },
+      "NutrientRow": {
+        "properties": {
+          "row_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Row Id"
+          },
+          "table_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Table Id"
+          },
+          "nutrient": {
+            "type": "string",
+            "enum": [
+              "energy",
+              "fat",
+              "saturated_fat",
+              "carbohydrates",
+              "carbohydrates_total",
+              "sugars",
+              "added_sugars",
+              "fibre",
+              "protein",
+              "sodium",
+              "salt"
+            ],
+            "title": "Nutrient"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "g",
+              "mg",
+              "ug",
+              "kcal",
+              "kJ"
+            ],
+            "title": "Unit"
+          },
+          "basis": {
+            "$ref": "#/components/schemas/NutritionBasis"
+          },
+          "preparation": {
+            "type": "string",
+            "enum": [
+              "as_sold",
+              "as_prepared"
+            ],
+            "title": "Preparation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "row_id",
+          "table_id",
+          "nutrient",
+          "value",
+          "unit",
+          "basis",
+          "preparation"
+        ],
+        "title": "NutrientRow"
+      },
+      "NutritionBasis": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "quantity",
+              "serving"
+            ],
+            "title": "Kind"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "g",
+                  "mL"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "NutritionBasis"
+      },
+      "NutritionLookup": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "nutrition_adapter_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Nutrition Adapter Version",
+            "default": "1"
+          },
+          "requested_barcode": {
+            "type": "string",
+            "title": "Requested Barcode"
+          },
+          "product_barcode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Barcode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "rate_limited",
+              "unavailable",
+              "incompatible_response"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "assessment_basis": {
+            "type": "string",
+            "const": "open_food_facts_community_data",
+            "title": "Assessment Basis",
+            "default": "open_food_facts_community_data"
+          },
+          "input_tables": {
+            "items": {
+              "$ref": "#/components/schemas/InputTableSource"
+            },
+            "type": "array",
+            "title": "Input Tables"
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NutritionSnapshot"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requested_barcode",
+          "status",
+          "source"
+        ],
+        "title": "NutritionLookup"
+      },
+      "NutritionSnapshot": {
+        "properties": {
+          "normalization_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Normalization Version",
+            "default": "1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial",
+              "needs_correction"
+            ],
+            "title": "Status"
+          },
+          "tables": {
+            "items": {
+              "$ref": "#/components/schemas/NutritionTable"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Tables"
+          },
+          "original_rows": {
+            "items": {
+              "$ref": "#/components/schemas/NutrientRow"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Original Rows"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "NutritionSnapshot"
+      },
+      "NutritionTable": {
+        "properties": {
+          "source_table_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Source Table Id"
+          },
+          "preparation": {
+            "type": "string",
+            "enum": [
+              "as_sold",
+              "as_prepared"
+            ],
+            "title": "Preparation"
+          },
+          "original_basis": {
+            "$ref": "#/components/schemas/NutritionBasis"
+          },
+          "normalized_basis": {
+            "$ref": "#/components/schemas/NutritionBasis"
+          },
+          "nutrients": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/NutrientCell"
+            },
+            "propertyNames": {
+              "enum": [
+                "energy",
+                "fat",
+                "saturated_fat",
+                "carbohydrates",
+                "carbohydrates_total",
+                "sugars",
+                "added_sugars",
+                "fibre",
+                "protein",
+                "sodium",
+                "salt"
+              ]
+            },
+            "type": "object",
+            "title": "Nutrients"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_table_id",
+          "preparation",
+          "original_basis",
+          "normalized_basis",
+          "nutrients"
+        ],
+        "title": "NutritionTable"
+      },
+      "Product": {
+        "properties": {
+          "barcode": {
+            "type": "string",
+            "title": "Barcode"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "brands": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brands"
+          },
+          "quantity_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity Text"
+          },
+          "ingredients_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredients Text"
+          },
+          "allergen_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Allergen Tags"
+          },
+          "trace_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Trace Tags"
+          },
+          "insights": {
+            "$ref": "#/components/schemas/ProviderInsights"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "barcode"
+        ],
+        "title": "Product"
+      },
+      "ProductFacts": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "provider_schema_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2147483647.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Schema Version"
+          },
+          "last_modified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Modified At"
+          },
+          "categories": {
+            "$ref": "#/components/schemas/AvailableTags"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/AvailableTags"
+          },
+          "allergens": {
+            "$ref": "#/components/schemas/AvailableTags"
+          },
+          "traces": {
+            "$ref": "#/components/schemas/AvailableTags"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FrontImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nutrition": {
+            "$ref": "#/components/schemas/DirectNutrition"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "categories",
+          "labels",
+          "allergens",
+          "traces",
+          "nutrition"
+        ],
+        "title": "ProductFacts"
+      },
+      "ProductLookup": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "requested_barcode": {
+            "type": "string",
+            "title": "Requested Barcode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "found",
+              "not_found",
+              "rate_limited",
+              "unavailable",
+              "incompatible_response"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Product"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requested_barcode",
+          "status",
+          "source"
+        ],
+        "title": "ProductLookup"
+      },
+      "ProviderInsights": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "open_food_facts",
+            "title": "Provider",
+            "default": "open_food_facts"
+          },
+          "nutri_score_grade": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b",
+                  "c",
+                  "d",
+                  "e"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nutri Score Grade"
+          },
+          "nova_group": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nova Group"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ProviderInsights"
+      },
+      "RuleCriterion": {
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "title": "Criterion Id"
+          },
+          "nutrient": {
+            "type": "string",
+            "enum": [
+              "fibre",
+              "sugars",
+              "sodium"
+            ],
+            "title": "Nutrient"
+          },
+          "basis": {
+            "type": "string",
+            "enum": [
+              "per_100_g",
+              "per_100_mL",
+              "per_100_kcal"
+            ],
+            "title": "Basis"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "gte",
+              "lte"
+            ],
+            "title": "Operator"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "unit": {
+            "type": "string",
+            "const": "g",
+            "title": "Unit"
+          },
+          "applicable_form": {
+            "type": "string",
+            "enum": [
+              "solid",
+              "liquid",
+              "either"
+            ],
+            "title": "Applicable Form"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "criterion_id",
+          "nutrient",
+          "basis",
+          "operator",
+          "threshold",
+          "unit",
+          "applicable_form"
+        ],
+        "title": "RuleCriterion"
+      },
+      "SnapshotFreshness": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "within_refresh_window",
+              "refresh_due",
+              "source_date_in_future"
+            ],
+            "title": "Status"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          },
+          "age_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Seconds"
+          },
+          "refresh_due_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Refresh Due At"
+          },
+          "refresh_interval_months": {
+            "type": "integer",
+            "const": 9,
+            "title": "Refresh Interval Months",
+            "default": 9
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "evaluated_at",
+          "age_seconds",
+          "refresh_due_at"
+        ],
+        "title": "SnapshotFreshness"
+      },
+      "Source": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "open_food_facts",
+            "title": "Provider",
+            "default": "open_food_facts"
+          },
+          "upstream_api_version": {
+            "type": "string",
+            "const": "3.6",
+            "title": "Upstream Api Version",
+            "default": "3.6"
+          },
+          "adapter_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Adapter Version",
+            "default": "1"
+          },
+          "product_url": {
+            "type": "string",
+            "title": "Product Url"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Retrieved At"
+          },
+          "provider_modified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Modified At"
+          },
+          "provider_schema_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Schema Version"
+          },
+          "attribution": {
+            "type": "string",
+            "title": "Attribution",
+            "default": "Product data from Open Food Facts"
+          },
+          "database_license": {
+            "type": "string",
+            "const": "ODbL-1.0",
+            "title": "Database License",
+            "default": "ODbL-1.0"
+          },
+          "contents_license": {
+            "type": "string",
+            "const": "DbCL-1.0",
+            "title": "Contents License",
+            "default": "DbCL-1.0"
+          },
+          "license_url": {
+            "type": "string",
+            "title": "License Url",
+            "default": "https://openfoodfacts.org/terms-of-use"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product_url",
+          "retrieved_at"
+        ],
+        "title": "Source"
+      },
+      "ValidationErrorDetail": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Loc"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "msg": {
+            "type": "string",
+            "const": "Invalid request data",
+            "title": "Msg"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "loc",
+          "type",
+          "msg"
+        ],
+        "title": "ValidationErrorDetail"
+      },
+      "ValidationFailure": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationErrorDetail"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Detail"
+          },
+          "errors_truncated": {
+            "type": "boolean",
+            "title": "Errors Truncated"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail",
+          "errors_truncated"
+        ],
+        "title": "ValidationFailure"
+      }
+    }
+  }
+}

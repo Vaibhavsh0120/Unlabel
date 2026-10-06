@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-10-06T19:13:17.440264+00:00",
+  "knowledge_version": "claims-2026-10-06.1",
+  "sources": [
+    {
+      "source_id": "fssai-ac-2022-schedule-i",
+      "url": "https://fssai.gov.in/docs/food-law/regulations/amendments/advertising-claims/Gazette_Notification_Amendment_14_12_2022.pdf",
+      "bytes": 1654559,
+      "sha256": "9e516f3fa689955ecd3eda3f4f9c07511d89b68a4272bfebc277cbb10be6da72",
+      "matches_registry": true
+    },
+    {
+      "source_id": "fssai-ac-2018-general",
+      "url": "https://fssai.gov.in/docs/food-law/regulations/Gazette_Notification_Advertising_Claims_27_11_2018.pdf",
+      "bytes": 1178339,
+      "sha256": "58184c716ad254e2ec698e3c4d212dfaacea4bf43cc09dcd48daeb590e94d9f4",
+      "matches_registry": true
+    },
+    {
+      "source_id": "fssai-ac-compendium-v4",
+      "url": "https://www.fssai.gov.in/upload/uploadfiles/files/Compendium_Advertising_Claims_Regulations_14_12_2022.pdf",
+      "bytes": 787091,
+      "sha256": "4bfe17ba6fe59a3a8ffc7326ad723014b19d69b68cebffdc68717cdfff5cb191",
+      "matches_registry": true
+    }
+  ],
+  "scope": "Seven numerical claims only; original 2022 Gazette thresholds and general requirements reviewed. No complete compliance or health verdict."
+}

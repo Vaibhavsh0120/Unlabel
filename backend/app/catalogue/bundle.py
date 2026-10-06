@@ -13,7 +13,7 @@ import stat
 import tempfile
 import zlib
 from pathlib import Path
-from typing import Literal, Self
+from typing import Literal, Self, TypeVar
 
 from pydantic import AwareDatetime, Field, model_validator
 
@@ -114,7 +114,10 @@ def _unique_object(pairs: list[tuple[str, object]]) -> dict:
     return result
 
 
-def _metadata(path: Path, model: type[_SourceBundle] | type[_Receipt]):
+MetadataModel = TypeVar("MetadataModel", bound=CatalogueModel)
+
+
+def _metadata(path: Path, model: type[MetadataModel]) -> MetadataModel:
     if not 0 < _regular_file(path) <= MAX_METADATA_BYTES:
         raise ValueError("Catalogue metadata exceeds its size limit")
     with path.open("rb") as stream:

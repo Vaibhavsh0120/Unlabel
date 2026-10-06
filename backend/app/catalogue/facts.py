@@ -276,6 +276,7 @@ def project_facts(raw: dict, barcode: str) -> tuple[ProductFacts, list[str]]:
     else:
         nutrition_availability = "missing"
     image = _selected_front(raw, barcode, warnings)
+    assert direct.snapshot is not None  # The direct-table parser always normalizes its rows.
     return ProductFacts(
         provider_schema_version=provider_schema,
         last_modified_at=last_modified_at,

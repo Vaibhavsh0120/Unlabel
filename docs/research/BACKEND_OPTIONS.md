@@ -1,6 +1,6 @@
 # Backend language options
 
-Language/provider research checked: **2026-10-05**. Implementation status updated for **backend v0.2.1**: **Python/FastAPI is selected** and implemented under `backend/app/`; Rust remains a deliberate later alternative. The backend supports live OFF product/nutrition lookup, confirmed-value normalization and an optional read-only identity catalogue. Frontend stays **0.0.0+1** with no API adapter; its mobile artifacts are unchanged. Reviewed rules, explanation templates and AI remain future work.
+Language/provider research checked: **2026-10-05**. Implementation status updated for **backend v0.3.0**: **Python/FastAPI is selected** and implemented under `backend/app/`; Rust remains a deliberate later alternative. The backend supports live OFF product/nutrition lookup, confirmed-value normalization a verified read-only rich-facts catalogue and a seven-claim reviewed numerical subset with rules/evidence APIs. Frontend stays **0.0.0+1** with no API adapter; its mobile artifacts are unchanged. Broader reviewed rules, bilingual explanation templates and AI remain future work.
 
 ## Comparison
 
@@ -20,7 +20,7 @@ Use language-neutral contracts in `contracts/` and canonical declarative rules/e
 
 Open Food Facts is the selected read-only product-data provider. Its normalized product fields and computed insights do much of the product lookup/ingredient-data work, with explicit source/freshness. They remain distinct from Unlabel's backend FSSAI-related findings; confirmed package evidence cannot be silently overwritten. See [OFF integration plan](../architecture/OPEN_FOOD_FACTS.md).
 
-Future public knowledge is packaged as read-only JSON in the deployed function; root build access alone does not guarantee runtime inclusion. The v0.2.1 product catalogue uses immutable SQLite built from validated local OFF JSONL or an official-CSV identity projection. It is enabled only with a valid configured catalogue directory. Full India coverage and hosted bundle fit require acquisition/import measurements. SQLite is not a hosted mutable user database; Firestore has not been selected, and instance memory and `/tmp` remain disposable.
+Current claim knowledge is packaged as two approved read-only JSON files with a verified receipt; root build access alone does not guarantee runtime inclusion. The rich-facts catalogue uses immutable verified SQLite built from the tracked validated India JSONL projection; CSV identity input remains supported. Each capability activates only after its own validation. The independently released v0.2.3 source/hosted measurements establish a dated 24,641-record snapshot, not every product sold in India. Current v0.3.0 claim/source/hosted gates remain documented separately. SQLite is not a hosted mutable user database; Firestore has not been selected, and instance memory and `/tmp` remain disposable.
 
 Clients send confirmed public label fields/region IDs and public barcode lookup requests. Preferences, personal suitability, images and history remain local. `/v1/meta` exposes versions/capabilities. New analysis requires a reachable backend. Without it, retain local drafts and show dated saved reports, local preferences and an optional small preinstalled glossary.
 

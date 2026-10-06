@@ -1,0 +1,300 @@
+{
+  "$defs": {
+    "ClaimEnergyConversion": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "fssai-schedule-i-note2-v1",
+          "default": "fssai-schedule-i-note2-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "kj_per_kcal": {
+          "default": 4.2,
+          "maximum": 4.2,
+          "minimum": 4.2,
+          "title": "Kj Per Kcal",
+          "type": "number"
+        },
+        "source_id": {
+          "const": "fssai-ac-2022-schedule-i",
+          "default": "fssai-ac-2022-schedule-i",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "evidence_locator": {
+          "const": "Schedule I Note 2, Gazette PDF page 13",
+          "default": "Schedule I Note 2, Gazette PDF page 13",
+          "title": "Evidence Locator",
+          "type": "string"
+        }
+      },
+      "title": "ClaimEnergyConversion",
+      "type": "object"
+    },
+    "ClaimRule": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "claim": {
+          "enum": [
+            "source_of_fibre",
+            "high_fibre",
+            "low_sugar",
+            "sugar_free",
+            "low_sodium",
+            "very_low_sodium",
+            "sodium_free"
+          ],
+          "title": "Claim",
+          "type": "string"
+        },
+        "combination": {
+          "const": "any",
+          "title": "Combination",
+          "type": "string"
+        },
+        "criteria": {
+          "items": {
+            "$ref": "#/$defs/RuleCriterion"
+          },
+          "maxItems": 3,
+          "minItems": 2,
+          "title": "Criteria",
+          "type": "array"
+        },
+        "source_ids": {
+          "items": {
+            "enum": [
+              "fssai-ac-2022-schedule-i",
+              "fssai-ac-2018-general",
+              "fssai-ac-compendium-v4"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 2,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "evidence_locator": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Evidence Locator",
+          "type": "string"
+        },
+        "supported_wording": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Supported Wording",
+          "type": "string"
+        },
+        "contradicted_wording": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Contradicted Wording",
+          "type": "string"
+        },
+        "scope": {
+          "const": "numeric_criterion_only",
+          "title": "Scope",
+          "type": "string"
+        },
+        "preparation_policy": {
+          "const": "confirmed_matching_table",
+          "title": "Preparation Policy",
+          "type": "string"
+        },
+        "food_category_policy": {
+          "const": "ordinary_general_food_only",
+          "title": "Food Category Policy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "claim",
+        "combination",
+        "criteria",
+        "source_ids",
+        "evidence_locator",
+        "supported_wording",
+        "contradicted_wording",
+        "scope",
+        "preparation_policy",
+        "food_category_policy"
+      ],
+      "title": "ClaimRule",
+      "type": "object"
+    },
+    "RuleCriterion": {
+      "additionalProperties": false,
+      "properties": {
+        "criterion_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Criterion Id",
+          "type": "string"
+        },
+        "nutrient": {
+          "enum": [
+            "fibre",
+            "sugars",
+            "sodium"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "per_100_g",
+            "per_100_mL",
+            "per_100_kcal"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "operator": {
+          "enum": [
+            "gte",
+            "lte"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "threshold": {
+          "maximum": 1000000000,
+          "minimum": 0,
+          "title": "Threshold",
+          "type": "number"
+        },
+        "unit": {
+          "const": "g",
+          "title": "Unit",
+          "type": "string"
+        },
+        "applicable_form": {
+          "enum": [
+            "solid",
+            "liquid",
+            "either"
+          ],
+          "title": "Applicable Form",
+          "type": "string"
+        }
+      },
+      "required": [
+        "criterion_id",
+        "nutrient",
+        "basis",
+        "operator",
+        "threshold",
+        "unit",
+        "applicable_form"
+      ],
+      "title": "RuleCriterion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "knowledge_version": {
+      "anyOf": [
+        {
+          "const": "claims-2026-10-06.1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Knowledge Version"
+    },
+    "reviewed_on": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reviewed On"
+    },
+    "energy_conversion": {
+      "$ref": "#/$defs/ClaimEnergyConversion"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/ClaimRule"
+      },
+      "maxItems": 7,
+      "title": "Rules",
+      "type": "array"
+    },
+    "unsupported_claims": {
+      "items": {
+        "enum": [
+          "source_of_fibre",
+          "high_fibre",
+          "low_sugar",
+          "sugar_free",
+          "low_sodium",
+          "very_low_sodium",
+          "sodium_free",
+          "high_protein",
+          "source_of_protein",
+          "no_added_sugar",
+          "multigrain"
+        ],
+        "type": "string"
+      },
+      "maxItems": 4,
+      "title": "Unsupported Claims",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "knowledge_version",
+    "reviewed_on",
+    "rules",
+    "unsupported_claims",
+    "warnings"
+  ],
+  "title": "ClaimsRulesResponse",
+  "type": "object"
+}

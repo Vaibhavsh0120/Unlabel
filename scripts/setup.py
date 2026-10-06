@@ -11,6 +11,7 @@ import venv
 from datetime import datetime
 from pathlib import Path
 
+from _progress import Progress
 from _workspace import ROOT, backend_python, config, execute, flutter_executable
 from env import EnvError, decrypt_env, decrypt_env_text, prompt_identity
 
@@ -80,27 +81,35 @@ def verified_bundle(root: Path) -> tuple[dict, Path]:
     if not 0 < source.stat().st_size <= 100 * 1024 * 1024:
         raise ValueError("Catalogue compressed source exceeds setup budget.")
     digest = hashlib.sha256()
-    with source.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    if (
-        digest.hexdigest() != metadata["compressed_sha256"]
-        or source.stat().st_size != metadata["compressed_bytes"]
-    ):
-        raise ValueError("Committed catalogue compressed checksum/size mismatch.")
+    with Progress(
+        "Validate compressed catalogue", total_bytes=source.stat().st_size
+    ) as progress:
+        with source.open("rb") as compressed_stream:
+            for chunk in iter(lambda: compressed_stream.read(1024 * 1024), b""):
+                digest.update(chunk)
+                progress.advance(len(chunk))
+        if (
+            digest.hexdigest() != metadata["compressed_sha256"]
+            or source.stat().st_size != metadata["compressed_bytes"]
+        ):
+            raise ValueError("Committed catalogue compressed checksum/size mismatch.")
     digest = hashlib.sha256()
     size = 0
-    with gzip.open(source, "rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            size += len(chunk)
-            if size > 100 * 1024 * 1024:
-                raise ValueError("Decoded catalogue exceeds setup budget.")
-            digest.update(chunk)
-    if (
-        size != metadata["decoded_bytes"]
-        or digest.hexdigest() != metadata["decoded_sha256"]
-    ):
-        raise ValueError("Committed catalogue decoded checksum/size mismatch.")
+    with Progress(
+        "Validate decoded catalogue", total_bytes=metadata["decoded_bytes"]
+    ) as progress:
+        with gzip.GzipFile(filename=source, mode="rb") as decoded_stream:
+            for chunk in iter(lambda: decoded_stream.read(1024 * 1024), b""):
+                size += len(chunk)
+                if size > 100 * 1024 * 1024:
+                    raise ValueError("Decoded catalogue exceeds setup budget.")
+                digest.update(chunk)
+                progress.advance(len(chunk))
+        if (
+            size != metadata["decoded_bytes"]
+            or digest.hexdigest() != metadata["decoded_sha256"]
+        ):
+            raise ValueError("Committed catalogue decoded checksum/size mismatch.")
     return metadata, source
 
 
@@ -115,7 +124,8 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
     directory.mkdir(parents=True, exist_ok=True)
     active = directory / "catalogue.sqlite3"
     if active.exists():
-        store = CatalogueStore(directory)
+        with Progress("Validate existing catalogue"):
+            store = CatalogueStore(directory)
         current = store.manifest
         if (
             current.source_sha256 == metadata["decoded_sha256"]
@@ -137,25 +147,26 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
                 flush=True,
             )
             return "preserved"
-    manifest = build_catalogue(
-        source,
-        directory,
-        source_url=metadata["source_url"],
-        source_format=metadata["source_format"],
-        exported_at=datetime.fromisoformat(metadata["exported_at"]),
-        coverage=metadata["coverage"],
-        expected_source_sha256=metadata["decoded_sha256"],
-        expected_rows_read=metadata["expected_input_rows"],
-        expected_indexed_products=metadata["indexed_products"],
-    )
-    if (
-        manifest.source_sha256 != metadata["decoded_sha256"]
-        or manifest.rows_read != metadata["expected_input_rows"]
-        or manifest.indexed_products != metadata["indexed_products"]
-    ):
-        raise ValueError(
-            "Built catalogue counts differ from the committed bundle; inspect before running."
+    with Progress("Build catalogue index"):
+        manifest = build_catalogue(
+            source,
+            directory,
+            source_url=metadata["source_url"],
+            source_format=metadata["source_format"],
+            exported_at=datetime.fromisoformat(metadata["exported_at"]),
+            coverage=metadata["coverage"],
+            expected_source_sha256=metadata["decoded_sha256"],
+            expected_rows_read=metadata["expected_input_rows"],
+            expected_indexed_products=metadata["indexed_products"],
         )
+        if (
+            manifest.source_sha256 != metadata["decoded_sha256"]
+            or manifest.rows_read != metadata["expected_input_rows"]
+            or manifest.indexed_products != metadata["indexed_products"]
+        ):
+            raise ValueError(
+                "Built catalogue counts differ from the committed bundle; inspect before running."
+            )
     print(
         f"Restored SQLite catalogue: {manifest.indexed_products} products, {active.stat().st_size} bytes.",
         flush=True,
@@ -193,22 +204,26 @@ def main() -> int:
             ensure_env(ROOT, args.identity, args.non_interactive)
             python = backend_python()
             if not python.is_file():
-                print("Creating backend/.venv.", flush=True)
-                venv.EnvBuilder(with_pip=True).create(ROOT / "backend/.venv")
-            execute(
-                [python, "-m", "pip", "install", "-r", "requirements-dev.lock"],
-                cwd=ROOT / "backend",
-            )
-            execute([python, "-m", "pip", "check"], cwd=ROOT)
+                with Progress("Create backend environment"):
+                    venv.EnvBuilder(with_pip=True).create(ROOT / "backend/.venv")
+            with Progress("Install locked backend dependencies", animate=False):
+                execute(
+                    [python, "-m", "pip", "install", "-r", "requirements-dev.lock"],
+                    cwd=ROOT / "backend",
+                )
+            with Progress("Check backend dependencies", animate=False):
+                execute([python, "-m", "pip", "check"], cwd=ROOT)
             command = [python, ROOT / "scripts/setup.py", "--catalogue-only"]
             if args.replace_catalogue:
                 command.append("--replace-catalogue")
             execute(command, cwd=ROOT)
         if args.scope in {"all", "frontend"}:
-            flutter = flutter_executable(install=True)
-            execute(
-                [flutter, "pub", "get", "--enforce-lockfile"], cwd=ROOT / "frontend"
-            )
+            with Progress("Check or download pinned Flutter SDK", animate=False):
+                flutter = flutter_executable(install=True)
+            with Progress("Restore locked Flutter dependencies", animate=False):
+                execute(
+                    [flutter, "pub", "get", "--enforce-lockfile"], cwd=ROOT / "frontend"
+                )
         print("Setup complete. Start locally: python scripts/run_local.py", flush=True)
         return 0
     except (

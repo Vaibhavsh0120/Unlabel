@@ -168,7 +168,7 @@ def _bounded_product(raw: dict, barcode: str) -> tuple[Product, list[str]]:
         ingredients_text=ingredients,
         allergen_tags=tags("allergens_tags"),
         trace_tags=tags("traces_tags"),
-        insights=ProviderInsights(nutri_score_grade=grade, nova_group=nova),
+        insights=ProviderInsights.model_validate({"nutri_score_grade": grade, "nova_group": nova}),
     )
     return product, warnings
 
@@ -392,7 +392,12 @@ def _build_locked(
                 coverage=coverage,
                 exported_at=exported_at,
                 indexed_at=datetime.now(UTC),
-                **counts,
+                rows_read=counts["rows_read"],
+                india_rows=counts["india_rows"],
+                indexed_products=counts["indexed_products"],
+                unsupported_barcodes=counts["unsupported_barcodes"],
+                missing_name=counts["missing_name"],
+                missing_ingredients=counts["missing_ingredients"],
             )
             for expected, actual in (
                 (expected_source_sha256, manifest.source_sha256),

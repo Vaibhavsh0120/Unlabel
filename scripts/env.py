@@ -62,10 +62,18 @@ def _run_age(
     command: list[str], output: Path, *, identity_input: bytes | None = None
 ) -> None:
     try:
-        options = {"input": identity_input} if identity_input is not None else {}
-        result = subprocess.run(
-            command, capture_output=True, check=False, timeout=120, **options
-        )
+        if identity_input is None:
+            result = subprocess.run(
+                command, capture_output=True, check=False, timeout=120
+            )
+        else:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                check=False,
+                timeout=120,
+                input=identity_input,
+            )
     except (OSError, subprocess.SubprocessError):
         raise EnvError(
             "age could not complete; existing environment files were preserved."

@@ -8,7 +8,12 @@ from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import OpenFoodFactsProvider
 
 
-def table(per="100g", preparation="as_sold", source="packaging", **nutrients):
+def table(
+    per: object = "100g",
+    preparation: object = "as_sold",
+    source: object = "packaging",
+    **nutrients,
+):
     return {
         "per": per,
         "preparation": preparation,
@@ -48,6 +53,7 @@ async def test_direct_values_keep_zero_missing_source_and_separate_volume_prepar
         )
     )
     assert result.status == "found"
+    assert result.snapshot is not None
     assert result.snapshot.status == "partial"
     a, b = result.snapshot.tables
     assert a.nutrients["fat"].value == 0
@@ -71,6 +77,7 @@ async def test_aggregate_computed_estimate_and_qualified_values_are_not_exact_fa
     data["nutrition"]["aggregated_set"] = {"nutrients": {"sugars": {"value": 100}}}
     result = await lookup(data)
     assert result.status == "found"
+    assert result.snapshot is not None
     assert result.snapshot.tables[0].nutrients["sugars"].value is None
     assert result.snapshot.tables[0].nutrients["fat"].value is None
     assert result.snapshot.tables[0].nutrients["added_sugars"].value is None
@@ -82,6 +89,7 @@ async def test_aggregate_computed_estimate_and_qualified_values_are_not_exact_fa
 async def test_bad_provider_numbers_remain_unknown(value):
     result = await lookup(product(table(fat={"value": value, "unit": "g"})))
     assert result.status == "found"
+    assert result.snapshot is not None
     assert result.snapshot.tables[0].nutrients["fat"].value is None
     assert "invalid_nutrient_value" in result.warnings
 
@@ -104,6 +112,7 @@ async def test_invalid_json_numeric_tokens_are_incompatible_not_zero(token):
 async def test_sparse_product_and_legacy_flat_fields_are_unknown_not_guessed():
     result = await lookup({"code": "0123456789012", "nutriments": {"sugars_100g": 3}})
     assert result.status == "found"
+    assert result.snapshot is not None
     assert result.snapshot.tables == []
     assert "nutrition_input_sets_missing" in result.warnings
 
@@ -127,11 +136,13 @@ async def test_unrelated_identity_and_timeout_do_not_produce_nutrition():
 
 async def test_table_budget_and_ambiguous_basis_are_unknown():
     too_many = await lookup(product(*[table()] * 17))
+    assert too_many.snapshot is not None
     assert too_many.snapshot.tables == []
     assert "nutrition_input_sets_invalid" in too_many.warnings
     bad = table(fat={"value": 1, "unit": "g"})
     bad["per_unit"] = "ml"
     result = await lookup(product(bad))
+    assert result.snapshot is not None
     assert result.snapshot.tables == []
     assert "invalid_table_basis" in result.warnings
 
@@ -158,18 +169,21 @@ async def test_many_supported_tables_stay_inside_output_row_budget():
     }
     result = await lookup(product(*[table(**nutrients)] * 16))
     assert result.status == "found"
+    assert result.snapshot is not None
     assert len(result.snapshot.original_rows) <= 64
     assert "nutrition_row_budget_exceeded" in result.warnings
 
 
 async def test_energy_unit_key_mismatch_is_not_normalized_as_a_fact():
     result = await lookup(product(table(**{"energy-kcal": {"value": 100, "unit": "kJ"}})))
+    assert result.snapshot is not None
     assert result.snapshot.tables[0].nutrients["energy"].value is None
     assert "invalid_nutrient_value" in result.warnings
 
 
 async def test_empty_provider_table_does_not_invent_an_original_nutrient_row():
     result = await lookup(product(table()))
+    assert result.snapshot is not None
     assert result.snapshot.original_rows == []
     assert result.snapshot.tables[0].nutrients["energy"].reason == "not_reported"
 
@@ -178,6 +192,7 @@ async def test_disagreeing_provider_tables_are_preserved_and_flagged_for_review(
     result = await lookup(
         product(table(fat={"value": 2, "unit": "g"}), table(fat={"value": 4, "unit": "g"}))
     )
+    assert result.snapshot is not None
     assert [t.nutrients["fat"].value for t in result.snapshot.tables] == [2, 4]
     assert result.snapshot.status == "needs_correction"
     assert "provider_tables_disagree" in result.warnings

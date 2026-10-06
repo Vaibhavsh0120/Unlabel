@@ -16,6 +16,7 @@ SCRIPT = Path(__file__).resolve().parents[3] / "scripts/acquire_india_jsonl.py"
 
 def module():
     spec = importlib.util.spec_from_file_location("acquire_india_jsonl", SCRIPT)
+    assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
     return result
@@ -158,6 +159,8 @@ def test_read_and_projection_budgets_are_fail_closed(bound, monkeypatch):
 def response(payload, *, url=None, length=None):
     class Response(io.BytesIO):
         status = 200
+        url: str
+        headers: dict[str, str]
 
     result = Response(payload)
     result.url = url or module().REDIRECT
@@ -172,6 +175,7 @@ def test_acquisition_hashes_full_source_and_deterministic_projection(tmp_path, m
     implementation = module()
     decoded = source(product(schema_version=1004)).getvalue()
     payload = gzip.compress(decoded)
+
     def network(request, **kwargs):
         assert request.get_header("User-agent") == (
             f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)"
@@ -268,6 +272,36 @@ def test_meter_checks_bounded_reads_deadline_and_transfer_budget(monkeypatch):
     )
     with pytest.raises(ValueError, match="deadline"):
         meter.read(1)
+
+
+def test_metered_gzip_reads_forward_only_source_and_hashes_complete_compressed_bytes():
+    decoded = source(product()).getvalue()
+    compressed = gzip.compress(decoded)
+
+    class ForwardOnly:
+        def __init__(self):
+            self.stream = io.BytesIO(compressed)
+
+        def read(self, size: int = -1, /) -> bytes:
+            assert 0 <= size <= 1024**2
+            return self.stream.read(size)
+
+    meter = module().MeteredReader(ForwardOnly())
+    with gzip.GzipFile(fileobj=meter) as stream:
+        assert stream.read(7) + stream.read() == decoded
+    assert meter.bytes_read == len(compressed)
+    assert meter.digest.hexdigest() == hashlib.sha256(compressed).hexdigest()
+
+
+@pytest.mark.parametrize("offset,whence", [(0, 0), (2, 1), (0, 2)])
+def test_meter_refuses_seek_without_rewinding_or_changing_count_and_digest(offset, whence):
+    source = io.BytesIO(b"compressed-stream")
+    meter = module().MeteredReader(source)
+    assert meter.read(3) == b"com"
+    position, count, digest = source.tell(), meter.bytes_read, meter.digest.hexdigest()
+    with pytest.raises(io.UnsupportedOperation):
+        meter.seek(offset, whence)
+    assert (source.tell(), meter.bytes_read, meter.digest.hexdigest()) == (position, count, digest)
 
 
 @pytest.mark.parametrize(

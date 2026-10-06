@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 from app.catalogue.facts import AvailableTags, FactsLookup, FrontImage, project_facts
 from app.catalogue.importer import build_catalogue
+from app.catalogue.models import SourceFormat
 from app.catalogue.store import CatalogueStore
 
 CODE = "0123456789012"
@@ -54,7 +55,7 @@ def raw_product(**extra):
     }
 
 
-def build(tmp_path, rows=None, source_format="off_jsonl"):
+def build(tmp_path, rows=None, source_format: SourceFormat = "off_jsonl"):
     source = tmp_path / "source.jsonl"
     decoded = b"".join(
         (json.dumps(row, ensure_ascii=True) + "\n").encode()
@@ -79,10 +80,13 @@ def test_rich_lookup_roundtrips_source_provenance_zero_and_explicit_unknown(tmp_
     assert store.supports_facts is True
     result = store.lookup_facts(CODE)
     assert result.status == "found"
+    assert result.product is not None
     assert result.product.barcode == CODE
     assert result.manifest == manifest
+    assert result.manifest is not None
     assert result.manifest.source_sha256 == hashlib.sha256(decoded).hexdigest()
     assert result.manifest.exported_at == EXPORTED_AT
+    assert result.details is not None
     assert result.details.provider_schema_version == 1004
     assert result.details.last_modified_at == datetime.fromtimestamp(1791226426, UTC)
     assert result.details.allergens.availability == "available"
@@ -141,12 +145,16 @@ def test_sparse_missing_tags_and_community_empty_are_distinct(tmp_path):
     }
     store, _, _, _ = build(tmp_path, [missing, empty])
     missing_result = store.lookup_facts(CODE)
+    assert missing_result.details is not None
     assert missing_result.details.allergens.availability == "missing"
+    assert missing_result.product is not None
     assert missing_result.product.allergen_tags == []
     assert missing_result.details.nutrition.availability == "missing"
     assert missing_result.details.nutrition.snapshot.tables == []
     assert missing_result.details.image is None
-    assert store.lookup_facts("123456789012").details.allergens.availability == "available"
+    empty_result = store.lookup_facts("123456789012")
+    assert empty_result.details is not None
+    assert empty_result.details.allergens.availability == "available"
     assert "allergen_safety_not_assessed" in store.lookup_facts("123456789012").warnings
 
 
@@ -185,6 +193,7 @@ def test_unknown_schema_type_is_not_coerced(schema):
 def test_image_url_uses_off_disk_path_without_changing_lookup_barcode(barcode, folder):
     details, _ = project_facts(raw_product(), barcode)
     image = details.image
+    assert image is not None
     assert (
         image.url == f"https://images.openfoodfacts.org/images/products/{folder}/front_en.4.400.jpg"
     )
@@ -203,8 +212,10 @@ def test_image_path_with_too_few_significant_digits_stays_unknown(barcode):
 def test_image_legacy_language_and_lc_fallback_ignore_arbitrary_urls():
     image = {"rev": 2, "sizes": {"400": {"w": 200, "h": 400}}}
     details, _ = project_facts(raw_product(images={"front_hi": image}), CODE)
+    assert details.image is not None
     assert details.image.language == "hi"
     details, _ = project_facts(raw_product(images={"front_ta": image}, lc="ta"), CODE)
+    assert details.image is not None
     assert details.image.language == "ta"
     details, _ = project_facts(
         raw_product(

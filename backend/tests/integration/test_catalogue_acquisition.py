@@ -1,4 +1,5 @@
 import gzip
+import hashlib
 import importlib.util
 import io
 import json
@@ -15,6 +16,7 @@ SCRIPT = Path(__file__).resolve().parents[3] / "scripts/acquire_india_catalogue.
 
 def module():
     spec = importlib.util.spec_from_file_location("acquire_india_catalogue", SCRIPT)
+    assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
     return result
@@ -70,6 +72,78 @@ def test_compressed_transfer_budget_is_checked_before_unbounded_read():
     meter = module().MeteredReader(io.BytesIO(b"123456"), max_bytes=5)
     with pytest.raises(ValueError):
         meter.read(6)
+
+
+def test_metered_gzip_reads_forward_only_source_and_hashes_complete_compressed_bytes():
+    decoded = b"code\tcountries_tags\n0123456789012\ten:india\n"
+    compressed = gzip.compress(decoded)
+
+    class ForwardOnly:
+        def __init__(self):
+            self.stream = io.BytesIO(compressed)
+
+        def read(self, size: int = -1, /) -> bytes:
+            assert 0 <= size <= 1024**2
+            return self.stream.read(size)
+
+    meter = module().MeteredReader(ForwardOnly())
+    with gzip.GzipFile(fileobj=meter) as stream:
+        assert stream.read(7) + stream.read() == decoded
+    assert meter.bytes_read == len(compressed)
+    assert meter.digest.hexdigest() == hashlib.sha256(compressed).hexdigest()
+
+
+@pytest.mark.parametrize("offset,whence", [(0, 0), (2, 1), (0, 2)])
+def test_meter_refuses_seek_without_rewinding_or_changing_count_and_digest(offset, whence):
+    source = io.BytesIO(b"compressed-stream")
+    meter = module().MeteredReader(source)
+    assert meter.read(3) == b"com"
+    position, count, digest = source.tell(), meter.bytes_read, meter.digest.hexdigest()
+    with pytest.raises(io.UnsupportedOperation):
+        meter.seek(offset, whence)
+    assert (source.tell(), meter.bytes_read, meter.digest.hexdigest()) == (position, count, digest)
+
+
+def csv_response(payload: bytes):
+    class Response(io.BytesIO):
+        status = 200
+        url = "https://openfoodfacts-ds.s3.eu-west-3.amazonaws.com/en.openfoodfacts.org.products.csv.gz"
+        headers = {"Content-Length": str(len(payload))}
+
+    return Response(payload)
+
+
+def test_successful_csv_acquisition_owns_binary_lock_and_cleans_it(tmp_path, monkeypatch):
+    implementation = module()
+    payload = gzip.compress(b"code\tcountries_tags\n0123456789012\ten:india\n")
+
+    def network(*args, **kwargs):
+        marker = (tmp_path / ".acquisition.lock").read_bytes()
+        assert marker.startswith(b"pid=") and b" token=" in marker
+        assert marker.endswith(b"\n") and b"\r" not in marker
+        return csv_response(payload)
+
+    monkeypatch.setattr(implementation.urllib.request, "urlopen", network)
+    evidence = implementation.acquire(tmp_path)
+    assert evidence["gzip_eof_verified"] is True
+    assert not (tmp_path / ".acquisition.lock").exists()
+    assert (tmp_path / "india-products.jsonl").is_file()
+
+
+def test_csv_acquisition_preserves_foreign_replacement_lock(tmp_path, monkeypatch):
+    implementation = module()
+    payload = gzip.compress(b"code\tcountries_tags\n0123456789012\ten:india\n")
+    lock = tmp_path / ".acquisition.lock"
+    foreign = b"operator replacement lock; preserve for review\n"
+
+    def network(*args, **kwargs):
+        lock.unlink()
+        lock.write_bytes(foreign)
+        return csv_response(payload)
+
+    monkeypatch.setattr(implementation.urllib.request, "urlopen", network)
+    implementation.acquire(tmp_path)
+    assert lock.read_bytes() == foreign
 
 
 def test_acquisition_never_overwrites_files_appearing_during_download(tmp_path, monkeypatch):
