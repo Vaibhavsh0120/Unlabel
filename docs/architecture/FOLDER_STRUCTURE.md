@@ -50,7 +50,7 @@ frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is t
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | App composition/lifespan, five versioned routes and redacted validation errors |
+| app/main.py | App composition/lifespan, six versioned routes and redacted validation errors |
 | app/api/v1 | Reserved route modules as future endpoints grow |
 | app/core | Validated environment/CORS settings and actual-byte request-body limit |
 | app/schemas/products.py | Unchanged strict product lookup v1 contract and OFF provenance |

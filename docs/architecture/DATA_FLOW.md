@@ -1,10 +1,10 @@
 # Unlabel data flow and ownership
 
-Status: backend v0.2.1 implements health/meta, live barcode product/nutrition lookup and confirmed structured nutrition-row normalization. Frontend remains v0.0.0 with no API adapter. OCR, health/claim analysis, report storage and AI connections remain planned. See the [backend guide](../../backend/README.md), release-specific [verification record](../planning/BACKEND_V0_2_0_REVIEW.md), and [hosting URLs](../planning/VERCEL_SETUP.md).
+Status: backend v0.2.1 implements health/meta, live barcode product/nutrition lookup and confirmed structured nutrition-row normalization. Frontend remains v0.0.0 with no API adapter. OCR, health/claim analysis, report storage and AI connections remain planned. See the [backend guide](../../backend/README.md), release-specific [verification record](../planning/BACKEND_V0_2_1_REVIEW.md), and [hosting URLs](../planning/VERCEL_SETUP.md).
 
 One Flutter app directly in `frontend/` targets Android, iOS, and the responsive website; `frontend/web/` is its web platform directory. Open Food Facts is the primary online source of product facts and source-tagged computed insights. FastAPI normalizes direct nutrition facts; reviewed FSSAI criteria follow later. Future OCR captures gaps/front claims and supports package review. Website/API are already separate Vercel projects. Local preferences and Gemini wording are later features.
 
-## Current v0.2.0 paths
+## Current v0.2.1 paths
 
 1. A caller supplies a supported barcode to the product route or separate nutrition route. The backend performs one fixed-origin OFF v3.6 read with an application User-Agent, an eight-second default total deadline and a 512 KiB default decoded-response budget. It validates identity and source data; no provider key or image download is needed.
 2. Product lookup returns the unchanged product v1 contract. Nutrition lookup reads only eligible `nutrition.input_sets` from packaging/manufacturer sources, excluding estimated/computed/qualified values. The adapter processes at most 16 tables and 64 accepted rows, omitting an over-budget table as a whole. Original direct values, accepted table source, preparation and basis remain visible. Separate tables are not combined.

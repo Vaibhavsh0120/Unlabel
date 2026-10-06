@@ -1,6 +1,6 @@
 # System architecture
 
-Decision updated: **2026-10-05**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.1 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
+Decision updated: **2026-10-06**. Frontend v0.0.0 remains the Flutter starter. Backend v0.2.1 implements FastAPI health/meta, separate live OFF product/nutrition lookup and confirmed-value normalization. Both Vercel projects automatically deploy main. Scanning and rule evaluation remain planned; see the release review for production evidence.
 
 ## Product and delivery boundary
 

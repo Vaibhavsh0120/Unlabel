@@ -44,7 +44,16 @@ Local verification: full backend **199 tests passed**, existing Starlette/HTTPX 
 
 ## Production gate
 
-Pending source push/automatic deployment verification. The hosted index is intentionally inactive: `storage/runtime/` is ignored/excluded, and no full corpus acquisition occurs inside API requests or deployment builds. Production must keep existing live APIs ready and report catalogue inactive. A successful local import does not establish cloud artifact distribution.
+Verified on **6 October 2026** after source commit `0c36031c2b07db62c5f8219d06e0dc5a08590f59` was pushed to `main`. Vercel reported both automatic production deployments **READY** for that exact commit:
+
+| Project | Production domain | Deployment |
+| --- | --- | --- |
+| Backend | [unlabel-api.vercel.app](https://unlabel-api.vercel.app) | `dpl_6GYv8H9gAgmwv8LxqhLC2fuUMLZ8` |
+| Frontend | [unlabel-india.vercel.app](https://unlabel-india.vercel.app) | `dpl_gDKfuAHEtVQDV4G2dZJ5g43YXZWa` |
+
+Public HTTPS checks passed independently of build status: health/meta returned version `0.2.1`; OpenAPI exactly matched the committed export; the inactive catalogue returned its validated 503 contract and invalid barcode input returned a redacted 422. Confirmed normalization converted 4 g protein per 40 g serving to 10 g per 100 g. Two invalid raw numeric bodies matched the redacted 422 schema; an oversized body returned 413. Frontend-origin CORS and POST preflight passed, and an unrelated origin received no allow-origin header. One bounded live rice-flour product lookup and nutrition lookup both returned 200/found and validated against their models. Frontend HTML and `main.dart.js` returned 200. These checks do not establish camera/device behavior or offline client support.
+
+The hosted index is intentionally inactive: `storage/runtime/` is ignored/excluded, and no full corpus acquisition occurs inside API requests or deployment builds. Public metadata reports `catalogue.status=not_configured` and `catalogue_lookup=false`; existing live APIs remain usable. A successful local import does not establish cloud artifact distribution. The follow-up documentation commit records this verified source deployment without changing backend or frontend runtime code.
 
 ## Remaining work
 
