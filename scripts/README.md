@@ -1,3 +1,8 @@
+Current work: [backend v0.6.0 Product Discovery](../docs/planning/BACKEND_V0_6_0_REVIEW.md).
+Setup upgrades the same facts-enabled source index when discovery is missing; it
+preserves a different local snapshot. Export now writes 19 routes and 24 synthetic
+examples, with a separate search schema. Existing receipts/progress/security remain.
+
 # Backend contracts, catalogue and knowledge tools
 
 Released production backend v0.5.0 includes the tools below, following the separately published v0.4.0 release. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.

@@ -42,6 +42,13 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
+The next accepted pair is **backend v0.6.0 Product Discovery** followed by
+**frontend v0.1.0+2 Connected Label Reader**. Discovery passed 863 tests with five
+emulator skips and clean type/lint checks. The frontend's manual lookup, sourced
+reports, corrected label entry and local saved/history flows are being verified.
+Their independent push/hosted/publication gates are tracked in the
+[connected release plan](docs/planning/CONNECTED_RELEASE_PLAN.md).
+
 **Production backend v0.5.0 Useful Label Report is published. Frontend remains 0.0.0+1.** The separately released v0.4.0 catalogue saves/deduplicates structured observations automatically and resolves compatible sourced fields. v0.5.0 adds current-label and historical barcode reports, a partial three-entry reviewed ingredient glossary and a declared 4 g/cube sugar approximation. Both versions passed their independent review, push and hosted checks. Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Firebase Unlabel stays free with no billing. Camera/OCR and background saving still need frontend integration. [Twenty hosted checks](docs/research/BACKEND_V0_5_0_PRODUCTION.json) · [v0.5.0 report scope](docs/architecture/LABEL_REPORT.md) · [Master plan](docs/planning/MASTER_PLAN.md).
 
 | Ready now | Planned next |

@@ -1,0 +1,334 @@
+{
+  "$defs": {
+    "Manifest": {
+      "additionalProperties": false,
+      "description": "Source SHA-256 covers every decoded byte of the local import input, through EOF.\n\n``unverified`` does not assert independent completeness of products sold in India.\nA CSV projection has separate upstream acquisition proof outside this contract.",
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9._:-]+$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Sha256",
+          "type": "string"
+        },
+        "source_format": {
+          "default": "off_jsonl",
+          "enum": [
+            "off_jsonl",
+            "off_csv_projection"
+          ],
+          "title": "Source Format",
+          "type": "string"
+        },
+        "coverage": {
+          "default": "sample",
+          "enum": [
+            "sample",
+            "unverified"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "exported_at": {
+          "format": "date-time",
+          "title": "Exported At",
+          "type": "string"
+        },
+        "indexed_at": {
+          "format": "date-time",
+          "title": "Indexed At",
+          "type": "string"
+        },
+        "market_tag": {
+          "const": "en:india",
+          "default": "en:india",
+          "title": "Market Tag",
+          "type": "string"
+        },
+        "rows_read": {
+          "minimum": 0,
+          "title": "Rows Read",
+          "type": "integer"
+        },
+        "india_rows": {
+          "minimum": 0,
+          "title": "India Rows",
+          "type": "integer"
+        },
+        "indexed_products": {
+          "minimum": 1,
+          "title": "Indexed Products",
+          "type": "integer"
+        },
+        "duplicate_barcodes": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Duplicate Barcodes",
+          "type": "integer"
+        },
+        "unsupported_barcodes": {
+          "minimum": 0,
+          "title": "Unsupported Barcodes",
+          "type": "integer"
+        },
+        "missing_name": {
+          "minimum": 0,
+          "title": "Missing Name",
+          "type": "integer"
+        },
+        "missing_ingredients": {
+          "minimum": 0,
+          "title": "Missing Ingredients",
+          "type": "integer"
+        },
+        "database_license": {
+          "const": "ODbL-1.0",
+          "default": "ODbL-1.0",
+          "title": "Database License",
+          "type": "string"
+        },
+        "contents_license": {
+          "const": "DbCL-1.0",
+          "default": "DbCL-1.0",
+          "title": "Contents License",
+          "type": "string"
+        },
+        "attribution": {
+          "const": "Product data from Open Food Facts",
+          "default": "Product data from Open Food Facts",
+          "title": "Attribution",
+          "type": "string"
+        },
+        "license_url": {
+          "const": "https://openfoodfacts.org/terms-of-use",
+          "default": "https://openfoodfacts.org/terms-of-use",
+          "title": "License Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "source_url",
+        "source_sha256",
+        "exported_at",
+        "indexed_at",
+        "rows_read",
+        "india_rows",
+        "indexed_products",
+        "unsupported_barcodes",
+        "missing_name",
+        "missing_ingredients"
+      ],
+      "title": "Manifest",
+      "type": "object"
+    },
+    "SearchCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/SearchIdentity"
+        },
+        "source_id": {
+          "pattern": "^off:[0-9a-f]{64}:(?:[0-9]{8}|[0-9]{12,14})$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identity",
+        "source_id"
+      ],
+      "title": "SearchCandidate",
+      "type": "object"
+    },
+    "SearchIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "barcode": {
+          "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+          "title": "Barcode",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "brands": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brands"
+        },
+        "quantity_text": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity Text"
+        }
+      },
+      "required": [
+        "barcode"
+      ],
+      "title": "SearchIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "search_version": {
+      "const": "catalogue-search-v1",
+      "default": "catalogue-search-v1",
+      "title": "Search Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "not_found",
+        "refine_query",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "query": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Query",
+      "type": "string"
+    },
+    "normalized_query": {
+      "maxLength": 519,
+      "minLength": 2,
+      "title": "Normalized Query",
+      "type": "string"
+    },
+    "manifest": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Manifest"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/SearchCandidate"
+      },
+      "maxItems": 20,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "matched_count": {
+      "anyOf": [
+        {
+          "maximum": 1000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Matched Count"
+    },
+    "ambiguous": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ambiguous"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Cursor"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "query",
+    "normalized_query"
+  ],
+  "title": "SearchResult",
+  "type": "object"
+}

@@ -18,6 +18,7 @@ Source = import_module("app.schemas.products").Source
 catalogue = import_module("app.catalogue.models")
 catalogue_status = import_module("app.catalogue.status")
 catalogue_facts = import_module("app.catalogue.facts")
+catalogue_search = import_module("app.catalogue.search")
 errors = import_module("app.schemas.errors")
 claims = import_module("app.claims.models")
 claim_knowledge = import_module("app.claims.knowledge")
@@ -50,6 +51,7 @@ def main():
         "catalogue-manifest-v1.schema.json": catalogue.Manifest,
         "catalogue-status-v1.schema.json": catalogue_status.CatalogueStatus,
         "catalogue-facts-v1.schema.json": catalogue_facts.FactsLookup,
+        "catalogue-search-v1.schema.json": catalogue_search.SearchResult,
         "validation-failure-v1.schema.json": errors.ValidationFailure,
         "claims-check-request-v1.schema.json": claims.ClaimsRequest,
         "claims-check-response-v1.schema.json": claims.ClaimsResponse,
@@ -149,6 +151,29 @@ def main():
         "examples",
         "catalogue-lookup-v1.synthetic.json",
         catalogue_example.model_dump(mode="json"),
+    )
+    search_example = catalogue_search.SearchResult(
+        status="ready",
+        query="Synthetic oat",
+        normalized_query="synthetic oat",
+        manifest=catalogue_example.manifest,
+        candidates=[
+            catalogue_search.SearchCandidate(
+                identity=catalogue_search.SearchIdentity(
+                    barcode="0123456789012", name="Synthetic oats"
+                ),
+                source_id="off:" + "0" * 64 + ":0123456789012",
+                warnings=["candidate_requires_identity_confirmation"],
+            )
+        ],
+        matched_count=1,
+        ambiguous=False,
+        warnings=["synthetic_example_not_a_real_product"],
+    )
+    write(
+        "examples",
+        "catalogue-search-v1.synthetic.json",
+        search_example.model_dump(mode="json"),
     )
     status_example = catalogue_status.CatalogueStatus(
         status="ready",
@@ -403,8 +428,9 @@ def main():
         "ingredient-glossary-v1.synthetic.json": report_glossary.response(),
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
+    count = len(list((ROOT / "contracts/examples").glob("*.synthetic.json")))
     print(
-        f"Exported backend v{version} contracts and twenty-two validated synthetic examples."
+        f"Exported backend v{version} contracts and {count} validated synthetic examples."
     )
 
 

@@ -1,4 +1,11 @@
-# Unlabel backend: v0.5.0 Useful Label Report
+# Unlabel backend: v0.6.0 Product Discovery
+
+v0.6.0 adds bounded Unicode name/brand/quantity candidate discovery over the
+dated India snapshot. Local validation passed 863 tests with five emulator-only
+skips and clean Ruff/Pyright. Hosted verification/publication remain pending
+until its own push. It preserves all eighteen prior paths; the new search route
+makes nineteen. [Discovery contract](../docs/architecture/PRODUCT_DISCOVERY.md)
+· [v0.6.0 review](../docs/planning/BACKEND_V0_6_0_REVIEW.md).
 
 Production **v0.5.0 Useful Label Report** was independently reviewed, pushed,
 hosted-verified and published after v0.4.0. Eighteen routes preserve live OFF,
@@ -44,6 +51,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `GET /v1/products/{barcode}/nutrition` | Separate source-tagged direct-input nutrition tables; strict product lookup v1 remains unchanged |
 | `POST /v1/nutrition/normalize` | Normalize user-confirmed structured nutrient rows without calling OFF |
 | `GET /v1/catalogue` | Ready/unavailable/not-configured status, manifest, artifact hash/size, source age, refresh date and field limits; 503 if unavailable |
+| `GET /v1/catalogue/search` | Bounded name/brand/quantity-word candidates; exact last-word prefix, dated source, pagination and broad-query refinement; no OFF request |
 | `GET /v1/catalogue/products/{barcode}` | Separate export-origin indexed identity lookup; 503 when catalogue is inactive/unavailable |
 | `GET /v1/catalogue/products/{barcode}/facts` | Exact identity/manifest plus optional rich facts; older identity-only catalogues report facts unavailable |
 | `POST /v1/claims/check` | Check identified claims against one selected user-confirmed nutrition table and explicit applicability context |

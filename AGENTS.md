@@ -1,6 +1,6 @@
 # Unlabel workspace instructions
 
-- Production backend is independently released v0.5.0 Useful Label Report, following the separately published v0.4.0 Community Product Catalogue. Both versions were reviewed, pushed, hosted-verified and published; preserve their release boundaries. Eighteen routes cover sourced current/historical reports, corrected confirmed barcode-less analysis, independent automatic storage outcomes, approximate sugar cubes and partial ingredient functions. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one accepted version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Flutter remains 0.0.0+1.
+- Production backend is independently released v0.5.0 Useful Label Report, following the separately published v0.4.0 Community Product Catalogue. Both versions were reviewed, pushed, hosted-verified and published; preserve their release boundaries. Eighteen routes cover sourced current/historical reports, corrected confirmed barcode-less analysis, independent automatic storage outcomes, approximate sugar cubes and partial ingredient functions. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one accepted version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Next authorized work is backend v0.6.0 Product Discovery followed by frontend v0.1.0+2 Connected Label Reader; see docs/planning/CONNECTED_RELEASE_PLAN.md. Keep component release boundaries.
 
 
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.
@@ -25,4 +25,4 @@ Use Context7 MCP for library/framework/SDK/API/CLI/cloud-service docs, even fami
 
 ## UI work
 
-Use Better Design MCP for frontend/UI/UX/interaction work. Start UI builds with find-design-system. Load get-ui-principle and get-ux-principle; review with get-review-rules and check-comprehension. With a rendered DOM, run inspect-spacing. React Native/Expo, Three.js and Shopify use their respective guides. A custom brand uses create-design-system and its status/kit workflow. Palette remains undecided; supplied references are illustrative.
+Use Better Design MCP for frontend/UI/UX/interaction work. Start UI builds with find-design-system. Load get-ui-principle and get-ux-principle; review with get-review-rules and check-comprehension. With a rendered DOM, run inspect-spacing. React Native/Expo, Three.js and Shopify use their respective guides. A custom brand uses create-design-system and its status/kit workflow. The supplied white/forest/mint references now set the visual direction; their scores and health claims remain illustrative. DESIGN.md records the Flutter adaptation.

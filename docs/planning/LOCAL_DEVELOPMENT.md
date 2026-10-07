@@ -29,7 +29,7 @@ provisions a cloud account, attaches billing or creates a paid fallback.
 | Environment | Preserve existing `backend/.env`; otherwise restore ciphertext or copy safe defaults. |
 | Python | Create ignored `backend/.venv`, install the tracked direct/transitive development version lock and check dependencies. |
 | Product source | Verify committed compressed/decoded hashes and byte limits for 24,695 India rows. |
-| SQLite | Regenerate ignored `backend/storage/runtime/india/catalogue.sqlite3`: 24,641 supported identity/facts records. Expected hash/counts are checked before publication; reuse a matching valid index. |
+| SQLite | Regenerate ignored `backend/storage/runtime/india/catalogue.sqlite3`: 24,641 supported identity/facts records plus optional discovery indexes. Verify hashes/counts; upgrade a matching facts store when search is absent. |
 | Flutter | Resolve the pinned SDK and run `flutter pub get --enforce-lockfile`. |
 
 Setup now shows progress automatically. Catalogue verification uses measured compressed/decoded bytes and prints `Verified` only after checksum and size checks succeed. Interactive terminals show byte bars plus an indeterminate bar/elapsed time for environment creation and index validation/build; pip and Flutter operations have named stages and retain native output. Noninteractive/redirected logs use plain `Starting`/`Verified`/`Done`/`Stopped` lines without redraws or invented percentages. Progress goes to stderr, adds no dependency or download, and needs no new flag. A failed stage reports `Stopped`; it does not claim completed verification.
@@ -90,7 +90,7 @@ This establishes **local recovery**. The current backend also has a separate net
 
 After deliberately updating backend dependencies, run `backend/.venv/Scripts/python.exe scripts/lock_backend.py` from root (use `backend/.venv/bin/python` on Unix), review the lock and run the backend suite before committing it. Runtime requirements remain declared separately.
 
-For a valid identity-only index from the same JSONL source, setup preserves the store by default; run `python scripts/setup.py --scope backend --replace-catalogue` to migrate it to the current facts-enabled catalogue. An intact current facts store is reused.
+For a valid identity-only index from the same JSONL source, setup preserves the store by default; run `python scripts/setup.py --scope backend --replace-catalogue` to migrate it to the current facts-enabled catalogue. A matching facts store without discovery tables is upgraded automatically; an intact current search-enabled store is reused. A different valid snapshot remains preserved. Actual v0.6.0 backend setup rebuilt the same source into a 76,111,872-byte index with visible progress and no new source download.
 
 ## Claim knowledge in local and hosted runs
 

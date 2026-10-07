@@ -184,6 +184,33 @@ def test_setup_migrates_same_source_identity_only_jsonl_index_with_explicit_repl
     assert setup.prepare_catalogue(clone, replace=True) == "reused"
 
 
+def test_setup_upgrades_same_source_missing_discovery_without_replacing_different_data(
+    clone, monkeypatch
+):
+    from app.catalogue.store import CatalogueStore
+
+    setup = module("setup", monkeypatch)
+    _, metadata = source_bundle(clone)
+    assert setup.prepare_catalogue(clone) == "built"
+    directory = clone / "backend/storage/runtime/india"
+    with closing(sqlite3.connect(directory / "catalogue.sqlite3")) as connection:
+        for table in (
+            "catalogue_search_terms",
+            "catalogue_search_prefixes",
+            "catalogue_search_counts",
+            "catalogue_search_format",
+        ):
+            connection.execute(f"DROP TABLE {table}")
+        connection.commit()
+    old = CatalogueStore(directory)
+    assert old.supports_facts is True and old.supports_search is False
+    assert setup.prepare_catalogue(clone) == "built"
+    restored = CatalogueStore(directory)
+    assert restored.manifest.source_sha256 == metadata["decoded_sha256"]
+    assert restored.supports_search is True
+    assert setup.prepare_catalogue(clone) == "reused"
+
+
 def test_setup_rejects_tampered_bundle_before_replacing_index(clone, monkeypatch):
     setup = module("setup", monkeypatch)
     directory, _ = source_bundle(clone)
@@ -236,3 +263,14 @@ def test_backend_origin_rejects_credentials_and_non_origin_urls(monkeypatch, url
     workspace = module("_workspace", monkeypatch)
     with pytest.raises(ValueError, match="without credentials"):
         workspace.public_origin(url)
+
+
+def test_local_frontend_metadata_reads_canonical_version(tmp_path, monkeypatch):
+    workspace = module("_workspace", monkeypatch)
+    (tmp_path / "frontend").mkdir()
+    pubspec = tmp_path / "frontend/pubspec.yaml"
+    pubspec.write_text("name: unlabel\nversion: 0.1.0+2\n")
+    assert workspace.frontend_version(tmp_path) == ("0.1.0", "2")
+    pubspec.write_text("version: 0.1.0+0\n")
+    with pytest.raises(ValueError, match="positive build"):
+        workspace.frontend_version(tmp_path)

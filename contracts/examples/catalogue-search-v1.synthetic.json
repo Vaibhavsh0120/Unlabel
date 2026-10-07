@@ -1,0 +1,49 @@
+{
+  "schema_version": "1",
+  "search_version": "catalogue-search-v1",
+  "status": "ready",
+  "query": "Synthetic oat",
+  "normalized_query": "synthetic oat",
+  "manifest": {
+    "schema_version": "1",
+    "snapshot_id": "synthetic-catalogue",
+    "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+    "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "source_format": "off_jsonl",
+    "coverage": "sample",
+    "exported_at": "2026-10-05T12:00:00Z",
+    "indexed_at": "2026-10-05T12:00:00Z",
+    "market_tag": "en:india",
+    "rows_read": 1,
+    "india_rows": 1,
+    "indexed_products": 1,
+    "duplicate_barcodes": 0,
+    "unsupported_barcodes": 0,
+    "missing_name": 0,
+    "missing_ingredients": 1,
+    "database_license": "ODbL-1.0",
+    "contents_license": "DbCL-1.0",
+    "attribution": "Product data from Open Food Facts",
+    "license_url": "https://openfoodfacts.org/terms-of-use"
+  },
+  "candidates": [
+    {
+      "identity": {
+        "barcode": "0123456789012",
+        "name": "Synthetic oats",
+        "brands": null,
+        "quantity_text": null
+      },
+      "source_id": "off:0000000000000000000000000000000000000000000000000000000000000000:0123456789012",
+      "warnings": [
+        "candidate_requires_identity_confirmation"
+      ]
+    }
+  ],
+  "matched_count": 1,
+  "ambiguous": false,
+  "next_cursor": null,
+  "warnings": [
+    "synthetic_example_not_a_real_product"
+  ]
+}

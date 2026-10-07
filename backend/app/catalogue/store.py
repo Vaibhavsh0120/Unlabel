@@ -5,6 +5,16 @@ from pathlib import Path
 
 from app.catalogue.facts import FactsLookup, ProductFacts
 from app.catalogue.models import CatalogLookup, Manifest, validate_barcode
+from app.catalogue.search import (
+    MAX_INDEX_INSTRUCTIONS,
+    MAX_QUERY_INSTRUCTIONS,
+    InvalidSearchRequest,
+    SearchResult,
+    query_terms,
+    search_catalogue,
+    search_index_supported,
+    validate_search_options,
+)
 from app.core.json_numbers import checked_float, reject_constant
 from app.schemas.products import Product
 
@@ -108,13 +118,80 @@ class CatalogueStore:
         self.directory = resolved_directory(directory)
         self.path = self.directory / DATABASE_FILENAME
         with read_only_connection(self.path) as connection:
-            verify_database(connection)
+            manifest = verify_database(connection)
             self._supports_facts = _has_facts(connection)
+            self._supports_search = search_index_supported(connection, manifest)
+            self._search_manifest = manifest
 
     @property
     def supports_facts(self) -> bool:
         """The optional facts table passed identity count/key checks at initialization."""
         return self._supports_facts
+
+    @property
+    def supports_search(self) -> bool:
+        """Optional Unicode discovery tables passed format/count/key checks."""
+        try:
+            with read_only_connection(self.path) as connection:
+                return self._search_supported(connection, read_manifest(connection))
+        except (ValueError, OSError):
+            return False
+
+    def _search_supported(self, connection: sqlite3.Connection, manifest: Manifest) -> bool:
+        if manifest != self._search_manifest:
+            instructions = 0
+
+            def exceeded() -> bool:
+                nonlocal instructions
+                instructions += 1000
+                return instructions > MAX_INDEX_INSTRUCTIONS
+
+            # An explicit local snapshot replacement is uncommon and must pass
+            # the complete optional-index validation before being advertised.
+            connection.set_progress_handler(exceeded, 1000)
+            supported = search_index_supported(connection, manifest)
+            connection.set_progress_handler(None, 0)
+            self._supports_search = supported
+            self._search_manifest = manifest
+            return supported
+        return self._supports_search
+
+    def search(self, query: str, *, limit: int = 10, cursor: str | None = None) -> SearchResult:
+        query, terms = query_terms(query)
+        validate_search_options(limit, cursor)
+        manifest = None
+        try:
+            with read_only_connection(self.path) as connection:
+                manifest = read_manifest(connection)
+                if not self._search_supported(connection, manifest):
+                    return SearchResult(
+                        status="unavailable",
+                        query=query,
+                        normalized_query=" ".join(terms),
+                        manifest=manifest,
+                        warnings=["catalogue_search_unavailable"],
+                    )
+                instructions = 0
+
+                def exceeded() -> bool:
+                    nonlocal instructions
+                    instructions += 1000
+                    return instructions > MAX_QUERY_INSTRUCTIONS
+
+                connection.set_progress_handler(exceeded, 1000)
+                return search_catalogue(
+                    connection, manifest, query, terms, limit=limit, cursor=cursor
+                )
+        except InvalidSearchRequest:
+            raise
+        except (ValueError, OSError):
+            return SearchResult(
+                status="unavailable",
+                query=query,
+                normalized_query=" ".join(terms),
+                manifest=manifest,
+                warnings=["catalogue_search_unavailable"],
+            )
 
     @property
     def manifest(self) -> Manifest:

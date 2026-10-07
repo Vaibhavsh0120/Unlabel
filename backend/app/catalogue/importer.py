@@ -21,6 +21,12 @@ from app.catalogue.models import (
     SourceFormat,
     validate_source_url,
 )
+from app.catalogue.search import (
+    create_search_index,
+    finish_search_index,
+    index_identity,
+    search_index_supported,
+)
 from app.catalogue.store import (
     APPLICATION_ID,
     DATABASE_FILENAME,
@@ -329,6 +335,7 @@ def _build_locked(
                 "CREATE TABLE catalogue_manifest (id INTEGER PRIMARY KEY CHECK(id = 1), "
                 "data TEXT NOT NULL)"
             )
+            create_search_index(connection)
             if source_format == "off_jsonl":
                 connection.execute(
                     "CREATE TABLE catalogue_facts (barcode TEXT PRIMARY KEY, data TEXT NOT NULL)"
@@ -362,6 +369,7 @@ def _build_locked(
                     )
                 except sqlite3.IntegrityError as error:
                     raise ValueError("Duplicate exact barcode in India source rows") from error
+                index_identity(connection, product)
                 if source_format == "off_jsonl":
                     details, fact_warnings = project_facts(row, code)
                     facts_data = json.dumps(
@@ -410,12 +418,15 @@ def _build_locked(
                 "INSERT INTO catalogue_manifest (id, data) VALUES (1, ?)",
                 (manifest.model_dump_json(),),
             )
+            finish_search_index(connection, manifest.indexed_products)
             connection.commit()
             _check_work_budget(directory, max_work_bytes)
             if staging.stat().st_size > max_artifact_bytes:
                 raise ValueError("Catalogue exceeds the artifact-size budget")
             if verify_database(connection) != manifest:
                 raise ValueError("Staged catalogue manifest did not round-trip")
+            if not search_index_supported(connection, manifest):
+                raise ValueError("Staged discovery index did not verify")
         # Re-open read-only after closing the writer before the one-file swap.
         with read_only_connection(staging) as connection:
             if verify_database(connection) != manifest:

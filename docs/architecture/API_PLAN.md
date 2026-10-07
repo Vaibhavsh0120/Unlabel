@@ -1,3 +1,8 @@
+Current implementation candidate **v0.6.0 Product Discovery** adds
+`GET /v1/catalogue/search` and the actual `catalogue_search` capability.
+The original 18 route contracts remain compatible. [Search bounds](PRODUCT_DISCOVERY.md)
+and [review gate](../planning/BACKEND_V0_6_0_REVIEW.md). Hosted verification follows push.
+
 # Frontend/backend API plan
 
 Released production **v0.5.0** has eighteen mounted routes, exported in

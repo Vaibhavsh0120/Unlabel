@@ -150,9 +150,11 @@ def test_settings_dotenv_default_can_be_disabled_and_direct_values_take_preceden
     assert Settings(off_timeout_seconds=6.5).off_timeout_seconds == 6.5
 
 
-def test_backend_version_matches_manifest_without_changing_frontend():
+def test_backend_version_matches_its_independent_manifest():
     backend = Path(__file__).resolve().parents[2]
     assert (
         tomllib.loads((backend / "pyproject.toml").read_text())["project"]["version"] == __version__
     )
-    assert "version: 0.0.0+1" in (backend.parent / "frontend/pubspec.yaml").read_text()
+    # Backend release gates must not pin or advance the independently released client.
+    frontend = (backend.parent / "frontend/pubspec.yaml").read_text()
+    assert any(line.startswith("version: ") and "+" in line for line in frontend.splitlines())

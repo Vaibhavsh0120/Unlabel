@@ -12,7 +12,14 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from _workspace import ROOT, backend_python, config, flutter_executable, public_origin
+from _workspace import (
+    ROOT,
+    backend_python,
+    config,
+    flutter_executable,
+    frontend_version,
+    public_origin,
+)
 
 
 def port(value: str) -> int:
@@ -147,6 +154,7 @@ def main() -> int:
             wait_for_api(backend, backend_url)
             print(f"Backend ready: {backend_url}/docs", flush=True)
         if flutter is not None:
+            app_version, build_number = frontend_version()
             command = [
                 flutter,
                 "run",
@@ -157,6 +165,8 @@ def main() -> int:
                 "--web-port",
                 str(args.web_port),
                 f"--dart-define=BACKEND_BASE_URL={backend_url}",
+                f"--dart-define=APP_VERSION={app_version}",
+                f"--dart-define=BUILD_NUMBER={build_number}",
             ]
             processes.append(spawn(command, ROOT / "frontend", dict(os.environ)))
             print(

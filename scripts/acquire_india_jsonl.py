@@ -442,7 +442,7 @@ def acquire(directory):
         request = urllib.request.Request(
             SOURCE,
             headers={
-                "User-Agent": "Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)",
+                "User-Agent": "Unlabel/0.6.0 (https://github.com/Vaibhavsh0120/Unlabel)",
                 "Accept-Encoding": "identity",
             },
         )

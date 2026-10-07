@@ -1,3 +1,8 @@
+Backend **v0.6.0 Product Discovery** is the current implementation candidate.
+Its additional [search contract](../docs/architecture/PRODUCT_DISCOVERY.md),
+[review](../docs/planning/BACKEND_V0_6_0_REVIEW.md), 19-route OpenAPI and new search
+schema/example preserve the released 18 routes. Hosted proof is pending its push.
+
 # Shared API contracts
 
 Released production backend **v0.5.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. It was independently reviewed, pushed, hosted-verified and published after v0.4.0. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.

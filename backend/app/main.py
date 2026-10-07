@@ -5,7 +5,7 @@ from pathlib import Path as FilePath
 from typing import Annotated, cast
 
 import httpx
-from fastapi import FastAPI, Path, Request
+from fastapi import FastAPI, Path, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -18,6 +18,14 @@ from app.api.v1.community import build_router as build_community_router
 from app.api.v1.reports import build_router as build_reports_router
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
+from app.catalogue.search import (
+    MAX_CURSOR_LENGTH,
+    MAX_QUERY_LENGTH,
+    InvalidSearchRequest,
+    SearchResult,
+    query_terms,
+    validate_search_options,
+)
 from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
 from app.catalogue.store import CatalogueStore
 from app.claims.knowledge import KnowledgeStore
@@ -235,6 +243,8 @@ def create_app(
                 "catalogue_lookup": catalogue["status"] == "ready",
                 "catalogue_facts": catalogue["status"] == "ready"
                 and request.app.state.catalogue.supports_facts,
+                "catalogue_search": catalogue["status"] == "ready"
+                and request.app.state.catalogue.supports_search,
                 "nutrition_analysis": True,
                 "label_reports": True,
                 "claim_checks": claim_store is not None,
@@ -291,6 +301,80 @@ def create_app(
         return JSONResponse(
             result.model_dump(mode="json"),
             status_code={"found": 200, "not_found": 404, "unavailable": 503}[result.status],
+            headers={"Cache-Control": "no-store"},
+        )
+
+    @application.get(
+        "/v1/catalogue/search",
+        response_model=SearchResult,
+        tags=["Catalogue"],
+        responses={503: {"model": SearchResult}},
+    )
+    def catalogue_search(
+        request: Request,
+        q: Annotated[str, Query(min_length=1, max_length=MAX_QUERY_LENGTH)],
+        limit: Annotated[int, Query(ge=1, le=20)] = 10,
+        cursor: Annotated[str | None, Query(min_length=1, max_length=MAX_CURSOR_LENGTH)] = None,
+    ):
+        try:
+            query, terms = query_terms(q)
+            validate_search_options(limit, cursor)
+            store = request.app.state.catalogue
+            if store is None:
+                result = SearchResult(
+                    status="unavailable",
+                    query=query,
+                    normalized_query=" ".join(terms),
+                    warnings=[
+                        "catalogue_not_configured"
+                        if config.catalogue_path() is None
+                        else "catalogue_search_unavailable"
+                    ],
+                )
+            else:
+                result = store.search(query, limit=limit, cursor=cursor)
+                artifact = request.app.state.catalogue_artifact
+                if (
+                    artifact is not None
+                    and result.manifest is not None
+                    and (
+                        result.manifest.snapshot_id != artifact.snapshot_id
+                        or result.manifest.source_sha256 != artifact.source_sha256
+                    )
+                ):
+                    result = SearchResult(
+                        status="unavailable",
+                        query=query,
+                        normalized_query=" ".join(terms),
+                        warnings=["catalogue_search_unavailable"],
+                    )
+                elif result.manifest is not None:
+                    freshness = snapshot_freshness(result.manifest.exported_at)
+                    warnings = list(result.warnings)
+                    if freshness.status == "refresh_due":
+                        warnings.append("snapshot_refresh_due")
+                    elif freshness.status == "source_date_in_future":
+                        warnings.append("snapshot_source_date_in_future")
+                    if result.manifest.coverage == "unverified":
+                        warnings.append("snapshot_coverage_unverified")
+                    result = result.model_copy(
+                        update={"warnings": list(dict.fromkeys(warnings))[:100]}
+                    )
+        except InvalidSearchRequest as error:
+            raise RequestValidationError(
+                [{"loc": ("query", "search"), "type": "value_error", "msg": "Invalid request data"}]
+            ) from error
+        except (ValueError, OSError):
+            query, terms = query_terms(q)
+            result = SearchResult(
+                status="unavailable",
+                query=query,
+                normalized_query=" ".join(terms),
+                warnings=["catalogue_search_unavailable"],
+            )
+        return JSONResponse(
+            result.model_dump(mode="json"),
+            status_code=503 if result.status == "unavailable" else 200,
             headers={"Cache-Control": "no-store"},
         )
 

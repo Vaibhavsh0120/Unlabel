@@ -378,14 +378,16 @@ rows alone do not measure useful Indian-market coverage.
 ## Delivery order and completion gates
 
 The user authorized v0.4.0 followed by v0.5.0 as separate reviewed/pushed versions.
-v0.6.0 and later remain proposals. Finish each release boundary before the next.
+The next backend v0.6.0 and frontend v0.1.0 are now authorized and in progress.
+Their [connected release plan](CONNECTED_RELEASE_PLAN.md) defines useful scope.
+v0.7.0 and later remain proposals. Finish each release boundary before the next.
 
 | Stage | Meaning and user value | Completion gate |
 | --- | --- | --- |
 | Published v0.3.0 foundation | Barcode facts, direct nutrition normalization and seven reviewed numerical claim types | Already released; preserve its tested contracts and source receipts |
 | v0.4.0 Community Product Catalogue | Automatically saved observations and compatible sourced fields improve exact lookup | Four additive routes with revised observation/receipt schemas, semantic deduplication, qualified candidates, conflict review, resolved fields, free project/rules, transaction and hosted checks |
 | Released v0.5.0 Useful Label Report | A barcode or corrected back label produces one understandable sourced report | Private intake without barcode; bounded ingredient/declaration fields; reuse normalizer/claims; reviewed glossary/templates; partial/unknown behavior |
-| Proposed v0.6.0 Product Discovery | Front text helps find the right candidate without a readable barcode | Bounded indexed name/brand/variant search, ambiguous/missing states and identity confirmation; no visual certainty claims |
+| Accepted v0.6.0 Product Discovery | Front text helps find the right candidate without a readable barcode | Bounded indexed name/brand/variant search, ambiguous/missing states and identity confirmation; no visual certainty claims |
 | Proposed v0.7.0 Evidence-aware Comparison | Two reports reveal supported nutrient differences | Compatible basis/preparation, missing-value handling and evidence-linked explanation; no unsupported universal winner |
 | Client integration alongside stable contracts | Barcode/manual scan, corrected front/back capture, results, automatic factual saving, local history/saved/preferences | Real-device/web OCR/camera tests, source/error/correction behavior and integration of each screen |
 

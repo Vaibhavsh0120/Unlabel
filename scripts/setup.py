@@ -127,7 +127,7 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
         with Progress("Validate existing catalogue"):
             store = CatalogueStore(directory)
         current = store.manifest
-        if (
+        same_source = (
             current.source_sha256 == metadata["decoded_sha256"]
             and current.indexed_products == metadata["indexed_products"]
             and current.source_format == metadata["source_format"]
@@ -135,18 +135,24 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
             and current.exported_at == datetime.fromisoformat(metadata["exported_at"])
             # Earlier importers could index the same JSONL without rich facts.
             and (metadata["source_format"] != "off_jsonl" or store.supports_facts)
-        ):
+        )
+        if same_source and store.supports_search:
             print(
                 f"Reusing validated catalogue: {current.indexed_products} products.",
                 flush=True,
             )
             return "reused"
-        if not replace:
+        if not replace and not same_source:
             print(
                 "Keeping a different valid local catalogue. Use --replace-catalogue to adopt the bundle.",
                 flush=True,
             )
             return "preserved"
+        if same_source and not store.supports_search:
+            print(
+                "Rebuilding the same source with the current discovery index.",
+                flush=True,
+            )
     with Progress("Build catalogue index"):
         manifest = build_catalogue(
             source,
