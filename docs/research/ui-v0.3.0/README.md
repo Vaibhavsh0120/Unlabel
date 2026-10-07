@@ -36,3 +36,19 @@ These captures establish layout review, not identical pixels across browsers,
 physical keyboard/camera/OCR accuracy, frame-rate benchmarks or native installs.
 Generated artwork prompts/hashes are in the
 [artwork provenance](../../../frontend/assets/artwork/README.md).
+
+## Hosted browser checkpoint
+
+Published frontend implementation `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`,
+READY deployment `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, was exercised in the browser.
+Welcome Get started opened Home. Search focused an actual input and returned ten
+results from 57 matches. A public barcode report opened and saved locally; returning
+to Profile showed Scans 1 / Saved 1 with Comparisons unknown and no SnackBar Hero failure.
+
+Hosted captures are `search-hosted-light-390.jpg` and
+`profile-hosted-light-390.jpg`, both with document viewport verified as 390×844.
+`welcome-hosted-light-1280.jpg` uses 1280×720; it is a separate desktop capture,
+not the 390px local reference comparison. The [production receipt](../FRONTEND_V0_3_0_PRODUCTION.json)
+records 49 public asset/API checks, all 21 OCR hashes and exact backend v0.7.0 compatibility.
+Browser interaction evidence supplements those HTTP checks; physical mobile
+keyboard and hosted OCR recognition are not established by this checkpoint.

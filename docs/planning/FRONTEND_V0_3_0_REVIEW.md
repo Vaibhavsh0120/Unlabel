@@ -6,10 +6,15 @@ Backend v0.7.0 and frontend v0.2.0 remain independently published. Backend v0.8.
 sourced comparison is a separate release; this client still uses its existing
 compatible-basis comparison and does not require the new endpoint.
 
-Stage: **implemented, locally tested and visually checked**. Release web build
-passed; light-mode Welcome/Profile were inspected at 390, 1440 and 1728 pixels.
-Push, hosted verification and source publication are pending. This document does
-not serve as a production receipt.
+Stage: **published and hosted-verified**. Implementation source
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb` is published as
+[frontend-v0.3.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0).
+Production deployment `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8` is READY at
+[unlabel-india.vercel.app](https://unlabel-india.vercel.app).
+Release build and light Welcome/Profile checks at 390/1440/1728px pass.
+The [49-check production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json)
+records exact hosted assets, all 21 OCR hashes and published backend v0.7.0
+compatibility. Later documentation-only closure commits have separate identities.
 
 ## Accepted screen and interaction boundaries
 
@@ -106,7 +111,8 @@ Fresh local checks reported by the execution run:
 | Android bridge | Kotlin compilation passed |
 | Final release web build | Passed, including Wasm dry run |
 | Final rendered reference checks | Light Welcome/Profile at 390, 1440 and 1728 pixels; [captures](../research/ui-v0.3.0/README.md) |
-| Push / hosted source and assets / source release | Pending |
+| Push / hosted source and assets / source release | Published exact implementation SHA; READY deployment; 49 checks and all 21 OCR hashes verified |
+| Hosted browser flow | Welcome Get started enters Home; Search focuses the actual input and returns ten results from 57 matches; a public report saves locally and Profile shows Scans 1 / Saved 1 with comparison total unknown |
 
 The synthetic browser check proves the bundled runtime can perform local
 recognition. It does not establish real-package OCR accuracy, Hindi accuracy,
@@ -118,10 +124,17 @@ establish bounded request behavior rather than a hosted speed benchmark.
 Release web build and rendered phone/PC checks are complete. Profile dialogs
 open real controls, and notification unavailability is visibly labelled. The
 retired Find a product page and unused Scan search callback are removed.
-Run the final Markdown/local-link/script/private-data review before push.
-Record implementation source SHA and exact hosted deployment separately from
-later documentation-only closure commits. Publish frontend independently;
-manual native APK/unsigned-IPA builds remain a separate lane.
+Markdown/local-link/script/private-data review and dead-code removal preceded
+the independent frontend push. Exact implementation/deployment/source release
+are recorded above; later documentation-only closure commits remain separate.
+The hosted browser checked Welcome Get started, Home, actual search input
+focus/results and a public barcode report. Saving it locally and returning to
+Profile showed Scans 1 / Saved 1, kept Comparisons unknown and caused no SnackBar Hero
+failure. Search/Profile captures use a verified 390×844 viewport; the hosted
+Welcome capture is 1280×720 and is labelled accordingly. The receipt's Node VM
+proves lazy bridge initialization; full
+hosted OCR recognition and physical keyboard behavior remain separate checks.
+Manual native APK/unsigned-IPA builds remain a separate lane.
 
 Automatic barcode camera detection and continuous live highlights remain future
 work. Follow-on frontend work also covers source-aware comparison endpoint

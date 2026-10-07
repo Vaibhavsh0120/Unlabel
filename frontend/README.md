@@ -1,9 +1,14 @@
 # Flutter frontend
 
-Frontend **0.3.0+4 — Visual Label Reader** is implemented, locally tested and
-visually checked. Release web build and light-mode Welcome/Profile checks at
-390/1440/1728px pass; push, hosted verification and source publication remain
-pending. [Current review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
+Frontend **0.3.0+4 — Visual Label Reader** is published from implementation source
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; READY deployment
+`dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8` passed 49 hosted checks, including all 21 OCR
+asset hashes. Hosted Welcome enters Home and Search focuses the actual input,
+returning ten results from 57 matches.
+[Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
+[Production receipt](../docs/research/FRONTEND_V0_3_0_PRODUCTION.json) ·
+[Current review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
+Later documentation-only closure commits do not replace this implementation SHA.
 Published frontend **0.2.0+3** remains at implementation commit
 `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`, with its
 [production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).

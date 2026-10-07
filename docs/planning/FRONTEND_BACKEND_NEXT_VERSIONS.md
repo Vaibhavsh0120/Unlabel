@@ -1,8 +1,9 @@
 # Reference screens and the next releases
 
 Accepted scope: **8 October 2026**. Work directly on `main` and preserve published
-backend v0.7.0/frontend v0.2.0 history. This plan implements the user's requested
-screens now; later releases remain plans until their own checks close.
+backend v0.7.0/frontend v0.2.0 history. Frontend v0.3.0 is now published and
+hosted-verified; backend v0.8.0 is separately implemented/locally verified with
+push/host/publication pending. Later releases remain plans until their own checks close.
 
 The latest correction takes precedence: **do not change the navbar**. Preserve
 Home / Scan / Compare / Saved, their order and design. The user's clarification
@@ -14,10 +15,10 @@ actual account identity, stored counts and supported settings supply its content
 
 ## Release boundaries
 
-| Component/version | Delivery | Evidence needed |
+| Component/version | Delivery | Evidence / state |
 | --- | --- | --- |
-| Frontend v0.3.0+4 | Reference Welcome on phone/PC, botanical startup screen, reference Profile with working account/device settings, immediate Home search keyboard, opaque header, a single Scan Label entry with private capture/gallery and editable review | Flutter analysis/tests/web build; light phone screenshot comparison; desktop layouts; camera/gallery/review/report flow; native keyboard/camera proof separately |
-| Backend v0.8.0 | Sourced Nutrient Comparison, with strict selected table basis/preparation, safe known unit conversion and original source references; scan validation additions only for measured contract gaps | Existing v0.7.0 already accepts corrected confirmed labels; no new photo/OCR upload endpoint; synthetic comparison tests/contracts and separate hosted proof |
+| Frontend v0.3.0+4 | Reference Welcome on phone/PC, botanical startup screen, reference Profile with working account/device settings, immediate Home search keyboard, opaque header, a single Scan Label entry with private capture/gallery and editable review | Published: 168 tests, clean analysis/build, 390/1440/1728px captures, READY deployment and 49 hosted checks and all 21 OCR hashes; physical keyboard/camera proof separate |
+| Backend v0.8.0 | Sourced Nutrient Comparison, with strict selected table basis/preparation, safe known unit conversion and original source references | Implemented/locally verified; separate push/host/publication pending. Existing v0.7.0 already accepts corrected labels; no photo/raw-OCR upload endpoint |
 | Frontend v0.4.0+5 | Remaining reference report/ingredient screens, remaining native OCR acceptance, automatic barcode camera detection, source-aware comparison details and persistence/notification design | Reviewed local extraction, editable candidate fields, explicit confirmation, bounded errors/cancellation and real camera/browser/device checks |
 | Backend v0.9.0 | Expand reviewed bilingual ingredient-function coverage and evidence references with explicit unavailable/conflict outcomes | Reviewed licensed source entries, immutable provenance, bounds and contract examples; no health/allergy/compliance verdict or invented score |
 
@@ -27,7 +28,11 @@ corrected OCR inputs; source capture alone does not mean automatic recognition.
 Local OCR is now implemented behind post-capture review and has read a synthetic label in the compiled browser. Nutrition extraction, live boxes and physical-device accuracy remain unverified.
 Anything without passing implementation/acceptance evidence remains planned.
 
-## Implementation order and ownership
+## Executed frontend order and remaining ownership
+
+The frontend steps below are complete for published v0.3.0. The next active
+component gate is backend v0.8.0's independent push, hosted verification and
+publication; source-aware frontend integration follows in v0.4.0.
 
 1. Define scope and inspect current capture/report/account contracts.
 2. Implement Welcome/loading artwork and responsive composition. Keep live text
@@ -51,10 +56,11 @@ Anything without passing implementation/acceptance evidence remains planned.
    remaining browser/native/hosted gates. Publish components independently only
    after their applicable verification; no APK/IPA build for backend-only work.
 
-After screen verification, address the user's added performance scope: skeleton
-feedback for pending search, measure startup and search request patterns, reduce
-unnecessary work, and add bounded caches without making dated source facts appear
-current. Preserve foreground camera/animation lifecycle and reduced-motion support.
+After screen verification, the added performance work delivered search skeletons,
+bounded public-read caches/request sharing, limited thumbnail work and reduced
+image decoding. Request/lifecycle regressions cover the changes; no device
+frame-rate or hosted latency benchmark is claimed. Dated facts retain their dates,
+and foreground camera/animation lifecycle/reduced-motion boundaries remain.
 
 ## Controls and visual fidelity
 
@@ -95,4 +101,11 @@ After screens, performance changes bound public search/report caching, coalesce
 requests, cap background thumbnail work and stop discarded queues/animations.
 Tests cover reopening pending search and query changes without obsolete reloads.
 These are request/lifecycle proofs, not device frame-rate or OCR-accuracy claims.
-Push, exact hosted verification and independent source release receipts follow.
+The frontend is independently published from exact implementation
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`, READY deployment
+`dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, with 49 hosted checks and all 21 OCR hashes.
+Hosted Welcome enters Home; Search focuses its actual input and returns ten of
+57 matches; a public report saves locally and Profile reflects Scans 1 / Saved 1
+with comparison count still unknown. Later docs-only closure commits retain
+that implementation identity. [Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
+[Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).

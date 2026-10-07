@@ -25,9 +25,14 @@ iOS release commitment as described below.
 Backend **0.7.0 Private Account Sync** and frontend **0.2.0+3 Welcome, Home and
 Optional Account** are independently published and hosted-verified. Earlier
 backend v0.6.0/frontend v0.1.0 releases remain historical. Frontend **0.3.0+4 Visual
-Label Reader** and backend **0.8.0 Sourced Nutrient Comparison** are locally
-implemented/tested, with separate final verification, push and publication gates.
-The user authorizes completing and publishing these two component versions;
+Label Reader** is independently published and hosted-verified from implementation
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`, READY deployment
+`dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, with 49 hosted checks.
+[Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
+[Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
+Later docs-only closure commits do not replace its implementation identity.
+Backend **0.8.0 Sourced Nutrient Comparison** is locally implemented/tested,
+with separate push/host/publication gates. The user authorizes completing that release;
 frontend v0.3.0 does not depend on the new comparison endpoint. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
 manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
 backend `v0.1.0` tag collision. All older tags/assets remain preserved.

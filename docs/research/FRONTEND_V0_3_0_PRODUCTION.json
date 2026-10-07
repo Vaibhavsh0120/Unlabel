@@ -1,0 +1,406 @@
+{
+  "component": "frontend",
+  "version": "0.3.0",
+  "build_number": "4",
+  "source_sha": "3f9a8172c284c74e25c0c83a270c1e8cabc26bdb",
+  "deployment_id": "dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8",
+  "deployment": {
+    "id": "dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8",
+    "state": "READY",
+    "environment": "production",
+    "source_sha": "3f9a8172c284c74e25c0c83a270c1e8cabc26bdb",
+    "alias": "https://unlabel-india.vercel.app",
+    "inspection_sha256": "94795e065e1af427ab1d5d6c754c4e4e753a945c8097f6e87e20f3ce9107f442",
+    "metadata_verification": "Fresh supplied Vercel inspection matched ID, READY state, Git SHA, production target and canonical alias"
+  },
+  "checked_at_utc": "2026-10-07T22:15:30.680953+00:00",
+  "checks": [
+    {
+      "asset": "index.html",
+      "status": 200,
+      "bytes": 1835,
+      "sha256": "4b35fd7626e30936c480586b7cfc4f6d5b644d902cb0ab2cb63cc7ec949f397d",
+      "matches_exact_source": false
+    },
+    {
+      "check": "Website excludes branded loading screen and eager OCR engine/model tags",
+      "passed": true
+    },
+    {
+      "asset": "flutter_bootstrap.js",
+      "status": 200,
+      "bytes": 13094,
+      "sha256": "3533ee473521dde26e146dfd08a12d09e9adb371143c2c6b8abf40eaac8a8ff0",
+      "matches_exact_source": false
+    },
+    {
+      "asset": "main.dart.js",
+      "status": 200,
+      "bytes": 3525775,
+      "sha256": "d7e2f7772f10dadf66db4abfa830646fe2a0702013f053e618b9e1cad9d45400",
+      "matches_exact_source": false
+    },
+    {
+      "asset": "version.json",
+      "status": 200,
+      "bytes": 84,
+      "sha256": "141def895638eb79b3e85a4bab8a6d79a772f67b6021727994774e9ee88e2927",
+      "matches_exact_source": false
+    },
+    {
+      "asset": "appearance.js",
+      "status": 200,
+      "bytes": 1019,
+      "sha256": "636660607d44cb5e64f63f954387b255da37593d0399743eb1977a0cdc06207d",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "local_ocr.js",
+      "status": 200,
+      "bytes": 3656,
+      "sha256": "65f479d4201578948d05cfc4bd734cf39fe884ac8545416d3ffa97477c658016",
+      "matches_exact_source": true
+    },
+    {
+      "check": "Hosted OCR bridge startup is lazy",
+      "passed": true,
+      "method": "Node VM evaluates exact hosted local_ocr.js without invoking recognize",
+      "startup_work": {
+        "scripts": 0,
+        "imageDecodes": 0,
+        "fetches": 0,
+        "workers": 0
+      },
+      "whole_browser_network_capture": false
+    },
+    {
+      "asset": "favicon-light.png",
+      "status": 200,
+      "bytes": 1038,
+      "sha256": "1adeccdbeafe87eaf1c47cbb2967dc46816beebda9678b38219253869e2c6470",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "favicon-dark.png",
+      "status": 200,
+      "bytes": 1158,
+      "sha256": "e9ffd7a9b8e4a285fa0ad71375110bb32d691f0b6019a9341fdf993777c7a35e",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "manifest.json",
+      "status": 200,
+      "bytes": 881,
+      "sha256": "f397bc4ee4302a5fbc3d1a3fa4e7ff7d6d3224bf44024fe3280b67937b58c66f",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "manifest-dark.json",
+      "status": 200,
+      "bytes": 877,
+      "sha256": "1c063099eeaf9a33c76ce1001b2ff41d0a122f0374cb7c39dabd5a7fab2e02cf",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/scan-hero-light.png",
+      "status": 200,
+      "bytes": 2003773,
+      "sha256": "3ae23be9daf49118804374902c2ab6bc4bdadc13037c81f3f5a428317a86a352",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/scan-hero-dark.png",
+      "status": 200,
+      "bytes": 2018186,
+      "sha256": "71211363e363b1025100384fd8716575ff1e2026759980ea8bd8a0fa0bd30431",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/botanical-corner.png",
+      "status": 200,
+      "bytes": 1238071,
+      "sha256": "0167ee9683683f957e5c46aba33fed0e39072eb08c1b895d4b1ae4b96af88e93",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/welcome-scan-package.png",
+      "status": 200,
+      "bytes": 1201160,
+      "sha256": "aae2a399b29faf1b32581803fc2cf0bdb04aaec36edd1c01c3055f3e254c58a0",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/splash-botanical.png",
+      "status": 200,
+      "bytes": 1305771,
+      "sha256": "b62382569a2eee2c5b77c872a4c10492141a0fbbc85a09f000faf6925385a41f",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/profile-avatar.png",
+      "status": 200,
+      "bytes": 1457880,
+      "sha256": "48797712123dc0ad933d8d4e58291739f343b22abacfd52b1d42c9926449b9bd",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/artwork/profile-botanical.png",
+      "status": 200,
+      "bytes": 953930,
+      "sha256": "b2221f7daf6f63e55ddc53c98f73f6e484e1ba02d2c6c89077c8f8831fd38687",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "assets/assets/brand/fonts/CormorantGaramond-Variable.ttf",
+      "status": 200,
+      "bytes": 1195560,
+      "sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-lstm.wasm",
+      "status": 200,
+      "bytes": 2855361,
+      "sha256": "66b17df6e20c5329a17ffa9c202a47eaa3e32500b253d4c7f38e7f2bc01457c3",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-lstm.wasm.js",
+      "status": 200,
+      "bytes": 3896484,
+      "sha256": "eef5f8b2f8e20e150680b20adaec4a60babafee3adbe8a94583c81fee46e8680",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-relaxedsimd-lstm.wasm",
+      "status": 200,
+      "bytes": 2862266,
+      "sha256": "7985c92d4c64e7267d24cadffe1b2a1da6bf8aa55fdcaf953fe94fe122a24545",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-relaxedsimd-lstm.wasm.js",
+      "status": 200,
+      "bytes": 3905767,
+      "sha256": "861a536cf9ef8e63cb644d57bab39c388f37f7d6b6f60024b741c5f6b39a59b3",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-relaxedsimd.wasm",
+      "status": 200,
+      "bytes": 3456075,
+      "sha256": "45f8c9b516df326b6ae6b493ed3a6289df5cbd10490e7b6ff8bf5b12ea42d1da",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-relaxedsimd.wasm.js",
+      "status": 200,
+      "bytes": 4697227,
+      "sha256": "843074aa5bad1cc6421b74a86201768ced9f244795e4d81435435a61a40ce535",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-simd-lstm.wasm",
+      "status": 200,
+      "bytes": 2857601,
+      "sha256": "34e8d50cac216427d86bf397d610fdd9f49492539bbcdfbfccc4eda20c810bea",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-simd-lstm.wasm.js",
+      "status": 200,
+      "bytes": 3899472,
+      "sha256": "c58b46a4c796c0b8afccf77591d5b875b6896b45d402bbce8caa6f5362447b38",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-simd.wasm",
+      "status": 200,
+      "bytes": 3451410,
+      "sha256": "7d237a13edfeb0fa2f104744fccde0a00e0c076c3e23b7a8fc7af75ec9af2c3e",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core-simd.wasm.js",
+      "status": 200,
+      "bytes": 4690932,
+      "sha256": "6b61ef4e911b5cf57e656bbfe983d6e2b3711a02dd164154ddda064566e8e09d",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core.wasm",
+      "status": 200,
+      "bytes": 3449168,
+      "sha256": "c7f5ace62ac0ad065e71e9c6725f1d7cdf82e7eda8fba532cbb9563964da7098",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/core/tesseract-core.wasm.js",
+      "status": 200,
+      "bytes": 4687944,
+      "sha256": "0bc6ce3e5fbbd0cd89706cf2fd70960e3372f4f01ee24265b26990808aaeb286",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/lang/eng.traineddata.gz",
+      "status": 200,
+      "bytes": 1967599,
+      "sha256": "f22e6d9b2804c62b69c5d2afd9007724469ded1c523f939be743bf829fcf9c6d",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/lang/hin.traineddata.gz",
+      "status": 200,
+      "bytes": 923147,
+      "sha256": "8fa12cc307ccfe0bfbb95b31232aa8cce815693cb7564ba00f9f57023ec0668a",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/licenses/tessdata_fast-LICENSE",
+      "status": 200,
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/licenses/tesseract.js-LICENSE.md",
+      "status": 200,
+      "bytes": 11357,
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/licenses/tesseract.js-core-LICENSE",
+      "status": 200,
+      "bytes": 11358,
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/tesseract.min.js",
+      "status": 200,
+      "bytes": 62961,
+      "sha256": "000c27d9cd0def655f77b36c72a389c0ab13793aa31cb4d7aab56d09c0afbc7e",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/tesseract.min.js.LICENSE.txt",
+      "status": 200,
+      "bytes": 149,
+      "sha256": "cdf963ced7d25a0f98901a547647b4d6e2dbe0197fd78c87a059a87b0e542fe2",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/worker.min.js",
+      "status": 200,
+      "bytes": 111307,
+      "sha256": "576b7df7e3393e137e51849357c9adb53fe7ac1bb69bfa06cf3d61520f182c6d",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/worker.min.js.LICENSE.txt",
+      "status": 200,
+      "bytes": 466,
+      "sha256": "45f54171aeaa1d10c0c1a66f374b7bba1f02472b1487fbe892eec04f840002ac",
+      "matches_exact_source": true
+    },
+    {
+      "asset": "ocr/provenance.json",
+      "status": 200,
+      "bytes": 7086,
+      "sha256": "6c37e096119ca8b6db7773d3dfbadd78314c02c00a013c3e6064ec3a4f5e2da8",
+      "matches_exact_source": true
+    },
+    {
+      "api_path": "/v1/health",
+      "status": 200,
+      "response_sha256": "14c5c9414ca083edec6a424e349d7a220e7b30fa2c4a831afe3426496d4a89ef",
+      "exact_origin_cors": true
+    },
+    {
+      "api_path": "/v1/meta",
+      "status": 200,
+      "response_sha256": "9bbff8d3ce2c65f8147422c7c0119da2a003b38ca2b815b9dc8d068eba063c8a",
+      "exact_origin_cors": true
+    },
+    {
+      "api_path": "/openapi.json",
+      "status": 200,
+      "response_sha256": "f53c61ba5611ca9fca102be87f83ab1ae8bd5f57403a85280259496c6fc21d82",
+      "exact_origin_cors": true
+    },
+    {
+      "api_path": "/v1/catalogue/search?q=aashirvaad&limit=10",
+      "status": 200,
+      "response_sha256": "551347db32737cce17ac245c21ce78f866e4d7f1cc0e546a735c5985ef068f22",
+      "exact_origin_cors": true
+    },
+    {
+      "api_path": "/v1/products/8901725000899/report",
+      "status": 200,
+      "response_sha256": "b517596e9b6a3e8e310efb15eb949d8e645a30b2c6847ceef4a40d359b996ffa",
+      "exact_origin_cors": true
+    },
+    {
+      "check": "Exact hosted frontend/private-sync CORS GET",
+      "passed": true
+    },
+    {
+      "check": "Exact hosted frontend/private-sync CORS POST",
+      "passed": true
+    }
+  ],
+  "backend_version": "0.7.0",
+  "backend_contract": {
+    "version": "0.7.0",
+    "canonical_sha256": "f53c61ba5611ca9fca102be87f83ab1ae8bd5f57403a85280259496c6fc21d82",
+    "exact_released_contract_matches": true
+  },
+  "ocr": {
+    "vendor_asset_count": 21,
+    "all_hosted_hashes_match_exact_source": true,
+    "startup_evidence": "Hosted index has no eager OCR tags; exact hosted bridge evaluated in Node VM without recognize produces zero loads/decode/fetch/worker calls",
+    "hosted_engine_recognition": "not_exercised_by_this_receipt",
+    "local_compiled_browser_recognition": "Recorded separately in docs/planning/FRONTEND_V0_3_0_REVIEW.md",
+    "photos_or_raw_ocr_sent": false
+  },
+  "local_visual_review": {
+    "evidence": "docs/research/ui-v0.3.0/README.md",
+    "light_welcome_profile_widths": [
+      390,
+      1440,
+      1728
+    ],
+    "startup_capture": "Native widget composition only; excluded from website",
+    "hosted_browser_flow_exercised_by_helper": false
+  },
+  "credentials_used": false,
+  "writes": "None; public static/API GET and CORS OPTIONS only",
+  "native_device_checks": "not_verified",
+  "limits": [
+    "Deployment identity comes from a fresh supplied Vercel inspection; helper never fetches private Vercel credentials",
+    "Static asset and API checks do not exercise every rendered hosted interaction or establish browser OCR accuracy",
+    "Node VM checks lazy bridge startup, not a whole-browser network recording",
+    "No physical keyboard, camera, Hindi/package recognition accuracy, haptic, iOS compilation/installation or frame-rate proof",
+    "Private-sync CORS preflight is not authenticated account-sync or ownership proof"
+  ],
+  "hosted_browser_checks": {
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "welcome": "Get started enters Home; no website branded splash",
+    "search": "Home tap focuses actual DOM INPUT; aashirvaad returned 10 displayed/57 matches",
+    "report": "Opened public dated catalogue report and saved it locally",
+    "profile": "Actual guest Scans1/Saved1 shown after report/save; no gear or bottom guest action; Allergen reminders editor opens",
+    "local_only_smoke_records": true,
+    "signed_in_flow": "not re-exercised; existing v0.7/v0.2 published proof and168localregressions remain distinct",
+    "native_device_keyboard_camera": "not_verified"
+  }
+}

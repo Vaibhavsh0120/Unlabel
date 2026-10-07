@@ -6,7 +6,7 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.3.0_local-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.3.0-155b4b?style=flat-square)
 ![Backend](https://img.shields.io/badge/backend-0.7.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -21,12 +21,13 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Backend v0.7.0 Private Account Sync and frontend v0.2.0+3 are independently
-published and hosted-verified.** Frontend **v0.3.0+4 Visual Label Reader** is
-implemented and locally tested/visually checked; push, hosted verification
-and source publication remain release gates. Backend **v0.8.0 Sourced Nutrient
-Comparison** is a separate locally implemented release; the current frontend
-does not require that endpoint. Historical releases remain preserved.
+**Frontend v0.3.0+4 Visual Label Reader and backend v0.7.0 Private Account Sync
+are independently published and hosted-verified.** Frontend source
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb` passed 49 hosted checks and browser
+Welcome/search checks. Backend **v0.8.0 Sourced Nutrient Comparison** is separately
+implemented and locally verified; its push, hosted verification and publication
+are the next release gates. The frontend does not require that endpoint.
+Historical releases remain preserved.
 [Version checklists](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 - Enter a barcode or search name/brand words and choose an exact catalogue record.
@@ -136,7 +137,13 @@ asset/API checks; source release is published. [Frontend proof](docs/research/FR
 Frontend v0.3.0+4: **168 Flutter tests passed**, clean analysis, four browser OCR
 bridge tests and pinned-asset verification. A real local browser read a synthetic
 label using the bundled OCR engine. Release web build and light-mode checks at
-390/1440/1728 pixels passed; hosted publication is pending.
+390/1440/1728 pixels passed. Exact source
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb` is published as
+[frontend-v0.3.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0),
+with READY deployment `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, 49 hosted checks and all
+21 OCR asset hashes verified. Hosted Welcome enters Home; Search focuses an actual
+input and returns ten results from 57 matches.
+[Production receipt](docs/research/FRONTEND_V0_3_0_PRODUCTION.json) ·
 [Current review](docs/planning/FRONTEND_V0_3_0_REVIEW.md).
 
 Vercel deploys separate backend/web projects from `main`. Backend source tags

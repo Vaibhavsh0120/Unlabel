@@ -11,10 +11,15 @@ is a separate gate.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
-Frontend **v0.3.0+4 Visual Label Reader** is implemented, locally tested and visually
-checked: **168 Flutter tests**, clean analysis, release web build, local synthetic
-browser OCR and light-mode Welcome/Profile captures at 390/1440/1728px. Push,
-hosted verification and source publication remain pending. Backend **v0.8.0
+Frontend **v0.3.0+4 Visual Label Reader** is independently published and hosted-verified:
+**168 Flutter tests**, clean analysis/build, local synthetic browser OCR and light
+Welcome/Profile captures at 390/1440/1728px. Exact implementation
+`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb` has READY deployment
+`dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, 49 hosted checks and all 21 OCR hashes and
+[source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0).
+Hosted Welcome enters Home; Search focuses the actual input and returns ten of
+57 matches. [Production receipt](research/FRONTEND_V0_3_0_PRODUCTION.json).
+Later docs-only closure commits preserve that implementation identity. Backend **v0.8.0
 Sourced Nutrient Comparison** is a separate locally implemented/tested release;
 the frontend remains compatible with published v0.7.0. App-only startup, unchanged
 Scan/navbar design, actual Profile controls and future-only features are recorded
@@ -32,8 +37,9 @@ Native camera/OCR, installability and launcher switching remain separate gates.
 | Document | Read it for |
 | --- | --- |
 | [Current connected release plan](planning/CONNECTED_RELEASE_PLAN.md) | Published backend v0.6.0 and frontend v0.1.0+2 component gates |
-| [Current account and screen releases](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) | Published private-sync/account boundaries, active v0.3.0 screens and honest Profile control states |
-| [Frontend v0.3.0 review](planning/FRONTEND_V0_3_0_REVIEW.md) | Local OCR, reference Welcome/Profile, search/navigation behavior, bounded caches and remaining publication/device gates |
+| [Current account and screen releases](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) | Published private-sync/account/screen boundaries, honest Profile controls and separate backend v0.8.0 gates |
+| [Frontend v0.3.0 review](planning/FRONTEND_V0_3_0_REVIEW.md) | Published local OCR, reference Welcome/Profile, search/navigation, bounded caches and remaining device gates |
+| [Frontend v0.3.0 production proof](research/FRONTEND_V0_3_0_PRODUCTION.json) | Exact implementation/READY deployment, 49 hosted checks, all 21 OCR hashes and backend v0.7.0 compatibility |
 | [Frontend v0.3.0 rendered checks](research/ui-v0.3.0/README.md) | Actual 390/1440/1728px light captures, app startup widget capture and Flutter DOM-measurement limits |
 | [Next frontend/backend versions](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Independently scoped v0.3.0/v0.8.0 releases and planned v0.4.0/v0.9.0 work |
 | [Interface contract](../DESIGN.md) | Reference visual direction, real components, evidence and accessibility boundaries |

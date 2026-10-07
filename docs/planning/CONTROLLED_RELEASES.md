@@ -29,7 +29,7 @@ version** independently. Do not stage the entire mixed tree as one release.
 | --- | --- | --- |
 | Backend v0.7.0 | Private Account Sync | Published: 931 passed / 5 emulator-only skips; 18 synthetic + 13 fresh hosted checks; source tag v0.7.0 |
 | Frontend v0.2.0+3 | Welcome/Home, optional account sync, basic capture and sourced report/Compare flows | Published: 135 tests, clean analyzer, hosted READY deployment and source release; native lane separate |
-| Frontend v0.3.0+4 | Visual Label Reader: reference Welcome/Profile, app-only startup, local OCR and bounded search behavior | 168 tests, clean analysis, release web build and light phone/PC captures pass; push/host/publication pending |
+| Frontend v0.3.0+4 | Visual Label Reader: reference Welcome/Profile, app-only startup, local OCR and bounded search behavior | Published: 168 tests, clean analysis/build, light phone/PC captures, READY deployment and 49 hosted checks; all 21 OCR hashes verified |
 | Backend v0.8.0 | Sourced Nutrient Comparison | Implemented and locally tested separately; review/push/host/publication pending |
 | Frontend v0.4.0 | Source-aware comparison integration and remaining accepted UI/device work | Planned; no implementation or hosted claim |
 | Backend v0.9.0 | Reviewed bilingual ingredient knowledge and measured coverage | Planned; no universal suitability verdict |
@@ -41,7 +41,13 @@ gate succeeds. Documentation-only closure commits have separate identities.
 The frontend release remains compatible with published backend v0.7.0; its
 publication does not need to claim or depend on unpublished v0.8.0 functionality.
 
-## Frontend v0.3.0 acceptance
+## Published frontend v0.3.0 acceptance
+
+Implementation source: `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`.
+Hosted READY deployment: `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`.
+[Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
+[Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
+Later documentation-only closure commits do not replace the implementation SHA.
 
 Latest user corrections supersede the old screen-order plan and attached navbar
 design. Screens come first, then loading/performance improvements.
@@ -71,13 +77,14 @@ design. Screens come first, then loading/performance improvements.
   bounded thumbnail queue and reduced image decoding.
 - [x] Local analysis/tests, browser OCR bridge/hash checks and synthetic real-browser
   OCR recognition. Native compilation/device evidence stays separate.
-- [ ] Final release web build and rendered light phone/PC comparison at 390/1440/1728px.
-- [ ] Complete Markdown/local-link/script/dead-code/private-data review before push.
-- [ ] Push only frontend scope/docs; verify exact hosted source, assets and useful flows.
-- [ ] Publish independent frontend source release without triggering native builds.
+- [x] Final release web build and rendered light phone/PC comparison at 390/1440/1728px.
+- [x] Markdown/local-link/script/dead-code/private-data review before push.
+- [x] Frontend-only source/docs push; exact hosted source/assets verification and 49 checks.
+- [x] Hosted browser Welcome enters Home; Search focuses the actual input and returns ten of 57 matches.
+- [x] Independent frontend source release without triggering native builds.
 
-See [frontend review](FRONTEND_V0_3_0_REVIEW.md) for exact local counts and pending
-gates. Tests for queue/cache behavior do not establish a device frame-rate or
+See [frontend review](FRONTEND_V0_3_0_REVIEW.md) for exact local/hosted evidence and
+remaining native gates. Tests for queue/cache behavior do not establish a device frame-rate or
 hosted latency benchmark.
 
 ## Backend v0.8.0 acceptance and independent publication

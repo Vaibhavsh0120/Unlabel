@@ -2,8 +2,9 @@
 
 Updated **8 October 2026** from the user's latest screen, behavior and release
 instructions. Backend v0.7.0 and frontend v0.2.0+3 are independently published and
-hosted-verified. Current work is frontend **v0.3.0+4 Visual Label Reader**, followed
-by an independent backend **v0.8.0 Sourced Nutrient Comparison** publication.
+hosted-verified. Frontend **v0.3.0+4 Visual Label Reader** is also independently
+published and hosted-verified. Current release work is the separate implemented
+backend **v0.8.0 Sourced Nutrient Comparison**, whose push/host/publication gates remain.
 Work directly on main, update docs before each push, and preserve historical tags.
 Backend work does not rebuild APK/IPA.
 
@@ -37,9 +38,14 @@ Implementation source:
 - [x] Independent push, READY hosted source verification and frontend source publication.
   [Historical review](FRONTEND_V0_2_0_REVIEW.md).
 
-## Frontend v0.3.0+4 — Visual Label Reader
+## Published frontend v0.3.0+4 — Visual Label Reader
 
-This is the active frontend release. Latest corrections keep the existing navbar
+Implementation source: `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`.
+READY deployment: `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`.
+[Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
+[49-check production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
+Later docs-only closure commits preserve this implementation identity.
+Latest corrections keep the existing navbar
 design/order and Scan Label UI. The attached reference navbar, top-right Profile
 gear, sample identity/counts and illustrative health scores are not approved behavior.
 
@@ -61,13 +67,15 @@ gear, sample identity/counts and illustrative health scores are not approved beh
 - [x] Four browser OCR bridge tests, 21 vendored runtime/model hashes and 42 icon checks.
 - [x] Real compiled local browser reads a synthetic label using same-origin local OCR.
 - [x] Android OCR bridge Kotlin compilation.
-- [ ] Final release web build and light-mode rendered phone/PC reference checks.
-- [ ] Confirm every visible action, errors, enlarged text, reduced motion and responsive overflow.
-- [ ] Check all Markdown/local links/scripts, remove confirmed dead code and review private data.
-- [ ] Independently push, verify exact hosted source/assets/flows and publish frontend source.
+- [x] Final release web build and light-mode rendered phone/PC reference checks.
+- [x] Profile control tests, errors, enlarged text, reduced motion and responsive checks;
+  native/device acceptance stays separate.
+- [x] Markdown/local-link/script/private-data review and confirmed dead-code removal before push.
+- [x] Independent push, exact READY hosted source/assets verification and frontend source publication.
+- [x] Hosted browser Welcome enters Home; Search focuses the actual input and returns ten of 57 matches.
 
 The [v0.3.0 review](FRONTEND_V0_3_0_REVIEW.md) records source behavior and limits.
-The final render targets are 390px phone and 1440/1728px PC. Native device accuracy,
+Rendered checks cover 390px phone and 1440/1728px PC. Native device accuracy,
 camera/picker interruption/haptics and iOS compilation remain separate gates.
 
 ## Profile controls and next-version commitments
