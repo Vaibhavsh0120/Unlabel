@@ -29,6 +29,8 @@ resolve_product = import_module("app.community.resolver").resolve_product
 reports = import_module("app.reports.models")
 glossary = import_module("app.reports.glossary")
 accounts = import_module("app.accounts.models")
+comparison = import_module("app.comparison.models")
+compare = import_module("app.comparison.service").compare
 
 
 def write(directory: str, name: str, value):
@@ -71,6 +73,8 @@ def main():
         "personal-sync-request-v1.schema.json": accounts.SyncRequest,
         "personal-sync-snapshot-v1.schema.json": accounts.SyncSnapshot,
         "personal-sync-failure-v1.schema.json": accounts.SyncFailure,
+        "comparison-request-v1.schema.json": comparison.ComparisonRequest,
+        "comparison-response-v1.schema.json": comparison.ComparisonResponse,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -463,6 +467,34 @@ def main():
             code="account_revision_conflict",
             current_revision=1,
         ),
+    }.items():
+        write("examples", filename, model.model_dump(mode="json"))
+    comparison_request = comparison.ComparisonRequest.model_validate(
+        {
+            "client_request_id": "10000000-0000-4000-8000-000000000020",
+            "comparison_session_id": "10000000-0000-4000-8000-000000000021",
+            "input_revision": 1,
+            "a": {
+                "kind": "current_confirmed_label",
+                "observation": report_request.observation,
+                "selected_table_id": report_request.selected_table_id,
+            },
+            "b": {
+                "kind": "current_confirmed_label",
+                "observation": report_request.observation,
+                "selected_table_id": report_request.selected_table_id,
+            },
+        }
+    )
+    comparison_response = compare(
+        comparison_request,
+        off_lookup=lambda _: facts,
+        community_lookup=lambda _: community_lookup,
+        generated_at=submitted_at,
+    )
+    for filename, model in {
+        "comparison-v1.request.synthetic.json": comparison_request,
+        "comparison-v1.response.synthetic.json": comparison_response,
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
     count = len(list((ROOT / "contracts/examples").glob("*.synthetic.json")))

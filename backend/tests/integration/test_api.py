@@ -38,6 +38,7 @@ def test_service_endpoints_do_not_call_provider_and_report_capabilities_are_expl
             "nutrition_analysis",
             "label_reports",
             "ingredient_explanations",
+            "comparison",
         }
         assert client.get("/v1/analyze").status_code == 404
         assert client.get("/openapi.json").json()["info"]["version"] == __version__

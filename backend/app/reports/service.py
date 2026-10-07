@@ -21,11 +21,11 @@ from app.reports.models import (
     SugarApproximation,
 )
 from app.schemas.nutrition import (
-    NutrientName,
     NutritionSnapshot,
     NutritionTable,
 )
 from app.services.parsing.nutrition import UNIT_FACTORS, normalize_rows
+from app.services.parsing.nutrition_checks import quantities_need_review as _quantities_need_review
 
 # Identification is deliberately whole-string. Nearby marketing words, negation
 # and arbitrary ingredient text cannot turn into a positive claim assessment.
@@ -99,29 +99,6 @@ def _historical_section(resolved: ResolvedProduct, name: str) -> ReportSection:
         source_ids=field.source_ids,
         evidence_state=field.evidence_state,
     )
-
-
-def _quantities_need_review(snapshot: NutritionSnapshot) -> bool:
-    """Only impossible same-context amounts; no dietary health thresholds."""
-    pairs: tuple[tuple[NutrientName, NutrientName], ...] = (
-        ("added_sugars", "sugars"),
-        ("saturated_fat", "fat"),
-    )
-    for table in snapshot.tables:
-        basis = table.normalized_basis
-        if basis.kind == "quantity" and basis.unit == "g" and basis.amount == 100:
-            if any(
-                cell.unit == "g" and cell.value is not None and cell.value > 100
-                for cell in table.nutrients.values()
-            ):
-                return True
-        for subset, total in pairs:
-            left, right = table.nutrients[subset], table.nutrients[total]
-            if left.value is not None and right.value is not None and left.value > right.value:
-                # Rounding can explain small printed discrepancies, so retain
-                # the transcription and request correction rather than reject it.
-                return True
-    return False
 
 
 def _selected_table(

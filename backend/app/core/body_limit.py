@@ -18,7 +18,8 @@ class RequestBodyLimit:
             await self.app(scope, receive, send)
             return
         personal = scope["path"].rstrip("/") == "/v1/account/sync"
-        max_bytes = MAX_BODY_BYTES if personal else self.max_bytes
+        comparison = scope["path"].rstrip("/") == "/v1/reports/compare"
+        max_bytes = MAX_BODY_BYTES if personal else 65536 if comparison else self.max_bytes
         for name, value in scope.get("headers", []):
             if name.lower() == b"content-length":
                 try:
@@ -63,6 +64,7 @@ class RequestBodyLimit:
                 "/v1/claims/check",
                 "/v1/community/contributions",
                 "/v1/reports/check",
+                "/v1/reports/compare",
                 "/v1/account/sync",
             }
             and scope["method"] == "POST"
@@ -98,7 +100,8 @@ class RequestBodyLimit:
         await self.app(scope, replay, send)
 
     async def reject(self, scope, receive, send):
-        size = "512" if scope["path"].rstrip("/") == "/v1/account/sync" else "32"
+        path = scope["path"].rstrip("/")
+        size = "512" if path == "/v1/account/sync" else "64" if path == "/v1/reports/compare" else "32"
         await JSONResponse(
             {"detail": f"Request body exceeds {size} KiB"},
             status_code=413,

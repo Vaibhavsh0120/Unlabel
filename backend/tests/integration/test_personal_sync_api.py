@@ -220,7 +220,7 @@ def test_new_openapi_is_additive_and_existing_response_components_unchanged():
     )
     with make_client() as client:
         current = client.get("/openapi.json").json()
-    assert len(current["paths"]) == 20
+    assert len(current["paths"]) == 21
     for name, path in old["paths"].items():
         assert current["paths"][name] == path
     for name, schema in old["components"]["schemas"].items():

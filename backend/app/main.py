@@ -17,6 +17,7 @@ from app.api.v1.accounts import build_router as build_accounts_router
 from app.api.v1.claims import build_router
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.api.v1.community import build_router as build_community_router
+from app.api.v1.comparison import build_router as build_comparison_router
 from app.api.v1.reports import build_router as build_reports_router
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
@@ -221,6 +222,7 @@ def create_app(
             "nutrition_adapter_version": "1",
             "normalization_version": "1",
             "report_version": "label-report-v1",
+            "comparison_version": "sourced-nutrient-comparison-v1",
             "knowledge_version": claim_store.knowledge_version if claim_store else "not_populated",
             "knowledge_artifact": knowledge_artifact,
             "glossary": {
@@ -263,7 +265,7 @@ def create_app(
                 "label_reports": True,
                 "claim_checks": claim_store is not None,
                 "ingredient_explanations": glossary is not None,
-                "comparison": False,
+                "comparison": True,
                 "ai_explanations": False,
                 "community_contributions": community_ready,
                 "community_lookup": community_ready,
@@ -490,6 +492,13 @@ def create_app(
             ),
             claims_store=claim_store,
             glossary=glossary,
+        )
+    )
+    application.include_router(
+        build_comparison_router(
+            snapshot_lookup=lambda request, barcode: cast(
+                FactsLookup, snapshot_result(request, barcode, facts=True)
+            )
         )
     )
     application.include_router(build_accounts_router(config=config))

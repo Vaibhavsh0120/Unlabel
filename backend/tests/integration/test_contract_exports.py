@@ -18,6 +18,7 @@ from app.community.models import (
     ContributionRequest,
     ResolvedProduct,
 )
+from app.comparison.models import ComparisonRequest, ComparisonResponse
 from app.reports.glossary import GlossaryResponse
 from app.reports.models import LabelReport, ReportCheckRequest, ReportFailure
 from app.schemas.nutrition import NormalizeRequest
@@ -58,6 +59,8 @@ def test_all_examples_validate_for_teammate_consumers():
         "personal-sync-v1.request.synthetic.json": SyncRequest,
         "personal-sync-v1.snapshot.synthetic.json": SyncSnapshot,
         "personal-sync-v1.failure.synthetic.json": SyncFailure,
+        "comparison-v1.request.synthetic.json": ComparisonRequest,
+        "comparison-v1.response.synthetic.json": ComparisonResponse,
     }.items():
         model.model_validate_json((CONTRACTS / "examples" / filename).read_text())
 
@@ -87,6 +90,8 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "personal-sync-request-v1.schema.json": SyncRequest,
         "personal-sync-snapshot-v1.schema.json": SyncSnapshot,
         "personal-sync-failure-v1.schema.json": SyncFailure,
+        "comparison-request-v1.schema.json": ComparisonRequest,
+        "comparison-response-v1.schema.json": ComparisonResponse,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

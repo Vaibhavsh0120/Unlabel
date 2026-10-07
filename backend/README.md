@@ -1,4 +1,22 @@
-# Unlabel backend: v0.7.0 Private Account Sync
+# Unlabel backend: v0.8.0 Sourced Nutrient Comparison
+
+v0.8.0 adds the read-only `POST /v1/reports/compare` contract to the independently
+published v0.7.0 backend. The working source exports **21 paths / 22 operations**
+and **29 validated synthetic examples**. It compares a selected nutrition table
+from each of two confirmed labels or exact historical source references, retaining
+original rows, source dates, unknowns and disagreements. It provides signed
+nutrient differences, without a winner, health score or safety verdict.
+[v0.8.0 review](../docs/planning/BACKEND_V0_8_0_REVIEW.md) ·
+[Comparison contract](../docs/architecture/SOURCED_COMPARISON.md).
+
+Local validation passed **975 tests with five emulator-only skips**; Ruff is clean
+and application Pyright reports zero errors/warnings. Subsequent body-limit wording,
+chunked-limit assertions and type narrowing passed the 25 affected comparison
+tests with clean Ruff/Pyright. Hosted exact-commit verification and independent
+publication remain pending.
+Earlier deployment receipts below establish their recorded releases only.
+
+## Published v0.7.0 evidence
 
 v0.7.0 implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`
 is independently published and hosted on READY deployment
@@ -22,19 +40,17 @@ published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/
 Documentation closure commit `ec70568` also reached READY without API source changes. A later documentation-only
 closure commit does not replace the original implementation SHA; any new deployment
 needs its own exact-commit verification.
-[Current review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
+[Published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
 [Private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md).
 
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app) ·
 [Swagger](https://unlabel-api.vercel.app/docs). Firebase remains free with no
-card/linked billing. Frontend v0.1.0+2 is independently published; v0.2.0+3
-Welcome/Home/optional account/four-tab navigation, search, camera/gallery manual
-capture and reference-style Results/Compare have passed local validation:
-135 tests, clean analysis and a release web build. Hosted verification and
-publication remain pending; Profile stays at the top right.
+card/linked billing. Frontend v0.2.0+3 is independently published; its source and
+hosted evidence are recorded in the
 [Frontend release review](../docs/planning/FRONTEND_V0_2_0_REVIEW.md).
-The current [contract exports](../contracts/README.md) include **27 validated
-synthetic examples**.
+Frontend v0.3.0+4 screen, local OCR and performance work has its own release gates.
+Profile remains at the top right of the existing four-tab app shell. Backend-only
+work does not rebuild APK/IPA artifacts.
 
 ## Run locally
 
@@ -70,6 +86,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `GET /v1/claims/rules` | Seven reviewed numerical rules, four recognized unsupported claim types, knowledge version and statutory energy conversion |
 | `GET /v1/evidence/{source_id}` | Public reviewed source metadata; found, not-found or unavailable without fetching a PDF |
 | `POST /v1/reports/check` | Useful current report from confirmed structured facts; automatic public saving has a separate outcome |
+| `POST /v1/reports/compare` | Read-only exact-reference comparison of two selected compatible tables; unknown/conflict states retained |
 | `GET /v1/products/{barcode}/report` | Read-only sourced historical report, without current-label claim confirmation |
 | `GET /v1/ingredients/glossary` | Three reviewed English/Hindi ingredient names/functions and source metadata |
 
@@ -164,7 +181,31 @@ All claim criteria compare exact rational values constructed from the original n
 
 `GET /v1/claims/rules` returns the actual loaded rules and unsupported list. `/v1/evidence/{source_id}` returns one of the three reviewed metadata records with URL, PDF hash/size/pages, known publication/effective dates, verification date/status and qualifications. Unknown valid IDs return 404; malformed IDs return redacted 422. Missing/invalid knowledge returns typed 503 responses; known future publication/effective dates, non-current/future review status or unsupported applicability suppress affected assessments. Review status is maintained explicitly; no automatic statutory expiry is inferred from age. These endpoints make no OFF, Gemini or FSSAI request and persist no scan. Claim/rule/evidence responses use `no-store`.
 
-Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter's connected manual correction/report flow is implemented; v0.2.0+3 adds local camera/gallery capture beside manual entry. Automatic barcode reading, OCR extraction/correction geometry and the dedicated Ingredient Insights screen remain frontend v0.3.0 work.
+Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter's connected manual correction/report flow is implemented; published v0.2.0+3 added local camera/gallery capture beside manual entry. Frontend v0.3.0+4 adds local OCR and editable suggestions behind the unchanged Scan Label screen. It still requires correction and confirmation before structured report submission. Native camera/keyboard/recognition acceptance remains separate from browser and source checks. Photos and raw OCR stay on-device; automatic live barcode decoding and the dedicated Ingredient Insights screen remain future frontend work.
+
+## Sourced nutrient comparison
+
+`POST /v1/reports/compare` accepts two discriminated inputs: current confirmed
+structured label facts, an exact OFF snapshot ID/hash/barcode, or an active public
+community revision ID/factual hash/barcode. Each side explicitly selects a table.
+Reference misses, rotated hashes, unavailable stores and correction requirements
+return typed side states; sources are never silently replaced. Current confirmed
+inputs work without authentication, catalogue, reviewed glossary or cloud storage.
+The route does not save observations or personal records and uses `no-store`.
+
+Compatible tables require a known measured basis in the same mass/volume unit and
+the same preparation. Original values are converted with exact rational arithmetic
+to 100 g or 100 mL; energy uses 4.184 kJ/kcal, with its own comparison version.
+Differences are `b - a`. Unknown nutrients stay unknown, explicit zero stays zero,
+and conflicting or incompatible evidence cannot produce a difference. Available
+carbohydrate/total carbohydrate and sodium/salt remain distinct. There is no density,
+serving-size or ingredient-based inference, score, recommendation or allergy verdict.
+
+The actual request body is bounded to **64 KiB**, with strict/redacted validation
+and no photo, raw OCR or private-sync payload. See the
+[full contract and outcomes](../docs/architecture/SOURCED_COMPARISON.md),
+[synthetic request](../contracts/examples/comparison-v1.request.synthetic.json)
+and [synthetic response](../contracts/examples/comparison-v1.response.synthetic.json).
 
 ## Community facts and source resolution
 
@@ -260,6 +301,7 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 - `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed three-entry glossary.
 - `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
 - `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
+- `app/comparison/` and `app/api/v1/comparison.py`: selected-table source resolution, original-row exact arithmetic and independent read-only comparison contract.
 - `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
 - `build_catalogue.py`: network-free deployment build entrypoint; validates tracked catalogue source and the two reviewed JSON projections, then generates SQLite/receipt in `app/catalogue/data/` and approved knowledge JSON/receipt in `app/claims/data/`. Both directories are ignored generated outputs. Successful stdout is one JSON object with `catalogue` and `claims_knowledge` receipts.
@@ -339,7 +381,9 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
+See [current v0.8.0 review](../docs/planning/BACKEND_V0_8_0_REVIEW.md),
+[published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
+[comparison contract](../docs/architecture/SOURCED_COMPARISON.md),
 [private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),
 [historical v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
 [published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).

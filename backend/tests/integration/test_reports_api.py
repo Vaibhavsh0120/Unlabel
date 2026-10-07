@@ -396,14 +396,14 @@ def test_report_body_limit_strict_numbers_redaction_and_cors():
         assert preflight.status_code == 200
 
 
-def test_report_metadata_advertises_qualified_analysis_without_ai_or_comparison():
+def test_report_metadata_advertises_qualified_analysis_and_separate_comparison_without_ai():
     with client_for() as client:
         meta = client.get("/v1/meta").json()
     assert meta["report_version"] == "label-report-v1"
     assert meta["capabilities"]["label_reports"] is True
     assert meta["capabilities"]["nutrition_analysis"] is True
     assert meta["capabilities"]["ai_explanations"] is False
-    assert meta["capabilities"]["comparison"] is False
+    assert meta["capabilities"]["comparison"] is True
 
 
 def test_reviewed_glossary_is_public_and_versioned_without_external_requests():

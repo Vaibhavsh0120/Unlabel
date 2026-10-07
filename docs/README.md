@@ -44,6 +44,8 @@ Native camera/OCR, installability and launcher switching remain separate gates.
 | [Next frontend/backend versions](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Independently scoped v0.3.0/v0.8.0 releases and planned v0.4.0/v0.9.0 work |
 | [Interface contract](../DESIGN.md) | Reference visual direction, real components, evidence and accessibility boundaries |
 | [Product Discovery](architecture/PRODUCT_DISCOVERY.md) | Bounded indexed Unicode search, candidate identity and cursor rules |
+| [Backend v0.8.0 review](planning/BACKEND_V0_8_0_REVIEW.md) | Independently implemented sourced comparison, local checks and hosted publication gates |
+| [Sourced nutrient comparison](architecture/SOURCED_COMPARISON.md) | Strict selected-table provenance, compatible bases, signed differences and unknowns |
 | [Backend v0.6.0 review](planning/BACKEND_V0_6_0_REVIEW.md) | Completed 863-test local validation, 23 hosted checks and publication |
 | [Backend v0.6.0 production proof](research/BACKEND_V0_6_0_PRODUCTION.json) | Exact deployed implementation and actual catalogue/knowledge build receipts |
 | [Master architecture plan](planning/MASTER_PLAN.md) | Complete scan-to-report flow, automatic confirmed-public-fact enrichment, per-field source resolution, local OCR and benchmark-gated AI |
