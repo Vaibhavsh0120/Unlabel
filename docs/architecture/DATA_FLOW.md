@@ -9,6 +9,11 @@ fields with source/date and conflicts. Firebase Unlabel has its first Standard
 denied direct client access. Frontend capture/OCR/background save remains pending.
 [Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
+Local v0.5.0 adds a sourced report from corrected confirmed fields, independent
+automatic storage outcomes and read-only historical barcode reports. Focused
+API/contracts pass; full review, push and hosted checks are pending. Production remains v0.4.0.
+[Detailed report flow](LABEL_REPORT.md).
+
 ## Preserved lookup, normalization and claim paths
 
 1. A caller supplies a supported barcode to the product route or separate nutrition route. The backend performs one fixed-origin OFF v3.6 read with an application User-Agent, an eight-second default total deadline and a 512 KiB default decoded-response budget. It validates identity and source data; no provider key or image download is needed.

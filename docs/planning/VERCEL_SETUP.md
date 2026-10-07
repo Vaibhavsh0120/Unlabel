@@ -26,7 +26,7 @@ The starter contains no product API request yet. Passing the URL config prepares
 - `backend/vercel.json` limits this Function to 60 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
 - `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` and `app/claims/data/` are ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- The v0.4.0 target environment uses `OFF_USER_AGENT=Unlabel/0.4.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
+- The local v0.5.0 target environment uses `OFF_USER_AGENT=Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
 No live FSSAI request or writable cloud database is required for existing OFF/normalization/claims; v0.4.0 community observations use separately configured free Firestore. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST, Content-Type and Authorization. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
@@ -73,7 +73,7 @@ The final network-free two-bundle build, noninteractive backend setup, **543-tes
 
 ## Backend v0.4.0 community deployment gate
 
-Local source implements fifteen routes. Firebase Unlabel/project
+Released v0.4.0 implements fifteen routes. Firebase Unlabel/project
 `unlabel-india-catalogue` has its first Standard database `unlabel` in Mumbai with
 free tier/no linked billing, anonymous Auth, deny-all client rules and dedicated
 backend IAM. Set the explicit community enabled/project/database and secret
@@ -90,5 +90,22 @@ metadata readiness, source-qualified lookup, anonymous write/own receipt/retry,
 old APIs, strict failures and matching OFF/claim receipts. Synthetic records and
 anonymous identities were removed. Source-only v0.4.0 was published separately.
 [Dated production proof](../research/BACKEND_V0_4_0_PRODUCTION.json)
-· [Current review](BACKEND_V0_4_0_REVIEW.md)
+· [Published v0.4.0 review](BACKEND_V0_4_0_REVIEW.md)
 · [Community configuration](../architecture/COMMUNITY_CATALOGUE.md).
+
+## Local v0.5.0 report deployment gate
+
+Local source mounts eighteen routes, adding current-label reports, read-only
+historical barcode reports and the three-entry reviewed glossary. Focused
+API/contracts pass; full review, push and hosted verification remain pending,
+with production still v0.4.0. No new provider, secret, billing account or service
+is required. The bounded tracked glossary projection is packaged with application
+source, independently of unchanged OFF/claim build receipts.
+
+After the separate push, verify the intended Git SHA, eighteen-route OpenAPI,
+report/glossary metadata and artifact, corrected barcode-less report, original
+12 g/40 g sugar producing approximately three cubes, historical read-only
+evidence, automatic saving and its independent failure outcomes. Recheck old
+APIs/receipts, strict bodies/redacted failures, exact-origin CORS and excluded
+private/source URLs. A READY deployment alone does not close these gates.
+[Report contract](../architecture/LABEL_REPORT.md).

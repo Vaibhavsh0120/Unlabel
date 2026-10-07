@@ -11,7 +11,12 @@ After released v0.3.0: **6 ready, 1 partial and 7 planned backend groups**, plus
 Published production is v0.4.0, independently pushed, hosted-verified and released.
 Its four routes and free Firebase setup are verified. C01 is released; original concept counts remain 6 ready,
 1 partial, 7 planned backend groups plus 6 frontend-owned groups. Community
-support does not complete the client screens or report. See the
+support does not complete the client screens. Local v0.5.0 Useful Label Report
+has passed its focused API/contract checks: F06 and F12 are ready locally, while
+F08 stays partial for three reviewed ingredient name/function entries. The local
+baseline is now **8 ready, 2 partial and 4 planned backend groups**, plus **6
+frontend-owned groups**. Full release review and hosted verification remain
+separate pending gates. See the
 [review](BACKEND_V0_4_0_REVIEW.md) for separate local/emulator/live/hosted evidence.
 
 
@@ -22,13 +27,13 @@ support does not complete the client screens or report. See the
 | F03 | Photos / Results, Compare | Ready: v0.2.3 descriptors | Image/fallback pending | v0.2.3: official URL, language and attribution |
 | F04 | Nutrition and normalization / Results | Ready | Correction form/table pending | Preserve origins, bases, zero/unknown and conflicts |
 | F05 | OFF Nutri-Score/NOVA / Home, Results | Ready | Grade/source display pending | Optional provider values; separate from an Unlabel score |
-| F06 | Unified report/reasons / Results | Next: v0.5.0 | Report layout pending | Evidence-backed report; scoring method needs review |
+| F06 | Unified report/reasons / Results | Ready locally: v0.5.0; publication pending | Report layout pending | Source-linked current/historical report; missing inputs visible; no universal score required |
 | F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Capture/edit/verdict pending | v0.3.0: strict confirmed input, rule/evidence references; wider claims incomplete |
-| F08 | Ingredient explanations / Ingredients | Next: v0.5.0 | Explorer pending | Reviewed aliases/INS, English/Hindi and evidence |
+| F08 | Ingredient explanations / Ingredients | Partial local v0.5.0: three reviewed name/function entries | Explorer pending | Lecithin 322(i), citric acid 330, xanthan gum 415; English/Hindi functions with evidence; wider coverage pending |
 | F09 | Allergens/traces / Scan, Ingredients | Ready: live and snapshot availability | Correction/warnings pending | v0.2.3: snapshot field availability; no allergy-safety claim |
 | F10 | Personal suitability / Results | Planned | Local preferences/reasons pending | Unknowns and conflicts; neutral preference facts |
 | F11 | Comparison / Compare | Planned | Selection/charts pending | Compatible category, mass/volume and preparation |
-| F12 | Sugar visualization / Results | Next: v0.5.0; normalized sugar available | Cubes/basis pending | Separate total/added sugar; declare approximation |
+| F12 | Sugar visualization / Results | Ready locally: v0.5.0; publication pending | Cubes/basis pending | Total sugar only; explicit 4 g/cube approximation and original basis/preparation; added sugar stays distinct |
 | F13 | Reviewed insights / Home | Planned | Feed/details pending | Source, applicability and content version |
 | F14 | Front/back and gallery / Scan | Client-owned | Pending | Correct sides, permissions and manual path |
 | F15 | OCR/live highlights / Scan | Client-owned; confirmed rows accepted | Pending | Bounding boxes, correction and real-device checks |
@@ -46,7 +51,7 @@ support does not complete the client screens or report. See the
 | v0.2.3 | Rich India snapshot product facts | Full JSONL EOF/hash/counts; compact source; typed facts API; nutrition/image/tag/date boundaries; old contracts; actual hosted reads | Verified and pushed |
 | v0.3.0 | First evidence-backed claim checks | 543 tests; zero static errors/warnings; current reviewed FSSAI sources; strict confirmed-input/rule/evidence APIs; 72 hosted HTTP checks and exact build receipts | Verified, pushed and published |
 | v0.4.0 | Community Product Catalogue | Implemented automatic observation save/dedup, private staging/receipts, qualified candidates/review, typed fields and configured free Firebase | Reviewed, pushed, hosted-verified and published; [review](BACKEND_V0_4_0_REVIEW.md) |
-| v0.5.0 | Useful Label Report | F06/F08/F12: unified sourced report, reviewed ingredient explanations and sugar visualization | Next authorized version; implement only after v0.4.0 boundary |
+| v0.5.0 | Useful Label Report | F06/F12 ready locally; F08 partial: three reviewed ingredient functions; 18-route OpenAPI and 22 validated examples | Focused API/contracts pass after separately released v0.4.0; full review/push/hosted checks pending |
 
 Each version is reviewed, documented, pushed and verified before the next is published. Rows advance only after their stated behavior is checked. A broad claim feature remains partial while other claim families or manufacturing/category evidence are unresolved.
 
@@ -56,8 +61,8 @@ The [Indian food coverage strategy](../research/INDIAN_FOOD_COVERAGE.md) tracks
 barcode/back/front paths separately. v0.4.0 accepts automatic structured facts,
 stages unverified observations and resolves compatible sourced fields while
 preserving originals. APIs are implemented; camera/OCR/background requests still
-need frontend integration. Ingredient explanations, full reports and sugar
-visualization are next in v0.5.0. Front text search and regional capture benchmarks
+need frontend integration. Local v0.5.0 provides reports, approximate sugar cubes
+and three ingredient functions; their UI remains pending. Front text search and regional capture benchmarks
 remain future scope; no photo recognition is implemented.
 
 

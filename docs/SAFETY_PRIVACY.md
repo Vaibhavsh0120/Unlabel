@@ -8,6 +8,13 @@ rules are configured with free tier/no linked billing. Flutter capture/OCR and
 background saving remain pending. [Current gates](planning/BACKEND_V0_4_0_REVIEW.md)
 · [Master plan](planning/MASTER_PLAN.md).
 
+Local v0.5.0 reports preserve corrected current-label and historical
+catalogue evidence separately. Analysis does not require authentication; failed
+automatic saving changes only storage outcome. Three glossary entries describe
+technological functions only. Sugar cubes explicitly approximate 4 g each using
+the original table basis. Focused API/contracts pass; full review, push and hosted verification remain pending.
+[Report boundaries](architecture/LABEL_REPORT.md).
+
 ## Findings and uncertainty
 
 - A claim may be supported, contradicted or `insufficient_information` for a reviewed criterion. Missing OCR cannot prove a legally missing declaration.
@@ -87,6 +94,12 @@ guarantee provider availability. Keep Spark/no linked billing and no paid fallba
 Local source/emulator and live Firebase checks are distinct from hosted API proof.
 
 
-Public Gemini remains disabled until verified individual authentication for an eligible adult beta, an access allowlist and bounded requests are implemented. Validate issuer/audience/signature/expiry; CORS only restricts browser access and is not authentication. Neither a shared APK/web secret nor a deployment-automation bypass token belongs in clients. `BACKEND_BASE_URL` is public configuration.
+Gemini remains disabled unless a later measured benchmark justifies a bounded
+fallback with no-card/privacy and provider-eligibility controls. No new interactive
+login, admin/reviewer role or dashboard is selected. The app has only scanner/client
+identities with automatic anonymous write auth; public facts and reports need no
+account. CORS restricts browser access and is not authentication. Neither a shared
+APK/web secret nor a deployment-automation bypass token belongs in clients.
+`BACKEND_BASE_URL` is public configuration.
 
 An optional `LOCAL_API_TOKEN` is solely a private development/tooling control, never production authentication or a shipped app credential. Native requests are not protected by CORS. Vercel instance caches/counters cannot guarantee a durable shared AI budget; on exhaustion/failure use reviewed templates or keep cloud AI disabled.

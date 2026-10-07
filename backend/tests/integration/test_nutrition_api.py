@@ -102,7 +102,9 @@ def test_post_preflight_and_old_strict_fixture_are_compatible():
         assert response.status_code == 200
         meta = client.get("/v1/meta").json()
         assert meta["capabilities"]["nutrition_normalization"] is True
-        assert meta["capabilities"]["nutrition_analysis"] is False
+        assert meta["capabilities"]["nutrition_analysis"] is True
+        assert meta["capabilities"]["label_reports"] is True
+        assert meta["report_version"] == "label-report-v1"
     fixture = (
         Path(__file__).resolve().parents[3] / "contracts/examples/product-lookup-v1.synthetic.json"
     )

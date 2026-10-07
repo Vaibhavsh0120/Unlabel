@@ -42,7 +42,7 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
-**Backend v0.4.0 is pushed, hosted-verified and published. Frontend remains 0.0.0+1.** Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Four new APIs save/deduplicate structured package observations automatically, stage unverified candidates and resolve compatible sourced fields. Firebase Unlabel is configured on its free tier with no billing. Full reports, camera/OCR and client background saving remain pending. [Current verification gates](docs/planning/BACKEND_V0_4_0_REVIEW.md) · [Master plan](docs/planning/MASTER_PLAN.md).
+**Production backend v0.4.0 is published; local v0.5.0 Useful Label Report passes focused API/contracts. Frontend remains 0.0.0+1.** Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Four APIs save/deduplicate structured package observations automatically, stage unverified candidates and resolve compatible sourced fields. Firebase Unlabel is configured on its free tier with no billing. Local v0.5.0 adds current-label and historical barcode reports, a partial three-entry reviewed ingredient glossary and a declared 4 g/cube sugar approximation. Full review, push and hosted checks are pending; camera/OCR and background saving still need frontend integration. [Published v0.4.0 proof](docs/research/BACKEND_V0_4_0_PRODUCTION.json) · [v0.5.0 report scope](docs/architecture/LABEL_REPORT.md) · [Master plan](docs/planning/MASTER_PLAN.md).
 
 | Ready now | Planned next |
 | --- | --- |
@@ -140,7 +140,7 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.4.0; hosted-verified source-only release
+├── backend/             FastAPI local v0.5.0; production v0.4.0 released
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Reusable India source, provenance/licenses and fixtures

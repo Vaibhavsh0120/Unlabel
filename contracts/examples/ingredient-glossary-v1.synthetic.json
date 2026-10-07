@@ -1,0 +1,92 @@
+{
+  "schema_version": "1",
+  "status": "ready",
+  "glossary_version": "ingredients-2026-10-07.1",
+  "artifact": {
+    "sha256": "5ec790f80554de1e0727662b506b983d94a2c0d516153257e8d51542458b34e9",
+    "bytes": 2857,
+    "entry_count": 3
+  },
+  "entries": [
+    {
+      "entry_id": "lecithin",
+      "name_en": "Lecithin",
+      "name_hi": "\u0932\u0947\u0938\u093f\u0925\u093f\u0928",
+      "aliases": [
+        "lecithin",
+        "\u0932\u0947\u0938\u093f\u0925\u093f\u0928"
+      ],
+      "ins_codes": [
+        "322(i)"
+      ],
+      "function_en": "An emulsifier used to help oil and water stay mixed.",
+      "function_hi": "\u092f\u0939 \u090f\u0915 \u0907\u092e\u0932\u094d\u0938\u0940\u092b\u093e\u092f\u0930 \u0939\u0948, \u091c\u094b \u0924\u0947\u0932 \u0914\u0930 \u092a\u093e\u0928\u0940 \u0915\u094b \u092e\u093f\u0932\u093e \u0939\u0941\u0906 \u0930\u0916\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-lecithin"
+      ]
+    },
+    {
+      "entry_id": "citric_acid",
+      "name_en": "Citric acid",
+      "name_hi": "\u0938\u093e\u0907\u091f\u094d\u0930\u093f\u0915 \u0905\u092e\u094d\u0932",
+      "aliases": [
+        "citric acid",
+        "\u0938\u093e\u0907\u091f\u094d\u0930\u093f\u0915 \u0905\u092e\u094d\u0932",
+        "\u0938\u093e\u0907\u091f\u094d\u0930\u093f\u0915 \u090f\u0938\u093f\u0921"
+      ],
+      "ins_codes": [
+        "330"
+      ],
+      "function_en": "An acidity regulator used to adjust the acidity of a food.",
+      "function_hi": "\u092f\u0939 \u092d\u094b\u091c\u0928 \u0915\u0940 \u0905\u092e\u094d\u0932\u0924\u093e \u0915\u094b \u0928\u093f\u092f\u0902\u0924\u094d\u0930\u093f\u0924 \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0909\u092a\u092f\u094b\u0917 \u0915\u093f\u092f\u093e \u091c\u093e\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-citric-acid"
+      ]
+    },
+    {
+      "entry_id": "xanthan_gum",
+      "name_en": "Xanthan gum",
+      "name_hi": "\u091c\u093c\u0948\u0902\u0925\u0928 \u0917\u092e",
+      "aliases": [
+        "xanthan gum",
+        "\u091c\u093c\u0948\u0902\u0925\u0928 \u0917\u092e",
+        "\u091c\u0948\u0902\u0925\u0928 \u0917\u092e"
+      ],
+      "ins_codes": [
+        "415"
+      ],
+      "function_en": "A thickener and stabilizer used to adjust a food's texture.",
+      "function_hi": "\u092f\u0939 \u092d\u094b\u091c\u0928 \u0915\u094b \u0917\u093e\u0922\u093c\u093e \u092c\u0928\u093e\u0928\u0947 \u0914\u0930 \u0909\u0938\u0915\u0940 \u092c\u0928\u093e\u0935\u091f \u0915\u094b \u0938\u094d\u0925\u093f\u0930 \u0930\u0916\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0909\u092a\u092f\u094b\u0917 \u0915\u093f\u092f\u093e \u091c\u093e\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-xanthan-gum"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "codex-gsfa-lecithin",
+      "title": "Codex GSFA: Lecithin (322(i))",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=77",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-citric-acid",
+      "title": "Codex GSFA: Citric acid (330)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=173",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-xanthan-gum",
+      "title": "Codex GSFA: Xanthan gum (415)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=48",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    }
+  ],
+  "warnings": [
+    "small_glossary_not_complete_ingredient_coverage",
+    "functions_only_not_health_allergy_or_indian_permission_verdict"
+  ]
+}

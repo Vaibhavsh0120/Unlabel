@@ -11,7 +11,7 @@ Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. API: 
 ## What exists
 
 - Flutter/native/web scaffold, appearance selection, lockfile and layout/theme/large-text tests.
-- Runnable stateless backend, strict exported contracts/synthetic examples, and reserved knowledge/design/AI folders.
+- Runnable backend with stateless normalization/claim evaluation, read-only source bundles and separate Firestore observations/receipts; strict exported contracts/synthetic examples and reserved wider knowledge/design/AI folders.
 - Data/API/offline/deployment/release plans and checked provider/source research.
 - Manual build/checksum/manifest/release workflow and v0.0.0 app version.
 
@@ -27,7 +27,7 @@ The preserved v0.3.0 foundation exposes eleven routes: health, metadata, product
 | Offline | Saved dated reports/snapshots, preferences and optional glossary; new analysis needs backend |
 | Rules | Python applies the reviewed numerical claim subset; wider criteria remain future work; no second Dart rule engine; no legal certification |
 | AI | Optional wording; training/HF only if separately useful/eligible |
-| Storage | Device/browser local history/preferences; server stateless |
+| Storage | Device/browser local history/preferences; read-only OFF/claims bundles plus automatic public observations/private staging in Firestore |
 | Releases | Native APK/IPA share source/frontend version/build; backend versions are independent; unsigned IPA is not installable |
 
 Start the next meeting with [system](../architecture/SYSTEM.md), [data flow](../architecture/DATA_FLOW.md), [folders](../architecture/FOLDER_STRUCTURE.md), [features](FEATURES.md) and [API](../architecture/API_PLAN.md). Choose a small source/claim scope, validate OCR, freeze compatibility/coverage, and assign owners before the next requested phase.
@@ -36,7 +36,7 @@ The teammate can build against the exported [contracts](../../contracts/README.m
 
 The app must not silently combine OFF tables with user-confirmed values, infer missing added sugar/salt, or compare mass and volume. Unknown serving size stays per serving. Saved results, offline caching, camera/OCR and charts remain teammate work. Catalogue status identifies limits for the actual loaded store, missing allergen uncertainty and nine-calendar-month source age; snapshot misses make no OFF request. Rich facts distinguish direct, missing, invalid and unsupported legacy nutrition. Present empty community tags never prove allergen absence. Full JSONL acquisition is complete: 24,695 India rows, 24,641 supported unique codes and validated gzip EOF; source **2026-10-06T06:53:46Z** is due **2027-07-06T06:53:46Z**. All 24,641 supported facts validate; the local build verifies a 62,472,192-byte SQLite/receipt. Only 4,519 records contain reported direct nutrient values; render sparse facts/legacy-unsupported states without inventing values. Hosted v0.2.3 facts/identity reads and build/public receipt agreement passed for the independently pushed implementation; [dated production proof](../research/BACKEND_V0_2_3_PRODUCTION.json). coverage remains unverified. The [OFF workflow](../architecture/OPEN_FOOD_FACTS.md) explains current adapters; the [catalogue guide](../architecture/CATALOGUE.md) documents immutable deployment replacement/rollback. The v0.2.3 independent source push, tested tag and hosted gate are complete; v0.3.0 is the separate reviewed-claims release with its own local/source/hosted/publication gates. Camera/OCR, report scoring, saved/history/preferences and comparison still require their tracked integration work. [20-group tracker](FEATURE_TRACKER.md). [Roadmap](ROADMAP.md) and [contribution rules](../../CONTRIBUTING.md) cover later work.
 
-For the claim flow, add the separate exported request/response models and check `claim_checks`/`knowledge_version` first. Submit identified claims, region IDs, confirmed rows, selected table and explicit ordinary-food/form/preparation context. Render supported/contradicted/insufficient states with numerical-only scope and input/rule/source references; high/source protein, no added sugar and multigrain remain unreviewed. Keep statutory 4.2 energy-conversion metadata separate from the unchanged 4.184 normalization snapshot. Unknown alternatives, conflicts or future-dated evidence must not become a confident claim verdict. The rules/evidence endpoints and eleven validated owned examples support integration without a provider key. Saved reports retain their original versions/dates; no Flutter API implementation is already present.
+For the claim flow, add the separate exported request/response models and check `claim_checks`/`knowledge_version` first. Submit identified claims, region IDs, confirmed rows, selected table and explicit ordinary-food/form/preparation context. Render supported/contradicted/insufficient states with numerical-only scope and input/rule/source references; high/source protein, no added sugar and multigrain remain unreviewed. Keep statutory 4.2 energy-conversion metadata separate from the unchanged 4.184 normalization snapshot. Unknown alternatives, conflicts or future-dated evidence must not become a confident claim verdict. The rules/evidence endpoints and current validated synthetic examples support integration without a provider key. Saved reports retain their original versions/dates; no Flutter API implementation is already present.
 
 ## Current v0.4.0 handoff
 
@@ -47,5 +47,10 @@ Auth and deny-all client rules are configured with free tier/no billing. Hosted 
 above is historical. [Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json)
 matched both immutable receipts and cleaned synthetic records. Use the current [contracts](../../contracts/README.md) and
 [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md). Client capture/OCR/background saves are
-pending. Next authorized version is v0.5.0 Useful Label Report (F06/F08/F12),
-after v0.4.0 is reviewed, pushed and published separately.
+pending. Local v0.5.0 Useful Label Report and focused API/contracts pass after the
+separate v0.4.0 release. It adds current/historical reports, independent autosave outcomes,
+three partial-coverage English/Hindi function entries and approximate sugar cubes.
+Full review, push and hosted checks remain separate gates. The only app account
+role is the scanner/client, using automatic anonymous Firebase auth. There is no
+admin/reviewer app login or dashboard; backend credentials and CLI maintenance are
+machine/manual tooling. [Report guide](../architecture/LABEL_REPORT.md).

@@ -1,0 +1,403 @@
+{
+  "schema_version": "1",
+  "report_version": "label-report-v1",
+  "backend_version": "0.5.0",
+  "generated_at": "2026-10-07T12:00:00Z",
+  "assessment_basis": "user_confirmed_label",
+  "status": "partial",
+  "identity": {
+    "name": "Synthetic corrected oats",
+    "brand": null,
+    "variant": null,
+    "quantity": null,
+    "language": "en"
+  },
+  "observation": {
+    "schema_version": "1",
+    "barcode": null,
+    "identity": {
+      "name": "Synthetic corrected oats",
+      "brand": null,
+      "variant": null,
+      "quantity": null,
+      "language": "en"
+    },
+    "ingredients": {
+      "status": "present",
+      "text": "Synthetic oats, milk, lecithin (INS 322(i))",
+      "completeness": "complete",
+      "origin": "independently_transcribed_package"
+    },
+    "contains": {
+      "status": "present",
+      "text": "Milk",
+      "completeness": "complete",
+      "origin": "independently_transcribed_package"
+    },
+    "may_contain": {
+      "status": "not_captured",
+      "text": null,
+      "completeness": "partial",
+      "origin": "independently_transcribed_package"
+    },
+    "front_claims": [
+      "Low sugar"
+    ],
+    "rows": [
+      {
+        "row_id": "sugar-line",
+        "table_id": "back-panel",
+        "nutrient": "sugars",
+        "value": 12.0,
+        "unit": "g",
+        "basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "preparation": "as_sold"
+      }
+    ],
+    "nutrition_completeness": "partial",
+    "nutrition_origin": "independently_transcribed_package",
+    "provider_references": [],
+    "revision_context": null,
+    "observed_on": "2026-10-07",
+    "capture_method": "manual",
+    "share_license": "CC0-1.0",
+    "market": "india"
+  },
+  "resolved": null,
+  "nutrition": {
+    "normalization_version": "1",
+    "status": "partial",
+    "tables": [
+      {
+        "source_table_id": "back-panel",
+        "preparation": "as_sold",
+        "original_basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "normalized_basis": {
+          "kind": "quantity",
+          "amount": 100.0,
+          "unit": "g"
+        },
+        "nutrients": {
+          "energy": {
+            "value": null,
+            "unit": "kcal",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "saturated_fat": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "carbohydrates_total": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "sugars": {
+            "value": 30.0,
+            "unit": "g",
+            "reason": null,
+            "source_row_ids": [
+              "sugar-line"
+            ],
+            "conversion": "g unchanged; scaled from 40 g to 100 g"
+          },
+          "added_sugars": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "fibre": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "protein": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "sodium": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          },
+          "salt": {
+            "value": null,
+            "unit": "g",
+            "reason": "not_reported",
+            "source_row_ids": [],
+            "conversion": null
+          }
+        }
+      }
+    ],
+    "original_rows": [
+      {
+        "row_id": "sugar-line",
+        "table_id": "back-panel",
+        "nutrient": "sugars",
+        "value": 12.0,
+        "unit": "g",
+        "basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "preparation": "as_sold"
+      }
+    ],
+    "warnings": [
+      "partial_capture"
+    ]
+  },
+  "resolved_nutrients": [],
+  "selected_table_id": "back-panel",
+  "context": {
+    "food_category": "ordinary_general_food",
+    "form": "solid",
+    "preparation": "as_sold"
+  },
+  "sugar": {
+    "approximation_version": "sugar-cubes-4g-v1",
+    "sugars_g": 12.0,
+    "cubes": 3.0,
+    "grams_per_cube": 4.0,
+    "basis": {
+      "kind": "serving",
+      "amount": 40.0,
+      "unit": "g"
+    },
+    "preparation": "as_sold",
+    "assessment_basis": "user_confirmed_label",
+    "source_table_id": "back-panel",
+    "source_row_ids": [
+      "sugar-line"
+    ],
+    "source_ids": [
+      "confirmed-label"
+    ],
+    "approximation": true
+  },
+  "claims": [
+    {
+      "claim_id": "front-claim-1",
+      "printed_text": "Low sugar",
+      "claim": "low_sugar",
+      "assessment": {
+        "claim_id": "front-claim-1",
+        "claim": "low_sugar",
+        "region_id": null,
+        "status": "contradicted",
+        "applicability": "applicable",
+        "scope": "numeric_criterion_only",
+        "reasons": [
+          "all_applicable_numeric_alternatives_failed"
+        ],
+        "missing_inputs": [],
+        "row_ids": [
+          "sugar-line"
+        ],
+        "criteria": [
+          {
+            "criterion_id": "low_sugar.per_100_g",
+            "nutrient": "sugars",
+            "basis": "per_100_g",
+            "operator": "lte",
+            "threshold": 5.0,
+            "unit": "g",
+            "alternative": true,
+            "applicable": true,
+            "outcome": "fail",
+            "value": 30.0,
+            "row_ids": [
+              "sugar-line"
+            ],
+            "reason": null
+          },
+          {
+            "criterion_id": "low_sugar.per_100_mL",
+            "nutrient": "sugars",
+            "basis": "per_100_mL",
+            "operator": "lte",
+            "threshold": 2.5,
+            "unit": "g",
+            "alternative": true,
+            "applicable": false,
+            "outcome": "not_applicable",
+            "value": null,
+            "row_ids": [],
+            "reason": "different_food_form"
+          }
+        ],
+        "combination": "any",
+        "rule_id": "fssai.claims.low_sugar.v1",
+        "source_ids": [
+          "fssai-ac-2022-schedule-i",
+          "fssai-ac-2018-general",
+          "fssai-ac-compendium-v4"
+        ],
+        "explanation": "The selected confirmed nutrition table does not meet any applicable reviewed numerical criterion for low sugar. This numerical result does not establish a legal violation."
+      },
+      "source_ids": [
+        "confirmed-label"
+      ],
+      "missing_inputs": []
+    }
+  ],
+  "ingredients": {
+    "status": "present",
+    "text": "Synthetic oats, milk, lecithin (INS 322(i))",
+    "completeness": "complete",
+    "source_ids": [
+      "confirmed-label"
+    ],
+    "evidence_state": "user_confirmed_label"
+  },
+  "contains": {
+    "status": "present",
+    "text": "Milk",
+    "completeness": "complete",
+    "source_ids": [
+      "confirmed-label"
+    ],
+    "evidence_state": "user_confirmed_label"
+  },
+  "may_contain": {
+    "status": "not_captured",
+    "text": null,
+    "completeness": "partial",
+    "source_ids": [
+      "confirmed-label"
+    ],
+    "evidence_state": "user_confirmed_label"
+  },
+  "ingredient_insights": [
+    {
+      "entry": {
+        "entry_id": "lecithin",
+        "name_en": "Lecithin",
+        "name_hi": "\u0932\u0947\u0938\u093f\u0925\u093f\u0928",
+        "aliases": [
+          "lecithin",
+          "\u0932\u0947\u0938\u093f\u0925\u093f\u0928"
+        ],
+        "ins_codes": [
+          "322(i)"
+        ],
+        "function_en": "An emulsifier used to help oil and water stay mixed.",
+        "function_hi": "\u092f\u0939 \u090f\u0915 \u0907\u092e\u0932\u094d\u0938\u0940\u092b\u093e\u092f\u0930 \u0939\u0948, \u091c\u094b \u0924\u0947\u0932 \u0914\u0930 \u092a\u093e\u0928\u0940 \u0915\u094b \u092e\u093f\u0932\u093e \u0939\u0941\u0906 \u0930\u0916\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u093e \u0939\u0948\u0964",
+        "source_ids": [
+          "codex-gsfa-lecithin"
+        ]
+      },
+      "matched_text": "lecithin",
+      "start": 22,
+      "end": 30
+    },
+    {
+      "entry": {
+        "entry_id": "lecithin",
+        "name_en": "Lecithin",
+        "name_hi": "\u0932\u0947\u0938\u093f\u0925\u093f\u0928",
+        "aliases": [
+          "lecithin",
+          "\u0932\u0947\u0938\u093f\u0925\u093f\u0928"
+        ],
+        "ins_codes": [
+          "322(i)"
+        ],
+        "function_en": "An emulsifier used to help oil and water stay mixed.",
+        "function_hi": "\u092f\u0939 \u090f\u0915 \u0907\u092e\u0932\u094d\u0938\u0940\u092b\u093e\u092f\u0930 \u0939\u0948, \u091c\u094b \u0924\u0947\u0932 \u0914\u0930 \u092a\u093e\u0928\u0940 \u0915\u094b \u092e\u093f\u0932\u093e \u0939\u0941\u0906 \u0930\u0916\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u093e \u0939\u0948\u0964",
+        "source_ids": [
+          "codex-gsfa-lecithin"
+        ]
+      },
+      "matched_text": "INS 322(i)",
+      "start": 32,
+      "end": 42
+    }
+  ],
+  "glossary_version": "ingredients-2026-10-07.1",
+  "glossary_artifact": {
+    "sha256": "5ec790f80554de1e0727662b506b983d94a2c0d516153257e8d51542458b34e9",
+    "bytes": 2857,
+    "entry_count": 3
+  },
+  "glossary_sources": [
+    {
+      "source_id": "codex-gsfa-lecithin",
+      "title": "Codex GSFA: Lecithin (322(i))",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=77",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-citric-acid",
+      "title": "Codex GSFA: Citric acid (330)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=173",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-xanthan-gum",
+      "title": "Codex GSFA: Xanthan gum (415)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=48",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    }
+  ],
+  "knowledge_version": "claims-2026-10-06.1",
+  "missing_inputs": [
+    "may_contain_not_captured"
+  ],
+  "warnings": [
+    "partial_capture",
+    "allergen_safety_not_assessed",
+    "numeric_criteria_only",
+    "not_legal_certification",
+    "not_overall_health_score",
+    "confirmed_inputs_only"
+  ],
+  "storage": {
+    "status": "unavailable",
+    "receipt": null,
+    "warnings": []
+  }
+}

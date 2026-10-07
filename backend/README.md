@@ -1,11 +1,13 @@
-# Unlabel backend v0.4.0: Community Product Catalogue
+# Unlabel backend: local v0.5.0 Useful Label Report
 
-Published **v0.4.0** is independently reviewed, pushed and hosted-verified. Flutter remains **0.0.0+1**. Four community
+Production **v0.4.0** is independently reviewed, pushed and hosted-verified.
+Local **v0.5.0 Useful Label Report** adds three mounted report/glossary APIs; focused API/contracts pass, while full release checks
+and its separate push/hosted publication remain pending. Flutter remains **0.0.0+1**. Four community
 APIs automatically save structured package observations and resolve compatible
 sourced fields, preserving live OFF/snapshot/normalization and seven numerical
-claim routes. Firebase Unlabel is configured with no billing. Camera/OCR/search,
-client background saving and full reports remain pending.
-[Feature tracker](../docs/planning/FEATURE_TRACKER.md) · [Current release gates](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+claim routes. Firebase Unlabel is configured with no billing. Camera/OCR/search and client background saving remain pending.
+The new report scope is documented in the [report guide](../docs/architecture/LABEL_REPORT.md).
+[Feature tracker](../docs/planning/FEATURE_TRACKER.md) · [Current v0.5.0 gates](../docs/planning/BACKEND_V0_5_0_REVIEW.md).
 
 Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy `main` pushes. [v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md) records separate local, emulator, live Firebase and hosted proof; [sixteen hosted checks](../docs/research/BACKEND_V0_4_0_PRODUCTION.json) matched both source receipts and cleaned synthetic records.
 
@@ -167,6 +169,37 @@ Examples: [confirmed intake](../contracts/examples/community-contribution-v1.req
 [resolved fields](../contracts/examples/resolved-product-v1.synthetic.json).
 [Storage/security/operator guide](../docs/architecture/COMMUNITY_CATALOGUE.md).
 
+## Useful Label Report: local v0.5.0
+
+Three additive routes are mounted locally: POST `/v1/reports/check`, GET
+`/v1/products/{barcode}/report` and GET `/v1/ingredients/glossary`.
+Current input is a confirmed `observation` with optional barcode, selected table
+and claim context. Analysis itself needs no authentication. Automatic community
+saving has an independent typed `storage` outcome, so missing auth, quota or
+provider failure keeps the useful report available. Historical barcode reports
+are read-only and never establish current-label claim confirmation.
+Impossible or internally contradictory nutrient quantities retain the useful
+HTTP 200 report with `storage: needs_correction` and cause no automatic write:
+more than 100 g per 100 g, added sugar above total sugar, or saturated fat above
+total fat must be corrected first.
+
+Report sections retain original nutrition, ingredient/contains/may-contain text,
+completeness, source/evidence, numerical claim findings, missing inputs and versions.
+Sugar cubes use the declared approximate **4 g/cube** assumption and original
+basis/preparation; quantity or packet size is never an inferred serving.
+The reviewed glossary covers only lecithin INS 322(i), citric acid INS 330 and
+xanthan gum INS 415 names/functions in English/Hindi, with source/hash metadata.
+No health/allergy/Indian-permission verdict, full ingredient coverage, universal
+score or Gemini dependency is introduced. Report metadata enables `label_reports`
+and `nutrition_analysis`, with `report_version: label-report-v1`; ingredient
+explanations require a valid loaded glossary. A glossary failure affects that
+section instead of discarding usable nutrition. Validated examples cover a
+[barcode-less current request](../contracts/examples/report-check-v1.request.synthetic.json),
+[current report](../contracts/examples/label-report-v1.current.synthetic.json),
+[historical report](../contracts/examples/label-report-v1.historical.synthetic.json)
+and [glossary](../contracts/examples/ingredient-glossary-v1.synthetic.json).
+[Detailed report contract](../docs/architecture/LABEL_REPORT.md).
+
 ## Configuration and key handling
 
 Settings load the ignored `.env` at this backend root; environment variables override the file. Do not overwrite a teammate's existing file. `.env.example` contains safe defaults. Current settings:
@@ -188,7 +221,8 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge stores, fifteen mounted routes and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, eighteen mounted routes and redacted validation failures.
+- `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed three-entry glossary.
 - `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
 - `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
@@ -262,9 +296,11 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [published v0.3.0 verification](../docs/planning/BACKEND_V0_3_0_REVIEW.md) and
-[current v0.4.0 review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
-Current exports describe fifteen v0.4.0 routes, five added community/resolved
-schemas and seventeen validated synthetic examples. Review Markdown/scripts, affected tests/contracts and
+See [current v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
+[published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+Current local exports describe eighteen v0.5.0 routes, four added report/glossary
+schemas and 22 validated synthetic examples; historical v0.4.0 exports are preserved.
+Focused API/contracts pass; full review/push/hosted gates remain pending.
+Review Markdown/scripts, affected tests/contracts and
 demonstrably dead code before any future push. Backend-only releases preserve
 Flutter and historical mobile artifacts.

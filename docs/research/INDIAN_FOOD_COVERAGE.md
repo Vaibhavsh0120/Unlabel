@@ -47,8 +47,8 @@ and [feature tracker](../planning/FEATURE_TRACKER.md):
 
 | Capture path | Backend support today | Required next work |
 | --- | --- | --- |
-| Barcode | Live product/nutrition lookup and separate exact snapshot identity/facts lookup | Client scanner/manual entry, explicit source choice and sourced report |
-| Back-package image | Confirmed structured nutrient rows can be normalized and checked without a barcode | OCR/correction and table interpretation; structured ingredient/declaration intake exists; unified report next in v0.5.0 |
+| Barcode | Live product/nutrition lookup, separate exact snapshot identity/facts lookup and local v0.5.0 read-only historical report | Client scanner/manual entry, source choice and report UI; v0.5.0 hosted gate pending |
+| Back-package image | Corrected confirmed nutrient/ingredient/declaration facts produce a local v0.5.0 sourced report without a barcode | OCR/correction, table interpretation and report UI; v0.5.0 hosted gate pending |
 | Front-package image | Identified confirmed claim types can be checked against sufficient confirmed back-table facts | Name/brand/variant extraction, bounded candidate search, identity confirmation and front/back pairing |
 
 Implemented enrichment accepts linked barcode, confirmed front identity and corrected back
@@ -165,8 +165,8 @@ is separate. Finish one accepted version at a time.
 | Source selection and gap audit | Record roles/rights, three capture-path gaps and honest field denominators | This research complete; no new source bundle acquired |
 | Automatic public product enrichment | Save/dedup confirmed barcode/front/back facts; stage candidates as unverified; compatible per-field sources with original observations retained | v0.4.0 released; Firebase and hosted checks passed; [review](../planning/BACKEND_V0_4_0_REVIEW.md) |
 | Coverage measurement and front-text search | Bounded name/brand/variant candidates; reproducible missing-field and category/language counts; no false exact matches | Proposed backend slice |
-| Confirmed package analysis and report | Sufficient corrected facts can be normalized/checked; a full report must combine reviewed criteria without erasing source conflicts | Normalization/claim subset released; unified report next in v0.5.0 |
-| Ingredient glossary and wider evidence | Reviewed Indian ingredient aliases/INS, English/Hindi explanations and declaration distinctions | Next v0.5.0 Useful Label Report; reviewed glossary still pending |
+| Confirmed package analysis and report | Sufficient corrected facts produce a useful report; current/historical evidence, unknowns and conflicts stay distinct | Normalization/claim subset released; local v0.5.0 report passes focused API/contracts, release gates pending |
+| Ingredient glossary and wider evidence | Reviewed Indian ingredient aliases/INS, English/Hindi explanations and declaration distinctions | Local v0.5.0: three reviewed English/Hindi technological-function entries; wider coverage pending |
 | Capture/OCR integration | Three entry modes, local capture/correction and useful reports on devices/web | Frontend work pending; SDKs not installed |
 | Regional coverage expansion | Measure missing regional/local/imported products and scripts, acquire only sources that improve those gaps | Pending benchmark and rights review |
 | Optional generic-food reference | Separate raw-food/recipe facts with licensed composition and visible limits | USDA optional; IFCT/INDB rights unresolved |

@@ -1,10 +1,15 @@
 # Shared API contracts
 
-Released backend **v0.4.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
+Local backend **v0.5.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Its focused API/contract checks pass; full review, push and hosted verification remain pending, while production is released **v0.4.0**. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.4.0.openapi.json` | Fifteen current routes; four additive community observation/receipt/exact/resolved endpoints. |
+| `schemas/backend-v0.5.0.openapi.json` | Eighteen local routes; three additive current/historical report and ingredient glossary endpoints. |
+| `schemas/report-check-request-v1.schema.json` | Corrected confirmed structured observation, optional barcode/table/context; no analysis auth requirement. |
+| `schemas/label-report-v1.schema.json` | Separate current/historical evidence, nutrition/claims/declarations, partial glossary, sugar approximation and independent storage outcome. |
+| `schemas/report-failure-v1.schema.json` | Typed unavailable/not-found report-section failures. |
+| `schemas/ingredient-glossary-v1.schema.json` | Three reviewed English/Hindi name/function entries, source metadata and artifact integrity. |
+| `schemas/backend-v0.4.0.openapi.json` | Historical independently released fifteen-route community catalogue API. |
 | `schemas/community-contribution-request-v1.schema.json` | Strict provisional/confirmed public observations, optional barcode, original rows and origin/license. |
 | `schemas/community-contribution-receipt-v1.schema.json` | Private owned submission receipt, observation/factual hashes, state, expiry and deduplication. |
 | `schemas/community-lookup-v1.schema.json` | Exact public candidate/approved assertions with qualified evidence state. |
@@ -31,9 +36,9 @@ Released backend **v0.4.0** exports current schemas from `app.main.create_app().
 | `schemas/backend-v0.2.0.openapi.json` | Historical nutrition release. |
 | `schemas/backend-v0.1.0.openapi.json` | Historical product release. |
 
-The exporter validates and writes **seventeen validated synthetic examples**. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six new community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields; no real food or private scan is included. These are not real scans, health policies or complete regulatory verdicts.
+The exporter validates and writes **22 synthetic examples**. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields. Five new examples cover report input, current/historical reports, a typed failure and the glossary. The current example keeps 12 g total sugar per 40 g quantity as approximately three cubes; the historical example has read-only storage and no current-label claim assessment. No real food or private scan is included. These are not health policies or complete regulatory verdicts.
 
-Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Add separate client models instead of modifying the strict v1 identity parser. Broad `nutrition_analysis`, glossary, comparison and AI remain disabled. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md).
+Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Local v0.5.0 enables `nutrition_analysis` and `label_reports`, with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary, whose version/artifact are separate metadata. Comparison and AI remain disabled. Add separate client models instead of modifying the strict v1 identity parser. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md) · [Report contract](../docs/architecture/LABEL_REPORT.md).
 
 Facts nutrition uses direct packaging/manufacturer inputs only, preserving kcal/g units, rows, sources, bases, preparation, conflicts and unknown reasons. `legacy_unsupported`, `missing` and `invalid` remain explicit. Tags distinguish present empty arrays from missing/invalid fields; none establishes allergy safety. Optional dates identify record modification separately from export age. Official image descriptors include language/revision/400-size and attribution/license; no arbitrary URL or bundled image bytes. Exact lookup keys preserve leading zeros while OFF image disk paths use their canonical normalization.
 
@@ -57,3 +62,5 @@ caller confirmation. Exact retries retain receipts despite OFF snapshot rotation
 new provider references must match actual snapshot identity. Frontend capture,
 background anonymous requests and reports remain integration work. Production
 v0.4.0 verification/publication passed separately; see the [review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+The [v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) records its separate
+checks and pending hosted/publication gate.

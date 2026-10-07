@@ -10,9 +10,12 @@ first Standard database `unlabel` in Mumbai with free tier/no billing, anonymous
 Auth and denied direct client access. It was independently pushed, hosted-verified and published;
 [sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) retain exact evidence. [Current review](BACKEND_V0_4_0_REVIEW.md).
 
-The user authorized **v0.5.0 Useful Label Report** next: F06/F08/F12 unify sourced
-findings, reviewed ingredient explanations and sugar visualization using existing
-normalization/claim engines. No universal score or Gemini dependency is required.
+Local **v0.5.0 Useful Label Report** is implemented and focused API/contracts pass:
+F06/F12 are ready locally, while F08 stays partial. They unify sourced
+findings, three reviewed English/Hindi ingredient name/function entries and declared
+4 g/cube sugar visualization using existing
+normalization/claim engines. Full review, push and hosted checks are pending.
+No universal score or Gemini dependency is required.
 v0.6.0 discovery and v0.7.0 comparison remain proposals in the
 [master plan](MASTER_PLAN.md). Camera/OCR/correction, anonymous background save,
 source/status displays and local history/saved/preferences need frontend work.

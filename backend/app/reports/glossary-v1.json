@@ -1,0 +1,83 @@
+{
+  "schema_version": "1",
+  "glossary_version": "ingredients-2026-10-07.1",
+  "reviewed_on": "2026-10-07",
+  "sources": [
+    {
+      "source_id": "codex-gsfa-lecithin",
+      "title": "Codex GSFA: Lecithin (322(i))",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=77",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-citric-acid",
+      "title": "Codex GSFA: Citric acid (330)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=173",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-xanthan-gum",
+      "title": "Codex GSFA: Xanthan gum (415)",
+      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=48",
+      "reviewed_on": "2026-10-07",
+      "scope": "name_and_technological_function_only"
+    }
+  ],
+  "entries": [
+    {
+      "entry_id": "lecithin",
+      "name_en": "Lecithin",
+      "name_hi": "लेसिथिन",
+      "aliases": [
+        "lecithin",
+        "लेसिथिन"
+      ],
+      "ins_codes": [
+        "322(i)"
+      ],
+      "function_en": "An emulsifier used to help oil and water stay mixed.",
+      "function_hi": "यह एक इमल्सीफायर है, जो तेल और पानी को मिला हुआ रखने में मदद करता है।",
+      "source_ids": [
+        "codex-gsfa-lecithin"
+      ]
+    },
+    {
+      "entry_id": "citric_acid",
+      "name_en": "Citric acid",
+      "name_hi": "साइट्रिक अम्ल",
+      "aliases": [
+        "citric acid",
+        "साइट्रिक अम्ल",
+        "साइट्रिक एसिड"
+      ],
+      "ins_codes": [
+        "330"
+      ],
+      "function_en": "An acidity regulator used to adjust the acidity of a food.",
+      "function_hi": "यह भोजन की अम्लता को नियंत्रित करने के लिए उपयोग किया जाता है।",
+      "source_ids": [
+        "codex-gsfa-citric-acid"
+      ]
+    },
+    {
+      "entry_id": "xanthan_gum",
+      "name_en": "Xanthan gum",
+      "name_hi": "ज़ैंथन गम",
+      "aliases": [
+        "xanthan gum",
+        "ज़ैंथन गम",
+        "जैंथन गम"
+      ],
+      "ins_codes": [
+        "415"
+      ],
+      "function_en": "A thickener and stabilizer used to adjust a food's texture.",
+      "function_hi": "यह भोजन को गाढ़ा बनाने और उसकी बनावट को स्थिर रखने के लिए उपयोग किया जाता है।",
+      "source_ids": [
+        "codex-gsfa-xanthan-gum"
+      ]
+    }
+  ]
+}

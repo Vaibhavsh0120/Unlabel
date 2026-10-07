@@ -3,7 +3,9 @@
 Published backend **v0.4.0** implements the community catalogue APIs and passed
 its independent hosted verification/source-only release. Flutter stays **0.0.0+1**.
 OFF snapshot and reviewed claims work independently of Firebase. Camera/OCR,
-client background requests and v0.5.0 reports remain pending. [Master plan](MASTER_PLAN.md).
+client background requests remain frontend work. Local v0.5.0 report/glossary
+APIs and focused contracts pass; full review, push and hosted verification remain
+separate gates. [Master plan](MASTER_PLAN.md).
 
 ## Quick start
 

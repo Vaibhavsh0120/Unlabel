@@ -39,7 +39,12 @@ class RequestBodyLimit:
 
         if (
             scope["path"].rstrip("/")
-            in {"/v1/nutrition/normalize", "/v1/claims/check", "/v1/community/contributions"}
+            in {
+                "/v1/nutrition/normalize",
+                "/v1/claims/check",
+                "/v1/community/contributions",
+                "/v1/reports/check",
+            }
             and scope["method"] == "POST"
         ):
             try:

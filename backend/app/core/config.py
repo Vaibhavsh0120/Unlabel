@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
-    off_user_agent: str = "Unlabel/0.4.0 (https://github.com/Vaibhavsh0120/Unlabel)"
+    off_user_agent: str = "Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)"
     off_timeout_seconds: float = Field(default=8, ge=1, le=15)
     off_max_response_bytes: int = Field(default=524_288, ge=1024, le=1_048_576)
     cors_origins: list[str] = Field(default_factory=list)

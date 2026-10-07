@@ -11,6 +11,12 @@ denied direct client access. Frontend capture/OCR/background save remains pendin
 
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app); API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app). [Vercel configuration](../planning/VERCEL_SETUP.md).
 
+Local v0.5.0 adds three report/glossary endpoints without another provider,
+secret, billing account or paid service. Report/glossary projection is bundled
+with source; focused API/contracts pass. Production remains v0.4.0 until separate
+full review, push and hosted verification.
+[Report scope](LABEL_REPORT.md).
+
 ## Project boundaries
 
 | Target | Repository root | Runtime / scope | Calls |

@@ -1,11 +1,15 @@
 # Documentation map
 
-Released backend **v0.4.0** implements fifteen routes, including automatic structured
+Production **v0.4.0** implements fifteen routes, including automatic structured
 observations and sourced resolution; it is pushed, hosted-verified and published. Flutter remains **0.0.0+1** with integration pending. Firebase
 Unlabel's first Standard database `unlabel` in Mumbai is configured with free tier,
-anonymous Auth, denied direct client access and no linked billing. Current exports
-are v0.4.0; historical exports/release evidence are preserved. See the v0.4.0 review
-for local, emulator, live Firebase and remaining hosted gates.
+anonymous Auth, denied direct client access and no linked billing. Local v0.5.0
+has eighteen mounted routes, a useful current/historical label report, approximate
+sugar cubes and a partial three-entry glossary. Its focused API/contract checks
+pass; current exports include four added schemas and 22 validated synthetic
+examples. Full review, push and hosted verification remain pending. Historical
+exports and source-only release records stay intact. Production remains v0.4.0;
+see its review for completed local, emulator, live Firebase and hosted evidence.
 
 
 | Document | Read it for |
@@ -16,7 +20,13 @@ for local, emulator, live Firebase and remaining hosted gates.
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
 | [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
-| [API plan](architecture/API_PLAN.md) | Mounted product/claim/community routes and future report contracts |
+| [API plan](architecture/API_PLAN.md) | Eighteen local product/claim/community/report/glossary routes and integration boundaries |
+| [Ingredient glossary source check](research/INGREDIENT_GLOSSARY_V0_5_0.md) | Three official indexed name/function sources, direct-fetch limitations and English/Hindi project text boundaries |
+| [Useful Label Report](architecture/LABEL_REPORT.md) | Local v0.5.0 current/historical reports, independent autosave, partial ingredient glossary and approximate sugar cubes |
+| [Accepted v0.5.0 design](superpowers/specs/2026-10-07-useful-label-report-design.md) | Confirmed-label/historical report, partial glossary and independent save boundaries |
+| [Accepted v0.5.0 plan](superpowers/plans/2026-10-07-backend-v0.5.0.md) | Report implementation and separate local/review/hosted release gates |
+| [Backend v0.5.0 review](planning/BACKEND_V0_5_0_REVIEW.md) | Current local/review evidence and pending hosted publication |
+| [Backend v0.5.0 release scope](planning/BACKEND_V0_5_0_RELEASE.md) | Useful Label Report goals, partial coverage and publication boundaries |
 | [Community catalogue](architecture/COMMUNITY_CATALOGUE.md) | Implemented automatic product-fact saving, unverified candidate staging, review, source resolution and no-card quotas |
 | [Accepted v0.4.0 design](superpowers/specs/2026-10-07-community-catalogue-design.md) | Confirmed package contributions and storage/privacy/source boundaries |
 | [Accepted v0.4.0 plan](superpowers/plans/2026-10-07-backend-v0.4.0.md) | Implementation ownership and separate local/emulator/hosted release gates |
@@ -26,7 +36,7 @@ for local, emulator, live Firebase and remaining hosted gates.
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
 | [Feature tracker](planning/FEATURE_TRACKER.md) | Original 20 concept groups, additional community scope and pending client work |
-| [Backend v0.3.0 review](planning/BACKEND_V0_3_0_REVIEW.md) | Latest published production reviewed-claim/code/build/hosted evidence |
+| [Backend v0.3.0 review](planning/BACKEND_V0_3_0_REVIEW.md) | Historical independently published reviewed-claim/code/build/hosted evidence |
 | [Backend v0.3.0 release notes](planning/BACKEND_V0_3_0_RELEASE.md) | Separate confirmed-label numerical claim release and preserved boundaries |
 | [Reviewed knowledge](../knowledge/README.md) | Actual seven-rule scope, three sources, hashes and packaging |
 | [Fresh FSSAI source check](research/FSSAI_CLAIMS_V0_3_0_SOURCE_CHECK.json) | Bounded fresh PDF byte/hash verification against the registry |

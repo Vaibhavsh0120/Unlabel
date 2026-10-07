@@ -1,0 +1,218 @@
+{
+  "$defs": {
+    "GlossaryArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "bytes": {
+          "maximum": 65536,
+          "minimum": 1,
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "entry_count": {
+          "const": 3,
+          "default": 3,
+          "title": "Entry Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "bytes"
+      ],
+      "title": "GlossaryArtifact",
+      "type": "object"
+    },
+    "GlossaryEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "entry_id": {
+          "enum": [
+            "lecithin",
+            "citric_acid",
+            "xanthan_gum"
+          ],
+          "title": "Entry Id",
+          "type": "string"
+        },
+        "name_en": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Name En",
+          "type": "string"
+        },
+        "name_hi": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Name Hi",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "ins_codes": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Ins Codes",
+          "type": "array"
+        },
+        "function_en": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Function En",
+          "type": "string"
+        },
+        "function_hi": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Function Hi",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "entry_id",
+        "name_en",
+        "name_hi",
+        "aliases",
+        "ins_codes",
+        "function_en",
+        "function_hi",
+        "source_ids"
+      ],
+      "title": "GlossaryEntry",
+      "type": "object"
+    },
+    "GlossarySource": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "reviewed_on": {
+          "format": "date",
+          "title": "Reviewed On",
+          "type": "string"
+        },
+        "scope": {
+          "const": "name_and_technological_function_only",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "url",
+        "reviewed_on",
+        "scope"
+      ],
+      "title": "GlossarySource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "ready",
+      "default": "ready",
+      "title": "Status",
+      "type": "string"
+    },
+    "glossary_version": {
+      "const": "ingredients-2026-10-07.1",
+      "title": "Glossary Version",
+      "type": "string"
+    },
+    "artifact": {
+      "$ref": "#/$defs/GlossaryArtifact"
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/GlossaryEntry"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Entries",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/GlossarySource"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Sources",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "glossary_version",
+    "artifact",
+    "entries",
+    "sources"
+  ],
+  "title": "GlossaryResponse",
+  "type": "object"
+}

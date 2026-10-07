@@ -15,6 +15,7 @@ from app import __version__
 from app.api.v1.claims import build_router
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.api.v1.community import build_router as build_community_router
+from app.api.v1.reports import build_router as build_reports_router
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
@@ -25,6 +26,7 @@ from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import BARCODE_PATTERN, OpenFoodFactsProvider
+from app.reports.glossary import GlossaryStore
 from app.schemas.errors import ValidationFailure
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
@@ -53,6 +55,11 @@ def create_app(
     except (OSError, ValueError):
         claim_store = None
         knowledge_artifact = None
+
+    try:
+        glossary = GlossaryStore()
+    except (OSError, ValueError):
+        glossary = None
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -203,8 +210,14 @@ def create_app(
             "product_adapter_version": "1",
             "nutrition_adapter_version": "1",
             "normalization_version": "1",
+            "report_version": "label-report-v1",
             "knowledge_version": claim_store.knowledge_version if claim_store else "not_populated",
             "knowledge_artifact": knowledge_artifact,
+            "glossary": {
+                "status": "ready" if glossary is not None else "unavailable",
+                "version": glossary.version if glossary is not None else None,
+                "artifact": glossary.artifact if glossary is not None else None,
+            },
             "catalogue": catalogue,
             "community": {
                 "status": "ready"
@@ -222,9 +235,10 @@ def create_app(
                 "catalogue_lookup": catalogue["status"] == "ready",
                 "catalogue_facts": catalogue["status"] == "ready"
                 and request.app.state.catalogue.supports_facts,
-                "nutrition_analysis": False,
+                "nutrition_analysis": True,
+                "label_reports": True,
                 "claim_checks": claim_store is not None,
-                "ingredient_explanations": False,
+                "ingredient_explanations": glossary is not None,
                 "comparison": False,
                 "ai_explanations": False,
                 "community_contributions": community_ready,
@@ -367,6 +381,16 @@ def create_app(
                 FactsLookup, snapshot_result(request, barcode, facts=True)
             ),
             knowledge_version=claim_store.knowledge_version if claim_store else None,
+        )
+    )
+    application.include_router(
+        build_reports_router(
+            config=config,
+            snapshot_lookup=lambda request, barcode: cast(
+                FactsLookup, snapshot_result(request, barcode, facts=True)
+            ),
+            claims_store=claim_store,
+            glossary=glossary,
         )
     )
     return application

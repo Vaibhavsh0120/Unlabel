@@ -24,7 +24,9 @@ iOS release commitment as described below.
 
 Published backend is **0.4.0 Community Product Catalogue**, independently
 reviewed, pushed and hosted-verified; Flutter remains **0.0.0+1**.
-The user authorized v0.4.0 then v0.5.0 Useful Label Report as separate reviewed,
+Local v0.5.0 Useful Label Report is implemented and focused API/contracts pass;
+full review, push and hosted verification remain pending. The user authorized v0.4.0
+then v0.5.0 as separate reviewed,
 pushed and published versions. [Current review](BACKEND_V0_4_0_REVIEW.md)
 · [Release scope](BACKEND_V0_4_0_RELEASE.md) · [Master plan](MASTER_PLAN.md).
 Historical source-only tags and v0.0.0 mobile assets remain preserved.
@@ -153,6 +155,11 @@ and bounded caches. Recheck repository visibility, current allowances, runner
 availability, and account policy before implementation; do not promise an
 unlimited private CI service. No card or paid runner is a prerequisite here.
 
+Local v0.5.0 keeps API major/schema 1 and adds report/glossary models rather than
+changing released identity/community shapes. Current-label reports and historical
+read-only reports remain distinct; F08 stays partial at three reviewed functions.
+No mobile build, new provider/key or AI activation is required.
+
 ## Client/backend compatibility and deployment order
 
 Compile a stable production backend HTTPS base URL into production clients
@@ -176,13 +183,14 @@ in published backend v0.4.0. Separate catalogue status/lookup uses an export-ori
 verified deployment receipt and nine-calendar-month source age. Its separate rich-facts route preserves direct-table nutrition, tag availability,
 optional record dates and official image URL attribution; legacy aggregates and
 missing fields stay unknown. Coverage is unverified; a snapshot miss makes no
-OFF request. The separate confirmed-label numerical claim API uses reviewed knowledge `claims-2026-10-06.1`; metadata exposes actual claim readiness and a verified knowledge receipt summary when packaged. Affected unsupported/missing/conflicting/future-dated evidence stays insufficient. Broader analysis, glossary and AI remain disabled.
+OFF request. The separate confirmed-label numerical claim API uses reviewed knowledge `claims-2026-10-06.1`; metadata exposes actual claim readiness and a verified knowledge receipt summary when packaged. Affected unsupported/missing/conflicting/future-dated evidence stays insufficient. Local v0.5.0 adds current/historical reports and a partial three-entry glossary. AI, full ingredient coverage and comparison remain future work.
 
 The strict ProductLookup v1 model/route is unchanged by v0.2.0. Nutrition has
 separate lookup/request/response schemas; historical v0.1.0 OpenAPI stays
 available. Clients can enable `nutrition_lookup`/`nutrition_normalization`
 through metadata and use the additive `catalogue_facts` capability for a
-validated facts-enabled store, while leaving future `nutrition_analysis` disabled. A complete
+validated facts-enabled store. Local v0.5.0 additionally enables `nutrition_analysis`
+and `label_reports`; ingredient explanations require valid glossary metadata. A complete
 normalization result is not complete nutrient coverage or a health verdict.
 
 Deploy additive backend changes first and verify old-client compatibility.
@@ -194,7 +202,7 @@ Compatible fields retain source/date/originals and conflicts; no generic packet
 imputation or current-label confirmation is invented. Safe defaults disable
 storage; resolved lookup can still serve available OFF facts. Check actual
 capabilities before frontend integration. v0.4.0 hosted verification/publication
-passed before v0.5.0 begins; preserve old APIs through both releases.
+passed before v0.5.0 implementation; preserve old APIs through both releases.
 
 
 Deploy the web project next, then release native assets against the stable URL.

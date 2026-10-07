@@ -17,6 +17,8 @@ from app.community.models import (
     ContributionRequest,
     ResolvedProduct,
 )
+from app.reports.glossary import GlossaryResponse
+from app.reports.models import LabelReport, ReportCheckRequest, ReportFailure
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
 from app.schemas.products import ProductLookup
@@ -47,6 +49,11 @@ def test_all_examples_validate_for_teammate_consumers():
         "community-lookup-v1.synthetic.json": CommunityLookup,
         "community-failure-v1.synthetic.json": CommunityFailure,
         "resolved-product-v1.synthetic.json": ResolvedProduct,
+        "report-check-v1.request.synthetic.json": ReportCheckRequest,
+        "label-report-v1.current.synthetic.json": LabelReport,
+        "label-report-v1.historical.synthetic.json": LabelReport,
+        "report-failure-v1.synthetic.json": ReportFailure,
+        "ingredient-glossary-v1.synthetic.json": GlossaryResponse,
     }.items():
         model.model_validate_json((CONTRACTS / "examples" / filename).read_text())
 
@@ -69,6 +76,10 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "community-lookup-v1.schema.json": CommunityLookup,
         "community-failure-v1.schema.json": CommunityFailure,
         "resolved-product-v1.schema.json": ResolvedProduct,
+        "report-check-request-v1.schema.json": ReportCheckRequest,
+        "label-report-v1.schema.json": LabelReport,
+        "report-failure-v1.schema.json": ReportFailure,
+        "ingredient-glossary-v1.schema.json": GlossaryResponse,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

@@ -9,6 +9,12 @@ fields with source/date and conflicts. Firebase Unlabel has its first Standard
 denied direct client access. Frontend capture/OCR/background save remains pending.
 [Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
+Local v0.5.0 adds corrected confirmed/historical label reports, independent
+automatic storage outcomes, approximate sugar cubes and three reviewed
+English/Hindi ingredient function entries. Focused API/contracts pass; full review,
+push and hosted checks are pending;
+production remains v0.4.0. [Report architecture](LABEL_REPORT.md).
+
 ## Product and delivery boundary
 
 Unlabel explains packaged food labels through claim checks, ingredient highlighting, local personal suitability and plain English/Hindi explanations. The college project must work within **₹0 additional platform cost, no credit card and no billing upgrade**.

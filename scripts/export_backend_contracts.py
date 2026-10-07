@@ -25,6 +25,8 @@ assess_claims = import_module("app.claims.engine").assess_claims
 community = import_module("app.community.models")
 community_service = import_module("app.community.service")
 resolve_product = import_module("app.community.resolver").resolve_product
+reports = import_module("app.reports.models")
+glossary = import_module("app.reports.glossary")
 
 
 def write(directory: str, name: str, value):
@@ -59,6 +61,10 @@ def main():
         "community-lookup-v1.schema.json": community.CommunityLookup,
         "community-failure-v1.schema.json": community.CommunityFailure,
         "resolved-product-v1.schema.json": community.ResolvedProduct,
+        "report-check-request-v1.schema.json": reports.ReportCheckRequest,
+        "label-report-v1.schema.json": reports.LabelReport,
+        "report-failure-v1.schema.json": reports.ReportFailure,
+        "ingredient-glossary-v1.schema.json": glossary.GlossaryResponse,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -350,8 +356,55 @@ def main():
         ),
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
+    report_service = import_module("app.reports.service")
+    report_glossary = glossary.GlossaryStore()
+    report_request = reports.ReportCheckRequest.model_validate(
+        {
+            "observation": {
+                **community_request.model_dump(mode="json"),
+                "submission_id": "10000000-0000-4000-8000-000000000003",
+                "barcode": None,
+                "identity": {
+                    **community_request.identity.model_dump(mode="json"),
+                    "name": "Synthetic corrected oats",
+                },
+                "ingredients": {
+                    **community_request.ingredients.model_dump(mode="json"),
+                    "text": "Synthetic oats, milk, lecithin (INS 322(i))",
+                },
+                "front_claims": ["Low sugar"],
+                "rows": [
+                    {**row.model_dump(mode="json"), "value": 12.0}
+                    for row in claim_request.rows
+                ],
+            },
+            "selected_table_id": claim_request.selected_table_id,
+            "context": claim_request.context.model_dump(mode="json"),
+        }
+    )
+    current_report = report_service.report_from_observation(
+        report_request, claims_store=store, glossary=report_glossary, now=submitted_at
+    )
+    historical_report = report_service.report_from_resolved(
+        resolve_product(
+            facts, community_lookup, knowledge_version=store.knowledge_version
+        ),
+        claims_store=store,
+        glossary=report_glossary,
+        now=submitted_at,
+    )
+    for filename, model in {
+        "report-check-v1.request.synthetic.json": report_request,
+        "label-report-v1.current.synthetic.json": current_report,
+        "label-report-v1.historical.synthetic.json": historical_report,
+        "report-failure-v1.synthetic.json": reports.ReportFailure(
+            status="unavailable", code="ingredient_glossary_unavailable"
+        ),
+        "ingredient-glossary-v1.synthetic.json": report_glossary.response(),
+    }.items():
+        write("examples", filename, model.model_dump(mode="json"))
     print(
-        f"Exported backend v{version} contracts and seventeen validated synthetic examples."
+        f"Exported backend v{version} contracts and twenty-two validated synthetic examples."
     )
 
 

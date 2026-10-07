@@ -1,6 +1,6 @@
 # Backend contracts, catalogue and knowledge tools
 
-Released backend v0.4.0 includes the tools below. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
+Local backend v0.5.0 includes the tools below; production remains independently released v0.4.0 until the new version passes its release gates. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
 
 | Tool | Responsibility |
 | --- | --- |
@@ -34,7 +34,10 @@ Keep source-tagged read-only Open Food Facts snapshots separate from reviewed FS
 
 ## Current validation and exports
 
-From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its fifteen-route v0.4.0 OpenAPI, five added community/resolved schemas and seventeen validated synthetic examples. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free two-bundle build. Both output directories are generated/ignored, while canonical JSON stays in Git. Current final test/static/emulator/live counts and separate local/emulator/live/hosted evidence are recorded in the [v0.4.0 review](../docs/planning/BACKEND_V0_4_0_REVIEW.md); earlier proof remains in historical reviews. Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
+The [v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) records current
+release gates; preceding hosted evidence remains separate historical proof.
+
+From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its eighteen-route v0.5.0 OpenAPI, four added report/glossary schemas and 22 validated synthetic examples. Historical v0.4.0 exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free two-bundle build. Both output directories are generated/ignored, while canonical JSON stays in Git. Local v0.5.0 focused API/contracts pass; final review/push/hosted gates remain separate. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
 
 Optional static type checking is reproducible from root with `npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json --pythonpath backend/.venv/Scripts/python.exe` (Unix: `backend/.venv/bin/python`). The checked-in root configuration covers maintained backend and script Python in basic mode. This development check needs Node/npm but introduces no npm project dependency or runtime service; backend restore/run still uses the documented Python tools.
 

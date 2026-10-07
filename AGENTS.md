@@ -1,6 +1,6 @@
 # Unlabel workspace instructions
 
-- Published production backend is v0.4.0 Community Product Catalogue, independently reviewed, pushed, hosted-verified and released. The user authorized finishing/pushing v0.4.0, then v0.5.0 Useful Label Report independently. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Flutter remains 0.0.0+1.
+- Production backend is independently released v0.4.0 Community Product Catalogue. Local v0.5.0 Useful Label Report is implemented with focused API/contracts passing: three additive report/glossary routes, corrected confirmed barcode-less analysis, separate automatic storage outcome, historical read-only report and approximate sugar cubes. Full review, push and hosted checks remain pending. The user authorized separate reviewed/pushed v0.4.0 and v0.5.0 versions; preserve that release boundary. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Flutter remains 0.0.0+1.
 
 
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.
@@ -11,10 +11,12 @@
 - Firebase Unlabel (`unlabel-india-catalogue`) has its first Standard database `unlabel` in Mumbai, free tier enabled and no linked billing. Anonymous Auth, deny-all client rules and least-privilege backend credentials are configured; live synthetic checks are separate from hosted API proof. Keep Spark/no card; prohibit paid Storage/Functions, TTL, backups and PITR. v0.4.0 saves/deduplicates structured public observations automatically without a Share flag; provisional observations remain private staging. Exact confirmed compatible candidates are public with qualified unreviewed evidence. Photos/raw OCR/profiles/history stay private. See docs/planning/BACKEND_V0_4_0_REVIEW.md and docs/architecture/COMMUNITY_CATALOGUE.md.
 
 
+- There is one app identity role: the scanner/client user, using automatic anonymous Firebase authentication. Do not add reviewer/admin app accounts, role claims or dashboards. The existing service account is a backend machine credential, not a user login; exact-hash CLI conflict maintenance stays manual tooling. Compatible safe facts qualify automatically and conflicts remain unresolved.
 - Use local OCR and reviewed deterministic rules first. No custom model or training is selected. Gemini stays disabled unless a measured benchmark later justifies an optional bounded fallback with no-card/privacy controls.
 - Exact-identity-compatible confirmed gap fills may appear as qualified submitter-confirmed/unreviewed facts after strict validation; identical rescans do not require repeated operator review. Conflicts/identity mismatches await review. Moderator review is an additional state, never safety/current-package proof. Preserve semantic deduplication, immutable receipts, provider-reference checks and transactional admission.
 
 
+- v0.5.0 ingredient scope is only three reviewed Codex technological-function entries in English/Hindi; F08 stays partial. No health/allergy/Indian-permission verdict, universal score or Gemini/training dependency. Current reports and historical barcode reports retain distinct evidence. Sugar cubes use the explicit approximate 4 g/cube version and original table basis, never inferred serving size.
 - Run backend tests with backend `.venv` Python and Flutter checks from frontend. Validate meaningful importer/secret/process boundaries, all Markdown/scripts, affected tests, docs links and current contracts before pushing. Remove demonstrably dead code. Hosted claim knowledge requires a verified two-file receipt; unknown/conflicting evidence remains insufficient.
 
 ## Current documentation

@@ -1,0 +1,70 @@
+{
+  "schema_version": "1",
+  "observation": {
+    "schema_version": "1",
+    "barcode": null,
+    "identity": {
+      "name": "Synthetic corrected oats",
+      "brand": null,
+      "variant": null,
+      "quantity": null,
+      "language": "en"
+    },
+    "ingredients": {
+      "status": "present",
+      "text": "Synthetic oats, milk, lecithin (INS 322(i))",
+      "completeness": "complete",
+      "origin": "independently_transcribed_package"
+    },
+    "contains": {
+      "status": "present",
+      "text": "Milk",
+      "completeness": "complete",
+      "origin": "independently_transcribed_package"
+    },
+    "may_contain": {
+      "status": "not_captured",
+      "text": null,
+      "completeness": "partial",
+      "origin": "independently_transcribed_package"
+    },
+    "front_claims": [
+      "Low sugar"
+    ],
+    "rows": [
+      {
+        "row_id": "sugar-line",
+        "table_id": "back-panel",
+        "nutrient": "sugars",
+        "value": 12.0,
+        "unit": "g",
+        "basis": {
+          "kind": "serving",
+          "amount": 40.0,
+          "unit": "g"
+        },
+        "preparation": "as_sold"
+      }
+    ],
+    "nutrition_completeness": "partial",
+    "nutrition_origin": "independently_transcribed_package",
+    "provider_references": [],
+    "revision_context": null,
+    "observed_on": "2026-10-07",
+    "capture_method": "manual",
+    "share_license": "CC0-1.0",
+    "market": "india",
+    "submission_id": "10000000-0000-4000-8000-000000000003",
+    "observation_state": "confirmed",
+    "confirmed": true,
+    "front_confirmed": true,
+    "back_confirmed": true,
+    "same_product_confirmed": true
+  },
+  "selected_table_id": "back-panel",
+  "context": {
+    "food_category": "ordinary_general_food",
+    "form": "solid",
+    "preparation": "as_sold"
+  }
+}

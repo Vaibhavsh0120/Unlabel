@@ -1,13 +1,18 @@
 # Reviewed claim knowledge
 
-Backend **v0.4.0** preserves and loads the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Ingredient aliases, allergen rules, nutrition classifications and bilingual glossary content remain reserved work. Open Food Facts product facts and user-confirmed package rows retain separate origins.
+Production **v0.4.0** and local **v0.5.0** preserve and load the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Local v0.5.0 adds a separate bounded three-entry English/Hindi ingredient name/function projection in `backend/app/reports/glossary-v1.json`; broader aliases, allergen rules and nutrition classifications remain future work. Its Codex metadata/functions do not establish health, allergy or Indian regulatory permission. Open Food Facts product facts and user-confirmed package rows retain separate origins.
 
 | Canonical file | Current content |
 | --- | --- |
 | [rules/claims/reviewed-v1.json](rules/claims/reviewed-v1.json) | Seven numerical fibre, sugar and sodium claims with applicability, alternatives, evidence locators and bounded wording |
 | [sources/registry/fssai-claims-v1.json](sources/registry/fssai-claims-v1.json) | Three reviewed official source metadata records, PDF hashes/sizes/pages, known dates, review status and qualifications |
 
-The reviewed source date is **6 October 2026**; v0.3.0 was independently released on **7 October 2026**; v0.4.0 retains its knowledge unchanged in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
+The reviewed source date is **6 October 2026**; v0.3.0 was independently released on **7 October 2026**; v0.4.0 and local v0.5.0 retain its knowledge unchanged in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
+
+The report glossary version is `ingredients-2026-10-07.1`, with an independent
+SHA-256/byte/count artifact. It is not part of the unchanged two-file FSSAI claim
+receipt. [Report/glossary scope](../docs/architecture/LABEL_REPORT.md) ·
+[Dated source check](../docs/research/INGREDIENT_GLOSSARY_V0_5_0.md).
 
 ## Reviewed sources
 

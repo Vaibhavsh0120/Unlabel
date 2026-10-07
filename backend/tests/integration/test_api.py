@@ -21,7 +21,7 @@ def client_with(response):
     )
 
 
-def test_service_endpoints_do_not_call_provider_and_future_features_are_disabled():
+def test_service_endpoints_do_not_call_provider_and_report_capabilities_are_explicit():
     def forbidden(request):
         raise AssertionError("Health/meta must not call OFF")
 
@@ -35,6 +35,9 @@ def test_service_endpoints_do_not_call_provider_and_future_features_are_disabled
             "nutrition_lookup",
             "nutrition_normalization",
             "claim_checks",
+            "nutrition_analysis",
+            "label_reports",
+            "ingredient_explanations",
         }
         assert client.get("/v1/analyze").status_code == 404
         assert client.get("/openapi.json").json()["info"]["version"] == __version__
