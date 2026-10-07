@@ -1,13 +1,12 @@
 # Unlabel: useful product architecture and delivery plan
 
-Delivery checkpoint: **7 October 2026**. Production **v0.5.0 Useful Label Report**
-was independently reviewed, pushed, hosted-verified and published after the
-separate **v0.4.0 Community Product Catalogue** release. Flutter remains
-**0.0.0+1**. Future flows below remain plans unless explicitly marked implemented.
-Preserve the released foundation and historical source-only tags.
-[Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json) verified current
-and historical reports, real anonymous saving/retry, Unicode aliases, blocked
-anomalous writes, unchanged source receipts and synthetic cleanup.
+Delivery checkpoint: **7 October 2026**. Backend **v0.6.0 Product Discovery**
+is pushed, hosted-verified and published independently after v0.5.0/v0.4.0.
+Frontend **0.1.0+2 Connected Label Reader** is implemented; its rendered/release
+checks are in progress. Light is the first-use default. Personal history, saved
+reports and preferences stay local; confirmed public product facts improve the
+catalogue automatically. Future flows below remain plans unless marked implemented.
+[Current backend review](BACKEND_V0_6_0_REVIEW.md) · [Connected release plan](CONNECTED_RELEASE_PLAN.md).
 
 ## Product goal
 
@@ -380,15 +379,16 @@ rows alone do not measure useful Indian-market coverage.
 The user authorized v0.4.0 followed by v0.5.0 as separate reviewed/pushed versions.
 The next backend v0.6.0 and frontend v0.1.0 are now authorized and in progress.
 Their [connected release plan](CONNECTED_RELEASE_PLAN.md) defines useful scope.
-v0.7.0 and later remain proposals. Finish each release boundary before the next.
+Backend v0.6.0 is published; frontend v0.1.0+2 has final rendered/release gates pending. The user then authorized backend v0.7.0/frontend v0.2.0 optional scanner login/private sync, first-launch Welcome and all reference-style action destinations, implemented one screen at a time. [Next accepted scope](ACCOUNT_SYNC_SCREEN_PLAN.md). Finish each component release boundary before the next.
 
 | Stage | Meaning and user value | Completion gate |
 | --- | --- | --- |
 | Published v0.3.0 foundation | Barcode facts, direct nutrition normalization and seven reviewed numerical claim types | Already released; preserve its tested contracts and source receipts |
 | v0.4.0 Community Product Catalogue | Automatically saved observations and compatible sourced fields improve exact lookup | Four additive routes with revised observation/receipt schemas, semantic deduplication, qualified candidates, conflict review, resolved fields, free project/rules, transaction and hosted checks |
 | Released v0.5.0 Useful Label Report | A barcode or corrected back label produces one understandable sourced report | Private intake without barcode; bounded ingredient/declaration fields; reuse normalizer/claims; reviewed glossary/templates; partial/unknown behavior |
-| Accepted v0.6.0 Product Discovery | Front text helps find the right candidate without a readable barcode | Bounded indexed name/brand/variant search, ambiguous/missing states and identity confirmation; no visual certainty claims |
-| Proposed v0.7.0 Evidence-aware Comparison | Two reports reveal supported nutrient differences | Compatible basis/preparation, missing-value handling and evidence-linked explanation; no unsupported universal winner |
+| Released v0.6.0 Product Discovery | Front text helps find the right candidate without a readable barcode | Bounded indexed name/brand/variant search, ambiguous/missing states and identity confirmation; no visual certainty claims |
+| Accepted v0.7.0 Private Account Sync | Optional scanner accounts sync their own personal records; comparison/insight destinations use useful sourced contracts | Verified account ownership, bounded private storage, guest privacy, merge/deletion/logout/conflicts; compatible facts without universal winner |
+| Accepted frontend v0.2.0 Welcome, Home and Optional Login | First-launch Welcome and complete light/dark app journeys, one screen at a time | Every visible action works; guest use remains local; optional login/private sync; generated cute art; responsive, error and device gates |
 | Client integration alongside stable contracts | Barcode/manual scan, corrected front/back capture, results, automatic factual saving, local history/saved/preferences | Real-device/web OCR/camera tests, source/error/correction behavior and integration of each screen |
 
 Do not require v0.6.0 search to begin useful barcode/back-label frontend work.
@@ -404,14 +404,14 @@ The final implementation/tests and separate cloud evidence are recorded in the
 v0.4.0 review. Released v0.5.0 separately verifies useful reports despite save failure;
 frontend coalescing/outbox remains a client gate.
 
-## Honest progress at this checkpoint
+## Historical backend milestones and current progress
 
 - Released v0.5.0 advances the original concept baseline to **8 ready backend groups,
   2 partial, 4 planned; 6 client-owned groups** after independent local/review/hosted checks.
   Historical v0.4.0 retained its published **6 ready, 1 partial, 7 planned** baseline.
   The additional C01 community group is
   released independently with verified hosted behavior. Counts are capabilities,
-  not completion percentages. All concept-screen Flutter integration is pending.
+  not completion percentages. At that historical checkpoint, concept-screen Flutter integration was pending.
 - OFF snapshot remains **24,641 supported India-tagged barcodes**, including
   **4,519 products with accepted direct nutrient values**. These dated counts do
   not measure the Indian retail-market denominator or capture accuracy.
@@ -431,7 +431,15 @@ frontend coalescing/outbox remains a client gate.
   passed separate release gates. Source commit `0c067027c934226fc2cd6880a319128ea26d9ebf`
   passed twenty hosted checks and was published as source-only v0.5.0.
   F08 remains partial; no full ingredient coverage is claimed. No universal score or AI dependency is
-  needed. Capture/search/comparison/client persistence stay in their own scope.
+  needed. Later v0.6.0 adds discovery, and frontend v0.1.0 implements manual reports and local persistence; capture/comparison remain in subsequent scope.
+- Released v0.6.0 advances the backend to **9 ready, 2 partial, 3 planned**
+  original groups, plus **6 client-owned groups**. Source commit
+  `c5fa883214b1448332f7c2465f8a063430279459` passed 863 tests with five emulator-only
+  skips and 23 hosted checks before separate source-only publication. Search keeps
+  bounded Unicode candidates, exact barcode selection and snapshot-bound cursors.
+- Frontend v0.1.0+2 implements manual barcode/name lookup, corrected current-label
+  entry, sourced reports, local saved/history and persistent light-default appearance.
+  Its final rendered/release gates remain pending; no native/capture proof is inferred.
 - No custom model, training or Gemini inference is implemented.
 
 

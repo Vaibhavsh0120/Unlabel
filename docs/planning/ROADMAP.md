@@ -1,27 +1,26 @@
 # Implementation roadmap
 
-The Flutter v0.0.0+1 starter and manual mobile workflow remain unchanged.
-Backend v0.1.0–v0.3.0 independently delivered live lookup, confirmed normalization,
-India acquisition/verified hosted rich facts and seven reviewed numerical claims.
-Released **v0.4.0 Community Product Catalogue** is implemented with four additive
-routes, automatic observation save/dedup, private staging, qualified candidate
-facts, conflict review and per-field source resolution. Firebase Unlabel has its
-first Standard database `unlabel` in Mumbai with free tier/no billing, anonymous
-Auth and denied direct client access. It was independently pushed, hosted-verified and published;
-[sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) retain exact evidence. [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md) · [Current v0.5.0 review](BACKEND_V0_5_0_REVIEW.md).
+Checkpoint **7 October 2026**: backend **v0.6.0 Product Discovery** is independently
+published with 863 backend tests passed, five emulator-only skips and 23 hosted
+checks. Historical v0.5.0/v0.4.0 remain independently published. Frontend
+**v0.1.0+2 Connected Label Reader** implements manual lookup, correction, reports,
+local saved/history and light-default appearance; final rendered/release gates
+remain pending. [Current plan](CONNECTED_RELEASE_PLAN.md) ·
+[Review](BACKEND_V0_6_0_REVIEW.md) · [Tracker](FEATURE_TRACKER.md).
 
-Released **v0.5.0 Useful Label Report** passed independent review, push and hosted checks:
-F06/F12 are ready, while F08 stays partial. They unify sourced
-findings, three reviewed English/Hindi ingredient name/function entries and declared
-4 g/cube sugar visualization using existing
-normalization/claim engines. Twenty hosted checks and source-only publication passed after the separate v0.4.0 release.
-No universal score or Gemini dependency is required.
-v0.6.0 discovery and v0.7.0 comparison remain proposals in the
-[master plan](MASTER_PLAN.md). Camera/OCR/correction, anonymous background save,
-source/status displays and local history/saved/preferences need frontend work.
-Coverage remains unverified; the [tracker](FEATURE_TRACKER.md) retains the original
-20 groups plus supporting C01. No separate Share action is required.
+Next accepted **backend v0.7.0/frontend v0.2.0** adds optional scanner login/profile
+and private sync after login. Guests retain useful local workflows. Complete the
+reference-style light/dark screens one at a time, beginning with a cute first-launch
+Welcome and Home, and give every visible action a working destination. The local
+Welcome completion flag sends returning users directly to Home. Comparison and
+reviewed insight destinations require sourced facts and honest missing states.
+[Next accepted plan](ACCOUNT_SYNC_SCREEN_PLAN.md).
 
+Keep automatic public product observations separate from private personal sync.
+Firebase remains free/no linked billing; no admin/reviewer app role, custom model,
+Gemini requirement or universal score. Camera/OCR/native/device validation is a
+separate measured gate. The broad phases below describe remaining architecture,
+not completion claims.
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |

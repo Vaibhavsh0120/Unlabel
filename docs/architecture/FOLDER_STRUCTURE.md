@@ -4,16 +4,16 @@ The root is the shared product repository. It coordinates the frontend, backend,
 
 | Root folder | Use |
 | --- | --- |
-| frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.4.0 product/nutrition/claims, immutable OFF facts and automatic community observations/resolution; hosted-verified and published |
+| frontend | The single Flutter Android/iOS/web app; v0.1.0+2 connected manual flows implemented, final rendered/release gates pending |
+| backend | FastAPI v0.6.0 product/nutrition/claims/report/discovery plus immutable OFF facts and community observations; independently hosted-verified and published |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
-| design | Supplied concept references and reserved shared tokens/assets; palette undecided |
+| design | Selected white/forest/mint references, later dark brief and reserved shared tokens/assets |
 | ai | Optional dataset/experiment/evaluation/export/hosting research |
 | scripts | Setup/local launcher, encrypted env recovery, catalogue acquisition/import and contract/dependency maintenance |
 | docs | Architecture, planning, source research and decisions |
-| .github/workflows | Manual APK/unsigned IPA build and release |
+| .github/workflows | Manual APK/unsigned IPA checks/build/release; separate source/web component releases |
 
 Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore protects secrets/generated/private data; .editorconfig standardizes text conventions.
 
@@ -22,25 +22,26 @@ Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore prote
 | Path | Responsibility |
 | --- | --- |
 | lib/main.dart | Flutter entry point |
-| lib/app | App composition, appearance state and injected build metadata |
-| lib/core/models | Future shared scan/coordinate/nutrient/result models |
+| lib/app | App composition, real Material 3 theme, persistent light-default appearance, web appearance bridge and public build/Firebase configuration |
+| lib/core/models | Implemented validated report/search/failure models and corrected label draft; capture geometry remains reserved |
 | lib/core/camera, ocr | Future native/browser capture, OCR and geometry adapters |
 | lib/core/analysis, knowledge | Future report models/presentation, evidence/version status and optional local glossary |
-| lib/core/network, storage | Future API adapter and device/browser-local preferences/history |
+| lib/core/network, storage | Implemented bounded HTTP/metadata handshake, lazy anonymous auth and bounded local saved/history/appearance storage |
 | lib/core/localization, theme, widgets | Future bilingual copy, semantic light/dark roles and shared widgets |
-| lib/features/scanner | Capture/correction flow; currently the starter screen only |
+| lib/features/scanner | Implemented Home, lookup, manual corrected entry, report/ingredient detail and saved/history pages; camera/OCR pending |
 | lib/features/analysis | Future findings, evidence and charts |
 | lib/features/preferences | Future local dietary/allergy choices |
 | lib/features/ingredient_details | Future ingredient explanations and source details |
-| lib/features/history, comparison | Future saved scans and compatible-basis comparisons |
+| lib/features/history, comparison | Reserved feature modules; current saved/history lives in scanner/presentation; comparison is next accepted scope |
 | features/*/presentation | Views/view models |
 | features/*/data | Feature repositories/adapters |
 | android | Generated Android Gradle, manifest and resources |
 | ios | Generated Xcode project, orientations and resources |
-| web | Generated Flutter web bootstrap/manifest/icons, not React |
-| assets/images, icons | Future licensed visual assets |
+| web | Flutter web bootstrap, appearance.js and light/dark favicon/touch/manifest icons; not React |
+| assets/images, icons | Bundled licensed Solar feature icons; image art remains next screen scope |
+| assets/brand | Authored light/dark app-icon masters, verification manifest and generated native/web resources |
 | assets/knowledge, l10n | Future derived bundles and reviewed bilingual content |
-| test/unit, test/widget | Reserved focused tests; starter checks at test/widget_test.dart |
+| test/unit, test/widget | Current core_data_test.dart, label_entry_test.dart and widget_test.dart cover data/form/responsive behavior; nested folders remain reserved |
 | integration_test | Reserved real-device journeys |
 | config | Non-secret backend/environment policy |
 
@@ -52,7 +53,7 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | App composition/lifespan, eighteen released v0.5.0 routes; independent source activation and redacted failures; published v0.4.0 has fifteen routes |
+| app/main.py | App composition/lifespan, nineteen released v0.6.0 routes; independent source activation and redacted failures; historical routes/components preserved |
 | app/reports/, app/api/v1/reports.py | Implemented current/historical report composition, independent storage outcomes, original-basis sugar cubes and bounded three-entry glossary |
 | app/api/v1/claims.py | Implemented confirmed claim checks, loaded rules and public evidence metadata |
 | app/claims | Strict claim models, numerical engine, bounded reviewed knowledge loader and receipt-verified bundle builder |
@@ -61,7 +62,8 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 | app/schemas/products.py | Unchanged strict product lookup v1 contract and OFF provenance |
 | app/schemas/nutrition.py, nutrition_products.py | Confirmed nutrient rows, basis/unit validation, snapshots and separate origin wrappers |
 | app/catalogue/models.py, status.py | Export-origin identity/manifest contracts and typed source-age/artifact status |
-| app/catalogue/importer.py, store.py | Bounded staged imports and exact indexed read-only lookup |
+| app/catalogue/importer.py, store.py | Bounded staged imports, optional discovery indexes and exact read-only barcode lookup |
+| app/catalogue/search.py | Bounded indexed Unicode exact-token/final-prefix discovery, candidate states and snapshot-bound cursors |
 | app/catalogue/bundle.py | Validate tracked bundle, generate/verify SQLite receipt and reject damaged deployment artifacts |
 | build_catalogue.py | Networkless Vercel/local build entrypoint for generated catalogue plus approved claim-knowledge bundle; stdout has both receipts |
 | app/catalogue/data | Ignored build-generated immutable SQLite/receipt; included in the hosted function after validation |
@@ -75,7 +77,7 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 | tests/unit, integration | Product/provider/API and nutrition/bounds/contract regression tests |
 | storage/runtime | Ignored local stores/cache, never durable Vercel storage |
 
-backend/.env.example documents implemented settings; ignored backend/.env holds local values. pyproject.toml and requirements files declare the runnable service. backend/vercel.json, .python-version and .vercelignore configure hosted packaging. frontend/vercel.json and tool/vercel-build.sh supply the pinned release web build; Flutter source/version are unchanged.
+backend/.env.example documents implemented settings; ignored backend/.env holds local values. pyproject.toml and requirements files declare the runnable service. backend/vercel.json, .python-version and .vercelignore configure hosted packaging. frontend/vercel.json and tool/vercel-build.sh supply the pinned release web build; Frontend v0.1.0+2 has separate source/web release gates; backend publication never rebuilds native assets.
 
 ## Knowledge and shared inputs
 
@@ -88,22 +90,22 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Released eighteen-route v0.5.0 OpenAPI, four report/glossary schemas and 22 validated synthetic examples; community/resolved/claim/catalogue/nutrition models and historical exports preserved |
+| contracts/schemas, examples | Current nineteen-route v0.6.0 OpenAPI, additive discovery schema and 24 validated synthetic examples; report/community/resolved/claim/catalogue/nutrition models and historical exports preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
 
 ## Design, AI and docs
 
-design/tokens and assets reserve shared future roles/branding. ai/datasets, experiments, evaluation, export and spaces reserve optional AI research; no data/model/training exists. scripts/export_backend_contracts.py regenerates current backend contracts and synthetic examples without overwriting historical OpenAPI/product v1. The combined build now validates/packages the approved claim/evidence JSON; later glossary tools remain planned. No regulation scraping runs per scan.
+design/tokens and assets reserve shared future roles/branding. ai/datasets, experiments, evaluation, export and spaces reserve optional AI research; no data/model/training exists. scripts/export_backend_contracts.py regenerates current backend contracts and synthetic examples without overwriting historical OpenAPI/product v1. The combined build now validates/packages the approved claim/evidence JSON; the current three-entry report glossary is implemented; broader glossary coverage remains planned. No regulation scraping runs per scan.
 
 docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
 
-Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; broader health analysis remains future work. The seven-rule claim scope and three-source registry are populated; broader ingredient/allergen folders remain reserved; released v0.5.0 has a separate three-entry name/function glossary under `app/reports/`. No model is trained.
+Empty future folders use .gitkeep. Reserved folders are not implemented features. The connected manual Flutter client, FastAPI product/nutrition/report/discovery service, Vercel web build and manual mobile workflow execute; capture/OCR, optional login/private sync and broader suitability remain subsequent scope. The seven-rule claim scope and three-source registry are populated; broader ingredient/allergen folders remain reserved; released v0.5.0 has a separate three-entry name/function glossary under `app/reports/`. No model is trained.
 
 `data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.3 source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).
 
-Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/cloud/hosted gates are in the [v0.5.0 review](../planning/BACKEND_V0_5_0_REVIEW.md); the claim knowledge remains unchanged.
+Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/hosted gates are in the [v0.6.0 review](../planning/BACKEND_V0_6_0_REVIEW.md); unchanged cloud proof stays in v0.4.0 and report proof in v0.5.0; the claim knowledge remains unchanged.
 
 `backend/app/community/` contains strict observations, normalization/hashes,
 resolver, Firebase authentication and transactional storage. Its four HTTP routes

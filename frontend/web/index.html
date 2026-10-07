@@ -24,15 +24,18 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Unlabel">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link id="unlabel-touch-icon" rel="apple-touch-icon" href="icons/apple-touch-light.png">
+  <meta id="unlabel-theme-color" name="theme-color" content="#F6FBF8">
+  <meta name="color-scheme" content="light dark">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link id="unlabel-favicon" rel="icon" type="image/png" href="favicon-light.png"/>
 
   <title>Unlabel</title>
-  <link rel="manifest" href="manifest.json">
+  <link id="unlabel-manifest" rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script src="appearance.js"></script>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader

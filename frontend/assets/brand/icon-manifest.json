@@ -1,0 +1,298 @@
+{
+  "version": "unlabel-leaf-wordmark-v2",
+  "default": "light",
+  "files": [
+    {
+      "path": "frontend/assets/brand/app-icon-light.svg",
+      "sha256": "fb42712915c1c5d9a87c87fbbfd66ec5870984d70ff05dffd8e76fd9ad1cdfe1"
+    },
+    {
+      "path": "frontend/assets/brand/app-icon-light.png",
+      "sha256": "66848303464c949cd0979abc36e139f4b520dc64986d271cb956a27b9550e17c",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "frontend/assets/brand/app-icon-dark.svg",
+      "sha256": "33833e68bf8e98b6dc823dc50b92932955acb6c7805544aae6bc4cab50256a85"
+    },
+    {
+      "path": "frontend/assets/brand/app-icon-dark.png",
+      "sha256": "adc9752050e9f5f444efb18be4b426642a32baaaa67fa4f2c05da024f38b7347",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "frontend/ios/Runner/Assets.xcassets/AppIcon.appiconset/AppIcon-Light.png",
+      "sha256": "66848303464c949cd0979abc36e139f4b520dc64986d271cb956a27b9550e17c",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "frontend/ios/Runner/Assets.xcassets/AppIcon.appiconset/AppIcon-Dark.png",
+      "sha256": "0a288eb7471eb5caee04842356b7128744499050f64df5e2c9838ec5614b12f2",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "frontend/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "sha256": "1c362bf668814c3bb1b4dde8a0b1729a4159b8ec2de7b4d622556e206a2500f9"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "sha256": "5ce0192c9a94306d9025c5885d1c1d2e1f127fefd275795b6dd795578d000b21",
+      "size": [
+        48,
+        48
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-night-mdpi/ic_launcher.png",
+      "sha256": "a6339eb4c46fce59c1114b80120601af69d466a84aaf209d1ab7d5eefaed1247",
+      "size": [
+        48,
+        48
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "sha256": "4ec8a6fa0d187210688ab992b78646b4ff84e3112aa5b02af7eb95fa17370db7",
+      "size": [
+        72,
+        72
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-night-hdpi/ic_launcher.png",
+      "sha256": "aa9b93981a69ae251953296429fd1307e31271eea3299643f594aaf6a8ea996a",
+      "size": [
+        72,
+        72
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "sha256": "db8667ce329325a047fe5d4dd1e6eac7a2abf70c931ca468e8c6c183d455972a",
+      "size": [
+        96,
+        96
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-night-xhdpi/ic_launcher.png",
+      "sha256": "2168bb5b5a6499b85449c7e070d78db88e8fb5de3a33f5196e3275a30c598687",
+      "size": [
+        96,
+        96
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "sha256": "4a07b0155827a2fc5e1af698acbc2f49d12713436949d028fa1992ccbaf86c20",
+      "size": [
+        144,
+        144
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-night-xxhdpi/ic_launcher.png",
+      "sha256": "ad5b7e5ee513c95480f6365784a8067a11693f1cac12d170acd7369190c0469c",
+      "size": [
+        144,
+        144
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "sha256": "41a1344dc86be0a84644728992b956feb2236562532ebd87627beaa88ba1a954",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-night-xxxhdpi/ic_launcher.png",
+      "sha256": "86a0a70d47eb58d95928052bdf05c6b7492e867271365b75ec903a7409fddf83",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/android/app/src/main/res/drawable/ic_launcher_foreground.xml",
+      "sha256": "5530755caba430ad16cbb04def36510888a4e2bbd45524e862560f43a79ea657"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/drawable/ic_launcher_monochrome.xml",
+      "sha256": "e020f3cc6b8134a1185bc13ccf9c32c9fc607c5e9ff692f8a1075ab2507f1274"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/values/icon_colors.xml",
+      "sha256": "159661b71fbbc0990aa55a2ba509b64fe71ac64df2c890a53addbae0f0d9cb9f"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/values-night/icon_colors.xml",
+      "sha256": "55917af42342aa3ea93b76fd654faf8abcb7f31e9cc29ebcb636ef1c23b5f5ed"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+      "sha256": "bb4100ad593d6cb258a946f115ce425ae8bf62c4c58639a32739e6a4d2eab3d9"
+    },
+    {
+      "path": "frontend/android/app/src/main/res/mipmap-anydpi-v33/ic_launcher.xml",
+      "sha256": "f63b8fda6a2f00a89f987f42b65b8dc42959d34d2801f96f2667e6aa3ac26312"
+    },
+    {
+      "path": "frontend/web/favicon-light.png",
+      "sha256": "1adeccdbeafe87eaf1c47cbb2967dc46816beebda9678b38219253869e2c6470",
+      "size": [
+        32,
+        32
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-light-192.png",
+      "sha256": "41a1344dc86be0a84644728992b956feb2236562532ebd87627beaa88ba1a954",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-light-192.png",
+      "sha256": "41a1344dc86be0a84644728992b956feb2236562532ebd87627beaa88ba1a954",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-light-512.png",
+      "sha256": "b8849c4b27d5d974be78ab331664b556b9ccc1da9ca24382d0de6e3cb45c69c8",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-light-512.png",
+      "sha256": "b8849c4b27d5d974be78ab331664b556b9ccc1da9ca24382d0de6e3cb45c69c8",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/web/icons/apple-touch-light.png",
+      "sha256": "73bf51a9a0fd99a33733f62723bf91472addae9bd1a10a8227437e4a1eefaddc",
+      "size": [
+        180,
+        180
+      ]
+    },
+    {
+      "path": "frontend/web/favicon-dark.png",
+      "sha256": "e9ffd7a9b8e4a285fa0ad71375110bb32d691f0b6019a9341fdf993777c7a35e",
+      "size": [
+        32,
+        32
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-dark-192.png",
+      "sha256": "86a0a70d47eb58d95928052bdf05c6b7492e867271365b75ec903a7409fddf83",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-dark-192.png",
+      "sha256": "86a0a70d47eb58d95928052bdf05c6b7492e867271365b75ec903a7409fddf83",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-dark-512.png",
+      "sha256": "b133a4818376d1d70ecf46a225a1014e5f68f6caab91970dc9c2d4280171b092",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-dark-512.png",
+      "sha256": "b133a4818376d1d70ecf46a225a1014e5f68f6caab91970dc9c2d4280171b092",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/web/icons/apple-touch-dark.png",
+      "sha256": "ff36682d4233791c4edaae282e789604e4958d1e0e5c40885c57f382cc0aa6d5",
+      "size": [
+        180,
+        180
+      ]
+    },
+    {
+      "path": "frontend/web/favicon.png",
+      "sha256": "1adeccdbeafe87eaf1c47cbb2967dc46816beebda9678b38219253869e2c6470",
+      "size": [
+        32,
+        32
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-192.png",
+      "sha256": "41a1344dc86be0a84644728992b956feb2236562532ebd87627beaa88ba1a954",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-192.png",
+      "sha256": "41a1344dc86be0a84644728992b956feb2236562532ebd87627beaa88ba1a954",
+      "size": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-512.png",
+      "sha256": "b8849c4b27d5d974be78ab331664b556b9ccc1da9ca24382d0de6e3cb45c69c8",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/web/icons/Icon-maskable-512.png",
+      "sha256": "b8849c4b27d5d974be78ab331664b556b9ccc1da9ca24382d0de6e3cb45c69c8",
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "frontend/assets/brand/fonts/Nunito-Variable.ttf",
+      "sha256": "bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207"
+    },
+    {
+      "path": "frontend/assets/brand/fonts/OFL.txt",
+      "sha256": "ee9491ad3ea5d390878695bd6cce49beb3cacd5c4312f8ab574b541e9f7afa21"
+    }
+  ]
+}

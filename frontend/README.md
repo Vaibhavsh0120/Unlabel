@@ -1,47 +1,86 @@
 # Flutter frontend
 
-One Flutter application lives directly here: lib, android, ios and web. It targets Android, iPhone/iPad and the website. The backend is a separate FastAPI application and Vercel project.
+Frontend **0.1.0+2 — Connected Label Reader** replaces the starter with a working
+Flutter client. Backend **0.6.0 — Product Discovery** adds bounded catalogue
+search and is independently published with 23 hosted checks after v0.5.0. Local implementation is present; final layout/test, browser, publication and native-device evidence are separate gates in
+the [connected release plan](../docs/planning/CONNECTED_RELEASE_PLAN.md).
 
-Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. Backend: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)**. Vercel project `unlabel-frontend` uses root `frontend`, `vercel.json`, and `tool/vercel-build.sh` to build release web assets on each `main` push. This hosting configuration leaves the Flutter app at **v0.0.0+1**. See [deployment settings](../docs/planning/VERCEL_SETUP.md) for environment, verification state and preview behavior.
+One application directly in this folder targets Android, iOS and web. The
+website is [unlabel-india.vercel.app](https://unlabel-india.vercel.app); its shared
+API is [unlabel-api.vercel.app](https://unlabel-api.vercel.app). These are separate
+Vercel projects. See [deployment settings](../docs/planning/VERCEL_SETUP.md).
 
-## What works now
+## What works
 
-A responsive, honest starter screen with the Unlabel tagline and a System/Light/Dark appearance selector. Native/platform files and dependency lockfile exist. The stock Material appearance is temporary; the brand palette is undecided. No camera, OCR, analysis or API request is implemented.
+- Manual barcode lookup and name/brand search, with explicit candidate selection,
+  bounded pagination, loading, misses, refinement and recoverable failures.
+- A manual current-label form: identity, printed ingredients/allergen declarations,
+  nutrient rows, table basis/preparation and front claims. Blank values remain
+  unknown. The person confirms facts and front/back pairing before analysis.
+- Sourced current and dated historical reports, original nutrition bases,
+  approximate sugar cubes, reviewed claim states and three English/Hindi
+  ingredient-function entries. No invented score or allergy-safe verdict.
+- Automatic structured-fact storage through anonymous scanner authentication.
+  Analysis remains available when authentication or storage fails. There is no
+  Share flag or admin/reviewer account.
+- Device/browser-local recently viewed history and explicit bookmarks, removal,
+  history clearing, bounded storage and readable persistence/recovery errors.
+- White/forest/mint Material 3 appearance, Light (default)/Dark/System selection, reflow for
+  narrow screens and large text, and locally bundled Solar icons with attribution.
 
-From this directory, use:
+Camera, image selection/OCR, live highlighting, comparison, personal suitability
+and insight feeds remain future work. There are no non-working buttons for them.
+A stored report can be reopened without a fresh API request while the app is
+loaded; first-visit offline website availability is not established.
+
+The [next accepted v0.7.0/v0.2.0 plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md)
+adds first-launch Welcome, complete reference-style light/dark screen destinations
+and optional scanner login/private sync. This does not change the current
+v0.1.0 boundary: personal data stays local, and public package facts save separately.
+
+## Run and check
+
+From the repository root:
+
+~~~sh
+python scripts/setup.py
+python scripts/run_local.py
+~~~
+
+From this folder, use the pinned Flutter **3.47.4** toolchain:
 
 ~~~sh
 flutter pub get
-flutter run
 flutter analyze
 flutter test
 flutter build web --release
-flutter build apk --release
 ~~~
 
-Use Flutter **3.47.4** for the current lockfile/manual release workflow. A web run can use a supported browser target. iOS builds require macOS/Xcode; the release workflow produces an unsigned device IPA, not an installable signed distribution.
+The launcher supplies the local backend URL and release metadata. The default
+public backend is production HTTPS. [Configuration policy](config/README.md)
+describes endpoint and Firebase settings. Native APK/unsigned-IPA workflows
+remain manual; web/widget checks do not prove camera behavior or an installable
+iOS distribution.
 
-## Folder ownership
+## Source ownership
 
-| Folder | Responsibility |
+| Path | Current responsibility |
 | --- | --- |
-| lib/app | App composition, appearance state and non-secret build metadata |
-| lib/core/models | Shared scan/result/coordinate models |
-| lib/core/camera, ocr | Future platform adapters: native ML Kit, browser OCR worker |
-| lib/core/analysis, knowledge | Future report models/presentation, evidence status and optional bundled glossary lookup |
-| lib/core/network, storage | Future backend adapter and device/browser-local persistence |
-| lib/core/localization, theme, widgets | Future bilingual copy, semantic tokens and shared widgets |
-| lib/features/*/presentation | Views and view models; scanner currently contains the starter screen |
-| lib/features/*/data | Future feature repositories/adapters |
-| android, ios | Generated native platform projects |
-| web | Flutter's website platform files, not a second frontend app |
-| assets/knowledge, l10n, images, icons | Future versioned bundles/translations/assets |
-| test | Starter layout/theme checks; future feature tests |
-| integration_test | Reserved physical-device journeys |
-| config | Non-secret client configuration policy |
+| lib/app | Composition, Material 3 theme, appearance and public build/Firebase configuration |
+| lib/core/models | Validated report/search display models and confirmed-label draft |
+| lib/core/network | Bounded HTTP, capability/version handshake and anonymous scanner Auth |
+| lib/core/storage | Bounded private local reports, bookmarks and appearance preferences |
+| lib/features/scanner/presentation | Home, lookup, label entry, reports, ingredient details, saved/history views and shared widgets |
+| assets/brand | Authored light/dark app-icon masters, generated platform assets and verification manifest |
+| assets/icons | Bundled Solar feature icons and their attribution/license |
+| test | Network/model/storage, form and responsive interaction regressions |
+| android, ios, web | Platform projects for the same Flutter application |
 
-The app is online-first: Open Food Facts supplies primary product data through FastAPI, and the backend applies reviewed rules. No Dart rule evaluator is required for the MVP. Offline features cover saved dated results, local preferences and an optional small glossary; fresh analysis requires the backend. These are plans, not implemented starter capabilities.
+Reserved camera/OCR, preference/comparison, knowledge and localization folders
+remain plans. The backend owns deterministic criteria; the client does not
+reimplement FSSAI thresholds or train a model.
 
-Native OCR requires platform integration later; its Flutter ML Kit wrapper is mobile-only. Web OCR/caching must be implemented explicitly and measured in real browsers. A first website visit cannot work without loading its assets.
-
-See [UI requirements](../docs/planning/UI_REQUIREMENTS.md), [data flow](../docs/architecture/DATA_FLOW.md), [API plan](../docs/architecture/API_PLAN.md) and [release/versioning](../docs/planning/RELEASE_VERSIONING.md).
+[UI requirements](../docs/planning/UI_REQUIREMENTS.md) ·
+[Data flow](../docs/architecture/DATA_FLOW.md) ·
+[API contracts](../contracts/README.md) ·
+[Release/versioning](../docs/planning/RELEASE_VERSIONING.md)

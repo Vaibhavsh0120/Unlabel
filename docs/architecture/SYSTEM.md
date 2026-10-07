@@ -1,17 +1,17 @@
 # System architecture
 
-Updated **7 October 2026**. Production **v0.5.0 Useful Label Report** was
-independently reviewed, pushed, hosted-verified and published after v0.4.0.
-Eighteen APIs preserve lookup/normalization/claims and automatic observations,
-adding current/historical reports, approximate sugar cubes and three reviewed
-English/Hindi ingredient functions. Facts retain their sources, dates, unknowns
-and conflicts. Flutter **0.0.0+1** remains a starter; camera/OCR, background saving
-and report UI need frontend integration. Firebase Unlabel's first Standard
-`unlabel` database in Mumbai retains its free tier, no linked billing, anonymous
-Auth and denied direct client access.
-[Master plan](../planning/MASTER_PLAN.md) · [Current release evidence](../planning/BACKEND_V0_5_0_REVIEW.md)
-· [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json).
-[Report architecture](LABEL_REPORT.md).
+Updated **7 October 2026**. Backend **v0.6.0 Product Discovery** is independently
+pushed, hosted-verified and published after the separate v0.5.0/v0.4.0 releases.
+Nineteen routes preserve old contracts and add bounded dated identity search.
+Frontend **0.1.0+2 Connected Label Reader** implements manual barcode/name lookup,
+current/historical reports, corrected input and device-local libraries. Its
+rendered/release gates are tracked separately; camera/OCR remains future scope.
+Light is the first-use default; saved Light/Dark/System choice stays local.
+Personal history/preferences/saved lists stay on-device. Only public package facts
+use automatic anonymous-authenticated catalogue storage; no reviewer/admin app
+accounts. Firebase retains free tier/no linked billing.
+[Master plan](../planning/MASTER_PLAN.md) · [Backend review](../planning/BACKEND_V0_6_0_REVIEW.md)
+· [Connected plan](../planning/CONNECTED_RELEASE_PLAN.md).
 
 ## Product and delivery boundary
 
@@ -115,7 +115,7 @@ revisions stay unselected. [Community catalogue](COMMUNITY_CATALOGUE.md)
 · [Privacy](../SAFETY_PRIVACY.md).
 
 
-The starter/workflow does not prove OCR quality, saved-content caching, legal criteria, live providers, hosted behavior or dietary suitability. Validate those during implementation.
+Widget/source checks and the current workflow do not prove OCR quality, native device behavior or dietary suitability. Current backend hosted evidence is recorded separately; local saved reports retain their date. Validate each new capture/sync flow during its implementation.
 
 The independently released v0.2.3 slice provides the unchanged export-origin rich-facts catalogue: complete official JSONL stream -> bounded tracked India projection -> verified build-time SQLite/receipt. The separate facts route preserves direct nutrition sources, tag availability, optional record dates and official image attribution. Legacy aggregate nutrients remain unavailable as direct evidence; no image bytes are bundled. It does not replace the live OFF product/nutrition routes or fetch OFF on a snapshot miss. `/v1/catalogue` and metadata expose manifest, artifact summary, field limits and freshness based on the source export date. Manual replacement is every nine calendar months through reviewed source changes and a new immutable deployment, with previous-deployment rollback. Coverage remains unverified. [Implemented catalogue workflow](CATALOGUE.md).
 

@@ -1,10 +1,10 @@
 # Clone, restore, run
 
-Published backend **v0.5.0** implements reports and a partial ingredient glossary
-after the separately verified v0.4.0 community catalogue. Both passed independent
-review, push, hosted checks and source-only publication. Flutter stays **0.0.0+1**.
-OFF snapshot and reviewed claims work independently of Firebase. Camera/OCR and
-client background requests remain frontend work. [Master plan](MASTER_PLAN.md).
+Backend **v0.6.0 Product Discovery** is independently published and hosted-verified.
+Frontend **0.1.0+2** connects manual barcode/name lookup, reports and corrected
+label entry. Personal saved/history/preferences stay local; only public package
+facts use automatic catalogue storage. Light is the default; camera/OCR remains
+future work. [Connected plan](CONNECTED_RELEASE_PLAN.md).
 
 ## Quick start
 
@@ -72,7 +72,7 @@ Explicit decryption refuses existing plaintext unless `--force` is supplied. It 
 
 ## Run and exit
 
-Open **http://127.0.0.1:7357** for the starter and **http://127.0.0.1:8000/docs** for the API. The runner checks occupied ports, waits for backend readiness, uses the restored catalogue with `CATALOGUE_REQUIRE_RECEIPT=false` for that local index, and supplies exact local CORS origins through process-only overrides. It passes `BACKEND_BASE_URL` to Flutter without rewriting `.env`; the starter has no API interaction yet. Press **Ctrl+C** to stop owned services. A failed service stops the others.
+Open **http://127.0.0.1:7357** for the app and **http://127.0.0.1:8000/docs** for the API. The runner checks occupied ports, waits for backend readiness, uses the restored catalogue with `CATALOGUE_REQUIRE_RECEIPT=false` for that local index, and supplies exact local CORS origins through process-only overrides. It passes `BACKEND_BASE_URL` to Flutter without rewriting `.env`; the app checks capabilities before requests and uses local version/build metadata. Press **Ctrl+C** to stop owned services. A failed service stops the others.
 
 ~~~powershell
 ./scripts/run-local.ps1 -Scope backend

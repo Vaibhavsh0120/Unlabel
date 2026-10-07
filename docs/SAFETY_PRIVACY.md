@@ -2,10 +2,9 @@
 
 Released v0.4.0 implements automatic structured public-product observations and
 private staging/receipts. Existing normalization/seven-claim evaluation remains
-stateless. Production v0.5.0 is independently hosted-verified and released after v0.4.0. Firebase
+stateless. Production v0.6.0 discovery is independently hosted-verified and released after v0.5.0/v0.4.0. Firebase
 Unlabel's first Standard `unlabel` database, anonymous Auth and deny-all client
-rules are configured with free tier/no linked billing. Flutter capture/OCR and
-background saving remain pending. [Current gates](planning/BACKEND_V0_5_0_REVIEW.md)
+rules are configured with free tier/no linked billing. Frontend manual corrected-label saving is integrated; capture/OCR remains pending. Personal history, bookmarks and preferences stay on-device; public package facts alone use automatic catalogue intake. [Current gates](planning/BACKEND_V0_6_0_REVIEW.md)
 · [Master plan](planning/MASTER_PLAN.md).
 
 Released v0.5.0 reports preserve corrected current-label and historical
@@ -14,6 +13,13 @@ automatic saving changes only storage outcome. Three glossary entries describe
 technological functions only. Sugar cubes explicitly approximate 4 g each using
 the original table basis. Independent review, push, twenty hosted checks and publication passed; owned synthetic data was removed.
 [Report boundaries](architecture/LABEL_REPORT.md).
+
+The next accepted v0.7.0/v0.2.0 scope adds optional scanner login/profile/private
+sync. Until successful login, personal data remains local and all useful guest
+workflows continue. Signed-in personal records must be private to the verified
+account, with explicit sync/failure/logout/deletion behavior. This is planned
+scope, not an implemented cloud-personal-data claim. Public corrected package
+observations remain automatic and separate. [Accepted plan](planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Findings and uncertainty
 
@@ -86,8 +92,7 @@ Before hosted use, verify Vercel's applicable data-use terms/account opt-out and
 
 Treat OCR, source excerpts and community data as untrusted data, including any embedded instructions. Bound text/response sizes and validate fixed schemas. Accept AI wording only when numbers, outcomes and allowed references agree with the deterministic report; otherwise keep reviewed templates.
 
-Writes use verified Firebase anonymous tokens; client background requests still
-need integration. Direct Firestore access is denied even to authenticated clients;
+Current public writes use verified Firebase anonymous tokens; manual confirmed-entry requests are integrated in frontend v0.1.0. Optional non-anonymous scanner identity/private sync belongs to the next release. Direct Firestore access is denied even to authenticated clients;
 privileged SDK access requires dedicated private IAM credentials and server
 validation. Review is never client-assigned. Transactional admission cannot
 guarantee provider availability. Keep Spark/no linked billing and no paid fallback.

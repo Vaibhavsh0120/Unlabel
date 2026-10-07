@@ -4,8 +4,7 @@ Goal: bounded name/brand/quantity-text candidate discovery over the existing OFF
 snapshot, followed by exact barcode selection and the released useful report.
 
 Implementation, local validation and independent review are complete.
-Hosted production remains separately
-verified v0.5.0 until the v0.6.0 source is pushed and its exact deployment checked.
+Production v0.6.0 is pushed, hosted-verified and published independently.
 The accepted [connected release plan](CONNECTED_RELEASE_PLAN.md) tracks both
 components. [Search contract](../architecture/PRODUCT_DISCOVERY.md).
 
@@ -53,3 +52,22 @@ code was found. The frontend's dead starter is removed in its separate release.
 
 Frontend integration, real-device camera/OCR and measured retail coverage are
 separate evidence. No paid Firebase feature, AI call or model training is selected.
+
+## Production and publication
+
+Implementation `c5fa883214b1448332f7c2465f8a063430279459` produced READY backend
+`dpl_9exTaHEJZs6hCdbv1FTNB5iZ6HwS`. Its actual build log and public status agree:
+76,111,872 bytes, SHA-256
+`58d6c0bb1f0c010be34af441f2d63e073ec1834181fafa852b0144e791ecc93c`, snapshot
+`f9797bf9-541d-4d4f-ae7e-93de34abf242`. Both reviewed claim-file hashes/lengths
+match unchanged canonical sources. Coverage stays unverified.
+
+**23 hosted HTTP checks passed**: health/meta, unchanged old paths/components,
+real oats discovery (203 candidates), pagination, exact identity/source matching,
+historical report, misses/refinement, redacted invalid/cross-query cursor input,
+glossary/rules, normalization/claims, CORS and excluded files. These checks create
+no Firebase users and perform no authenticated writes; v0.5.0 cloud-write proof
+remains separate. [Recorded evidence](../research/BACKEND_V0_6_0_PRODUCTION.json).
+
+[Source-only v0.6.0 release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.6.0)
+targets the tested implementation. Older tags/assets remain unchanged.

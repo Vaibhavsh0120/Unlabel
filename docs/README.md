@@ -1,26 +1,36 @@
 # Documentation map
 
-Production **v0.5.0 Useful Label Report** is independently reviewed, pushed,
-hosted-verified and published after v0.4.0. Eighteen routes provide automatic
-structured observations, sourced current/historical reports, approximate sugar
-cubes and a partial three-entry glossary. Current exports include four added
-schemas and 22 validated synthetic examples. Flutter remains **0.0.0+1** with
-concept-screen integration pending. Firebase Unlabel's first Standard database
-`unlabel` in Mumbai stays on its free tier with anonymous Auth, denied direct
-client access and no linked billing. Historical exports and source-only release
-records stay intact. [Twenty hosted checks](research/BACKEND_V0_5_0_PRODUCTION.json)
-verified reports, real anonymous saving/retry, historical evidence, Unicode
-aliases, correction-blocked writes and unchanged source receipts.
+Production **v0.6.0 Product Discovery** is independently reviewed, pushed,
+hosted-verified and published after v0.5.0/v0.4.0. Nineteen routes retain the sourced
+report/community/claims APIs and add bounded Unicode name/brand search. Current
+exports include **24 validated synthetic examples**. The full backend suite passed
+**863 tests**, with **5 emulator-only skips**, and **23 hosted HTTP checks** passed.
+Frontend **0.1.0+2 Connected Label Reader** implements manual lookup, corrected
+label entry, sourced reports and local libraries; final rendered/release checks
+and separate publication remain in progress. Light is the first-use default.
+
+Personal records remain local in the current client; confirmed public package
+facts save automatically. The next accepted backend v0.7.0/frontend v0.2.0 adds
+optional scanner login/private sync and completes the reference-styled screen
+journeys one screen at a time. Firebase's existing Standard database `unlabel`
+remains on its free tier without linked billing. Historical evidence and source
+release boundaries remain intact.
 
 | Document | Read it for |
 | --- | --- |
+| [Current connected release plan](planning/CONNECTED_RELEASE_PLAN.md) | Published backend v0.6.0 and pending frontend v0.1.0+2 component gates |
+| [Next account and screen releases](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) | Accepted v0.7.0/v0.2.0 optional login/private sync and complete light/dark screen journeys |
+| [Interface contract](../DESIGN.md) | Reference visual direction, real components, evidence and accessibility boundaries |
+| [Product Discovery](architecture/PRODUCT_DISCOVERY.md) | Bounded indexed Unicode search, candidate identity and cursor rules |
+| [Backend v0.6.0 review](planning/BACKEND_V0_6_0_REVIEW.md) | Completed 863-test local validation, 23 hosted checks and publication |
+| [Backend v0.6.0 production proof](research/BACKEND_V0_6_0_PRODUCTION.json) | Exact deployed implementation and actual catalogue/knowledge build receipts |
 | [Master architecture plan](planning/MASTER_PLAN.md) | Complete scan-to-report flow, automatic confirmed-public-fact enrichment, per-field source resolution, local OCR and benchmark-gated AI |
 | [Clone, restore, run](planning/LOCAL_DEVELOPMENT.md) | Setup/local-run commands, encrypted settings and committed catalogue recovery |
 | [Recovery review](planning/RECOVERABLE_WORKSPACE_REVIEW.md) | Clean-copy, encryption and local process validation |
 | [System](architecture/SYSTEM.md) | Stack, module boundaries, operating modes and alternatives |
-| [Folder structure](architecture/FOLDER_STRUCTURE.md) | Exact reserved tree and file ownership |
+| [Folder structure](architecture/FOLDER_STRUCTURE.md) | Implemented modules, reserved folders and file ownership |
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
-| [API plan](architecture/API_PLAN.md) | Eighteen local product/claim/community/report/glossary routes and integration boundaries |
+| [API plan](architecture/API_PLAN.md) | Nineteen product/claim/community/report/glossary/discovery routes and integration boundaries |
 | [Ingredient glossary source check](research/INGREDIENT_GLOSSARY_V0_5_0.md) | Three official indexed name/function sources, direct-fetch limitations and English/Hindi project text boundaries |
 | [Useful Label Report](architecture/LABEL_REPORT.md) | Released v0.5.0 current/historical reports, independent autosave, partial ingredient glossary and approximate sugar cubes |
 | [Accepted v0.5.0 design](superpowers/specs/2026-10-07-useful-label-report-design.md) | Confirmed-label/historical report, partial glossary and independent save boundaries |

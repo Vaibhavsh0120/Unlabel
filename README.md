@@ -6,21 +6,42 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.5.0-59636e?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.1.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.6.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
-![Stage](https://img.shields.io/badge/stage-backend%20core-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
-[Architecture](docs/architecture/SYSTEM.md) · [Data workflow](docs/architecture/DATA_FLOW.md) · [Folder guide](docs/architecture/FOLDER_STRUCTURE.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md)
-
-[Website](https://unlabel-india.vercel.app) · [Backend API](https://unlabel-api.vercel.app/v1/meta) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue) · [API docs](https://unlabel-api.vercel.app/docs)
+[Website](https://unlabel-india.vercel.app) · [API](https://unlabel-api.vercel.app/v1/meta) · [API docs](https://unlabel-api.vercel.app/docs)
 
 </div>
 
----
+Unlabel helps people read Indian packaged-food labels using sourced facts,
+reviewed claim checks and clear missing-information states. The app uses a
+white, forest-green and mint design, with light as the first-use default.
 
-Unlabel is a college mini-project that will turn packaged food labels into simple, evidence-backed explanations in English or Hindi. Scan the front and back, check marketing claims, understand ingredients, and see how a food fits your preferences.
+## What works
+
+**Backend v0.6.0 Product Discovery is pushed, hosted-verified and published.**
+**Frontend v0.1.0+2 Connected Label Reader is implemented; its rendered/release
+checks are in progress.** [Release progress](docs/planning/CONNECTED_RELEASE_PLAN.md).
+
+- Enter a barcode or search name/brand words and choose an exact catalogue record.
+- Read dated historical reports, nutrition bases, source references and unknowns.
+- Enter and confirm current package facts for a separate useful label report.
+- See approximate total-sugar cubes, seven reviewed numerical claim types and
+  three reviewed English/Hindi ingredient functions where evidence permits.
+- Keep saved reports, viewed history and appearance preferences on the device.
+- Save confirmed public package facts automatically to improve the shared catalogue.
+
+Personal history, saved lists and preferences are not uploaded. Photos and raw OCR
+are outside this release. Anonymous scanner authentication protects public-fact
+writes; there are no admin/reviewer app accounts. Storage failure does not discard
+the useful report. [Privacy and evidence](docs/SAFETY_PRIVACY.md).
+
+Camera/gallery OCR, live highlights, comparison, personal suitability and an
+insight feed remain tracked follow-ups. Concept-image scores are illustrative;
+the app does not invent a universal health or allergy-safety verdict.
+[20-group feature tracker](docs/planning/FEATURE_TRACKER.md).
 
 ## Clone and run
 
@@ -31,170 +52,80 @@ Install Git and Python 3.12+, then run from the project folder:
 ./scripts/run-local.ps1
 ~~~
 
-Setup restores settings, dependencies and product data. Choose a key file, hidden key paste or safe defaults.
+macOS/Linux: `python3 scripts/setup.py`, then `python3 scripts/run_local.py`.
+Setup restores dependencies, settings and verified product data with progress
+indicators. Use a key file, hidden key paste or safe defaults; never commit `.env`.
+`--scope backend` or `--scope frontend` selects one component.
 
-| Local service | Open |
+| Local service | Address |
 | --- | --- |
 | Website | http://127.0.0.1:7357 |
 | API docs | http://127.0.0.1:8000/docs |
 
-[Platform options and encryption guide →](docs/planning/LOCAL_DEVELOPMENT.md)
+The runner supplies local CORS, catalogue and version settings through process
+overrides. Production clients use `https://unlabel-api.vercel.app`.
+[Local development and encryption](docs/planning/LOCAL_DEVELOPMENT.md).
 
-## What is ready
+## Data and architecture
 
-The next accepted pair is **backend v0.6.0 Product Discovery** followed by
-**frontend v0.1.0+2 Connected Label Reader**. Discovery passed 863 tests with five
-emulator skips and clean type/lint checks. The frontend's manual lookup, sourced
-reports, corrected label entry and local saved/history flows are being verified.
-Their independent push/hosted/publication gates are tracked in the
-[connected release plan](docs/planning/CONNECTED_RELEASE_PLAN.md).
+The acquired India-tagged OFF snapshot contains **24,641 supported barcodes**.
+The generated discovery-enabled SQLite bundle is **72.58 MiB**. Retail/regional
+coverage remains unmeasured. Exact and search misses do not silently call OFF;
+separate live product/nutrition APIs remain available.
 
-**Production backend v0.5.0 Useful Label Report is published. Frontend remains 0.0.0+1.** The separately released v0.4.0 catalogue saves/deduplicates structured observations automatically and resolves compatible sourced fields. v0.5.0 adds current-label and historical barcode reports, a partial three-entry reviewed ingredient glossary and a declared 4 g/cube sugar approximation. Both versions passed their independent review, push and hosted checks. Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Firebase Unlabel stays free with no billing. Camera/OCR and background saving still need frontend integration. [Twenty hosted checks](docs/research/BACKEND_V0_5_0_PRODUCTION.json) · [v0.5.0 report scope](docs/architecture/LABEL_REPORT.md) · [Master plan](docs/planning/MASTER_PLAN.md).
-
-| Ready now | Planned next |
+| Source | Purpose |
 | --- | --- |
-| One Flutter starter for Android, iOS and web | Camera capture, OCR and ingredient highlighting |
-| FastAPI health/meta, OFF product/nutrition lookup and confirmed normalization | Full analysis report, health-score policy and comparison |
-| Rich facts: 24,641 validated barcodes, verified 59.58 MiB SQLite | Camera integration with explicit live/snapshot selection |
-| Seven reviewed confirmed-label numerical claims, rules and evidence metadata | Broader claim coverage, ingredients and bilingual explanations |
-| Catalogue status, source age and nine-month refresh date | Saved results, history and local preferences |
-| Public lookup and confirmed checks need no interactive account; automatic observation APIs and sourced resolution are implemented | Camera/correction integration with anonymous background saving |
-| Confirmed nutrient rows normalized with original values and provenance | OCR-to-API integration and nutrition visualizations |
-| Responsive starter with System / Light / Dark appearance | Reviewed glossary and bilingual explanations |
-| Platform projects and tracked dependency lockfile | Reviewed nutrition classifications and allergen policies |
-| Manual APK + unsigned IPA release workflow | Optional Gemini explanations |
-| Architecture, sources, workflows and team boundaries | Online analysis, saved results and limited offline access |
+| Open Food Facts | Dated packaged-product identity and available direct label facts |
+| Confirmed package observations | Qualified compatible gap fills, original sources/dates and visible conflicts |
+| Reviewed FSSAI knowledge | Seven scoped numerical claim checks with sufficient confirmed inputs |
+| Reviewed ingredient glossary | Three technological-function entries in English/Hindi |
 
-The color theme is undecided. The starter uses temporary stock Material styles. Both Vercel projects are configured for automatic Git deployments. The website renders the starter; [v0.3.0 verification](docs/planning/BACKEND_V0_3_0_REVIEW.md) records the published API. Glossary and wider rules remain future work. No custom model or training is selected. [Hosting settings and URLs →](docs/planning/VERCEL_SETUP.md)
+Generic IFCT/INDB/USDA food composition does not fill a branded packet's unknown
+values. Missing is unknown, not zero. Tables retain basis and preparation; source
+conflicts are preserved. Sugar cubes use the explicit approximate 4 g/cube policy.
+No custom model/training is selected; Gemini remains disabled.
 
-[Master architecture plan](docs/planning/MASTER_PLAN.md) · [Feature tracker](docs/planning/FEATURE_TRACKER.md) · [API/run guide](backend/README.md) · [Community catalogue](docs/architecture/COMMUNITY_CATALOGUE.md)
+Firebase **Unlabel**, project `unlabel-india-catalogue`, uses its first Standard
+database **unlabel** in Mumbai with free tier/no linked billing. Deny-all client
+rules and backend credentials protect structured public observations. No paid
+Storage/Functions, billing upgrade or card is required.
 
-## Four connected features
+New lookup/analysis needs the backend. Already loaded dated reports can be read
+from local storage; website first-load/offline app-shell caching is not promised.
+Shared preferences are convenience storage, not an encrypted backup.
 
-| Feature | The experience | The evidence |
-| --- | --- | --- |
-| **Check the claim** | Compare “high protein”, “no added sugar” and other front-label claims against the back | Reviewed rules with input/source references; uncertainty when information is missing |
-| **Ingredient X-ray** | Highlight useful ingredient/nutrient information in the camera view | Local OCR regions and bounding boxes; provisional until corrected |
-| **Personal suitability** | See separate reasons for dietary and allergy preferences | Confirmed product facts matched to preferences stored locally |
-| **Ingredient translator** | Tap a technical name for a simple English/Hindi explanation | Reviewed aliases, ingredient purpose and evidence-backed context |
+[Master plan](docs/planning/MASTER_PLAN.md) · [Data flow](docs/architecture/DATA_FLOW.md)
+· [Discovery](docs/architecture/PRODUCT_DISCOVERY.md) · [Reports](docs/architecture/LABEL_REPORT.md)
+· [Community catalogue](docs/architecture/COMMUNITY_CATALOGUE.md).
 
-Unknown chemicals are not automatically dangerous. “Allergen not detected” is not “allergen-free”. Missing evidence will remain uncertain. [Full feature workflows →](docs/planning/FEATURES.md)
+## Validation and releases
 
-## How everything connects
+Backend v0.6.0: **863 passed, five emulator-only skips**, clean Ruff/Pyright and
+**23 hosted checks**. [Review](docs/planning/BACKEND_V0_6_0_REVIEW.md).
+Frontend: **42 tests**, clean analysis and web compilation; rendered/hosted proof
+is recorded separately. [Frontend guide](frontend/README.md).
 
-This is the complete target flow. The backend implements structured observation
-persistence and source resolution; OCR, reports and client integration remain
-pending. The client will save corrected confirmed public facts automatically,
-with extracted candidates staged as unverified and anonymous authentication
-behind the scenes. There is no separate Share action.
+Vercel deploys separate backend/web projects from `main`. Backend source tags
+remain `v0.x.0`; frontend source uses `frontend-v0.1.0`; future manual mobile
+builds use `mobile-vVERSION+BUILD`. Existing tags and assets are preserved.
 
-~~~mermaid
-flowchart LR
-  Barcode["Product barcode"] --> API["FastAPI · Vercel backend"]
-  API --> Snapshot["Bundled India catalogue: identity + rich facts"]
-  Snapshot --> Review["Review product facts"]
-  API --> OFF["Live Open Food Facts: product / nutrition"]
-  OFF --> Review["Review product facts"]
-  Label["Package claims / missing fields"] --> OCR["Local OCR + correction"]
-  OCR --> Review
-  Review --> Rules["Backend: reviewed FSSAI criteria"]
-  OCR -->|"Structured candidates only"| Staging["Staged / unverified facts"]
-  Review -->|"Automatic confirmed-fact save + dedup"| Community["Firebase Unlabel: product observations"]
-  Community -->|"Validated compatible gap fills; qualified origin"| Resolved["Compatible fields + per-field source/date"]
-  Community -->|"Known conflict / identity mismatch"| Moderation["Operator exact-hash review"]
-  Moderation --> Resolved["Compatible fields + per-field source/date"]
-  Resolved --> Review
-  Rules -. "Optional wording" .-> AI["Gemini / eligible AI provider"]
-  Rules --> Result["Findings + evidence"]
-  AI --> Result
-  Result --> Local["Local preferences + saved scans"]
-  Knowledge["Reviewed canonical knowledge"] --> Rules
-~~~
+The manual APK/unsigned-IPA workflow uses one immutable commit and matching
+version/build. It is not triggered by these backend/web releases. APKs use demo
+signing; the unsigned IPA is not directly installable. Native build/device gates
+are separate from Flutter/web checks. [Release guide](docs/planning/RELEASE_VERSIONING.md)
+· [Deployment settings](docs/planning/VERCEL_SETUP.md).
 
-**Open Food Facts does the product-data heavy lifting:** barcode identity, ingredients, nutrition and available source-tagged computed insights. The separate catalogue route reads the bundled India snapshot without an OFF request. The separate facts route returns selected direct nutrition, availability-aware tags, record dates and a validated official image reference; live product/nutrition routes still query OFF. Legacy aggregate nutrition is unavailable as direct label evidence. Coverage is unverified and a missing snapshot record stays a dated 404. Nutrition tables retain their source, basis and preparation; separate tables are never silently combined. Confirmed physical-package values remain distinct from community data. Reviewed FSSAI numerical criteria run through a separate confirmed-label API; no live FSSAI verification API or official certification is assumed. [Open Food Facts integration →](docs/architecture/OPEN_FOOD_FACTS.md)
+## Repository and team
 
-Normalization preserves zero, marks missing values as unknown, and converts compatible values to per 100 g or per 100 mL. It keeps an unmeasured serving as a serving, without guessing density or portion size. It does not infer added sugar from total sugar or salt from sodium. [Current API and examples →](backend/README.md)
+| Folder | Responsibility |
+| --- | --- |
+| frontend | Flutter app, platform icons, UI, bounded API and local persistence |
+| backend | FastAPI, catalogue, reviewed checks and report composition |
+| contracts | Versioned schemas, historical OpenAPI and synthetic fixtures |
+| data / knowledge | Reusable licensed source bundles, provenance and reviewed rules |
+| scripts | Restore/run/encryption/import/export and verified icon generation |
+| docs / design | Architecture, release evidence, progress and supplied UI references |
 
-Use local OCR and reviewed deterministic rules first. No custom model, training or vector database is selected. Gemini stays disabled; a benchmark may later justify an optional bounded extraction/wording fallback. Any candidate still requires correction and validation, and cannot change confirmed numbers, verdicts or sources. [Architecture/AI selection →](docs/planning/MASTER_PLAN.md) · [Evidence strategy →](docs/research/EVIDENCE_STRATEGY.md)
-
-## Online-first, with a few offline features
-
-New product lookup and rule analysis use the backend. Offline scope is limited to previously saved results/product snapshots, local preferences and an optional small bundled ingredient glossary. Saved findings retain their source, date and versions; they are not refreshed compliance checks.
-
-No duplicate Dart rule engine is required for the MVP. On-device OCR may still capture a draft when supported, but fresh analysis waits for the backend. Website offline access needs an initial load and explicit app/saved-content caching; it is not implemented or automatic now. [Complete data flow →](docs/architecture/DATA_FLOW.md)
-
-## One frontend, two Vercel projects
-
-| Part | Stack | Deployment |
-| --- | --- | --- |
-| Frontend | One Flutter app: Android, iPhone/iPad and web | [unlabel-india.vercel.app](https://unlabel-india.vercel.app), rooted at frontend |
-| Backend | Python + FastAPI, selected for quicker development | [unlabel-api.vercel.app](https://unlabel-api.vercel.app), rooted at backend; native apps use this same API |
-| Product data | Open Food Facts live APIs + compact India snapshot | Separate live and read-only snapshot routes; source gaps remain visible |
-| Product enrichment | Firebase Unlabel; first Standard database `unlabel`, Mumbai | Automatic observation APIs, qualified candidates and source resolution; free tier/no linked billing |
-| Knowledge | Reviewed JSON/CSV sources, aliases, rules and translations | Read-only client/server bundles; optional local SQLite index |
-
-The backend has no durable local state and generates verified read-only OFF SQLite/claim bundles. v0.4.0 uses Firestore for structured public observations and private staged candidates. Compatible fields retain individual source/date references, originals and conflicts. Photos/raw OCR/preferences/history stay private. Unlabel's first Standard database `unlabel` in Mumbai has its free tier enabled and no linked billing; no paid fallback is allowed. The website uses pinned Flutter 3.47.4. Pushes deploy both Vercel projects; mobile releases remain manual. v0.4.0 passed sixteen hosted HTTP checks with matching OFF/claim receipts. [Deployment configuration →](docs/planning/VERCEL_SETUP.md) · [Storage boundaries →](docs/architecture/COMMUNITY_CATALOGUE.md)
-
-**₹0 and no credit card remain the baseline.** Stay within eligible free tiers, keep billing disabled, and preserve local/template fallbacks. Hosted AI and unlimited private CI are not guarantees. [Free-stack research →](docs/research/FREE_STACK.md)
-
-## Repository guide
-
-~~~text
-Unlabel/
-├── frontend/            One Flutter project directly here
-│   ├── lib/             App, platform adapters and feature folders
-│   ├── android/ ios/    Native platforms
-│   ├── web/             Flutter website platform files
-│   ├── assets/          Future glossary, translations and visuals
-│   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.5.0, independently released
-├── knowledge/           Canonical reviewed evidence and rules
-├── contracts/           Shared API/schema/version boundaries
-├── data/                Reusable India source, provenance/licenses and fixtures
-├── design/              Concept references and future tokens; palette undecided
-├── ai/                  Optional experiments; no training
-├── scripts/             Setup, local run, encryption and catalogue maintenance
-├── docs/                Architecture, research and teammate handoff
-└── .github/workflows/   Manual APK + unsigned IPA release
-~~~
-
-The root coordinates the product; it is not another app. [Every folder explained →](docs/architecture/FOLDER_STRUCTURE.md)
-
-## Run the starter
-
-Use **Flutter 3.47.4**:
-
-~~~sh
-cd frontend
-flutter pub get
-flutter run
-~~~
-
-~~~sh
-flutter analyze
-flutter test
-flutter build web --release
-flutter build apk --release
-~~~
-
-No API key is needed for the starter or backend OFF reads. Gemini remains disabled.
-
-## Manual releases and version sync
-
-Open [GitHub Actions](https://github.com/Vaibhavsh0120/Unlabel/actions), select **Manual APK and unsigned IPA release**, and choose **Run workflow**. Supply the frontend version, increasing build number and source reference. For future API-enabled app builds, use `https://unlabel-api.vercel.app` as the backend URL. Existing v0.0.0 assets are unchanged.
-
-The workflow resolves one source commit, checks Flutter, builds both platforms with the same version/build, verifies uploaded artifacts, and attaches APK, unsigned IPA, checksums and a manifest to a release. Existing tags/assets are never overwritten.
-
-**The IPA is unsigned and not directly installable.** APKs currently use demo debug signing; reliable installed-app upgrades need a stable release key. Private repositories have limited free runner allowances; this workflow uses standard runners and does not enable billing.
-
-Backend/web deployment versions can differ while remaining compatible with installed apps. Stable API majors, contract capabilities and knowledge versions provide that compatibility. Deploy compatible backend changes before dependent clients. [Release/versioning details →](docs/planning/RELEASE_VERSIONING.md)
-
-## For the team
-
-[Handoff](docs/planning/TEAM_HANDOFF.md) → [System](docs/architecture/SYSTEM.md) → [API plan](docs/architecture/API_PLAN.md) → [Roadmap](docs/planning/ROADMAP.md).
-
-UI targets include iPhone, iPad portrait/landscape and MacBook sizes in both modes, with touch/keyboard access and readable text. [UI requirements →](docs/planning/UI_REQUIREMENTS.md)
-
-Source and Firebase research checked **5–7 October 2026**. Recheck provider terms and source applicability before use. The supplied compliance reference is background for a later extension, not official certification. Keep plaintext secrets/private scans out of Git. [Contribution boundaries →](CONTRIBUTING.md)
-
-Claim results retain selected table/context, row/region IDs, rule/source IDs and knowledge version. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal; normalization-v1 remains 4.184. Unknown alternatives or conflicts stay insufficient. High/source protein, no added sugar and multigrain are recognized but unreviewed. Numerical support does not certify health, allergy safety or complete compliance. [Claim API and synthetic examples](backend/README.md#reviewed-confirmed-label-claim-checks).
+[Teammate handoff](docs/planning/TEAM_HANDOFF.md) · [Folder guide](docs/architecture/FOLDER_STRUCTURE.md)
+· [UI requirements](docs/planning/UI_REQUIREMENTS.md) · [Contributing](CONTRIBUTING.md).
+Keep plaintext credentials, private identities and real scans out of Git.

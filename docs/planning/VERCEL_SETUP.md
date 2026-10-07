@@ -14,10 +14,13 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - Framework: **Other**; install command skipped.
 - Build: `bash tool/vercel-build.sh`; output: `build/web`.
 - The tracked build script supplies Flutter **3.47.4** from the official SDK Git tag, checks that version, uses the tracked dependency lockfile and builds web in **release** mode.
-- Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is supplied through `--dart-define`. Version/build come from `pubspec.yaml`, currently **0.0.0+1**; Vercel supplies the source commit SHA. The starter does not consume `BuildInfo` yet, so release tree shaking can remove unused constants; no API client or visible version panel is claimed.
-- `frontend/vercel.json` stores reproducible build settings. SDK/build output stays ignored. Hash routing uses the existing starter; no blanket rewrite turns missing assets into successful HTML responses.
-
-The starter contains no product API request yet. Passing the URL config prepares the teammate's future API adapter; it does not implement scanning or analysis.
+- Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is compiled through
+  Dart defines. Frontend version/build come from pubspec (0.1.0+2); commit comes
+  from Vercel. The app checks API major/schema/capabilities and shows build info.
+- Locked restoration, Flutter analysis/tests and web compilation run in the build.
+  Light is the first-use default; saved appearance and libraries stay local.
+- Light/dark web icons and manifests are bundled. Missing assets are genuine 404s;
+  no blanket rewrite hides deployment errors. Native releases stay manual.
 
 ## Backend settings
 
@@ -26,7 +29,7 @@ The starter contains no product API request yet. Passing the URL config prepares
 - `backend/vercel.json` limits this Function to 60 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
 - `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` and `app/claims/data/` are ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- The released v0.5.0 environment uses `OFF_USER_AGENT=Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
+- The current v0.6.0 environment uses `OFF_USER_AGENT=Unlabel/0.6.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
 No live FSSAI request or writable cloud database is required for existing OFF/normalization/claims; v0.4.0 community observations use separately configured free Firestore. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST, Content-Type and Authorization. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
@@ -106,3 +109,17 @@ The source-only v0.5.0 release targets that commit. No new provider, secret,
 billing or paid service was required; future pushes require their own checks.
 [Dated evidence](../research/BACKEND_V0_5_0_PRODUCTION.json) ·
 [Review](BACKEND_V0_5_0_REVIEW.md) · [Report contract](../architecture/LABEL_REPORT.md).
+
+
+## Released v0.6.0 discovery deployment gate
+
+Source `c5fa883214b1448332f7c2465f8a063430279459` independently reached READY on
+backend `dpl_9exTaHEJZs6hCdbv1FTNB5iZ6HwS`. **23 hosted HTTP checks** verified the
+19-route export, compatible older components, actual indexed search/pagination,
+exact identity and historical report, broad/missing/bad query/cursor states,
+source/knowledge receipts, CORS and excluded private/artifact URLs. No private
+user record was written during these public discovery checks. Source-only v0.6.0
+was published separately. Frontend v0.1.0+2 still requires its own final rendered,
+push, exact hosted deployment and publication gates.
+[Production proof](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
+[Review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).

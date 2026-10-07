@@ -1,15 +1,19 @@
-Backend **v0.6.0 Product Discovery** is the current implementation candidate.
-Its additional [search contract](../docs/architecture/PRODUCT_DISCOVERY.md),
-[review](../docs/planning/BACKEND_V0_6_0_REVIEW.md), 19-route OpenAPI and new search
-schema/example preserve the released 18 routes. Hosted proof is pending its push.
-
 # Shared API contracts
 
-Released production backend **v0.5.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. It was independently reviewed, pushed, hosted-verified and published after v0.4.0. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
+Released production backend **v0.6.0 Product Discovery** exports schemas from
+`app.main.create_app().openapi()` and named Pydantic models. Nineteen routes add
+bounded indexed search while preserving all eighteen earlier paths/components.
+Backend routes/models are the source of truth; regenerate exports after changes.
+Preserve historical OpenAPI and strict earlier response shapes. Frontend
+**0.1.0+2** consumes metadata/report/search contracts; its final rendered/release
+checks remain in progress. [Current review](../docs/planning/BACKEND_V0_6_0_REVIEW.md)
+· [23 hosted checks](../docs/research/BACKEND_V0_6_0_PRODUCTION.json).
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.5.0.openapi.json` | Eighteen released routes; three additive current/historical report and ingredient glossary endpoints. |
+| `schemas/backend-v0.6.0.openapi.json` | Current nineteen routes including indexed catalogue search; previous paths/components preserved. |
+| `schemas/catalogue-search-v1.schema.json` | Bounded identity candidates, explicit refinement/miss/unavailable states and query/snapshot-bound pagination. |
+| `schemas/backend-v0.5.0.openapi.json` | Historical eighteen-route report/glossary release. |
 | `schemas/report-check-request-v1.schema.json` | Corrected confirmed structured observation, optional barcode/table/context; no analysis auth requirement. |
 | `schemas/label-report-v1.schema.json` | Separate current/historical evidence, nutrition/claims/declarations, partial glossary, sugar approximation and independent storage outcome. |
 | `schemas/report-failure-v1.schema.json` | Typed unavailable/not-found report-section failures. |
@@ -41,7 +45,7 @@ Released production backend **v0.5.0** exports current schemas from `app.main.cr
 | `schemas/backend-v0.2.0.openapi.json` | Historical nutrition release. |
 | `schemas/backend-v0.1.0.openapi.json` | Historical product release. |
 
-The exporter validates and writes **22 synthetic examples**. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields. Five new examples cover report input, current/historical reports, a typed failure and the glossary. The current example keeps 12 g total sugar per 40 g quantity as approximately three cubes; the historical example has read-only storage and no current-label claim assessment. No real food or private scan is included. These are not health policies or complete regulatory verdicts.
+The exporter validates and writes **24 synthetic examples**, including bounded search candidates and the preserved product example. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields. Five new examples cover report input, current/historical reports, a typed failure and the glossary. The current example keeps 12 g total sugar per 40 g quantity as approximately three cubes; the historical example has read-only storage and no current-label claim assessment. No real food or private scan is included. These are not health policies or complete regulatory verdicts.
 
 Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports`, with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary, whose version/artifact are separate metadata. Comparison and AI remain disabled. Add separate client models instead of modifying the strict v1 identity parser. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md) · [Report contract](../docs/architecture/LABEL_REPORT.md).
 
@@ -64,8 +68,7 @@ Community capabilities depend on configured runtime; connectivity remains
 catalogue. Resolution retains unavailable community provenance during a partial
 outage; neither usable source returns 503. Observations do not provide current
 caller confirmation. Exact retries retain receipts despite OFF snapshot rotation;
-new provider references must match actual snapshot identity. Frontend capture,
-background anonymous requests and reports remain integration work. Production
+new provider references must match actual snapshot identity. Frontend manual confirmed intake, anonymous requests and reports are integrated for v0.1.0; capture/OCR and final rendered/release checks remain separate work. Production
 v0.4.0 verification/publication passed separately; see the [review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
 The [v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) records its separate
 completed checks, twenty hosted requests and separate publication.

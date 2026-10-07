@@ -5,8 +5,7 @@ published after the separate v0.4.0 release. [Twenty hosted checks](../research/
 verified real reports, anonymous saving/retry, correction-blocked writes,
 historical evidence, glossary boundaries and unchanged source receipts. The
 report connects confirmed normalization, reviewed numerical claims and exact
-sourced product facts. Camera/OCR, results UI and background-save integration
-remain frontend work.
+sourced product facts. Frontend v0.1.0 implements manual current/historical report UI and automatic confirmed structured intake; its final rendered/release checks remain separate. Camera/OCR and reference-style screen redesign remain subsequent work.
 
 ## Three additive APIs
 

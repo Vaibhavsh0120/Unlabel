@@ -2,15 +2,18 @@
 abstract final class BuildInfo {
   static const version = String.fromEnvironment(
     'APP_VERSION',
-    defaultValue: 'development',
+    defaultValue: '0.1.0',
   );
   static const buildNumber = String.fromEnvironment(
     'BUILD_NUMBER',
-    defaultValue: 'local',
+    defaultValue: '2',
   );
   static const commitSha = String.fromEnvironment(
     'COMMIT_SHA',
     defaultValue: 'local',
   );
-  static const backendBaseUrl = String.fromEnvironment('BACKEND_BASE_URL');
+  static const backendBaseUrl = String.fromEnvironment(
+    'BACKEND_BASE_URL',
+    defaultValue: 'https://unlabel-api.vercel.app',
+  );
 }

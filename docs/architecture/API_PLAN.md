@@ -1,17 +1,17 @@
-Current implementation candidate **v0.6.0 Product Discovery** adds
-`GET /v1/catalogue/search` and the actual `catalogue_search` capability.
-The original 18 route contracts remain compatible. [Search bounds](PRODUCT_DISCOVERY.md)
-and [review gate](../planning/BACKEND_V0_6_0_REVIEW.md). Hosted verification follows push.
-
 # Frontend/backend API plan
 
-Released production **v0.5.0** has eighteen mounted routes, exported in
-`contracts/schemas/backend-v0.5.0.openapi.json`. It was independently reviewed,
-pushed, hosted-verified and published after v0.4.0. The fifteen earlier routes
-retain their contracts; three additive APIs provide current/historical reports
-and a partial reviewed glossary. [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json)
-verify this release independently. [Report contract](LABEL_REPORT.md) ·
-[Master plan](../planning/MASTER_PLAN.md) · [Actual backend](../../backend/README.md).
+Released production **v0.6.0 Product Discovery** has nineteen mounted routes,
+exported in `contracts/schemas/backend-v0.6.0.openapi.json`. The earlier eighteen
+routes/components remain compatible. Indexed `GET /v1/catalogue/search` adds the
+actual `catalogue_search` capability and bounded candidate pagination.
+[Search bounds](PRODUCT_DISCOVERY.md) · [Current review](../planning/BACKEND_V0_6_0_REVIEW.md)
+· [23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json).
+
+Frontend v0.1.0+2 consumes metadata/search/report contracts and automatically
+submits confirmed public facts, while personal records remain local. Its final
+rendered/release checks are separate. Optional scanner login/private sync and
+comparison/insight support belong to the next accepted v0.7.0/v0.2.0 plan, not the
+current API. [Next scope](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Implemented endpoints and nutrition contract
 
@@ -22,6 +22,7 @@ verify this release independently. [Report contract](LABEL_REPORT.md) ·
 | `GET /v1/products/{barcode}` | Unchanged typed OFF identity/ingredient/tag/computed-grade lookup |
 | `GET /v1/products/{barcode}/nutrition` | Separate OFF direct-input nutrition lookup with community origin and table source metadata |
 | `POST /v1/nutrition/normalize` | Structured user-confirmed nutrient normalization, independent of OFF connectivity |
+| `GET /v1/catalogue/search` | Bounded Unicode name/brand identity candidates with exact barcode keys, refinement/miss/unavailable states and query/snapshot/options-bound cursor; no OFF request |
 | `GET /v1/catalogue` | Typed status/manifest, source-age policy, receipt artifact summary and excluded-field limits; 503 when not ready |
 | `GET /v1/catalogue/products/{barcode}` | Optional exact indexed lookup with separate export manifest, no OFF call; 503 when inactive |
 | `GET /v1/catalogue/products/{barcode}/facts` | Separate strict rich-facts model: direct nutrition, tag availability, record date and official image URL; exact snapshot origin |
@@ -145,11 +146,9 @@ free-tier availability is finite. Never multiply keys to bypass provider quotas.
 
 ## Remaining API scope
 
-Bounded discovery and compatible comparison remain future versions in the
+Bounded discovery is released in v0.6.0; compatible comparison remains subsequent screen/contract scope in the
 [master plan](../planning/MASTER_PLAN.md). Wider ingredient details need reviewed
 coverage before new endpoints. Current reports use the three implemented APIs;
-a duplicate generic analyze endpoint is unnecessary. No profile/image-upload,
-scan-history, per-frame or generic-chat endpoint is required. Camera/OCR,
-correction, source views, saved/history and frontend report UI remain client work.
+a duplicate generic analyze endpoint is unnecessary. The current version has no personal-profile or image-upload route; next-version private sync is separate from public facts. Per-frame and generic-chat endpoints are unnecessary. Manual correction, source views, local saved/history and report UI are integrated for frontend v0.1.0; camera/OCR remains subsequent client work.
 Gemini/custom training are disabled; any later fallback requires a measured
 benchmark and no-card/privacy controls before acceptance.

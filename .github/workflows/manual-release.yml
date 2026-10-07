@@ -11,17 +11,17 @@ on:
       release_version:
         description: Product version (overrides pubspec version for both artifacts)
         required: true
-        default: 0.0.0
+        default: 0.1.0
         type: string
       build_number:
         description: Positive mobile build number; increase for each new build
         required: true
-        default: '1'
+        default: '2'
         type: string
       backend_url:
-        description: Optional public HTTPS backend URL; leave empty for this starter
-        required: false
-        default: ''
+        description: Public HTTPS backend origin used by the connected client
+        required: true
+        default: 'https://unlabel-api.vercel.app'
         type: string
       publish_release:
         description: Publish after every asset is verified (false keeps a draft)
@@ -63,15 +63,15 @@ jobs:
           from urllib.parse import urlsplit
           version, build, ref = (os.environ[k] for k in ('RELEASE_VERSION', 'BUILD_NUMBER', 'SOURCE_REF'))
           if not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
-              raise SystemExit('release_version must have three SemVer numbers, such as 0.0.0.')
+              raise SystemExit('release_version must have three SemVer numbers, such as 0.1.0.')
           if not re.fullmatch(r'[1-9][0-9]{0,9}', build) or int(build) > 2100000000:
               raise SystemExit('build_number must be a positive Android-compatible integer.')
           if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._/-]{0,199}', ref) or '..' in ref or '//' in ref or ref.endswith(('/', '.')):
               raise SystemExit('source_ref must be a plain branch, tag, or commit reference.')
           url = os.environ['BACKEND_BASE_URL']
           parsed = urlsplit(url)
-          if url and (len(url) > 500 or any(c.isspace() for c in url) or parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment):
-              raise SystemExit('backend_url must be an HTTPS base URL without credentials, query, or fragment.')
+          if not url or len(url) > 500 or any(c.isspace() for c in url) or parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment or parsed.path not in ('', '/'):
+              raise SystemExit('backend_url must be an HTTPS origin without credentials, path, query, or fragment.')
           if os.environ['PUBLISH_RELEASE'] not in ('true', 'false'):
               raise SystemExit('publish_release must be a boolean.')
           PY
@@ -80,6 +80,8 @@ jobs:
           ref: ${{ inputs.source_ref }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify authored platform icons
+        run: python3 scripts/generate_app_icons.py --check
       - name: Resolve one source commit and preserve workflow authorization
         id: source
         env:
@@ -107,7 +109,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import os, urllib.error, urllib.request
-          endpoint = f"{os.environ['GH_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/git/ref/tags/v{os.environ['RELEASE_VERSION']}"
+          endpoint = f"{os.environ['GH_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/git/ref/tags/mobile-v{os.environ['RELEASE_VERSION']}+{os.environ['BUILD_NUMBER']}"
           request = urllib.request.Request(endpoint, headers={'Authorization': f"Bearer {os.environ['GH_TOKEN']}", 'Accept': 'application/vnd.github+json'})
           try:
               urllib.request.urlopen(request, timeout=30).close()
@@ -122,7 +124,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: false
-      - name: Check the Flutter starter
+      - name: Check the connected Flutter client
         working-directory: frontend
         run: |
           flutter pub get --enforce-lockfile
@@ -155,7 +157,7 @@ jobs:
           APK_PATH='build/app/outputs/flutter-apk/app-release.apk'
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
           "$APKSIGNER" verify --print-certs "$APK_PATH" > apk-signing.txt
-          grep -q 'CN=Android Debug' apk-signing.txt || { echo 'Expected starter debug signing; review the production signing plan before changing this lane.'; exit 1; }
+          grep -q 'CN=Android Debug' apk-signing.txt || { echo 'Expected demo debug signing; review the production signing plan before changing this lane.'; exit 1; }
           "$(dirname "$APKSIGNER")/aapt" dump badging "$APK_PATH" > apk-metadata.txt
           python3 - <<'PY'
           import os, pathlib, re
@@ -260,7 +262,7 @@ jobs:
                       raise SystemExit(f'Invalid artifact structure: {name}')
           toolchains = {p: json.loads((out / f'{p}-toolchain.json').read_text()) for p in ['android', 'ios']}
           assets = [{'file': n, 'bytes': (out / n).stat().st_size, 'sha256': hashlib.sha256((out / n).read_bytes()).hexdigest()} for n in names]
-          manifest = {'product_version': version, 'build_number': build, 'pubspec_version': os.environ['PUBSPEC_VERSION'], 'source_sha': os.environ['SOURCE_SHA'], 'workflow_sha': os.environ['WORKFLOW_SHA'], 'workflow_run': os.environ['GITHUB_RUN_ID'], 'built_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'toolchains': toolchains, 'backend_base_url': os.environ['BACKEND_BASE_URL'] or None, 'api_major_planned': '/v1', 'contract_schema_planned': '1', 'knowledge_version': 'not_populated', 'deployment': 'not_deployed_by_this_workflow', 'gates': {'flutter_analyze': 'passed', 'flutter_test': 'passed', 'android_build': 'passed', 'ios_device_build': 'passed', 'backend_contract_checks': 'not_implemented', 'web_build': 'not_in_this_workflow'}, 'android_signing': 'demo_debug_key_not_production_identity', 'ios_signing': 'unsigned_not_directly_installable', 'assets': assets}
+          manifest = {'component': 'frontend', 'product_version': version, 'build_number': build, 'pubspec_version': os.environ['PUBSPEC_VERSION'], 'source_sha': os.environ['SOURCE_SHA'], 'workflow_sha': os.environ['WORKFLOW_SHA'], 'workflow_run': os.environ['GITHUB_RUN_ID'], 'built_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'toolchains': toolchains, 'backend_base_url': os.environ['BACKEND_BASE_URL'], 'supported_api_major': 1, 'contract_schema': '1', 'report_version': 'label-report-v1', 'knowledge_version': 'negotiated_at_runtime_and_retained_in_reports', 'deployment': 'not_deployed_by_this_workflow', 'gates': {'flutter_analyze': 'passed', 'flutter_test': 'passed', 'android_build': 'passed', 'ios_device_build': 'passed', 'backend_contract_checks': 'separate_backend_release_gate', 'web_build': 'not_in_this_workflow'}, 'android_signing': 'demo_debug_key_not_production_identity', 'ios_signing': 'unsigned_not_directly_installable', 'assets': assets}
           manifest['publication_requested'] = os.environ['PUBLISH_RELEASE'] == 'true'
           (out / 'build-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
           checksum_files = names + ['build-manifest.json', 'android-toolchain.json', 'ios-toolchain.json']
@@ -276,7 +278,7 @@ jobs:
                   if allow_missing and error.code == 404:
                       return None
                   raise
-          tag = f'v{version}'
+          tag = f'mobile-v{version}+{build}'
           if api(f'{root}/git/ref/tags/{tag}', allow_missing=True) is not None:
               raise SystemExit('Tag already exists; refusing to overwrite it.')
           page = 1
@@ -287,7 +289,7 @@ jobs:
               if len(releases) < 100:
                   break
               page += 1
-          notes = f"Unlabel starter {version}+{build}, built from {os.environ['SOURCE_SHA']}.\n\nAndroid APK uses the generated demo debug signing key, not a production update identity. The iOS IPA is UNSIGNED and NOT directly installable; valid signing/provisioning is needed for device installation.\n\nFlutter analysis/tests and both mobile builds passed. Backend contracts, live deployment and real-device behavior are not validated. Asset hashes and build details are recorded in SHA256SUMS.txt and build-manifest.json."
+          notes = f"Unlabel Flutter {version}+{build}, built from {os.environ['SOURCE_SHA']}.\n\nAndroid APK uses the generated demo debug signing key, not a production update identity. The iOS IPA is UNSIGNED and NOT directly installable; valid signing/provisioning is needed for device installation.\n\nFlutter analysis/tests and both mobile builds passed. This workflow does not establish hosted API or real-device behavior. Asset hashes and build details are recorded in SHA256SUMS.txt and build-manifest.json."
           payload = {'tag_name': tag, 'target_commitish': os.environ['SOURCE_SHA'], 'name': f'Unlabel {version} — demo APK / unsigned iOS', 'body': notes, 'draft': True, 'prerelease': True}
           release = api(f'{root}/releases', json.dumps(payload).encode(), 'POST')
           upload_url = release['upload_url'].split('{')[0]

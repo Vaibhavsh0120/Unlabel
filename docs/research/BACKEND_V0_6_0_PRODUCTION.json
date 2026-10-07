@@ -1,0 +1,217 @@
+{
+  "checked_at": "2026-10-07T10:13:48.256414+00:00",
+  "version": "0.6.0",
+  "source_sha": "c5fa883214b1448332f7c2465f8a063430279459",
+  "deployment": {
+    "id": "dpl_9exTaHEJZs6hCdbv1FTNB5iZ6HwS",
+    "state": "READY"
+  },
+  "catalogue": {
+    "schema_version": "1",
+    "status": "ready",
+    "manifest": {
+      "schema_version": "1",
+      "snapshot_id": "f9797bf9-541d-4d4f-ae7e-93de34abf242",
+      "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+      "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+      "source_format": "off_jsonl",
+      "coverage": "unverified",
+      "exported_at": "2026-10-06T06:53:46Z",
+      "indexed_at": "2026-10-07T09:53:02.845077Z",
+      "market_tag": "en:india",
+      "rows_read": 24695,
+      "india_rows": 24695,
+      "indexed_products": 24641,
+      "duplicate_barcodes": 0,
+      "unsupported_barcodes": 54,
+      "missing_name": 3545,
+      "missing_ingredients": 18088,
+      "database_license": "ODbL-1.0",
+      "contents_license": "DbCL-1.0",
+      "attribution": "Product data from Open Food Facts",
+      "license_url": "https://openfoodfacts.org/terms-of-use"
+    },
+    "freshness": {
+      "status": "within_refresh_window",
+      "evaluated_at": "2026-10-07T10:13:41.831882Z",
+      "age_seconds": 98395,
+      "refresh_due_at": "2027-07-06T06:53:46Z",
+      "refresh_interval_months": 9
+    },
+    "artifact": {
+      "database_sha256": "58d6c0bb1f0c010be34af441f2d63e073ec1834181fafa852b0144e791ecc93c",
+      "database_bytes": 76111872,
+      "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+      "snapshot_id": "f9797bf9-541d-4d4f-ae7e-93de34abf242"
+    },
+    "data_kind": "product_identity",
+    "field_limits": [
+      "nutrition_direct_tables_only",
+      "images_are_source_urls_only",
+      "per_product_dates_may_be_missing",
+      "missing_allergen_tags_do_not_mean_allergen_free"
+    ]
+  },
+  "knowledge_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/v1/health",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/0041240100044",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/0041240100044/report",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ingredients/glossary",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/claims/rules",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/nutrition/normalize",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/claims/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/.env",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "GET",
+      "path": "/.env.age",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "GET",
+      "path": "/app/main.py",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "GET",
+      "path": "/app/catalogue/data/catalogue.sqlite3",
+      "status": 404,
+      "expected": 404
+    }
+  ],
+  "passed": 23,
+  "writes": "No authenticated writes or Firebase test users created",
+  "limits": [
+    "Retail/regional coverage unmeasured",
+    "Old v0.5.0 cloud writes retain separate historical proof"
+  ]
+}

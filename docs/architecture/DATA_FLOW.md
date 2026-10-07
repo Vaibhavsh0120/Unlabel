@@ -1,17 +1,17 @@
 # Unlabel data flow and ownership
 
-Updated **7 October 2026**. Production **v0.5.0 Useful Label Report** was
-independently reviewed, pushed, hosted-verified and published after v0.4.0.
-Eighteen APIs preserve lookup/normalization/claims and automatic observations,
-adding current/historical reports, approximate sugar cubes and three reviewed
-English/Hindi ingredient functions. Facts retain their sources, dates, unknowns
-and conflicts. Flutter **0.0.0+1** remains a starter; camera/OCR, background saving
-and report UI need frontend integration. Firebase Unlabel's first Standard
-`unlabel` database in Mumbai retains its free tier, no linked billing, anonymous
-Auth and denied direct client access.
-[Master plan](../planning/MASTER_PLAN.md) · [Current release evidence](../planning/BACKEND_V0_5_0_REVIEW.md)
-· [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json).
-[Report architecture](LABEL_REPORT.md).
+Updated **7 October 2026**. Backend **v0.6.0 Product Discovery** is independently
+pushed, hosted-verified and published after the separate v0.5.0/v0.4.0 releases.
+Nineteen routes preserve old contracts and add bounded dated identity search.
+Frontend **0.1.0+2 Connected Label Reader** implements manual barcode/name lookup,
+current/historical reports, corrected input and device-local libraries. Its
+rendered/release gates are tracked separately; camera/OCR remains future scope.
+Light is the first-use default; saved Light/Dark/System choice stays local.
+Personal history/preferences/saved lists stay on-device. Only public package facts
+use automatic anonymous-authenticated catalogue storage; no reviewer/admin app
+accounts. Firebase retains free tier/no linked billing.
+[Master plan](../planning/MASTER_PLAN.md) · [Backend review](../planning/BACKEND_V0_6_0_REVIEW.md)
+· [Connected plan](../planning/CONNECTED_RELEASE_PLAN.md).
 
 ## Preserved lookup, normalization and claim paths
 
@@ -20,14 +20,14 @@ Auth and denied direct client access.
 3. Independently, a caller can POST 1–64 user-confirmed structured nutrient rows with UUID request/session IDs, a correction revision and a completeness declaration. No OFF connection is required for this path. Normalization stores no scan and accepts no raw OCR/image/profile. The actual input body is bounded to 32 KiB before JSON parsing.
 4. The pure normalizer converts kcal/kJ and mass units, and scales known mass or volume bases to the same unit per 100. An unknown serving remains per serving. Missing and explicit unknown values retain reasons; zero stays zero. Sodium/salt, total/added sugar and available/total carbohydrates stay separate without inference.
 5. The response retains original rows, conversion descriptions and source-row references. Lookup origin is `open_food_facts_community_data`; confirmed input origin is `user_confirmed_label`. No merge occurs across these origins. `complete` indicates successful processing of submitted rows, not complete nutrient coverage or a health verdict; conflicting contexts/duplicates require correction. Comparable OFF tables that disagree remain visible with `provider_tables_disagree` and `needs_correction`.
-6. Responses use `no-store` and contain no provider secrets. Validation errors are bounded/redacted and do not echo submitted values. Request content is not logged or retained by this backend. A future client correlates session/request/revision and saves only when explicitly requested; no such Flutter flow exists yet.
+6. Responses use `no-store` and contain no provider secrets. Validation errors are bounded/redacted and do not echo submitted values. Request content is not logged or retained by this backend. The current client correlates session/request/revision, records viewed reports locally and bookmarks only on explicit choice. Confirmed public facts use separate automatic intake; personal records are not uploaded in v0.1.0.
 7. Separately, the backend build reads the committed India gzip, verifies compressed/decoded hashes and counts, and generates SQLite plus a receipt under `app/catalogue/data/`. Hosted startup validates the receipt, full database hash, manifest, integrity and counts. `GET /v1/catalogue` exposes source age and field limits; exact catalogue barcode reads make no OFF request and retain the existing export-origin contract. A missing receipt disables only catalogue access. Snapshot misses do not silently fall back to the live adapter.
 8. The separate facts route returns the same exact identity/manifest plus optional direct nutrition, availability-aware canonical tags, provider schema/record-modification date and official selected-front image URL metadata. No image bytes or arbitrary URLs are served. Direct nutrition shares the live parser but retains export provenance; legacy aggregates remain unavailable. Older identity-only stores keep existing reads without enabling `catalogue_facts`.
 
 ## Implemented automatic observation and resolution path
 
 1. The API accepts provisional/confirmed structured public observations. Client
-   capture, OCR and coalesced background requests still need integration.
+   capture/OCR remains pending; current manual corrected entry is integrated with stable retry identity and independent analysis/storage outcomes.
 2. Anonymous-token verification establishes private keyed ownership. No Share
    flag, photos/raw OCR, profiles or private history enter the request.
 3. Server normalization and full/factual hashes preserve original rows/context.

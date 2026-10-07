@@ -1,6 +1,6 @@
 # Release and versioning plan
 
-Status: Flutter starter and manual mobile release workflow implemented;
+Status: connected Flutter client and manual mobile release workflow implemented;
 production signing remains future work. Separate Git-connected Vercel projects are configured for automatic website/backend deployment; see [settings and URLs](VERCEL_SETUP.md). Remote native build results
 are recorded by GitHub Actions and the resulting release manifest.
 Official documentation checked: 2026-10-05 (Asia/Calcutta), with Context7 used
@@ -22,13 +22,12 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Published backend is **0.5.0 Useful Label Report**, independently reviewed,
-pushed and hosted-verified after separately released v0.4.0. Flutter remains
-**0.0.0+1**. Both accepted versions were published as separate source-only
-releases. [Current review](BACKEND_V0_5_0_REVIEW.md)
-· [Release scope](BACKEND_V0_5_0_RELEASE.md) · [Master plan](MASTER_PLAN.md).
-Historical source-only tags and v0.0.0 mobile assets remain preserved.
-
+Backend **0.6.0 Product Discovery** is published after the independently released
+0.5.0 and 0.4.0. Frontend **0.1.0+2 Connected Label Reader** has separate source/web
+gates. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
+manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
+backend `v0.1.0` tag collision. All older tags/assets remain preserved.
+[Backend review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |
@@ -50,11 +49,11 @@ in the release manifest. Never silently replace a published artifact.
 ## Manual release workflow design
 
 The release entry point is `workflow_dispatch`, with source reference,
-product version (default `0.0.0`), mobile build number (default `1`), optional
+frontend version (default `0.1.0`), mobile build number (default `2`), required
 public backend URL, and a `publish_release` boolean (default true).
 Python validates environment values without shell interpolation. Version and
 build number override pubspec for both artifacts; the manifest records both.
-The starter uses a fixed unsigned iOS lane and a demo debug-signed APK lane.
+The workflow uses a fixed unsigned iOS lane and a demo debug-signed APK lane.
 
 GitHub requires the dispatch workflow to exist on the default branch and
 requires write access to run it. A selected reference is allowed, but the
@@ -90,7 +89,7 @@ deployment; a GitHub asset does not establish backend availability.
 Future gates include meaningful checks for extraction, uncertainty, evidence
 references, and request/response contracts. Check both the new client and
 supported older native client fixtures against the proposed backend.
-The starter workflow currently checks Flutter tests/analysis and native builds.
+The manual workflow checks Flutter tests/analysis and native builds; web CI separately checks analysis/tests before building.
 Platform compilation alone does not establish camera or real-device behavior.
 
 The manifest should identify:
@@ -203,7 +202,7 @@ capabilities before frontend integration. v0.4.0 hosted verification/publication
 passed before v0.5.0 implementation; preserve old APIs through both releases.
 
 
-Deploy the web project next, then release native assets against the stable URL.
+Deploy the web project next. Native assets require a separate explicitly selected build/device gate against the stable URL.
 Installed native apps remain frozen until users update, so keep supported old
 contracts/routes operational. Rollback must pass the same compatibility checks;
 do not roll back to a backend that cannot serve already released clients.

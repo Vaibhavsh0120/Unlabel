@@ -1,10 +1,14 @@
-# Working on the Unlabel foundation
+# Working on Unlabel
 
-Published backend is **v0.5.0 Useful Label Report**, Flutter **0.0.0+1**.
-Its source, report and hosted checks passed before separate publication after v0.4.0; the configured free Firebase resources are unchanged. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
+Published backend is **v0.6.0 Product Discovery**; frontend **0.1.0+2 Connected Label Reader** is implemented with final rendered/release gates pending. Backend tests/static/build and 23 hosted checks passed before separate publication; the configured free Firebase resources are unchanged. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
 Latest direction automatically saves confirmed public facts and stages unverified
-candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_5_0_REVIEW.md).
+candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_6_0_REVIEW.md).
 Keep ₹0/no-card, review Markdown/scripts and update docs before a future push.
+
+Next accepted work adds optional scanner login/private sync, first-launch Welcome,
+five-tab navigation and reference-style light/dark screens in separate versions.
+Guests keep personal records local; signed-in sync remains private and separate
+from automatic public facts. [Next version boundaries](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Team boundaries
 

@@ -5,13 +5,14 @@ examples, with a separate search schema. Existing receipts/progress/security rem
 
 # Backend contracts, catalogue and knowledge tools
 
-Released production backend v0.5.0 includes the tools below, following the separately published v0.4.0 release. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
+Released production backend v0.6.0 includes the tools below, following the separately published v0.4.0 release. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
 
 | Tool | Responsibility |
 | --- | --- |
 | `setup.py` / `setup.ps1` | Restore env/dependencies, verified committed source to SQLite and pinned Flutter tooling. |
 | `_progress.py` | Internal dependency-free setup progress: measured catalogue byte bars, indeterminate work/elapsed time and plain stage/failure logs. Not a separate command. |
 | `run_local.py` / `run-local.ps1` | Run localhost API/web services with process-only settings and owned-process cleanup. |
+| `generate_app_icons.py` | Regenerate authored light/dark iOS/Android/web icons with optional Pillow; `--check` validates tracked icon sizes/hashes/references using the standard library. See [brand assets](../frontend/assets/brand/README.md). |
 | `env.py` | Encrypt env to age ciphertext or restore using a key file/hidden terminal paste. |
 | `lock_backend.py` | Record tested backend development dependency versions; run with backend `.venv` Python after deliberate dependency updates. |
 | `community_catalogue.py` | Guarded private pending/inspect/approve/reject/cleanup operations for automatic community observations; explicit project and exact review hash. |
@@ -29,7 +30,7 @@ The completed JSONL acquisition has 24,695 exact India rows and 24,641 supported
 
 Large network acquisition is authorized, but transfer, decoded-record, work-directory and output limits remain finite. Use a dedicated owned source/output directory, preserve the current valid catalogue during local import, and refresh manually every nine calendar months from source export. Keep reusable reviewed source/provenance/licenses in Git; regenerated SQLite stays ignored. Hosted refresh creates a new verified immutable deployment and supports previous-deployment rollback; it never writes packaged runtime files in place. Catalogue lookup requires a valid configured index, with a receipt also required on Vercel. The separate configured Firestore `unlabel` database stores structured observations; immutable OFF storage is unchanged. [Build/status/refresh workflow](../docs/architecture/CATALOGUE.md).
 
-Existing same-source JSONL identity-only databases remain readable and are preserved by default setup. Use `scripts/setup.py --catalogue-only --replace-catalogue` to rebuild their facts table deliberately; intact facts stores and CSV identity stores retain normal reuse. This migration and actual local restore passed in the **402-test** v0.2.3 scope. [Hosted catalogue proof](../docs/research/BACKEND_V0_2_3_PRODUCTION.json).
+Existing same-source JSONL identity-only databases remain readable and are preserved by default setup. Use `scripts/setup.py --catalogue-only --replace-catalogue` to rebuild their facts table deliberately; same-source facts stores without discovery are upgraded automatically; current indexed facts stores and CSV identity stores retain normal reuse. This migration and actual local restore passed in the **402-test** v0.2.3 scope. [Hosted catalogue proof](../docs/research/BACKEND_V0_2_3_PRODUCTION.json).
 
 The current build validates exactly the two canonical reviewed claim JSON files, including rule/source references, bounds, dates and version, then packages hashes/lengths with a strict receipt. `--knowledge-directory` defaults to root `knowledge/`; `--knowledge-output-directory` defaults to `backend/app/claims/data/`. Catalogue `--source-directory`/`--output-directory` options retain their roles. Hosted activation requires receipt verification including explicit overrides; invalid packages never silently fall back. A small versioned preinstalled Flutter glossary export is optional; no offline Dart rule bundle or mandatory Dart/Python evaluator-parity tool is required. The manual release workflow already contains its own artifact-validation steps.
 
@@ -39,10 +40,10 @@ Keep source-tagged read-only Open Food Facts snapshots separate from reviewed FS
 
 ## Current validation and exports
 
-The [v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) records current
+The [v0.6.0 review](../docs/planning/BACKEND_V0_6_0_REVIEW.md) records current
 release gates; preceding hosted evidence remains separate historical proof.
 
-From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its eighteen-route v0.5.0 OpenAPI, four added report/glossary schemas and 22 validated synthetic examples. Historical v0.4.0 exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free two-bundle build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.5.0 passed full backend/static/source-build/setup/Markdown review and twenty hosted checks before separate publication. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
+From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its nineteen-route v0.6.0 OpenAPI, additive discovery schema and 24 validated synthetic examples. Historical v0.4.0 exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free two-bundle build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.6.0 passed 863 backend tests with five emulator-only skips, static/source-build/setup/Markdown review and 23 hosted checks before separate publication. v0.5.0 retains its earlier twenty-check evidence. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
 
 Optional static type checking is reproducible from root with `npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json --pythonpath backend/.venv/Scripts/python.exe` (Unix: `backend/.venv/bin/python`). The checked-in root configuration covers maintained backend and script Python in basic mode. This development check needs Node/npm but introduces no npm project dependency or runtime service; backend restore/run still uses the documented Python tools.
 

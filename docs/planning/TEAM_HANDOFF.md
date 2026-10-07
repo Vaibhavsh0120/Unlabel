@@ -1,56 +1,99 @@
 # Teammate handoff
 
-Fresh clone: `./scripts/setup.ps1`, then `./scripts/run-local.ps1` from root. Setup preserves `.env` or offers key-file/hidden-paste/example restoration, verifies the committed India source and regenerates SQLite. Python equivalents support macOS/Linux. [Recovery guide](LOCAL_DEVELOPMENT.md) · [Supplied concepts](../../design/references/README.md).
+Restore from root with python scripts/setup.py and run with
+python scripts/run_local.py; PowerShell wrappers remain available.
+Setup preserves local settings, can restore encrypted backend/.env.age, verifies
+the tracked India source and builds the current discovery index with progress.
+[Recovery guide](LOCAL_DEVELOPMENT.md).
 
-> Unlabel has a Flutter v0.0.0+1 starter and released FastAPI backend v0.5.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
+## Current checkpoint
 
-The rich-facts v0.2.3 and reviewed-claims v0.3.0 releases were reviewed, pushed, verified in production and published separately. The latter passed 543 backend tests, static checks and 72 public HTTP checks with actual hosted build receipts. Use the [current API guide](../../backend/README.md), [synthetic request/response contracts](../../contracts/README.md) and [dated production proof](../research/BACKEND_V0_3_0_PRODUCTION.json) when connecting the client. Wider feature and client work remains explicit in the [20-group tracker](FEATURE_TRACKER.md).
+Backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label Reader**
+have separate release gates: backend v0.6.0 is already published; frontend v0.1.0+2 is implemented with final rendered/release checks pending. Backend local verification:
+**863 passed, 5 emulator-only skipped**, Ruff/Pyright clean, nineteen exported
+routes and old eighteen-route compatibility preserved. Frontend analysis and
+interaction/data tests passed before final layout adjustments; the 42-test suite must pass again with those changes. Backend exact deployment and 23 hosted checks passed. Frontend browser/push/publication are separate gates, tracked in the [connected release plan](CONNECTED_RELEASE_PLAN.md)
+and [backend review](BACKEND_V0_6_0_REVIEW.md).
 
-Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)**. API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)**. [Hosting settings/verification](VERCEL_SETUP.md).
+Historical production **v0.5.0 Useful Label Report** and **v0.4.0 Community Product Catalogue**
+were independently pushed, hosted-verified and published. Preserve their source
+tags and evidence: [v0.5.0 proof](../research/BACKEND_V0_5_0_PRODUCTION.json),
+[v0.4.0 proof](../research/BACKEND_V0_4_0_PRODUCTION.json).
+Earlier review/test counts are historical, not the next release's hosted proof.
 
-## What exists
+Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app).
+API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
+[Deployment configuration](VERCEL_SETUP.md).
 
-- Flutter/native/web scaffold, appearance selection, lockfile and layout/theme/large-text tests.
-- Runnable backend with stateless normalization/claim evaluation, read-only source bundles and separate Firestore observations/receipts; strict exported contracts/synthetic examples and reserved wider knowledge/design/AI folders.
-- Data/API/offline/deployment/release plans and checked provider/source research.
-- Manual build/checksum/manifest/release workflow and v0.0.0 app version.
+Next accepted backend v0.7.0/frontend v0.2.0 adds optional scanner login/private
+sync and completes all visible reference-style destinations one screen at a time,
+beginning with Home. Guests retain local features; public package facts remain
+separate. [Accepted next scope](ACCOUNT_SYNC_SCREEN_PLAN.md).
 
-The preserved v0.3.0 foundation exposes eleven routes: health, metadata, product lookup, separate nutrition lookup, POST normalization of confirmed nutrient rows, typed catalogue status, exact catalogue identity lookup separate rich facts, confirmed claim checks, loaded rules and public evidence metadata. Frontend stays v0.0.0+1 and has no API adapter yet. No OCR plugin or trained model has been added; the deterministic reviewed claim subset runs in the backend. The tracked India source rebuilds local SQLite and a separate hosted SQLite/receipt without another export download. Hosted activation requires receipt/hash/manifest/integrity/count checks; [release-specific validation](BACKEND_V0_3_0_REVIEW.md) records measured-source/local/actual deployment gates separately. OFF and claim reads need no API key; community writes need explicit anonymous Firebase auth and backend credentials. See the [backend guide](../../backend/README.md) and [version plan](../superpowers/plans/2026-10-05-backend-versions.md).
+## What the person can do
 
-| Topic | Direction |
+The Flutter home opens manual barcode lookup or bounded name/brand search.
+Candidates show identifying fields and require explicit selection. The historical
+report preserves source dates, unavailable facts and conflicts.
+
+The dedicated label form accepts the current package's identity, claims,
+ingredient/allergen declarations and nutrient rows with printed basis/unit/
+preparation. Independent confirmation/pairing precedes analysis. An unchanged
+retry keeps its submission ID; changing facts creates a fresh submission.
+Structured public facts save automatically through anonymous scanner Auth.
+Storage/auth failures are distinct from the useful report outcome.
+
+Reports show sourced current/historical facts, approximate original-basis sugar
+cubes, the reviewed numerical claim subset and only three English/Hindi ingredient
+functions. The person can explicitly bookmark a report and reopen bounded private
+device-local saved/history lists. Appearance uses the owner's white/forest/mint
+direction, real Material 3 controls and locally licensed Solar icons.
+
+No camera/gallery/OCR, comparison, suitability profile, AI calls, training or fake
+85/100 score is part of this frontend release. Native device validation remains
+separate from the web/widget checks.
+
+## Integration and ownership
+
+| Area | Current implementation |
 | --- | --- |
-| Frontend | Single Flutter app directly frontend; Android/iOS/web |
-| UI | iPhone/iPad orientations/MacBook; light/dark; palette undecided |
-| Backend | Python/FastAPI, separate configured Vercel project |
-| Evidence | OFF and user-confirmed origins remain separate; seven reviewed numerical FSSAI claims run only against confirmed selected-table inputs |
-| Product data | Source-tagged live OFF product/nutrition routes plus separate export-origin identity/facts catalogue; no silent origin fallback |
-| Offline | Saved dated reports/snapshots, preferences and optional glossary; new analysis needs backend |
-| Rules | Python applies the reviewed numerical claim subset; wider criteria remain future work; no second Dart rule engine; no legal certification |
-| AI | Optional wording; training/HF only if separately useful/eligible |
-| Storage | Device/browser local history/preferences; read-only OFF/claims bundles plus automatic public observations/private staging in Firestore |
-| Releases | Native APK/IPA share source/frontend version/build; backend versions are independent; unsigned IPA is not installable |
+| Client composition | frontend/lib/app, one Flutter app for Android/iOS/web |
+| Client data | core/models, network and storage: bounded validation/HTTP, cached metadata handshake, lazy anonymous Auth and local persistence |
+| Client pages | features/scanner/presentation: home, lookup, form, report, ingredient detail, saved/history |
+| Backend discovery | app/catalogue/search.py and optional indexed SQLite tables; no upstream search call |
+| Report | app/reports and existing report routes; sources/dates/unknowns retained |
+| Community facts | app/community: deduplication, private staging, qualified compatible observations and unresolved conflicts |
+| Source/recovery | data/catalogue, scripts/setup.py and tracked encrypted environment; generated SQLite/SDKs remain ignored |
 
-Start the next meeting with [system](../architecture/SYSTEM.md), [data flow](../architecture/DATA_FLOW.md), [folders](../architecture/FOLDER_STRUCTURE.md), [features](FEATURES.md) and [API](../architecture/API_PLAN.md). Choose a small source/claim scope, validate OCR, freeze compatibility/coverage, and assign owners before the next requested phase.
+Name search covers the measured OFF snapshot, not community-only products.
+Barcode reports can use exact source resolution; this does not confirm a current
+packet. New source catalogs must preserve licensing, identity and per-field
+provenance. Generic raw-food composition must not fill branded packet gaps.
 
-The teammate can build against the exported [contracts](../../contracts/README.md) and synthetic examples without a provider key. Keep v1 identity parsing unchanged and add separate nutrition/facts models. Check `catalogue_facts` before using the facts route. Render direct-table availability, tags with availability, optional dates/image attribution and unknown values; an image descriptor alone is not proof the remote image currently loads. The confirmed-input body requires real boolean `confirmed: true`, UUID request/session IDs, a revision, completeness, and 1–64 rows; the actual body budget is 32 KiB. Preserve `original_rows`, table sources/preparation/bases, unknown-cell reasons, and all warnings. A `complete` normalization status does not mean every nutrient is known or that a food is healthy. Reject stale responses by request/session/revision.
+The source contains **24,641** supported India-tagged OFF identities; **4,519**
+have reported direct nutrient values. This is source content, not measured Indian
+retail coverage. The acquisition source date is **2026-10-06T06:53:46Z**, with manual
+nine-calendar-month replacement due **2027-07-06T06:53:46Z**.
+[Measured source](../research/CATALOGUE_V0_2_3_COVERAGE.json).
 
-The app must not silently combine OFF tables with user-confirmed values, infer missing added sugar/salt, or compare mass and volume. Unknown serving size stays per serving. Saved results, offline caching, camera/OCR and charts remain teammate work. Catalogue status identifies limits for the actual loaded store, missing allergen uncertainty and nine-calendar-month source age; snapshot misses make no OFF request. Rich facts distinguish direct, missing, invalid and unsupported legacy nutrition. Present empty community tags never prove allergen absence. Full JSONL acquisition is complete: 24,695 India rows, 24,641 supported unique codes and validated gzip EOF; source **2026-10-06T06:53:46Z** is due **2027-07-06T06:53:46Z**. All 24,641 supported facts validate; the local build verifies a 62,472,192-byte SQLite/receipt. Only 4,519 records contain reported direct nutrient values; render sparse facts/legacy-unsupported states without inventing values. Hosted v0.2.3 facts/identity reads and build/public receipt agreement passed for the independently pushed implementation; [dated production proof](../research/BACKEND_V0_2_3_PRODUCTION.json). coverage remains unverified. The [OFF workflow](../architecture/OPEN_FOOD_FACTS.md) explains current adapters; the [catalogue guide](../architecture/CATALOGUE.md) documents immutable deployment replacement/rollback. The v0.2.3 independent source push, tested tag and hosted gate are complete; v0.3.0 is the separate reviewed-claims release with its own local/source/hosted/publication gates. Camera/OCR, report scoring, saved/history/preferences and comparison still require their tracked integration work. [20-group tracker](FEATURE_TRACKER.md). [Roadmap](ROADMAP.md) and [contribution rules](../../CONTRIBUTING.md) cover later work.
+## Non-negotiable boundaries
 
-For the claim flow, add the separate exported request/response models and check `claim_checks`/`knowledge_version` first. Submit identified claims, region IDs, confirmed rows, selected table and explicit ordinary-food/form/preparation context. Render supported/contradicted/insufficient states with numerical-only scope and input/rule/source references; high/source protein, no added sugar and multigrain remain unreviewed. Keep statutory 4.2 energy-conversion metadata separate from the unchanged 4.184 normalization snapshot. Unknown alternatives, conflicts or future-dated evidence must not become a confident claim verdict. The rules/evidence endpoints and current validated synthetic examples support integration without a provider key. Saved reports retain their original versions/dates; no Flutter API implementation is already present.
+Only the scanner/client user authenticates, automatically and anonymously.
+There is no admin/reviewer app role or dashboard. The backend service account is
+a machine credential. Firebase Unlabel's first Standard database unlabel in
+Mumbai keeps its free tier, deny-all client rules and no linked billing.
+No paid Storage/Functions, TTL, backups or PITR may be added.
 
-## Current released-version handoff
+Preserve original rows/units/table bases, uncertainty and source receipts. Missing
+is not zero, allergy-safe or compliance proof. Claim checks retain their numerical
+scope and cited inputs; unsupported protein/no-added-sugar/multigrain claims remain
+insufficient. Gemini is disabled and custom training is unselected.
 
-Released v0.4.0 implements four additive observation/receipt/exact/resolved routes,
-semantic deduplication, private staging, qualified candidates and exact-hash
-review. Firebase Unlabel's first Standard database `unlabel` in Mumbai, anonymous
-Auth and deny-all client rules are configured with free tier/no billing. Hosted verification/publication passed independently; the v0.3.0 evidence
-above is historical. [Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json)
-matched both immutable receipts and cleaned synthetic records. Use the current [contracts](../../contracts/README.md) and
-[v0.4.0 review](BACKEND_V0_4_0_REVIEW.md). Client capture/OCR/background saves are
-pending. v0.5.0 Useful Label Report is independently reviewed, pushed, hosted-verified
-and published after the separate v0.4.0 release. It adds current/historical reports, independent autosave outcomes,
-three partial-coverage English/Hindi function entries and approximate sugar cubes.
-[Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json) verified real anonymous saving/retry, report/glossary boundaries, correction-blocked writes and matching source receipts; owned synthetic data was removed. [Current review](BACKEND_V0_5_0_REVIEW.md). The only app account
-role is the scanner/client, using automatic anonymous Firebase auth. There is no
-admin/reviewer app login or dashboard; backend credentials and CLI maintenance are
-machine/manual tooling. [Report guide](../architecture/LABEL_REPORT.md).
+Before each push, review docs/scripts/tests, meaningful process/import/secret
+boundaries and current contract exports. Never commit plaintext environment,
+private identities, real scans or credentials. Keep backend and frontend tags/
+validation independent and do not rebuild native artifacts for backend work.
+
+[System](../architecture/SYSTEM.md) · [Data flow](../architecture/DATA_FLOW.md) ·
+[Folders](../architecture/FOLDER_STRUCTURE.md) · [Features](FEATURES.md) ·
+[Feature tracker](FEATURE_TRACKER.md) · [Contracts](../../contracts/README.md)

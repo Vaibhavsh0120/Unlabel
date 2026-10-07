@@ -1,0 +1,1 @@
+void setWebAppearance(String mode) {}
