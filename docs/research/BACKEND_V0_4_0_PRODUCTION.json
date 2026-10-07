@@ -1,0 +1,127 @@
+{
+  "verified_at": "2026-10-07T05:16:45.770598+00:00",
+  "backend_version": "0.4.0",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/v1/health",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/claims/rules",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/evidence/fssai-ac-2022-schedule-i",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/products/SYNTHETIC_BARCODE",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "POST",
+      "path": "/v1/community/contributions",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "method": "POST",
+      "path": "/v1/community/contributions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/community/contributions",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/contributions/eb51578c-7163-4996-b42b-5a5e27cbbe82",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/products/SYNTHETIC_BARCODE",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/SYNTHETIC_BARCODE/resolved",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/contributions/eb51578c-7163-4996-b42b-5a5e27cbbe82",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/products/SYNTHETIC_BARCODE",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/community/contributions",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "catalogue_artifact": {
+    "database_sha256": "c42b95f6470f34577824d8fadc371c9dd46c2674c10810cf99c1c2f486f01976",
+    "database_bytes": 62472192,
+    "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+    "snapshot_id": "105f85b6-74b2-4c7a-a099-96de0c8bcecf"
+  },
+  "claim_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "synthetic_records_removed": true,
+  "synthetic_auth_users_removed": true,
+  "aggregate_admission_counters_retained": true
+}

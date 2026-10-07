@@ -20,6 +20,9 @@ pairing/correction and automatic save integration are still pending. Nutrition
 and claim rules retain their existing evidence boundaries. A full label report
 is the next separate version; no universal health score is introduced here.
 
-Publication is pending the final push and exact hosted verification.
+Published separately as the [source-only v0.4.0 release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.4.0).
+Implementation `d793f628581f509481d6dc60a82afe59ca013439` reached READY on both
+Vercel projects and passed 16 hosted HTTP checks, including automatic saving,
+retry, ownership, resolution and review. Synthetic records/accounts were removed.
 [Validation and remaining gates](BACKEND_V0_4_0_REVIEW.md) ·
 [Client contract guide](../../contracts/README.md) · [Complete plan](MASTER_PLAN.md).

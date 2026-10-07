@@ -2,7 +2,7 @@
 
 Fresh clone: `./scripts/setup.ps1`, then `./scripts/run-local.ps1` from root. Setup preserves `.env` or offers key-file/hidden-paste/example restoration, verifies the committed India source and regenerates SQLite. Python equivalents support macOS/Linux. [Recovery guide](LOCAL_DEVELOPMENT.md) · [Supplied concepts](../../design/references/README.md).
 
-> Unlabel has a Flutter v0.0.0+1 starter and local FastAPI backend v0.4.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
+> Unlabel has a Flutter v0.0.0+1 starter and released FastAPI backend v0.4.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
 
 The rich-facts v0.2.3 and reviewed-claims v0.3.0 releases were reviewed, pushed, verified in production and published separately. The latter passed 543 backend tests, static checks and 72 public HTTP checks with actual hosted build receipts. Use the [current API guide](../../backend/README.md), [synthetic request/response contracts](../../contracts/README.md) and [dated production proof](../research/BACKEND_V0_3_0_PRODUCTION.json) when connecting the client. Wider feature and client work remains explicit in the [20-group tracker](FEATURE_TRACKER.md).
 
@@ -40,12 +40,12 @@ For the claim flow, add the separate exported request/response models and check 
 
 ## Current v0.4.0 handoff
 
-Local v0.4.0 implements four additive observation/receipt/exact/resolved routes,
+Released v0.4.0 implements four additive observation/receipt/exact/resolved routes,
 semantic deduplication, private staging, qualified candidates and exact-hash
 review. Firebase Unlabel's first Standard database `unlabel` in Mumbai, anonymous
-Auth and deny-all client rules are configured with free tier/no billing. Hosted
-verification/publication remain pending; production v0.3.0 evidence above is
-historical. Use the current [contracts](../../contracts/README.md) and
+Auth and deny-all client rules are configured with free tier/no billing. Hosted verification/publication passed independently; the v0.3.0 evidence
+above is historical. [Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json)
+matched both immutable receipts and cleaned synthetic records. Use the current [contracts](../../contracts/README.md) and
 [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md). Client capture/OCR/background saves are
 pending. Next authorized version is v0.5.0 Useful Label Report (F06/F08/F12),
 after v0.4.0 is reviewed, pushed and published separately.

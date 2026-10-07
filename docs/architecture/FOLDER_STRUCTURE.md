@@ -5,7 +5,7 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.4.0 product/nutrition/claims, immutable OFF facts and automatic community observations/resolution; hosted publication pending |
+| backend | FastAPI v0.4.0 product/nutrition/claims, immutable OFF facts and automatic community observations/resolution; hosted-verified and published |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |

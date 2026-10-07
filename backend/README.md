@@ -1,14 +1,13 @@
 # Unlabel backend v0.4.0: Community Product Catalogue
 
-Local **v0.4.0** is implemented and checked; production remains **v0.3.0** until
-push and hosted verification pass. Flutter remains **0.0.0+1**. Four community
+Published **v0.4.0** is independently reviewed, pushed and hosted-verified. Flutter remains **0.0.0+1**. Four community
 APIs automatically save structured package observations and resolve compatible
 sourced fields, preserving live OFF/snapshot/normalization and seven numerical
 claim routes. Firebase Unlabel is configured with no billing. Camera/OCR/search,
 client background saving and full reports remain pending.
 [Feature tracker](../docs/planning/FEATURE_TRACKER.md) · [Current release gates](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy `main` pushes. [Published v0.3.0 verification](../docs/planning/BACKEND_V0_3_0_REVIEW.md) is distinct from [current local v0.4.0 checks](../docs/planning/BACKEND_V0_4_0_REVIEW.md); no v0.4.0 release or hosted verification is claimed.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy `main` pushes. [v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md) records separate local, emulator, live Firebase and hosted proof; [sixteen hosted checks](../docs/research/BACKEND_V0_4_0_PRODUCTION.json) matched both source receipts and cleaned synthetic records.
 
 ## Run locally
 
@@ -159,7 +158,7 @@ Firebase **Unlabel**, project `unlabel-india-catalogue`, first Standard database
 **`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous Auth,
 deny-all direct client rules and dedicated backend access are configured. Photos,
 raw OCR, profiles and private history remain excluded. The current local API is
-checked; hosted deployment/publication remain pending.
+checked, pushed, hosted-verified and published independently.
 
 Examples: [confirmed intake](../contracts/examples/community-contribution-v1.request.synthetic.json),
 [provisional intake](../contracts/examples/community-provisional-v1.request.synthetic.json),

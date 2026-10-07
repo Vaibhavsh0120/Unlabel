@@ -83,8 +83,12 @@ TTL, backups or billing upgrade are permitted. Firestore RPCs have bounded
 three-second deadlines/three transaction attempts, and public lookup performs no
 per-read writes; OFF keeps its independent eight-second default timeout.
 
-After push, verify exact backend version/build/source receipts, metadata readiness,
-partial OFF resolution, public source qualification, authenticated own receipts,
-strict bodies/redaction and REST denial. Firebase live synthetic checks alone do
-not prove this hosted runtime. [Current review](BACKEND_V0_4_0_REVIEW.md)
+Source commit `d793f628581f509481d6dc60a82afe59ca013439` independently reached READY
+on backend `dpl_8oGRZz2v6WZgnkQkBi9ShrAkdWNB` and frontend
+`dpl_DrcUBiaR7s3e9uRTpo2owuF1vjZG`. Sixteen hosted HTTP checks verified v0.4.0,
+metadata readiness, source-qualified lookup, anonymous write/own receipt/retry,
+old APIs, strict failures and matching OFF/claim receipts. Synthetic records and
+anonymous identities were removed. Source-only v0.4.0 was published separately.
+[Dated production proof](../research/BACKEND_V0_4_0_PRODUCTION.json)
+· [Current review](BACKEND_V0_4_0_REVIEW.md)
 · [Community configuration](../architecture/COMMUNITY_CATALOGUE.md).

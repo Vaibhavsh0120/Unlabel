@@ -69,11 +69,23 @@ this project's behavior, not Indian-market coverage or transcription accuracy.
   both PowerShell entry points passed validation. No dead-code removal was
   justified beyond replacing the superseded opt-in/prototype behavior.
 
-## Publication gates
+## Hosted verification and publication
 
-Push, exact hosted deployment, public HTTP checks and the separate source-only
-v0.4.0 release are pending until local review completes. No APK/IPA build or
-historical tag movement is part of this version.
+Implementation **d793f628581f509481d6dc60a82afe59ca013439** was pushed separately.
+Backend deployment **dpl_8oGRZz2v6WZgnkQkBi9ShrAkdWNB** and frontend deployment
+**dpl_DrcUBiaR7s3e9uRTpo2owuF1vjZG** reached READY for that exact commit.
+**16 hosted HTTP checks passed**: version/metadata/OpenAPI, existing source
+receipts, automatic candidate saving, immutable retry, own receipt isolation,
+public sourced resolution, review and semantic deduplication. Both canonical
+claim files matched the hosted receipt; the catalogue retained its validated
+source hash and 24,641 products. Synthetic product records and Auth users were
+removed after testing; aggregate admission counters were retained.
+[Dated hosted evidence](../research/BACKEND_V0_4_0_PRODUCTION.json).
+
+The separate [source-only v0.4.0 release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.4.0)
+targets the tested implementation. No APK/IPA was rebuilt and historical tags
+were preserved. Frontend capture, source views and background saving remain
+integration work. Proceed to v0.5.0 as a separate useful report version.
 
 [Release notes](BACKEND_V0_4_0_RELEASE.md) ·
 [Architecture](../architecture/COMMUNITY_CATALOGUE.md) ·

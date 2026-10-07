@@ -1,6 +1,6 @@
 # Unlabel workspace instructions
 
-- Published production backend is v0.3.0 until the v0.4.0 push and hosted verification pass; local v0.4.0 Community Product Catalogue is implemented. The user authorized finishing/pushing v0.4.0, then v0.5.0 Useful Label Report independently. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Flutter remains 0.0.0+1.
+- Published production backend is v0.4.0 Community Product Catalogue, independently reviewed, pushed, hosted-verified and released. The user authorized finishing/pushing v0.4.0, then v0.5.0 Useful Label Report independently. Follow docs/planning/MASTER_PLAN.md and the feature tracker. Work on one version at a time; preserve historical tags and do not rebuild APK/IPA for backend/tooling work. Flutter remains 0.0.0+1.
 
 
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.

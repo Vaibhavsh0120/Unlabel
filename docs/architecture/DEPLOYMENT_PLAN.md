@@ -1,7 +1,7 @@
 # Website and shared API deployment plan
 
-Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
-is implemented; production remains **v0.3.0** until push and hosted verification.
+Updated **7 October 2026**. Released backend **v0.4.0 Community Product Catalogue**
+is pushed, hosted-verified and published independently.
 Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
 observations automatically, stage provisional facts privately and resolve compatible
 fields with source/date and conflicts. Firebase Unlabel has its first Standard
@@ -16,7 +16,7 @@ Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app); API: [unl
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published OFF/normalization/claims/snapshot; local v0.4.0 enrichment awaits push/hosted verification. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published OFF/normalization/claims/snapshot; v0.4.0 enrichment is hosted-verified and released. |
 | Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous Auth/rules/IAM; automatic observations, private staging and qualified review. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 

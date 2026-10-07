@@ -1,8 +1,8 @@
 # Frontend/backend API plan
 
-Local backend **v0.4.0** has fifteen mounted routes, exported in
-`contracts/schemas/backend-v0.4.0.openapi.json`; production remains v0.3.0 until
-push/hosted verification. Four additive community endpoints implement automatic
+Released backend **v0.4.0** has fifteen mounted routes, exported in
+`contracts/schemas/backend-v0.4.0.openapi.json`; production v0.4.0 is independently
+hosted-verified and released. Four additive community endpoints implement automatic
 observations, semantic deduplication, private staging/receipts and sourced fields.
 Flutter integration and the v0.5.0 report remain pending.
 [Master plan](../planning/MASTER_PLAN.md) · [Actual backend](../../backend/README.md).

@@ -22,8 +22,8 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Published backend is **0.3.0** until v0.4.0 push/hosted verification. Local
-**0.4.0 Community Product Catalogue** is implemented; Flutter remains **0.0.0+1**.
+Published backend is **0.4.0 Community Product Catalogue**, independently
+reviewed, pushed and hosted-verified; Flutter remains **0.0.0+1**.
 The user authorized v0.4.0 then v0.5.0 Useful Label Report as separate reviewed,
 pushed and published versions. [Current review](BACKEND_V0_4_0_REVIEW.md)
 · [Release scope](BACKEND_V0_4_0_RELEASE.md) · [Master plan](MASTER_PLAN.md).
@@ -172,7 +172,7 @@ provider schema remains behind a stable backend adapter. Offline saved reports
 retain their original source, date and versions; viewing them does not refresh
 criteria or compute new findings. No Dart rule engine/parity system is required.
 Product/nutrition provider reads and confirmed-row normalization remain active
-in published backend v0.3.0. Separate catalogue status/lookup uses an export-origin contract,
+in published backend v0.4.0. Separate catalogue status/lookup uses an export-origin contract,
 verified deployment receipt and nine-calendar-month source age. Its separate rich-facts route preserves direct-table nutrition, tag availability,
 optional record dates and official image URL attribution; legacy aggregates and
 missing fields stay unknown. Coverage is unverified; a snapshot miss makes no
@@ -194,7 +194,7 @@ Compatible fields retain source/date/originals and conflicts; no generic packet
 imputation or current-label confirmation is invented. Safe defaults disable
 storage; resolved lookup can still serve available OFF facts. Check actual
 capabilities before frontend integration. v0.4.0 hosted verification/publication
-must finish before v0.5.0 begins; preserve old APIs through both releases.
+passed before v0.5.0 begins; preserve old APIs through both releases.
 
 
 Deploy the web project next, then release native assets against the stable URL.

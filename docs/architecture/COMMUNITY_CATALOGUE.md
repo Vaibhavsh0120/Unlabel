@@ -1,12 +1,13 @@
 # Community Product Catalogue: backend v0.4.0
 
-**7 October 2026:** v0.4.0 is implemented and checked locally; its push, hosted
-verification and source-only release remain pending. Published production is
-v0.3.0 until those gates pass. Firebase **Unlabel** has its first Standard
-Firestore database **`unlabel`** in Mumbai (`asia-south1`), with free tier enabled
+**7 October 2026:** v0.4.0 was independently reviewed, pushed, hosted-verified and
+published as a source-only release at `d793f628581f509481d6dc60a82afe59ca013439`.
+[Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) matched the
+unchanged OFF/claim receipts and cleaned synthetic records. Firebase **Unlabel**
+has its first Standard database **`unlabel`** in Mumbai (`asia-south1`), free tier
 and no linked billing. Anonymous Auth, deny-all client rules and dedicated
-backend credentials are configured. See the [release review](../planning/BACKEND_V0_4_0_REVIEW.md)
-for separate local, emulator, live Firebase and hosted evidence.
+credentials are configured. [Review](../planning/BACKEND_V0_4_0_REVIEW.md) records
+local, emulator, live Firebase and hosted evidence separately.
 
 ## Automatic observations
 

@@ -1,8 +1,7 @@
 # Documentation map
 
-Local backend **v0.4.0** implements fifteen routes, including automatic structured
-observations and sourced resolution; production remains **v0.3.0** until push and
-hosted verification. Flutter remains **0.0.0+1** with integration pending. Firebase
+Released backend **v0.4.0** implements fifteen routes, including automatic structured
+observations and sourced resolution; it is pushed, hosted-verified and published. Flutter remains **0.0.0+1** with integration pending. Firebase
 Unlabel's first Standard database `unlabel` in Mumbai is configured with free tier,
 anonymous Auth, denied direct client access and no linked billing. Current exports
 are v0.4.0; historical exports/release evidence are preserved. See the v0.4.0 review
@@ -21,8 +20,9 @@ for local, emulator, live Firebase and remaining hosted gates.
 | [Community catalogue](architecture/COMMUNITY_CATALOGUE.md) | Implemented automatic product-fact saving, unverified candidate staging, review, source resolution and no-card quotas |
 | [Accepted v0.4.0 design](superpowers/specs/2026-10-07-community-catalogue-design.md) | Confirmed package contributions and storage/privacy/source boundaries |
 | [Accepted v0.4.0 plan](superpowers/plans/2026-10-07-backend-v0.4.0.md) | Implementation ownership and separate local/emulator/hosted release gates |
+| [Backend v0.4.0 production proof](research/BACKEND_V0_4_0_PRODUCTION.json) | Sixteen hosted checks, matching unchanged OFF/claim receipts and synthetic cleanup |
 | [Backend v0.4.0 review](planning/BACKEND_V0_4_0_REVIEW.md) | Implemented source/APIs, configured Firebase and separate local/live/hosted gates |
-| [Backend v0.4.0 draft release scope](planning/BACKEND_V0_4_0_RELEASE.md) | Implemented Community Product Catalogue scope; publication pending |
+| [Backend v0.4.0 release notes](planning/BACKEND_V0_4_0_RELEASE.md) | Published Community Product Catalogue scope and preserved boundaries |
 | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md) | Selected barcode provider, normalization, provenance, caching and fallback |
 | [Backend version plan](superpowers/plans/2026-10-05-backend-versions.md) | Reference screens mapped to staged backend releases |
 | [Feature tracker](planning/FEATURE_TRACKER.md) | Original 20 concept groups, additional community scope and pending client work |

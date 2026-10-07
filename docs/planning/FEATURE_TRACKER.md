@@ -8,9 +8,8 @@ After verified v0.2.3: **6 ready, 0 partial and 8 planned backend groups**, plus
 
 After released v0.3.0: **6 ready, 1 partial and 7 planned backend groups**, plus **6 frontend-owned groups**. Claim checks now cover seven reviewed numeric claim types; broader claim evidence remains incomplete. Both backend versions were reviewed, pushed, verified in production and published independently. This measures capabilities, not the percentage of development effort completed.
 
-Published production remains v0.3.0 until v0.4.0 push/hosted checks pass.
-Local v0.4.0 has four mounted routes and configured free Firebase. C01 is ready
-locally and awaits hosted publication; original concept counts remain 6 ready,
+Published production is v0.4.0, independently pushed, hosted-verified and released.
+Its four routes and free Firebase setup are verified. C01 is released; original concept counts remain 6 ready,
 1 partial, 7 planned backend groups plus 6 frontend-owned groups. Community
 support does not complete the client screens or report. See the
 [review](BACKEND_V0_4_0_REVIEW.md) for separate local/emulator/live/hosted evidence.
@@ -38,7 +37,7 @@ support does not complete the client screens or report. See the
 | F18 | Profile/preferences / Home | Client-owned private choices | Pending | Local persistence/reset; explicit controls |
 | F19 | Responsive/light/dark / All | Client-owned | Starter only | iPhone/iPad/MacBook, text scaling and keyboard |
 | F20 | Attribution/age/version / All | Ready | Source/version display pending | Capability handshake and dates; no certification label |
-| C01 | Shared Indian package-fact coverage / supporting scope | Ready locally: v0.4.0; hosted verification pending | Pairing/correction, automatic anonymous requests and source/conflict views pending | Four routes, semantic dedup, private staging/receipts, qualified candidates, typed sources and configured free Firebase |
+| C01 | Shared Indian package-fact coverage / supporting scope | Released: v0.4.0; hosted-verified | Pairing/correction, automatic anonymous requests and source/conflict views pending | Four routes, semantic dedup, private staging/receipts, qualified candidates, typed sources and configured free Firebase |
 
 ## Backend version goals
 
@@ -46,7 +45,7 @@ support does not complete the client screens or report. See the
 | --- | --- | --- | --- |
 | v0.2.3 | Rich India snapshot product facts | Full JSONL EOF/hash/counts; compact source; typed facts API; nutrition/image/tag/date boundaries; old contracts; actual hosted reads | Verified and pushed |
 | v0.3.0 | First evidence-backed claim checks | 543 tests; zero static errors/warnings; current reviewed FSSAI sources; strict confirmed-input/rule/evidence APIs; 72 hosted HTTP checks and exact build receipts | Verified, pushed and published |
-| v0.4.0 | Community Product Catalogue | Implemented automatic observation save/dedup, private staging/receipts, qualified candidates/review, typed fields and configured free Firebase | Local checked; push/hosted/publication pending; [review](BACKEND_V0_4_0_REVIEW.md) |
+| v0.4.0 | Community Product Catalogue | Implemented automatic observation save/dedup, private staging/receipts, qualified candidates/review, typed fields and configured free Firebase | Reviewed, pushed, hosted-verified and published; [review](BACKEND_V0_4_0_REVIEW.md) |
 | v0.5.0 | Useful Label Report | F06/F08/F12: unified sourced report, reviewed ingredient explanations and sugar visualization | Next authorized version; implement only after v0.4.0 boundary |
 
 Each version is reviewed, documented, pushed and verified before the next is published. Rows advance only after their stated behavior is checked. A broad claim feature remains partial while other claim families or manufacturing/category evidence are unresolved.

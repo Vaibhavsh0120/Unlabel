@@ -42,7 +42,7 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
-**Backend v0.4.0 is implemented locally; production remains v0.3.0 until push and hosted verification. Frontend remains 0.0.0+1.** Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Four new APIs save/deduplicate structured package observations automatically, stage unverified candidates and resolve compatible sourced fields. Firebase Unlabel is configured on its free tier with no billing. Full reports, camera/OCR and client background saving remain pending. [Current verification gates](docs/planning/BACKEND_V0_4_0_REVIEW.md) · [Master plan](docs/planning/MASTER_PLAN.md).
+**Backend v0.4.0 is pushed, hosted-verified and published. Frontend remains 0.0.0+1.** Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Four new APIs save/deduplicate structured package observations automatically, stage unverified candidates and resolve compatible sourced fields. Firebase Unlabel is configured on its free tier with no billing. Full reports, camera/OCR and client background saving remain pending. [Current verification gates](docs/planning/BACKEND_V0_4_0_REVIEW.md) · [Master plan](docs/planning/MASTER_PLAN.md).
 
 | Ready now | Planned next |
 | --- | --- |
@@ -126,7 +126,7 @@ No duplicate Dart rule engine is required for the MVP. On-device OCR may still c
 | Product enrichment | Firebase Unlabel; first Standard database `unlabel`, Mumbai | Automatic observation APIs, qualified candidates and source resolution; free tier/no linked billing |
 | Knowledge | Reviewed JSON/CSV sources, aliases, rules and translations | Read-only client/server bundles; optional local SQLite index |
 
-The backend has no durable local state and generates verified read-only OFF SQLite/claim bundles. v0.4.0 uses Firestore for structured public observations and private staged candidates. Compatible fields retain individual source/date references, originals and conflicts. Photos/raw OCR/preferences/history stay private. Unlabel's first Standard database `unlabel` in Mumbai has its free tier enabled and no linked billing; no paid fallback is allowed. The website uses pinned Flutter 3.47.4. Pushes deploy both Vercel projects; mobile releases remain manual. v0.4.0 hosted verification is still pending. [Deployment configuration →](docs/planning/VERCEL_SETUP.md) · [Storage boundaries →](docs/architecture/COMMUNITY_CATALOGUE.md)
+The backend has no durable local state and generates verified read-only OFF SQLite/claim bundles. v0.4.0 uses Firestore for structured public observations and private staged candidates. Compatible fields retain individual source/date references, originals and conflicts. Photos/raw OCR/preferences/history stay private. Unlabel's first Standard database `unlabel` in Mumbai has its free tier enabled and no linked billing; no paid fallback is allowed. The website uses pinned Flutter 3.47.4. Pushes deploy both Vercel projects; mobile releases remain manual. v0.4.0 passed sixteen hosted HTTP checks with matching OFF/claim receipts. [Deployment configuration →](docs/planning/VERCEL_SETUP.md) · [Storage boundaries →](docs/architecture/COMMUNITY_CATALOGUE.md)
 
 **₹0 and no credit card remain the baseline.** Stay within eligible free tiers, keep billing disabled, and preserve local/template fallbacks. Hosted AI and unlimited private CI are not guarantees. [Free-stack research →](docs/research/FREE_STACK.md)
 
@@ -140,7 +140,7 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI v0.4.0 locally; hosted publication pending
+├── backend/             FastAPI v0.4.0; hosted-verified source-only release
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Reusable India source, provenance/licenses and fixtures

@@ -3,12 +3,12 @@
 The Flutter v0.0.0+1 starter and manual mobile workflow remain unchanged.
 Backend v0.1.0–v0.3.0 independently delivered live lookup, confirmed normalization,
 India acquisition/verified hosted rich facts and seven reviewed numerical claims.
-Local **v0.4.0 Community Product Catalogue** is implemented with four additive
+Released **v0.4.0 Community Product Catalogue** is implemented with four additive
 routes, automatic observation save/dedup, private staging, qualified candidate
 facts, conflict review and per-field source resolution. Firebase Unlabel has its
 first Standard database `unlabel` in Mumbai with free tier/no billing, anonymous
-Auth and denied direct client access. Hosted verification/publication follow the
-separate push gate. [Current review](BACKEND_V0_4_0_REVIEW.md).
+Auth and denied direct client access. It was independently pushed, hosted-verified and published;
+[sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) retain exact evidence. [Current review](BACKEND_V0_4_0_REVIEW.md).
 
 The user authorized **v0.5.0 Useful Label Report** next: F06/F08/F12 unify sourced
 findings, reviewed ingredient explanations and sugar visualization using existing

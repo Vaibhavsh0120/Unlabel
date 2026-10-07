@@ -2,7 +2,7 @@
 
 **Final implemented design, 7 October 2026.** Local source/API checks and live
 Firebase synthetic checks are recorded in the [release review](../../planning/BACKEND_V0_4_0_REVIEW.md).
-Push, hosted verification and publication remain separate pending gates. This
+Source-only v0.4.0 was pushed, hosted-verified and published separately. This
 replaces the earlier per-scan consent/accepted-only prototype. The
 [master plan](../../planning/MASTER_PLAN.md) retains the complete product direction.
 
@@ -100,9 +100,10 @@ moderation/supersession, quota, token/project/provider boundaries, source confli
 unknown revisions and partial outage behavior. Emulator and live synthetic
 checks are separate evidence from mocks and hosted deployment.
 
-Complete independent review, current Markdown/script/secret/static checks, then
-push and verify exact hosted v0.4.0 and immutable source receipts before its
-source-only publication. Preserve historical release tags and Flutter 0.0.0+1.
+Independent review, current Markdown/script/secret/static checks, exact hosted
+v0.4.0 and immutable source-receipt checks passed before source-only publication.
+[Production proof](../../research/BACKEND_V0_4_0_PRODUCTION.json) records sixteen
+hosted HTTP checks and synthetic cleanup. Preserve historical release tags and Flutter 0.0.0+1.
 v0.5.0 Useful Label Report starts only after the v0.4.0 release boundary.
 
 [Firebase plans](https://firebase.google.com/docs/projects/billing/firebase-pricing-plans)

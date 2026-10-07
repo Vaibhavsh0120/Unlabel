@@ -1,7 +1,7 @@
 # Unlabel data flow and ownership
 
-Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
-is implemented; production remains **v0.3.0** until push and hosted verification.
+Updated **7 October 2026**. Released backend **v0.4.0 Community Product Catalogue**
+is pushed, hosted-verified and published independently.
 Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
 observations automatically, stage provisional facts privately and resolve compatible
 fields with source/date and conflicts. Firebase Unlabel has its first Standard
@@ -42,7 +42,7 @@ denied direct client access. Frontend capture/OCR/background save remains pendin
    or disable independent normalization/claim paths.
 
 Firebase Unlabel is provisioned on free Standard database `unlabel` with no
-billing. API push/hosted verification remain pending. [Lifecycle](COMMUNITY_CATALOGUE.md).
+billing. API push/hosted verification and publication passed separately. [Lifecycle](COMMUNITY_CATALOGUE.md).
 
 ## Planned end-to-end online lookup and label review
 

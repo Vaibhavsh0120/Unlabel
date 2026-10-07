@@ -1,11 +1,12 @@
 # Unlabel: useful product architecture and delivery plan
 
-Delivery checkpoint: **7 October 2026**. The user authorized finishing v0.4.0
-then v0.5.0 as independently reviewed/pushed versions. Local **v0.4.0 Community
-Product Catalogue** is implemented; its hosted verification/publication remain
-pending. Published production is **v0.3.0** until that boundary passes. Flutter
-remains **0.0.0+1**. Future product flows below remain plans unless explicitly
-marked implemented; preserve the completed foundation and historical releases.
+Delivery checkpoint: **7 October 2026**. Backend **v0.4.0 Community Product
+Catalogue** was reviewed, pushed, hosted-verified and published independently.
+The user authorized **v0.5.0 Useful Label Report** next. Flutter remains
+**0.0.0+1**. Future flows below remain plans unless explicitly marked implemented.
+Preserve the released foundation and historical source-only tags.
+[Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) matched both
+OFF/claim receipts and cleaned synthetic records.
 
 ## Product goal
 
@@ -283,7 +284,7 @@ first Standard database **`unlabel`** is configured in **Mumbai/asia-south1** wi
 free tier enabled and no linked billing. Anonymous Auth, denied direct client
 access and dedicated least-privilege backend credentials are configured. Live
 synthetic persistence/retry/review/cleanup and direct REST denial were checked;
-hosted API verification remains a separate pending gate.
+hosted API verification passed separately with sixteen HTTP checks and matching source receipts.
 Keep Spark, deny direct client database access and use explicit backend credentials.
 No Cloud Storage, Cloud Functions, paid billing, paid fallback, TTL or paid backups.
 The first database receives free quota regardless of its ID; hard quotas can
@@ -397,7 +398,7 @@ client/v0.5.0 gates.
 
 - Original concept baseline remains **6 ready backend groups, 1 partial,
   7 planned; 6 client-owned groups**. The additional C01 community group is
-  implemented locally and awaits hosted publication. Counts are capabilities,
+  released independently with verified hosted behavior. Counts are capabilities,
   not completion percentages. All concept-screen Flutter integration is pending.
 - OFF snapshot remains **24,641 supported India-tagged barcodes**, including
   **4,519 products with accepted direct nutrient values**. These dated counts do
@@ -410,7 +411,7 @@ client/v0.5.0 gates.
   free tier/no billing; Auth/rules/IAM and live synthetic checks are verified.
   Emulator and live results remain distinct from local mocks and hosted proof.
 - Final aggregate counts/review findings belong in the [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md).
-  Push, exact hosted verification and source-only publication remain pending.
+  Source commit `d793f628581f509481d6dc60a82afe59ca013439` passed sixteen hosted checks and was published as source-only v0.4.0.
 - v0.5.0 next targets the useful sourced report, reviewed ingredient explanations
   and sugar visualization (F06/F08/F12). No universal score or AI dependency is
   needed. Capture/search/comparison/client persistence stay in their own scope.

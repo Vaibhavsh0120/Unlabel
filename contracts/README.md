@@ -1,6 +1,6 @@
 # Shared API contracts
 
-Local backend **v0.4.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
+Released backend **v0.4.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
 
 | File | Model or purpose |
 | --- | --- |
@@ -56,4 +56,4 @@ outage; neither usable source returns 503. Observations do not provide current
 caller confirmation. Exact retries retain receipts despite OFF snapshot rotation;
 new provider references must match actual snapshot identity. Frontend capture,
 background anonymous requests and reports remain integration work. Production
-v0.4.0 verification/publication is pending; see the [review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+v0.4.0 verification/publication passed separately; see the [review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).

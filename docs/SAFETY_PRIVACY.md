@@ -1,8 +1,8 @@
 # Safety, evidence and privacy boundaries
 
-Local v0.4.0 implements automatic structured public-product observations and
+Released v0.4.0 implements automatic structured public-product observations and
 private staging/receipts. Existing normalization/seven-claim evaluation remains
-stateless. Production remains v0.3.0 until push/hosted verification. Firebase
+stateless. Production v0.4.0 is independently hosted-verified and released. Firebase
 Unlabel's first Standard `unlabel` database, anonymous Auth and deny-all client
 rules are configured with free tier/no linked billing. Flutter capture/OCR and
 background saving remain pending. [Current gates](planning/BACKEND_V0_4_0_REVIEW.md)

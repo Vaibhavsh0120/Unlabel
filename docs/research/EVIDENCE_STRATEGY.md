@@ -1,8 +1,7 @@
 # Evidence strategy
 
-Status: local **v0.4.0** implements automatic structured observations, private
-staging and qualified source resolution; production remains v0.3.0 until
-push/hosted verification. The seven reviewed numerical claims and three source
+Status: published **v0.4.0** implements automatic structured observations, private
+staging and qualified source resolution; production v0.4.0 is pushed, hosted-verified and released. The seven reviewed numerical claims and three source
 records are unchanged. Firebase Unlabel is configured on free Standard database
 `unlabel` without linked billing. Product observations remain distinct from rule
 evidence; review never confirms the caller's current packet or activates new

@@ -1,10 +1,10 @@
 # Indian food coverage: barcode, back label and front package
 
-Research updated **7 October 2026 (Asia/Calcutta)**. Local **v0.4.0 Community
+Research updated **7 October 2026 (Asia/Calcutta)**. Released **v0.4.0 Community
 Product Catalogue** is implemented with automatic observations, semantic dedup,
 private provisional staging, qualified candidates and typed sourced fields.
 Firebase Unlabel's free first Standard database `unlabel` is configured with no
-billing. Production remains **0.3.0** until push/hosted verification; Flutter
+billing. Production **0.4.0** is independently hosted-verified and released; Flutter
 **0.0.0+1** still needs capture/OCR/integration. Search/source acquisition and
 regional benchmarks remain proposals. No Indian-market coverage percentage or
 photo recognition is proved. [Master plan](../planning/MASTER_PLAN.md).
@@ -156,14 +156,14 @@ or all-language download is required by this proposal.
 ## Work tracker and sequence
 
 These are work packages. v0.4.0 enrichment is implemented locally and Firebase
-is configured; its hosted publication remains pending. Search/OCR/report work
+is configured; hosted publication passed independently. Search/OCR/report work
 is separate. Finish one accepted version at a time.
 
 | Work package | Goal and completion evidence | Current state |
 | --- | --- | --- |
 | Existing product foundation | Reuse validated OFF India source, exact live/snapshot contracts and reviewed seven-claim bundle | Released; source scope remains limited |
 | Source selection and gap audit | Record roles/rights, three capture-path gaps and honest field denominators | This research complete; no new source bundle acquired |
-| Automatic public product enrichment | Save/dedup confirmed barcode/front/back facts; stage candidates as unverified; compatible per-field sources with original observations retained | v0.4.0 ready locally; Firebase configured; hosted/publication pending; [review](../planning/BACKEND_V0_4_0_REVIEW.md) |
+| Automatic public product enrichment | Save/dedup confirmed barcode/front/back facts; stage candidates as unverified; compatible per-field sources with original observations retained | v0.4.0 released; Firebase and hosted checks passed; [review](../planning/BACKEND_V0_4_0_REVIEW.md) |
 | Coverage measurement and front-text search | Bounded name/brand/variant candidates; reproducible missing-field and category/language counts; no false exact matches | Proposed backend slice |
 | Confirmed package analysis and report | Sufficient corrected facts can be normalized/checked; a full report must combine reviewed criteria without erasing source conflicts | Normalization/claim subset released; unified report next in v0.5.0 |
 | Ingredient glossary and wider evidence | Reviewed Indian ingredient aliases/INS, English/Hindi explanations and declaration distinctions | Next v0.5.0 Useful Label Report; reviewed glossary still pending |
