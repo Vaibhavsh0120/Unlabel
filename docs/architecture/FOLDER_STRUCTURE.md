@@ -52,7 +52,7 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | App composition/lifespan, eighteen local v0.5.0 routes; independent source activation and redacted failures; published v0.4.0 has fifteen routes |
+| app/main.py | App composition/lifespan, eighteen released v0.5.0 routes; independent source activation and redacted failures; published v0.4.0 has fifteen routes |
 | app/reports/, app/api/v1/reports.py | Implemented current/historical report composition, independent storage outcomes, original-basis sugar cubes and bounded three-entry glossary |
 | app/api/v1/claims.py | Implemented confirmed claim checks, loaded rules and public evidence metadata |
 | app/claims | Strict claim models, numerical engine, bounded reviewed knowledge loader and receipt-verified bundle builder |
@@ -88,7 +88,7 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Local eighteen-route v0.5.0 OpenAPI, four report/glossary schemas and 22 validated synthetic examples; community/resolved/claim/catalogue/nutrition models and historical exports preserved |
+| contracts/schemas, examples | Released eighteen-route v0.5.0 OpenAPI, four report/glossary schemas and 22 validated synthetic examples; community/resolved/claim/catalogue/nutrition models and historical exports preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
@@ -99,11 +99,11 @@ design/tokens and assets reserve shared future roles/branding. ai/datasets, expe
 
 docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
 
-Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; broader health analysis remains future work. The seven-rule claim scope and three-source registry are populated; broader ingredient/allergen folders remain reserved; local v0.5.0 has a separate three-entry name/function glossary under `app/reports/`. No model is trained.
+Empty future folders use .gitkeep. Reserved folders are not implemented features. The Flutter starter, FastAPI product/nutrition service, Vercel web build and manual mobile workflow execute; broader health analysis remains future work. The seven-rule claim scope and three-source registry are populated; broader ingredient/allergen folders remain reserved; released v0.5.0 has a separate three-entry name/function glossary under `app/reports/`. No model is trained.
 
 `data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.3 source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).
 
-Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/cloud/hosted gates are in the [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md); the claim knowledge remains unchanged.
+Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/cloud/hosted gates are in the [v0.5.0 review](../planning/BACKEND_V0_5_0_REVIEW.md); the claim knowledge remains unchanged.
 
 `backend/app/community/` contains strict observations, normalization/hashes,
 resolver, Firebase authentication and transactional storage. Its four HTTP routes

@@ -8,13 +8,13 @@ routes, automatic observation save/dedup, private staging, qualified candidate
 facts, conflict review and per-field source resolution. Firebase Unlabel has its
 first Standard database `unlabel` in Mumbai with free tier/no billing, anonymous
 Auth and denied direct client access. It was independently pushed, hosted-verified and published;
-[sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) retain exact evidence. [Current review](BACKEND_V0_4_0_REVIEW.md).
+[sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) retain exact evidence. [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md) · [Current v0.5.0 review](BACKEND_V0_5_0_REVIEW.md).
 
-Local **v0.5.0 Useful Label Report** is implemented and focused API/contracts pass:
-F06/F12 are ready locally, while F08 stays partial. They unify sourced
+Released **v0.5.0 Useful Label Report** passed independent review, push and hosted checks:
+F06/F12 are ready, while F08 stays partial. They unify sourced
 findings, three reviewed English/Hindi ingredient name/function entries and declared
 4 g/cube sugar visualization using existing
-normalization/claim engines. Full review, push and hosted checks are pending.
+normalization/claim engines. Twenty hosted checks and source-only publication passed after the separate v0.4.0 release.
 No universal score or Gemini dependency is required.
 v0.6.0 discovery and v0.7.0 comparison remain proposals in the
 [master plan](MASTER_PLAN.md). Camera/OCR/correction, anonymous background save,

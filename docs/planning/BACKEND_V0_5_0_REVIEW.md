@@ -1,6 +1,6 @@
 # Backend v0.5.0 review: Useful Label Report
 
-Reviewed on **7 October 2026**. This version composes the existing confirmed-row
+Released on **7 October 2026**. This version composes the existing confirmed-row
 normalizer, reviewed claim rules and sourced catalogue into a usable report.
 Flutter remains **0.0.0+1**. v0.4.0 was separately pushed, hosted-verified and
 published before this work. Local checks and hosted publication are separate.
@@ -69,10 +69,29 @@ initialization was removed; its **26 service tests** passed afterward.
 
 ## Hosted verification and publication
 
-Pending the independently reviewed v0.5.0 push. Production still serves released
-v0.4.0. Exact-commit deployment readiness, real report/glossary/saving requests,
-existing source receipts and owned synthetic cleanup must pass before a v0.5.0
-source-only release is published. No completion claim is based on local tests.
+Implementation **0c067027c934226fc2cd6880a319128ea26d9ebf** was independently
+pushed after review. Backend deployment **dpl_86fgYA2rwzN68dZkg9zc3UrW3Pes** and
+frontend deployment **dpl_Cg1NeQnueW9xhhAmRDYrmrHGG4ka** reached READY for that
+exact commit. **Twenty hosted HTTP checks passed**, including confirmed and
+barcode-less reports, real anonymous automatic saving, immutable retry, owned
+receipt access, read-only historical reports, glossary hash/matches, rejected
+anomalous admission with no receipt, strict redacted failures and original
+catalogue/claim receipts. The unchanged website and bootstrap both returned 200.
+
+Owned synthetic product/revision/receipt records and anonymous test users were
+removed; aggregate admission counters remain. No admin/reviewer app account was
+created. [Dated hosted evidence](../research/BACKEND_V0_5_0_PRODUCTION.json).
+The separate [source-only v0.5.0 release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.5.0)
+targets the tested implementation. Remote v0.4.0/v0.5.0 tag targets were checked;
+historical tags and native artifacts remain unchanged. Production now serves
+v0.5.0; local gates alone were not used as deployment evidence.
+
+The tracker records **eight ready, two partial and four planned backend groups**
+from the original baseline, plus **six client-owned groups**. Supporting C01 was
+released separately in v0.4.0. Camera/OCR, result/source UI, background saving and
+local saved/history/preferences still require frontend integration. Broader
+ingredients/claims, discovery and comparison remain future work; Indian retail
+coverage is unverified.
 
 [Release scope](BACKEND_V0_5_0_RELEASE.md) ·
 [Report architecture](../architecture/LABEL_REPORT.md) ·

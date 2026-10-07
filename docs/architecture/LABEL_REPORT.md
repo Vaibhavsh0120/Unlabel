@@ -1,10 +1,12 @@
 # Useful Label Report: backend v0.5.0
 
-Local **v0.5.0** is implemented and focused API/contract checks pass; production
-**v0.4.0** is separately reviewed, pushed, hosted-verified and published. Full
-release review, push and hosted checks must pass before v0.5.0 is released. The report connects existing confirmed
-normalization, reviewed numerical claims and exact sourced product facts.
-Camera/OCR, results UI and background-save integration remain frontend work.
+Production **v0.5.0** was independently reviewed, pushed, hosted-verified and
+published after the separate v0.4.0 release. [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json)
+verified real reports, anonymous saving/retry, correction-blocked writes,
+historical evidence, glossary boundaries and unchanged source receipts. The
+report connects confirmed normalization, reviewed numerical claims and exact
+sourced product facts. Camera/OCR, results UI and background-save integration
+remain frontend work.
 
 ## Three additive APIs
 
@@ -103,7 +105,7 @@ responses. Read `/v1/meta` versions and capabilities before integration; glossar
 readiness is separate from report and reviewed claim readiness. No Gemini,
 custom training, new provider, new secret, paid database/service or mobile build
 belongs to v0.5.0. Preserve the fifteen released v0.4.0 APIs and historical exports.
-The local eighteen-route OpenAPI and four added schemas are exported with five
+The released eighteen-route OpenAPI and four added schemas are exported with five
 new report/glossary examples, bringing the validated synthetic set to 22.
 
 [Accepted design](../superpowers/specs/2026-10-07-useful-label-report-design.md)

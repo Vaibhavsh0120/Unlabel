@@ -1,9 +1,9 @@
 # Working on the Unlabel foundation
 
-Published backend is **v0.4.0 Community Product Catalogue**, Flutter **0.0.0+1**.
-Its source, Firebase and hosted checks passed before separate publication. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
+Published backend is **v0.5.0 Useful Label Report**, Flutter **0.0.0+1**.
+Its source, report and hosted checks passed before separate publication after v0.4.0; the configured free Firebase resources are unchanged. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
 Latest direction automatically saves confirmed public facts and stages unverified
-candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_4_0_REVIEW.md).
+candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_5_0_REVIEW.md).
 Keep ₹0/no-card, review Markdown/scripts and update docs before a future push.
 
 ## Team boundaries

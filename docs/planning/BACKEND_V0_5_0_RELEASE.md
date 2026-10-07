@@ -1,8 +1,9 @@
 # Backend v0.5.0: Useful Label Report
 
-Release preparation on **7 October 2026**. v0.4.0 Community Product Catalogue is
+Released on **7 October 2026**. v0.4.0 Community Product Catalogue is
 already separately published; this next version gives a future client one useful
-report response to render. Publication and hosted proof are pending review.
+report response to render. Both versions were independently reviewed, pushed,
+hosted-verified and published.
 
 ## Goal and behavior
 
@@ -32,9 +33,11 @@ plaintext credentials. No new cloud billing/card requirement was introduced.
 Review and local checks passed: **807 tests**, zero Pyright errors/warnings,
 Ruff/format, contracts, scripts/Markdown links, actual setup and source build.
 Five unchanged storage emulator cases are excluded from this suite and retain
-their separate v0.4.0 proof. An independent push, exact-commit READY deployment
-and hosted synthetic checks must precede the source-only GitHub release. No
-APK/IPA or historical release tag is rebuilt or moved.
+their separate v0.4.0 proof. Source **0c067027c934226fc2cd6880a319128ea26d9ebf**
+was pushed independently. Both exact-commit deployments reached READY; twenty
+hosted API checks and two website HTTP checks passed. Synthetic records and test
+users were cleaned up. The [source-only GitHub release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.5.0)
+targets that source. No APK/IPA or historical release tag was rebuilt or moved.
 
 [Review and evidence](BACKEND_V0_5_0_REVIEW.md) ·
 [Architecture](../architecture/LABEL_REPORT.md) ·

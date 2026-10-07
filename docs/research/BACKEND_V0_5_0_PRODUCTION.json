@@ -1,0 +1,185 @@
+{
+  "verified_at": "2026-10-07T05:40:41.602764+00:00",
+  "backend_version": "0.5.0",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/v1/health",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ingredients/glossary",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/contributions/SYNTHETIC_SUBMISSION_ID",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/SYNTHETIC_BARCODE/report",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community/contributions/SYNTHETIC_SUBMISSION_ID",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 413,
+      "expected": 413
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/invalid/report",
+      "status": 422,
+      "expected": 422
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/claims/rules",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalogue/products/00024907/facts",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "catalogue_artifact": {
+    "database_sha256": "92d39b4e0fbd849eae175172166633d5857ee6f5e604ded0b1768dfe07241ecc",
+    "database_bytes": 62472192,
+    "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+    "snapshot_id": "73211f3e-549e-4f7b-be54-873b4cc69adc"
+  },
+  "claim_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "glossary_artifact": {
+    "sha256": "5ec790f80554de1e0727662b506b983d94a2c0d516153257e8d51542458b34e9",
+    "bytes": 2857,
+    "entry_count": 3
+  },
+  "synthetic_records_removed": true,
+  "synthetic_auth_users_removed": true,
+  "aggregate_admission_counters_retained": true,
+  "implementation_commit": "0c067027c934226fc2cd6880a319128ea26d9ebf",
+  "deployments": {
+    "backend": {
+      "id": "dpl_86fgYA2rwzN68dZkg9zc3UrW3Pes",
+      "state": "READY",
+      "sha": "0c067027c934226fc2cd6880a319128ea26d9ebf"
+    },
+    "frontend": {
+      "id": "dpl_Cg1NeQnueW9xhhAmRDYrmrHGG4ka",
+      "state": "READY",
+      "sha": "0c067027c934226fc2cd6880a319128ea26d9ebf"
+    }
+  },
+  "source_release": {
+    "url": "https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.5.0",
+    "tag": "v0.5.0",
+    "target": "0c067027c934226fc2cd6880a319128ea26d9ebf",
+    "native_assets": false
+  },
+  "website_checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/flutter_bootstrap.js",
+      "status": 200
+    }
+  ]
+}

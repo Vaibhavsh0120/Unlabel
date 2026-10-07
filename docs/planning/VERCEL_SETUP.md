@@ -26,7 +26,7 @@ The starter contains no product API request yet. Passing the URL config prepares
 - `backend/vercel.json` limits this Function to 60 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
 - `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` and `app/claims/data/` are ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- The local v0.5.0 target environment uses `OFF_USER_AGENT=Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
+- The released v0.5.0 environment uses `OFF_USER_AGENT=Unlabel/0.5.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
 No live FSSAI request or writable cloud database is required for existing OFF/normalization/claims; v0.4.0 community observations use separately configured free Firestore. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST, Content-Type and Authorization. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
@@ -93,19 +93,16 @@ anonymous identities were removed. Source-only v0.4.0 was published separately.
 · [Published v0.4.0 review](BACKEND_V0_4_0_REVIEW.md)
 · [Community configuration](../architecture/COMMUNITY_CATALOGUE.md).
 
-## Local v0.5.0 report deployment gate
+## Released v0.5.0 report deployment gate
 
-Local source mounts eighteen routes, adding current-label reports, read-only
-historical barcode reports and the three-entry reviewed glossary. Focused
-API/contracts pass; full review, push and hosted verification remain pending,
-with production still v0.4.0. No new provider, secret, billing account or service
-is required. The bounded tracked glossary projection is packaged with application
-source, independently of unchanged OFF/claim build receipts.
-
-After the separate push, verify the intended Git SHA, eighteen-route OpenAPI,
-report/glossary metadata and artifact, corrected barcode-less report, original
-12 g/40 g sugar producing approximately three cubes, historical read-only
-evidence, automatic saving and its independent failure outcomes. Recheck old
-APIs/receipts, strict bodies/redacted failures, exact-origin CORS and excluded
-private/source URLs. A READY deployment alone does not close these gates.
-[Report contract](../architecture/LABEL_REPORT.md).
+Source `0c067027c934226fc2cd6880a319128ea26d9ebf` independently reached READY on
+backend `dpl_86fgYA2rwzN68dZkg9zc3UrW3Pes` and frontend
+`dpl_Cg1NeQnueW9xhhAmRDYrmrHGG4ka`. Twenty hosted API checks verified reports,
+anonymous automatic saving/retry, barcode-less intake, original-basis sugar,
+glossary hashes/aliases, correction blocking, redacted errors and unchanged source
+receipts. Hosted eighteen-route OpenAPI equals the reviewed export. The website
+and bootstrap returned 200. Owned synthetic records and users were removed.
+The source-only v0.5.0 release targets that commit. No new provider, secret,
+billing or paid service was required; future pushes require their own checks.
+[Dated evidence](../research/BACKEND_V0_5_0_PRODUCTION.json) ·
+[Review](BACKEND_V0_5_0_REVIEW.md) · [Report contract](../architecture/LABEL_REPORT.md).

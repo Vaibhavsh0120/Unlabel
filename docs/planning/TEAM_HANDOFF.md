@@ -2,7 +2,7 @@
 
 Fresh clone: `./scripts/setup.ps1`, then `./scripts/run-local.ps1` from root. Setup preserves `.env` or offers key-file/hidden-paste/example restoration, verifies the committed India source and regenerates SQLite. Python equivalents support macOS/Linux. [Recovery guide](LOCAL_DEVELOPMENT.md) · [Supplied concepts](../../design/references/README.md).
 
-> Unlabel has a Flutter v0.0.0+1 starter and released FastAPI backend v0.4.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
+> Unlabel has a Flutter v0.0.0+1 starter and released FastAPI backend v0.5.0 product/nutrition lookup, confirmed-value normalization and a verified India catalogue/status with separate rich-facts contracts. Both Vercel projects are configured for automatic `main` deployments. A separate seven-claim numerical FSSAI scope, rules and public evidence metadata are implemented. Camera/OCR, health scores, broader claim coverage and frontend integration remain future work.
 
 The rich-facts v0.2.3 and reviewed-claims v0.3.0 releases were reviewed, pushed, verified in production and published separately. The latter passed 543 backend tests, static checks and 72 public HTTP checks with actual hosted build receipts. Use the [current API guide](../../backend/README.md), [synthetic request/response contracts](../../contracts/README.md) and [dated production proof](../research/BACKEND_V0_3_0_PRODUCTION.json) when connecting the client. Wider feature and client work remains explicit in the [20-group tracker](FEATURE_TRACKER.md).
 
@@ -38,7 +38,7 @@ The app must not silently combine OFF tables with user-confirmed values, infer m
 
 For the claim flow, add the separate exported request/response models and check `claim_checks`/`knowledge_version` first. Submit identified claims, region IDs, confirmed rows, selected table and explicit ordinary-food/form/preparation context. Render supported/contradicted/insufficient states with numerical-only scope and input/rule/source references; high/source protein, no added sugar and multigrain remain unreviewed. Keep statutory 4.2 energy-conversion metadata separate from the unchanged 4.184 normalization snapshot. Unknown alternatives, conflicts or future-dated evidence must not become a confident claim verdict. The rules/evidence endpoints and current validated synthetic examples support integration without a provider key. Saved reports retain their original versions/dates; no Flutter API implementation is already present.
 
-## Current v0.4.0 handoff
+## Current released-version handoff
 
 Released v0.4.0 implements four additive observation/receipt/exact/resolved routes,
 semantic deduplication, private staging, qualified candidates and exact-hash
@@ -47,10 +47,10 @@ Auth and deny-all client rules are configured with free tier/no billing. Hosted 
 above is historical. [Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json)
 matched both immutable receipts and cleaned synthetic records. Use the current [contracts](../../contracts/README.md) and
 [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md). Client capture/OCR/background saves are
-pending. Local v0.5.0 Useful Label Report and focused API/contracts pass after the
-separate v0.4.0 release. It adds current/historical reports, independent autosave outcomes,
+pending. v0.5.0 Useful Label Report is independently reviewed, pushed, hosted-verified
+and published after the separate v0.4.0 release. It adds current/historical reports, independent autosave outcomes,
 three partial-coverage English/Hindi function entries and approximate sugar cubes.
-Full review, push and hosted checks remain separate gates. The only app account
+[Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json) verified real anonymous saving/retry, report/glossary boundaries, correction-blocked writes and matching source receipts; owned synthetic data was removed. [Current review](BACKEND_V0_5_0_REVIEW.md). The only app account
 role is the scanner/client, using automatic anonymous Firebase auth. There is no
 admin/reviewer app login or dashboard; backend credentials and CLI maintenance are
 machine/manual tooling. [Report guide](../architecture/LABEL_REPORT.md).

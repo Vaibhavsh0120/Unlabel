@@ -1,6 +1,6 @@
 # Open Food Facts v3.6 nutrition adapter research
 
-Historical research checked **2026-10-05** for backend v0.2.0; this file does not itself implement normalization or activate claim thresholds. The v0.4.0 source preserves that direct-table adapter, retains the independently verified v0.2.3 rich snapshot and adds a separate confirmed-label numerical claim subset; see the [current API](../../backend/README.md) and [current release gates](../planning/BACKEND_V0_4_0_REVIEW.md). Context7 resolved `/openfoodfacts/openfoodfacts-server`; current official schema/code and two bounded public product reads supplied the findings below.
+Historical research checked **2026-10-05** for backend v0.2.0; this file does not itself implement normalization or activate claim thresholds. The v0.5.0 source preserves that direct-table adapter, retains the independently verified v0.2.3 rich snapshot and adds a separate confirmed-label numerical claim subset; see the [current API](../../backend/README.md) and [current release gates](../planning/BACKEND_V0_5_0_REVIEW.md). Context7 resolved `/openfoodfacts/openfoodfacts-server`; current official schema/code and two bounded public product reads supplied the findings below.
 
 ## Version and selected product fields
 

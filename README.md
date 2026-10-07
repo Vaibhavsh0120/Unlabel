@@ -7,7 +7,7 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.0.0-59636e?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.4.0-59636e?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.5.0-59636e?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Stage](https://img.shields.io/badge/stage-backend%20core-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -42,7 +42,7 @@ Setup restores settings, dependencies and product data. Choose a key file, hidde
 
 ## What is ready
 
-**Production backend v0.4.0 is published; local v0.5.0 Useful Label Report passes focused API/contracts. Frontend remains 0.0.0+1.** Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Four APIs save/deduplicate structured package observations automatically, stage unverified candidates and resolve compatible sourced fields. Firebase Unlabel is configured on its free tier with no billing. Local v0.5.0 adds current-label and historical barcode reports, a partial three-entry reviewed ingredient glossary and a declared 4 g/cube sugar approximation. Full review, push and hosted checks are pending; camera/OCR and background saving still need frontend integration. [Published v0.4.0 proof](docs/research/BACKEND_V0_4_0_PRODUCTION.json) · [v0.5.0 report scope](docs/architecture/LABEL_REPORT.md) · [Master plan](docs/planning/MASTER_PLAN.md).
+**Production backend v0.5.0 Useful Label Report is published. Frontend remains 0.0.0+1.** The separately released v0.4.0 catalogue saves/deduplicates structured observations automatically and resolves compatible sourced fields. v0.5.0 adds current-label and historical barcode reports, a partial three-entry reviewed ingredient glossary and a declared 4 g/cube sugar approximation. Both versions passed their independent review, push and hosted checks. Live barcode lookup, direct nutrition, normalization, the rich India snapshot and seven numerical FSSAI claim checks are preserved. Firebase Unlabel stays free with no billing. Camera/OCR and background saving still need frontend integration. [Twenty hosted checks](docs/research/BACKEND_V0_5_0_PRODUCTION.json) · [v0.5.0 report scope](docs/architecture/LABEL_REPORT.md) · [Master plan](docs/planning/MASTER_PLAN.md).
 
 | Ready now | Planned next |
 | --- | --- |
@@ -140,7 +140,7 @@ Unlabel/
 │   ├── web/             Flutter website platform files
 │   ├── assets/          Future glossary, translations and visuals
 │   └── test/            Starter layout/theme checks
-├── backend/             FastAPI local v0.5.0; production v0.4.0 released
+├── backend/             FastAPI v0.5.0, independently released
 ├── knowledge/           Canonical reviewed evidence and rules
 ├── contracts/           Shared API/schema/version boundaries
 ├── data/                Reusable India source, provenance/licenses and fixtures

@@ -1,15 +1,11 @@
 # Frontend/backend API plan
 
-Released backend **v0.4.0** has fifteen mounted routes, exported in
-`contracts/schemas/backend-v0.4.0.openapi.json`; production v0.4.0 is independently
-hosted-verified and released. Four additive community endpoints implement automatic
-observations, semantic deduplication, private staging/receipts and sourced fields.
-Local v0.5.0 has eighteen mounted routes in
-`contracts/schemas/backend-v0.5.0.openapi.json`, adding POST `/v1/reports/check`,
-GET `/v1/products/{barcode}/report` and GET `/v1/ingredients/glossary`.
-Focused API/contracts pass; full review, push and hosted verification remain
-pending. Production remains the separately published v0.4.0.
-[Report contract](LABEL_REPORT.md).
+Released production **v0.5.0** has eighteen mounted routes, exported in
+`contracts/schemas/backend-v0.5.0.openapi.json`. It was independently reviewed,
+pushed, hosted-verified and published after v0.4.0. The fifteen earlier routes
+retain their contracts; three additive APIs provide current/historical reports
+and a partial reviewed glossary. [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json)
+verify this release independently. [Report contract](LABEL_REPORT.md) ·
 [Master plan](../planning/MASTER_PLAN.md) · [Actual backend](../../backend/README.md).
 
 ## Implemented endpoints and nutrition contract
@@ -47,7 +43,7 @@ No generic packet imputation or current-label confirmation is invented.
 [Community contract](COMMUNITY_CATALOGUE.md).
 
 
-Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Local v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary. Glossary version/artifact and claim readiness remain independent. Comparison and AI stay disabled.
+Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary. Glossary version/artifact and claim readiness remain independent. Comparison and AI stay disabled.
 
 `CatalogueStatus` reports `ready`, `not_configured` or `unavailable`, with nullable manifest/freshness/artifact and explicit field limits for the loaded store. Freshness is `within_refresh_window`, `refresh_due` or `source_date_in_future`; it uses nine calendar months from `exported_at`, not the build timestamp. Unconfigured/unavailable status returns 503 and claims no verified manifest. A ready but overdue catalogue remains readable with warnings. Existing `CatalogLookup` keys are unchanged; warnings remain within its 100-item bound. A 404 snapshot miss makes no upstream request. Catalogue status/identity/facts responses are `no-store`. The additive `catalogue_facts` capability is true only for a validated facts-enabled store. Older identity-only stores keep their old routes and return facts unavailable for a found identity.
 
@@ -70,7 +66,7 @@ without a Share flag. No AI is enabled. [Storage lifecycle](COMMUNITY_CATALOGUE.
 
 Use the [export/example index](../../contracts/README.md) for actual schema files and validated synthetic requests/responses. The facts route keeps `product` and `manifest` separate from `details`. Tags use availability plus values; nutrition distinguishes `direct_tables`, `missing`, `legacy_unsupported` and `invalid`. Only direct packaging/manufacturer tables are normalized; legacy aggregate nutrients remain unavailable. Dates and official selected-front image descriptors are optional. Image URL metadata includes language/revision/400-size and attribution/license; a descriptor does not guarantee present image availability. No photo bytes or arbitrary URL proxy is served.
 
-Raw text interpretation, capture geometry and universal health scoring remain outside this slice. Local v0.5.0 composes existing structured facts into a useful sourced report; [report contract](LABEL_REPORT.md). The independently released v0.3.0 claim/rule/evidence APIs remain intact; [historical accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
+Raw text interpretation, capture geometry and universal health scoring remain outside this slice. Released v0.5.0 composes existing structured facts into a useful sourced report; [report contract](LABEL_REPORT.md). The independently released v0.3.0 claim/rule/evidence APIs remain intact; [historical accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
 
 `ClaimsRequest` extends confirmed normalization with 1–16 unique identified claims, `selected_table_id` and food category/form/preparation context. Numerical scope covers seven fibre/sugar/sodium claims for ordinary general food and matching table context. High/source protein, no added sugar and multigrain remain recognized but unreviewed. One applicable fibre alternative can support a criterion; a contradiction requires every applicable alternative known and failing. Missing/conflicting/unsupported or future-dated evidence yields insufficient information. Results include row/region/rule/source references, knowledge version and numerical-only scope. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal with version `fssai-schedule-i-note2-v1`; the returned normalization-v1 snapshot retains 4.184. All structured POST routes share checked numeric tokens, the 32 KiB body limit and redacted validation. Claim/rule/evidence reads use `no-store` and no external provider. [Detailed current criteria and synthetic integration pair](../../backend/README.md#reviewed-confirmed-label-claim-checks).
 

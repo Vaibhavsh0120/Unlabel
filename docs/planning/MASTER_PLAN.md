@@ -1,14 +1,13 @@
 # Unlabel: useful product architecture and delivery plan
 
-Delivery checkpoint: **7 October 2026**. Backend **v0.4.0 Community Product
-Catalogue** was reviewed, pushed, hosted-verified and published independently.
-The user authorized **v0.5.0 Useful Label Report** next; local implementation and
-focused API/contracts pass, while full review, push and hosted checks remain
-pending. Production remains the separately released v0.4.0. Flutter remains
+Delivery checkpoint: **7 October 2026**. Production **v0.5.0 Useful Label Report**
+was independently reviewed, pushed, hosted-verified and published after the
+separate **v0.4.0 Community Product Catalogue** release. Flutter remains
 **0.0.0+1**. Future flows below remain plans unless explicitly marked implemented.
 Preserve the released foundation and historical source-only tags.
-[Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) matched both
-OFF/claim receipts and cleaned synthetic records.
+[Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json) verified current
+and historical reports, real anonymous saving/retry, Unicode aliases, blocked
+anomalous writes, unchanged source receipts and synthetic cleanup.
 
 ## Product goal
 
@@ -385,7 +384,7 @@ v0.6.0 and later remain proposals. Finish each release boundary before the next.
 | --- | --- | --- |
 | Published v0.3.0 foundation | Barcode facts, direct nutrition normalization and seven reviewed numerical claim types | Already released; preserve its tested contracts and source receipts |
 | v0.4.0 Community Product Catalogue | Automatically saved observations and compatible sourced fields improve exact lookup | Four additive routes with revised observation/receipt schemas, semantic deduplication, qualified candidates, conflict review, resolved fields, free project/rules, transaction and hosted checks |
-| Local v0.5.0 Useful Label Report | A barcode or corrected back label produces one understandable sourced report | Private intake without barcode; bounded ingredient/declaration fields; reuse normalizer/claims; reviewed glossary/templates; partial/unknown behavior |
+| Released v0.5.0 Useful Label Report | A barcode or corrected back label produces one understandable sourced report | Private intake without barcode; bounded ingredient/declaration fields; reuse normalizer/claims; reviewed glossary/templates; partial/unknown behavior |
 | Proposed v0.6.0 Product Discovery | Front text helps find the right candidate without a readable barcode | Bounded indexed name/brand/variant search, ambiguous/missing states and identity confirmation; no visual certainty claims |
 | Proposed v0.7.0 Evidence-aware Comparison | Two reports reveal supported nutrient differences | Compatible basis/preparation, missing-value handling and evidence-linked explanation; no unsupported universal winner |
 | Client integration alongside stable contracts | Barcode/manual scan, corrected front/back capture, results, automatic factual saving, local history/saved/preferences | Real-device/web OCR/camera tests, source/error/correction behavior and integration of each screen |
@@ -400,14 +399,14 @@ unreviewed sources, unknown reformulation, ordered partial ingredient sections,
 mass/volume/preparation mismatches, provider-prefilled provenance, A → B → A
 revision handling, coalesced/duplicate saves and save failure preserving analysis.
 The final implementation/tests and separate cloud evidence are recorded in the
-v0.4.0 review. Local v0.5.0 separately verifies useful reports despite save failure;
+v0.4.0 review. Released v0.5.0 separately verifies useful reports despite save failure;
 frontend coalescing/outbox remains a client gate.
 
 ## Honest progress at this checkpoint
 
-- Local v0.5.0 advances the original concept baseline to **8 ready backend groups,
-  2 partial, 4 planned; 6 client-owned groups** after focused API/contract checks.
-  Production v0.4.0 retains its published **6 ready, 1 partial, 7 planned** baseline.
+- Released v0.5.0 advances the original concept baseline to **8 ready backend groups,
+  2 partial, 4 planned; 6 client-owned groups** after independent local/review/hosted checks.
+  Historical v0.4.0 retained its published **6 ready, 1 partial, 7 planned** baseline.
   The additional C01 community group is
   released independently with verified hosted behavior. Counts are capabilities,
   not completion percentages. All concept-screen Flutter integration is pending.
@@ -423,11 +422,12 @@ frontend coalescing/outbox remains a client gate.
   Emulator and live results remain distinct from local mocks and hosted proof.
 - Final aggregate counts/review findings belong in the [v0.4.0 review](BACKEND_V0_4_0_REVIEW.md).
   Source commit `d793f628581f509481d6dc60a82afe59ca013439` passed sixteen hosted checks and was published as source-only v0.4.0.
-- Local v0.5.0 implements the useful current/historical sourced report,
+- Released v0.5.0 implements the useful current/historical sourced report,
   independent automatic-save outcomes, three reviewed ingredient name/function
   entries and explicit approximate 4 g/cube sugar visualization (F06/F08/F12).
   Eighteen mounted routes, four added schemas and 22 validated synthetic examples
-  pass focused API/contract checks; full review, push and hosted gates are pending.
+  passed separate release gates. Source commit `0c067027c934226fc2cd6880a319128ea26d9ebf`
+  passed twenty hosted checks and was published as source-only v0.5.0.
   F08 remains partial; no full ingredient coverage is claimed. No universal score or AI dependency is
   needed. Capture/search/comparison/client persistence stay in their own scope.
 - No custom model, training or Gemini inference is implemented.

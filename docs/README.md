@@ -1,16 +1,16 @@
 # Documentation map
 
-Production **v0.4.0** implements fifteen routes, including automatic structured
-observations and sourced resolution; it is pushed, hosted-verified and published. Flutter remains **0.0.0+1** with integration pending. Firebase
-Unlabel's first Standard database `unlabel` in Mumbai is configured with free tier,
-anonymous Auth, denied direct client access and no linked billing. Local v0.5.0
-has eighteen mounted routes, a useful current/historical label report, approximate
-sugar cubes and a partial three-entry glossary. Its focused API/contract checks
-pass; current exports include four added schemas and 22 validated synthetic
-examples. Full review, push and hosted verification remain pending. Historical
-exports and source-only release records stay intact. Production remains v0.4.0;
-see its review for completed local, emulator, live Firebase and hosted evidence.
-
+Production **v0.5.0 Useful Label Report** is independently reviewed, pushed,
+hosted-verified and published after v0.4.0. Eighteen routes provide automatic
+structured observations, sourced current/historical reports, approximate sugar
+cubes and a partial three-entry glossary. Current exports include four added
+schemas and 22 validated synthetic examples. Flutter remains **0.0.0+1** with
+concept-screen integration pending. Firebase Unlabel's first Standard database
+`unlabel` in Mumbai stays on its free tier with anonymous Auth, denied direct
+client access and no linked billing. Historical exports and source-only release
+records stay intact. [Twenty hosted checks](research/BACKEND_V0_5_0_PRODUCTION.json)
+verified reports, real anonymous saving/retry, historical evidence, Unicode
+aliases, correction-blocked writes and unchanged source receipts.
 
 | Document | Read it for |
 | --- | --- |
@@ -22,11 +22,11 @@ see its review for completed local, emulator, live Firebase and hosted evidence.
 | [Data flow](architecture/DATA_FLOW.md) | Full scan workflow, origins, transfers and retention |
 | [API plan](architecture/API_PLAN.md) | Eighteen local product/claim/community/report/glossary routes and integration boundaries |
 | [Ingredient glossary source check](research/INGREDIENT_GLOSSARY_V0_5_0.md) | Three official indexed name/function sources, direct-fetch limitations and English/Hindi project text boundaries |
-| [Useful Label Report](architecture/LABEL_REPORT.md) | Local v0.5.0 current/historical reports, independent autosave, partial ingredient glossary and approximate sugar cubes |
+| [Useful Label Report](architecture/LABEL_REPORT.md) | Released v0.5.0 current/historical reports, independent autosave, partial ingredient glossary and approximate sugar cubes |
 | [Accepted v0.5.0 design](superpowers/specs/2026-10-07-useful-label-report-design.md) | Confirmed-label/historical report, partial glossary and independent save boundaries |
 | [Accepted v0.5.0 plan](superpowers/plans/2026-10-07-backend-v0.5.0.md) | Report implementation and separate local/review/hosted release gates |
-| [Backend v0.5.0 review](planning/BACKEND_V0_5_0_REVIEW.md) | Current local/review evidence and pending hosted publication |
-| [Backend v0.5.0 release scope](planning/BACKEND_V0_5_0_RELEASE.md) | Useful Label Report goals, partial coverage and publication boundaries |
+| [Backend v0.5.0 review](planning/BACKEND_V0_5_0_REVIEW.md) | Completed local/review evidence, twenty hosted checks and published source tag |
+| [Backend v0.5.0 release scope](planning/BACKEND_V0_5_0_RELEASE.md) | Published Useful Label Report goals, partial coverage and preserved boundaries |
 | [Community catalogue](architecture/COMMUNITY_CATALOGUE.md) | Implemented automatic product-fact saving, unverified candidate staging, review, source resolution and no-card quotas |
 | [Accepted v0.4.0 design](superpowers/specs/2026-10-07-community-catalogue-design.md) | Confirmed package contributions and storage/privacy/source boundaries |
 | [Accepted v0.4.0 plan](superpowers/plans/2026-10-07-backend-v0.4.0.md) | Implementation ownership and separate local/emulator/hosted release gates |

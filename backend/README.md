@@ -1,15 +1,23 @@
-# Unlabel backend: local v0.5.0 Useful Label Report
+# Unlabel backend: v0.5.0 Useful Label Report
 
-Production **v0.4.0** is independently reviewed, pushed and hosted-verified.
-Local **v0.5.0 Useful Label Report** adds three mounted report/glossary APIs; focused API/contracts pass, while full release checks
-and its separate push/hosted publication remain pending. Flutter remains **0.0.0+1**. Four community
-APIs automatically save structured package observations and resolve compatible
-sourced fields, preserving live OFF/snapshot/normalization and seven numerical
-claim routes. Firebase Unlabel is configured with no billing. Camera/OCR/search and client background saving remain pending.
-The new report scope is documented in the [report guide](../docs/architecture/LABEL_REPORT.md).
-[Feature tracker](../docs/planning/FEATURE_TRACKER.md) · [Current v0.5.0 gates](../docs/planning/BACKEND_V0_5_0_REVIEW.md).
+Production **v0.5.0 Useful Label Report** was independently reviewed, pushed,
+hosted-verified and published after v0.4.0. Eighteen routes preserve live OFF,
+snapshot, normalization, seven numerical claims and automatic community
+observations, adding useful current/historical reports and a partial three-entry
+glossary. Firebase Unlabel stays free with no billing. Flutter remains
+**0.0.0+1**; camera/OCR/search, report UI and background saving need integration.
+[Report guide](../docs/architecture/LABEL_REPORT.md) ·
+[Feature tracker](../docs/planning/FEATURE_TRACKER.md) ·
+[Current review](../docs/planning/BACKEND_V0_5_0_REVIEW.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy `main` pushes. [v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md) records separate local, emulator, live Firebase and hosted proof; [sixteen hosted checks](../docs/research/BACKEND_V0_4_0_PRODUCTION.json) matched both source receipts and cleaned synthetic records.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** ·
+[Swagger](https://unlabel-api.vercel.app/docs) ·
+[Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website:
+[unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy
+`main` pushes. [Twenty hosted checks](../docs/research/BACKEND_V0_5_0_PRODUCTION.json)
+verified real anonymous saving/retry, barcode-less/current/historical reports,
+glossary boundaries, anomalous-write blocking and matching source receipts.
+Owned synthetic records and anonymous identities were removed.
 
 ## Run locally
 
@@ -169,9 +177,9 @@ Examples: [confirmed intake](../contracts/examples/community-contribution-v1.req
 [resolved fields](../contracts/examples/resolved-product-v1.synthetic.json).
 [Storage/security/operator guide](../docs/architecture/COMMUNITY_CATALOGUE.md).
 
-## Useful Label Report: local v0.5.0
+## Useful Label Report: released v0.5.0
 
-Three additive routes are mounted locally: POST `/v1/reports/check`, GET
+Three additive routes are mounted: POST `/v1/reports/check`, GET
 `/v1/products/{barcode}/report` and GET `/v1/ingredients/glossary`.
 Current input is a confirmed `observation` with optional barcode, selected table
 and claim context. Analysis itself needs no authentication. Automatic community
@@ -298,9 +306,9 @@ This uses the backend Python environment and checks backend application/build/te
 
 See [current v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
 [published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
-Current local exports describe eighteen v0.5.0 routes, four added report/glossary
+Current exports describe eighteen v0.5.0 routes, four added report/glossary
 schemas and 22 validated synthetic examples; historical v0.4.0 exports are preserved.
-Focused API/contracts pass; full review/push/hosted gates remain pending.
+Independent local/review/hosted gates passed; v0.5.0 is separately published.
 Review Markdown/scripts, affected tests/contracts and
 demonstrably dead code before any future push. Backend-only releases preserve
 Flutter and historical mobile artifacts.

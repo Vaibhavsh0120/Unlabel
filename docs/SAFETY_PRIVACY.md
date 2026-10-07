@@ -2,17 +2,17 @@
 
 Released v0.4.0 implements automatic structured public-product observations and
 private staging/receipts. Existing normalization/seven-claim evaluation remains
-stateless. Production v0.4.0 is independently hosted-verified and released. Firebase
+stateless. Production v0.5.0 is independently hosted-verified and released after v0.4.0. Firebase
 Unlabel's first Standard `unlabel` database, anonymous Auth and deny-all client
 rules are configured with free tier/no linked billing. Flutter capture/OCR and
-background saving remain pending. [Current gates](planning/BACKEND_V0_4_0_REVIEW.md)
+background saving remain pending. [Current gates](planning/BACKEND_V0_5_0_REVIEW.md)
 · [Master plan](planning/MASTER_PLAN.md).
 
-Local v0.5.0 reports preserve corrected current-label and historical
+Released v0.5.0 reports preserve corrected current-label and historical
 catalogue evidence separately. Analysis does not require authentication; failed
 automatic saving changes only storage outcome. Three glossary entries describe
 technological functions only. Sugar cubes explicitly approximate 4 g each using
-the original table basis. Focused API/contracts pass; full review, push and hosted verification remain pending.
+the original table basis. Independent review, push, twenty hosted checks and publication passed; owned synthetic data was removed.
 [Report boundaries](architecture/LABEL_REPORT.md).
 
 ## Findings and uncertainty

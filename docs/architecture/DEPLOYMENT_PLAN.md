@@ -1,28 +1,25 @@
 # Website and shared API deployment plan
 
-Updated **7 October 2026**. Released backend **v0.4.0 Community Product Catalogue**
-is pushed, hosted-verified and published independently.
-Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
-observations automatically, stage provisional facts privately and resolve compatible
-fields with source/date and conflicts. Firebase Unlabel has its first Standard
-`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
-denied direct client access. Frontend capture/OCR/background save remains pending.
-[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
-
+Updated **7 October 2026**. Production **v0.5.0 Useful Label Report** was
+independently reviewed, pushed, hosted-verified and published after v0.4.0.
+Eighteen APIs preserve lookup/normalization/claims and automatic observations,
+adding current/historical reports, approximate sugar cubes and three reviewed
+English/Hindi ingredient functions. Facts retain their sources, dates, unknowns
+and conflicts. Flutter **0.0.0+1** remains a starter; camera/OCR, background saving
+and report UI need frontend integration. Firebase Unlabel's first Standard
+`unlabel` database in Mumbai retains its free tier, no linked billing, anonymous
+Auth and denied direct client access.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release evidence](../planning/BACKEND_V0_5_0_REVIEW.md)
+· [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json).
+[Report architecture](LABEL_REPORT.md).
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app); API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app). [Vercel configuration](../planning/VERCEL_SETUP.md).
-
-Local v0.5.0 adds three report/glossary endpoints without another provider,
-secret, billing account or paid service. Report/glossary projection is bundled
-with source; focused API/contracts pass. Production remains v0.4.0 until separate
-full review, push and hosted verification.
-[Report scope](LABEL_REPORT.md).
 
 ## Project boundaries
 
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published OFF/normalization/claims/snapshot; v0.4.0 enrichment is hosted-verified and released. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published v0.5.0 OFF/normalization/claims/snapshot, community enrichment and report/glossary APIs; independently hosted-verified. |
 | Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous Auth/rules/IAM; automatic observations, private staging and qualified review. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 

@@ -1,13 +1,17 @@
 # Product catalogue: tracked source, verified SQLite
 
-Updated **7 October 2026**. Released backend **v0.4.0 Community Product Catalogue**
-is pushed, hosted-verified and published independently.
-Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
-observations automatically, stage provisional facts privately and resolve compatible
-fields with source/date and conflicts. Firebase Unlabel has its first Standard
-`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
-denied direct client access. Frontend capture/OCR/background save remains pending.
-[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
+Updated **7 October 2026**. Production **v0.5.0 Useful Label Report** was
+independently reviewed, pushed, hosted-verified and published after v0.4.0.
+Eighteen APIs preserve lookup/normalization/claims and automatic observations,
+adding current/historical reports, approximate sugar cubes and three reviewed
+English/Hindi ingredient functions. Facts retain their sources, dates, unknowns
+and conflicts. Flutter **0.0.0+1** remains a starter; camera/OCR, background saving
+and report UI need frontend integration. Firebase Unlabel's first Standard
+`unlabel` database in Mumbai retains its free tier, no linked billing, anonymous
+Auth and denied direct client access.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release evidence](../planning/BACKEND_V0_5_0_REVIEW.md)
+· [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json).
+[Report architecture](LABEL_REPORT.md).
 
 ## Storage and source
 

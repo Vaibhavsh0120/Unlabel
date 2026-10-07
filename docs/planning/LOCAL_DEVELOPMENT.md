@@ -1,11 +1,10 @@
 # Clone, restore, run
 
-Published backend **v0.4.0** implements the community catalogue APIs and passed
-its independent hosted verification/source-only release. Flutter stays **0.0.0+1**.
-OFF snapshot and reviewed claims work independently of Firebase. Camera/OCR,
-client background requests remain frontend work. Local v0.5.0 report/glossary
-APIs and focused contracts pass; full review, push and hosted verification remain
-separate gates. [Master plan](MASTER_PLAN.md).
+Published backend **v0.5.0** implements reports and a partial ingredient glossary
+after the separately verified v0.4.0 community catalogue. Both passed independent
+review, push, hosted checks and source-only publication. Flutter stays **0.0.0+1**.
+OFF snapshot and reviewed claims work independently of Firebase. Camera/OCR and
+client background requests remain frontend work. [Master plan](MASTER_PLAN.md).
 
 ## Quick start
 
