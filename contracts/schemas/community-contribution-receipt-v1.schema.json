@@ -1,0 +1,119 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "submission_id": {
+      "format": "uuid",
+      "title": "Submission Id",
+      "type": "string"
+    },
+    "revision_id": {
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Revision Id",
+      "type": "string"
+    },
+    "barcode": {
+      "anyOf": [
+        {
+          "maxLength": 14,
+          "minLength": 8,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Barcode"
+    },
+    "content_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "factual_sha256": {
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Factual Sha256",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "provisional",
+        "candidate",
+        "pending",
+        "approved",
+        "rejected",
+        "superseded"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "submitted_at": {
+      "format": "date-time",
+      "title": "Submitted At",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewed At"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expires At"
+    },
+    "deduplicated": {
+      "default": false,
+      "title": "Deduplicated",
+      "type": "boolean"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "submission_id",
+    "revision_id",
+    "barcode",
+    "content_sha256",
+    "factual_sha256",
+    "status",
+    "submitted_at"
+  ],
+  "title": "ContributionReceipt",
+  "type": "object"
+}

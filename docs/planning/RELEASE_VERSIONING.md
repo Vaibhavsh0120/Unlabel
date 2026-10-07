@@ -22,7 +22,13 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Current source versions are independent: frontend **0.0.0+1**, backend **0.3.0**. Historical `v0.1.0`, `v0.2.0`, `v0.2.1`, `v0.2.2` and `v0.2.3` releases are explicitly titled Backend and carry no APK/IPA; GitHub and version-specific reviews record publication/verification. The v0.3.0 source-only backend release follows the current [review](BACKEND_V0_3_0_REVIEW.md) and [release notes](BACKEND_V0_3_0_RELEASE.md); publication is a separate gate from local checks or a Vercel build. Mobile `v0.0.0` tag/assets remain on their original build commit. Reserve the existing tags as backend history; later component-prefixed `backend-vX.Y.Z`/`frontend-vX.Y.Z` tags can avoid collisions when frontend versions advance. Never move a published tag or rebuild mobile files for a backend-only release.
+Published backend is **0.3.0** until v0.4.0 push/hosted verification. Local
+**0.4.0 Community Product Catalogue** is implemented; Flutter remains **0.0.0+1**.
+The user authorized v0.4.0 then v0.5.0 Useful Label Report as separate reviewed,
+pushed and published versions. [Current review](BACKEND_V0_4_0_REVIEW.md)
+· [Release scope](BACKEND_V0_4_0_RELEASE.md) · [Master plan](MASTER_PLAN.md).
+Historical source-only tags and v0.0.0 mobile assets remain preserved.
+
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |
@@ -166,7 +172,7 @@ provider schema remains behind a stable backend adapter. Offline saved reports
 retain their original source, date and versions; viewing them does not refresh
 criteria or compute new findings. No Dart rule engine/parity system is required.
 Product/nutrition provider reads and confirmed-row normalization remain active
-in backend v0.3.0. Separate catalogue status/lookup uses an export-origin contract,
+in published backend v0.3.0. Separate catalogue status/lookup uses an export-origin contract,
 verified deployment receipt and nine-calendar-month source age. Its separate rich-facts route preserves direct-table nutrition, tag availability,
 optional record dates and official image URL attribution; legacy aggregates and
 missing fields stay unknown. Coverage is unverified; a snapshot miss makes no
@@ -180,6 +186,17 @@ validated facts-enabled store, while leaving future `nutrition_analysis` disable
 normalization result is not complete nutrient coverage or a health verdict.
 
 Deploy additive backend changes first and verify old-client compatibility.
+
+The four additive v0.4.0 routes implement automatic structured public observations,
+semantic deduplication, private staging/receipts and typed sourced resolution.
+Anonymous writes require verified tokens; tokens never authorize a claim verdict.
+Compatible fields retain source/date/originals and conflicts; no generic packet
+imputation or current-label confirmation is invented. Safe defaults disable
+storage; resolved lookup can still serve available OFF facts. Check actual
+capabilities before frontend integration. v0.4.0 hosted verification/publication
+must finish before v0.5.0 begins; preserve old APIs through both releases.
+
+
 Deploy the web project next, then release native assets against the stable URL.
 Installed native apps remain frozen until users update, so keep supported old
 contracts/routes operational. Rollback must pass the same compatibility checks;

@@ -1,6 +1,9 @@
 # Clone, restore, run
 
-Backend source is **0.3.0**, frontend **0.0.0+1**. These maintenance tools restore the current implementation; the reviewed claim subset is implemented, while scanner/frontend integration and broader analysis remain later features.
+Local backend **v0.4.0** implements the community catalogue APIs; production
+remains **v0.3.0** until push/hosted verification. Flutter stays **0.0.0+1**.
+OFF snapshot and reviewed claims work independently of Firebase. Camera/OCR,
+client background requests and v0.5.0 reports remain pending. [Master plan](MASTER_PLAN.md).
 
 ## Quick start
 
@@ -13,7 +16,12 @@ cd Unlabel
 ./scripts/run-local.ps1
 ~~~
 
-macOS/Linux: `python3 scripts/setup.py`, then `python3 scripts/run_local.py`. This private repository requires teammate GitHub access. No Git LFS, database account, API key or another world-export download is needed for the current catalogue.
+macOS/Linux: `python3 scripts/setup.py`, then `python3 scripts/run_local.py`.
+This private repository requires teammate GitHub access. No Git LFS, database
+account, API key or new world-export download is needed for OFF snapshot/claims.
+The automatic public-fact catalogue needs explicit Firebase project/database and
+private backend credentials; safe defaults leave it disabled. Setup never
+provisions a cloud account, attaches billing or creates a paid fallback.
 
 | Setup step | Result |
 | --- | --- |
@@ -26,6 +34,22 @@ macOS/Linux: `python3 scripts/setup.py`, then `python3 scripts/run_local.py`. Th
 Setup now shows progress automatically. Catalogue verification uses measured compressed/decoded bytes and prints `Verified` only after checksum and size checks succeed. Interactive terminals show byte bars plus an indeterminate bar/elapsed time for environment creation and index validation/build; pip and Flutter operations have named stages and retain native output. Noninteractive/redirected logs use plain `Starting`/`Verified`/`Done`/`Stopped` lines without redraws or invented percentages. Progress goes to stderr, adds no dependency or download, and needs no new flag. A failed stage reports `Stopped`; it does not claim completed verification.
 
 Use `-Scope backend` / `--scope backend` for backend-only work, or `frontend` for Flutter-only setup. Re-running setup preserves a different valid catalogue. To adopt an updated committed bundle deliberately, use `-ReplaceCatalogue` / `--replace-catalogue`. Corrupt/unrecognized existing databases require operator review. A same-source JSONL identity-only database is preserved by default; `--replace-catalogue` deliberately rebuilds its facts table. Actual `scripts/setup.py --catalogue-only --replace-catalogue` restored 24,641 records and the 62,472,192-byte local index in this release; private-key env restoration was not rerun.
+
+## Firebase community configuration
+
+Firebase **Unlabel**, project `unlabel-india-catalogue`, has its first Standard
+Firestore database **`unlabel`** in **Mumbai/asia-south1**, free tier enabled and no
+linked billing. Anonymous Auth, deny-all direct client rules and dedicated backend
+credentials are configured. Safe defaults keep `COMMUNITY_ENABLED=false`.
+
+Enabling requires `COMMUNITY_PROJECT_ID`, `COMMUNITY_DATABASE_ID=unlabel`, backend
+`COMMUNITY_SERVICE_ACCOUNT_JSON` and an actor secret of at least 32 characters.
+Restore authorized encrypted settings or configure ignored `.env`; never put
+admin secrets into Flutter or tracked plaintext. `firebase/client-config.json`
+is public SDK configuration. Setup does not provision/cloud-deploy or enable billing.
+Use the [community guide](../architecture/COMMUNITY_CATALOGUE.md) and
+[operator commands](../../scripts/README.md). Live/emulator/hosted proof remains
+separate in the [review](BACKEND_V0_4_0_REVIEW.md).
 
 ## Restore encrypted settings
 

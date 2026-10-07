@@ -2,21 +2,25 @@ import os
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from pathlib import Path as FilePath
-from typing import Annotated
+from typing import Annotated, cast
 
 import httpx
 from fastapi import FastAPI, Path, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.concurrency import run_in_threadpool
 
 from app import __version__
 from app.api.v1.claims import build_router
+from app.api.v1.community import CommunityRuntimeProtocol
+from app.api.v1.community import build_router as build_community_router
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.catalogue.status import CatalogueArtifact, CatalogueStatus, snapshot_freshness
 from app.catalogue.store import CatalogueStore
 from app.claims.knowledge import KnowledgeStore
+from app.community.auth import AuthenticationUnavailable, create_runtime
 from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
@@ -29,7 +33,9 @@ from app.services.parsing.nutrition import normalize_rows
 
 
 def create_app(
-    settings: Settings | None = None, transport: httpx.AsyncBaseTransport | None = None
+    settings: Settings | None = None,
+    transport: httpx.AsyncBaseTransport | None = None,
+    community_runtime: CommunityRuntimeProtocol | None = None,
 ) -> FastAPI:
     config = settings or Settings()
     knowledge_artifact = None
@@ -60,6 +66,22 @@ def create_app(
             application.state.nutrition = NutritionProvider(application.state.products)
             application.state.catalogue = None
             application.state.catalogue_artifact = None
+            application.state.community_runtime = None
+            if config.community_enabled:
+                if community_runtime is not None and config.community_actor_secret is not None:
+                    application.state.community_runtime = community_runtime
+                elif config.community_configured():
+                    account = config.community_service_account_json
+                    assert account is not None
+                    try:
+                        application.state.community_runtime = await run_in_threadpool(
+                            create_runtime,
+                            config.community_project_id,
+                            config.community_database_id,
+                            account.get_secret_value(),
+                        )
+                    except AuthenticationUnavailable:
+                        pass
             directory = config.catalogue_path()
             if directory is not None:
                 try:
@@ -75,7 +97,15 @@ def create_app(
                     application.state.catalogue_artifact = artifact
                 except (ValueError, OSError):
                     pass  # Live endpoints remain usable; catalogue reports unavailable.
-            yield
+            try:
+                yield
+            finally:
+                active = application.state.community_runtime
+                if active is not None:
+                    try:
+                        await run_in_threadpool(active.close)
+                    except Exception:
+                        pass  # Shutdown failures must not expose backend credentials.
 
     application = FastAPI(
         title="Unlabel Backend",
@@ -89,7 +119,7 @@ def create_app(
         CORSMiddleware,
         allow_origins=config.cors_origins,
         allow_methods=["GET", "POST"],
-        allow_headers=["Accept", "Content-Type"],
+        allow_headers=["Accept", "Content-Type", "Authorization"],
         allow_credentials=False,
     )
 
@@ -165,6 +195,7 @@ def create_app(
     @application.get("/v1/meta", tags=["Service"])
     def meta(request: Request):
         catalogue = catalogue_metadata(request).model_dump(mode="json")
+        community_ready = request.app.state.community_runtime is not None
         return {
             "backend_version": __version__,
             "api_major": 1,
@@ -175,6 +206,15 @@ def create_app(
             "knowledge_version": claim_store.knowledge_version if claim_store else "not_populated",
             "knowledge_artifact": knowledge_artifact,
             "catalogue": catalogue,
+            "community": {
+                "status": "ready"
+                if community_ready
+                else "unavailable"
+                if config.community_enabled
+                else "not_configured",
+                "provider_connectivity": "not_checked",
+                "database_id": config.community_database_id if community_ready else None,
+            },
             "capabilities": {
                 "product_lookup": True,
                 "nutrition_lookup": True,
@@ -187,6 +227,10 @@ def create_app(
                 "ingredient_explanations": False,
                 "comparison": False,
                 "ai_explanations": False,
+                "community_contributions": community_ready,
+                "community_lookup": community_ready,
+                "resolved_product_lookup": community_ready
+                or (catalogue["status"] == "ready" and request.app.state.catalogue.supports_facts),
             },
         }
 
@@ -316,6 +360,15 @@ def create_app(
         )
         return JSONResponse(result.model_dump(mode="json"), headers={"Cache-Control": "no-store"})
 
+    application.include_router(
+        build_community_router(
+            config=config,
+            snapshot_lookup=lambda request, barcode: cast(
+                FactsLookup, snapshot_result(request, barcode, facts=True)
+            ),
+            knowledge_version=claim_store.knowledge_version if claim_store else None,
+        )
+    )
     return application
 
 

@@ -1,13 +1,13 @@
 # Reviewed claim knowledge
 
-Backend **v0.3.0** loads the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Ingredient aliases, allergen rules, nutrition classifications and bilingual glossary content remain reserved work. Open Food Facts product facts and user-confirmed package rows retain separate origins.
+Backend **v0.4.0** preserves and loads the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Ingredient aliases, allergen rules, nutrition classifications and bilingual glossary content remain reserved work. Open Food Facts product facts and user-confirmed package rows retain separate origins.
 
 | Canonical file | Current content |
 | --- | --- |
 | [rules/claims/reviewed-v1.json](rules/claims/reviewed-v1.json) | Seven numerical fibre, sugar and sodium claims with applicability, alternatives, evidence locators and bounded wording |
 | [sources/registry/fssai-claims-v1.json](sources/registry/fssai-claims-v1.json) | Three reviewed official source metadata records, PDF hashes/sizes/pages, known dates, review status and qualifications |
 
-The reviewed source date is **6 October 2026**; v0.3.0 implementation/release work continues on **7 October 2026** in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
+The reviewed source date is **6 October 2026**; v0.3.0 was independently released on **7 October 2026**; v0.4.0 retains its knowledge unchanged in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
 
 ## Reviewed sources
 

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1",
+  "submission_id": "10000000-0000-4000-8000-000000000001",
+  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "barcode": "0123456789012",
+  "content_sha256": "f3f273b4c24a9b2f5f945e91f3f21b0b33ab28e3ec0b06b83f1b32f195cc016d",
+  "factual_sha256": "962ec9eba0ae16ba28d47c77464062f60aedd295cfbf468c147dd7a16591260e",
+  "status": "candidate",
+  "submitted_at": "2026-10-07T12:00:00Z",
+  "reviewed_at": null,
+  "expires_at": null,
+  "deduplicated": false,
+  "warnings": [
+    "synthetic_example_not_a_real_product"
+  ]
+}

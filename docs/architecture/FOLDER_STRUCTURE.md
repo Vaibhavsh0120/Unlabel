@@ -5,7 +5,7 @@ The root is the shared product repository. It coordinates the frontend, backend,
 | Root folder | Use |
 | --- | --- |
 | frontend | The single Flutter Android/iOS/web app; starter implemented |
-| backend | FastAPI v0.3.0 product/nutrition lookup, normalization, verified catalogue/status/rich facts and reviewed confirmed-label claim subset; optional AI remains future |
+| backend | FastAPI v0.4.0 product/nutrition/claims, immutable OFF facts and automatic community observations/resolution; hosted publication pending |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
@@ -87,7 +87,7 @@ backend/.env.example documents implemented settings; ignored backend/.env holds 
 | knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
 | data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
 | data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Current v0.3.0 OpenAPI/claim/evidence/status/catalogue/facts/nutrition/error schemas and synthetic examples; historical exports and product/catalogue v1 preserved |
+| contracts/schemas, examples | Current v0.4.0 OpenAPI/community/resolved/claim/evidence/status/catalogue/facts/nutrition/error schemas and synthetic examples; historical exports and product/catalogue v1 preserved |
 | contracts/versioning | Version/compatibility/release-manifest policy |
 
 Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
@@ -102,4 +102,10 @@ Empty future folders use .gitkeep. Reserved folders are not implemented features
 
 `data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.3 source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).
 
-Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current claim/build/deployment gates are in the [v0.3.0 review](../planning/BACKEND_V0_3_0_REVIEW.md).
+Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/cloud/hosted gates are in the [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md); the claim knowledge remains unchanged.
+
+`backend/app/community/` contains strict observations, normalization/hashes,
+resolver, Firebase authentication and transactional storage. Its four HTTP routes
+are composed by `app/api/v1/community.py`. `firebase/`, root Firebase config/rules
+and `scripts/community_catalogue.py` support explicit no-billing operation; setup
+never provisions a cloud account. [Storage guide](COMMUNITY_CATALOGUE.md).

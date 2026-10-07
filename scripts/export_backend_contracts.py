@@ -22,6 +22,9 @@ errors = import_module("app.schemas.errors")
 claims = import_module("app.claims.models")
 claim_knowledge = import_module("app.claims.knowledge")
 assess_claims = import_module("app.claims.engine").assess_claims
+community = import_module("app.community.models")
+community_service = import_module("app.community.service")
+resolve_product = import_module("app.community.resolver").resolve_product
 
 
 def write(directory: str, name: str, value):
@@ -51,6 +54,11 @@ def main():
         "claims-rules-v1.schema.json": claims.ClaimsRulesResponse,
         "claims-unavailable-v1.schema.json": claims.ClaimsUnavailable,
         "evidence-v1.schema.json": claims.EvidenceResponse,
+        "community-contribution-request-v1.schema.json": community.ContributionRequest,
+        "community-contribution-receipt-v1.schema.json": community.ContributionReceipt,
+        "community-lookup-v1.schema.json": community.CommunityLookup,
+        "community-failure-v1.schema.json": community.CommunityFailure,
+        "resolved-product-v1.schema.json": community.ResolvedProduct,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -243,8 +251,107 @@ def main():
         ),
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
+    community_request = community.ContributionRequest.model_validate(
+        {
+            "submission_id": "10000000-0000-4000-8000-000000000001",
+            "barcode": "0123456789012",
+            "observation_state": "confirmed",
+            "identity": {
+                "name": "Synthetic oats",
+                "brand": None,
+                "variant": None,
+                "quantity": None,
+                "language": "en",
+            },
+            "ingredients": {
+                "status": "present",
+                "text": "Synthetic oats, milk",
+                "completeness": "complete",
+                "origin": "independently_transcribed_package",
+            },
+            "contains": {
+                "status": "present",
+                "text": "Milk",
+                "completeness": "complete",
+                "origin": "independently_transcribed_package",
+            },
+            "may_contain": {
+                "status": "not_captured",
+                "text": None,
+                "completeness": "partial",
+                "origin": "independently_transcribed_package",
+            },
+            "front_claims": [],
+            "rows": [row.model_dump(mode="json") for row in request.rows],
+            "nutrition_completeness": "partial",
+            "nutrition_origin": "independently_transcribed_package",
+            "observed_on": "2026-10-07",
+            "capture_method": "manual",
+            "share_license": "CC0-1.0",
+            "market": "india",
+            "confirmed": True,
+            "front_confirmed": True,
+            "back_confirmed": True,
+            "same_product_confirmed": True,
+        }
+    )
+    prepared = community_service.prepare_submission(community_request)
+    submitted_at = datetime(2026, 10, 7, 12, tzinfo=UTC)
+    community_receipt = community.ContributionReceipt(
+        submission_id=community_request.submission_id,
+        revision_id="a" * 64,
+        barcode=community_request.barcode,
+        content_sha256=prepared.content_sha256,
+        factual_sha256=prepared.factual_sha256,
+        status="candidate",
+        submitted_at=submitted_at,
+        warnings=["synthetic_example_not_a_real_product"],
+    )
+    community_revision = community.CommunityRevision(
+        revision_id=community_receipt.revision_id,
+        content_sha256=prepared.content_sha256,
+        factual_sha256=prepared.factual_sha256,
+        barcode="0123456789012",
+        submitted_at=submitted_at,
+        reviewed_at=None,
+        facts=community_service.contribution_facts(community_request),
+        snapshot=prepared.snapshot,
+        review_state="submitter_confirmed_not_moderator_reviewed",
+    )
+    community_lookup = community.CommunityLookup(
+        requested_barcode="0123456789012",
+        status="found",
+        revisions=[community_revision],
+        warnings=["synthetic_example_not_a_real_product"],
+    )
+    provisional = community.ContributionRequest.model_validate(
+        {
+            **community_request.model_dump(mode="json"),
+            "submission_id": "10000000-0000-4000-8000-000000000002",
+            "barcode": None,
+            "observation_state": "provisional",
+            "capture_method": "ocr_unconfirmed",
+            "confirmed": False,
+            "front_confirmed": False,
+            "back_confirmed": False,
+            "same_product_confirmed": False,
+        }
+    )
+    for filename, model in {
+        "community-contribution-v1.request.synthetic.json": community_request,
+        "community-provisional-v1.request.synthetic.json": provisional,
+        "community-contribution-v1.receipt.synthetic.json": community_receipt,
+        "community-lookup-v1.synthetic.json": community_lookup,
+        "community-failure-v1.synthetic.json": community.CommunityFailure(
+            status="unavailable", code="community_unavailable"
+        ),
+        "resolved-product-v1.synthetic.json": resolve_product(
+            facts, community_lookup, knowledge_version=store.knowledge_version
+        ),
+    }.items():
+        write("examples", filename, model.model_dump(mode="json"))
     print(
-        f"Exported backend v{version} contracts and eleven validated synthetic examples."
+        f"Exported backend v{version} contracts and seventeen validated synthetic examples."
     )
 
 

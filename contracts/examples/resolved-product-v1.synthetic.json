@@ -1,0 +1,887 @@
+{
+  "schema_version": "1",
+  "requested_barcode": "0123456789012",
+  "off_snapshot": {
+    "schema_version": "1",
+    "requested_barcode": "0123456789012",
+    "status": "found",
+    "manifest": {
+      "schema_version": "1",
+      "snapshot_id": "synthetic-catalogue",
+      "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+      "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "source_format": "off_jsonl",
+      "coverage": "sample",
+      "exported_at": "2026-10-05T12:00:00Z",
+      "indexed_at": "2026-10-05T12:00:00Z",
+      "market_tag": "en:india",
+      "rows_read": 1,
+      "india_rows": 1,
+      "indexed_products": 1,
+      "duplicate_barcodes": 0,
+      "unsupported_barcodes": 0,
+      "missing_name": 0,
+      "missing_ingredients": 1,
+      "database_license": "ODbL-1.0",
+      "contents_license": "DbCL-1.0",
+      "attribution": "Product data from Open Food Facts",
+      "license_url": "https://openfoodfacts.org/terms-of-use"
+    },
+    "product": {
+      "barcode": "0123456789012",
+      "name": "Synthetic oats",
+      "brands": null,
+      "quantity_text": null,
+      "ingredients_text": null,
+      "allergen_tags": [
+        "en:milk"
+      ],
+      "trace_tags": [],
+      "insights": {
+        "provider": "open_food_facts",
+        "nutri_score_grade": null,
+        "nova_group": null
+      }
+    },
+    "details": {
+      "schema_version": "1",
+      "provider_schema_version": 1004,
+      "last_modified_at": null,
+      "categories": {
+        "availability": "missing",
+        "values": []
+      },
+      "labels": {
+        "availability": "missing",
+        "values": []
+      },
+      "allergens": {
+        "availability": "available",
+        "values": [
+          "en:milk"
+        ]
+      },
+      "traces": {
+        "availability": "available",
+        "values": []
+      },
+      "image": null,
+      "nutrition": {
+        "availability": "direct_tables",
+        "nutrition_adapter_version": "1",
+        "assessment_basis": "open_food_facts_community_data",
+        "input_tables": [
+          {
+            "table_id": "off-table-0",
+            "provider_source": "packaging"
+          }
+        ],
+        "snapshot": {
+          "normalization_version": "1",
+          "status": "partial",
+          "tables": [
+            {
+              "source_table_id": "off-table-0",
+              "preparation": "as_sold",
+              "original_basis": {
+                "kind": "quantity",
+                "amount": 100.0,
+                "unit": "g"
+              },
+              "normalized_basis": {
+                "kind": "quantity",
+                "amount": 100.0,
+                "unit": "g"
+              },
+              "nutrients": {
+                "energy": {
+                  "value": null,
+                  "unit": "kcal",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "fat": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "saturated_fat": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "carbohydrates": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "carbohydrates_total": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "sugars": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "added_sugars": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "fibre": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "protein": {
+                  "value": 4.0,
+                  "unit": "g",
+                  "reason": null,
+                  "source_row_ids": [
+                    "off-table-0-proteins"
+                  ],
+                  "conversion": "g unchanged; scaled from 100 g to 100 g"
+                },
+                "sodium": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "salt": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                }
+              }
+            }
+          ],
+          "original_rows": [
+            {
+              "row_id": "off-table-0-proteins",
+              "table_id": "off-table-0",
+              "nutrient": "protein",
+              "value": 4.0,
+              "unit": "g",
+              "basis": {
+                "kind": "quantity",
+                "amount": 100.0,
+                "unit": "g"
+              },
+              "preparation": "as_sold"
+            }
+          ],
+          "warnings": [
+            "partial_capture"
+          ]
+        },
+        "warnings": []
+      }
+    },
+    "warnings": [
+      "synthetic_example_not_a_real_catalogue",
+      "allergen_safety_not_assessed"
+    ]
+  },
+  "community": {
+    "schema_version": "1",
+    "requested_barcode": "0123456789012",
+    "status": "found",
+    "revisions": [
+      {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "content_sha256": "f3f273b4c24a9b2f5f945e91f3f21b0b33ab28e3ec0b06b83f1b32f195cc016d",
+        "factual_sha256": "962ec9eba0ae16ba28d47c77464062f60aedd295cfbf468c147dd7a16591260e",
+        "barcode": "0123456789012",
+        "submitted_at": "2026-10-07T12:00:00Z",
+        "reviewed_at": null,
+        "facts": {
+          "schema_version": "1",
+          "barcode": "0123456789012",
+          "identity": {
+            "name": "Synthetic oats",
+            "brand": null,
+            "variant": null,
+            "quantity": null,
+            "language": "en"
+          },
+          "ingredients": {
+            "status": "present",
+            "text": "Synthetic oats, milk",
+            "completeness": "complete",
+            "origin": "independently_transcribed_package"
+          },
+          "contains": {
+            "status": "present",
+            "text": "Milk",
+            "completeness": "complete",
+            "origin": "independently_transcribed_package"
+          },
+          "may_contain": {
+            "status": "not_captured",
+            "text": null,
+            "completeness": "partial",
+            "origin": "independently_transcribed_package"
+          },
+          "front_claims": [],
+          "rows": [
+            {
+              "row_id": "protein-line",
+              "table_id": "back-panel",
+              "nutrient": "protein",
+              "value": 4.0,
+              "unit": "g",
+              "basis": {
+                "kind": "serving",
+                "amount": 40.0,
+                "unit": "g"
+              },
+              "preparation": "as_sold"
+            }
+          ],
+          "nutrition_completeness": "partial",
+          "nutrition_origin": "independently_transcribed_package",
+          "provider_references": [],
+          "revision_context": null,
+          "observed_on": "2026-10-07",
+          "capture_method": "manual",
+          "share_license": "CC0-1.0",
+          "market": "india"
+        },
+        "snapshot": {
+          "normalization_version": "1",
+          "status": "partial",
+          "tables": [
+            {
+              "source_table_id": "back-panel",
+              "preparation": "as_sold",
+              "original_basis": {
+                "kind": "serving",
+                "amount": 40.0,
+                "unit": "g"
+              },
+              "normalized_basis": {
+                "kind": "quantity",
+                "amount": 100.0,
+                "unit": "g"
+              },
+              "nutrients": {
+                "energy": {
+                  "value": null,
+                  "unit": "kcal",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "fat": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "saturated_fat": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "carbohydrates": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "carbohydrates_total": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "sugars": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "added_sugars": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "fibre": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "protein": {
+                  "value": 10.0,
+                  "unit": "g",
+                  "reason": null,
+                  "source_row_ids": [
+                    "protein-line"
+                  ],
+                  "conversion": "g unchanged; scaled from 40 g to 100 g"
+                },
+                "sodium": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                },
+                "salt": {
+                  "value": null,
+                  "unit": "g",
+                  "reason": "not_reported",
+                  "source_row_ids": [],
+                  "conversion": null
+                }
+              }
+            }
+          ],
+          "original_rows": [
+            {
+              "row_id": "protein-line",
+              "table_id": "back-panel",
+              "nutrient": "protein",
+              "value": 4.0,
+              "unit": "g",
+              "basis": {
+                "kind": "serving",
+                "amount": 40.0,
+                "unit": "g"
+              },
+              "preparation": "as_sold"
+            }
+          ],
+          "warnings": [
+            "partial_capture"
+          ]
+        },
+        "origin": "unlabel_community",
+        "license": "CC0-1.0",
+        "review_state": "submitter_confirmed_not_moderator_reviewed"
+      }
+    ],
+    "warnings": [
+      "synthetic_example_not_a_real_product"
+    ]
+  },
+  "knowledge_version": "claims-2026-10-06.1",
+  "comparisons": [
+    {
+      "field": "identity.name",
+      "state": "agreement",
+      "source_ids": [
+        "off:synthetic-catalogue",
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    {
+      "field": "identity.brand",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "identity.variant",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "identity.quantity",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "ingredients",
+      "state": "single_source",
+      "source_ids": [
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    {
+      "field": "contains",
+      "state": "single_source",
+      "source_ids": [
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    {
+      "field": "may_contain",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.energy",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.fat",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.saturated_fat",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.carbohydrates",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.carbohydrates_total",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.sugars",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.added_sugars",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.fibre",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.protein",
+      "state": "conflict",
+      "source_ids": [
+        "off:synthetic-catalogue",
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    },
+    {
+      "field": "nutrition.as_sold.100g.sodium",
+      "state": "unknown",
+      "source_ids": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.salt",
+      "state": "unknown",
+      "source_ids": []
+    }
+  ],
+  "fields": [
+    {
+      "field": "identity.name",
+      "state": "agreement",
+      "value": "Synthetic oats",
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [
+        "off:synthetic-catalogue",
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+      "observed_on": "2026-10-07",
+      "source_updated_at": null,
+      "completeness": "complete",
+      "selection_reason": "compatible_identity_field",
+      "alternatives": [
+        {
+          "source_id": "off:synthetic-catalogue",
+          "value": "Synthetic oats",
+          "evidence_state": "open_food_facts_community_data",
+          "observed_on": null,
+          "source_updated_at": null,
+          "completeness": "complete",
+          "source_table_id": null,
+          "source_row_ids": [],
+          "basis": null,
+          "preparation": null,
+          "unit": null
+        },
+        {
+          "source_id": "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "value": "Synthetic oats",
+          "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+          "observed_on": "2026-10-07",
+          "source_updated_at": null,
+          "completeness": "complete",
+          "source_table_id": null,
+          "source_row_ids": [],
+          "basis": null,
+          "preparation": null,
+          "unit": null
+        }
+      ]
+    },
+    {
+      "field": "identity.brand",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "identity.variant",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "identity.quantity",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "ingredients",
+      "state": "single_source",
+      "value": "Synthetic oats, milk",
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+      "observed_on": "2026-10-07",
+      "source_updated_at": null,
+      "completeness": "complete",
+      "selection_reason": "compatible_whole_section",
+      "alternatives": [
+        {
+          "source_id": "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "value": "Synthetic oats, milk",
+          "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+          "observed_on": "2026-10-07",
+          "source_updated_at": null,
+          "completeness": "complete",
+          "source_table_id": null,
+          "source_row_ids": [],
+          "basis": null,
+          "preparation": null,
+          "unit": null
+        }
+      ]
+    },
+    {
+      "field": "contains",
+      "state": "single_source",
+      "value": "Milk",
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+      "observed_on": "2026-10-07",
+      "source_updated_at": null,
+      "completeness": "complete",
+      "selection_reason": "compatible_whole_section",
+      "alternatives": [
+        {
+          "source_id": "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "value": "Milk",
+          "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+          "observed_on": "2026-10-07",
+          "source_updated_at": null,
+          "completeness": "complete",
+          "source_table_id": null,
+          "source_row_ids": [],
+          "basis": null,
+          "preparation": null,
+          "unit": null
+        }
+      ]
+    },
+    {
+      "field": "may_contain",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.energy",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.fat",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.saturated_fat",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.carbohydrates",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.carbohydrates_total",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.sugars",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.added_sugars",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.fibre",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.protein",
+      "state": "conflict",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [
+        "off:synthetic-catalogue",
+        "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "conflicting_assertions_require_confirmation",
+      "alternatives": [
+        {
+          "source_id": "off:synthetic-catalogue",
+          "value": 4.0,
+          "evidence_state": "open_food_facts_community_data",
+          "observed_on": null,
+          "source_updated_at": null,
+          "completeness": null,
+          "source_table_id": "off-table-0",
+          "source_row_ids": [
+            "off-table-0-proteins"
+          ],
+          "basis": {
+            "kind": "quantity",
+            "amount": 100.0,
+            "unit": "g"
+          },
+          "preparation": "as_sold",
+          "unit": "g"
+        },
+        {
+          "source_id": "community:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "value": 10.0,
+          "evidence_state": "submitter_confirmed_not_moderator_reviewed",
+          "observed_on": "2026-10-07",
+          "source_updated_at": null,
+          "completeness": null,
+          "source_table_id": "back-panel",
+          "source_row_ids": [
+            "protein-line"
+          ],
+          "basis": {
+            "kind": "quantity",
+            "amount": 100.0,
+            "unit": "g"
+          },
+          "preparation": "as_sold",
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "field": "nutrition.as_sold.100g.sodium",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    },
+    {
+      "field": "nutrition.as_sold.100g.salt",
+      "state": "unknown",
+      "value": null,
+      "unit": null,
+      "basis": null,
+      "preparation": null,
+      "source_ids": [],
+      "evidence_state": null,
+      "observed_on": null,
+      "source_updated_at": null,
+      "completeness": null,
+      "selection_reason": "no_known_value",
+      "alternatives": []
+    }
+  ],
+  "warnings": [
+    "community_assertions_not_current_label_confirmation",
+    "allergen_safety_not_assessed",
+    "generic_composition_not_used_for_packaged_facts",
+    "sources_disagree_requires_confirmation",
+    "revision_compatibility_unknown",
+    "synthetic_example_not_a_real_catalogue",
+    "synthetic_example_not_a_real_product"
+  ]
+}

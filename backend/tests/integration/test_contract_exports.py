@@ -10,6 +10,13 @@ from app.claims.models import (
     ClaimsUnavailable,
     EvidenceResponse,
 )
+from app.community.models import (
+    CommunityFailure,
+    CommunityLookup,
+    ContributionReceipt,
+    ContributionRequest,
+    ResolvedProduct,
+)
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
 from app.schemas.products import ProductLookup
@@ -22,7 +29,7 @@ def test_published_strict_product_schema_has_not_changed():
     assert saved == ProductLookup.model_json_schema()
 
 
-def test_nutrition_examples_validate_for_teammate_consumers():
+def test_all_examples_validate_for_teammate_consumers():
     for filename, model in {
         "nutrition-normalize-v1.request.synthetic.json": NormalizeRequest,
         "nutrition-normalize-v1.response.synthetic.json": NormalizeResponse,
@@ -34,11 +41,17 @@ def test_nutrition_examples_validate_for_teammate_consumers():
         "claims-rules-v1.synthetic.json": ClaimsRulesResponse,
         "claims-unavailable-v1.synthetic.json": ClaimsUnavailable,
         "evidence-v1.synthetic.json": EvidenceResponse,
+        "community-contribution-v1.request.synthetic.json": ContributionRequest,
+        "community-provisional-v1.request.synthetic.json": ContributionRequest,
+        "community-contribution-v1.receipt.synthetic.json": ContributionReceipt,
+        "community-lookup-v1.synthetic.json": CommunityLookup,
+        "community-failure-v1.synthetic.json": CommunityFailure,
+        "resolved-product-v1.synthetic.json": ResolvedProduct,
     }.items():
         model.model_validate_json((CONTRACTS / "examples" / filename).read_text())
 
 
-def test_current_openapi_and_all_new_claim_schemas_match_runtime():
+def test_current_openapi_and_all_current_schemas_match_runtime():
     from app import __version__
     from app.core.config import Settings
     from app.main import create_app
@@ -51,6 +64,11 @@ def test_current_openapi_and_all_new_claim_schemas_match_runtime():
         "claims-rules-v1.schema.json": ClaimsRulesResponse,
         "claims-unavailable-v1.schema.json": ClaimsUnavailable,
         "evidence-v1.schema.json": EvidenceResponse,
+        "community-contribution-request-v1.schema.json": ContributionRequest,
+        "community-contribution-receipt-v1.schema.json": ContributionReceipt,
+        "community-lookup-v1.schema.json": CommunityLookup,
+        "community-failure-v1.schema.json": CommunityFailure,
+        "resolved-product-v1.schema.json": ResolvedProduct,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

@@ -1,15 +1,23 @@
 # Website and shared API deployment plan
 
-Updated: **2026-10-07** (Asia/Calcutta). Two Git-connected Vercel projects are configured for automatic deployment. Backend v0.3.0 adds receipt-verified reviewed claim JSON and separate confirmed-label claim/rule/evidence APIs alongside the independently released rich catalogue facts; pinned Flutter remains v0.0.0+1. Existing live product/nutrition lookup and confirmed normalization remain separate. Current v0.3.0 local/source/deployment gates are recorded in the [current release review](../planning/BACKEND_V0_3_0_REVIEW.md); local validation alone does not prove hosted reads. Future OCR, broader analysis, glossary and AI remain plans. [Historical recovery review](../planning/RECOVERABLE_WORKSPACE_REVIEW.md).
+Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
+is implemented; production remains **v0.3.0** until push and hosted verification.
+Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
+observations automatically, stage provisional facts privately and resolve compatible
+fields with source/date and conflicts. Firebase Unlabel has its first Standard
+`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
+denied direct client access. Frontend capture/OCR/background save remains pending.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
-Website: **[unlabel-india.vercel.app](https://unlabel-india.vercel.app)** (`unlabel-frontend`, root `frontend`). API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** (`unlabel-backend`, root `backend`). [Actual settings and validation state](../planning/VERCEL_SETUP.md).
+Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app); API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app). [Vercel configuration](../planning/VERCEL_SETUP.md).
 
 ## Project boundaries
 
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Live OFF product/nutrition, confirmed normalization and verified snapshot identity/status/rich facts; reviewed rules and optional Gemini later. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published OFF/normalization/claims/snapshot; local v0.4.0 enrichment awaits push/hosted verification. |
+| Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous Auth/rules/IAM; automatic observations, private staging and qualified review. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
@@ -71,7 +79,7 @@ An outside-root setting alone does not prove that the deployed API contains the 
 Changes to `knowledge/`, `contracts/` or the evidence packaging script must rebuild the backend even when `backend/` is unchanged.
 Changes to shared client contracts must trigger relevant Flutter web/native checks. Validate one contract version before promotion.
 
-## Stateless runtime and storage
+## Disposable runtime and separate durable public storage
 
 Treat every hosted request as able to land in a fresh instance. Read evidence; do not update packaged files at runtime.
 Vercel Functions provide a read-only filesystem with temporary scratch space:
@@ -79,6 +87,16 @@ Vercel Functions provide a read-only filesystem with temporary scratch space:
 Do not store scan history, mutable SQLite databases, user accounts, quota counters or permanent caches in that filesystem.
 The current backend keeps live OFF routes and a separate immutable SQLite identity/facts catalogue. Rich facts may include direct-table nutrition and attributed official image URL descriptors; no photos or world dump enter the function bundle. The catalogue build/runtime validate its receipt and source manifest; actual v0.2.3 production file/hash/read checks passed, with [dated build/HTTP evidence](../research/BACKEND_V0_2_3_PRODUCTION.json). The reviewed claim subset uses its own verified read-only two-file JSON bundle; its metadata receipt is separate from the catalogue artifact. A laptop can also use a regenerated local SQLite index. Nine-calendar-month source replacement creates a new Git/Vercel deployment; rollback restores the prior validated deployment and matching source/configuration. Never hot-swap packaged runtime files.
 Profiles, history and pending scans remain in browser/device storage and do not sync between clients in the initial scope.
+
+v0.4.0 automatically stores bounded structured public observations and private
+unverified staging; client background save still needs integration. Photos/raw
+OCR/profiles/history stay private. Firebase Unlabel/project `unlabel-india-catalogue`
+has first Standard database `unlabel` in Mumbai, free tier/no linked billing,
+anonymous Auth, deny-all client rules and dedicated backend credentials. Live
+synthetic persistence/review/cleanup and REST denial passed separately from
+hosted API deployment. Keep Spark/no card and no paid fallback. Preserve useful
+OFF resolution and independent normalization/claims on storage failure.
+[Product storage](COMMUNITY_CATALOGUE.md).
 
 ## Limited offline access and optional model hosting
 
@@ -115,7 +133,9 @@ Keep the provider disabled and `GEMINI_MODEL` blank until the real Free Tier pro
 
 Keep a publicly reachable deployment's Gemini route disabled by default; deterministic templates remain usable.
 For a later invited adult beta, require verified individual identity tokens and a backend invite allowlist before cloud-AI access.
-Select and verify a no-card identity mechanism in that implementation phase; there is no authentication service dependency now.
+Configured Firebase anonymous authentication serves write ownership, but does not
+establish adult eligibility, invite membership or authorization for optional AI.
+Implement and verify those additional controls before enabling public AI.
 Do not distribute a shared API secret, Vercel automation bypass token or Gemini key inside website/native builds.
 Token signature, issuer, audience, expiry and invite membership must be checked server-side.
 

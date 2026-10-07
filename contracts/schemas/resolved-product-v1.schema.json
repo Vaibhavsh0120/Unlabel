@@ -1,0 +1,1778 @@
+{
+  "$defs": {
+    "AvailableTags": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "enum": [
+            "available",
+            "missing",
+            "invalid"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "availability"
+      ],
+      "title": "AvailableTags",
+      "type": "object"
+    },
+    "CommunityLookup": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "requested_barcode": {
+          "maxLength": 14,
+          "minLength": 8,
+          "title": "Requested Barcode",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "found",
+            "not_found",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/CommunityRevision"
+          },
+          "maxItems": 8,
+          "title": "Revisions",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "requested_barcode",
+        "status"
+      ],
+      "title": "CommunityLookup",
+      "type": "object"
+    },
+    "CommunityRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "content_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "factual_sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Factual Sha256",
+          "type": "string"
+        },
+        "barcode": {
+          "maxLength": 14,
+          "minLength": 8,
+          "title": "Barcode",
+          "type": "string"
+        },
+        "submitted_at": {
+          "format": "date-time",
+          "title": "Submitted At",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reviewed At"
+        },
+        "facts": {
+          "$ref": "#/$defs/ContributionFacts"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/NutritionSnapshot"
+        },
+        "origin": {
+          "const": "unlabel_community",
+          "default": "unlabel_community",
+          "title": "Origin",
+          "type": "string"
+        },
+        "license": {
+          "const": "CC0-1.0",
+          "default": "CC0-1.0",
+          "title": "License",
+          "type": "string"
+        },
+        "review_state": {
+          "default": "moderator_accepted_community_assertion",
+          "enum": [
+            "moderator_accepted_community_assertion",
+            "submitter_confirmed_not_moderator_reviewed"
+          ],
+          "title": "Review State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "revision_id",
+        "content_sha256",
+        "factual_sha256",
+        "barcode",
+        "submitted_at",
+        "reviewed_at",
+        "facts",
+        "snapshot"
+      ],
+      "title": "CommunityRevision",
+      "type": "object"
+    },
+    "ContributionFacts": {
+      "additionalProperties": false,
+      "description": "Public factual assertion; permission/ownership/request IDs are not exposed.",
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "barcode": {
+          "anyOf": [
+            {
+              "maxLength": 14,
+              "minLength": 8,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Barcode"
+        },
+        "identity": {
+          "$ref": "#/$defs/ProductIdentity"
+        },
+        "ingredients": {
+          "$ref": "#/$defs/LabelSection"
+        },
+        "contains": {
+          "$ref": "#/$defs/LabelSection"
+        },
+        "may_contain": {
+          "$ref": "#/$defs/LabelSection"
+        },
+        "front_claims": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Front Claims",
+          "type": "array"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/NutrientRow"
+          },
+          "maxItems": 64,
+          "title": "Rows",
+          "type": "array"
+        },
+        "nutrition_completeness": {
+          "enum": [
+            "complete",
+            "partial"
+          ],
+          "title": "Nutrition Completeness",
+          "type": "string"
+        },
+        "nutrition_origin": {
+          "const": "independently_transcribed_package",
+          "title": "Nutrition Origin",
+          "type": "string"
+        },
+        "provider_references": {
+          "items": {
+            "$ref": "#/$defs/ProviderReference"
+          },
+          "maxItems": 8,
+          "title": "Provider References",
+          "type": "array"
+        },
+        "revision_context": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Context"
+        },
+        "observed_on": {
+          "format": "date",
+          "title": "Observed On",
+          "type": "string"
+        },
+        "capture_method": {
+          "enum": [
+            "manual",
+            "ocr_corrected",
+            "ocr_unconfirmed"
+          ],
+          "title": "Capture Method",
+          "type": "string"
+        },
+        "share_license": {
+          "const": "CC0-1.0",
+          "title": "Share License",
+          "type": "string"
+        },
+        "market": {
+          "const": "india",
+          "title": "Market",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identity",
+        "ingredients",
+        "contains",
+        "may_contain",
+        "nutrition_completeness",
+        "nutrition_origin",
+        "observed_on",
+        "capture_method",
+        "share_license",
+        "market"
+      ],
+      "title": "ContributionFacts",
+      "type": "object"
+    },
+    "DirectNutrition": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "enum": [
+            "direct_tables",
+            "missing",
+            "legacy_unsupported",
+            "invalid"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "nutrition_adapter_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Nutrition Adapter Version",
+          "type": "string"
+        },
+        "assessment_basis": {
+          "const": "open_food_facts_community_data",
+          "default": "open_food_facts_community_data",
+          "title": "Assessment Basis",
+          "type": "string"
+        },
+        "input_tables": {
+          "items": {
+            "$ref": "#/$defs/InputTableSource"
+          },
+          "maxItems": 16,
+          "title": "Input Tables",
+          "type": "array"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/NutritionSnapshot"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "availability",
+        "snapshot"
+      ],
+      "title": "DirectNutrition",
+      "type": "object"
+    },
+    "FactsLookup": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "requested_barcode": {
+          "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+          "title": "Requested Barcode",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "found",
+            "not_found",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "manifest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Manifest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "product": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Product"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "details": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProductFacts"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "requested_barcode",
+        "status"
+      ],
+      "title": "FactsLookup",
+      "type": "object"
+    },
+    "FieldAlternative": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "type": "string"
+            },
+            {
+              "maximum": 1000000000,
+              "minimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Value"
+        },
+        "evidence_state": {
+          "enum": [
+            "open_food_facts_community_data",
+            "submitter_confirmed_not_moderator_reviewed",
+            "moderator_accepted_community_assertion"
+          ],
+          "title": "Evidence State",
+          "type": "string"
+        },
+        "observed_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed On"
+        },
+        "source_updated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Updated At"
+        },
+        "completeness": {
+          "anyOf": [
+            {
+              "enum": [
+                "complete",
+                "partial"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completeness"
+        },
+        "source_table_id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Table Id"
+        },
+        "source_row_ids": {
+          "items": {
+            "maxLength": 64,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Source Row Ids",
+          "type": "array"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NutritionBasis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preparation": {
+          "anyOf": [
+            {
+              "enum": [
+                "as_sold",
+                "as_prepared"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preparation"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "kcal"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "source_id",
+        "value",
+        "evidence_state"
+      ],
+      "title": "FieldAlternative",
+      "type": "object"
+    },
+    "FieldComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "unknown",
+            "single_source",
+            "agreement",
+            "conflict",
+            "not_comparable"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 9,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "field",
+        "state"
+      ],
+      "title": "FieldComparison",
+      "type": "object"
+    },
+    "FrontImage": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "language": {
+          "maxLength": 3,
+          "pattern": "^[a-z]{2,3}$",
+          "title": "Language",
+          "type": "string"
+        },
+        "revision": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "size": {
+          "const": 400,
+          "default": 400,
+          "title": "Size",
+          "type": "integer"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "maximum": 400,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "maximum": 400,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "provider": {
+          "const": "open_food_facts",
+          "default": "open_food_facts",
+          "title": "Provider",
+          "type": "string"
+        },
+        "attribution": {
+          "const": "Product image from Open Food Facts contributors",
+          "default": "Product image from Open Food Facts contributors",
+          "title": "Attribution",
+          "type": "string"
+        },
+        "license": {
+          "const": "CC-BY-SA-3.0",
+          "default": "CC-BY-SA-3.0",
+          "title": "License",
+          "type": "string"
+        },
+        "license_url": {
+          "const": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "default": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "title": "License Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "language",
+        "revision"
+      ],
+      "title": "FrontImage",
+      "type": "object"
+    },
+    "InputTableSource": {
+      "additionalProperties": false,
+      "properties": {
+        "table_id": {
+          "title": "Table Id",
+          "type": "string"
+        },
+        "provider_source": {
+          "enum": [
+            "packaging",
+            "manufacturer"
+          ],
+          "title": "Provider Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table_id",
+        "provider_source"
+      ],
+      "title": "InputTableSource",
+      "type": "object"
+    },
+    "LabelSection": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "present",
+            "not_observed",
+            "not_captured"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Text"
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "partial"
+          ],
+          "title": "Completeness",
+          "type": "string"
+        },
+        "origin": {
+          "const": "independently_transcribed_package",
+          "title": "Origin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "text",
+        "completeness",
+        "origin"
+      ],
+      "title": "LabelSection",
+      "type": "object"
+    },
+    "Manifest": {
+      "additionalProperties": false,
+      "description": "Source SHA-256 covers every decoded byte of the local import input, through EOF.\n\n``unverified`` does not assert independent completeness of products sold in India.\nA CSV projection has separate upstream acquisition proof outside this contract.",
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9._:-]+$",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Sha256",
+          "type": "string"
+        },
+        "source_format": {
+          "default": "off_jsonl",
+          "enum": [
+            "off_jsonl",
+            "off_csv_projection"
+          ],
+          "title": "Source Format",
+          "type": "string"
+        },
+        "coverage": {
+          "default": "sample",
+          "enum": [
+            "sample",
+            "unverified"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "exported_at": {
+          "format": "date-time",
+          "title": "Exported At",
+          "type": "string"
+        },
+        "indexed_at": {
+          "format": "date-time",
+          "title": "Indexed At",
+          "type": "string"
+        },
+        "market_tag": {
+          "const": "en:india",
+          "default": "en:india",
+          "title": "Market Tag",
+          "type": "string"
+        },
+        "rows_read": {
+          "minimum": 0,
+          "title": "Rows Read",
+          "type": "integer"
+        },
+        "india_rows": {
+          "minimum": 0,
+          "title": "India Rows",
+          "type": "integer"
+        },
+        "indexed_products": {
+          "minimum": 1,
+          "title": "Indexed Products",
+          "type": "integer"
+        },
+        "duplicate_barcodes": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Duplicate Barcodes",
+          "type": "integer"
+        },
+        "unsupported_barcodes": {
+          "minimum": 0,
+          "title": "Unsupported Barcodes",
+          "type": "integer"
+        },
+        "missing_name": {
+          "minimum": 0,
+          "title": "Missing Name",
+          "type": "integer"
+        },
+        "missing_ingredients": {
+          "minimum": 0,
+          "title": "Missing Ingredients",
+          "type": "integer"
+        },
+        "database_license": {
+          "const": "ODbL-1.0",
+          "default": "ODbL-1.0",
+          "title": "Database License",
+          "type": "string"
+        },
+        "contents_license": {
+          "const": "DbCL-1.0",
+          "default": "DbCL-1.0",
+          "title": "Contents License",
+          "type": "string"
+        },
+        "attribution": {
+          "const": "Product data from Open Food Facts",
+          "default": "Product data from Open Food Facts",
+          "title": "Attribution",
+          "type": "string"
+        },
+        "license_url": {
+          "const": "https://openfoodfacts.org/terms-of-use",
+          "default": "https://openfoodfacts.org/terms-of-use",
+          "title": "License Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "source_url",
+        "source_sha256",
+        "exported_at",
+        "indexed_at",
+        "rows_read",
+        "india_rows",
+        "indexed_products",
+        "unsupported_barcodes",
+        "missing_name",
+        "missing_ingredients"
+      ],
+      "title": "Manifest",
+      "type": "object"
+    },
+    "NutrientCell": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "kcal"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "not_reported",
+                "unknown_value",
+                "conflicting_values",
+                "conversion_missing_basis",
+                "conversion_out_of_bounds"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "source_row_ids": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Source Row Ids",
+          "type": "array"
+        },
+        "conversion": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversion"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "NutrientCell",
+      "type": "object"
+    },
+    "NutrientRow": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Table Id",
+          "type": "string"
+        },
+        "nutrient": {
+          "enum": [
+            "energy",
+            "fat",
+            "saturated_fat",
+            "carbohydrates",
+            "carbohydrates_total",
+            "sugars",
+            "added_sugars",
+            "fibre",
+            "protein",
+            "sodium",
+            "salt"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "mg",
+            "ug",
+            "kcal",
+            "kJ"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row_id",
+        "table_id",
+        "nutrient",
+        "value",
+        "unit",
+        "basis",
+        "preparation"
+      ],
+      "title": "NutrientRow",
+      "type": "object"
+    },
+    "NutritionBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "quantity",
+            "serving"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "mL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "NutritionBasis",
+      "type": "object"
+    },
+    "NutritionSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "normalization_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "needs_correction"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tables": {
+          "items": {
+            "$ref": "#/$defs/NutritionTable"
+          },
+          "maxItems": 64,
+          "title": "Tables",
+          "type": "array"
+        },
+        "original_rows": {
+          "items": {
+            "$ref": "#/$defs/NutrientRow"
+          },
+          "maxItems": 64,
+          "title": "Original Rows",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "NutritionSnapshot",
+      "type": "object"
+    },
+    "NutritionTable": {
+      "additionalProperties": false,
+      "properties": {
+        "source_table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Source Table Id",
+          "type": "string"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        },
+        "original_basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "normalized_basis": {
+          "$ref": "#/$defs/NutritionBasis"
+        },
+        "nutrients": {
+          "additionalProperties": {
+            "$ref": "#/$defs/NutrientCell"
+          },
+          "propertyNames": {
+            "enum": [
+              "energy",
+              "fat",
+              "saturated_fat",
+              "carbohydrates",
+              "carbohydrates_total",
+              "sugars",
+              "added_sugars",
+              "fibre",
+              "protein",
+              "sodium",
+              "salt"
+            ]
+          },
+          "title": "Nutrients",
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_table_id",
+        "preparation",
+        "original_basis",
+        "normalized_basis",
+        "nutrients"
+      ],
+      "title": "NutritionTable",
+      "type": "object"
+    },
+    "Product": {
+      "additionalProperties": false,
+      "properties": {
+        "barcode": {
+          "title": "Barcode",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "brands": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brands"
+        },
+        "quantity_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity Text"
+        },
+        "ingredients_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ingredients Text"
+        },
+        "allergen_tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allergen Tags",
+          "type": "array"
+        },
+        "trace_tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Trace Tags",
+          "type": "array"
+        },
+        "insights": {
+          "$ref": "#/$defs/ProviderInsights"
+        }
+      },
+      "required": [
+        "barcode"
+      ],
+      "title": "Product",
+      "type": "object"
+    },
+    "ProductFacts": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "provider_schema_version": {
+          "anyOf": [
+            {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Schema Version"
+        },
+        "last_modified_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Modified At"
+        },
+        "categories": {
+          "$ref": "#/$defs/AvailableTags"
+        },
+        "labels": {
+          "$ref": "#/$defs/AvailableTags"
+        },
+        "allergens": {
+          "$ref": "#/$defs/AvailableTags"
+        },
+        "traces": {
+          "$ref": "#/$defs/AvailableTags"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontImage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "nutrition": {
+          "$ref": "#/$defs/DirectNutrition"
+        }
+      },
+      "required": [
+        "categories",
+        "labels",
+        "allergens",
+        "traces",
+        "nutrition"
+      ],
+      "title": "ProductFacts",
+      "type": "object"
+    },
+    "ProductIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brand"
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variant"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "language": {
+          "maxLength": 3,
+          "minLength": 2,
+          "pattern": "^[a-z]{2,3}$",
+          "title": "Language",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "language"
+      ],
+      "title": "ProductIdentity",
+      "type": "object"
+    },
+    "ProviderInsights": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "const": "open_food_facts",
+          "default": "open_food_facts",
+          "title": "Provider",
+          "type": "string"
+        },
+        "nutri_score_grade": {
+          "anyOf": [
+            {
+              "enum": [
+                "a",
+                "b",
+                "c",
+                "d",
+                "e"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nutri Score Grade"
+        },
+        "nova_group": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nova Group"
+        }
+      },
+      "title": "ProviderInsights",
+      "type": "object"
+    },
+    "ProviderReference": {
+      "additionalProperties": false,
+      "description": "Pointers to existing licensed data, never a copied CC0 assertion.",
+      "properties": {
+        "provider": {
+          "const": "off_snapshot",
+          "title": "Provider",
+          "type": "string"
+        },
+        "source_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "barcode": {
+          "maxLength": 14,
+          "minLength": 8,
+          "title": "Barcode",
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "enum": [
+              "identity.name",
+              "identity.brand",
+              "identity.variant",
+              "identity.quantity",
+              "ingredients",
+              "contains",
+              "may_contain",
+              "nutrition"
+            ],
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "provider",
+        "source_id",
+        "barcode",
+        "fields"
+      ],
+      "title": "ProviderReference",
+      "type": "object"
+    },
+    "ResolvedField": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "unknown",
+            "single_source",
+            "agreement",
+            "conflict",
+            "not_comparable"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "type": "string"
+            },
+            {
+              "maximum": 1000000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "kcal"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NutritionBasis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preparation": {
+          "anyOf": [
+            {
+              "enum": [
+                "as_sold",
+                "as_prepared"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preparation"
+        },
+        "source_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 9,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "evidence_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "open_food_facts_community_data",
+                "submitter_confirmed_not_moderator_reviewed",
+                "moderator_accepted_community_assertion"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence State"
+        },
+        "observed_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed On"
+        },
+        "source_updated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Updated At"
+        },
+        "completeness": {
+          "anyOf": [
+            {
+              "enum": [
+                "complete",
+                "partial"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completeness"
+        },
+        "selection_reason": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Selection Reason",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/FieldAlternative"
+          },
+          "maxItems": 144,
+          "title": "Alternatives",
+          "type": "array"
+        }
+      },
+      "required": [
+        "field",
+        "state",
+        "selection_reason"
+      ],
+      "title": "ResolvedField",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "requested_barcode": {
+      "maxLength": 14,
+      "minLength": 8,
+      "title": "Requested Barcode",
+      "type": "string"
+    },
+    "off_snapshot": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FactsLookup"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "community": {
+      "$ref": "#/$defs/CommunityLookup"
+    },
+    "knowledge_version": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Knowledge Version"
+    },
+    "comparisons": {
+      "items": {
+        "$ref": "#/$defs/FieldComparison"
+      },
+      "maxItems": 128,
+      "title": "Comparisons",
+      "type": "array"
+    },
+    "fields": {
+      "items": {
+        "$ref": "#/$defs/ResolvedField"
+      },
+      "maxItems": 128,
+      "title": "Fields",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "requested_barcode",
+    "off_snapshot",
+    "community"
+  ],
+  "title": "ResolvedProduct",
+  "type": "object"
+}

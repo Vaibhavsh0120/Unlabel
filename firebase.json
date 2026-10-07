@@ -1,0 +1,18 @@
+{
+  "firestore": {
+    "database": "unlabel",
+    "location": "asia-south1",
+    "rules": "firebase/firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true
+    }
+  },
+  "emulators": {
+    "firestore": {"host": "127.0.0.1", "port": 8080},
+    "ui": {"enabled": false},
+    "singleProjectMode": false
+  }
+}

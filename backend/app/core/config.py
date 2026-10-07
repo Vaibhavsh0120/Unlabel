@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 from urllib.parse import urlsplit
 
-from pydantic import Field, field_validator
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_settings.sources import ENV_FILE_SENTINEL, DotenvType
 
@@ -14,13 +14,20 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
-    off_user_agent: str = "Unlabel/0.3.0 (https://github.com/Vaibhavsh0120/Unlabel)"
+    off_user_agent: str = "Unlabel/0.4.0 (https://github.com/Vaibhavsh0120/Unlabel)"
     off_timeout_seconds: float = Field(default=8, ge=1, le=15)
     off_max_response_bytes: int = Field(default=524_288, ge=1024, le=1_048_576)
     cors_origins: list[str] = Field(default_factory=list)
     catalogue_directory: str = Field(default="", max_length=1024)
     catalogue_require_receipt: bool = False
     claims_knowledge_directory: str = Field(default="", max_length=1024)
+    community_enabled: bool = False
+    community_project_id: str = Field(
+        default="", max_length=30, pattern=r"^(?:[a-z][a-z0-9-]{4,28}[a-z0-9])?$"
+    )
+    community_database_id: Literal["unlabel"] = "unlabel"
+    community_service_account_json: SecretStr | None = Field(default=None, repr=False)
+    community_actor_secret: SecretStr | None = Field(default=None, repr=False)
 
     def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
         # Preserve BaseSettings' supported dotenv override in its typed signature.
@@ -46,6 +53,28 @@ class Settings(BaseSettings):
         if not directory.is_absolute():
             directory = Path(__file__).resolve().parents[2] / directory
         return directory.resolve()
+
+    def community_configured(self) -> bool:
+        return bool(
+            self.community_enabled
+            and self.community_project_id
+            and self.community_service_account_json is not None
+            and self.community_actor_secret is not None
+        )
+
+    @field_validator("community_service_account_json")
+    @classmethod
+    def bounded_service_account(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None and not 1 <= len(value.get_secret_value().encode("utf-8")) <= 32768:
+            raise ValueError("Community credential must be bounded")
+        return value
+
+    @field_validator("community_actor_secret")
+    @classmethod
+    def bounded_actor_secret(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None and not 32 <= len(value.get_secret_value()) <= 1024:
+            raise ValueError("Community ownership secret must contain 32–1024 characters")
+        return value
 
     @field_validator("off_user_agent")
     @classmethod

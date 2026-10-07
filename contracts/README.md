@@ -1,10 +1,16 @@
 # Shared API contracts
 
-Backend **v0.3.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
+Local backend **v0.4.0** exports current schemas from `app.main.create_app().openapi()` and named Pydantic models. Backend routes/models are the source of truth; regenerate exports after changes. Preserve historical OpenAPI and strict earlier response shapes. Flutter stays **0.0.0+1** with client integration pending.
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.3.0.openapi.json` | Eleven current routes, including separate confirmed-label claim checks, loaded rules and public evidence metadata. |
+| `schemas/backend-v0.4.0.openapi.json` | Fifteen current routes; four additive community observation/receipt/exact/resolved endpoints. |
+| `schemas/community-contribution-request-v1.schema.json` | Strict provisional/confirmed public observations, optional barcode, original rows and origin/license. |
+| `schemas/community-contribution-receipt-v1.schema.json` | Private owned submission receipt, observation/factual hashes, state, expiry and deduplication. |
+| `schemas/community-lookup-v1.schema.json` | Exact public candidate/approved assertions with qualified evidence state. |
+| `schemas/community-failure-v1.schema.json` | Safe typed authentication/conflict/quota/unavailable/owned-not-found failures. |
+| `schemas/resolved-product-v1.schema.json` | Whole OFF/community originals, comparisons and typed fields with sources/dates/alternatives. |
+| `schemas/backend-v0.3.0.openapi.json` | Historical independently published numerical-claims release. |
 | `schemas/claims-check-request-v1.schema.json` | Confirmed rows, identified claims, selected table and explicit applicability context. |
 | `schemas/claims-check-response-v1.schema.json` | Numerical assessments, input/rule/source references, normalization snapshot and statutory energy-conversion metadata. |
 | `schemas/claims-rules-v1.schema.json` | Seven reviewed numerical rules, four recognized unsupported claims and knowledge readiness/version. |
@@ -25,7 +31,7 @@ Backend **v0.3.0** exports current schemas from `app.main.create_app().openapi()
 | `schemas/backend-v0.2.0.openapi.json` | Historical nutrition release. |
 | `schemas/backend-v0.1.0.openapi.json` | Historical product release. |
 
-The exporter validates and writes **eleven owned synthetic examples**. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. These are not real scans, health policies or complete regulatory verdicts.
+The exporter validates and writes **seventeen validated synthetic examples**. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six new community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields; no real food or private scan is included. These are not real scans, health policies or complete regulatory verdicts.
 
 Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Add separate client models instead of modifying the strict v1 identity parser. Broad `nutrition_analysis`, glossary, comparison and AI remain disabled. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md).
 
@@ -42,3 +48,12 @@ backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py
 ~~~
 
 On macOS/Linux use `backend/.venv/bin/python`. The exporter validates synthetic models and preserves historical exports. JSON Schema alone cannot encode every strict numeric, unique-ID, source/image-identity or semantic unit/basis rule enforced by the backend. Shared fixtures and regression tests verify those boundaries. No private scans, profile, credentials or raw provider internals belong in contracts.
+
+Community capabilities depend on configured runtime; connectivity remains
+`not_checked`. `resolved_product_lookup` can be true with only a ready OFF facts
+catalogue. Resolution retains unavailable community provenance during a partial
+outage; neither usable source returns 503. Observations do not provide current
+caller confirmation. Exact retries retain receipts despite OFF snapshot rotation;
+new provider references must match actual snapshot identity. Frontend capture,
+background anonymous requests and reports remain integration work. Production
+v0.4.0 verification/publication is pending; see the [review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).

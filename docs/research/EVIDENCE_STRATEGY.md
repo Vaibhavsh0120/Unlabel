@@ -1,7 +1,23 @@
 # Evidence strategy
 
-Status: backend v0.3.0 implements seven reviewed numerical claims and three official source metadata records. Wider ingredients, allergens, glossary and bilingual evidence workflows remain planned.
-Source research began 5 October; the selected claim scope was reviewed 6 October 2026 and fresh byte/hash checks passed during 7 October implementation work (Asia/Calcutta). [Actual source register/hashes](../../knowledge/README.md) · [Current release gates](../planning/BACKEND_V0_3_0_REVIEW.md).
+Status: local **v0.4.0** implements automatic structured observations, private
+staging and qualified source resolution; production remains v0.3.0 until
+push/hosted verification. The seven reviewed numerical claims and three source
+records are unchanged. Firebase Unlabel is configured on free Standard database
+`unlabel` without linked billing. Product observations remain distinct from rule
+evidence; review never confirms the caller's current packet or activates new
+criteria. [Master plan](../planning/MASTER_PLAN.md).
+
+
+The [Indian food coverage strategy](INDIAN_FOOD_COVERAGE.md) records the user's
+barcode/back-image/front-image goal, measured product gaps, source selection,
+language limits and proposed acquisition/implementation sequence. Generic food
+composition stays separate from packaged-product and confirmed-label facts.
+Source research began 5 October; the selected claim scope was reviewed 6 October
+2026 and fresh byte/hash checks passed on 7 October (Asia/Calcutta).
+[Actual source register/hashes](../../knowledge/README.md) ·
+[Current gates](../planning/BACKEND_V0_4_0_REVIEW.md) ·
+[Community/source boundaries](../architecture/COMMUNITY_CATALOGUE.md).
 
 ## Decision
 

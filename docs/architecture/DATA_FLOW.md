@@ -1,19 +1,48 @@
 # Unlabel data flow and ownership
 
-Status: backend source v0.3.0 implements health/meta, live barcode product/nutrition lookup, confirmed structured nutrition-row normalization receipt-verified catalogue status/identity/rich-facts lookup and reviewed confirmed-label claim/rule/evidence APIs. Frontend remains v0.0.0+1 with no API adapter. OCR, broad health analysis, full report storage and AI connections remain planned. See the [backend guide](../../backend/README.md), release-specific [verification record](../planning/BACKEND_V0_3_0_REVIEW.md), and [hosting URLs](../planning/VERCEL_SETUP.md).
+Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
+is implemented; production remains **v0.3.0** until push and hosted verification.
+Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
+observations automatically, stage provisional facts privately and resolve compatible
+fields with source/date and conflicts. Firebase Unlabel has its first Standard
+`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
+denied direct client access. Frontend capture/OCR/background save remains pending.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
-One Flutter app directly in `frontend/` targets Android, iOS, and the responsive website; `frontend/web/` is its web platform directory. Open Food Facts is the primary online source of product facts and source-tagged computed insights. FastAPI normalizes direct nutrition facts; the v0.3.0 subset checks seven reviewed numerical FSSAI claims from confirmed rows. Future OCR captures gaps/front claims and supports package review. Website/API are already separate Vercel projects. Local preferences and Gemini wording are later features.
-
-## Current v0.3.0 paths
+## Preserved lookup, normalization and claim paths
 
 1. A caller supplies a supported barcode to the product route or separate nutrition route. The backend performs one fixed-origin OFF v3.6 read with an application User-Agent, an eight-second default total deadline and a 512 KiB default decoded-response budget. It validates identity and source data; no provider key or image download is needed.
 2. Product lookup returns the unchanged product v1 contract. Nutrition lookup reads only eligible `nutrition.input_sets` from packaging/manufacturer sources, excluding estimated/computed/qualified values. The adapter processes at most 16 tables and 64 accepted rows, omitting an over-budget table as a whole. Original direct values, accepted table source, preparation and basis remain visible. Separate tables are not combined.
-3. Independently, a caller can POST 1–64 user-confirmed structured nutrient rows with UUID request/session IDs, a correction revision and a completeness declaration. No OFF connection is required for this path. There is no raw OCR/image/profile input or scan database. The actual input body is bounded to 32 KiB before JSON parsing.
+3. Independently, a caller can POST 1–64 user-confirmed structured nutrient rows with UUID request/session IDs, a correction revision and a completeness declaration. No OFF connection is required for this path. Normalization stores no scan and accepts no raw OCR/image/profile. The actual input body is bounded to 32 KiB before JSON parsing.
 4. The pure normalizer converts kcal/kJ and mass units, and scales known mass or volume bases to the same unit per 100. An unknown serving remains per serving. Missing and explicit unknown values retain reasons; zero stays zero. Sodium/salt, total/added sugar and available/total carbohydrates stay separate without inference.
 5. The response retains original rows, conversion descriptions and source-row references. Lookup origin is `open_food_facts_community_data`; confirmed input origin is `user_confirmed_label`. No merge occurs across these origins. `complete` indicates successful processing of submitted rows, not complete nutrient coverage or a health verdict; conflicting contexts/duplicates require correction. Comparable OFF tables that disagree remain visible with `provider_tables_disagree` and `needs_correction`.
 6. Responses use `no-store` and contain no provider secrets. Validation errors are bounded/redacted and do not echo submitted values. Request content is not logged or retained by this backend. A future client correlates session/request/revision and saves only when explicitly requested; no such Flutter flow exists yet.
 7. Separately, the backend build reads the committed India gzip, verifies compressed/decoded hashes and counts, and generates SQLite plus a receipt under `app/catalogue/data/`. Hosted startup validates the receipt, full database hash, manifest, integrity and counts. `GET /v1/catalogue` exposes source age and field limits; exact catalogue barcode reads make no OFF request and retain the existing export-origin contract. A missing receipt disables only catalogue access. Snapshot misses do not silently fall back to the live adapter.
 8. The separate facts route returns the same exact identity/manifest plus optional direct nutrition, availability-aware canonical tags, provider schema/record-modification date and official selected-front image URL metadata. No image bytes or arbitrary URLs are served. Direct nutrition shares the live parser but retains export provenance; legacy aggregates remain unavailable. Older identity-only stores keep existing reads without enabling `catalogue_facts`.
+
+## Implemented automatic observation and resolution path
+
+1. The API accepts provisional/confirmed structured public observations. Client
+   capture, OCR and coalesced background requests still need integration.
+2. Anonymous-token verification establishes private keyed ownership. No Share
+   flag, photos/raw OCR, profiles or private history enter the request.
+3. Server normalization and full/factual hashes preserve original rows/context.
+   Exact retries retain receipts; semantic duplicates reuse active assertions.
+4. Provisional/barcode-less observations remain private staging with seven-day
+   expiry and bounded cleanup. Correct confirmed exact front/back/pairing facts
+   can become qualified unreviewed candidates when compatible with known evidence.
+   Conflicts and identity mismatches await exact-hash review/supersession.
+5. Public resolution retains OFF/community source groups, typed selected fields,
+   dates, completeness, alternatives and conflicts. Unknown cross-source nutrition
+   revision is unselected; tables are not averaged or generically imputed.
+6. Current-package confirmation is still required for claim checks. A historical
+   candidate or moderator decision never supplies that confirmation automatically.
+7. OFF-only resolution remains usable during community unavailability, including
+   disabled storage. Neither source available returns 503; saving cannot replace
+   or disable independent normalization/claim paths.
+
+Firebase Unlabel is provisioned on free Standard database `unlabel` with no
+billing. API push/hosted verification remain pending. [Lifecycle](COMMUNITY_CATALOGUE.md).
 
 ## Planned end-to-end online lookup and label review
 

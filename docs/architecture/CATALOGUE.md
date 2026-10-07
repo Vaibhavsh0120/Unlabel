@@ -1,6 +1,13 @@
 # Product catalogue: tracked source, verified SQLite
 
-Backend **v0.3.0**, frontend **0.0.0+1**. The catalogue source and rich-facts behavior remain those independently released in v0.2.3. The separate export-origin facts route adds direct nutrition, canonical tag availability, optional provider schema/record dates and official image references to the identity catalogue. Live OFF reads, user-confirmed values and reviewed confirmed-label FSSAI findings retain independent origins. [Historical catalogue source/hosted proof](../planning/BACKEND_V0_2_3_REVIEW.md) · [Current v0.3.0 gates](../planning/BACKEND_V0_3_0_REVIEW.md).
+Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
+is implemented; production remains **v0.3.0** until push and hosted verification.
+Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
+observations automatically, stage provisional facts privately and resolve compatible
+fields with source/date and conflicts. Firebase Unlabel has its first Standard
+`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
+denied direct client access. Frontend capture/OCR/background save remains pending.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
 ## Storage and source
 
@@ -9,7 +16,7 @@ Backend **v0.3.0**, frontend **0.0.0+1**. The catalogue source and rich-facts be
 | Official OFF JSONL gzip | Rich bulk input streamed through validated EOF; retain only the compact exact-India projection. |
 | OFF CSV/TSV | Earlier identity acquisition remains supported; its aggregate nutrients are not direct package tables. |
 | SQLite | Generated exact-barcode index and bounded optional facts table, served with read-only parameterized queries. |
-| Firestore | Deferred; the immutable snapshot does not require a database account, credential or writable cloud store. |
+| Firestore | Separate configured Standard database `unlabel` stores automatic public observations/private staging; immutable OFF snapshot still needs no cloud credentials. |
 
 The [tracked bundle](../../data/catalogue/README.md) keeps the projected gzip, compressed/decoded hashes and lengths, original acquisition provenance, source date, expected counts and ODbL/DbCL notices. SQLite/receipts are generated, ignored outputs. Image metadata has separate CC-BY-SA attribution; image bytes and the global dump are not retained.
 

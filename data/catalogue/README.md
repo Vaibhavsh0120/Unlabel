@@ -2,7 +2,7 @@
 
 Product data from [Open Food Facts](https://world.openfoodfacts.org/) is retained under [ODbL 1.0](licenses/ODbL-1.0.txt), with individual contents under [DbCL 1.0](licenses/DbCL-1.0.txt). The compact public source, provenance and license notices belong in Git; generated SQLite/receipts do not.
 
-Backend v0.3.0 retains the independently released v0.2.3 identity/rich-facts source and rebuilds it without another global download. No world dump, image bytes, contributor identities, private scans, credentials or history are bundled. Selected-front image metadata supplies attributed official URL descriptors with separate CC-BY-SA licensing. The separate confirmed-label claim knowledge is maintained in [knowledge/](../../knowledge/README.md), not inferred from community snapshot fields.
+Backend v0.4.0 retains the independently released v0.2.3 identity/rich-facts source and rebuilds it without another global download. No world dump, image bytes, contributor identities, private scans, credentials or history are bundled. Selected-front image metadata supplies attributed official URL descriptors with separate CC-BY-SA licensing. The separate confirmed-label claim knowledge is maintained in [knowledge/](../../knowledge/README.md), not inferred from community snapshot fields.
 
 | File | Purpose |
 | --- | --- |

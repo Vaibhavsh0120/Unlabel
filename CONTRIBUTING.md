@@ -1,6 +1,11 @@
 # Working on the Unlabel foundation
 
-The current phase includes Flutter **0.0.0+1**, backend **v0.3.0** live APIs, verified rich-facts catalogue and reviewed confirmed-label numerical claim subset, shared contracts/docs, manual mobile releases and Vercel setup. The dated India snapshot has **24,641 supported records**; [current verification](docs/planning/BACKEND_V0_3_0_REVIEW.md) separates source, local and hosted evidence. Restore a clone with the [local development guide](docs/planning/LOCAL_DEVELOPMENT.md). Follow the [accepted next-version plan](docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md), one backend version at a time. Flutter features belong to the teammate. Keep ₹0/no-card, review Markdown/scripts, remove demonstrably dead code and update docs before every push.
+Published backend is **v0.3.0**, Flutter **0.0.0+1**. Local **v0.4.0 Community
+Product Catalogue** is implemented; push, hosted verification and publication
+remain pending. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
+Latest direction automatically saves confirmed public facts and stages unverified
+candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_4_0_REVIEW.md).
+Keep ₹0/no-card, review Markdown/scripts and update docs before a future push.
 
 ## Team boundaries
 
@@ -18,6 +23,8 @@ The current phase includes Flutter **0.0.0+1**, backend **v0.3.0** live APIs, ve
 - Do not put Gemini keys into the mobile app, its assets, build arguments or client-side environment files.
 - Fixtures must be synthetic or explicitly reusable, with source/rights recorded. Legal thresholds need a reviewed source, effective date and food-category applicability.
 - Never turn unknown or missing data into zero, a passed claim or an allergy-safe verdict.
+- Confirmed public product facts save/deduplicate automatically through the v0.4.0 API, with unverified extraction candidates staged separately and anonymous writes behind the scenes. No separate Share action. Preserve original observations; complement compatible fields only with per-field source/date and visible conflicts. Generic composition never fills packet gaps.
+- Firebase Unlabel has its first Standard database `unlabel` in Mumbai, free tier enabled and no linked billing. No paid fallback, Storage/Functions, TTL, backups or PITR. Photos/raw OCR/profiles/history stay private. [Storage boundaries](docs/architecture/COMMUNITY_CATALOGUE.md).
 
 ## Future validation
 

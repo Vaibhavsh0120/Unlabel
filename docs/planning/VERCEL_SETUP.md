@@ -23,12 +23,12 @@ The starter contains no product API request yet. Passing the URL config prepares
 
 - Framework: **FastAPI**, Python **3.12**, entrypoint `app.main:app`.
 - Vercel installs the declared Python runtime dependencies. `[tool.vercel.scripts]` in `backend/pyproject.toml` then runs `python build_catalogue.py`; project-level build overrides must not suppress this hook. It generates verified catalogue SQLite/receipt and approved claim JSON/receipt before the application is packaged as one Function. Stdout is one JSON object with `catalogue` and `claims_knowledge` receipts.
-- `backend/vercel.json` limits this Function to 15 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
+- `backend/vercel.json` limits this Function to 60 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
 - `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` and `app/claims/data/` are ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- The v0.3.0 target environment uses `OFF_USER_AGENT=Unlabel/0.3.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
+- The v0.4.0 target environment uses `OFF_USER_AGENT=Unlabel/0.4.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
-No live FSSAI requests, permanent writable cloud database or new subscription is required. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST and Content-Type. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
+No live FSSAI request or writable cloud database is required for existing OFF/normalization/claims; v0.4.0 community observations use separately configured free Firestore. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST, Content-Type and Authorization. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
 ## Push and verification
 
@@ -70,3 +70,21 @@ Complete JSONL acquisition has validated EOF and measured counts/hashes; source 
 The combined network-free build validates and packages exactly the seven-rule JSON and three-source registry with a strict hash/length receipt under `app/claims/data/`. `VERCEL=1` requires receipt verification even when `CLAIMS_KNOWLEDGE_DIRECTORY` explicitly overrides the location; no source fallback is allowed for missing or invalid hosted knowledge. Metadata reports `claim_checks`, `claims-2026-10-06.1` and a verified `knowledge_artifact` summary. Claim failure isolates only claim/rule/evidence access. No regulator PDF, provider call, writable cloud database or new account is required.
 
 The final network-free two-bundle build, noninteractive backend setup, **543-test suite**, **59-file static check** and **150-test independent review** passed with no remaining findings; all Markdown/scripts and syntax/artifact boundaries were reviewed. Implementation `ba44cbd26cf3c5ee306449c28fbb0c40dea0ba2e` independently reached READY on backend `dpl_7mE2QodTDT6NicE3gz1K7yuWuFqH` and frontend `dpl_CpKhKmJ3qDSBZqRqqsx1iyp2UmAg`. **72 public HTTP checks passed**, matching both actual hosted build receipts to public catalogue/knowledge metadata and confirming all reviewed claim thresholds, insufficient/conflicting/context cases, evidence records, old APIs, OpenAPI, POST validation/body limits, CORS and excluded package/private URLs. [Dated production evidence](../research/BACKEND_V0_3_0_PRODUCTION.json) · [Full v0.3.0 review and published source tag](BACKEND_V0_3_0_REVIEW.md). Future pushes still require their own build/endpoint checks; frontend integration remains pending.
+
+## Backend v0.4.0 community deployment gate
+
+Local source implements fifteen routes. Firebase Unlabel/project
+`unlabel-india-catalogue` has its first Standard database `unlabel` in Mumbai with
+free tier/no linked billing, anonymous Auth, deny-all client rules and dedicated
+backend IAM. Set the explicit community enabled/project/database and secret
+service-account/actor-key settings through hosted environment controls; never
+publish those secrets. Safe clones default to disabled storage. No paid services,
+TTL, backups or billing upgrade are permitted. Firestore RPCs have bounded
+three-second deadlines/three transaction attempts, and public lookup performs no
+per-read writes; OFF keeps its independent eight-second default timeout.
+
+After push, verify exact backend version/build/source receipts, metadata readiness,
+partial OFF resolution, public source qualification, authenticated own receipts,
+strict bodies/redaction and REST denial. Firebase live synthetic checks alone do
+not prove this hosted runtime. [Current review](BACKEND_V0_4_0_REVIEW.md)
+· [Community configuration](../architecture/COMMUNITY_CATALOGUE.md).

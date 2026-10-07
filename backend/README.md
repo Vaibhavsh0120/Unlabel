@@ -1,8 +1,14 @@
-# Unlabel backend v0.3.0
+# Unlabel backend v0.4.0: Community Product Catalogue
 
-Frontend remains **0.0.0+1**. This version adds reviewed numerical FSSAI claim checks for user-confirmed nutrient rows, a rules endpoint and public evidence metadata. Seven fibre, sugar and sodium claim types are implemented; four recognized claim types remain explicitly unreviewed. Existing identity, live OFF nutrition, catalogue facts and normalization contracts preserve their shapes and origins. The rich-facts v0.2.3 release was pushed and verified separately. [Accepted two-version plan](../docs/superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md) · [20-group feature tracker](../docs/planning/FEATURE_TRACKER.md).
+Local **v0.4.0** is implemented and checked; production remains **v0.3.0** until
+push and hosted verification pass. Flutter remains **0.0.0+1**. Four community
+APIs automatically save structured package observations and resolve compatible
+sourced fields, preserving live OFF/snapshot/normalization and seven numerical
+claim routes. Firebase Unlabel is configured with no billing. Camera/OCR/search,
+client background saving and full reports remain pending.
+[Feature tracker](../docs/planning/FEATURE_TRACKER.md) · [Current release gates](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects automatically deploy `main` pushes. See [deployment settings](../docs/planning/VERCEL_SETUP.md) and the release-specific [v0.3.0 verification record](../docs/planning/BACKEND_V0_3_0_REVIEW.md) for actual local/provider/production gates. Local completion does not establish that production already runs this version.
+Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** · [Swagger](https://unlabel-api.vercel.app/docs) · [Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy `main` pushes. [Published v0.3.0 verification](../docs/planning/BACKEND_V0_3_0_REVIEW.md) is distinct from [current local v0.4.0 checks](../docs/planning/BACKEND_V0_4_0_REVIEW.md); no v0.4.0 release or hosted verification is claimed.
 
 ## Run locally
 
@@ -34,6 +40,20 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `POST /v1/claims/check` | Check identified claims against one selected user-confirmed nutrition table and explicit applicability context |
 | `GET /v1/claims/rules` | Seven reviewed numerical rules, four recognized unsupported claim types, knowledge version and statutory energy conversion |
 | `GET /v1/evidence/{source_id}` | Public reviewed source metadata; found, not-found or unavailable without fetching a PDF |
+
+Four additive routes are mounted in v0.4.0:
+
+| Endpoint | Behavior |
+| --- | --- |
+| `POST /v1/community/contributions` | Authenticated automatic provisional/confirmed intake and private receipt |
+| `GET /v1/community/contributions/{submission_id}` | Authenticated caller-owned receipt |
+| `GET /v1/community/products/{barcode}` | Public exact candidate/approved facts |
+| `GET /v1/products/{barcode}/resolved` | Typed sourced fields, originals, conflicts and unknowns |
+
+Safe defaults disable community storage. Resolved lookup still returns available
+OFF snapshot facts with community marked unavailable. Neither source available
+returns 503. Hosted verification follows the separate push gate.
+[Community lifecycle](../docs/architecture/COMMUNITY_CATALOGUE.md).
 
 Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Live OFF lookup identity must match the requested code, permitting leading-zero normalization only. Catalogue lookups use exact keys; leading-zero variants remain distinct.
 
@@ -83,7 +103,7 @@ Canonical cells support energy, fat, saturated fat, available carbohydrates, tot
 
 `snapshot.status` is `complete`, `partial` or `needs_correction`. **Complete means the submitted rows normalized successfully with a complete submission declaration; it does not mean all nutrients are known.** Unreported cells are null with `not_reported`; explicit unknowns remain distinct from zero. Conflicting duplicates and inconsistent contexts for one table ID require correction, retaining the original inputs without choosing a winner. Comparable OFF tables that disagree produce `provider_tables_disagree` and `needs_correction`, preserving both tables/numbers. No rounding tolerance is assumed. Numeric conversion overflow/underflow returns unknown correction cells. Separate tables are preserved.
 
-The POST actual body limit is **32 KiB**, including chunked requests, enforced before JSON parsing/provider work. Oversize returns 413; strict validation failures return 422 with at most 32 redacted errors and an `errors_truncated` flag. Submitted values/unknown field names are removed. Raw numeric JSON tokens that become nonfinite, underflow or lose decimal digits are rejected before float validation. Photos, raw OCR, profiles, allergy preferences, history and provider keys are not accepted. Responses include request/session/revision and normalization time so the client can reject stale results. The backend has no scan persistence or request-content logging.
+The POST actual body limit is **32 KiB**, including chunked requests, enforced before JSON parsing/provider work. Oversize returns 413; strict validation failures return 422 with at most 32 redacted errors and an `errors_truncated` flag. Submitted values/unknown field names are removed. Raw numeric JSON tokens that become nonfinite, underflow or lose decimal digits are rejected before float validation. Photos, raw OCR, profiles, allergy preferences, history and provider keys are not accepted. Responses include request/session/revision and normalization time so the client can reject stale results. Current normalization/claim routes persist no scan and log no content. The separate community intake automatically saves structured public observations and stages unverified candidates; it accepts no raw OCR or photos.
 
 Use the validated [synthetic request](../contracts/examples/nutrition-normalize-v1.request.synthetic.json) and [response](../contracts/examples/nutrition-normalize-v1.response.synthetic.json) as an integration pair. They are illustrative facts, not a real product, regulatory rule or health verdict.
 
@@ -91,7 +111,7 @@ Use the validated [synthetic request](../contracts/examples/nutrition-normalize-
 
 Check `/v1/meta.capabilities.claim_checks` before submitting to `/v1/claims/check`. A valid loaded knowledge store reports `knowledge_version: claims-2026-10-06.1`; invalid or missing knowledge disables only claim/rule/evidence access. A verified package also exposes the two-file hash/length receipt in `knowledge_artifact`; direct local canonical-source loading has a null artifact. Health, live OFF reads and catalogue operations retain their independent readiness.
 
-`ClaimsRequest` extends the strict confirmed normalization request. Supply 1–16 unique identified claims (`claim_id`, recognized `claim`, required nullable `region_id`), `selected_table_id` and `context` with food category, solid/liquid form and preparation. The selected table must exist and match the confirmed context for an applicable assessment. UUID request/session IDs, correction revision, `confirmed: true`, completeness and 1–64 nutrient rows remain required. Photos, raw OCR, personal profiles and arbitrary claim text are excluded. The same **32 KiB** actual-body limit and strict numeric-token/redacted-422 handling cover both POST routes.
+`ClaimsRequest` extends the strict confirmed normalization request. Supply 1–16 unique identified claims (`claim_id`, recognized `claim`, required nullable `region_id`), `selected_table_id` and `context` with food category, solid/liquid form and preparation. The selected table must exist and match the confirmed context for an applicable assessment. UUID request/session IDs, correction revision, `confirmed: true`, completeness and 1–64 nutrient rows remain required. Photos, raw OCR, personal profiles and arbitrary claim text are excluded. Normalization, claim checks and community intake use the same **32 KiB** actual body, strict numeric-token and redacted-422 handling.
 
 | Reviewed claim | Selected numerical criterion |
 | --- | --- |
@@ -113,6 +133,41 @@ All claim criteria compare exact rational values constructed from the original n
 
 Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter still needs capture/correction, API models, stale-response handling and result screens.
 
+## Community facts and source resolution
+
+`ContributionRequest` accepts provisional/confirmed observations, optional exact
+barcode, independent package identity/label sections and nutrient rows. Confirmed
+records need `confirmed: true`; public candidate eligibility additionally needs
+front/back/same-product confirmation and valid normalization. No Share flag exists.
+Provisional/unmatched records remain private, expire after seven days and can be
+cleaned by the operator. Known conflicts await review; eligible compatible facts
+can appear as `submitter_confirmed_not_moderator_reviewed`.
+
+The server computes observation/factual hashes. Immutable retries preserve receipts;
+semantic duplicates reuse active facts without new public revisions or trust votes.
+Provider references are verified against the exact available OFF snapshot for new
+records. Identical retries remain valid when that snapshot rotates or is unavailable.
+Copied OFF facts cannot become CC0 package transcription.
+
+Resolved `fields` retain selected values or unknown/conflict, units/basis/preparation,
+source IDs, evidence state, completeness, source dates and alternatives. Whole source
+groups remain intact. Unknown cross-source nutrition revision is unselected; no
+averaging, first-arrival winner, generic composition imputation or current-packet
+confirmation is invented. OFF-only results remain useful during a community outage.
+
+Firebase **Unlabel**, project `unlabel-india-catalogue`, first Standard database
+**`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous Auth,
+deny-all direct client rules and dedicated backend access are configured. Photos,
+raw OCR, profiles and private history remain excluded. The current local API is
+checked; hosted deployment/publication remain pending.
+
+Examples: [confirmed intake](../contracts/examples/community-contribution-v1.request.synthetic.json),
+[provisional intake](../contracts/examples/community-provisional-v1.request.synthetic.json),
+[receipt](../contracts/examples/community-contribution-v1.receipt.synthetic.json),
+[public lookup](../contracts/examples/community-lookup-v1.synthetic.json),
+[resolved fields](../contracts/examples/resolved-product-v1.synthetic.json).
+[Storage/security/operator guide](../docs/architecture/COMMUNITY_CATALOGUE.md).
+
 ## Configuration and key handling
 
 Settings load the ignored `.env` at this backend root; environment variables override the file. Do not overwrite a teammate's existing file. `.env.example` contains safe defaults. Current settings:
@@ -123,18 +178,24 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `CORS_ORIGINS`: JSON array of exact HTTP(S) website origins, default `[]`; no wildcard or credentialed CORS.
 - `CATALOGUE_DIRECTORY`: read-only index directory, relative to backend or absolute; empty disables catalogue. Local generated index is `storage/runtime/india`; hosted build output is `app/catalogue/data`.
 - `CATALOGUE_REQUIRE_RECEIPT`: `false` for an explicitly configured local runtime index; `true` for hosted bundles. Startup verifies the SQLite hash/size, receipt and manifest before enabling catalogue access. Invalid/missing files disable the catalogue while health/live APIs remain available.
+- `COMMUNITY_ENABLED`: default `false`; enables authenticated observation storage when explicit credentials are available.
+- `COMMUNITY_PROJECT_ID`: exact Firebase project; configured project is `unlabel-india-catalogue`.
+- `COMMUNITY_DATABASE_ID`: literal `unlabel`.
+- `COMMUNITY_SERVICE_ACCOUNT_JSON`: backend-only `SecretStr`, bounded to 32 KiB; no ambient credential fallback.
+- `COMMUNITY_ACTOR_SECRET`: backend-only `SecretStr`, 32–1024 characters; keyed ownership hashes, never public.
 - `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source/bundle directory, relative to backend or absolute. Local default uses `app/claims/data` when it exists, otherwise canonical root `knowledge/`. An existing invalid packaged bundle never falls back to source. With `VERCEL=1`, the default selects the packaged path and every selected directory requires a verified knowledge receipt, including an explicit override; no source fallback is permitted.
 
 OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Gemini is disabled/unimplemented; reserved Gemini fields in `.env` are unused. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication. Public cloud AI needs a separate access/budget design before activation.
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP client/catalogue/knowledge stores, eleven routes and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge stores, fifteen mounted routes and redacted validation failures.
+- `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
 - `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
 - `build_catalogue.py`: network-free deployment build entrypoint; validates tracked catalogue source and the two reviewed JSON projections, then generates SQLite/receipt in `app/catalogue/data/` and approved knowledge JSON/receipt in `app/claims/data/`. Both directories are ignored generated outputs. Successful stdout is one JSON object with `catalogue` and `claims_knowledge` receipts.
 - `app/schemas/errors.py`: shared strict redacted 422 response, including raw-number middleware rejections.
-- `app/core/config.py`: validated non-secret request/CORS settings.
+- `app/core/config.py`: validated public request/CORS settings plus explicit secret Firebase credentials and actor hashing key.
 - `app/core/body_limit.py`: actual-byte input limit before parsing.
 - `app/providers/products/open_food_facts.py`: fixed official HTTPS origin, selected fields, bounded read/deadline, identity checks and failure mapping.
 - `app/providers/products/nutrition.py`: live direct-input wrapper; `app/services/parsing/off_nutrition.py` shares its bounded parser with snapshot facts.
@@ -144,7 +205,7 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 - `tests/`: synthetic mocked-provider and ASGI contract tests; no corpus copied from OFF.
 - `requirements*.txt`, `pyproject.toml`: tested dependency versions and backend metadata/tooling.
 
-HTTPX connection pool is bounded to six connections. There is no automatic retry, durable cache, process-wide global quota guarantee, profile/history storage or image upload. Both confirmed-input POST routes work independently of OFF connectivity. The current claim subset requires confirmed rows; a broader combined analysis report remains future work.
+HTTPX connection pool is bounded to six connections. OFF reads have no automatic retry or durable cache. There is no profile/history storage or image upload. Confirmed normalization and claims work independently of OFF connectivity and require no account. Planned community transactions/admission counters do not yet provide API behavior or verified availability. The claim subset still requires confirmed current-package rows; a broader report remains future work.
 
 Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. The project allows build access to files outside its root, and `pyproject.toml` runs `python build_catalogue.py` after dependency installation. The generated owned bundle is included in the Python function. Local `.env*`, tests, environments and `storage/runtime` are excluded; hosted settings live in the project's environment. See [Vercel's build-hook documentation](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
 
@@ -180,7 +241,10 @@ Validate complete transfer/gzip EOF, compressed/decoded hashes, source date, exa
 
 Run tests/build, update docs, then push. Verify the exact deployed commit, source/hash/date/counts, receipt, status and identity/facts routes before accepting the replacement. Failed builds must not be promoted; rollback uses the previous verified deployment/source/configuration. No request-time bulk import, automatic schedule or packaged-runtime hot swap exists. [Full catalogue workflow](../docs/architecture/CATALOGUE.md).
 
-SQLite serves the immutable snapshot; JSONL/CSV are acquisition inputs. Firestore remains deferred. No backend snapshot makes phones or the website fully offline.
+SQLite serves the immutable OFF snapshot; JSONL/CSV are acquisition inputs.
+Automatic public-fact observations use the separate configured Firestore database;
+the OFF snapshot remains read-only.
+Backend-held data does not make phones or the website fully offline.
 
 ## Validate
 
@@ -199,4 +263,9 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [v0.3.0 review](../docs/planning/BACKEND_V0_3_0_REVIEW.md) for current checks and remaining gates; earlier reviews remain historical records. Current exports/examples are indexed in [contracts](../contracts/README.md). Review all Markdown/scripts, update affected tests/contracts/docs and remove demonstrably dead code before every push. Backend-only releases do not trigger the manual mobile workflow or change Flutter's pubspec.
+See [published v0.3.0 verification](../docs/planning/BACKEND_V0_3_0_REVIEW.md) and
+[current v0.4.0 review](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+Current exports describe fifteen v0.4.0 routes, five added community/resolved
+schemas and seventeen validated synthetic examples. Review Markdown/scripts, affected tests/contracts and
+demonstrably dead code before any future push. Backend-only releases preserve
+Flutter and historical mobile artifacts.

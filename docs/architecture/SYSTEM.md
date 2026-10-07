@@ -1,6 +1,13 @@
 # System architecture
 
-Decision updated: **2026-10-07** (Asia/Calcutta). Frontend v0.0.0+1 remains the Flutter starter. Backend v0.3.0 implements FastAPI health/meta, separate live OFF product/nutrition lookup, confirmed-value normalization and a receipt-verified India catalogue with typed status and a separate rich-facts route. Both Vercel projects automatically deploy main. The separate claim/rule/evidence APIs implement seven reviewed numerical checks for confirmed rows. Scanning, full report/scoring, glossary and AI remain planned; the [v0.3.0 review](../planning/BACKEND_V0_3_0_REVIEW.md) records current source/build/hosted gates.
+Updated **7 October 2026**. Local backend **v0.4.0 Community Product Catalogue**
+is implemented; production remains **v0.3.0** until push and hosted verification.
+Flutter **0.0.0+1** is still a starter. Four additive APIs save structured package
+observations automatically, stage provisional facts privately and resolve compatible
+fields with source/date and conflicts. Firebase Unlabel has its first Standard
+`unlabel` database in Mumbai with free tier/no linked billing, anonymous Auth and
+denied direct client access. Frontend capture/OCR/background save remains pending.
+[Master plan](../planning/MASTER_PLAN.md) · [Current release gates](../planning/BACKEND_V0_4_0_REVIEW.md).
 
 ## Product and delivery boundary
 
@@ -20,13 +27,17 @@ flowchart LR
     Results["Findings + evidence + templates"] --> Saved["Dated local saved reports"]
     Results --> Personal["Local preferences / suitability / history"]
   end
-  subgraph Backend["FastAPI — stateless Vercel Function / local laptop"]
+  subgraph Backend["FastAPI — disposable Vercel instances / local laptop"]
     API["Contract + capability validation"] --> Parse["Normalize source-tagged facts"]
     API --> OFF["Open Food Facts product lookup"]
     OFF --> Review
     Parse --> Rules["Reviewed FSSAI/ingredient rules"]
     Rules --> Explain["Templates / optional protected AI"]
     Evidence["Bundled read-only JSON knowledge"] --> Rules
+    API --> Community["Automatic public observations / private staging"]
+    Community --> Shared["Firestore Unlabel: qualified observations / review state"]
+    Shared --> Resolve["Compatible fields + per-field sources / conflicts"]
+    Resolve --> Review
   end
   Canonical["Canonical knowledge/ + contracts/"] --> Evidence
   Barcode --> API
@@ -47,6 +58,8 @@ The two-file reviewed claim knowledge package and confirmed-label claim API are 
 | Local suitability matcher | Select relevant neutral reasons using preferences kept on the device/browser |
 | AI adapter | Optional wording only; immutable numbers, outcomes and allowed evidence IDs |
 | Open Food Facts product adapter | Selected read-only barcode provider; source-tagged enrichment; confirmed physical label remains the scan source |
+| Product enrichment | Implemented automatic save/dedup, private staging, qualified compatible submitter-confirmed candidates and conflict review |
+| Resolved view | Complement compatible known fields with source/date references; preserve original observations/conflicts and never impute generic packet values |
 
 Use modest modules and one backend API. Microservices, vector databases, training infrastructure and a cloud user-profile database are unnecessary for the baseline.
 
@@ -83,7 +96,20 @@ The reviewed claim subset uses bundled read-only JSON. Build access to root `kno
 
 Client `BACKEND_BASE_URL` is public configuration, never a credential. Gemini keys stay in backend environment settings. `AI_PROVIDER=disabled` and an empty model are the baseline. Public AI stays disabled until verified individual access for an eligible adult beta and bounded requests exist. CORS and an embedded shared app token cannot provide authentication.
 
-Preferences, personal suitability and scan history stay in the phone/browser. Only public barcodes, necessary public label fields and generic product evidence go to the API/provider. Hosted services need HTTPS, minimal redacted logs and the choices recorded in [SAFETY_PRIVACY.md](../SAFETY_PRIVACY.md).
+Preferences, personal suitability, photos/raw OCR and private scan history stay
+on the phone/browser. v0.4.0 stores structured public observations automatically,
+with private provisional staging and keyed anonymous write ownership. Confirmed
+compatible exact candidates may be public with an explicit unreviewed label;
+known conflicts/identity mismatches await exact-hash operator review. Semantic
+deduplication avoids repeated revisions/review for identical rescans. Moderator
+state never proves safety or the caller's current packet.
+
+Firebase Unlabel has its free Standard `unlabel` database configured, with no
+linked billing, verified anonymous Auth and denied direct client access. No paid
+fallback is permitted. Source originals remain intact and incompatible nutrition
+revisions stay unselected. [Community catalogue](COMMUNITY_CATALOGUE.md)
+· [Privacy](../SAFETY_PRIVACY.md).
+
 
 The starter/workflow does not prove OCR quality, saved-content caching, legal criteria, live providers, hosted behavior or dietary suitability. Validate those during implementation.
 

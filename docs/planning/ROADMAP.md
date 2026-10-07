@@ -1,6 +1,24 @@
 # Implementation roadmap
 
-Phase 0 includes the Flutter v0.0.0+1 starter and manual unsigned release automation. Backend work follows the [small version plan](../superpowers/plans/2026-10-05-backend-versions.md): v0.1.0 product lookup/hosting, v0.2.0 nutrition/confirmed-value normalization and v0.2.1 India identity acquisition/local indexing are implemented. v0.2.2 adds receipt-verified immutable hosted catalogue builds, typed source-age status and nine-calendar-month replacement/rollback. v0.2.3 adds a separate rich-facts contract and full-JSONL acquisition: direct nutrition, tag availability, record dates and official image references. Coverage remains unverified and live nutrition stays separate. [Release-specific validation](BACKEND_V0_3_0_REVIEW.md) and [hosting settings](VERCEL_SETUP.md) distinguish source checks from live deployment proof. The independent v0.2.3 source push, hosted verification and tag are complete. v0.3.0 implements a small seven-claim reviewed confirmed-label FSSAI numerical scope with rules/evidence metadata; its review/source/hosted/publication gates are separate. Broader claim coverage, glossary, full report/scoring, comparison and optional AI follow. Frontend features belong to the teammate. [20-group readiness tracker](FEATURE_TRACKER.md) records capability completion without equating endpoint readiness with client integration.
+The Flutter v0.0.0+1 starter and manual mobile workflow remain unchanged.
+Backend v0.1.0–v0.3.0 independently delivered live lookup, confirmed normalization,
+India acquisition/verified hosted rich facts and seven reviewed numerical claims.
+Local **v0.4.0 Community Product Catalogue** is implemented with four additive
+routes, automatic observation save/dedup, private staging, qualified candidate
+facts, conflict review and per-field source resolution. Firebase Unlabel has its
+first Standard database `unlabel` in Mumbai with free tier/no billing, anonymous
+Auth and denied direct client access. Hosted verification/publication follow the
+separate push gate. [Current review](BACKEND_V0_4_0_REVIEW.md).
+
+The user authorized **v0.5.0 Useful Label Report** next: F06/F08/F12 unify sourced
+findings, reviewed ingredient explanations and sugar visualization using existing
+normalization/claim engines. No universal score or Gemini dependency is required.
+v0.6.0 discovery and v0.7.0 comparison remain proposals in the
+[master plan](MASTER_PLAN.md). Camera/OCR/correction, anonymous background save,
+source/status displays and local history/saved/preferences need frontend work.
+Coverage remains unverified; the [tracker](FEATURE_TRACKER.md) retains the original
+20 groups plus supporting C01. No separate Share action is required.
+
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |
@@ -9,7 +27,7 @@ Phase 0 includes the Flutter v0.0.0+1 starter and manual unsigned release automa
 | 2. Contracts/backend rules | Stable product/report schemas, canonical backend criteria | Missing values unknown; units/provenance and old-client parsing reviewed |
 | 3. Online product-to-result | OFF barcode facts, backend rules/templates; OCR for claims/gaps | Source-linked online result; package/provider differences preserved |
 | 4. Suitability/translation | Local preferences, English/Hindi explanations | No profile transfer; unknowns preserved; content reviewed |
-| 5. Online backend/product data | Stateless FastAPI, read-only bundles, version/meta endpoints, selected Open Food Facts barcode adapter | Contract/old-client compatibility; OFF missing/conflicting/rate-limited cases, attribution and offline fallback; protected AI default |
+| 5. Online backend/product data | Existing immutable OFF/claim bundles and implemented automatic public observations, staging and per-field derived view | Old-client compatibility, dedup/review/source provenance/quota and independent analysis; no paid fallback |
 | 6. Live overlay | Throttled native highlights; measured browser enhancement | Lifecycle/rotation/crop/stale-frame checks; no network per frame |
 | 7. Optional AI | Gemini wording, eligible HF experiment | No billing/card; failure preserves deterministic findings |
 | 8. Web hosting/offline | Two Vercel projects, stable API URL, explicit asset caching | Staged compatible deploy; cold/offline/update checks |

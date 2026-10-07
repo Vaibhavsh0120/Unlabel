@@ -1,0 +1,25 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "community_revisions",
+      "fieldPath": "payload_json",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "community_revisions",
+      "fieldPath": "snapshot_json",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "community_receipts",
+      "fieldPath": "payload_json",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "community_receipts",
+      "fieldPath": "snapshot_json",
+      "indexes": []
+    }
+  ]
+}
