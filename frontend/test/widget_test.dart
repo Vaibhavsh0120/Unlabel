@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_app.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
+import 'package:unlabel/core/accounts/account_auth.dart';
+import 'package:unlabel/core/accounts/account_controller.dart';
+import 'package:unlabel/core/accounts/account_data.dart';
+import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/lookup_page.dart';
@@ -110,7 +114,72 @@ Widget _lookup(
   ),
 );
 
+class _NoPrivateSync implements AccountSyncTransport {
+  @override
+  Future<bool> available() async => false;
+  @override
+  Future<AccountSnapshot> fetch(String token) async =>
+      throw StateError('Guest must not fetch private data');
+  @override
+  Future<AccountSnapshot> put(String token, AccountMutation mutation) async =>
+      throw StateError('Guest must not upload private data');
+  @override
+  void cancelAll() {}
+  @override
+  void close() {}
+}
+
+Widget _app({required FakeRepository repository, required LocalStore store}) {
+  final auth = UnavailableAccountAuth();
+  final account = AccountController(
+    auth: auth,
+    api: _NoPrivateSync(),
+    guestStore: store,
+    preferences: store.preferences,
+  );
+  addTearDown(() {
+    account.dispose();
+    auth.dispose();
+  });
+  return UnlabelApp(
+    repository: repository,
+    store: store,
+    showWelcome: false,
+    accountController: account,
+  );
+}
+
+Future<void> _tapVisible(WidgetTester tester, Finder finder) async {
+  await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
+  await tester.pumpAndSettle();
+  await tester.tap(finder);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _appearance(WidgetTester tester) async {
+  await tester.pumpAndSettle();
+  await tester.tap(find.byTooltip('Profile'));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.byTooltip('Appearance & app info'));
+  await tester.tap(find.byTooltip('Appearance & app info'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Appearance').last);
+  await tester.pumpAndSettle();
+}
+
 void main() {
+  setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized()
+        .platformDispatcher
+        .accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(
+      disableAnimations: true,
+    );
+  });
+  tearDown(() {
+    TestWidgetsFlutterBinding.ensureInitialized().platformDispatcher
+        .clearAccessibilityFeaturesTestValue();
+  });
+
   testWidgets('home remains usable across sizes and saved themes', (
     tester,
   ) async {
@@ -136,15 +205,15 @@ void main() {
         await LocalStore(preferences: preferences)
             .setAppearance(brightness.name);
         await tester.pumpWidget(
-          UnlabelApp(
+          _app(
             repository: repository,
             store: LocalStore(preferences: preferences),
           ),
         );
         await tester.pumpAndSettle();
-        expect(find.text('Understand your\nfood label'), findsOneWidget);
-        expect(find.text('Barcode lookup'), findsOneWidget);
-        expect(find.text('Enter a label'), findsOneWidget);
+        expect(find.text('Scan your\nfood label'), findsOneWidget);
+        expect(find.text('Barcode Scan'), findsOneWidget);
+        expect(find.byKey(const Key('start-lookup')), findsOneWidget);
         expect(tester.takeException(), isNull);
         expect(
           Theme.of(tester.element(find.text('Unlabel'))).brightness,
@@ -166,7 +235,7 @@ void main() {
       addTearDown(repository.close);
       final preferences = MemoryPreferences();
       await tester.pumpWidget(
-        UnlabelApp(
+        _app(
           repository: repository,
           store: LocalStore(preferences: preferences),
         ),
@@ -176,18 +245,20 @@ void main() {
         Theme.of(tester.element(find.text('Unlabel'))).brightness,
         Brightness.light,
       );
-      await tester.tap(find.byKey(const Key('theme-selector')));
+      await _appearance(tester);
       await tester.pumpAndSettle();
       await tester.tap(find.text('Dark').last);
       await tester.pumpAndSettle();
       expect(await LocalStore(preferences: preferences).appearance(), 'dark');
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pumpWidget(
-        UnlabelApp(
+        _app(
           repository: repository,
           store: LocalStore(preferences: preferences),
         ),
       );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('mobile-nav-0')));
       await tester.pumpAndSettle();
       expect(
         Theme.of(tester.element(find.text('Unlabel'))).brightness,
@@ -209,7 +280,7 @@ void main() {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;
       await tester.pumpWidget(
-        UnlabelApp(
+        _app(
           repository: repository,
           store: LocalStore(preferences: MemoryPreferences()),
         ),
@@ -217,14 +288,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       for (final text in [
-        'Barcode lookup',
-        'Search products',
-        'Enter a label',
+        'Barcode Scan',
+        'Compare Products',
+        'Saved Products',
         'Know where facts come from',
       ]) {
-        await tester.ensureVisible(find.text(text));
+        await Scrollable.ensureVisible(
+          tester.element(find.text(text)),
+          alignment: 0,
+        );
         await tester.pumpAndSettle();
         expect(find.text(text).hitTestable(), findsOneWidget);
+        final navigation = tester.getRect(
+          find.byKey(const Key('floating-navigation')),
+        );
+        expect(tester.getCenter(find.text(text)).dy, lessThan(navigation.top));
         expect(tester.takeException(), isNull);
       }
       await tester.pumpWidget(const SizedBox.shrink());
@@ -239,20 +317,29 @@ void main() {
       final repository = FakeRepository();
       addTearDown(repository.close);
       await tester.pumpWidget(
-        UnlabelApp(
+        _app(
           repository: repository,
           store: LocalStore(preferences: MemoryPreferences()),
         ),
       );
-      await tester.tap(find.byKey(const Key('theme-selector')));
+      await _appearance(tester);
       await tester.pumpAndSettle();
       await tester.tap(find.text('Dark').last);
+      await tester.pumpAndSettle();
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('mobile-nav-0')));
       await tester.pumpAndSettle();
       expect(
         Theme.of(tester.element(find.text('Unlabel'))).brightness,
         Brightness.dark,
       );
-      await tester.tap(find.byTooltip('About Unlabel'));
+      await tester.tap(find.byTooltip('Profile'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byTooltip('Appearance & app info'));
+      await tester.tap(find.byTooltip('Appearance & app info'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('About Unlabel').last);
       await tester.pumpAndSettle();
       expect(find.textContaining('Solar icons by 480 Design'), findsOneWidget);
       expect(tester.takeException(), isNull);
@@ -484,9 +571,9 @@ void main() {
       final store = LocalStore(preferences: MemoryPreferences());
       await store.record(_report(historical: true));
       await store.save(_report(historical: true));
-      await tester.pumpWidget(UnlabelApp(repository: repository, store: store));
+      await tester.pumpWidget(_app(repository: repository, store: store));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('History').last);
+      await _tapVisible(tester, find.text('History').last);
       await tester.pumpAndSettle();
       expect(find.text('Your history'), findsOneWidget);
       await tester.tap(find.text('Synthetic oats'));
@@ -522,7 +609,7 @@ void main() {
     final store = LocalStore(preferences: preferences);
     await store.record(_report());
     preferences.values[LocalStore.savedKey] = '{broken';
-    await tester.pumpWidget(UnlabelApp(repository: repository, store: store));
+    await tester.pumpWidget(_app(repository: repository, store: store));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Saved').last);
     await tester.pumpAndSettle();
@@ -555,7 +642,7 @@ void main() {
       ],
     });
     await tester.pumpWidget(
-      UnlabelApp(
+      _app(
         repository: repository,
         store: LocalStore(preferences: preferences),
       ),

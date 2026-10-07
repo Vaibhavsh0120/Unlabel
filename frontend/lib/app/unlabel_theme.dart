@@ -8,21 +8,34 @@ abstract final class UnlabelTheme {
           seedColor: const Color(0xff155b4b),
           brightness: brightness,
         ).copyWith(
-          primary: dark ? const Color(0xff94d9bb) : const Color(0xff155b4b),
-          onPrimary: dark ? const Color(0xff073e30) : Colors.white,
+          primary: dark ? const Color(0xff70ebba) : const Color(0xff155b4b),
+          onPrimary: dark ? const Color(0xff10251e) : Colors.white,
           primaryContainer: dark
-              ? const Color(0xff1b473a)
+              ? const Color(0xff1d332b)
               : const Color(0xffd8f4e8),
           onPrimaryContainer: dark
               ? const Color(0xffc6f4df)
               : const Color(0xff0d483b),
-          surface: dark ? const Color(0xff111d19) : const Color(0xfff8fcfa),
-          onSurface: dark ? const Color(0xffedf6f0) : const Color(0xff102e27),
+          surface: dark ? const Color(0xff101214) : const Color(0xfffbfdfc),
+          surfaceContainerLowest: dark ? const Color(0xff0d0f10) : Colors.white,
+          surfaceContainerLow: dark
+              ? const Color(0xff171b1e)
+              : const Color(0xfff5faf7),
+          surfaceContainer: dark
+              ? const Color(0xff1b1f22)
+              : const Color(0xfff1f6f3),
+          surfaceContainerHigh: dark
+              ? const Color(0xff242a2e)
+              : const Color(0xffeaf2ed),
+          surfaceContainerHighest: dark
+              ? const Color(0xff2c3338)
+              : const Color(0xffe4ede7),
+          onSurface: dark ? const Color(0xfff4f6f7) : const Color(0xff102e27),
           onSurfaceVariant: dark
-              ? const Color(0xffb8ccc3)
+              ? const Color(0xffb6bec5)
               : const Color(0xff53685f),
           outlineVariant: dark
-              ? const Color(0xff344a40)
+              ? const Color(0xff3e474c)
               : const Color(0xffdce8e1),
         );
     final base = ThemeData(useMaterial3: true, colorScheme: scheme);
@@ -31,6 +44,7 @@ abstract final class UnlabelTheme {
       side: BorderSide(color: scheme.outlineVariant),
     );
     return base.copyWith(
+      visualDensity: VisualDensity.standard,
       scaffoldBackgroundColor: scheme.surface,
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(minimumSize: const Size(48, 48)),
@@ -64,7 +78,7 @@ abstract final class UnlabelTheme {
         centerTitle: false,
       ),
       cardTheme: CardThemeData(
-        color: dark ? const Color(0xff182821) : Colors.white,
+        color: dark ? const Color(0xff1b1f22) : Colors.white,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
@@ -91,7 +105,7 @@ abstract final class UnlabelTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: dark ? const Color(0xff182821) : Colors.white,
+        fillColor: dark ? const Color(0xff1b1f22) : Colors.white,
         contentPadding: const EdgeInsets.all(18),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         enabledBorder: OutlineInputBorder(

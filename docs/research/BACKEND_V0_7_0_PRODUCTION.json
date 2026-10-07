@@ -161,7 +161,7 @@
       "warnings": 1,
       "warning_scope": "Upstream Starlette TestClient httpx deprecation"
     },
-    "ruff": "passed",
+    "ruff": "passed for backend and root scripts",
     "pyright": {
       "errors": 0,
       "warnings": 0,
@@ -174,6 +174,10 @@
       "checked": 756,
       "passed": true,
       "verified_by": "root release audit"
+    },
+    "ruff_format": {
+      "passed": true,
+      "backend_files_checked": 82
     }
   },
   "limits": [
@@ -181,5 +185,18 @@
     "Retail/regional catalogue coverage remains unverified.",
     "Native/mobile builds and physical camera/icon/haptic checks are outside this backend release."
   ],
-  "credentials_persisted": false
+  "credentials_persisted": false,
+  "publication": {
+    "tag": "v0.7.0",
+    "url": "https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0",
+    "published_at_utc": "2026-10-07T14:49:06Z",
+    "source_sha": "9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0"
+  },
+  "documentation_deployment": {
+    "source_sha": "ec705685be7b847f536b0f44796604e283a6c79a",
+    "deployment_id": "dpl_FpP3m5en3A1RVxwakB2HqQ8iwqt5",
+    "state": "READY",
+    "api_source_unchanged": true,
+    "health_meta_openapi_readback": "passed"
+  }
 }

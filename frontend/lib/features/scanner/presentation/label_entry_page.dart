@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/network/unlabel_repository.dart';
@@ -7,9 +9,13 @@ class LabelEntryPage extends StatefulWidget {
     super.key,
     required this.repository,
     required this.onReport,
+    this.capturePhotos = const {},
   });
   final UnlabelRepository repository;
   final void Function(ProductReport) onReport;
+
+  /// Session-only reference photos. Never included in the report payload/storage.
+  final Map<int, Uint8List> capturePhotos;
   @override
   State<LabelEntryPage> createState() => _LabelEntryPageState();
 }
@@ -267,6 +273,32 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
                         'Enter the front identity and corrected back-label facts. Empty or uncaptured fields stay unknown. Enter only what you can read on this package.',
                       ),
                       const SizedBox(height: 20),
+                      if (widget.capturePhotos.isNotEmpty) ...[
+                        _card('Your captured label', [
+                          const Text(
+                            'Read the photo and enter the printed facts below. Photos stay in this session; values still need your confirmation.',
+                          ),
+                          for (final photo in widget.capturePhotos.entries) ...[
+                            const SizedBox(height: 12),
+                            Text(photo.key == 0 ? 'Front label' : 'Back label'),
+                            SizedBox(
+                              height: 260,
+                              child: InteractiveViewer(
+                                child: Image.memory(
+                                  photo.value,
+                                  fit: BoxFit.contain,
+                                  semanticLabel: photo.key == 0
+                                      ? 'Your front label photo'
+                                      : 'Your back label photo',
+                                  errorBuilder: (_, _, _) => const Text(
+                                    'This photo cannot be displayed. Retake it or enter the label manually.',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ]),
+                      ],
                       _card('1. Product identity', [
                         _field(
                           _name,

@@ -5,18 +5,18 @@ Checkpoint: **7 October 2026**.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently published and hosted-verified:
+**931 tests passed, five emulator-only skips**, clean Ruff/Pyright, 18 hosted
+synthetic and 13 fresh read-only checks. Frontend **v0.2.0+3** is locally tested;
+its separate push, hosted verification and publication remain the active gates.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
 Frontend v0.2.0 provides a cute first-launch Welcome, returning-user Home,
-Home/Scan/Compare/Saved/Profile navigation and working manual/sourced destinations.
-Frontend v0.3.0 remains the separate next reference-style Scan/Results/Ingredients
-redesign. Camera/OCR and native/device proofs stay separate. Firebase stays free
+Home/Scan/Compare/Saved navigation with top-right Profile, live camera/gallery,
+manual review, live header search and reference-style reports/comparison.
+Frontend v0.3.0 adds local OCR, automatic barcode decoding and Ingredient Insights.
+Native/device proofs stay separate. Firebase stays free
 with no linked billing, admin role, custom model or Gemini requirement.
 [Accepted checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
 

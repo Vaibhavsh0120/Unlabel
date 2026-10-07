@@ -1,4 +1,4 @@
-"""Run the API and Flutter website on localhost; Ctrl+C stops owned child processes."""
+"""Choose Local or Production preview; Ctrl+C stops only owned child processes."""
 
 import argparse
 import json
@@ -12,6 +12,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from _preview_server import PRODUCTION_ORIGIN, serve_web
 from _workspace import (
     ROOT,
     backend_python,
@@ -97,12 +98,45 @@ def wait_for_api(process: subprocess.Popen, url: str) -> None:
     raise ValueError("Local backend did not become ready within 30 seconds.")
 
 
+def choose_mode() -> str:
+    if not sys.stdin.isatty():
+        raise ValueError(
+            "Select --mode local or --mode production for a noninteractive run."
+        )
+    print(
+        "1. Local: frontend and local backend\n2. Production: frontend and hosted API",
+        flush=True,
+    )
+    while True:
+        choice = input("Choose 1 or 2: ").strip().lower()
+        if choice in {"1", "local"}:
+            return "local"
+        if choice in {"2", "production"}:
+            return "production"
+        print("Choose Local (1) or Production (2); there is no default.", flush=True)
+
+
+def wait_for_web(process: subprocess.Popen, url: str) -> None:
+    deadline = time.monotonic() + 10
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            raise ValueError("Frontend preview exited before readiness.")
+        try:
+            with urllib.request.urlopen(url + "/index.html", timeout=1) as response:
+                if response.status == 200:
+                    return
+        except (OSError, urllib.error.URLError):
+            pass
+        time.sleep(0.1)
+    raise ValueError("Frontend preview did not become ready within 10 seconds.")
+
+
 def main() -> int:
     defaults = config()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--scope", choices=["all", "backend", "frontend"], default="all"
-    )
+    parser.add_argument("--mode", choices=["local", "production"])
+    parser.add_argument("--scope", choices=["all", "backend", "frontend"])
+    parser.add_argument("--serve-web", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--backend-port", type=port, default=defaults["backend_port"])
     parser.add_argument("--web-port", type=port, default=defaults["web_port"])
     parser.add_argument(
@@ -111,19 +145,43 @@ def main() -> int:
     args = parser.parse_args()
     processes = []
     try:
-        if args.backend_port == args.web_port and args.scope == "all":
+        if args.serve_web:
+            if args.mode is None:
+                raise ValueError("The preview server requires an explicit mode.")
+            return serve_web(ROOT / "frontend/build/web", args.web_port, args.mode)
+        if args.mode and args.scope:
+            raise ValueError("Use --mode or the legacy --scope selection, not both.")
+        mode = args.mode or ("local" if args.scope else choose_mode())
+        scope = args.scope or ("all" if mode == "local" else "frontend")
+        if args.backend_port == args.web_port and scope == "all":
             raise ValueError("Backend and frontend ports must differ.")
-        if args.backend_url and args.scope != "frontend":
+        if args.backend_url and scope != "frontend":
             raise ValueError("--backend-url applies only to --scope frontend.")
+        if args.backend_url and public_origin(args.backend_url) == PRODUCTION_ORIGIN:
+            mode = "production"
+        elif mode == "production" and args.backend_url:
+            raise ValueError("Production mode uses only the fixed hosted Unlabel API.")
+        web_url = f"http://127.0.0.1:{args.web_port}"
         backend_url = public_origin(
-            args.backend_url or f"http://127.0.0.1:{args.backend_port}"
+            web_url
+            if mode == "production"
+            else args.backend_url or f"http://127.0.0.1:{args.backend_port}"
         )
-        flutter = flutter_executable() if args.scope in {"all", "frontend"} else None
-        if args.scope in {"all", "backend"}:
+        flutter = flutter_executable() if scope in {"all", "frontend"} else None
+        print(
+            f"Mode: {mode.title()}; API target: {PRODUCTION_ORIGIN if mode == 'production' else backend_url}",
+            flush=True,
+        )
+        if mode == "production":
+            print(
+                "Production data is live. This mode starts no local backend.",
+                flush=True,
+            )
+        if scope in {"all", "backend"}:
             check_port_available(args.backend_port)
-        if args.scope in {"all", "frontend"}:
+        if scope in {"all", "frontend"}:
             check_port_available(args.web_port)
-        if args.scope in {"all", "backend"}:
+        if scope in {"all", "backend"}:
             python = backend_python()
             if not python.is_file() or not (ROOT / "backend/.env").is_file():
                 raise ValueError(
@@ -157,30 +215,45 @@ def main() -> int:
             app_version, build_number = frontend_version()
             command = [
                 flutter,
-                "run",
-                "-d",
-                "web-server",
-                "--web-hostname",
-                "127.0.0.1",
-                "--web-port",
-                str(args.web_port),
+                "build",
+                "web",
+                "--debug",
+                "--no-pub",
                 f"--dart-define=BACKEND_BASE_URL={backend_url}",
                 f"--dart-define=APP_VERSION={app_version}",
                 f"--dart-define=BUILD_NUMBER={build_number}",
             ]
-            processes.append(spawn(command, ROOT / "frontend", dict(os.environ)))
-            print(
-                f"Frontend starting: http://127.0.0.1:{args.web_port} (browser opens manually).",
-                flush=True,
+            build = spawn(command, ROOT / "frontend", dict(os.environ))
+            processes.append(build)
+            while build.poll() is None:
+                time.sleep(0.2)
+            if build.returncode != 0:
+                raise ValueError("Flutter preview build failed.")
+            processes.remove(build)
+            preview = spawn(
+                [
+                    sys.executable,
+                    ROOT / "scripts/run_local.py",
+                    "--serve-web",
+                    "--mode",
+                    mode,
+                    "--web-port",
+                    str(args.web_port),
+                ],
+                ROOT,
+                dict(os.environ),
             )
+            processes.append(preview)
+            wait_for_web(preview, web_url)
+            print(f"Frontend ready: {web_url} (open the browser manually).", flush=True)
         print(
-            "Press Ctrl+C to stop both owned process trees. Local .env is unchanged.",
+            "Press Ctrl+C to stop owned process trees. Local .env is unchanged.",
             flush=True,
         )
         while all(process.poll() is None for process in processes):
             time.sleep(0.5)
         raise ValueError("A local service exited; stopping remaining owned processes.")
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         return 0
     except (ValueError, OSError, subprocess.CalledProcessError) as error:
         message = (

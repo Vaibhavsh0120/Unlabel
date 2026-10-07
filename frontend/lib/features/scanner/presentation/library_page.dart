@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/models/app_failure.dart';
 import '../../../core/models/product_report.dart';
 import '../../../core/storage/local_store.dart';
+import 'report_presentation.dart';
 import 'ui_components.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -33,6 +34,7 @@ class _LibraryPageState extends State<LibraryPage> {
   String? _error;
   String? _errorKind;
   String? _warning;
+  int _loadGeneration = 0;
 
   @override
   void initState() {
@@ -44,36 +46,42 @@ class _LibraryPageState extends State<LibraryPage> {
   void didUpdateWidget(LibraryPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.refreshKey != widget.refreshKey ||
-        oldWidget.saved != widget.saved) {
+        oldWidget.saved != widget.saved ||
+        oldWidget.store != widget.store) {
       _refresh();
     }
   }
 
   Future<void> _refresh() async {
+    final generation = ++_loadGeneration;
     setState(() {
       _loading = true;
       _error = null;
       _errorKind = null;
+      _items = [];
+      _warning = null;
     });
     try {
       final items = widget.saved
           ? await widget.store.saved()
           : await widget.store.history();
-      if (mounted) {
+      if (mounted && generation == _loadGeneration) {
         setState(() {
           _items = items;
           _warning = widget.store.recoveryWarning;
         });
       }
     } on AppFailure catch (error) {
-      if (mounted) {
+      if (mounted && generation == _loadGeneration) {
         setState(() {
           _error = error.userMessage;
           _errorKind = error.kind;
         });
       }
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted && generation == _loadGeneration) {
+        setState(() => _loading = false);
+      }
     }
   }
 
@@ -85,6 +93,7 @@ class _LibraryPageState extends State<LibraryPage> {
         const SnackBar(content: Text('Removed from saved products')),
       );
       widget.onChanged();
+      await _refresh();
     } on AppFailure catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context)
@@ -133,6 +142,7 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
       );
       widget.onChanged();
+      await _refresh();
     } on AppFailure catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context)
@@ -182,14 +192,13 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
         )
       else if (_items.isEmpty)
-        StatusNotice(
+        LibraryEmptyState(
           title: widget.saved
               ? 'Keep a useful label close'
               : 'No labels viewed yet',
           message: widget.saved
               ? 'Open a report and choose Save to find it here later.'
               : 'Look up a product or enter a label to start your history.',
-          icon: widget.saved ? Icons.bookmark_outline : Icons.history_outlined,
           action: FilledButton(
             onPressed: widget.onLookup,
             child: const Text('Look up a product'),
@@ -212,20 +221,48 @@ class _LibraryPageState extends State<LibraryPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: FeatureIcon(widget.saved ? 'bookmark' : 'history'),
-                    title: Text(item.report.name),
-                    subtitle: Text(
-                      [
-                        if (item.report.brand?.isNotEmpty ?? false)
-                          item.report.brand!,
-                        item.report.basisLabel,
-                        'Viewed ${_date(item.storedAt)}',
-                      ].join('\n'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(8),
                     onTap: () => widget.onOpenReport(item.report),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        children: [
+                          StoredProductPhoto(report: item.report, size: 76),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.report.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium,
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  [
+                                    if (item.report.brand?.isNotEmpty ?? false)
+                                      item.report.brand!,
+                                    item.report.basisLabel,
+                                    'Viewed ${_date(item.storedAt)}',
+                                  ].join('\n'),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.chevron_right, size: 22),
+                        ],
+                      ),
+                    ),
                   ),
                   if (widget.saved)
                     Align(
@@ -249,5 +286,117 @@ class _LibraryPageState extends State<LibraryPage> {
   String _date(DateTime value) {
     final local = value.toLocal();
     return '${local.day.toString().padLeft(2, '0')}/${local.month.toString().padLeft(2, '0')}/${local.year}';
+  }
+}
+
+/// Provider photos are distinct from decorative app artwork. Invalid or absent
+/// descriptors use a neutral package icon, never a made-up product picture.
+class StoredProductPhoto extends StatelessWidget {
+  const StoredProductPhoto({required this.report, this.size = 76, super.key});
+
+  final ProductReport report;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final descriptor = ReportImageDescriptor.fromReport(report);
+    final fallback = Center(
+      child: FeatureIcon('document-text', size: size * .4),
+    );
+    return SizedBox.square(
+      dimension: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: descriptor == null
+              ? fallback
+              : Tooltip(
+                  message:
+                      '${descriptor.attribution} · ${descriptor.license}\n${descriptor.licenseUrl}',
+                  child: Image.network(
+                    descriptor.url,
+                    fit: BoxFit.contain,
+                    semanticLabel:
+                        'Product photo of ${report.name}. ${descriptor.attribution}. ${descriptor.license}.',
+                    loadingBuilder: (context, image, progress) =>
+                        progress == null ? image : fallback,
+                    errorBuilder: (context, error, stackTrace) => fallback,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+class LibraryEmptyState extends StatelessWidget {
+  const LibraryEmptyState({
+    required this.title,
+    required this.message,
+    required this.action,
+    super.key,
+  });
+
+  final String title;
+  final String message;
+  final Widget action;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final stacked =
+              constraints.maxWidth < 560 ||
+              MediaQuery.textScalerOf(context).scale(14) > 21;
+          final copy = Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleLarge),
+                const SizedBox(height: 12),
+                Text(
+                  message,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                action,
+              ],
+            ),
+          );
+          const art = CornerArtwork(
+            asset: 'assets/artwork/botanical-corner.png',
+            height: 180,
+            scale: 1.28,
+          );
+          return stacked
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    copy,
+                    const Align(
+                      alignment: Alignment.bottomRight,
+                      child: FractionallySizedBox(widthFactor: .65, child: art),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(flex: 6, child: copy),
+                    const Expanded(flex: 4, child: art),
+                  ],
+                );
+        },
+      ),
+    );
   }
 }

@@ -1,7 +1,7 @@
 # Unlabel backend: v0.7.0 Private Account Sync
 
 v0.7.0 implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`
-is already pushed and hosted on READY deployment
+is independently published and hosted on READY deployment
 `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`, after the independently published
 v0.6.0 Product Discovery. **20 paths / 21 operations** preserve all public
 contracts and add optional password-authenticated private profile/saved/history
@@ -17,8 +17,9 @@ and one anonymous identity to test ownership, anonymous rejection,
 CAS/retry/conflict, versioned clearing and no-store behavior. Test identities were
 deleted and private report snapshots cleared; empty revision-protection documents
 and bounded counters remain. Email/password Auth was enabled without adding
-billing. Local `.env` changes were encrypted into `.env.age`. GitHub v0.7.0
-publication and documentation closure remain pending. A later documentation-only
+billing. Local `.env` changes were encrypted into `.env.age`. Backend v0.7.0 is
+published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
+Documentation closure commit `ec70568` also reached READY without API source changes. A later documentation-only
 closure commit does not replace the original implementation SHA; any new deployment
 needs its own exact-commit verification.
 [Current review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
@@ -26,9 +27,14 @@ needs its own exact-commit verification.
 
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app) ·
 [Swagger](https://unlabel-api.vercel.app/docs). Firebase remains free with no
-card/linked billing. Frontend v0.1.0+2 is independently published; v0.2.0 optional
-account/Home/four-tab navigation is implemented with release validation pending;
-Profile stays at the top right. Frontend work resumes after backend publication.
+card/linked billing. Frontend v0.1.0+2 is independently published; v0.2.0+3
+Welcome/Home/optional account/four-tab navigation, search, camera/gallery manual
+capture and reference-style Results/Compare have passed local validation:
+135 tests, clean analysis and a release web build. Hosted verification and
+publication remain pending; Profile stays at the top right.
+[Frontend release review](../docs/planning/FRONTEND_V0_2_0_REVIEW.md).
+The current [contract exports](../contracts/README.md) include **27 validated
+synthetic examples**.
 
 ## Run locally
 
@@ -63,6 +69,9 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `POST /v1/claims/check` | Check identified claims against one selected user-confirmed nutrition table and explicit applicability context |
 | `GET /v1/claims/rules` | Seven reviewed numerical rules, four recognized unsupported claim types, knowledge version and statutory energy conversion |
 | `GET /v1/evidence/{source_id}` | Public reviewed source metadata; found, not-found or unavailable without fetching a PDF |
+| `POST /v1/reports/check` | Useful current report from confirmed structured facts; automatic public saving has a separate outcome |
+| `GET /v1/products/{barcode}/report` | Read-only sourced historical report, without current-label claim confirmation |
+| `GET /v1/ingredients/glossary` | Three reviewed English/Hindi ingredient names/functions and source metadata |
 
 Four additive routes are mounted in v0.4.0:
 
@@ -155,7 +164,7 @@ All claim criteria compare exact rational values constructed from the original n
 
 `GET /v1/claims/rules` returns the actual loaded rules and unsupported list. `/v1/evidence/{source_id}` returns one of the three reviewed metadata records with URL, PDF hash/size/pages, known publication/effective dates, verification date/status and qualifications. Unknown valid IDs return 404; malformed IDs return redacted 422. Missing/invalid knowledge returns typed 503 responses; known future publication/effective dates, non-current/future review status or unsupported applicability suppress affected assessments. Review status is maintained explicitly; no automatic statutory expiry is inferred from age. These endpoints make no OFF, Gemini or FSSAI request and persist no scan. Claim/rule/evidence responses use `no-store`.
 
-Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter still needs capture/correction, API models, stale-response handling and result screens.
+Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter's connected manual correction/report flow is implemented; v0.2.0+3 adds local camera/gallery capture beside manual entry. Automatic barcode reading, OCR extraction/correction geometry and the dedicated Ingredient Insights screen remain frontend v0.3.0 work.
 
 ## Community facts and source resolution
 
@@ -180,10 +189,13 @@ averaging, first-arrival winner, generic composition imputation or current-packe
 confirmation is invented. OFF-only results remain useful during a community outage.
 
 Firebase **Unlabel**, project `unlabel-india-catalogue`, first Standard database
-**`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous Auth,
-deny-all direct client rules and dedicated backend access are configured. Photos,
-raw OCR, profiles and private history remain excluded. The current local API is
-checked, pushed, hosted-verified and published independently.
+**`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous and
+email/password Auth, deny-all direct client rules and dedicated backend access are
+configured. Public observations exclude photos, raw OCR, profiles and private
+history. The separately released v0.7.0 private account contract accepts only
+bounded display name/saved/history snapshots; photos/raw OCR and health preferences
+remain excluded. Backend releases are checked, pushed, hosted-verified and
+published independently.
 
 Examples: [confirmed intake](../contracts/examples/community-contribution-v1.request.synthetic.json),
 [provisional intake](../contracts/examples/community-provisional-v1.request.synthetic.json),
@@ -262,7 +274,14 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 - `tests/`: synthetic mocked-provider and ASGI contract tests; no corpus copied from OFF.
 - `requirements*.txt`, `pyproject.toml`: tested dependency versions and backend metadata/tooling.
 
-HTTPX connection pool is bounded to six connections. OFF reads have no automatic retry or durable cache. There is no profile/history storage or image upload. Confirmed normalization and claims work independently of OFF connectivity and require no account. Planned community transactions/admission counters do not yet provide API behavior or verified availability. The claim subset still requires confirmed current-package rows; a broader report remains future work.
+HTTPX connection pool is bounded to six connections. OFF reads have no automatic
+retry or durable cache. Confirmed normalization, claims and useful current reports
+work independently of OFF connectivity and require no account. Released community
+transactions and admission counters protect automatic public observation storage;
+v0.7.0 adds separate password-owned private profile/saved/history snapshots.
+Guests retain personal records locally. No image-upload route exists. Current
+claim checks still require confirmed package rows and explicit context; historical
+reports preserve their source/date and do not establish current-label confirmation.
 
 Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entrypoint/config. The project allows build access to files outside its root, and `pyproject.toml` runs `python build_catalogue.py` after dependency installation. The generated owned bundle is included in the Python function. Local `.env*`, tests, environments and `storage/runtime` are excluded; hosted settings live in the project's environment. See [Vercel's build-hook documentation](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
 

@@ -3,20 +3,27 @@
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently
+[published](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
+Implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is hosted on READY
+deployment `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`: **931 tests passed, five emulator-only
+skips**, clean Ruff/Pyright and **18 hosted synthetic checks**. Documentation-only
+closure `ec70568` also reached READY and retains the original implementation SHA.
+Frontend **v0.2.0+3** Welcome/Home/optional account/navigation, search, local
+camera/gallery manual capture and reference-style Results/Compare have passed
+local validation: **135 tests**, clean analysis and a release web build.
+Frontend hosted verification and publication remain pending.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
-Implemented v0.7.0 exports **20 paths / 21 operations** in
+Released v0.7.0 exports **20 paths / 21 operations** and **27 validated synthetic
+examples**, with OpenAPI in
 `contracts/schemas/backend-v0.7.0.openapi.json`. Every prior public path/component
 remains intact. GET/POST `/v1/account/sync` is a separate strict private contract;
 the capability is enabled only with configured account/community runtime.
 [Private sync and caps](PRIVATE_ACCOUNT_SYNC.md) ·
-[Backend release review](../planning/BACKEND_V0_7_0_REVIEW.md).
+[Backend release review](../planning/BACKEND_V0_7_0_REVIEW.md) ·
+[Frontend release review](../planning/FRONTEND_V0_2_0_REVIEW.md).
 
 ## Implemented endpoints and nutrition contract
 
@@ -56,7 +63,7 @@ No generic packet imputation or current-label confirmation is invented.
 [Community contract](COMMUNITY_CATALOGUE.md).
 
 
-Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary. Glossary version/artifact and claim readiness remain independent. Comparison and AI stay disabled.
+Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary. Glossary version/artifact and claim readiness remain independent. Backend comparison and AI stay disabled; frontend v0.2.0+3 provides a conservative client-side comparison view.
 
 `CatalogueStatus` reports `ready`, `not_configured` or `unavailable`, with nullable manifest/freshness/artifact and explicit field limits for the loaded store. Freshness is `within_refresh_window`, `refresh_due` or `source_date_in_future`; it uses nine calendar months from `exported_at`, not the build timestamp. Unconfigured/unavailable status returns 503 and claims no verified manifest. A ready but overdue catalogue remains readable with warnings. Existing `CatalogLookup` keys are unchanged; warnings remain within its 100-item bound. A 404 snapshot miss makes no upstream request. Catalogue status/identity/facts responses are `no-store`. The additive `catalogue_facts` capability is true only for a validated facts-enabled store. Older identity-only stores keep their old routes and return facts unavailable for a found identity.
 
@@ -73,8 +80,10 @@ The actual body limit is 32 KiB before JSON parsing, including chunked transfers
 Normalization/claims persist no scan/profile and log no content. Separate
 community intake persists bounded public assertions and private staging/receipts;
 images/raw OCR/profiles/history remain excluded. Exact-origin GET/POST CORS permits
-Authorization but is not authentication. Public writes accept verified anonymous or password scanner tokens; private account sync requires password authentication. Public writes
-without a Share flag. No AI is enabled. [Storage lifecycle](COMMUNITY_CATALOGUE.md).
+Authorization but is not authentication. Public writes accept verified anonymous or
+password scanner tokens; private account sync requires password authentication.
+Public observations save automatically without a Share flag. No AI is enabled.
+[Storage lifecycle](COMMUNITY_CATALOGUE.md).
 
 
 Use the [export/example index](../../contracts/README.md) for actual schema files and validated synthetic requests/responses. The facts route keeps `product` and `manifest` separate from `details`. Tags use availability plus values; nutrition distinguishes `direct_tables`, `missing`, `legacy_unsupported` and `invalid`. Only direct packaging/manufacturer tables are normalized; legacy aggregate nutrients remain unavailable. Dates and official selected-front image descriptors are optional. Image URL metadata includes language/revision/400-size and attribution/license; a descriptor does not guarantee present image availability. No photo bytes or arbitrary URL proxy is served.
@@ -156,6 +165,12 @@ free-tier availability is finite. Never multiply keys to bypass provider quotas.
 Bounded discovery is released in v0.6.0; compatible comparison remains subsequent screen/contract scope in the
 [master plan](../planning/MASTER_PLAN.md). Wider ingredient details need reviewed
 coverage before new endpoints. Current reports use the three implemented APIs;
-a duplicate generic analyze endpoint is unnecessary. The current version has no personal-profile or image-upload route; next-version private sync is separate from public facts. Per-frame and generic-chat endpoints are unnecessary. Manual correction, source views, local saved/history and report UI are integrated for frontend v0.1.0; camera/OCR remains subsequent client work.
+a duplicate generic analyze endpoint is unnecessary. Released v0.7.0 provides
+private profile/saved/history snapshots through `/v1/account/sync`, separate from
+public facts. There is no image-upload route. Per-frame and generic-chat endpoints
+are unnecessary. Manual correction, source views, local saved/history and report
+UI are integrated; locally validated frontend v0.2.0+3 adds camera/gallery capture
+beside manual entry and conservative client-side comparison. Automatic barcode
+reading, local OCR and Ingredient Insights remain frontend v0.3.0 work.
 Gemini/custom training are disabled; any later fallback requires a measured
 benchmark and no-card/privacy controls before acceptance.

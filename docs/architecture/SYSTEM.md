@@ -5,19 +5,28 @@ Updated **7 October 2026**.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently
+[published](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
+Implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is hosted on READY
+deployment `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`: **931 tests passed, five emulator-only
+skips**, clean Ruff/Pyright and **18 hosted synthetic checks**. Documentation-only
+closure `ec70568` also reached READY without replacing the implementation SHA.
+Frontend **v0.2.0+3** Welcome/Home/optional account/navigation, search, local
+camera/gallery manual capture and reference-style Results/Compare have passed
+local validation: **135 tests**, clean analysis and a release web build.
+Frontend hosted verification and publication remain pending.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
-v0.7.0 exports **20 API paths / 21 operations**, retaining all public contracts and
+v0.7.0 exports **20 API paths / 21 operations** and **27 validated synthetic examples**,
+retaining all public contracts and
 adding authenticated GET/POST `/v1/account/sync`. Private ownership derives from
 verified password tokens. There is one scanner role and no admin/reviewer app.
-Light/dark/system appearance stays device-local; camera/OCR remains future work.
-[Private sync](PRIVATE_ACCOUNT_SYNC.md) · [Master plan](../planning/MASTER_PLAN.md).
+Light/dark/system appearance stays device-local. Camera/gallery capture is locally
+implemented; automatic barcode reading, OCR and Ingredient Insights remain
+frontend v0.3.0 work. [Private sync](PRIVATE_ACCOUNT_SYNC.md) ·
+[Master plan](../planning/MASTER_PLAN.md) ·
+[Frontend release review](../planning/FRONTEND_V0_2_0_REVIEW.md).
 
 ## Product and delivery boundary
 
@@ -56,7 +65,14 @@ flowchart LR
   Explain -.->|"Public product facts only"| Gemini["Optional Gemini Free Tier"]
 ~~~
 
-The two-file reviewed claim knowledge package and confirmed-label claim API are implemented. Useful reports, the three-entry ingredient glossary and manual frontend paths are implemented; camera/OCR, broader ingredient coverage and optional AI remain planned. Private account sync is separate from the public analysis pipeline shown here. Backend rule fixtures and provider/client contract fixtures verify missing values, applicability, provenance and compatible reports.
+The diagram includes implemented and planned boundaries. The two-file reviewed
+claim knowledge package, confirmed-label claim API, useful reports and three-entry
+ingredient glossary are released. Manual frontend paths and local camera/gallery
+capture are implemented; OCR, broader ingredient coverage, local suitability and
+optional AI remain planned. Released private account sync is separate from the
+public analysis pipeline shown here. Backend rule fixtures and provider/client
+contract fixtures verify missing values, applicability, provenance and compatible
+reports.
 
 | Boundary | Responsibility |
 | --- | --- |
@@ -70,8 +86,12 @@ The two-file reviewed claim knowledge package and confirmed-label claim API are 
 | Open Food Facts product adapter | Selected read-only barcode provider; source-tagged enrichment; confirmed physical label remains the scan source |
 | Product enrichment | Implemented automatic save/dedup, private staging, qualified compatible submitter-confirmed candidates and conflict review |
 | Resolved view | Complement compatible known fields with source/date references; preserve original observations/conflicts and never impute generic packet values |
+| Private account sync | Optional password-owned display name/saved/history snapshots, revision conflicts and explicit client choices; separate from public observations |
 
-Use modest modules and one backend API. Microservices, vector databases, training infrastructure and a cloud user-profile database are unnecessary for the baseline.
+Use modest modules and one backend API. Microservices, vector databases and
+training infrastructure are unnecessary for the baseline. Optional private account
+snapshots use the existing free Firestore database and separate ownership/storage
+boundaries from public package observations.
 
 Open Food Facts is the primary online product-data provider through `backend/app/providers/products/`. Basic product views can use its source-tagged record directly; checking the current package's marketing claims requires relevant claim/field confirmation. If OFF is unavailable but the backend is reachable, analyze available package fields; if the backend is unavailable, defer fresh analysis and offer saved results/draft capture. [Provider workflow](OPEN_FOOD_FACTS.md).
 

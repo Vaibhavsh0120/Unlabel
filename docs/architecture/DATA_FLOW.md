@@ -5,11 +5,12 @@ Updated **7 October 2026**.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
+and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
+18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
+preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
+Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
+release validation and user preview review are required before its push.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
@@ -27,7 +28,7 @@ retain their mutation UUID/payload and compare-and-set revision for safe retries
 3. Independently, a caller can POST 1–64 user-confirmed structured nutrient rows with UUID request/session IDs, a correction revision and a completeness declaration. No OFF connection is required for this path. Normalization stores no scan and accepts no raw OCR/image/profile. The actual input body is bounded to 32 KiB before JSON parsing.
 4. The pure normalizer converts kcal/kJ and mass units, and scales known mass or volume bases to the same unit per 100. An unknown serving remains per serving. Missing and explicit unknown values retain reasons; zero stays zero. Sodium/salt, total/added sugar and available/total carbohydrates stay separate without inference.
 5. The response retains original rows, conversion descriptions and source-row references. Lookup origin is `open_food_facts_community_data`; confirmed input origin is `user_confirmed_label`. No merge occurs across these origins. `complete` indicates successful processing of submitted rows, not complete nutrient coverage or a health verdict; conflicting contexts/duplicates require correction. Comparable OFF tables that disagree remain visible with `provider_tables_disagree` and `needs_correction`.
-6. Responses use `no-store` and contain no provider secrets. Validation errors are bounded/redacted and do not echo submitted values. Request content is not logged or retained by this backend. The current client correlates session/request/revision, records viewed reports locally and bookmarks only on explicit choice. Confirmed public facts use separate automatic intake; personal records are not uploaded in v0.1.0.
+6. Responses use `no-store` and contain no provider secrets. Validation errors are bounded/redacted and do not echo submitted values. Normalization/claim request content is not logged or retained; public observations and private account snapshots have separate documented storage contracts. The current client correlates session/request/revision, records viewed reports locally and bookmarks only on explicit choice. Confirmed public facts use separate automatic intake; personal records are not uploaded in v0.1.0.
 7. Separately, the backend build reads the committed India gzip, verifies compressed/decoded hashes and counts, and generates SQLite plus a receipt under `app/catalogue/data/`. Hosted startup validates the receipt, full database hash, manifest, integrity and counts. `GET /v1/catalogue` exposes source age and field limits; exact catalogue barcode reads make no OFF request and retain the existing export-origin contract. A missing receipt disables only catalogue access. Snapshot misses do not silently fall back to the live adapter.
 8. The separate facts route returns the same exact identity/manifest plus optional direct nutrition, availability-aware canonical tags, provider schema/record-modification date and official selected-front image URL metadata. No image bytes or arbitrary URLs are served. Direct nutrition shares the live parser but retains export provenance; legacy aggregates remain unavailable. Older identity-only stores keep existing reads without enabling `catalogue_facts`.
 

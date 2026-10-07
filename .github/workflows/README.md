@@ -5,8 +5,8 @@ the repository's default branch. It runs only through **Run workflow** in the
 GitHub Actions tab (`workflow_dispatch`); pushes and tags do not trigger it.
 Remote build and release results are recorded by the action run and manifest.
 
-Inputs are `source_ref` (default `main`), `release_version` (`0.0.0`),
-`build_number` (`1`), optional `backend_url` (empty for the starter), and
+Inputs are `source_ref` (default `main`), `release_version` (`0.2.0`),
+`build_number` (`3`), `backend_url` (`https://unlabel-api.vercel.app`), and
 `publish_release` (default `true`; select `false` to retain a draft).
 Version and build number override the pubspec value for both mobile builds.
 Increase the build number for a new build and choose an unused release version.
@@ -34,7 +34,8 @@ The workflow uses short intermediate-artifact retention and no paid runners.
 It only needs the automatic `GITHUB_TOKEN`; `contents: write` is limited to
 the release job. Provider keys must never be supplied as `backend_url`.
 
-The backend and website are not built or deployed by this starter workflow.
-Their contract compatibility checks and Vercel promotion remain future work.
+Native artifacts use separate `mobile-vVERSION+BUILD` tags. The backend and website
+are independently deployed through their Git-connected Vercel projects; this
+workflow builds only frontend mobile artifacts.
 See [release/versioning](../../docs/planning/RELEASE_VERSIONING.md) and
 [deployment](../../docs/architecture/DEPLOYMENT_PLAN.md).

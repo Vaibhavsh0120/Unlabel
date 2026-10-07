@@ -23,8 +23,8 @@ iOS release commitment as described below.
 ## Version identities
 
 Backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label Reader**
-are independently published. Backend **0.7.0 Private Account Sync** is ready for its
-separate push/hosted gate; frontend **0.2.0 Welcome, Home and Optional Login** is
+are independently published. Backend **0.7.0 Private Account Sync** is independently pushed, hosted-verified
+and published; frontend **0.2.0 Welcome, Home and Optional Login** is
 implemented with release verification pending. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
 manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
 backend `v0.1.0` tag collision. All older tags/assets remain preserved.
@@ -50,7 +50,7 @@ in the release manifest. Never silently replace a published artifact.
 ## Manual release workflow design
 
 The release entry point is `workflow_dispatch`, with source reference,
-frontend version (default `0.1.0`), mobile build number (default `2`), required
+frontend version (default `0.2.0`), mobile build number (default `3`), required
 public backend URL, and a `publish_release` boolean (default true).
 Python validates environment values without shell interpolation. Version and
 build number override pubspec for both artifacts; the manifest records both.

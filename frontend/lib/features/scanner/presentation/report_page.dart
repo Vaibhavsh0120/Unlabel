@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/models/app_failure.dart';
 import '../../../core/models/product_report.dart';
 import '../../../core/storage/local_store.dart';
+import '../../../core/interaction/ui_feedback.dart';
+import 'report_presentation.dart';
 import 'ui_components.dart';
 
 class ReportPage extends StatefulWidget {
@@ -65,6 +69,7 @@ class _ReportPageState extends State<ReportPage> {
       }
       if (!mounted) return;
       setState(() => _saved = !_saved);
+      unawaited(UiFeedback.confirmed());
       widget.onChanged();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -83,62 +88,60 @@ class _ReportPageState extends State<ReportPage> {
     }
   }
 
+  Widget _saveAction() => OutlinedButton.icon(
+    key: const Key('save-report'),
+    onPressed: _saving || _checkingSaved || _savedError != null
+        ? null
+        : _toggleSaved,
+    icon: _saving || _checkingSaved
+        ? const SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        : Icon(_saved ? Icons.bookmark : Icons.bookmark_outline),
+    label: Text(
+      _checkingSaved
+          ? 'Checking saved status…'
+          : _saving
+          ? 'Saving…'
+          : _saved
+          ? 'Saved · remove'
+          : 'Save on this device',
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final report = widget.report;
     final theme = Theme.of(context);
+    final photo = ReportImageDescriptor.fromReport(report);
     return Scaffold(
-      appBar: AppBar(title: const Text('Label report')),
+      appBar: AppBar(title: const Text('Analysis Results')),
       body: PageBody(
         children: [
           SectionCard(
+            key: const Key('report-product-card'),
+            padding: 18,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(report.name, style: theme.textTheme.headlineMedium),
-                if (report.brand?.isNotEmpty ?? false) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    report.brand!,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-                if (report.variant?.isNotEmpty ?? false) ...[
-                  const SizedBox(height: 6),
-                  Text(report.variant!),
-                ],
-                if (report.quantity?.isNotEmpty ?? false) ...[
-                  const SizedBox(height: 6),
-                  Text(report.quantity!),
-                ],
-                if (report.barcode != null) ...[
-                  const SizedBox(height: 8),
-                  Text('Barcode ${report.barcode}'),
-                ],
-                const SizedBox(height: 20),
-                OutlinedButton.icon(
-                  key: const Key('save-report'),
-                  onPressed: _saving || _checkingSaved || _savedError != null
-                      ? null
-                      : _toggleSaved,
-                  icon: _saving || _checkingSaved
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Icon(_saved ? Icons.bookmark : Icons.bookmark_outline),
-                  label: Text(
-                    _checkingSaved
-                        ? 'Checking saved status…'
-                        : _saving
-                        ? 'Saving…'
-                        : _saved
-                        ? 'Saved · remove'
-                        : 'Save on this device',
-                  ),
+                _ProductIdentity(report: report, photo: photo),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 16,
+                  runSpacing: 12,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _saveAction(),
+                    if (report.barcode != null)
+                      Text(
+                        'Barcode ${report.barcode}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                  ],
                 ),
                 if (_savedError != null) ...[
                   const SizedBox(height: 12),
@@ -151,36 +154,37 @@ class _ReportPageState extends State<ReportPage> {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(24),
+          const SizedBox(height: 16),
+          _ReportSummary(report: report),
+          const SectionTitle('Evidence at a glance'),
+          _EvidenceOverview(report: report),
+          const SectionTitle('Claim check'),
+          if (report.claims.isEmpty)
+            StatusNotice(
+              title: report.isHistorical
+                  ? 'Current claims need the current label'
+                  : 'No front claims captured',
+              message: report.isHistorical
+                  ? 'Catalogue nutrient values cannot establish claims on a current package.'
+                  : 'Enter the printed front claims with enough back-label facts to check them.',
+            )
+          else
+            SectionCard(
+              padding: 18,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (
+                    var index = 0;
+                    index < report.claims.length;
+                    index++
+                  ) ...[
+                    _ClaimRow(report.claims[index]),
+                    if (index < report.claims.length - 1) const Divider(),
+                  ],
+                ],
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const FeatureIcon('leaf', size: 32),
-                const SizedBox(height: 16),
-                Text(
-                  report.basisLabel,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  report.isHistorical
-                      ? 'These are dated catalogue observations. They may differ from the package in your hand.'
-                      : 'This report uses the package facts you confirmed. Missing or conflicting facts stay unknown.',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              ],
-            ),
-          ),
           const SectionTitle('Nutrition snapshot'),
           if (report.nutrients.isEmpty)
             const StatusNotice(
@@ -188,45 +192,14 @@ class _ReportPageState extends State<ReportPage> {
               message: 'No usable printed nutrient rows were found. Check the nutrition table on your package.',
             )
           else
-            SectionCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (
-                    var index = 0;
-                    index < report.nutrients.length;
-                    index++
-                  ) ...[
-                    _NutrientRow(report.nutrients[index]),
-                    if (index < report.nutrients.length - 1) const Divider(),
-                  ],
-                ],
-              ),
-            ),
+            _NutritionSnapshot(nutrients: report.nutrients),
           if (report.sugar != null) ...[
-            const SectionTitle('Sugar in context'),
-            SectionCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'About ${_number(report.sugar!.cubes)} sugar cubes',
-                    style: theme.textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${_number(report.sugar!.grams)} g total sugars · ${report.sugar!.basisLabel}',
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'An approximate visual conversion using 4 g per cube. Total sugar alone does not tell us how much sugar was added.',
-                  ),
-                ],
-              ),
-            ),
+            const SectionTitle('Sugar reality'),
+            _SugarReality(sugar: report.sugar!),
           ],
           const SectionTitle('Ingredients & allergens'),
           SectionCard(
+            padding: 18,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -255,37 +228,6 @@ class _ReportPageState extends State<ReportPage> {
               ],
             ),
           ),
-          const SectionTitle('Package claims'),
-          if (report.claims.isEmpty)
-            StatusNotice(
-              title: report.isHistorical
-                  ? 'Current claims need the current label'
-                  : 'No front claims captured',
-              message: report.isHistorical
-                  ? 'Catalogue nutrient values cannot establish claims on a current package.'
-                  : 'Enter the printed front claims with enough back-label facts to check them.',
-            )
-          else
-            for (final claim in report.claims) ...[
-              SectionCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(claim.text, style: theme.textTheme.titleMedium),
-                    const SizedBox(height: 8),
-                    Text(
-                      _human(claim.status),
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(claim.reason),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
           if (!report.isHistorical) ...[
             const SectionTitle('Catalogue update'),
             StatusNotice(
@@ -297,10 +239,11 @@ class _ReportPageState extends State<ReportPage> {
               report.warnings.isNotEmpty) ...[
             const SectionTitle('What is still unknown'),
             SectionCard(
+              padding: 18,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (final item in <dynamic>{
+                  for (final item in <String>{
                     ...report.missingInputs,
                     ...report.warnings,
                   })
@@ -314,6 +257,7 @@ class _ReportPageState extends State<ReportPage> {
           ],
           const SectionTitle('Sources & evidence'),
           SectionCard(
+            padding: 18,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -325,6 +269,12 @@ class _ReportPageState extends State<ReportPage> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: SelectableText(source),
                     ),
+                if (photo != null) ...[
+                  const SizedBox(height: 4),
+                  SelectableText('${photo.attribution} · ${photo.license}'),
+                  SelectableText(photo.licenseUrl),
+                  const SizedBox(height: 12),
+                ],
                 const SizedBox(height: 8),
                 const Text(
                   'These explanations describe the supplied label facts. They do not establish a health score, allergy safety or regulatory compliance.',
@@ -336,6 +286,478 @@ class _ReportPageState extends State<ReportPage> {
       ),
     );
   }
+}
+
+class _ProductIdentity extends StatelessWidget {
+  const _ProductIdentity({required this.report, required this.photo});
+  final ProductReport report;
+  final ReportImageDescriptor? photo;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+        final size = constraints.maxWidth < 450 ? 76.0 : 100.0;
+        final fallback = Semantics(
+          label: 'Product photo unavailable',
+          child: const Center(child: FeatureIcon('document-text', size: 32)),
+        );
+        final picture = ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: SizedBox.square(
+            dimension: size,
+            child: ColoredBox(
+              color: theme.colorScheme.surfaceContainerLow,
+              child: photo == null
+                  ? fallback
+                  : Image.network(
+                      photo!.url,
+                      fit: BoxFit.contain,
+                      semanticLabel:
+                          'Product photo of ${report.name}. ${photo!.attribution}. ${photo!.license}.',
+                      loadingBuilder: (_, image, progress) =>
+                          progress == null ? image : fallback,
+                      errorBuilder: (_, _, _) => fallback,
+                    ),
+            ),
+          ),
+        );
+        final copy = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(report.name, style: theme.textTheme.titleLarge),
+            if (report.brand?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 4),
+              Text(
+                report.brand!,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+            if (report.variant?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 4),
+              Text(report.variant!),
+            ],
+            if (report.quantity?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 4),
+              Text(
+                report.quantity!,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ],
+        );
+        return largeText && constraints.maxWidth < 500
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [picture, const SizedBox(height: 12), copy],
+              )
+            : Row(
+                children: [
+                  picture,
+                  const SizedBox(width: 16),
+                  Expanded(child: copy),
+                ],
+              );
+      },
+    );
+  }
+}
+
+class _ReportSummary extends StatelessWidget {
+  const _ReportSummary({required this.report});
+  final ProductReport report;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
+    return Container(
+      key: const Key('report-evidence-summary'),
+      decoration: BoxDecoration(
+        color: dark ? const Color(0xff18251f) : const Color(0xffecfaf2),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final wide =
+              constraints.maxWidth >= 660 &&
+              MediaQuery.textScalerOf(context).scale(14) <= 21;
+          final copy = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(report.basisLabel, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 10),
+              Text(
+                report.isHistorical
+                    ? 'These are dated catalogue observations. They may differ from the package in your hand.'
+                    : 'This report uses the package facts you confirmed. Missing or conflicting facts stay unknown.',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          );
+          final mark = Container(
+            width: wide ? 90 : 56,
+            height: wide ? 90 : 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: theme.colorScheme.primaryContainer,
+              border: Border.all(color: theme.colorScheme.primary, width: 3),
+            ),
+            child: Center(
+              child: FeatureIcon(
+                report.isHistorical ? 'history' : 'leaf',
+                size: wide ? 42 : 28,
+              ),
+            ),
+          );
+          if (wide) {
+            return Row(
+              children: [
+                mark,
+                const SizedBox(width: 20),
+                Expanded(flex: 4, child: copy),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: CornerArtwork(
+                    asset: 'assets/artwork/botanical-corner.png',
+                    height: 140,
+                    animate: false,
+                  ),
+                ),
+              ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  mark,
+                  const SizedBox(
+                    width: 82,
+                    child: CornerArtwork(
+                      asset: 'assets/artwork/botanical-corner.png',
+                      height: 66,
+                      animate: false,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              copy,
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _EvidenceOverview extends StatelessWidget {
+  const _EvidenceOverview({required this.report});
+  final ProductReport report;
+
+  @override
+  Widget build(BuildContext context) {
+    final available = report.nutrients
+        .where((item) => item.value != null)
+        .length;
+    final unknown = report.nutrients.length - available;
+    return SectionCard(
+      padding: 18,
+      child: Column(
+        children: [
+          _EvidenceRow(
+            icon: 'document-text',
+            title: 'Nutrition facts',
+            detail:
+                '$available available'
+                '${unknown == 0 ? '' : ' · $unknown unknown or unresolved'}',
+          ),
+          const Divider(height: 24),
+          _EvidenceRow(
+            icon: 'shield',
+            title: 'Claim evidence',
+            detail: report.claims.isEmpty
+                ? 'No current-package claim assessments'
+                : '${report.claims.length} recorded ${report.claims.length == 1 ? 'assessment' : 'assessments'}',
+          ),
+          const Divider(height: 24),
+          _EvidenceRow(
+            icon: report.isHistorical ? 'history' : 'scanner',
+            title: report.isHistorical
+                ? 'Dated observations'
+                : 'Confirmed package facts',
+            detail: report.isHistorical
+                ? 'Dates and sources stay attached.'
+                : 'Package context preserved.',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EvidenceRow extends StatelessWidget {
+  const _EvidenceRow({
+    required this.icon,
+    required this.title,
+    required this.detail,
+  });
+  final String icon, title, detail;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Center(child: FeatureIcon(icon, size: 24)),
+      ),
+      const SizedBox(width: 14),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 4),
+            Text(detail, style: Theme.of(context).textTheme.bodyMedium),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+class _ClaimRow extends StatelessWidget {
+  const _ClaimRow(this.claim);
+  final ReportClaimView claim;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = switch (claim.status) {
+      'supported' => theme.colorScheme.primary,
+      'contradicted' => theme.colorScheme.error,
+      _ => theme.colorScheme.onSurfaceVariant,
+    };
+    final icon = switch (claim.status) {
+      'supported' => Icons.check_circle_outline,
+      'contradicted' => Icons.cancel_outlined,
+      _ => Icons.info_outline,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(claim.text, style: theme.textTheme.titleMedium),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: .10),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 20, color: color),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  _human(claim.status),
+                  style: theme.textTheme.labelLarge?.copyWith(color: color),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(claim.reason),
+      ],
+    );
+  }
+}
+
+class _NutritionSnapshot extends StatelessWidget {
+  const _NutritionSnapshot({required this.nutrients});
+  final List<ReportNutrient> nutrients;
+
+  // Keep the overview short. Every row, including alternate table bases and
+  // unresolved fields, remains available in the evidence disclosure below.
+  List<ReportNutrient> get _overview {
+    final selected = <ReportNutrient>[];
+    for (final names in const [
+      ['energy'],
+      ['protein'],
+      ['carbohydrates', 'carbohydrates_total'],
+      ['fat'],
+      ['sodium'],
+      ['sugars'],
+    ]) {
+      for (final item in nutrients) {
+        if (names.contains(item.name)) {
+          selected.add(item);
+          break;
+        }
+      }
+    }
+    return selected.isEmpty ? nutrients.take(6).toList() : selected;
+  }
+
+  @override
+  Widget build(BuildContext context) => SectionCard(
+    key: const Key('report-nutrition-snapshot'),
+    padding: 18,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+            final minimum = largeText ? 220.0 : 110.0;
+            final columns = (constraints.maxWidth / minimum).floor().clamp(
+              1,
+              5,
+            );
+            final width = (constraints.maxWidth - 16 * (columns - 1)) / columns;
+            return Wrap(
+              spacing: 16,
+              runSpacing: 20,
+              children: [
+                for (var index = 0; index < _overview.length; index++)
+                  SizedBox(
+                    width: width,
+                    child: _SnapshotValue(_overview[index], index: index),
+                  ),
+              ],
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        const Divider(height: 1),
+        ExpansionTile(
+          key: const Key('report-nutrient-evidence'),
+          tilePadding: EdgeInsets.zero,
+          childrenPadding: const EdgeInsets.only(top: 8),
+          title: const Text('All nutrients, evidence & sources'),
+          children: [
+            for (var index = 0; index < nutrients.length; index++) ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: _NutrientRow(nutrients[index]),
+              ),
+              if (index < nutrients.length - 1) const Divider(),
+            ],
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+class _SnapshotValue extends StatelessWidget {
+  const _SnapshotValue(this.nutrient, {required this.index});
+  final ReportNutrient nutrient;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      key: Key('report-nutrient-$index'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          _human(nutrient.name),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          nutrient.value == null
+              ? _human(nutrient.state)
+              : '${_number(nutrient.value!)} ${nutrient.unit}',
+          style: nutrient.value == null
+              ? theme.textTheme.titleMedium
+              : theme.textTheme.titleLarge?.copyWith(fontSize: 25),
+        ),
+        const SizedBox(height: 5),
+        Text(nutrient.basisLabel, style: theme.textTheme.bodySmall),
+      ],
+    );
+  }
+}
+
+class _SugarReality extends StatelessWidget {
+  const _SugarReality({required this.sugar});
+  final SugarView sugar;
+
+  @override
+  Widget build(BuildContext context) => SectionCard(
+    key: const Key('report-sugar-reality'),
+    padding: 18,
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final wide =
+            constraints.maxWidth >= 550 &&
+            MediaQuery.textScalerOf(context).scale(14) <= 21;
+        final artwork = SizedBox(
+          width: wide ? 150 : 100,
+          child: CornerArtwork(
+            asset: 'assets/artwork/sugar-cubes.png',
+            height: wide ? 120 : 88,
+            animate: false,
+          ),
+        );
+        final copy = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'About ${_number(sugar.cubes)} sugar cubes',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '${_number(sugar.grams)} g total sugars · ${sugar.basisLabel}',
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'An approximate visual conversion using 4 g per cube. Total sugar alone does not tell us how much sugar was added.',
+            ),
+          ],
+        );
+        return wide
+            ? Row(
+                children: [
+                  artwork,
+                  const SizedBox(width: 20),
+                  Expanded(child: copy),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [artwork, const SizedBox(height: 8), copy],
+              );
+      },
+    ),
+  );
 }
 
 class _NutrientRow extends StatelessWidget {

@@ -4,7 +4,7 @@ Implementation and independent source review passed. Source
 `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is pushed on `main` and reached
 READY on backend deployment `dpl_5TNPc4yuis3tdLJ114jacroGvbvh` at
 [unlabel-api.vercel.app](https://unlabel-api.vercel.app). Eighteen hosted synthetic
-checks passed; GitHub publication and the documentation closure remain pending.
+checks passed; Backend v0.7.0 is independently published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0). Documentation closure commit ec70568 also reached READY without API source changes.
 This version adds optional private scanner account sync while preserving
 guest workflows and the separate automatic public product catalogue.
 
@@ -71,15 +71,15 @@ private rejection with no-store responses, frontend-origin GET/POST preflight an
 unchanged reviewed knowledge receipt hashes. Health readiness still reports external
 provider connectivity as `not_checked`; it is not a generic live-provider guarantee.
 
-## Remaining publication gates
+## Publication completed
 
-- Complete the production receipt with the original implementation SHA,
-  exact deployment identity and read-only recheck evidence. Keep tokens, passwords
-  and private IDs out of tracked proof.
-- Push documentation closure independently on `main`. Record its own commit/deployment
-  and verify any replacement deployment; do not rewrite historical implementation proof.
-- Publish backend source release separately from frontend. Do not rebuild
-  Android/iOS binaries for this backend version.
+- The production receipt records the original implementation SHA, exact deployment
+  identity and thirteen fresh read-only hosted checks, without private IDs or credentials.
+- Documentation closure `ec705685be7b847f536b0f44796604e283a6c79a` was pushed
+  independently on `main`; its replacement deployment `dpl_FpP3m5en3A1RVxwakB2HqQ8iwqt5`
+  reached READY and the canonical health/meta/OpenAPI endpoints were rechecked.
+- [Backend v0.7.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0)
+  was published against the verified implementation SHA. No APK/IPA was rebuilt.
 
 Frontend v0.2.0 release work resumes only after this backend publication. Its
 four-tab bottom bar is Home/Scan/Compare/Saved; Profile stays at the top right.

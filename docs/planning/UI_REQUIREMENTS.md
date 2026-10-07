@@ -1,8 +1,8 @@
 # Unlabel UI and interaction requirements
 
 Frontend **v0.1.0+2 Connected Label Reader** is independently published.
-Frontend **v0.2.0 Welcome, Home and Optional Login** is implemented with full
-render/test/build/push/hosted gates pending. The supplied light/dark
+Frontend **v0.2.0+3** is locally tested; independent push/hosted/publication gates
+are active. The supplied light/dark
 [references](../../design/references/README.md) set the forest/mint and charcoal
 direction; scores, sample foods and verdicts remain illustrative.
 First-use appearance is light. Cute generated artwork decorates the app without
@@ -15,10 +15,11 @@ impersonating actual package images. Native camera/icon switching remain separat
 | --- | --- |
 | Welcome | Cute first-launch screen with Continue and no forced login; local completion sends returning users straight to Home |
 | Home | Reference-style light/dark cards, real recent records/empty states, Start Scan, barcode/search and working educational/source destinations |
-| Navigation | Five bottom tabs: Home, Scan, Compare, Saved, Profile; Scan retains useful manual/search paths pending camera/OCR |
+| Navigation | Floating Home/Scan/Compare/Saved bar; top-right Profile; draggable active selection |
+| Scan | Non-scrolling camera/gallery capture and manual review, centered back/title/gallery header and front/back/barcode modes; local OCR and automatic barcode decoding follow in v0.3.0 |
 | Profile | Optional password sign-in/create/reset, display name, private sync/status/conflict choices, clear/sign out; guests continue freely |
 | Compare | Select actual saved/history/lookup reports, compatible-basis numeric rows and unknown/incompatible states; no universal healthier winner |
-| Product lookup | Manual barcode or submitted name/brand query; explicit candidates show barcode/brand/quantity; bounded Show more; empty/broad/unavailable states stay distinct |
+| Product lookup | Manual barcode or live name/brand search replacing the header; debounced results show actual photo/identity and open their report; bounded paging and empty/broad/unavailable states stay distinct |
 | Current-label form | Enter printed identity, table rows/basis/preparation, declarations and claims; confirm current facts and pairing; keep blanks unknown and draft retry identity stable |
 | Report | Show current versus historical evidence, nutrient units/bases, approximate total-sugar cubes, scoped claim outcomes, missing/conflicting facts and source references |
 | Ingredient insights | Original matched terms and three reviewed English/Hindi technological functions; unknown terms do not get invented explanations |
@@ -35,6 +36,8 @@ presents historical selection as confirmation of the current package.
 Use bounded content widths and natural-height cards. At narrow widths and
 enlarged text, actions and nutrient content reflow instead of shrinking. App bars,
 safe areas and vertical scrolling keep the same reading order in landscape.
+Scan alone fits the viewport without scrolling and adapts its camera/control
+columns for short landscape or enlarged text.
 Phone, tablet and desktop share real Material 3 controls and semantic colors.
 Solar feature icons are bundled locally; ordinary navigation/form controls use
 Material icons consistently. Bundled Nunito and local icons avoid remote font/icon requests.
@@ -48,7 +51,8 @@ Inputs have visible labels and Enter submits lookup. Keyboard focus and native
 button/dialog semantics remain intact. Progress reflects active requests, without
 invented percentages. Screen-reader announcements identify loading/results.
 Touch controls retain useful hit areas and separation. Section titles expose
-heading semantics. Two-times text and small landscape sizes stay scrollable.
+heading semantics. Two-times text and small landscape sizes remain reachable;
+ordinary report/form pages scroll, while Scan adapts within the viewport.
 
 Widget checks cover 320/390 mobile, 768 tablet, 1440/1728 desktop and landscape
 sizes in light/dark, enlarged text, request staleness, source boundaries and local

@@ -22,9 +22,9 @@ white, forest-green and mint design, with light as the first-use default.
 ## What works
 
 **Backend v0.6.0 and frontend v0.1.0+2 are independently published.**
-**Backend v0.7.0 Private Account Sync is implemented and ready to push; hosted
-verification remains pending. Frontend v0.2.0 Welcome, Home and Optional Login is
-implemented with release validation pending.**
+**Backend v0.7.0 Private Account Sync is independently published and hosted-verified.
+Frontend v0.2.0+3 is locally tested; its separate push, hosted verification and
+publication are the active release gates.**
 [Version checklists](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 - Enter a barcode or search name/brand words and choose an exact catalogue record.
@@ -34,8 +34,9 @@ implemented with release validation pending.**
   three reviewed English/Hindi ingredient functions where evidence permits.
 - Continue as a guest with device-local saved reports/history, or optionally sign in
   to sync a private account display name, saved reports and history across devices.
-- Use first-launch Welcome, light/dark Home and Home/Scan/Compare/Saved/Profile navigation;
-  v0.2.0 working destinations await their full release validation.
+- Use first-launch Welcome, compact light/dark Home and floating Home/Scan/Compare/Saved
+  navigation, with Profile at the top right.
+- Capture a private camera/gallery photo and review it beside manual label entry.
 - Save confirmed public package facts automatically to improve the shared catalogue.
 
 Guests do not upload personal history or saved lists. Password accounts use a
@@ -45,10 +46,10 @@ raw OCR and dietary health preferences are excluded from private sync. Public fa
 use anonymous or signed-in scanner authentication; there are no admin/reviewer app accounts. Storage failure does not discard
 the useful report. [Privacy and evidence](docs/SAFETY_PRIVACY.md).
 
-Camera/gallery OCR, live highlights, personal suitability, wider reviewed insight
-coverage and the remaining reference-style results screens stay tracked. v0.2.0
-adds compatible-basis client comparison and sourced educational destinations;
-their rendered/release validation remains pending. Concept-image scores are illustrative;
+Automatic barcode reading, local OCR, live highlights, personal suitability and
+wider reviewed insight coverage stay tracked. v0.2.0 includes live header search,
+reference-style reports, compatible-basis client comparison and manually swiped tips.
+Concept-image scores are illustrative;
 the app does not invent a universal health or allergy-safety verdict.
 [20-group feature tracker](docs/planning/FEATURE_TRACKER.md).
 

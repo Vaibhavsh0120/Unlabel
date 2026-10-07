@@ -3,17 +3,17 @@
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently published and hosted-verified:
+**931 tests passed, five emulator-only skips**, clean Ruff/Pyright, 18 hosted
+synthetic checks and 13 fresh read-only checks. Frontend **v0.2.0+3** is locally
+tested; its independent push, hosted verification and publication remain active.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 
 [Current account/screen plan](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) ·
 [Private sync architecture](architecture/PRIVATE_ACCOUNT_SYNC.md) ·
 [Backend v0.7.0 review](planning/BACKEND_V0_7_0_REVIEW.md) ·
+[Frontend v0.2.0 review](planning/FRONTEND_V0_2_0_REVIEW.md) ·
 [Frontend v0.1.0 production proof](research/FRONTEND_V0_1_0_PRODUCTION.json).
 Native camera/OCR, installability and launcher switching remain separate gates.
 

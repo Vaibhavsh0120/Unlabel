@@ -125,7 +125,7 @@ was published separately. Frontend v0.1.0+2 independently passed its rendered/pu
 Implementation `1138c292296ae6c9309d73d430d267ec1a98fa80` has dated
 [production asset/browser proof](../research/FRONTEND_V0_1_0_PRODUCTION.json).
 Backend v0.7.0 source is already pushed and hosted-verified as described below;
-its GitHub publication/documentation closure remain pending. Frontend v0.2.0
+Backend v0.7.0 is independently published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0). Documentation closure commit ec70568 also reached READY without API source changes. Frontend v0.2.0
 full release checks remain pending.
 [Production proof](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
 [Review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).
@@ -157,7 +157,7 @@ unchanged v0.6 paths/components, unauthenticated private rejection, frontend COR
 and the reviewed knowledge receipt hashes. Health's provider connectivity remains
 `not_checked`, separate from the scoped synthetic provider evidence.
 
-GitHub v0.7.0 publication and documentation closure remain pending. A later
+Backend v0.7.0 is independently published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0). Documentation closure commit ec70568 also reached READY without API source changes. A later
 documentation-only closure commit has its own SHA/deployment and must not replace
 the original implementation evidence. Verify any replacement deployment separately.
 Frontend v0.2.0 resumes after backend publication and must complete its own full

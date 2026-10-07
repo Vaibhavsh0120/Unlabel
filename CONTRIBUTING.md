@@ -1,12 +1,15 @@
 # Working on Unlabel
 
-Published backend is **v0.6.0 Product Discovery**; frontend **0.1.0+2 Connected Label Reader** is implemented with final rendered/release gates pending. Backend tests/static/build and 23 hosted checks passed before separate publication; the configured free Firebase resources are unchanged. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
+Published backend is **v0.7.0 Private Account Sync**; frontend **v0.1.0+2** remains
+historically published and **v0.2.0+3** is the active locally tested release.
+Backend v0.7.0 passed 931 tests, five emulator-only skips, static checks and its
+separate hosted gates. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
 Latest direction automatically saves confirmed public facts and stages unverified
-candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/BACKEND_V0_6_0_REVIEW.md).
+candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/CONTROLLED_RELEASES.md).
 Keep ₹0/no-card, review Markdown/scripts and update docs before a future push.
 
-Next accepted work adds optional scanner login/private sync, first-launch Welcome,
-five-tab navigation and reference-style light/dark screens in separate versions.
+The active frontend adds optional scanner login/private sync, first-launch Welcome,
+four-tab navigation with top-right Profile and reference-style light/dark screens.
 Guests keep personal records local; signed-in sync remains private and separate
 from automatic public facts. [Next version boundaries](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 

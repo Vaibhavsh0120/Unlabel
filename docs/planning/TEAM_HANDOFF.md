@@ -11,11 +11,13 @@ the tracked India source and builds the current discovery index with progress.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
+Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
+and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
+18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
+preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
+Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
+135 tests and clean analysis passed; the user authorized its separate push and
+release after documentation and hosted verification.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 [Current account checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) ·
@@ -31,10 +33,10 @@ Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app).
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
 [Deployment configuration](VERCEL_SETUP.md).
 
-Next accepted backend v0.7.0/frontend v0.2.0 adds optional scanner login/private
-sync and completes all visible reference-style destinations one screen at a time,
-beginning with Home. Guests retain local features; public package facts remain
-separate. [Accepted next scope](ACCOUNT_SYNC_SCREEN_PLAN.md).
+Implemented backend v0.7.0/frontend v0.2.0 adds optional private account sync,
+Welcome/Home and four-tab navigation with top-right Profile. Finish their independent release gates
+before frontend v0.3.0 adds local OCR/barcode decoding and Ingredient Insights. Guests
+retain local features; public package facts remain separate. [Version checklist](ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## What the person can do
 
@@ -46,7 +48,7 @@ The dedicated label form accepts the current package's identity, claims,
 ingredient/allergen declarations and nutrient rows with printed basis/unit/
 preparation. Independent confirmation/pairing precedes analysis. An unchanged
 retry keeps its submission ID; changing facts creates a fresh submission.
-Structured public facts save automatically through anonymous scanner Auth.
+Structured public facts save automatically through anonymous guest or password scanner Auth.
 Storage/auth failures are distinct from the useful report outcome.
 
 Reports show sourced current/historical facts, approximate original-basis sugar
@@ -55,9 +57,10 @@ functions. The person can explicitly bookmark a report and reopen bounded privat
 device-local saved/history lists. Appearance uses the owner's white/forest/mint
 direction, real Material 3 controls and locally licensed Solar icons.
 
-Camera/gallery/OCR, dietary suitability, AI calls, training and fake 85/100 scores
-remain outside this release. v0.2.0 client comparison and sourced educational
-destinations are implemented with validation pending. Native device validation remains
+Basic camera/gallery capture and manual review are included in v0.2.0. Local OCR,
+automatic barcode decoding, dietary suitability, AI calls, training and fake 85/100
+scores remain outside it. Reference reports, client comparison and sourced educational
+destinations are implemented and locally tested. Native device validation remains
 separate from the web/widget checks.
 
 ## Integration and ownership
@@ -65,7 +68,7 @@ separate from the web/widget checks.
 | Area | Current implementation |
 | --- | --- |
 | Client composition | frontend/lib/app, one Flutter app for Android/iOS/web |
-| Client data | core/models, network and storage: bounded validation/HTTP, cached metadata handshake, lazy anonymous Auth and local persistence |
+| Client data | core/models/network/storage/accounts: bounded HTTP, metadata handshake, SDK-owned anonymous/password Auth, isolated guest/account libraries and private CAS sync |
 | Client pages | features/scanner/presentation: home, lookup, form, report, ingredient detail, saved/history |
 | Backend discovery | app/catalogue/search.py and optional indexed SQLite tables; no upstream search call |
 | Report | app/reports and existing report routes; sources/dates/unknowns retained |

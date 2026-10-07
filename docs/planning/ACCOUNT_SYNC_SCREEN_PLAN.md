@@ -1,8 +1,8 @@
 # Next accepted account and screen releases
 
 Accepted user steering: **7 October 2026**. Frontend v0.1.0+2 and backend v0.6.0
-are independently published. Backend v0.7.0 source is pushed and hosted-verified; publication closure is active;
-frontend v0.2.0 is implemented with release validation pending. Continue to review, push and verify
+are independently published. Backend v0.7.0 source is pushed and hosted-verified; publication is complete;
+frontend v0.2.0 has 135 passing Flutter tests, clean analysis and a release web build; hosted/publication gates follow. Continue to review, push and verify
 **each version separately**: backend v0.7.0, frontend v0.2.0, then frontend v0.3.0.
 Preserve historical source tags; backend/tooling work does not rebuild APK/IPA.
 
@@ -24,7 +24,7 @@ records while guest scanning and automatic public-product facts continue to work
 - [x] Export additive contracts and test old clients, authentication, ownership,
   quotas, deletion/conflicts, scripts, environment and Markdown.
 - [x] Push and hosted verification: source 9d9a9b6 and 18 hosted synthetic checks; test identities deleted and private snapshots cleared.
-- [ ] Complete independent GitHub publication after refreshed validation/documentation.
+- [x] Independent GitHub v0.7.0 publication completed on 7 October after refreshed validation/documentation.
 
 ## Frontend v0.2.0 — Welcome, Home and Optional Login
 
@@ -36,9 +36,8 @@ make navigation useful. Implement/review one screen at a time.
 - [x] Reference-style Home: forest/mint light, near-black/charcoal dark, rounded
   cards, warm decorative art and actual recent records or useful empty states.
 - [x] Four bottom destinations: **Home, Scan, Compare, Saved**; Profile at the top right of main screens. Every visible
-  action opens a working flow. Until the v0.3.0 redesign, Scan uses existing manual
-  lookup/corrected entry and Compare must use a useful implemented selection/facts
-  flow; never leave a stale/disabled comparison button or fabricated result.
+  action opens a working flow. Later user steering adds basic camera/gallery/manual review, live header
+  search and reference Results/Compare to v0.2.0; never leave a stale/disabled comparison button or fabricated result.
 - [x] Optional scanner sign-in/create account/profile, sync state, sign out and
   deletion controls. Guest workflows stay usable with personal records local.
 - [x] Keep public corrected-package intake separate from personal account sync.
@@ -81,3 +80,5 @@ camera behavior cannot be inferred from a web build.
 
 [Controlled release order](CONTROLLED_RELEASES.md) · [Current release plan](CONNECTED_RELEASE_PLAN.md) · [Tracker](FEATURE_TRACKER.md)
 · [Interface contract](../../DESIGN.md) · [Safety/privacy](../SAFETY_PRIVACY.md).
+
+Latest accepted camera/screen scope and evidence: [frontend v0.2.0 review](FRONTEND_V0_2_0_REVIEW.md).

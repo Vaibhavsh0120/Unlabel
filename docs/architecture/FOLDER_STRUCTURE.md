@@ -4,8 +4,8 @@ The root is the shared product repository. It coordinates the frontend, backend,
 
 | Root folder | Use |
 | --- | --- |
-| frontend | The single Flutter Android/iOS/web app; v0.1.0+2 connected manual flows implemented, final rendered/release gates pending |
-| backend | FastAPI v0.6.0 product/nutrition/claims/report/discovery plus immutable OFF facts and community observations; independently hosted-verified and published |
+| frontend | Single Flutter Android/iOS/web app; v0.1.0+2 published; v0.2.0 Welcome/Home/optional account/navigation implemented with release gates pending |
+| backend | v0.7.0 independently pushed, hosted-verified and published; adds strict private account sync |
 | knowledge | Canonical reviewed ingredients, rules, sources and translations |
 | contracts | Shared API schemas/examples and compatibility policy |
 | data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
@@ -23,6 +23,8 @@ Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore prote
 | --- | --- |
 | lib/main.dart | Flutter entry point |
 | lib/app | App composition, real Material 3 theme, persistent light-default appearance, web appearance bridge and public build/Firebase configuration |
+| lib/core/accounts | SDK password auth, strict private snapshot/CAS API, isolated UID-specific local store and safe sync controller |
+| lib/features/account/presentation | Optional sign-in/create/reset/Profile, sync state/conflict choices, sign out and clear controls |
 | lib/core/models | Implemented validated report/search/failure models and corrected label draft; capture geometry remains reserved |
 | lib/core/camera, ocr | Future native/browser capture, OCR and geometry adapters |
 | lib/core/analysis, knowledge | Future report models/presentation, evidence/version status and optional local glossary |
@@ -32,13 +34,13 @@ Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore prote
 | lib/features/analysis | Future findings, evidence and charts |
 | lib/features/preferences | Future local dietary/allergy choices |
 | lib/features/ingredient_details | Future ingredient explanations and source details |
-| lib/features/history, comparison | Reserved feature modules; current saved/history lives in scanner/presentation; comparison is next accepted scope |
+| lib/features/history, comparison | Reserved feature modules; current saved/history lives in scanner/presentation; compatible-basis comparison is implemented in scanner/presentation with validation pending |
 | features/*/presentation | Views/view models |
 | features/*/data | Feature repositories/adapters |
 | android | Generated Android Gradle, manifest and resources |
 | ios | Generated Xcode project, orientations and resources |
 | web | Flutter web bootstrap, appearance.js and light/dark favicon/touch/manifest icons; not React |
-| assets/images, icons | Bundled licensed Solar feature icons; image art remains next screen scope |
+| assets/icons, artwork | Bundled licensed Solar feature icons and generated decorative artwork for Welcome/Home; no fake product records |
 | assets/brand | Authored light/dark app-icon masters, verification manifest and generated native/web resources |
 | assets/knowledge, l10n | Future derived bundles and reviewed bilingual content |
 | test/unit, test/widget | Current core_data_test.dart, label_entry_test.dart and widget_test.dart cover data/form/responsive behavior; nested folders remain reserved |
@@ -53,7 +55,8 @@ Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and priv
 
 | Path | Responsibility / implementation status |
 | --- | --- |
-| app/main.py | App composition/lifespan, nineteen released v0.6.0 routes; independent source activation and redacted failures; historical routes/components preserved |
+| app/main.py | App composition/lifespan, twenty v0.7.0 paths/twenty-one operations; independent source activation and redacted failures; historical routes/components preserved |
+| app/accounts/, app/api/v1/accounts.py | Strict private profile/saved/history snapshots, password ownership, CAS retries/clear and separate free-tier admission |
 | app/reports/, app/api/v1/reports.py | Implemented current/historical report composition, independent storage outcomes, original-basis sugar cubes and bounded three-entry glossary |
 | app/api/v1/claims.py | Implemented confirmed claim checks, loaded rules and public evidence metadata |
 | app/claims | Strict claim models, numerical engine, bounded reviewed knowledge loader and receipt-verified bundle builder |

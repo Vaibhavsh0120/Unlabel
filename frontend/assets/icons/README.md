@@ -1,6 +1,6 @@
 # Solar linear icons
 
-Five original Solar SVGs by **480 Design**, obtained through Better Design's
+Sixteen original Solar SVGs by **480 Design**, obtained through Better Design's
 Iconify-backed installer on 7 October 2026. Original paths are unchanged;
 the app applies theme colors and scaling at render time.
 

@@ -1,27 +1,33 @@
 # Website and shared API deployment plan
 
-Updated **7 October 2026**. Production **v0.6.0 Product Discovery** is independently
-reviewed, pushed, hosted-verified and published after v0.5.0/v0.4.0. Nineteen APIs
-retain original lookup/normalization/claim/community/report boundaries and add
-bounded name/brand discovery. Flutter **0.1.0+2** implements manual lookup,
-corrected label entry, reports and local libraries with final rendered/release
-gates pending; camera/OCR and native device behavior remain separate. Firebase's
-first Standard database `unlabel` in Mumbai retains free tier/no linked billing,
-anonymous Auth and denied direct client access. Optional scanner login/private
-sync is accepted only for the next v0.7.0/v0.2.0 scope.
-[Current review](../planning/BACKEND_V0_6_0_REVIEW.md) ·
-[23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
-[Next plan](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
-Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
+Updated **7 October 2026**.
+
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
+and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
+18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
+preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
+Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
+release validation and user preview review are required before its push.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+
+Firebase's first Standard database `unlabel` in Mumbai stays on its free tier
+without linked billing. Anonymous/email-password Auth and deny-all client rules
+are configured. Private sync has no paid fallback and remains separate from public
+facts. Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
+[Current version gates](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Project boundaries
 
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published v0.6.0 OFF/normalization/claims/snapshot/community/report/glossary/discovery APIs; independently hosted-verified. |
-| Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous Auth/rules/IAM; automatic observations, private staging and qualified review. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published v0.7.0 OFF/normalization/claims/snapshot/community/report/glossary/discovery/private sync APIs; independently hosted-verified. |
+| Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous/email-password Auth/rules/IAM; automatic public observations plus separately bounded private account snapshots; live synthetic checks passed, hosted v0.7.0 checks and publication completed. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
 Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).

@@ -2,8 +2,9 @@
 // ignore_for_file: prefer_initializing_formals
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import '../accounts/account_auth.dart';
 
 abstract interface class ScannerAuth {
   /// Null means automatic authentication is unavailable; analysis still runs.
@@ -17,7 +18,8 @@ class UnavailableScannerAuth implements ScannerAuth {
 }
 
 /// The Firebase SDK owns credentials and token refresh. The app never writes
-/// tokens to its report/history preferences, and creates only anonymous users.
+/// tokens to its report/history preferences. Guests use anonymous credentials;
+/// signed-in scanner users retain their SDK-managed password session.
 class SingleFlightScannerAuth implements ScannerAuth {
   SingleFlightScannerAuth({
     required Future<String?> Function() resolve,
@@ -43,17 +45,15 @@ class FirebaseScannerAuth extends SingleFlightScannerAuth {
     : super(resolve: () => _sdkToken(options));
 
   static Future<String?> _sdkToken(FirebaseOptions options) async {
-    final app = Firebase.apps.isEmpty
-        ? await Firebase.initializeApp(options: options)
-        : Firebase.app();
-    if (app.options.projectId != options.projectId ||
-        app.options.appId != options.appId) {
+    final auth = await resolveAccountFirebaseAuth(options);
+    var user = auth.currentUser;
+    if (user != null &&
+        !user.isAnonymous &&
+        !user.providerData.any(
+          (provider) => provider.providerId == 'password',
+        )) {
       return null;
     }
-    final auth = FirebaseAuth.instanceFor(app: app);
-    var user = auth.currentUser;
-    // An unrelated non-anonymous identity is never reused for scanner writes.
-    if (user != null && !user.isAnonymous) return null;
     user ??= (await auth.signInAnonymously()).user;
     return user?.getIdToken();
   }

@@ -6,8 +6,19 @@
   "icons": [
     "barcode-linear",
     "bookmark-linear",
+    "cup-linear",
     "document-text-linear",
+    "dumbbell-linear",
+    "fire-linear",
+    "gallery-linear",
     "history-linear",
-    "leaf-linear"
+    "home-linear",
+    "leaf-linear",
+    "lightbulb-linear",
+    "magnifer-linear",
+    "scanner-linear",
+    "shield-linear",
+    "stars-linear",
+    "user-linear"
   ]
 }

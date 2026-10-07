@@ -5,11 +5,14 @@ Checkpoint: **7 October 2026**.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently published. Backend **v0.7.0 Private Account Sync** source
 `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed and hosted-verified;
-its independent publication/documentation closure is the active release goal.
+its independent GitHub release is published. Frontend v0.2.0 is now the active release goal.
 Prior full-suite evidence is **931 passed / five emulator-only skips** and
 **18 hosted synthetic checks**; a fresh validation pass is recorded in its review.
-Frontend **v0.2.0+3** has uncommitted Welcome/Home/accounts/four-tab work;
-**v0.3.0+4** capture and screen fragments are preserved for the following release.
+Frontend **v0.2.0+3** now has locally verified Welcome/Home/accounts, four tabs,
+live header search, reference Results/Compare and basic private camera/gallery capture.
+Fresh evidence: **135 Flutter tests**, clean analysis, release web build and 42 verified
+icon assets. Push/publication is authorized. Local OCR, automatic barcode reading
+and Ingredient Insights remain **v0.3.0+4** work preserved in the recovery snapshot.
 Guests remain local; signed-in private records and public package facts stay separate.
 
 Follow [controlled releases](CONTROLLED_RELEASES.md): work on main only, finish
@@ -31,19 +34,19 @@ sample products and health verdicts are illustrative.
 | ID | Feature / screen | Backend current | Frontend current / remaining |
 | --- | --- | --- | --- |
 | F01 | Barcode identity / Home, Scan | Ready: live and exact snapshot routes | Manual barcode entry/report integrated; camera barcode capture remains pending |
-| F02 | Search / Home | Ready: released v0.6.0 bounded indexed discovery | Name/brand search, paging and explicit selection published in frontend v0.1.0; v0.2.0 navigation validation pending |
+| F02 | Search / Home | Ready: released v0.6.0 bounded indexed discovery | Name/brand search, paging and explicit selection published in frontend v0.1.0; v0.2.0 live header search and whole-result report links locally verified |
 | F03 | Photos / Results, Compare | Ready: official attributed URL descriptors | Official attributed image/fallback used for actual records; cute generated artwork is decorative and cannot impersonate a scanned product |
 | F04 | Nutrition and normalization / Results | Ready | Corrected rows, original basis/unit/preparation and report tables implemented; OCR intake pending |
 | F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0–100 health score |
-| F06 | Unified report/reasons / Results | Ready: released v0.5.0 | Current/historical sourced reports implemented; reference-style analysis screen is next UI work |
+| F06 | Unified report/reasons / Results | Ready: released v0.5.0 | Current/historical sourced reports implemented; reference-style analysis screen locally verified in v0.2.0 |
 | F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Manual identified claims, correction and scoped verdicts implemented; broader claims remain insufficient |
 | F08 | Ingredient explanations / Ingredients | Partial: three reviewed English/Hindi name/function entries | Expandable sourced functions implemented; full ingredient-screen layout and wider reviewed coverage pending |
 | F09 | Allergens/traces / Scan, Ingredients | Ready: source availability and declarations | Confirmed declaration input and sourced report display implemented; no absence/safety inference |
 | F10 | Personal suitability / Results | Planned | Dietary/allergy choices and neutral reasons pending; optional sync must preserve private ownership |
-| F11 | Comparison / Compare | Planned | Implemented client selection and compatible-basis facts comparison; validation pending; complete reference-style redesign in v0.3.0; no universal healthier verdict |
+| F11 | Comparison / Compare | Planned | Reference-style paired cards and compatible-basis facts comparison locally verified in v0.2.0; server comparison remains planned; no universal healthier verdict |
 | F12 | Sugar visualization / Results | Ready: released v0.5.0 | Approximate 4 g/cube total-sugar view with original basis implemented; added sugar stays distinct |
 | F13 | Reviewed insights / Home | Planned | Implemented educational list/detail destinations with source/applicability; validation pending; no fabricated health advice |
-| F14 | Front/back and gallery / Scan | Client-owned | Camera/gallery capture, correct-side pairing and permissions pending; current manual path works |
+| F14 | Front/back and gallery / Scan | Client-owned | Basic camera/gallery capture, permissions, retry and manual photo review locally verified in v0.2.0; automatic reading and measured device accuracy remain v0.3.0 |
 | F15 | OCR/live highlights / Scan | Client-owned; confirmed rows accepted | Local OCR/table interpretation, boxes and correction pending; real-device accuracy unverified |
 | F16 | Saved products / Home | Client-owned; private sync implemented | Bounded bookmarks/reopening/removal implemented; guests local, signed-in UID-specific private sync implemented with validation pending |
 | F17 | History / Home | Client-owned, currently local | Bounded dated history/clearing implemented; guest/account isolation and optional private sync implemented with validation pending |
@@ -51,7 +54,7 @@ sample products and health verdicts are illustrative.
 | F19 | Responsive/light/dark / All | Client-owned | Responsive Material 3, light first-use default and local appearance persistence implemented; final visual review/native icon checks separate |
 | F20 | Attribution/age/version / All | Ready | Metadata/source/date/evidence/build information and working source-detail destination implemented; rendered validation pending |
 | C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
-| C02 | Optional scanner account/private sync | v0.7.0 pushed and hosted-verified; 931 passed/5 skips and 18 hosted synthetic checks; publication closure active | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; full release validation pending |
+| C02 | Optional scanner account/private sync | v0.7.0 pushed and hosted-verified; 931 passed/5 skips and 18 hosted synthetic checks; independently published | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; 135 tests, clean analyzer and web build passed; hosted/publication gates pending |
 
 ## Component releases
 
@@ -63,7 +66,7 @@ sample products and health verdicts are illustrative.
 | Backend v0.5.0 | Useful Label Report | Independently published; reports, approximate sugar and three-entry glossary; [review](BACKEND_V0_5_0_REVIEW.md) |
 | Backend v0.6.0 | Product Discovery | Published after 863 passed / 5 emulator skips and 23 hosted checks; [review](BACKEND_V0_6_0_REVIEW.md) |
 | Frontend v0.1.0+2 | Connected Label Reader | Independently published exact commit 1138c292296ae6c9309d73d430d267ec1a98fa80; production assets/browser proof recorded |
-| Backend v0.7.0 | Private Account Sync | Pushed and hosted-verified source 9d9a9b6; publication closure active; 931 passed/5 skips plus 18 hosted synthetic checks; [review](BACKEND_V0_7_0_REVIEW.md) |
+| Backend v0.7.0 | Private Account Sync | Pushed and hosted-verified source 9d9a9b6; independently published; 931 passed/5 skips plus 18 hosted synthetic checks; [review](BACKEND_V0_7_0_REVIEW.md) |
 | Frontend v0.2.0 | Welcome, Home and Optional Login | Implemented Welcome/Home/account/four-tab navigation and useful destinations; full test/render/build/push/hosted gates pending |
 | Frontend v0.3.0 | Complete Scan and Food Screens | Accepted following frontend release; redesign Scan, Compare, Results, Ingredient and supporting destinations one screen at a time |
 

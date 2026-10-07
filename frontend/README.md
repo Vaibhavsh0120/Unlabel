@@ -1,9 +1,10 @@
 # Flutter frontend
 
-Frontend **0.1.0+2 — Connected Label Reader** replaces the starter with a working
-Flutter client. Backend **0.6.0 — Product Discovery** adds bounded catalogue
-search and is independently published with 23 hosted checks after v0.5.0. Local implementation is present; final layout/test, browser, publication and native-device evidence are separate gates in
-the [connected release plan](../docs/planning/CONNECTED_RELEASE_PLAN.md).
+Frontend **0.2.0+3 — Welcome, Home and Optional Account** is implemented locally
+and locally verified; docs/push/publication are authorized after final review.
+Published frontend **0.1.0+2** remains the production release. Backend
+**0.7.0 — Private Account Sync** is independently pushed, hosted-verified and
+published. Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
 
 One application directly in this folder targets Android, iOS and web. The
 website is [unlabel-india.vercel.app](https://unlabel-india.vercel.app); its shared
@@ -25,18 +26,30 @@ Vercel projects. See [deployment settings](../docs/planning/VERCEL_SETUP.md).
   Share flag or admin/reviewer account.
 - Device/browser-local recently viewed history and explicit bookmarks, removal,
   history clearing, bounded storage and readable persistence/recovery errors.
+- First-use Welcome, reference-style Home, four Home/Scan/Compare/Saved tabs,
+  top-right Profile, optional password sign-in and isolated private sync with
+  explicit conflict choices. Guest records remain device-local.
+- Compatible-basis product comparison, sourced Insights and Sources destinations.
 - White/forest/mint Material 3 appearance, Light (default)/Dark/System selection, reflow for
-  narrow screens and large text, and locally bundled Solar icons with attribution.
+  narrow screens and large text, charcoal dark surfaces, filled-leaf branding and
+  locally bundled Solar feature icons with attribution. Seven decorative artwork assets
+  have recorded provenance; gentle motion respects accessibility and visibility.
+- Navigation and confirmed save feedback, with harmless unsupported haptics.
 
-Camera, image selection/OCR, live highlighting, comparison, personal suitability
-and insight feeds remain future work. There are no non-working buttons for them.
+Opening Scan requests camera permission and shows the live feed in an adaptive,
+non-scrolling viewport. Camera/gallery photos stay in session memory for manual
+review; audio and uploads are disabled. Search updates as you type and opens
+actual reports. Home tips are manually swiped, with no autoplay/pause controls.
+Reference-style Results/Compare use sourced evidence instead of illustrative scores.
+Local OCR, automatic barcode reading and Ingredient Insights complete the separate
+frontend v0.3.0 release. Continuous live-camera highlighting, personal suitability
+and broader ingredient knowledge remain future work.
 A stored report can be reopened without a fresh API request while the app is
 loaded; first-visit offline website availability is not established.
 
-The [next accepted v0.7.0/v0.2.0 plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md)
-adds first-launch Welcome, complete reference-style light/dark screen destinations
-and optional scanner login/private sync. This does not change the current
-v0.1.0 boundary: personal data stays local, and public package facts save separately.
+The [account and screen plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md)
+retains independent version boundaries. Personal records sync only after optional
+password sign-in; public structured package facts save separately.
 
 ## Run and check
 
@@ -76,8 +89,8 @@ iOS distribution.
 | test | Network/model/storage, form and responsive interaction regressions |
 | android, ios, web | Platform projects for the same Flutter application |
 
-Reserved camera/OCR, preference/comparison, knowledge and localization folders
-remain plans. The backend owns deterministic criteria; the client does not
+OCR and automatic barcode reading remain the next controlled release. Broader preferences, knowledge and
+localization remain plans. The backend owns deterministic criteria; the client does not
 reimplement FSSAI thresholds or train a model.
 
 [UI requirements](../docs/planning/UI_REQUIREMENTS.md) ·

@@ -3,7 +3,7 @@
 The [20-group tracker](FEATURE_TRACKER.md) tracks the five supplied concept screens
 without treating each group as equally sized. The [connected release plan](CONNECTED_RELEASE_PLAN.md)
 selects backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label
-Reader** as independently published releases. Backend v0.7.0 private sync is implemented with 931 tests/5 emulator skips and 18 live Firebase checks; push/hosted/publication are pending. Frontend v0.2.0 Welcome/Home/optional account/5-tab navigation and useful destinations are implemented with release verification pending. Frontend v0.3.0 completes remaining reference-style screens separately. [Current checklist](ACCOUNT_SYNC_SCREEN_PLAN.md).
+Reader** as independently published releases. Backend v0.7.0 private sync is pushed, hosted-verified and published with 931 tests/5 emulator skips, 18 hosted synthetic checks and 13 fresh read-only hosted checks. Frontend v0.2.0 Welcome/Home/optional account/four-tab navigation and top-right Profile and useful destinations are implemented with release verification pending. Frontend v0.3.0 completes remaining reference-style screens separately. [Current checklist](ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Implemented connected slice
 
@@ -14,7 +14,7 @@ Reader** as independently published releases. Backend v0.7.0 private sync is imp
 | Current-label entry | Independently transcribe identity/declarations/rows/claims; preserve unknowns and units/basis; confirm front/back/pairing before submitting |
 | Useful report | Current versus historical evidence, nutrition, approximate 4 g/cube total-sugar view, scoped claim checks and missing/conflicting facts |
 | Ingredient detail | Three reviewed English/Hindi technological-function entries and original matched text; unmatched does not mean dangerous or safe |
-| Automatic catalogue enrichment | Confirmed structured facts save through anonymous scanner Auth; exact retries deduplicate; storage outcomes do not discard analysis |
+| Automatic catalogue enrichment | Confirmed structured facts save through anonymous guest or password scanner Auth; exact retries deduplicate; storage outcomes do not discard analysis |
 | Private saved/history | Recently viewed snapshots, explicit bookmarks/removal and independent list clearing; bounded device/browser guest storage; optional password accounts use a separate private CAS snapshot, never automatic guest import |
 | Appearance | Responsive Material 3 white/forest/mint light (default)/dark/system UI with saved local choice, visible recovery and icon attribution |
 

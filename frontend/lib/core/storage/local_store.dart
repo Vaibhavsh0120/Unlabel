@@ -69,14 +69,35 @@ class LocalStore {
   static const historyKey = 'unlabel.client.v1.history';
   static const savedKey = 'unlabel.client.v1.saved';
   static const appearanceKey = 'unlabel.client.v1.appearance';
+  static const welcomeKey = 'unlabel.client.v1.welcomeDone';
   static const maxReportBytes = 256 * 1024;
   static const maxNamespaceBytes = 2 * 1024 * 1024;
   static const maxHistory = 100;
   static const maxSaved = 50;
   final PreferencesAdapter _preferences;
+  PreferencesAdapter get preferences => _preferences;
   final DateTime Function() _clock;
   Future<void> _tail = Future.value();
   String? recoveryWarning;
+
+  Future<bool> welcomeCompleted() => _serial(() async {
+    try {
+      return await _preferences.read(welcomeKey) == '1';
+    } catch (_) {
+      return false;
+    }
+  });
+
+  Future<void> completeWelcome() => _serial(() async {
+    try {
+      await _preferences.write(welcomeKey, '1');
+    } catch (_) {
+      throw const AppFailure(
+        'local_storage',
+        'Welcome could not be remembered on this device. You can still use the app.',
+      );
+    }
+  });
 
   Future<String> appearance() => _serial(() async {
     try {

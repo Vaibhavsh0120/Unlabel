@@ -5,19 +5,22 @@ Delivery checkpoint: **7 October 2026**.
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently published. Backend **v0.7.0 Private Account Sync** source
 `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed and hosted-verified;
-its independent publication/documentation closure is the active release goal.
+its independent GitHub release is published. Frontend v0.2.0 is now the active release goal.
 Prior full-suite evidence is **931 passed / five emulator-only skips** and
 **18 hosted synthetic checks**; a fresh validation pass is recorded in its review.
-Frontend **v0.2.0+3** has uncommitted Welcome/Home/accounts/four-tab work;
-**v0.3.0+4** capture and screen fragments are preserved for the following release.
+Frontend **v0.2.0+3** now has locally verified Welcome/Home/accounts, four tabs,
+live header search, reference Results/Compare and basic private camera/gallery capture.
+Fresh evidence: **135 Flutter tests**, clean analysis, release web build and 42 verified
+icon assets. Push/publication is authorized. Local OCR, automatic barcode reading
+and Ingredient Insights remain **v0.3.0+4** work preserved in the recovery snapshot.
 Guests remain local; signed-in private records and public package facts stay separate.
 
 Follow [controlled releases](CONTROLLED_RELEASES.md): work on main only, finish
 one release before the next, and stage each version explicitly. The verified
 65-file local recovery snapshot preserves the original unfinished work.
 
-Light is the first-use default. Future camera/OCR, broad ingredient content,
-personal suitability and complete reference-style results remain plans.
+Light is the first-use default. Local OCR, broader ingredient content and
+personal suitability remain plans. [Frontend review](FRONTEND_V0_2_0_REVIEW.md).
 [Account plan](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
 
 ## Product goal
@@ -391,7 +394,7 @@ rows alone do not measure useful Indian-market coverage.
 The user authorized v0.4.0 followed by v0.5.0 as separate reviewed/pushed versions.
 The next backend v0.6.0 and frontend v0.1.0 are now authorized and in progress.
 Their [connected release plan](CONNECTED_RELEASE_PLAN.md) defines useful scope.
-Backend v0.6.0 and frontend v0.1.0+2 are published. Backend v0.7.0 private sync is implemented and locally/live-Firebase checked, with its separate hosted/publication gate pending. Frontend v0.2.0 Welcome/Home/optional account/navigation is implemented with release validation pending; frontend v0.3.0 completes remaining reference-style screens separately. [Accepted scope and checklists](ACCOUNT_SYNC_SCREEN_PLAN.md). Finish each component release boundary before the next.
+Backend v0.6.0 and frontend v0.1.0+2 are published. Backend v0.7.0 private sync is implemented and locally/live-Firebase checked, with its separate hosted verification and publication complete. Frontend v0.2.0 Welcome/Home/optional account/navigation is implemented with release validation pending; frontend v0.3.0 completes remaining reference-style screens separately. [Accepted scope and checklists](ACCOUNT_SYNC_SCREEN_PLAN.md). Finish each component release boundary before the next.
 
 | Stage | Meaning and user value | Completion gate |
 | --- | --- | --- |
@@ -452,8 +455,8 @@ frontend coalescing/outbox remains a client gate.
 - Frontend v0.1.0+2 implements manual barcode/name lookup, corrected current-label
   entry, sourced reports, local saved/history and persistent light-default appearance.
   It is independently published at `1138c292296ae6c9309d73d430d267ec1a98fa80`, with production assets/browser checks; no native/capture proof is inferred.
-- Implemented v0.7.0 adds private account CAS snapshots after optional password login; 931 tests/five emulator skips and 18 live synthetic Firebase checks passed, with its hosted/publication gate pending.
-- Frontend v0.2.0 Welcome/Home/optional account/5-tab navigation and useful destinations are implemented with full release validation pending; v0.3.0 completes remaining reference screens separately.
+- Implemented v0.7.0 adds private account CAS snapshots after optional password login; 931 tests/five emulator skips and 18 live synthetic Firebase checks passed, with its hosted verification and publication complete.
+- Frontend v0.2.0 Welcome/Home/optional account/four-tab navigation and useful destinations are implemented with full release validation pending; v0.3.0 completes remaining reference screens separately.
 - No custom model, training or Gemini inference is implemented.
 
 
