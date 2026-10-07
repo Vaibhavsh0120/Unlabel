@@ -3,15 +3,18 @@
 Delivery checkpoint: **7 October 2026**.
 
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+are independently published. Backend **v0.7.0 Private Account Sync** source
+`9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed and hosted-verified;
+its independent publication/documentation closure is the active release goal.
+Prior full-suite evidence is **931 passed / five emulator-only skips** and
+**18 hosted synthetic checks**; a fresh validation pass is recorded in its review.
+Frontend **v0.2.0+3** has uncommitted Welcome/Home/accounts/four-tab work;
+**v0.3.0+4** capture and screen fragments are preserved for the following release.
+Guests remain local; signed-in private records and public package facts stay separate.
+
+Follow [controlled releases](CONTROLLED_RELEASES.md): work on main only, finish
+one release before the next, and stage each version explicitly. The verified
+65-file local recovery snapshot preserves the original unfinished work.
 
 Light is the first-use default. Future camera/OCR, broad ingredient content,
 personal suitability and complete reference-style results remain plans.
@@ -448,7 +451,9 @@ frontend coalescing/outbox remains a client gate.
   bounded Unicode candidates, exact barcode selection and snapshot-bound cursors.
 - Frontend v0.1.0+2 implements manual barcode/name lookup, corrected current-label
   entry, sourced reports, local saved/history and persistent light-default appearance.
-  Its final rendered/release gates remain pending; no native/capture proof is inferred.
+  It is independently published at `1138c292296ae6c9309d73d430d267ec1a98fa80`, with production assets/browser checks; no native/capture proof is inferred.
+- Implemented v0.7.0 adds private account CAS snapshots after optional password login; 931 tests/five emulator skips and 18 live synthetic Firebase checks passed, with its hosted/publication gate pending.
+- Frontend v0.2.0 Welcome/Home/optional account/5-tab navigation and useful destinations are implemented with full release validation pending; v0.3.0 completes remaining reference screens separately.
 - No custom model, training or Gemini inference is implemented.
 
 

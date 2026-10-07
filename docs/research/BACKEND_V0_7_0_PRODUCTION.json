@@ -1,0 +1,185 @@
+{
+  "version": "0.7.0",
+  "origin": "https://unlabel-api.vercel.app",
+  "source_sha": "9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0",
+  "deployment": {
+    "id": "dpl_5TNPc4yuis3tdLJ114jacroGvbvh",
+    "state": "READY",
+    "environment": "production",
+    "source_sha": "9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0",
+    "alias": "https://unlabel-api.vercel.app",
+    "metadata_verification": "Vercel MCP deployment metadata verified by release audit on 2026-10-07"
+  },
+  "read_only_verification": {
+    "checked_at_utc": "2026-10-07T14:46:34.633133+00:00",
+    "checks": [
+      {
+        "method": "GET",
+        "path": "/v1/health",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/v1/meta",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/openapi.json",
+        "status": 200,
+        "expected": 200
+      },
+      {
+        "method": "GET",
+        "path": "/v1/account/sync",
+        "status": 401,
+        "expected": 401,
+        "cache_control": "no-store"
+      },
+      {
+        "method": "GET",
+        "path": "/.env",
+        "status": 404,
+        "expected": 404
+      },
+      {
+        "method": "GET",
+        "path": "/.env.age",
+        "status": 404,
+        "expected": 404
+      },
+      {
+        "method": "GET",
+        "path": "/app/main.py",
+        "status": 404,
+        "expected": 404
+      },
+      {
+        "method": "GET",
+        "path": "/app/catalogue/data/catalogue.sqlite3",
+        "status": 404,
+        "expected": 404
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/v1/account/sync",
+        "requested_method": "GET",
+        "status": 200,
+        "expected": 200,
+        "allowed_origin": "https://unlabel-india.vercel.app"
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/v1/account/sync",
+        "requested_method": "POST",
+        "status": 200,
+        "expected": 200,
+        "allowed_origin": "https://unlabel-india.vercel.app"
+      },
+      {
+        "check": "Hosted OpenAPI equals tracked v0.7.0 export",
+        "passed": true,
+        "paths": 20,
+        "operations": 21
+      },
+      {
+        "check": "All nineteen v0.6.0 paths and existing schema components unchanged",
+        "passed": true
+      },
+      {
+        "check": "Reviewed knowledge two-file receipt matches tracked bytes and hashes",
+        "passed": true
+      }
+    ],
+    "passed": 13,
+    "provider_connectivity": "not_checked",
+    "account_sync": {
+      "status": "ready",
+      "sync_version": "personal-sync-v1",
+      "max_snapshot_bytes": 393216,
+      "max_saved": 50,
+      "max_history": 100,
+      "authentication": "password"
+    },
+    "catalogue_status": "ready",
+    "knowledge_artifact": {
+      "schema_version": "1",
+      "knowledge_version": "claims-2026-10-06.1",
+      "files": [
+        {
+          "path": "rules/claims/reviewed-v1.json",
+          "bytes": 11477,
+          "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+        },
+        {
+          "path": "sources/registry/fssai-claims-v1.json",
+          "bytes": 2913,
+          "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+        }
+      ]
+    },
+    "writes": "No authenticated writes or Firebase test identities created during this verification"
+  },
+  "prior_hosted_synthetic_verification": {
+    "checked_at_utc": "2026-10-07T11:42:22.263810+00:00",
+    "checks": [
+      "SDK password identity created",
+      "SDK password identity created",
+      "SDK anonymous identity created",
+      "Private sync capability active",
+      "Missing identity rejected",
+      "Anonymous identity cannot read personal cloud data",
+      "New owner starts empty",
+      "Personal responses are not cached",
+      "Synthetic profile and sourced reports stored",
+      "Saved data reads back exactly",
+      "Second owner cannot read first owner data",
+      "Identical mutation retries once",
+      "Stale revision cannot overwrite",
+      "Clear retains revision protection",
+      "Old retry cannot restore cleared reports",
+      "Cleared snapshot remains empty",
+      "Personal email field prohibited in snapshot",
+      "All temporary SDK identities deleted; synthetic report snapshot cleared"
+    ],
+    "passed": 18,
+    "synthetic_only": true,
+    "credentials_persisted": false,
+    "rerun_during_read_only_verification": false,
+    "cleanup_boundary": "Temporary SDK identities deleted; synthetic personal report snapshot cleared to empty. Revision-protection records may remain; this is not proof that every Firestore document was deleted."
+  },
+  "local_validation": {
+    "checked_at_utc": "2026-10-07T14:46:34.633133+00:00",
+    "source_sha": "9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0",
+    "pytest": {
+      "passed": 931,
+      "skipped": 5,
+      "skip_scope": "Firebase emulator-only checks",
+      "duration_seconds": 25.47,
+      "warnings": 1,
+      "warning_scope": "Upstream Starlette TestClient httpx deprecation"
+    },
+    "ruff": "passed",
+    "pyright": {
+      "errors": 0,
+      "warnings": 0,
+      "informations": 0,
+      "configuration": "pyrightconfig.json"
+    },
+    "root_script_compilation": "passed",
+    "git_diff_check": "passed",
+    "local_markdown_links": {
+      "checked": 756,
+      "passed": true,
+      "verified_by": "root release audit"
+    }
+  },
+  "limits": [
+    "Readiness endpoints report provider_connectivity=not_checked; provider mutation behavior retains separately dated synthetic hosted proof.",
+    "Retail/regional catalogue coverage remains unverified.",
+    "Native/mobile builds and physical camera/icon/haptic checks are outside this backend release."
+  ],
+  "credentials_persisted": false
+}

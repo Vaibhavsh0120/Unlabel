@@ -3,15 +3,18 @@
 Checkpoint: **7 October 2026**.
 
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+are independently published. Backend **v0.7.0 Private Account Sync** source
+`9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed and hosted-verified;
+its independent publication/documentation closure is the active release goal.
+Prior full-suite evidence is **931 passed / five emulator-only skips** and
+**18 hosted synthetic checks**; a fresh validation pass is recorded in its review.
+Frontend **v0.2.0+3** has uncommitted Welcome/Home/accounts/four-tab work;
+**v0.3.0+4** capture and screen fragments are preserved for the following release.
+Guests remain local; signed-in private records and public package facts stay separate.
+
+Follow [controlled releases](CONTROLLED_RELEASES.md): work on main only, finish
+one release before the next, and stage each version explicitly. The verified
+65-file local recovery snapshot preserves the original unfinished work.
 
 [Backend v0.7.0 review](BACKEND_V0_7_0_REVIEW.md) ·
 [Frontend v0.1.0 proof](../research/FRONTEND_V0_1_0_PRODUCTION.json) ·
@@ -42,13 +45,13 @@ sample products and health verdicts are illustrative.
 | F13 | Reviewed insights / Home | Planned | Implemented educational list/detail destinations with source/applicability; validation pending; no fabricated health advice |
 | F14 | Front/back and gallery / Scan | Client-owned | Camera/gallery capture, correct-side pairing and permissions pending; current manual path works |
 | F15 | OCR/live highlights / Scan | Client-owned; confirmed rows accepted | Local OCR/table interpretation, boxes and correction pending; real-device accuracy unverified |
-| F16 | Saved products / Home | Client-owned, currently local | Bounded bookmarks/reopening/removal implemented; guests local, signed-in UID-specific private sync implemented with validation pending |
+| F16 | Saved products / Home | Client-owned; private sync implemented | Bounded bookmarks/reopening/removal implemented; guests local, signed-in UID-specific private sync implemented with validation pending |
 | F17 | History / Home | Client-owned, currently local | Bounded dated history/clearing implemented; guest/account isolation and optional private sync implemented with validation pending |
 | F18 | Profile/preferences / Home | Client-owned private choices | Optional password sign-in/create/reset, display name/private sync, explicit conflict choices and sign out implemented; guest mode fully usable; validation pending |
 | F19 | Responsive/light/dark / All | Client-owned | Responsive Material 3, light first-use default and local appearance persistence implemented; final visual review/native icon checks separate |
 | F20 | Attribution/age/version / All | Ready | Metadata/source/date/evidence/build information and working source-detail destination implemented; rendered validation pending |
 | C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
-| C02 | Optional scanner account/private sync | v0.7.0 implemented: 931 passed/5 skips and 18 live Firebase checks; hosted/push pending | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; full release validation pending |
+| C02 | Optional scanner account/private sync | v0.7.0 pushed and hosted-verified; 931 passed/5 skips and 18 hosted synthetic checks; publication closure active | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; full release validation pending |
 
 ## Component releases
 
@@ -60,8 +63,8 @@ sample products and health verdicts are illustrative.
 | Backend v0.5.0 | Useful Label Report | Independently published; reports, approximate sugar and three-entry glossary; [review](BACKEND_V0_5_0_REVIEW.md) |
 | Backend v0.6.0 | Product Discovery | Published after 863 passed / 5 emulator skips and 23 hosted checks; [review](BACKEND_V0_6_0_REVIEW.md) |
 | Frontend v0.1.0+2 | Connected Label Reader | Independently published exact commit 1138c292296ae6c9309d73d430d267ec1a98fa80; production assets/browser proof recorded |
-| Backend v0.7.0 | Private Account Sync | Implemented and ready to push; 931 passed/5 skips plus 18 live synthetic Firebase checks; hosted/publication pending; [review](BACKEND_V0_7_0_REVIEW.md) |
-| Frontend v0.2.0 | Welcome, Home and Optional Login | Implemented Welcome/Home/account/5-tab navigation and useful destinations; full test/render/build/push/hosted gates pending |
+| Backend v0.7.0 | Private Account Sync | Pushed and hosted-verified source 9d9a9b6; publication closure active; 931 passed/5 skips plus 18 hosted synthetic checks; [review](BACKEND_V0_7_0_REVIEW.md) |
+| Frontend v0.2.0 | Welcome, Home and Optional Login | Implemented Welcome/Home/account/four-tab navigation and useful destinations; full test/render/build/push/hosted gates pending |
 | Frontend v0.3.0 | Complete Scan and Food Screens | Accepted following frontend release; redesign Scan, Compare, Results, Ingredient and supporting destinations one screen at a time |
 
 Each component is reviewed, documented, pushed and verified before its separate

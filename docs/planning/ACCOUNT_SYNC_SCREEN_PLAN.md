@@ -1,7 +1,7 @@
 # Next accepted account and screen releases
 
 Accepted user steering: **7 October 2026**. Frontend v0.1.0+2 and backend v0.6.0
-are independently published. Backend v0.7.0 is ready for its separate push;
+are independently published. Backend v0.7.0 source is pushed and hosted-verified; publication closure is active;
 frontend v0.2.0 is implemented with release validation pending. Continue to review, push and verify
 **each version separately**: backend v0.7.0, frontend v0.2.0, then frontend v0.3.0.
 Preserve historical source tags; backend/tooling work does not rebuild APK/IPA.
@@ -23,7 +23,8 @@ records while guest scanning and automatic public-product facts continue to work
   and offline/failed sync. Preserve local results and isolate different accounts.
 - [x] Export additive contracts and test old clients, authentication, ownership,
   quotas, deletion/conflicts, scripts, environment and Markdown.
-- [ ] Independently push, hosted-verify and publish. Local/live Firebase review passed: 931 tests/5 emulator skips, 18 synthetic checks; test identities deleted and private snapshots cleared.
+- [x] Push and hosted verification: source 9d9a9b6 and 18 hosted synthetic checks; test identities deleted and private snapshots cleared.
+- [ ] Complete independent GitHub publication after refreshed validation/documentation.
 
 ## Frontend v0.2.0 — Welcome, Home and Optional Login
 
@@ -34,7 +35,7 @@ make navigation useful. Implement/review one screen at a time.
   completion locally and send returning users straight to Home.
 - [x] Reference-style Home: forest/mint light, near-black/charcoal dark, rounded
   cards, warm decorative art and actual recent records or useful empty states.
-- [x] Five bottom destinations: **Home, Scan, Compare, Saved, Profile**. Every visible
+- [x] Four bottom destinations: **Home, Scan, Compare, Saved**; Profile at the top right of main screens. Every visible
   action opens a working flow. Until the v0.3.0 redesign, Scan uses existing manual
   lookup/corrected entry and Compare must use a useful implemented selection/facts
   flow; never leave a stale/disabled comparison button or fabricated result.
@@ -78,5 +79,5 @@ The references' 85/100 scores, sample product facts and claim verdicts are not
 approved fixtures. Native builds, launcher icon switching and physical-device
 camera behavior cannot be inferred from a web build.
 
-[Current release plan](CONNECTED_RELEASE_PLAN.md) · [Tracker](FEATURE_TRACKER.md)
+[Controlled release order](CONTROLLED_RELEASES.md) · [Current release plan](CONNECTED_RELEASE_PLAN.md) · [Tracker](FEATURE_TRACKER.md)
 · [Interface contract](../../DESIGN.md) · [Safety/privacy](../SAFETY_PRIVACY.md).

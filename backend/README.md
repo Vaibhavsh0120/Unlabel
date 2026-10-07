@@ -1,25 +1,34 @@
 # Unlabel backend: v0.7.0 Private Account Sync
 
-v0.7.0 is implemented and ready for its independent push after the published
+v0.7.0 implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`
+is already pushed and hosted on READY deployment
+`dpl_5TNPc4yuis3tdLJ114jacroGvbvh`, after the independently published
 v0.6.0 Product Discovery. **20 paths / 21 operations** preserve all public
 contracts and add optional password-authenticated private profile/saved/history
 sync. Guests keep personal records locally; public package observations remain
 automatic and separate.
 
-Validation: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** through a local API using real Firebase. Two password
-identities and one anonymous identity tested ownership, anonymous rejection,
-CAS/retry/conflict, versioned clearing and no-store behavior; test accounts were
-deleted and private snapshots cleared. Email/password Auth was enabled without
-adding billing. Local `.env` changes were encrypted into `.env.age`. These checks
-do not establish hosted v0.7.0 behavior; its push/hosted/publication gate is pending.
+Fresh closure validation on 7 October passed **931 tests with five emulator-only
+skips** in 25.47 seconds, with clean Ruff and root-configured Pyright reporting
+zero errors/warnings. Separate local-API/live-Firebase checks and the
+[hosted production receipt](../docs/research/BACKEND_V0_7_0_PRODUCTION.json)
+each record **18 synthetic checks**. The hosted checks used two password identities
+and one anonymous identity to test ownership, anonymous rejection,
+CAS/retry/conflict, versioned clearing and no-store behavior. Test identities were
+deleted and private report snapshots cleared; empty revision-protection documents
+and bounded counters remain. Email/password Auth was enabled without adding
+billing. Local `.env` changes were encrypted into `.env.age`. GitHub v0.7.0
+publication and documentation closure remain pending. A later documentation-only
+closure commit does not replace the original implementation SHA; any new deployment
+needs its own exact-commit verification.
 [Current review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
 [Private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md).
 
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app) ·
 [Swagger](https://unlabel-api.vercel.app/docs). Firebase remains free with no
 card/linked billing. Frontend v0.1.0+2 is independently published; v0.2.0 optional
-account/Home/navigation is implemented with release validation pending.
+account/Home/four-tab navigation is implemented with release validation pending;
+Profile stays at the top right. Frontend work resumes after backend publication.
 
 ## Run locally
 
@@ -66,7 +75,8 @@ Four additive routes are mounted in v0.4.0:
 
 Safe defaults disable community storage. Resolved lookup still returns available
 OFF snapshot facts with community marked unavailable. Neither source available
-returns 503. Hosted verification follows the separate push gate.
+returns 503. Historical hosted verification is recorded in the separate
+version-specific release reviews; future deployments require their own checks.
 [Community lifecycle](../docs/architecture/COMMUNITY_CATALOGUE.md).
 
 Barcodes are ASCII digit strings of 8, 12, 13 or 14 characters. Preserve leading zeros. GTIN checksum validity is not asserted; other provider-specific code formats are outside this version. Live OFF lookup identity must match the requested code, permitting leading-zero normalization only. Catalogue lookups use exact keys; leading-zero variants remain distinct.
@@ -310,7 +320,9 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
+See [current v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
+[private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),
+[historical v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
 [published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
 Historical v0.5.0 exports describe eighteen routes and four added report/glossary
 schemas and 22 validated synthetic examples; historical v0.4.0 exports are preserved.

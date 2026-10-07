@@ -15,8 +15,10 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - Build: `bash tool/vercel-build.sh`; output: `build/web`.
 - The tracked build script supplies Flutter **3.47.4** from the official SDK Git tag, checks that version, uses the tracked dependency lockfile and builds web in **release** mode.
 - Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is compiled through
-  Dart defines. Frontend version/build come from pubspec (currently 0.2.0+3 source); commit comes
-  from Vercel. The app checks API major/schema/capabilities and shows build info.
+  Dart defines. Frontend version/build come from pubspec; commit comes from Vercel.
+  Published production is v0.1.0+2. Local v0.2.0+3 source remains unreleased and
+  includes four bottom tabs, with Profile at the top right. The app checks API
+  major/schema/capabilities and shows build info.
 - Locked restoration, Flutter analysis/tests and web compilation run in the build.
   Light is the first-use default; appearance and guest libraries stay local. Optional password accounts use bounded private backend sync.
 - Light/dark web icons and manifests are bundled. Missing assets are genuine 404s;
@@ -29,7 +31,7 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - `backend/vercel.json` limits this Function to 60 seconds; OFF lookup has its own 8-second deadline and 512 KiB decoded response budget.
 - `backend/.vercelignore` and Function `excludeFiles` exclude env files, development environments/tests/caches and private runtime storage. Generated `app/catalogue/data/` and `app/claims/data/` are ignored by Git but retained for validated function packaging.
 - CORS allowlist: `https://unlabel-india.vercel.app` and the existing `https://unlabel-frontend.vercel.app`. Native clients can call the same public API. CORS is not authentication.
-- The current v0.6.0 environment uses `OFF_USER_AGENT=Unlabel/0.6.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
+- The v0.7.0 deployment uses `OFF_USER_AGENT=Unlabel/0.7.0 (https://github.com/Vaibhavsh0120/Unlabel)`, `OFF_TIMEOUT_SECONDS=8`, `OFF_MAX_RESPONSE_BYTES=524288`, `CORS_ORIGINS` and `AI_PROVIDER=disabled`. Hosted catalogue settings are `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true`. Public OFF reads and catalogue builds require no key. No Gemini key is configured or required.
 
 No live FSSAI request or writable cloud database is required for existing OFF/normalization/claims; v0.4.0 community observations use separately configured free Firestore. Confirmed nutrition and claim POSTs have a 32 KiB actual body cap and work without OFF connectivity; exact-origin CORS permits GET/POST, Content-Type and Authorization. The current catalogue build reads only the tracked public source: it performs no acquisition, env decryption or world download. New hosted settings activate only after deployment. Never run bulk import inside a scan request. [Nine-calendar-month source/deployment replacement](../architecture/CATALOGUE.md).
 
@@ -122,7 +124,44 @@ user record was written during these public discovery checks. Source-only v0.6.0
 was published separately. Frontend v0.1.0+2 independently passed its rendered/push/hosted/publication gates.
 Implementation `1138c292296ae6c9309d73d430d267ec1a98fa80` has dated
 [production asset/browser proof](../research/FRONTEND_V0_1_0_PRODUCTION.json).
-Backend v0.7.0 private sync is locally/live-Firebase verified and ready to push;
-its hosted/publication gate is pending. Frontend v0.2.0 full release checks remain pending.
+Backend v0.7.0 source is already pushed and hosted-verified as described below;
+its GitHub publication/documentation closure remain pending. Frontend v0.2.0
+full release checks remain pending.
 [Production proof](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
 [Review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).
+
+
+## Current private account release gate
+
+Implemented backend v0.7.0 adds password-authenticated GET/POST `/v1/account/sync`
+without changing public observation/report schemas. `ACCOUNT_SYNC_ENABLED`
+requires the existing configured community Firebase runtime and stable actor-secret
+ownership derivation; it defaults off in safe settings. Email/password Auth was
+enabled through the official Firebase CLI without attaching billing. Local `.env`
+was updated and encrypted into `.env.age`; plaintext remains ignored.
+
+Fresh closure validation on 7 October passed 931 backend tests/five emulator-only
+skips in 25.47 seconds, clean Ruff and root-configured Pyright with zero
+errors/warnings; 18 local-API/live-Firebase synthetic checks also passed. Source
+`9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed on `main` and reached
+READY on backend `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`. The dated
+[hosted production receipt](../research/BACKEND_V0_7_0_PRODUCTION.json) records
+18 additional synthetic checks covering password ownership, anonymous rejection,
+no-store, retries/conflicts and versioned clearing. The two password and one
+anonymous test identities were deleted and private report snapshots cleared;
+empty revision-protection documents and bounded counters remain.
+
+Read-only rechecks confirm health/meta/version, ready private-sync/catalogue
+capabilities, exact tracked OpenAPI with twenty paths/twenty-one operations,
+unchanged v0.6 paths/components, unauthenticated private rejection, frontend CORS
+and the reviewed knowledge receipt hashes. Health's provider connectivity remains
+`not_checked`, separate from the scoped synthetic provider evidence.
+
+GitHub v0.7.0 publication and documentation closure remain pending. A later
+documentation-only closure commit has its own SHA/deployment and must not replace
+the original implementation evidence. Verify any replacement deployment separately.
+Frontend v0.2.0 resumes after backend publication and must complete its own full
+tests, rendered flows, web build and exact hosted gate. No mobile build is dispatched
+for this backend closure.
+[Private sync architecture](../architecture/PRIVATE_ACCOUNT_SYNC.md) ·
+[Backend release review](BACKEND_V0_7_0_REVIEW.md).
