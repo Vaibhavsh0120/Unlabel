@@ -1,0 +1,107 @@
+{
+  "component": "frontend",
+  "version": "0.2.0",
+  "build_number": "3",
+  "source_sha": "5f3e92fe58f87aeed6a78f989b3f9289233ca2f2",
+  "deployment_id": "dpl_C67D8NT38YmhRXr2AsRoibKswaZy",
+  "checked_at_utc": "2026-10-07T17:50:06.100292+00:00",
+  "checks": [
+    {
+      "asset": "index.html",
+      "status": 200,
+      "bytes": 1796,
+      "sha256": "068feb8b161f8bd5c16ef4800baf6288b6854823291fc6500e67af87514b0317"
+    },
+    {
+      "asset": "flutter_bootstrap.js",
+      "status": 200,
+      "bytes": 13094,
+      "sha256": "f0a97678815235271fdb2dacd0d8b029339a024a24ad0ce809a53fe200bc5ffe"
+    },
+    {
+      "asset": "main.dart.js",
+      "status": 200,
+      "bytes": 3454753,
+      "sha256": "1cf08349fe497a6451dd47c7420e5c1880c5154c942f5ef49df555988173d23d"
+    },
+    {
+      "asset": "appearance.js",
+      "status": 200,
+      "bytes": 1019,
+      "sha256": "636660607d44cb5e64f63f954387b255da37593d0399743eb1977a0cdc06207d"
+    },
+    {
+      "asset": "favicon-light.png",
+      "status": 200,
+      "bytes": 1038,
+      "sha256": "1adeccdbeafe87eaf1c47cbb2967dc46816beebda9678b38219253869e2c6470"
+    },
+    {
+      "asset": "favicon-dark.png",
+      "status": 200,
+      "bytes": 1158,
+      "sha256": "e9ffd7a9b8e4a285fa0ad71375110bb32d691f0b6019a9341fdf993777c7a35e"
+    },
+    {
+      "asset": "manifest.json",
+      "status": 200,
+      "bytes": 881,
+      "sha256": "f397bc4ee4302a5fbc3d1a3fa4e7ff7d6d3224bf44024fe3280b67937b58c66f"
+    },
+    {
+      "asset": "manifest-dark.json",
+      "status": 200,
+      "bytes": 877,
+      "sha256": "1c063099eeaf9a33c76ce1001b2ff41d0a122f0374cb7c39dabd5a7fab2e02cf"
+    },
+    {
+      "asset": "assets/assets/artwork/scan-hero-light.png",
+      "status": 200,
+      "bytes": 2003773,
+      "sha256": "3ae23be9daf49118804374902c2ab6bc4bdadc13037c81f3f5a428317a86a352"
+    },
+    {
+      "asset": "assets/assets/artwork/scan-hero-dark.png",
+      "status": 200,
+      "bytes": 2018186,
+      "sha256": "71211363e363b1025100384fd8716575ff1e2026759980ea8bd8a0fa0bd30431"
+    },
+    {
+      "api_path": "/v1/health",
+      "status": 200
+    },
+    {
+      "api_path": "/v1/meta",
+      "status": 200
+    },
+    {
+      "api_path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "api_path": "/v1/catalogue/search?q=aashirvaad&limit=10",
+      "status": 200
+    },
+    {
+      "api_path": "/v1/products/8901725000899/report",
+      "status": 200
+    },
+    {
+      "check": "Exact hosted frontend CORS GET",
+      "passed": true
+    },
+    {
+      "check": "Exact hosted frontend CORS POST",
+      "passed": true
+    }
+  ],
+  "backend_version": "0.7.0",
+  "local_browser_checks": [
+    "390x844 Home rendered",
+    "Live muted camera feed and stop-on-exit",
+    "Typing search returned catalogue results",
+    "Actual product photo opened Analysis Results"
+  ],
+  "additional_visual_review": "User elected to perform further visual review personally before authorizing push.",
+  "native_device_checks": "not_verified"
+}

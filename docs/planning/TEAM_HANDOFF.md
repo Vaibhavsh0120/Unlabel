@@ -15,9 +15,9 @@ Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
 and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
 18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
 preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
-Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
-135 tests and clean analysis passed; the user authorized its separate push and
-release after documentation and hosted verification.
+Frontend **v0.2.0+3 Welcome, Home and Optional Account** is published from
+`5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`; 135 tests, clean analysis, hosted
+asset/API checks and the source release passed. The native workflow is separate.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 [Current account checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) ·

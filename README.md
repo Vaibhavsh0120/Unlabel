@@ -111,14 +111,13 @@ Shared preferences are convenience storage, not an encrypted backup.
 
 ## Validation and releases
 
-Backend v0.7.0: **931 passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** using a local API with real Firebase; hosted/publication
-checks remain pending. [Review](docs/planning/BACKEND_V0_7_0_REVIEW.md).
+Backend v0.7.0: **931 passed, five emulator-only skips**, clean Ruff/Pyright,
+18 hosted synthetic checks and 13 fresh read-only checks. [Review](docs/planning/BACKEND_V0_7_0_REVIEW.md).
 Frontend v0.1.0+2: independently published at exact source
 `1138c292296ae6c9309d73d430d267ec1a98fa80`, with production assets/browser checks.
 [Production proof](docs/research/FRONTEND_V0_1_0_PRODUCTION.json).
-Frontend v0.2.0: implemented; **25 focused account tests** pass, while full
-render/build/push/hosted validation remains pending. [Frontend guide](frontend/README.md).
+Frontend v0.2.0+3: **135 tests passed**, clean analysis, web build and hosted
+asset/API checks; source release is published. [Frontend proof](docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
 
 Vercel deploys separate backend/web projects from `main`. Backend source tags
 remain `v0.x.0`; frontend source uses `frontend-v0.1.0`; future manual mobile

@@ -1,8 +1,9 @@
 # Flutter frontend
 
-Frontend **0.2.0+3 — Welcome, Home and Optional Account** is implemented locally
-and locally verified; docs/push/publication are authorized after final review.
-Published frontend **0.1.0+2** remains the production release. Backend
+Frontend **0.2.0+3 — Welcome, Home and Optional Account** is published from source
+commit `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`; hosted proof is recorded in
+[the production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
+Published frontend **0.1.0+2** remains historical. Backend
 **0.7.0 — Private Account Sync** is independently pushed, hosted-verified and
 published. Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
 

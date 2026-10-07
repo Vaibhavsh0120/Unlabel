@@ -5,8 +5,9 @@ are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
 Backend **v0.7.0 Private Account Sync** is independently published and hosted-verified:
 **931 tests passed, five emulator-only skips**, clean Ruff/Pyright, 18 hosted
-synthetic checks and 13 fresh read-only checks. Frontend **v0.2.0+3** is locally
-tested; its independent push, hosted verification and publication remain active.
+synthetic checks and 13 fresh read-only checks. Frontend **v0.2.0+3** is
+independently pushed, hosted-verified and published; its native artifact workflow
+is a separate gate.
 Guests keep personal data locally; optional password sign-in enables private
 account profile/saved/history sync. Public package facts remain separate.
 

@@ -23,7 +23,7 @@ implementing the next. Preserve existing source and historical tags.
 | Release | Goal | Current stage |
 | --- | --- | --- |
 | Backend v0.7.0 | Close Private Account Sync independently | Published: 931 passed / 5 emulator-only skips; 18 synthetic + 13 fresh hosted checks; source tag v0.7.0 |
-| Frontend v0.2.0+3 | Welcome, Home, four-tab shell, optional account sync, artwork/motion/haptics | Active: 135 tests, clean analyzer, release web build; docs/push/release authorized |
+| Frontend v0.2.0+3 | Welcome, Home, four-tab shell, optional account sync, artwork/motion/haptics | Published: 135 tests, clean analyzer, hosted READY web deployment and source release; native workflow separate |
 | Frontend v0.3.0+4 | Capture/OCR and remaining reference-style screens | Planned; preserve existing fragments until v0.2.0 is published |
 
 Stages: **Planned → Implemented → Tested → Visually verified → Pushed →

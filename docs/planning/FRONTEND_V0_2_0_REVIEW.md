@@ -71,3 +71,12 @@ No Gemini, paid service, new account role or photo upload is introduced.
 The user explicitly authorized updating docs, pushing and making the release on
 7 October, superseding the earlier preview-before-push hold. Publication follows
 successful local and hosted gates; native artifacts use their separate manual lane.
+
+## Published receipt
+
+Implementation source: `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`.
+Hosted frontend deployment: `dpl_C67D8NT38YmhRXr2AsRoibKswaZy` (READY).
+Source release: [frontend-v0.2.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.2.0).
+The detailed asset/API receipt is [FRONTEND_V0_2_0_PRODUCTION.json](../research/FRONTEND_V0_2_0_PRODUCTION.json).
+The separately dispatched native run builds the demo APK and unsigned IPA; its
+artifacts do not change the source release or prove device installation.
