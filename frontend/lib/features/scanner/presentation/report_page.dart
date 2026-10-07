@@ -26,6 +26,7 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+  final _messenger = GlobalKey<ScaffoldMessengerState>();
   bool _saved = false;
   bool _saving = false;
   bool _checkingSaved = true;
@@ -71,7 +72,7 @@ class _ReportPageState extends State<ReportPage> {
       setState(() => _saved = !_saved);
       unawaited(UiFeedback.confirmed());
       widget.onChanged();
-      ScaffoldMessenger.of(context).showSnackBar(
+      _messenger.currentState!.showSnackBar(
         SnackBar(
           content: Text(
             _saved ? 'Saved on this device' : 'Removed from saved products',
@@ -80,8 +81,9 @@ class _ReportPageState extends State<ReportPage> {
       );
     } on AppFailure catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.userMessage)));
+        _messenger.currentState!.showSnackBar(
+          SnackBar(content: Text(error.userMessage)),
+        );
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -116,173 +118,176 @@ class _ReportPageState extends State<ReportPage> {
     final report = widget.report;
     final theme = Theme.of(context);
     final photo = ReportImageDescriptor.fromReport(report);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Analysis Results')),
-      body: PageBody(
-        children: [
-          SectionCard(
-            key: const Key('report-product-card'),
-            padding: 18,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _ProductIdentity(report: report, photo: photo),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 12,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    _saveAction(),
-                    if (report.barcode != null)
-                      Text(
-                        'Barcode ${report.barcode}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                  ],
-                ),
-                if (_savedError != null) ...[
-                  const SizedBox(height: 12),
-                  Text('Saved status could not be loaded. $_savedError'),
-                  TextButton(
-                    onPressed: _readSaved,
-                    child: const Text('Retry saved status'),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          _ReportSummary(report: report),
-          const SectionTitle('Evidence at a glance'),
-          _EvidenceOverview(report: report),
-          const SectionTitle('Claim check'),
-          if (report.claims.isEmpty)
-            StatusNotice(
-              title: report.isHistorical
-                  ? 'Current claims need the current label'
-                  : 'No front claims captured',
-              message: report.isHistorical
-                  ? 'Catalogue nutrient values cannot establish claims on a current package.'
-                  : 'Enter the printed front claims with enough back-label facts to check them.',
-            )
-          else
+    return ScaffoldMessenger(
+      key: _messenger,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Analysis Results')),
+        body: PageBody(
+          children: [
             SectionCard(
+              key: const Key('report-product-card'),
               padding: 18,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (
-                    var index = 0;
-                    index < report.claims.length;
-                    index++
-                  ) ...[
-                    _ClaimRow(report.claims[index]),
-                    if (index < report.claims.length - 1) const Divider(),
+                  _ProductIdentity(report: report, photo: photo),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 12,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      _saveAction(),
+                      if (report.barcode != null)
+                        Text(
+                          'Barcode ${report.barcode}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                    ],
+                  ),
+                  if (_savedError != null) ...[
+                    const SizedBox(height: 12),
+                    Text('Saved status could not be loaded. $_savedError'),
+                    TextButton(
+                      onPressed: _readSaved,
+                      child: const Text('Retry saved status'),
+                    ),
                   ],
                 ],
               ),
             ),
-          const SectionTitle('Nutrition snapshot'),
-          if (report.nutrients.isEmpty)
-            const StatusNotice(
-              title: 'Nutrition is not available',
-              message: 'No usable printed nutrient rows were found. Check the nutrition table on your package.',
-            )
-          else
-            _NutritionSnapshot(nutrients: report.nutrients),
-          if (report.sugar != null) ...[
-            const SectionTitle('Sugar reality'),
-            _SugarReality(sugar: report.sugar!),
-          ],
-          const SectionTitle('Ingredients & allergens'),
-          SectionCard(
-            padding: 18,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _Declaration('Ingredients', report.ingredients),
-                const Divider(),
-                _Declaration('Contains', report.contains),
-                const Divider(),
-                _Declaration('May contain', report.mayContain),
-                const SizedBox(height: 16),
-                Text(
-                  'Missing allergen information does not mean allergy-safe. Read the current package.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+            const SizedBox(height: 16),
+            _ReportSummary(report: report),
+            const SectionTitle('Evidence at a glance'),
+            _EvidenceOverview(report: report),
+            const SectionTitle('Claim check'),
+            if (report.claims.isEmpty)
+              StatusNotice(
+                title: report.isHistorical
+                    ? 'Current claims need the current label'
+                    : 'No front claims captured',
+                message: report.isHistorical
+                    ? 'Catalogue nutrient values cannot establish claims on a current package.'
+                    : 'Enter the printed front claims with enough back-label facts to check them.',
+              )
+            else
+              SectionCard(
+                padding: 18,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (
+                      var index = 0;
+                      index < report.claims.length;
+                      index++
+                    ) ...[
+                      _ClaimRow(report.claims[index]),
+                      if (index < report.claims.length - 1) const Divider(),
+                    ],
+                  ],
                 ),
-                const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => IngredientPage(report: report),
-                    ),
-                  ),
-                  icon: const FeatureIcon('document-text', size: 20),
-                  label: const Text('Explore ingredient functions'),
-                ),
-              ],
-            ),
-          ),
-          if (!report.isHistorical) ...[
-            const SectionTitle('Catalogue update'),
-            StatusNotice(
-              title: _storageTitle(report.storageStatus),
-              message: _storageMessage(report.storageStatus),
-            ),
-          ],
-          if (report.missingInputs.isNotEmpty ||
-              report.warnings.isNotEmpty) ...[
-            const SectionTitle('What is still unknown'),
+              ),
+            const SectionTitle('Nutrition snapshot'),
+            if (report.nutrients.isEmpty)
+              const StatusNotice(
+                title: 'Nutrition is not available',
+                message: 'No usable printed nutrient rows were found. Check the nutrition table on your package.',
+              )
+            else
+              _NutritionSnapshot(nutrients: report.nutrients),
+            if (report.sugar != null) ...[
+              const SectionTitle('Sugar reality'),
+              _SugarReality(sugar: report.sugar!),
+            ],
+            const SectionTitle('Ingredients & allergens'),
             SectionCard(
               padding: 18,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (final item in <String>{
-                    ...report.missingInputs,
-                    ...report.warnings,
-                  })
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text('• ${_human(item)}'),
+                  _Declaration('Ingredients', report.ingredients),
+                  const Divider(),
+                  _Declaration('Contains', report.contains),
+                  const Divider(),
+                  _Declaration('May contain', report.mayContain),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Missing allergen information does not mean allergy-safe. Read the current package.',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => IngredientPage(report: report),
+                      ),
+                    ),
+                    icon: const FeatureIcon('document-text', size: 20),
+                    label: const Text('Explore ingredient functions'),
+                  ),
+                ],
+              ),
+            ),
+            if (!report.isHistorical) ...[
+              const SectionTitle('Catalogue update'),
+              StatusNotice(
+                title: _storageTitle(report.storageStatus),
+                message: _storageMessage(report.storageStatus),
+              ),
+            ],
+            if (report.missingInputs.isNotEmpty ||
+                report.warnings.isNotEmpty) ...[
+              const SectionTitle('What is still unknown'),
+              SectionCard(
+                padding: 18,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final item in <String>{
+                      ...report.missingInputs,
+                      ...report.warnings,
+                    })
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text('• ${_human(item)}'),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            const SectionTitle('Sources & evidence'),
+            SectionCard(
+              padding: 18,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (report.sourceLabels.isEmpty)
+                    const Text('Source details are unavailable in this report.')
+                  else
+                    for (final source in report.sourceLabels)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: SelectableText(source),
+                      ),
+                  if (photo != null) ...[
+                    const SizedBox(height: 4),
+                    SelectableText('${photo.attribution} · ${photo.license}'),
+                    SelectableText(photo.licenseUrl),
+                    const SizedBox(height: 12),
+                  ],
+                  const SizedBox(height: 8),
+                  const Text(
+                    'These explanations describe the supplied label facts. They do not establish a health score, allergy safety or regulatory compliance.',
+                  ),
                 ],
               ),
             ),
           ],
-          const SectionTitle('Sources & evidence'),
-          SectionCard(
-            padding: 18,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (report.sourceLabels.isEmpty)
-                  const Text('Source details are unavailable in this report.')
-                else
-                  for (final source in report.sourceLabels)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: SelectableText(source),
-                    ),
-                if (photo != null) ...[
-                  const SizedBox(height: 4),
-                  SelectableText('${photo.attribution} · ${photo.license}'),
-                  SelectableText(photo.licenseUrl),
-                  const SizedBox(height: 12),
-                ],
-                const SizedBox(height: 8),
-                const Text(
-                  'These explanations describe the supplied label facts. They do not establish a health score, allergy safety or regulatory compliance.',
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

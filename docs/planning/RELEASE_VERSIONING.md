@@ -22,13 +22,17 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label Reader**
-are independently published. Backend **0.7.0 Private Account Sync** is independently pushed, hosted-verified
-and published; frontend **0.2.0 Welcome, Home and Optional Login** is
-implemented with release verification pending. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
+Backend **0.7.0 Private Account Sync** and frontend **0.2.0+3 Welcome, Home and
+Optional Account** are independently published and hosted-verified. Earlier
+backend v0.6.0/frontend v0.1.0 releases remain historical. Frontend **0.3.0+4 Visual
+Label Reader** and backend **0.8.0 Sourced Nutrient Comparison** are locally
+implemented/tested, with separate final verification, push and publication gates.
+The user authorizes completing and publishing these two component versions;
+frontend v0.3.0 does not depend on the new comparison endpoint. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
 manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
 backend `v0.1.0` tag collision. All older tags/assets remain preserved.
-[Backend review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).
+[Frontend review](FRONTEND_V0_3_0_REVIEW.md) · [Controlled releases](CONTROLLED_RELEASES.md)
+· [Next versions](FRONTEND_BACKEND_NEXT_VERSIONS.md).
 
 | Identity | Planned meaning | Compatibility rule |
 | --- | --- | --- |
@@ -50,7 +54,7 @@ in the release manifest. Never silently replace a published artifact.
 ## Manual release workflow design
 
 The release entry point is `workflow_dispatch`, with source reference,
-frontend version (default `0.2.0`), mobile build number (default `3`), required
+frontend version (default `0.3.0`), mobile build number (default `4`), required
 public backend URL, and a `publish_release` boolean (default true).
 Python validates environment values without shell interpolation. Version and
 build number override pubspec for both artifacts; the manifest records both.
@@ -176,12 +180,21 @@ The MVP is online-first. Python owns reviewed rule evaluation; OFF's changing
 provider schema remains behind a stable backend adapter. Offline saved reports
 retain their original source, date and versions; viewing them does not refresh
 criteria or compute new findings. No Dart rule engine/parity system is required.
+Frontend v0.3.0's in-memory public-read caches additionally share identical requests
+and expire search pages after 60 seconds/reports after five minutes; private account
+data and confirmed-label POSTs are excluded. Local OCR keeps photos/raw extracted
+text in the capture session, requires human correction/confirmation and preserves
+manual entry. The app-only startup screen is excluded from the website.
 Product/nutrition provider reads and confirmed-row normalization remain active
 in published backend v0.4.0. Separate catalogue status/lookup uses an export-origin contract,
 verified deployment receipt and nine-calendar-month source age. Its separate rich-facts route preserves direct-table nutrition, tag availability,
 optional record dates and official image URL attribution; legacy aggregates and
 missing fields stay unknown. Coverage is unverified; a snapshot miss makes no
-OFF request. The separate confirmed-label numerical claim API uses reviewed knowledge `claims-2026-10-06.1`; metadata exposes actual claim readiness and a verified knowledge receipt summary when packaged. Affected unsupported/missing/conflicting/future-dated evidence stays insufficient. Released v0.5.0 adds current/historical reports and a partial three-entry glossary. AI, full ingredient coverage and comparison remain future work.
+OFF request. The separate confirmed-label numerical claim API uses reviewed knowledge `claims-2026-10-06.1`; metadata exposes actual claim readiness and a verified knowledge receipt summary when packaged. Affected unsupported/missing/conflicting/future-dated evidence stays insufficient. Released v0.5.0 adds current/historical reports and a partial three-entry glossary. Published frontend
+v0.2.0 includes compatible-basis client comparison. Backend v0.8.0 locally adds
+read-only comparison of exact sourced/confirmed tables; its hosted gate is still
+pending, and frontend integration follows separately. AI and full ingredient
+coverage remain future work.
 
 The strict ProductLookup v1 model/route is unchanged by v0.2.0. Nutrition has
 separate lookup/request/response schemas; historical v0.1.0 OpenAPI stays
@@ -191,7 +204,10 @@ validated facts-enabled store. Released v0.5.0 additionally enables `nutrition_a
 and `label_reports`; ingredient explanations require valid glossary metadata. A complete
 normalization result is not complete nutrient coverage or a health verdict.
 
-Deploy additive backend changes first and verify old-client compatibility.
+Deploy additive backend dependencies first and verify old-client compatibility
+before a frontend begins to require them. The current independent frontend v0.3.0
+release uses published v0.7.0 APIs, so it may publish before backend v0.8.0. Source-aware
+comparison integration must wait for the latter's hosted gate.
 
 The four additive v0.4.0 routes implement automatic structured public observations,
 semantic deduplication, private staging/receipts and typed sourced resolution.

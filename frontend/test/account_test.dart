@@ -15,6 +15,7 @@ import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/models/app_failure.dart';
 import 'package:unlabel/core/models/product_report.dart';
 import 'package:unlabel/core/storage/local_store.dart';
+import 'package:unlabel/features/account/data/device_profile_preferences.dart';
 import 'package:unlabel/features/account/presentation/profile_page.dart';
 
 class MemoryPreferences implements PreferencesAdapter {
@@ -669,9 +670,8 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
-        await tester.ensureVisible(find.text('Continue as guest'));
-        await tester.tap(find.text('Continue as guest'));
-        expect(continued, true);
+        expect(find.text('Continue as guest'), findsNothing);
+        expect(continued, false);
         expect(api.fetches, 0);
         await tester.ensureVisible(find.text('Sign in'));
         await tester.tap(find.text('Sign in'));
@@ -691,6 +691,113 @@ void main() {
       },
     );
   }
+  testWidgets(
+    'profile counts active reports and keeps reminders device-local',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final prefs = MemoryPreferences();
+      final auth = FakeAuth();
+      final api = FakeSync();
+      final value = await controller(prefs, auth, api);
+      addTearDown(value.dispose);
+      addTearDown(auth.dispose);
+      await value.activeStore.record(report());
+      await value.activeStore.save(report());
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: UnlabelTheme.forBrightness(Brightness.light),
+          home: ProfilePage(controller: value, onContinue: () {}),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('1'), findsNWidgets(2));
+      expect(find.text('128'), findsNothing);
+      expect(find.text('—'), findsOneWidget);
+      await tester.ensureVisible(find.text('Low sugar'));
+      await tester.tap(find.text('Low sugar'));
+      await tester.pumpAndSettle();
+      expect(
+        (await DeviceProfilePreferencesStore(prefs).read()).lowSugar,
+        true,
+      );
+      expect(api.fetches, 0);
+      expect(api.mutations, isEmpty);
+      await tester.ensureVisible(find.text('Allergens'));
+      await tester.tap(find.text('Allergens'));
+      await tester.pumpAndSettle();
+      expect(find.text('Allergen reminders'), findsOneWidget);
+      await tester.tap(find.text('Milk'));
+      await tester.tap(find.text('Save preferences'));
+      await tester.pumpAndSettle();
+      expect((await DeviceProfilePreferencesStore(prefs).read()).allergens, {
+        'milk',
+      });
+      expect(api.mutations, isEmpty);
+      await tester.ensureVisible(find.text('Notifications'));
+      final notificationSwitch = tester.widget<Switch>(
+        find.byType(Switch).first,
+      );
+      expect(notificationSwitch.value, false);
+      expect(notificationSwitch.onChanged, isNull);
+      await tester.tap(find.text('Notifications'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text(
+          'Push notifications and reminders are not supported in this version.',
+        ),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'profile Privacy preserves explicit sync choice and clear controls',
+    (tester) async {
+      final prefs = MemoryPreferences();
+      final auth = FakeAuth()..setUser('account-a');
+      final api = FakeSync()
+        ..cloud = AccountSnapshot(
+          revision: 2,
+          data: AccountData(displayName: 'Synthetic cloud name'),
+        );
+      final value = await controller(prefs, auth, api);
+      addTearDown(value.dispose);
+      addTearDown(auth.dispose);
+      expect(value.state, AccountSyncState.needsChoice);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: UnlabelTheme.forBrightness(Brightness.light),
+          home: ProfilePage(controller: value, onContinue: () {}),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Choose your sync library'));
+      await tester.pumpAndSettle();
+      expect(find.text('Use cloud library'), findsOneWidget);
+      expect(find.text('Use this device library'), findsOneWidget);
+      await tester.tap(find.text('Use cloud library'));
+      await tester.pumpAndSettle();
+      expect(find.text('Use the cloud library?'), findsOneWidget);
+      expect(api.mutations, isEmpty);
+      await tester.tap(find.text('Use cloud'));
+      await tester.pumpAndSettle();
+      expect(value.localData!.displayName, 'Synthetic cloud name');
+      expect(value.state, AccountSyncState.ready);
+      await tester.ensureVisible(find.text('Clear account data'));
+      await tester.tap(find.text('Clear account data'));
+      await tester.pumpAndSettle();
+      expect(find.text('Clear account data?'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(value.localData!.displayName, 'Synthetic cloud name');
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets(
     'account help exposes creation and password reset before failure',
     (tester) async {
@@ -765,18 +872,16 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      await tester.ensureVisible(find.text('Edit display name'));
-      await tester.tap(find.text('Edit display name'));
+      await tester.ensureVisible(find.text('Edit profile'));
+      await tester.tap(find.text('Edit profile'));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), 'Synthetic name');
       await tester.tap(find.text('Save name'));
       await tester.pumpAndSettle();
       expect(value.localData!.displayName, 'Synthetic name');
       expect(tester.takeException(), isNull);
-      await tester.ensureVisible(find.text('Appearance & app info'));
-      await tester.tap(find.text('Appearance & app info'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Appearance'));
+      await tester.ensureVisible(find.text('Dark mode'));
+      await tester.tap(find.text('Dark mode'));
       await tester.pumpAndSettle();
       expect(appearance, true);
       expect(tester.takeException(), isNull);

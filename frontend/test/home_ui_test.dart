@@ -235,7 +235,7 @@ void main() {
             );
             await tester.pumpAndSettle();
             expect(
-              find.text('No account needed. Sign in for other devices.'),
+              find.text('Scan food smarter'),
               findsOneWidget,
             );
             expect(
@@ -541,9 +541,14 @@ void main() {
       );
       expect(moved.left, greaterThan(initial.left));
       expect(moved.center.dx, closeTo(target.dx, 1));
+      final draggedIcon = tester.getRect(
+        find.byKey(const Key('navigation-dragged-icon')),
+      );
+      expect(draggedIcon.center.dx, closeTo(target.dx, 1));
       await gesture.up();
       await tester.pumpAndSettle();
       expect(selected, [2]);
+      expect(find.byKey(const Key('navigation-dragged-icon')), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

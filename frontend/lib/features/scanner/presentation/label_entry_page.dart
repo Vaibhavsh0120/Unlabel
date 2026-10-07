@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import '../../../core/capture/label_text_suggestions.dart';
+import '../../../core/capture/local_ocr.dart';
 import '../../../core/network/unlabel_repository.dart';
 
 class LabelEntryPage extends StatefulWidget {
@@ -10,12 +12,14 @@ class LabelEntryPage extends StatefulWidget {
     required this.repository,
     required this.onReport,
     this.capturePhotos = const {},
+    this.ocrReader,
   });
   final UnlabelRepository repository;
   final void Function(ProductReport) onReport;
 
   /// Session-only reference photos. Never included in the report payload/storage.
   final Map<int, Uint8List> capturePhotos;
+  final LocalOcrReader? ocrReader;
   @override
   State<LabelEntryPage> createState() => _LabelEntryPageState();
 }
@@ -49,6 +53,15 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
   final _mayContain = _SectionInput();
   final _rows = <_RowInput>[];
   final _errorAnchor = GlobalKey();
+  late final _ocrReader = widget.ocrReader ?? LocalOcrReader();
+  final _recognizedText = {
+    0: TextEditingController(),
+    1: TextEditingController(),
+  };
+  bool _reading = false, _ocrUsed = false;
+  double? _readingProgress;
+  String? _readingError, _suggestionNotice;
+  int _readingGeneration = 0;
   String _language = 'en';
   String _basisKind = 'quantity';
   String _basisUnit = 'g';
@@ -66,6 +79,109 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
   String? _submissionId;
   final _observedAt = DateTime.now();
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.capturePhotos.keys.any((slot) => slot == 0 || slot == 1)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _readPhotos();
+      });
+    }
+  }
+
+  Future<void> _readPhotos() async {
+    if (_reading || _busy) return;
+    final generation = ++_readingGeneration;
+    final language = _language;
+    setState(() {
+      _reading = true;
+      _readingError = null;
+      _readingProgress = null;
+      _suggestionNotice = null;
+    });
+    final failures = <String>[];
+    for (final slot in [0, 1]) {
+      final bytes = widget.capturePhotos[slot];
+      if (bytes == null) continue;
+      if (!mounted || generation != _readingGeneration) return;
+      try {
+        final text = await _ocrReader.recognize(
+          bytes,
+          language: language,
+          onProgress: (value) {
+            if (mounted && generation == _readingGeneration) {
+              setState(() => _readingProgress = value);
+            }
+          },
+        );
+        if (!mounted || generation != _readingGeneration) return;
+        setState(() {
+          _recognizedText[slot]!.text = text;
+          if (text.isEmpty) {
+            failures.add(
+              '${slot == 0 ? 'Front' : 'Back'} photo: no clear text found.',
+            );
+          }
+        });
+      } on LocalOcrFailure catch (failure) {
+        failures.add(failure.message);
+      }
+    }
+    if (mounted && generation == _readingGeneration) {
+      setState(() {
+        _reading = false;
+        _readingProgress = null;
+        _readingError = failures.isEmpty ? null : failures.toSet().join(' ');
+      });
+    }
+  }
+
+  void _stopReading() {
+    _readingGeneration++;
+    _ocrReader.cancel();
+    setState(() {
+      _reading = false;
+      _readingProgress = null;
+      _readingError = null;
+    });
+  }
+
+  void _applySuggestions() {
+    if (_reading || _busy) return;
+    final suggestions = LabelTextSuggestions.fromText(
+      _recognizedText[0]!.text,
+      _recognizedText[1]!.text,
+    );
+    var changed = false;
+    void applySection(_SectionInput target, String? value) {
+      if (value != null &&
+          target.status == 'not_captured' &&
+          target.text.text.isEmpty) {
+        target.status = 'present';
+        target.text.text = value;
+        target.complete = false;
+        changed = true;
+      }
+    }
+
+    setState(() {
+      if (suggestions.name != null && _name.text.trim().isEmpty) {
+        _name.text = suggestions.name!;
+        changed = true;
+      }
+      applySection(_ingredients, suggestions.ingredients);
+      applySection(_contains, suggestions.contains);
+      applySection(_mayContain, suggestions.mayContain);
+      if (changed) {
+        _ocrUsed = true;
+        _changed();
+      }
+      _suggestionNotice = changed
+          ? 'Text suggestions added. Check each field against your photo.'
+          : 'No new suggestions found. Enter the printed facts in the fields below.';
+    });
+  }
+
   void _changed({bool resetConfirmations = true}) {
     _submissionId = null;
     _dirty = true;
@@ -78,6 +194,12 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
 
   @override
   void dispose() {
+    _readingGeneration++;
+    if (widget.ocrReader == null) {
+      _ocrReader.dispose();
+    } else {
+      _ocrReader.cancel();
+    }
     for (final controller in [
       _name,
       _brand,
@@ -90,6 +212,7 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
       _contains.text,
       _mayContain.text,
       ..._rows.map((row) => row.value),
+      ..._recognizedText.values,
     ]) {
       controller.dispose();
     }
@@ -170,11 +293,18 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
         frontConfirmed: _frontConfirmed,
         backConfirmed: _backConfirmed,
         samePackageConfirmed: _sameConfirmed,
+        captureMethod: _ocrUsed ? 'ocr_corrected' : 'manual',
         submissionId: _submissionId,
         observedAt: _observedAt,
       );
       draft.toPayload();
-      setState(() => _busy = true);
+      _readingGeneration++;
+      _ocrReader.cancel();
+      setState(() {
+        _busy = true;
+        _reading = false;
+        _readingProgress = null;
+      });
       final report = await widget.repository.checkLabel(draft);
       if (!mounted) return;
       setState(() {
@@ -276,7 +406,7 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
                       if (widget.capturePhotos.isNotEmpty) ...[
                         _card('Your captured label', [
                           const Text(
-                            'Read the photo and enter the printed facts below. Photos stay in this session; values still need your confirmation.',
+                            'Text reading happens on this device. Check suggestions against your photo before confirming the facts.',
                           ),
                           for (final photo in widget.capturePhotos.entries) ...[
                             const SizedBox(height: 12),
@@ -295,6 +425,70 @@ class _LabelEntryPageState extends State<LabelEntryPage> {
                                   ),
                                 ),
                               ),
+                            ),
+                          ],
+                          _select('Text reading language', _language, const {
+                            'en': 'English',
+                            'hi': 'Hindi and English',
+                          }, (value) => _language = value),
+                          if (_reading) ...[
+                            const SizedBox(height: 12),
+                            LinearProgressIndicator(value: _readingProgress),
+                            const SizedBox(height: 8),
+                            const Text('Reading your label on this device…'),
+                            TextButton(
+                              onPressed: _stopReading,
+                              child: const Text('Stop reading'),
+                            ),
+                          ] else
+                            OutlinedButton.icon(
+                              onPressed: _busy ? null : _readPhotos,
+                              icon: const Icon(Icons.text_fields_rounded),
+                              label: const Text('Read text on this device'),
+                            ),
+                          if (_readingError != null)
+                            Semantics(
+                              liveRegion: true,
+                              child: Text(_readingError!),
+                            ),
+                          for (final slot in [0, 1])
+                            if (_recognizedText[slot]!.text.isNotEmpty) ...[
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                key: Key(
+                                  'ocr-${slot == 0 ? 'front' : 'back'}-text',
+                                ),
+                                controller: _recognizedText[slot],
+                                enabled: !_busy && !_reading,
+                                minLines: 3,
+                                maxLines: 7,
+                                maxLength: LocalOcrReader.maxText,
+                                decoration: InputDecoration(
+                                  labelText:
+                                      '${slot == 0 ? 'Front' : 'Back'} text suggestions',
+                                ),
+                              ),
+                            ],
+                          if (_recognizedText.values.any(
+                            (text) => text.text.isNotEmpty,
+                          )) ...[
+                            const SizedBox(height: 12),
+                            FilledButton.tonal(
+                              onPressed: _busy || _reading
+                                  ? null
+                                  : _applySuggestions,
+                              child: const Text('Use text suggestions'),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Nutrition values need manual entry from the printed table.',
+                            ),
+                          ],
+                          if (_suggestionNotice != null) ...[
+                            const SizedBox(height: 8),
+                            Semantics(
+                              liveRegion: true,
+                              child: Text(_suggestionNotice!),
                             ),
                           ],
                         ]),

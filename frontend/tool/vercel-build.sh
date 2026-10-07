@@ -35,6 +35,8 @@ app_version="$(awk '$1 == "version:" {print $2; exit}' pubspec.yaml)"
 test -n "$app_version"
 flutter pub get --enforce-lockfile
 python3 ../scripts/generate_app_icons.py --check
+python3 ../scripts/vendor_web_ocr.py --check
+node --test test/local_ocr_web_test.cjs
 flutter analyze
 flutter test
 flutter build web --release \

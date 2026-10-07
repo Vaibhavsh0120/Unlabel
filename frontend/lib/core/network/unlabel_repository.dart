@@ -21,24 +21,45 @@ class UnlabelRepository {
     this.timeout = const Duration(seconds: 15),
     this.authTimeout = const Duration(seconds: 8),
     this.maxResponseBytes = 2 * 1024 * 1024,
+    DateTime Function()? clock,
     bool allowLocalHttp = kDebugMode,
   }) : _client = client ?? http.Client(),
        // ignore: prefer_initializing_formals
        _auth = auth,
+       _clock = clock ?? DateTime.now,
        _base = _validateBase(baseUrl, allowLocalHttp);
   final http.Client _client;
   final ScannerAuth _auth;
   final Uri _base;
+  final DateTime Function() _clock;
   final Duration timeout;
   final Duration authTimeout;
   final int maxResponseBytes;
   JsonMap? _metadata;
   DateTime? _metadataAt;
   Future<JsonMap>? _metadataPending;
+  bool _closed = false;
+  late final _searchCache = _PublicReadCache<SearchPage>(
+    ttl: const Duration(seconds: 60),
+    maxEntries: 20,
+    clock: _clock,
+  );
+  late final _reportCache = _PublicReadCache<ProductReport>(
+    ttl: const Duration(minutes: 5),
+    maxEntries: 40,
+    clock: _clock,
+  );
+
+  void _ensureOpen() {
+    if (_closed) {
+      throw const AppFailure('closed', 'This service connection has closed.');
+    }
+  }
 
   Future<void> _requireCapability(String capability) async {
+    _ensureOpen();
     if (_metadataAt == null ||
-        DateTime.now().difference(_metadataAt!) > const Duration(minutes: 5)) {
+        _clock().difference(_metadataAt!) >= const Duration(minutes: 5)) {
       _metadata = null;
     }
     final metadata =
@@ -46,6 +67,7 @@ class UnlabelRepository {
         await (_metadataPending ??= _loadMetadata().whenComplete(
           () => _metadataPending = null,
         ));
+    _ensureOpen();
     final capabilities = metadata['capabilities'] as JsonMap;
     if (capabilities[capability] != true) {
       throw AppFailure(
@@ -68,8 +90,10 @@ class UnlabelRepository {
         'This service uses an incompatible app contract. Please check the service configuration.',
       );
     }
-    _metadata = value;
-    _metadataAt = DateTime.now();
+    if (!_closed) {
+      _metadata = value;
+      _metadataAt = _clock();
+    }
     return value;
   }
 
@@ -104,12 +128,17 @@ class UnlabelRepository {
       );
     }
     await _requireCapability('catalogue_search');
-    final value = await _request(
-      'GET',
-      '/v1/catalogue/search',
-      query: {'q': text, 'limit': '10', 'cursor': ?cursor},
+    return _searchCache.read(
+      jsonEncode([text, cursor]),
+      () async => SearchPage.fromJson(
+        await _request(
+          'GET',
+          '/v1/catalogue/search',
+          query: {'q': text, 'limit': '10', 'cursor': ?cursor},
+        ),
+      ),
+      cacheable: (page) => page.status != 'unavailable',
     );
-    return SearchPage.fromJson(value);
   }
 
   Future<ProductReport> loadReport(String barcode) async {
@@ -121,8 +150,13 @@ class UnlabelRepository {
       );
     }
     await _requireCapability('label_reports');
-    return ProductReport.fromJson(
-      await _request('GET', '/v1/products/$code/report'),
+    return _reportCache.read(
+      code,
+      () async => ProductReport.fromJson(
+        await _request('GET', '/v1/products/$code/report'),
+      ),
+      // Current-package checks belong only to their confirmed POST receipt.
+      cacheable: (report) => report.isHistorical,
     );
   }
 
@@ -152,6 +186,7 @@ class UnlabelRepository {
     JsonMap? body,
     String? token,
   }) async {
+    _ensureOpen();
     final abort = Completer<void>();
     final uri = _base.replace(path: path, queryParameters: query);
     final request =
@@ -257,5 +292,75 @@ class UnlabelRepository {
     }
   }
 
-  void close() => _client.close();
+  void close() {
+    if (_closed) return;
+    _closed = true;
+    _metadata = null;
+    _metadataAt = null;
+    _metadataPending = null;
+    _searchCache.close();
+    _reportCache.close();
+    _client.close();
+  }
+}
+
+/// Public validated DTOs only. Completed entries have a fixed expiry and LRU
+/// bound; in-flight reads share a future and failures are never retained.
+class _PublicReadCache<T> {
+  _PublicReadCache({
+    required this.ttl,
+    required this.maxEntries,
+    required this.clock,
+  });
+
+  final Duration ttl;
+  final int maxEntries;
+  final DateTime Function() clock;
+  final _entries = <String, _PublicCacheEntry<T>>{};
+  final _pending = <String, Future<T>>{};
+  bool _closed = false;
+
+  Future<T> read(
+    String key,
+    Future<T> Function() load, {
+    required bool Function(T) cacheable,
+  }) {
+    final now = clock();
+    _entries.removeWhere((_, entry) => !now.isBefore(entry.expiresAt));
+    final cached = _entries.remove(key);
+    if (cached != null) {
+      _entries[key] = cached;
+      return Future.value(cached.value);
+    }
+    final pending = _pending[key];
+    if (pending != null) return pending;
+    late final Future<T> operation;
+    operation = Future<T>.sync(load)
+        .then((value) {
+          if (!_closed && cacheable(value)) {
+            _entries[key] = _PublicCacheEntry(value, clock().add(ttl));
+            while (_entries.length > maxEntries) {
+              _entries.remove(_entries.keys.first);
+            }
+          }
+          return value;
+        })
+        .whenComplete(() {
+          if (identical(_pending[key], operation)) _pending.remove(key);
+        });
+    _pending[key] = operation;
+    return operation;
+  }
+
+  void close() {
+    _closed = true;
+    _entries.clear();
+    _pending.clear();
+  }
+}
+
+class _PublicCacheEntry<T> {
+  const _PublicCacheEntry(this.value, this.expiresAt);
+  final T value;
+  final DateTime expiresAt;
 }

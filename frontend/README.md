@@ -1,56 +1,87 @@
 # Flutter frontend
 
-Frontend **0.2.0+3 — Welcome, Home and Optional Account** is published from source
-commit `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`; hosted proof is recorded in
-[the production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
-Published frontend **0.1.0+2** remains historical. Backend
-**0.7.0 — Private Account Sync** is independently pushed, hosted-verified and
-published. Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
+Frontend **0.3.0+4 — Visual Label Reader** is implemented, locally tested and
+visually checked. Release web build and light-mode Welcome/Profile checks at
+390/1440/1728px pass; push, hosted verification and source publication remain
+pending. [Current review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
+Published frontend **0.2.0+3** remains at implementation commit
+`5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`, with its
+[production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
+Backend **0.7.0 — Private Account Sync** is independently published;
+backend v0.8.0 comparison is a separate locally implemented release.
+Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
 
-One application directly in this folder targets Android, iOS and web. The
-website is [unlabel-india.vercel.app](https://unlabel-india.vercel.app); its shared
-API is [unlabel-api.vercel.app](https://unlabel-api.vercel.app). These are separate
-Vercel projects. See [deployment settings](../docs/planning/VERCEL_SETUP.md).
+One application in this folder targets Android, iOS and web. The
+[website](https://unlabel-india.vercel.app) and
+[API](https://unlabel-api.vercel.app) are separate Vercel projects.
+See [deployment settings](../docs/planning/VERCEL_SETUP.md).
 
 ## What works
 
-- Manual barcode lookup and name/brand search, with explicit candidate selection,
-  bounded pagination, loading, misses, refinement and recoverable failures.
-- A manual current-label form: identity, printed ingredients/allergen declarations,
-  nutrient rows, table basis/preparation and front claims. Blank values remain
-  unknown. The person confirms facts and front/back pairing before analysis.
-- Sourced current and dated historical reports, original nutrition bases,
-  approximate sugar cubes, reviewed claim states and three English/Hindi
-  ingredient-function entries. No invented score or allergy-safe verdict.
-- Automatic structured-fact storage through anonymous scanner authentication.
-  Analysis remains available when authentication or storage fails. There is no
-  Share flag or admin/reviewer account.
-- Device/browser-local recently viewed history and explicit bookmarks, removal,
-  history clearing, bounded storage and readable persistence/recovery errors.
-- First-use Welcome, reference-style Home, four Home/Scan/Compare/Saved tabs,
-  top-right Profile, optional password sign-in and isolated private sync with
-  explicit conflict choices. Guest records remain device-local.
-- Compatible-basis product comparison, sourced Insights and Sources destinations.
-- White/forest/mint Material 3 appearance, Light (default)/Dark/System selection, reflow for
-  narrow screens and large text, charcoal dark surfaces, filled-leaf branding and
-  locally bundled Solar feature icons with attribution. Seven decorative artwork assets
-  have recorded provenance; gentle motion respects accessibility and visibility.
-- Navigation and confirmed save feedback, with harmless unsupported haptics.
+- Mobile and PC Welcome use the supplied white/forest/mint direction with
+  generated decorative pouch/leaves, a working Get started action and optional
+  sign-in. Completion stays on the device. A botanical startup screen appears
+  only during app state restoration, with no artificial delay; the website has
+  no branded loading screen.
+- Home Search is mounted before the tap so its persistent input can immediately
+  request focus and the mobile keyboard. It retains debounce, stale-response
+  guards, bounded pagination, explicit candidate selection and recoverable
+  misses/failures. The header uses an opaque surface without status-bar blur.
+- The existing floating **Home / Scan / Compare / Saved** design/order remains.
+  Its bottom padding is smaller while the operating-system safe area remains.
+  Hold the active icon and drag it to preview another tab; release selects it.
+  Tap, keyboard and accessibility navigation remain available.
+- Scan Label keeps its existing camera viewport, front/back/barcode modes and
+  capture/gallery/manual controls. The retired Find a product page is replaced
+  by an autofocus barcode sheet inside Scan Label. It validates 8/12/13/14 digits,
+  preserves leading zeroes and offers retry or manual label entry after a miss.
+- After capture/gallery selection, local OCR supports English/Hindi with editable
+  extracted text and conservative field suggestions. People review identity,
+  printed ingredient/allergen declarations, nutrition rows, basis/preparation and
+  claims, then explicitly confirm facts and front/back pairing before analysis.
+  OCR does not silently confirm facts or infer a nutrition table.
+- Sourced current and dated historical reports retain original nutrition bases,
+  approximate 4 g sugar cubes, reviewed claim states and three English/Hindi
+  ingredient-function entries. Compatible-basis client comparison, Insights and
+  Sources remain useful. No universal health score or allergy-safe verdict is invented.
+- Profile has a botanical identity card, real current history/saved library sizes,
+  optional sign-in/name editing, working library shortcuts, preferences and settings.
+  It has no top-right gear or bottom Continue as guest action. Comparisons open
+  Compare, but the total is unknown because earlier releases did not record it.
+- Dark mode updates persisted device appearance. Preferences and Allergens save
+  device-local reminders. Privacy exposes existing sync/conflict/copy/clear actions
+  with confirmations; Help explains supported flows and opens About. Signed-in
+  users can log out. Notifications are disabled with an explicit explanation that
+  this version has no notification service.
+- Guests keep bounded history/bookmarks on the device. Optional password accounts
+  use a separate verified-UID namespace and explicit private sync choices.
+  Confirmed public package facts save separately through scanner authentication.
+  Report analysis remains useful when authentication or storage fails.
 
-Opening Scan requests camera permission and shows the live feed in an adaptive,
-non-scrolling viewport. Camera/gallery photos stay in session memory for manual
-review; audio and uploads are disabled. Search updates as you type and opens
-actual reports. Home tips are manually swiped, with no autoplay/pause controls.
-Reference-style Results/Compare use sourced evidence instead of illustrative scores.
-Local OCR, automatic barcode reading and Ingredient Insights complete the separate
-frontend v0.3.0 release. Continuous live-camera highlighting, personal suitability
-and broader ingredient knowledge remain future work.
-A stored report can be reopened without a fresh API request while the app is
-loaded; first-visit offline website availability is not established.
+Camera/gallery photos and raw OCR remain in the capture session and stay out of
+reports, public observations and private account sync. Android uses bundled ML Kit
+Latin/Devanagari recognition. iOS uses Vision where the selected language is
+supported, otherwise offers manual entry. Browser OCR loads pinned same-origin
+Tesseract JavaScript/Wasm/language assets only on first use; it does not send the
+photo to an OCR provider. Inputs, decoded dimensions, text and execution time are
+bounded, with cancel/late-response guards. Asset download and first OCR startup
+still depend on device/network speed.
 
-The [account and screen plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md)
-retains independent version boundaries. Personal records sync only after optional
-password sign-in; public structured package facts save separately.
+Search first-page loading uses a skeleton that respects reduced motion and page
+visibility; existing results remain visible during refresh. Public search results
+are cached for 60 seconds (20 entries), historical reports for five minutes
+(40 entries), with concurrent identical requests shared. Failed/unavailable results
+are not retained. Background report requests for thumbnails are limited to two;
+a selected result starts immediately. These caches are in memory and contain no
+private account data or confirmed-label POST responses. Smaller image decode
+sizes reduce decorative/thumbnail work. These changes have regression coverage,
+not a claim of measured device-wide latency or frame-rate improvement.
+
+Automatic barcode camera detection, continuous live highlights, comparison-history
+totals, notification delivery, personal suitability and broader ingredient coverage
+remain future work. Reminders do not filter products or establish allergy safety.
+Already stored reports can be reopened without a fresh API request; first-visit
+offline website availability is not established.
 
 ## Run and check
 
@@ -61,39 +92,52 @@ python scripts/setup.py
 python scripts/run_local.py
 ~~~
 
-From this folder, use the pinned Flutter **3.47.4** toolchain:
+From this folder, use pinned Flutter **3.47.4**:
 
 ~~~sh
 flutter pub get
 flutter analyze
 flutter test
 flutter build web --release
+node --test test/local_ocr_web_test.cjs
 ~~~
 
-The launcher supplies the local backend URL and release metadata. The default
-public backend is production HTTPS. [Configuration policy](config/README.md)
-describes endpoint and Firebase settings. Native APK/unsigned-IPA workflows
-remain manual; web/widget checks do not prove camera behavior or an installable
-iOS distribution.
+From the root, `python scripts/vendor_web_ocr.py --check` verifies the 21 tracked
+browser OCR assets offline; reacquisition is an explicit maintenance action.
+`python scripts/generate_app_icons.py --check` verifies the 42 existing icon assets.
+Artwork and the startup font retain source/license records under their asset folders.
+
+Fresh local evidence: **168 Flutter tests passed**, clean analysis, four browser
+OCR bridge tests and pinned asset checks. A real compiled local browser recognized
+a synthetic oats/ingredients/protein label. Android Kotlin compilation passed;
+physical camera/OCR behavior still needs a device check. iOS Vision source has not
+been compiled on this Windows host. Web/widget tests do not prove installation,
+native haptics, picker interruption or recognition accuracy across real packages.
+Mounted-search regression coverage verifies the input takes focus when Home Search
+is tapped; a physical mobile keyboard remains a separate device check.
+
+The launcher supplies local API/release settings. Production uses the HTTPS API.
+[Configuration policy](config/README.md) describes endpoint and Firebase settings.
+Native APK/unsigned-IPA workflows remain manual and independent of backend/web
+source releases. No paid service, card, Gemini or custom training is introduced.
 
 ## Source ownership
 
 | Path | Current responsibility |
 | --- | --- |
-| lib/app | Composition, Material 3 theme, appearance and public build/Firebase configuration |
-| lib/core/models | Validated report/search display models and confirmed-label draft |
-| lib/core/network | Bounded HTTP, capability/version handshake and anonymous scanner Auth |
-| lib/core/storage | Bounded private local reports, bookmarks and appearance preferences |
-| lib/features/scanner/presentation | Home, lookup, label entry, reports, ingredient details, saved/history views and shared widgets |
-| assets/brand | Authored light/dark app-icon masters, generated platform assets and verification manifest |
-| assets/icons | Bundled Solar feature icons and their attribution/license |
-| test | Network/model/storage, form and responsive interaction regressions |
-| android, ios, web | Platform projects for the same Flutter application |
+| lib/app | Composition, theme, appearance, startup/Welcome and public build/Firebase configuration |
+| lib/core/capture | Bounded local OCR and camera lifecycle/platform bridges |
+| lib/core/models | Validated report/search models and explicitly confirmed label draft |
+| lib/core/network | Bounded HTTP, capabilities, public read caches and scanner Auth |
+| lib/core/storage | Bounded local reports, bookmarks and appearance |
+| lib/features/account | Optional private sync Profile and device-only reminders |
+| lib/features/scanner/presentation | Home, Scan, barcode sheet, label review, reports, comparison and libraries |
+| assets/artwork, assets/brand | Decorative artwork, startup font, icon masters and provenance/license records |
+| assets/icons | Bundled Solar feature icons with attribution/license |
+| test | Network/model/storage, OCR, form, lifecycle and responsive interaction regressions |
+| android, ios, web | Platform projects, OCR integration and pinned browser runtime assets |
 
-OCR and automatic barcode reading remain the next controlled release. Broader preferences, knowledge and
-localization remain plans. The backend owns deterministic criteria; the client does not
-reimplement FSSAI thresholds or train a model.
-
+[Account/screen plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md) ·
 [UI requirements](../docs/planning/UI_REQUIREMENTS.md) ·
 [Data flow](../docs/architecture/DATA_FLOW.md) ·
 [API contracts](../contracts/README.md) ·

@@ -1,0 +1,16 @@
+[
+  {
+    "asset": "CormorantGaramond-Variable.ttf",
+    "url": "https://raw.githubusercontent.com/google/fonts/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cormorantgaramond/CormorantGaramond%5Bwght%5D.ttf",
+    "sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+    "bytes": 1195560,
+    "license": "SIL-OFL-1.1"
+  },
+  {
+    "asset": "CormorantGaramond-OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/3dd78844021e948ceb633d1dcee3f7885561b5d9/ofl/cormorantgaramond/OFL.txt",
+    "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956",
+    "bytes": 4387,
+    "license": "SIL-OFL-1.1"
+  }
+]

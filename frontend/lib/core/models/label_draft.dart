@@ -121,7 +121,8 @@ class DraftNutrient {
   }
 }
 
-/// Independent manual transcription only. No catalogue data is accepted as
+/// Independent package transcription, including corrected local OCR suggestions.
+/// No catalogue data is accepted as
 /// copied public package evidence. One instance keeps its UUID across retries.
 class LabelDraft {
   LabelDraft({
@@ -144,6 +145,7 @@ class LabelDraft {
     this.frontConfirmed = false,
     this.backConfirmed = false,
     this.samePackageConfirmed = false,
+    this.captureMethod = 'manual',
     String? submissionId,
     DateTime? observedAt,
   }) : submissionId = submissionId ?? newSubmissionId(),
@@ -167,6 +169,7 @@ class LabelDraft {
       backConfirmed,
       samePackageConfirmed;
   final String foodCategory, foodForm;
+  final String captureMethod;
   final String submissionId, observedOn;
 
   JsonMap toPayload() {
@@ -197,7 +200,8 @@ class LabelDraft {
         'Confirm the product front, corrected back-label facts, and that they belong to the same package.',
       );
     }
-    if (!const ['as_sold', 'as_prepared'].contains(preparation) ||
+    if (!const ['manual', 'ocr_corrected'].contains(captureMethod) ||
+        !const ['as_sold', 'as_prepared'].contains(preparation) ||
         !const [
           'ordinary_general_food',
           'special_food',
@@ -252,7 +256,7 @@ class LabelDraft {
         'provider_references': <JsonMap>[],
         'revision_context': null,
         'observed_on': observedOn,
-        'capture_method': 'manual',
+        'capture_method': captureMethod,
         'share_license': 'CC0-1.0',
         'market': 'india',
         'submission_id': submissionId,

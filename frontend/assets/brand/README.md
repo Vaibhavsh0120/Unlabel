@@ -1,5 +1,10 @@
 # Unlabel app mark
 
+The app-only startup wordmark uses bundled Cormorant Garamond at regular weight.
+Its unmodified variable font, SIL Open Font License and pinned official Google
+Fonts source URLs/SHA-256 hashes are in `fonts/startup-font-source.json`. It does
+not require an installed system serif or a runtime font download.
+
 Original large leaf above a rounded Unlabel wordmark, following the supplied
 icon direction. The light mark uses white, forest green and a soft green leaf
 gradient; the dark mark uses charcoal, mint and an off-white wordmark. Editable

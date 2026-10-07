@@ -1,26 +1,32 @@
 # Unlabel: useful product architecture and delivery plan
 
-Delivery checkpoint: **7 October 2026**.
+Delivery checkpoint: **8 October 2026**. Published backend v0.7.0 and frontend
+v0.2.0+3 retain their exact historical source and hosted receipts. Current frontend
+**v0.3.0+4 Visual Label Reader** implements reference Welcome/Profile, app-only
+startup, immediate Home search focus, local OCR behind the unchanged Scan Label
+screen, and its barcode fallback. Navbar Home/Scan/Compare/Saved design/order is
+preserved; only the requested bottom gap and held active-icon drag are refined.
+Public-read caches, bounded thumbnail work and reduced-motion search skeletons
+follow the screen work. Local evidence: **168 Flutter tests**, clean analysis,
+release web build, four browser OCR bridge tests and successful synthetic local
+browser recognition. Final source/hosted receipts close independently.
 
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently published. Backend **v0.7.0 Private Account Sync** source
-`9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is already pushed and hosted-verified;
-its independent GitHub release is published. Frontend v0.2.0 is now the active release goal.
-Prior full-suite evidence is **931 passed / five emulator-only skips** and
-**18 hosted synthetic checks**; a fresh validation pass is recorded in its review.
-Frontend **v0.2.0+3** now has locally verified Welcome/Home/accounts, four tabs,
-live header search, reference Results/Compare and basic private camera/gallery capture.
-Fresh evidence: **135 Flutter tests**, clean analysis, release web build and 42 verified
-icon assets. Push/publication is authorized. Local OCR, automatic barcode reading
-and Ingredient Insights remain **v0.3.0+4** work preserved in the recovery snapshot.
-Guests remain local; signed-in private records and public package facts stay separate.
+Backend **v0.8.0 Sourced Nutrient Comparison** is implemented and locally verified
+as a separate release. Existing v0.7.0 already accepts confirmed corrected OCR
+facts; no image/raw-OCR upload API is added. Frontend v0.4.0 plans source-aware
+comparison integration, remaining insight refinements and native acceptance;
+backend v0.9.0 plans expanded reviewed bilingual ingredient-function evidence.
+Notifications, persistent comparison totals, automatic barcode camera detection,
+live highlighting and personal suitability remain explicitly future work.
 
-Follow [controlled releases](CONTROLLED_RELEASES.md): work on main only, finish
-one release before the next, and stage each version explicitly. The verified
-65-file local recovery snapshot preserves the original unfinished work.
+Follow [controlled releases](CONTROLLED_RELEASES.md): main only, explicit component
+staging, docs before every push and preserved historical tags. The verified
+65-file local recovery snapshot remains private. Guests keep personal records
+local; signed-in private records and public package observations remain separate.
+Light is the first-use default. No Gemini, custom training, card or paid service.
 
-Light is the first-use default. Local OCR, broader ingredient content and
-personal suitability remain plans. [Frontend review](FRONTEND_V0_2_0_REVIEW.md).
+[Current release plan](FRONTEND_BACKEND_NEXT_VERSIONS.md) ·
+[Frontend review](FRONTEND_V0_3_0_REVIEW.md) ·
 [Account plan](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
 
 ## Product goal

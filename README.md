@@ -6,7 +6,7 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.2.0-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.3.0_local-155b4b?style=flat-square)
 ![Backend](https://img.shields.io/badge/backend-0.7.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -21,10 +21,12 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Backend v0.6.0 and frontend v0.1.0+2 are independently published.**
-**Backend v0.7.0 Private Account Sync is independently published and hosted-verified.
-Frontend v0.2.0+3 is locally tested; its separate push, hosted verification and
-publication are the active release gates.**
+**Backend v0.7.0 Private Account Sync and frontend v0.2.0+3 are independently
+published and hosted-verified.** Frontend **v0.3.0+4 Visual Label Reader** is
+implemented and locally tested/visually checked; push, hosted verification
+and source publication remain release gates. Backend **v0.8.0 Sourced Nutrient
+Comparison** is a separate locally implemented release; the current frontend
+does not require that endpoint. Historical releases remain preserved.
 [Version checklists](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 - Enter a barcode or search name/brand words and choose an exact catalogue record.
@@ -34,9 +36,13 @@ publication are the active release gates.**
   three reviewed English/Hindi ingredient functions where evidence permits.
 - Continue as a guest with device-local saved reports/history, or optionally sign in
   to sync a private account display name, saved reports and history across devices.
-- Use first-launch Welcome, compact light/dark Home and floating Home/Scan/Compare/Saved
-  navigation, with Profile at the top right.
-- Capture a private camera/gallery photo and review it beside manual label entry.
+- Use responsive botanical Welcome on mobile and PC, compact light/dark Home and
+  the existing floating Home/Scan/Compare/Saved navigation, with Profile at the top right.
+- Capture a private camera/gallery photo, read English/Hindi text locally, correct
+  suggested label fields and explicitly confirm facts before analysis. Nutrition
+  tables remain manually reviewed. Manual barcode fallback lives inside Scan Label.
+- Open a reference-style Profile with actual library counts, optional account
+  editing/sync, local reminders, appearance, privacy and help controls.
 - Save confirmed public package facts automatically to improve the shared catalogue.
 
 Guests do not upload personal history or saved lists. Password accounts use a
@@ -46,9 +52,18 @@ raw OCR and dietary health preferences are excluded from private sync. Public fa
 use anonymous or signed-in scanner authentication; there are no admin/reviewer app accounts. Storage failure does not discard
 the useful report. [Privacy and evidence](docs/SAFETY_PRIVACY.md).
 
-Automatic barcode reading, local OCR, live highlights, personal suitability and
-wider reviewed insight coverage stay tracked. v0.2.0 includes live header search,
-reference-style reports, compatible-basis client comparison and manually swiped tips.
+v0.3.0 adds an app-only startup screen; the website has no branded loading screen.
+Home Search requests keyboard focus on tap. Search uses accessible skeletons,
+bounded public-read caching and limited background thumbnail requests. The Scan
+Label layout and four-tab navigation design/order remain the established ones;
+the bar sits lower and its active icon can be held and dragged.
+
+Automatic barcode camera detection, continuous live highlights, personal
+suitability and wider reviewed insight coverage remain future work. Profile
+notifications are explicitly unavailable, and unrecorded comparison totals show
+an unknown count. Saved dietary/allergen choices are device-local reminders;
+they do not filter products or establish allergy safety. v0.2.0 introduced live
+header search, reference-style reports, compatible-basis client comparison and manually swiped tips.
 Concept-image scores are illustrative;
 the app does not invent a universal health or allergy-safety verdict.
 [20-group feature tracker](docs/planning/FEATURE_TRACKER.md).
@@ -118,9 +133,14 @@ Frontend v0.1.0+2: independently published at exact source
 [Production proof](docs/research/FRONTEND_V0_1_0_PRODUCTION.json).
 Frontend v0.2.0+3: **135 tests passed**, clean analysis, web build and hosted
 asset/API checks; source release is published. [Frontend proof](docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
+Frontend v0.3.0+4: **168 Flutter tests passed**, clean analysis, four browser OCR
+bridge tests and pinned-asset verification. A real local browser read a synthetic
+label using the bundled OCR engine. Release web build and light-mode checks at
+390/1440/1728 pixels passed; hosted publication is pending.
+[Current review](docs/planning/FRONTEND_V0_3_0_REVIEW.md).
 
 Vercel deploys separate backend/web projects from `main`. Backend source tags
-remain `v0.x.0`; frontend source uses `frontend-v0.1.0`; future manual mobile
+remain `v0.x.0`; frontend source uses `frontend-vVERSION`; future manual mobile
 builds use `mobile-vVERSION+BUILD`. Existing tags and assets are preserved.
 
 The manual APK/unsigned-IPA workflow uses one immutable commit and matching

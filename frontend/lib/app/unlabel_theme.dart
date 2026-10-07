@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 abstract final class UnlabelTheme {
   static ThemeData forBrightness(Brightness brightness) {
@@ -75,6 +76,13 @@ abstract final class UnlabelTheme {
         foregroundColor: scheme.onSurface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: scheme.surface,
+          statusBarIconBrightness: dark ? Brightness.light : Brightness.dark,
+          statusBarBrightness: dark ? Brightness.dark : Brightness.light,
+        ),
         centerTitle: false,
       ),
       cardTheme: CardThemeData(

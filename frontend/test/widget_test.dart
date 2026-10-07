@@ -12,7 +12,7 @@ import 'package:unlabel/core/accounts/account_data.dart';
 import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
-import 'package:unlabel/features/scanner/presentation/lookup_page.dart';
+import 'package:unlabel/features/scanner/presentation/barcode_entry_sheet.dart';
 import 'package:unlabel/features/scanner/presentation/report_page.dart';
 
 class MemoryPreferences implements PreferencesAdapter {
@@ -102,15 +102,26 @@ SearchPage _search({
 
 Widget _lookup(
   FakeRepository repository, {
-  bool barcode = true,
   Future<void> Function(ProductReport)? onReport,
+  VoidCallback? onEnterLabel,
 }) => MaterialApp(
   theme: UnlabelTheme.forBrightness(Brightness.light),
-  home: LookupPage(
-    repository: repository,
-    barcodeMode: barcode,
-    onOpenReport: onReport ?? (_) async {},
-    onEnterLabel: () {},
+  home: Scaffold(
+    body: Builder(
+      builder: (context) => TextButton(
+        onPressed: () => showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (_) => BarcodeEntrySheet(
+            repository: repository,
+            onOpenReport: onReport ?? (_) async {},
+            onEnterLabel: onEnterLabel ?? () {},
+          ),
+        ),
+        child: const Text('Enter barcode'),
+      ),
+    ),
   ),
 );
 
@@ -160,10 +171,8 @@ Future<void> _appearance(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.tap(find.byTooltip('Profile'));
   await tester.pumpAndSettle();
-  await tester.ensureVisible(find.byTooltip('Appearance & app info'));
-  await tester.tap(find.byTooltip('Appearance & app info'));
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('Appearance').last);
+  await tester.ensureVisible(find.text('Dark mode'));
+  await tester.tap(find.text('Dark mode'));
   await tester.pumpAndSettle();
 }
 
@@ -247,8 +256,6 @@ void main() {
       );
       await _appearance(tester);
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Dark').last);
-      await tester.pumpAndSettle();
       expect(await LocalStore(preferences: preferences).appearance(), 'dark');
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pumpWidget(
@@ -324,8 +331,6 @@ void main() {
       );
       await _appearance(tester);
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Dark').last);
-      await tester.pumpAndSettle();
       await tester.pageBack();
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('mobile-nav-0')));
@@ -336,8 +341,8 @@ void main() {
       );
       await tester.tap(find.byTooltip('Profile'));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.byTooltip('Appearance & app info'));
-      await tester.tap(find.byTooltip('Appearance & app info'));
+      await tester.ensureVisible(find.text('Help'));
+      await tester.tap(find.text('Help'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('About Unlabel').last);
       await tester.pumpAndSettle();
@@ -354,7 +359,9 @@ void main() {
     final pending = Completer<ProductReport>();
     repository.reportLoader = (_) => pending.future;
     await tester.pumpWidget(_lookup(repository));
-    await tester.tap(find.byKey(const Key('lookup-submit')));
+    await tester.tap(find.text('Enter barcode'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('barcode-submit')));
     await tester.pump();
     expect(
       find.text('Enter an 8, 12, 13 or 14 digit barcode.'),
@@ -362,7 +369,7 @@ void main() {
     );
     expect(repository.reportCalls, 0);
     await tester.enterText(
-      find.byKey(const Key('lookup-input')),
+      find.byKey(const Key('barcode-input')),
       '0123456789012',
     );
     await tester.testTextInput.receiveAction(TextInputAction.search);
@@ -379,103 +386,200 @@ void main() {
   });
 
   testWidgets(
-    'name search identities are explicit and paging retains the submitted query',
+    'successful barcode lookup keeps leading zeros and closes the sheet',
     (tester) async {
       final repository = FakeRepository();
       addTearDown(repository.close);
-      repository.searchLoader = (_, cursor) async => cursor == null
-          ? _search(cursor: 'next-page')
-          : _search(name: 'Synthetic second oats', barcode: '0123456789013');
-      await tester.pumpWidget(_lookup(repository, barcode: false));
-      await tester.enterText(find.byKey(const Key('lookup-input')), 'oat');
-      await tester.tap(find.byKey(const Key('lookup-submit')));
-      await tester.pumpAndSettle();
-      expect(find.text('Choose a matching package'), findsOneWidget);
-      expect(find.text('Synthetic oats'), findsOneWidget);
-      expect(find.text('Barcode 0123456789012'), findsOneWidget);
-      expect(
-        find.textContaining('Names alone do not confirm identity'),
-        findsOneWidget,
+      String? received;
+      ProductReport? opened;
+      repository.reportLoader = (barcode) async {
+        received = barcode;
+        return _report(historical: true);
+      };
+      await tester.pumpWidget(
+        _lookup(repository, onReport: (report) async => opened = report),
       );
-      expect(repository.reportCalls, 0);
+      await tester.tap(find.text('Enter barcode'));
+      await tester.pumpAndSettle();
       await tester.enterText(
-        find.byKey(const Key('lookup-input')),
-        'changed input',
+        find.byKey(const Key('barcode-input')),
+        '00123456',
       );
-      await tester.ensureVisible(find.text('Show more matches'));
-      await tester.tap(find.text('Show more matches'));
+      await tester.tap(find.byKey(const Key('barcode-submit')));
       await tester.pumpAndSettle();
-      expect(repository.searchCalls, [('oat', null), ('oat', 'next-page')]);
-      expect(find.text('Synthetic second oats'), findsOneWidget);
-      expect(find.text('Synthetic oats'), findsOneWidget);
+      expect(received, '00123456');
+      expect(opened?.name, 'Synthetic oats');
+      expect(find.byKey(const Key('barcode-input')), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );
 
-  testWidgets('a new failed query cannot display the previous query products', (
+  testWidgets('barcode submission rejects pasted non-digits', (tester) async {
+    final repository = FakeRepository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(_lookup(repository));
+    await tester.tap(find.text('Enter barcode'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('barcode-input')), '1234ABCD');
+    await tester.tap(find.byKey(const Key('barcode-submit')));
+    await tester.pumpAndSettle();
+    expect(repository.reportCalls, 0);
+    expect(
+      find.text('Enter an 8, 12, 13 or 14 digit barcode.'),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('oversize barcode paste stays visible and requires correction', (
     tester,
   ) async {
     final repository = FakeRepository();
     addTearDown(repository.close);
-    repository.searchLoader = (query, _) async {
-      if (query == 'new query') {
-        throw const AppFailure('network', 'Synthetic connection failure.');
-      }
-      return _search();
-    };
-    await tester.pumpWidget(_lookup(repository, barcode: false));
-    await tester.enterText(find.byKey(const Key('lookup-input')), 'oat');
-    await tester.tap(find.byKey(const Key('lookup-submit')));
+    await tester.pumpWidget(_lookup(repository));
+    await tester.tap(find.text('Enter barcode'));
     await tester.pumpAndSettle();
-    expect(find.text('Synthetic oats'), findsOneWidget);
-    await tester.enterText(find.byKey(const Key('lookup-input')), 'new query');
-    await tester.tap(find.byKey(const Key('lookup-submit')));
+    await tester.enterText(
+      find.byKey(const Key('barcode-input')),
+      '123456789012345',
+    );
+    await tester.tap(find.byKey(const Key('barcode-submit')));
     await tester.pumpAndSettle();
-    expect(find.text('Lookup could not be completed'), findsOneWidget);
-    expect(find.text('Synthetic oats'), findsNothing);
-    expect(find.textContaining('shown'), findsNothing);
+    expect(repository.reportCalls, 0);
+    expect(
+      tester
+          .widget<TextFormField>(find.byKey(const Key('barcode-input')))
+          .controller!
+          .text,
+      '123456789012345',
+    );
+    expect(
+      find.text('Enter an 8, 12, 13 or 14 digit barcode.'),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('changing lookup mode discards a late search response', (
+  testWidgets('barcode request disables duplicates and retries after failure', (
     tester,
   ) async {
     final repository = FakeRepository();
     addTearDown(repository.close);
-    final pending = Completer<SearchPage>();
-    repository.searchLoader = (_, _) => pending.future;
-    await tester.pumpWidget(_lookup(repository, barcode: false));
-    await tester.enterText(find.byKey(const Key('lookup-input')), 'oat');
-    await tester.tap(find.byKey(const Key('lookup-submit')));
-    await tester.pump();
-    await tester.tap(find.text('Barcode'));
-    await tester.pump();
-    pending.complete(_search());
+    final pending = Completer<ProductReport>();
+    ProductReport? opened;
+    repository.reportLoader = (_) => pending.future;
+    await tester.pumpWidget(
+      _lookup(repository, onReport: (report) async => opened = report),
+    );
+    await tester.tap(find.text('Enter barcode'));
     await tester.pumpAndSettle();
-    expect(find.text('Synthetic oats'), findsNothing);
-    expect(find.text('Look up barcode'), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('barcode-input')), '00123456');
+    await tester.tap(find.byKey(const Key('barcode-submit')));
+    await tester.pump();
+    expect(
+      tester
+          .widget<FilledButton>(find.byKey(const Key('barcode-submit')))
+          .onPressed,
+      isNull,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(find.byKey(const Key('barcode-input')))
+          .enabled,
+      isFalse,
+    );
+    pending.completeError(
+      const AppFailure('network', 'Synthetic connection failure.'),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Synthetic connection failure.'), findsOneWidget);
+    repository.reportLoader = (_) async => _report(historical: true);
+    await tester.ensureVisible(find.text('Retry lookup'));
+    await tester.tap(find.text('Retry lookup'));
+    await tester.pumpAndSettle();
+    expect(opened?.name, 'Synthetic oats');
+    expect(find.byKey(const Key('barcode-input')), findsNothing);
+    expect(repository.reportCalls, 2);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('empty, too broad and unavailable searches are distinct', (
+  testWidgets('dismissing barcode sheet discards a late report response', (
     tester,
   ) async {
-    for (final entry in [
-      ('not_found', 'No matches for “oat”'),
-      ('refine_query', 'Narrow your search'),
-      ('unavailable', 'Catalogue search is unavailable'),
-    ]) {
-      final repository = FakeRepository();
-      repository.searchLoader = (_, _) async => _search(status: entry.$1);
-      await tester.pumpWidget(_lookup(repository, barcode: false));
-      await tester.enterText(find.byKey(const Key('lookup-input')), 'oat');
-      await tester.tap(find.byKey(const Key('lookup-submit')));
-      await tester.pumpAndSettle();
-      expect(find.text(entry.$2), findsOneWidget);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox.shrink());
-      repository.close();
-    }
+    final repository = FakeRepository();
+    addTearDown(repository.close);
+    final pending = Completer<ProductReport>();
+    repository.reportLoader = (_) => pending.future;
+    var opened = false;
+    await tester.pumpWidget(
+      _lookup(repository, onReport: (_) async => opened = true),
+    );
+    await tester.tap(find.text('Enter barcode'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('barcode-input')), '00123456');
+    await tester.tap(find.byKey(const Key('barcode-submit')));
+    await tester.pump();
+    Navigator.of(tester.element(find.byKey(const Key('barcode-input')))).pop();
+    pending.complete(_report());
+    await tester.pumpAndSettle();
+    expect(opened, isFalse);
+    expect(find.byKey(const Key('barcode-input')), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('barcode sheet stays usable above keyboard with large text', (
+    tester,
+  ) async {
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetViewInsets);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1;
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    final repository = FakeRepository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(_lookup(repository));
+    await tester.tap(find.text('Enter barcode'));
+    await tester.pumpAndSettle();
+    tester.view.viewInsets = const FakeViewPadding(bottom: 260);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('barcode-input')));
+    expect(
+      find.byKey(const Key('barcode-input')).hitTestable(),
+      findsOneWidget,
+    );
+    await tester.enterText(find.byKey(const Key('barcode-input')), '00123456');
+    await tester.ensureVisible(find.byKey(const Key('barcode-submit')));
+    await tester.pumpAndSettle();
+    expect(
+      tester.getRect(find.byKey(const Key('barcode-submit'))).bottom,
+      lessThanOrEqualTo(308),
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('missing barcode hands off to label entry after closing sheet', (
+    tester,
+  ) async {
+    final repository = FakeRepository();
+    addTearDown(repository.close);
+    repository.reportLoader = (_) async =>
+        throw const AppFailure('not_found', 'No synthetic report.');
+    var entered = false;
+    await tester.pumpWidget(
+      _lookup(repository, onEnterLabel: () => entered = true),
+    );
+    await tester.tap(find.text('Enter barcode'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('barcode-input')), '00123456');
+    await tester.tap(find.byKey(const Key('barcode-submit')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Enter this package label'));
+    await tester.pumpAndSettle();
+    expect(entered, isTrue);
+    expect(find.byKey(const Key('barcode-input')), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('saving waits for the initial saved status read', (tester) async {

@@ -11,12 +11,12 @@ on:
       release_version:
         description: Product version (overrides pubspec version for both artifacts)
         required: true
-        default: 0.2.0
+        default: 0.3.0
         type: string
       build_number:
         description: Positive mobile build number; increase for each new build
         required: true
-        default: '3'
+        default: '4'
         type: string
       backend_url:
         description: Public HTTPS backend origin used by the connected client
@@ -82,6 +82,8 @@ jobs:
           persist-credentials: false
       - name: Verify authored platform icons
         run: python3 scripts/generate_app_icons.py --check
+      - name: Verify bundled local OCR sources
+        run: python3 scripts/vendor_web_ocr.py --check
       - name: Resolve one source commit and preserve workflow authorization
         id: source
         env:

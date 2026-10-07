@@ -1,5 +1,16 @@
 # Unlabel interface contract
 
+8 October steering: Profile, app loading and mobile/desktop Welcome use the four
+new supplied references. Keep the existing four-tab navbar design/order and
+Profile shortcut; only reduce its bottom gap and refine the held active indicator
+so both its icon and green selection surface track the finger. Do not copy the
+five-tab screenshot navbar or add a redundant Profile settings button. The
+botanical loading screen is app-only; the website has no branded loading screen.
+Welcome uses live copy/actions and a generated package/leaf illustration, with
+stacked phone and two-column desktop compositions. Profile uses the actual
+guest/account identity, real counts and device-local preferences. See the
+[next releases plan](docs/planning/FRONTEND_BACKEND_NEXT_VERSIONS.md).
+
 The user's five supplied mobile references are the visual source of truth.
 Use white/off-white surfaces, forest-green headings/actions, mint icon backgrounds,
 rounded cards, generous spacing and restrained leaf shapes. Text and status must

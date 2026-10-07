@@ -155,6 +155,25 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 
 void main() {
   setUp(() {
+    // Widget tests retain the packages' MethodChannel implementations, rather
+    // than registering the Android Pigeon implementations. Complete both
+    // recovery and camera discovery so scanner fallback is deterministic.
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('plugins.flutter.io/image_picker'),
+          (call) async {
+            if (call.method == 'retrieve') return null;
+            throw MissingPluginException();
+          },
+        );
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('plugins.flutter.io/camera'),
+          (call) async {
+            if (call.method == 'availableCameras') return <Object>[];
+            throw MissingPluginException();
+          },
+        );
     TestWidgetsFlutterBinding.ensureInitialized()
         .platformDispatcher
         .accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(
@@ -162,6 +181,16 @@ void main() {
     );
   });
   tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('plugins.flutter.io/camera'),
+          null,
+        );
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('plugins.flutter.io/image_picker'),
+          null,
+        );
     TestWidgetsFlutterBinding.ensureInitialized().platformDispatcher
         .clearAccessibilityFeaturesTestValue();
   });
@@ -197,7 +226,7 @@ void main() {
       final bar = tester.getRect(find.byKey(const Key('floating-navigation')));
       expect(bar.left, greaterThanOrEqualTo(16));
       expect(bar.right, lessThanOrEqualTo(settings.$1 - 16));
-      expect(844 - 34 - bar.bottom, greaterThanOrEqualTo(12));
+      expect(844 - 34 - bar.bottom, closeTo(2, .01));
       expect(
         tester.getRect(find.byType(SingleChildScrollView).first).bottom,
         greaterThan(bar.bottom),
@@ -228,6 +257,42 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
     }
   });
+
+  testWidgets(
+    'Home search is mounted before tap and receives immediate focus',
+    (tester) async {
+      final guest = LocalStore(preferences: _Preferences());
+      final auth = _Auth();
+      final sync = _Sync();
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(auth, sync, guest),
+          showWelcome: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      final input = find.byKey(
+        const Key('product-search-input'),
+        skipOffstage: false,
+      );
+      expect(input, findsOneWidget);
+      final focus = tester.widget<TextField>(input).focusNode!;
+      expect(focus.hasFocus, isFalse);
+      await tester.tap(find.byTooltip('Search products'));
+      await tester.pump();
+    expect(focus.hasFocus, isTrue);
+    expect(find.byKey(const Key('product-search-input')), findsOneWidget);
+    expect(find.byTooltip('Profile'), findsNothing);
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pump();
+    expect(focus.hasFocus, isFalse);
+    expect(find.byTooltip('Profile'), findsOneWidget);
+    },
+  );
 
   testWidgets('input keyboard hides floating navigation until dismissed', (
     tester,
@@ -330,14 +395,8 @@ void main() {
       );
       await tester.pumpWidget(app());
       await tester.pumpAndSettle();
-      expect(
-        find.text('A little clarity for\nevery food find.'),
-        findsOneWidget,
-      );
-      expect(
-        find.text('No account needed. Sign in for other devices.'),
-        findsOneWidget,
-      );
+      expect(find.text('Scan food smarter'), findsOneWidget);
+      expect(find.text('I already have an account'), findsOneWidget);
       expect(sync.availabilityCalls, 0);
       expect(sync.uploaded, isEmpty);
       expect(auth.signIns, 0);
@@ -408,24 +467,28 @@ void main() {
       );
       await tester.pumpAndSettle();
       await _tap(tester, find.text('Barcode Scan'));
+      await _tap(tester, find.byKey(const Key('scan-mode-2')));
+      expect(find.text('Enter barcode'), findsOneWidget);
+      await _tap(tester, find.byKey(const Key('scan-primary')));
+      expect(find.byKey(const Key('barcode-input')), findsOneWidget);
       await tester.enterText(
-        find.byKey(const Key('lookup-input')),
+        find.byKey(const Key('barcode-input')),
         '0123456789012',
       );
-      await _tap(tester, find.byKey(const Key('lookup-submit')));
+      await _tap(tester, find.byKey(const Key('barcode-submit')));
       expect(find.text('Guest scanned oats'), findsOneWidget);
       expect((await guest.history()).single.report.name, 'Guest scanned oats');
       await _tap(tester, find.byKey(const Key('save-report')));
       expect((await guest.saved()).single.report.name, 'Guest scanned oats');
       await tester.pageBack();
       await tester.pumpAndSettle();
-      await tester.pageBack();
-      await tester.pumpAndSettle();
       await _tap(tester, find.byKey(const Key('mobile-nav-3')));
       expect(find.text('Guest scanned oats'), findsOneWidget);
       await _tap(tester, find.byTooltip('Profile'));
       expect(find.text('Sign in'), findsOneWidget);
-      await _tap(tester, find.text('Continue as guest'));
+      expect(find.text('Continue as guest'), findsNothing);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
       expect(find.text('Saved products'), findsOneWidget);
       expect(find.text('Guest scanned oats'), findsOneWidget);
       await _tap(tester, find.byKey(const Key('mobile-nav-0')));
@@ -533,11 +596,15 @@ void main() {
       );
       await tester.pumpAndSettle();
       await _tap(tester, find.text('Barcode Scan'));
+      await _tap(tester, find.byKey(const Key('scan-mode-2')));
+      expect(find.text('Enter barcode'), findsOneWidget);
+      await _tap(tester, find.byKey(const Key('scan-primary')));
+      expect(find.byKey(const Key('barcode-input')), findsOneWidget);
       await tester.enterText(
-        find.byKey(const Key('lookup-input')),
+        find.byKey(const Key('barcode-input')),
         '0123456789012',
       );
-      await tester.tap(find.byKey(const Key('lookup-submit')));
+      await tester.tap(find.byKey(const Key('barcode-submit')));
       await tester.pump();
       auth.setUser('account-a');
       await tester.pumpAndSettle();

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../../../core/network/unlabel_repository.dart';
 import 'report_presentation.dart';
 import 'ui_components.dart';
+import '../../../core/widgets/search_skeleton.dart';
 
 /// Name search replaces the app header and keeps typing independent of requests.
 class ProductSearchPage extends StatefulWidget {
@@ -13,11 +14,19 @@ class ProductSearchPage extends StatefulWidget {
     required this.repository,
     required this.onOpenReport,
     required this.onEnterLabel,
+    this.focusNode,
+    this.autofocus = true,
+    this.onClose,
+    this.active = true,
     super.key,
   });
   final UnlabelRepository repository;
   final Future<void> Function(ProductReport) onOpenReport;
   final VoidCallback onEnterLabel;
+  final FocusNode? focusNode;
+  final bool autofocus;
+  final VoidCallback? onClose;
+  final bool active;
 
   @override
   State<ProductSearchPage> createState() => _ProductSearchPageState();
@@ -25,12 +34,16 @@ class ProductSearchPage extends StatefulWidget {
 
 class _ProductSearchPageState extends State<ProductSearchPage> {
   final _input = TextEditingController();
-  final _focus = FocusNode();
-  final _reports = <String, Future<ProductReport>>{};
+  late final _focus = widget.focusNode ?? FocusNode();
+  final _reports = <String, Future<ProductReport?>>{};
+  final _thumbnails = <_ThumbnailJob>[];
+  int _thumbnailRequests = 0;
   final _items = <SearchCandidate>[];
   Timer? _debounce;
   SearchPage? _page;
   String _query = '';
+  String _resultsQuery = '';
+  final _noThumbnail = Future<ProductReport?>.value(null);
   String? _error, _opening;
   bool _busy = false;
   int _request = 0;
@@ -39,13 +52,47 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   void dispose() {
     _request++;
     _debounce?.cancel();
+    _discardThumbnails();
     _input.dispose();
-    _focus.dispose();
+    if (widget.focusNode == null) _focus.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(ProductSearchPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.active && oldWidget.active) {
+      _request++;
+      _debounce?.cancel();
+      _busy = false;
+      _discardThumbnails();
+      _reports.clear();
+    }
+    if (widget.active && !oldWidget.active && _query.length >= 2) {
+      unawaited(_search());
+    }
+  }
+
+  void _discardThumbnails() {
+    for (final job in _thumbnails) {
+      _reports.remove(job.code);
+      job.result.complete(null);
+    }
+    _thumbnails.clear();
+  }
+
+  void _close() {
+    _focus.unfocus();
+    if (widget.onClose != null) {
+      widget.onClose!();
+    } else {
+      Navigator.maybePop(context);
+    }
   }
 
   void _changed(String value) {
     _debounce?.cancel();
+    _discardThumbnails();
     _request++; // Invalidate the old response before the debounce elapses.
     final query = value.trim();
     setState(() {
@@ -55,6 +102,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       if (query.length < 2) {
         _items.clear();
         _page = null;
+        _reports.clear();
+        _resultsQuery = '';
       }
     });
     if (query.length >= 2) {
@@ -64,7 +113,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
 
   Future<void> _search({bool more = false}) async {
     _debounce?.cancel();
-    if (_query.length < 2) return;
+    if (_query.length < 2 || !widget.active) return;
     final query = _query;
     final request = ++_request;
     setState(() {
@@ -77,8 +126,13 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
         cursor: more ? _page?.nextCursor : null,
       );
       if (!mounted || request != _request) return;
+      if (!more) {
+        _discardThumbnails();
+        _reports.clear();
+      }
       setState(() {
         _page = page;
+        _resultsQuery = query;
         if (!more) _items.clear();
         final codes = _items.map((item) => item.barcode).toSet();
         for (final item in page.candidates) {
@@ -94,11 +148,48 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     }
   }
 
-  Future<ProductReport> _report(String code) {
+  Future<ProductReport?> _report(String code, {bool selected = false}) {
+    // Retained rows remain readable while a changed query is pending, without
+    // launching fresh background work for the obsolete results.
+    if (!selected && _query != _resultsQuery) {
+      return _reports[code] ?? _noThumbnail;
+    }
     if (!_reports.containsKey(code) && _reports.length >= 40) {
       _reports.remove(_reports.keys.first);
     }
-    return _reports.putIfAbsent(code, () => widget.repository.loadReport(code));
+    return _reports.putIfAbsent(code, () {
+      final job = _ThumbnailJob(code);
+      if (selected) {
+        unawaited(_loadThumbnail(job));
+      } else {
+        _thumbnails.add(job);
+        _pumpThumbnails();
+      }
+      return job.result.future;
+    });
+  }
+
+  void _pumpThumbnails() {
+    while (mounted &&
+        widget.active &&
+        _query == _resultsQuery &&
+        _thumbnailRequests < 2 &&
+        _thumbnails.isNotEmpty) {
+      unawaited(_loadThumbnail(_thumbnails.removeAt(0)));
+    }
+  }
+
+  Future<void> _loadThumbnail(_ThumbnailJob job) async {
+    _thumbnailRequests++;
+    try {
+      job.result.complete(await widget.repository.loadReport(job.code));
+    } catch (error, stack) {
+      if (_reports[job.code] == job.result.future) _reports.remove(job.code);
+      job.result.completeError(error, stack);
+    } finally {
+      _thumbnailRequests--;
+      _pumpThumbnails();
+    }
   }
 
   Future<void> _open(SearchCandidate item) async {
@@ -110,8 +201,11 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       _error = null;
     });
     try {
-      final report = await _report(item.barcode);
-      if (!mounted || request != _request) return;
+      // A chosen result starts immediately instead of waiting behind photos.
+      final queued = _thumbnails.indexWhere((job) => job.code == item.barcode);
+      if (queued >= 0) unawaited(_loadThumbnail(_thumbnails.removeAt(queued)));
+      final report = await _report(item.barcode, selected: true);
+      if (!mounted || request != _request || report == null) return;
       await widget.onOpenReport(report);
     } on AppFailure catch (error) {
       _reports.remove(item.barcode);
@@ -129,10 +223,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     final ready = _page?.status == 'ready';
     final showItems = _query.length >= 2 && _items.isNotEmpty;
     return CallbackShortcuts(
-      bindings: {
-        const SingleActivator(LogicalKeyboardKey.escape): () =>
-            Navigator.maybePop(context),
-      },
+      bindings: {const SingleActivator(LogicalKeyboardKey.escape): _close},
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: MediaQuery.textScalerOf(context).scale(14) > 21
@@ -144,7 +235,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
             children: [
               IconButton(
                 tooltip: 'Close search',
-                onPressed: () => Navigator.maybePop(context),
+                onPressed: _close,
                 icon: const Icon(Icons.arrow_back_rounded),
               ),
               const SizedBox(width: 4),
@@ -153,7 +244,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   key: const Key('product-search-input'),
                   controller: _input,
                   focusNode: _focus,
-                  autofocus: true,
+                  autofocus: widget.autofocus,
                   maxLength: 128,
                   textInputAction: TextInputAction.search,
                   onChanged: _changed,
@@ -198,6 +289,11 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         if (_busy) const LinearProgressIndicator(minHeight: 2),
+                        if (_busy && _items.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: SearchSkeleton(),
+                          ),
                         if (_error != null) ...[
                           const SizedBox(height: 12),
                           StatusNotice(
@@ -211,7 +307,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                         ],
                         if (_query.length < 2)
                           const StatusNotice(
-                            title: 'Find a product',
+                            title: 'Search products',
                             message: 'Search by product name or brand. Choose the matching package to open its label report.',
                             icon: Icons.search_rounded,
                           )
@@ -309,7 +405,7 @@ class _ProductResult extends StatelessWidget {
     super.key,
   });
   final SearchCandidate item;
-  final Future<ProductReport> report;
+  final Future<ProductReport?> report;
   final bool opening;
   final VoidCallback? onTap;
 
@@ -328,7 +424,7 @@ class _ProductResult extends StatelessWidget {
                 key: Key('search-image-${item.barcode}'),
                 width: 72,
                 height: 88,
-                child: FutureBuilder<ProductReport>(
+                child: FutureBuilder<ProductReport?>(
                   future: report,
                   builder: (context, snapshot) {
                     final descriptor = snapshot.hasData
@@ -348,6 +444,7 @@ class _ProductResult extends StatelessWidget {
                         : Image.network(
                             descriptor.url,
                             fit: BoxFit.contain,
+                            cacheWidth: 216,
                             semanticLabel: 'Product photo of ${item.name}',
                             errorBuilder: (_, _, _) => fallback,
                           );
@@ -390,4 +487,10 @@ class _ProductResult extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ThumbnailJob {
+  _ThumbnailJob(this.code);
+  final String code;
+  final result = Completer<ProductReport?>();
 }

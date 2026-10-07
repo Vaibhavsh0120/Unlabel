@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+import '../../../core/interaction/ui_feedback.dart';
 
 import 'ui_components.dart';
 
@@ -64,7 +68,7 @@ class _MobileNavigationState extends State<MobileNavigation>
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
         child: Center(
           heightFactor: 1,
           child: ConstrainedBox(
@@ -107,12 +111,16 @@ class _MobileNavigationState extends State<MobileNavigation>
 
                       void move(double x) {
                         if (!_holding) return;
+                        final candidate = logicalSlot(x);
+                        if (_dragCandidate != candidate) {
+                          unawaited(UiFeedback.selection());
+                        }
                         setState(() {
                           _dragCenter = x.clamp(
                             slot / 2,
                             constraints.maxWidth - slot / 2,
                           );
-                          _dragCandidate = logicalSlot(x);
+                          _dragCandidate = candidate;
                         });
                       }
 
@@ -185,12 +193,27 @@ class _MobileNavigationState extends State<MobileNavigation>
                                           (_dragCandidate ??
                                               widget.selectedIndex) ==
                                           index,
+                                      dragging:
+                                          _holding &&
+                                          widget.selectedIndex == index,
                                       onTap: () =>
                                           widget.onDestinationSelected(index),
                                     ),
                                   ),
                               ],
                             ),
+                            if (_holding)
+                              Positioned(
+                                key: const Key('navigation-dragged-icon'),
+                                left: left + (slot - 24) / 2,
+                                top: 8,
+                                child: IgnorePointer(
+                                  child: _destinationIcon(
+                                    widget.selectedIndex,
+                                    colors.primary,
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
                       );
@@ -212,11 +235,13 @@ class _Destination extends StatelessWidget {
     required this.selected,
     required this.highlighted,
     required this.onTap,
+    this.dragging = false,
   });
   final int index;
   final bool selected;
   final bool highlighted;
   final VoidCallback onTap;
+  final bool dragging;
   static const _labels = ['Home', 'Scan', 'Compare', 'Saved'];
 
   @override
@@ -225,12 +250,6 @@ class _Destination extends StatelessWidget {
     final color = highlighted
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurfaceVariant;
-    final icons = <Widget>[
-      FeatureIcon('home', size: 24, color: color),
-      FeatureIcon('scanner', size: 24, color: color),
-      Icon(Icons.balance_outlined, size: 24, color: color),
-      FeatureIcon('bookmark', size: 24, color: color),
-    ];
     return Semantics(
       button: true,
       selected: selected,
@@ -251,7 +270,10 @@ class _Destination extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    icons[index],
+                    Opacity(
+                      opacity: dragging ? 0 : 1,
+                      child: _destinationIcon(index, color),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       _labels[index],
@@ -273,3 +295,10 @@ class _Destination extends StatelessWidget {
     );
   }
 }
+
+Widget _destinationIcon(int index, Color color) => switch (index) {
+  0 => FeatureIcon('home', size: 24, color: color),
+  1 => FeatureIcon('scanner', size: 24, color: color),
+  2 => Icon(Icons.balance_outlined, size: 24, color: color),
+  _ => FeatureIcon('bookmark', size: 24, color: color),
+};

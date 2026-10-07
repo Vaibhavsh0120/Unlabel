@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/capture/live_camera.dart';
@@ -54,6 +55,7 @@ Future<void> _show(
   _Camera camera, {
   Future<Uint8List?> Function()? pickPhoto,
   Future<void> Function(Map<int, Uint8List>)? review,
+  Future<void> Function()? onBarcode,
 }) async {
   await tester.pumpWidget(
     MaterialApp(
@@ -61,9 +63,8 @@ Future<void> _show(
       home: ScanLandingPage(
         camera: camera,
         pickPhoto: pickPhoto ?? () async => null,
-        onBarcode: () async {},
+        onBarcode: onBarcode ?? () async {},
         onEnterLabel: () async {},
-        onSearch: () async {},
         onReviewCapture: review,
       ),
     ),
@@ -72,6 +73,60 @@ Future<void> _show(
 }
 
 void main() {
+  testWidgets(
+    'lost-gallery recovery times out and ignores late Android picker results',
+    (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      const picker = MethodChannel('plugins.flutter.io/image_picker');
+      final pending = Completer<Object?>();
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        picker,
+        (call) async => call.method == 'retrieve' ? pending.future : null,
+      );
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          picker,
+          null,
+        ),
+      );
+      final camera = _Camera();
+      var barcodes = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: UnlabelTheme.forBrightness(Brightness.light),
+          home: ScanLandingPage(
+            camera: camera,
+            onBarcode: () async => barcodes++,
+            onEnterLabel: () async {},
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('Working…'), findsOneWidget);
+      expect(camera.starts, 0);
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+      expect(find.text('Working…'), findsNothing);
+      expect(camera.ready, isTrue);
+      await tester.tap(find.text('Barcode'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('scan-primary')));
+      await tester.pumpAndSettle();
+      expect(barcodes, 1);
+      pending.complete({
+        'pathList': ['/late/private-photo.png'],
+        'type': 'image',
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Image), findsNothing);
+      expect(camera.ready, isTrue);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+      debugDefaultTargetPlatformOverride = null;
+    },
+  );
   testWidgets(
     'opening Scan starts live preview; background and disposal stop it',
     (tester) async {
@@ -136,6 +191,34 @@ void main() {
       expect(find.text('Review Label'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       camera2.dispose();
+    },
+  );
+  testWidgets(
+    'manual barcode fallback pauses the camera until its sheet closes',
+    (tester) async {
+      final camera = _Camera();
+      final closeSheet = Completer<void>();
+      var opened = 0;
+      await _show(
+        tester,
+        camera,
+        onBarcode: () {
+          opened++;
+          return closeSheet.future;
+        },
+      );
+      await tester.tap(find.text('Barcode'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('scan-primary')));
+      await tester.pump();
+      expect(opened, 1);
+      expect(camera.ready, isFalse);
+      expect(camera.captures, 0);
+      closeSheet.complete();
+      await tester.pumpAndSettle();
+      expect(camera.ready, isTrue);
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
     },
   );
   testWidgets(

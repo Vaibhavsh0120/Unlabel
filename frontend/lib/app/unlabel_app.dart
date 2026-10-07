@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 
 import '../core/accounts/account_auth.dart';
 import '../core/accounts/account_controller.dart';
@@ -13,14 +14,15 @@ import '../core/storage/local_store.dart';
 import '../core/widgets/brand_mark.dart';
 import '../features/account/presentation/profile_page.dart';
 import '../features/scanner/presentation/compare_page.dart';
+import '../features/scanner/presentation/barcode_entry_sheet.dart';
 import '../features/scanner/presentation/home_page.dart';
 import '../features/scanner/presentation/label_entry_page.dart';
 import '../features/scanner/presentation/library_page.dart';
-import '../features/scanner/presentation/lookup_page.dart';
 import '../features/scanner/presentation/mobile_navigation.dart';
 import '../features/scanner/presentation/product_search_page.dart';
 import '../features/scanner/presentation/report_page.dart';
 import '../features/scanner/presentation/scan_landing_page.dart';
+import '../features/scanner/presentation/startup_page.dart';
 import '../features/scanner/presentation/ui_components.dart';
 import '../features/scanner/presentation/welcome_page.dart';
 import 'build_info.dart';
@@ -148,6 +150,13 @@ class _UnlabelAppState extends State<UnlabelApp> {
     if (mounted) setState(() => _welcome = false);
   }
 
+  Future<void> _welcomeSignIn() async {
+    final context = _navigator.currentContext;
+    if (context == null) return;
+    await ProfilePage.showSignIn(context, _account);
+    if (mounted && _account.identity != null) await _continue();
+  }
+
   Future<void> _setAppearance(ThemeMode mode) async {
     _appearanceRevision++;
     try {
@@ -185,9 +194,14 @@ class _UnlabelAppState extends State<UnlabelApp> {
     darkTheme: UnlabelTheme.forBrightness(Brightness.dark),
     themeMode: _themeMode,
     home: _loading
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? kIsWeb
+              ? const Scaffold()
+              : const StartupPage()
         : _welcome
-        ? WelcomePage(onContinue: () => unawaited(_continue()))
+        ? WelcomePage(
+            onContinue: () => unawaited(_continue()),
+            onSignIn: () => unawaited(_welcomeSignIn()),
+          )
         : _ClientHome(
             key: ValueKey(_identity ?? 'guest'),
             repository: _repository,
@@ -222,6 +236,27 @@ class _ClientHome extends StatefulWidget {
 
 class _ClientHomeState extends State<_ClientHome> {
   int _tab = 0, _refreshKey = 0;
+  bool _searching = false;
+  final _searchFocus = FocusNode();
+
+  @override
+  void dispose() {
+    _searchFocus.dispose();
+    super.dispose();
+  }
+
+  void _closeSearch() {
+    _searchFocus.unfocus();
+    setState(() => _searching = false);
+  }
+
+  void _search() {
+    setState(() => _searching = true);
+    // The input is already attached, so focus stays in the initiating tap.
+    // Mobile browsers may reject a soft keyboard opened after route animation.
+    _searchFocus.requestFocus();
+  }
+
   void _selectTab(int value) {
     if (_tab == value) return;
     unawaited(UiFeedback.selection());
@@ -264,20 +299,22 @@ class _ClientHomeState extends State<_ClientHome> {
     );
   }
 
-  Future<void> _lookup(bool barcode) => Navigator.of(context).push<void>(
-    MaterialPageRoute<void>(
-      builder: (_) => barcode
-          ? LookupPage(
-              repository: widget.repository,
-              barcodeMode: barcode,
-              onOpenReport: (report) => _openReport(report, record: true),
-              onEnterLabel: _enterLabel,
-            )
-          : ProductSearchPage(
-              repository: widget.repository,
-              onOpenReport: (report) => _openReport(report, record: true),
-              onEnterLabel: _enterLabel,
-            ),
+  Future<void> _lookup(bool barcode) async {
+    if (barcode) {
+      _selectTab(1);
+    } else {
+      _search();
+    }
+  }
+
+  Future<void> _barcode() => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    builder: (_) => BarcodeEntrySheet(
+      repository: widget.repository,
+      onOpenReport: (report) => _openReport(report, record: true),
+      onEnterLabel: () => unawaited(_enterLabel()),
     ),
   );
   Future<void> _enterLabel({Map<int, Uint8List> photos = const {}}) =>
@@ -361,124 +398,184 @@ class _ClientHomeState extends State<_ClientHome> {
       ),
     ],
   );
-  void _profile() => Navigator.of(context).push(
-    MaterialPageRoute<void>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(title: const Text('Profile')),
-        body: ProfilePage(
-          controller: widget.account,
-          embedded: true,
-          onContinue: () => Navigator.of(context).pop(),
-          onAppearance: _appearance,
-          onAbout: _about,
+  void _profile() {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 72,
+            title: const Text(
+              'Profile',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
+            ),
+          ),
+          body: ProfilePage(
+            controller: widget.account,
+            embedded: true,
+            showHeader: false,
+            themeMode: widget.themeMode,
+            onThemeModeChanged: widget.onThemeModeChanged,
+            onSaved: () {
+              Navigator.of(context).pop();
+              _selectTab(3);
+            },
+            onScans: () {
+              Navigator.of(context).pop();
+              _library(2);
+            },
+            onCompare: () {
+              Navigator.of(context).pop();
+              _selectTab(2);
+            },
+            onContinue: () => Navigator.of(context).pop(),
+            onAppearance: _appearance,
+            onAbout: _about,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
-    return Scaffold(
-      extendBody: true,
-      appBar: _tab == 1
-          ? null
-          : AppBar(
-              toolbarHeight: largeText ? 112 : 64,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          'Unlabel',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontSize: 30,
+    return PopScope(
+      canPop: !_searching,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && _searching) _closeSearch();
+      },
+      child: Stack(
+        children: [
+          Offstage(
+            offstage: _searching,
+            child: Scaffold(
+              extendBody: true,
+              appBar: _tab == 1
+                  ? null
+                  : AppBar(
+                      toolbarHeight: largeText ? 112 : 64,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  'Unlabel',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.headlineMedium
+                                      ?.copyWith(fontSize: 30),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              if (!largeText) const BrandLeaf(size: 30),
+                            ],
+                          ),
+                          Text(
+                            'Know Beyond the Label',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        IconButton(
+                          constraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                          ),
+                          onPressed: () => _lookup(false),
+                          tooltip: 'Search products',
+                          icon: const FeatureIcon('magnifer'),
+                        ),
+                        IconButton(
+                          constraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                          ),
+                          onPressed: _profile,
+                          tooltip: 'Profile',
+                          icon: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: theme.colorScheme.primaryContainer,
+                            child: FeatureIcon(
+                              'user',
+                              color: theme.colorScheme.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 6),
-                      if (!largeText) const BrandLeaf(size: 30),
-                    ],
-                  ),
-                  Text(
-                    'Know Beyond the Label',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-              actions: [
-                IconButton(
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
-                  onPressed: () => _lookup(false),
-                  tooltip: 'Search products',
-                  icon: const FeatureIcon('magnifer'),
-                ),
-                IconButton(
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
-                  onPressed: _profile,
-                  tooltip: 'Profile',
-                  icon: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: theme.colorScheme.primaryContainer,
-                    child: FeatureIcon(
-                      'user',
-                      color: theme.colorScheme.primary,
+                        const SizedBox(width: 8),
+                      ],
                     ),
-                  ),
+              body: switch (_tab) {
+                0 => HomePage(
+                  store: widget.store,
+                  refreshKey: _refreshKey,
+                  onLookup: _lookup,
+                  onEnterLabel: () => _selectTab(1),
+                  onCompare: () => _selectTab(2),
+                  onOpenReport: _openReport,
+                  onLibrary: _library,
                 ),
-                const SizedBox(width: 8),
-              ],
+                1 => ScanLandingPage(
+                  onBarcode: _barcode,
+                  onEnterLabel: () => _enterLabel(),
+                  onBack: () => _selectTab(0),
+                  onReviewCapture: (photos) => _enterLabel(photos: photos),
+                ),
+                2 => ComparePage(
+                  store: widget.store,
+                  repository: widget.repository,
+                  onOpenReport: _openReport,
+                ),
+                _ => LibraryPage(
+                  saved: true,
+                  store: widget.store,
+                  refreshKey: _refreshKey,
+                  onOpenReport: _openReport,
+                  onLookup: () => _lookup(true),
+                  onChanged: _changed,
+                ),
+              },
+              bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom > 0
+                  ? null
+                  : MobileNavigation(
+                      selectedIndex: _tab,
+                      onDestinationSelected: _selectTab,
+                    ),
             ),
-      body: switch (_tab) {
-        0 => HomePage(
-          store: widget.store,
-          refreshKey: _refreshKey,
-          onLookup: _lookup,
-          onEnterLabel: () => _selectTab(1),
-          onCompare: () => _selectTab(2),
-          onOpenReport: _openReport,
-          onLibrary: _library,
-        ),
-        1 => ScanLandingPage(
-          onBarcode: () => _lookup(true),
-          onEnterLabel: () => _enterLabel(),
-          onSearch: () => _lookup(false),
-          onBack: () => _selectTab(0),
-          onReviewCapture: (photos) => _enterLabel(photos: photos),
-        ),
-        2 => ComparePage(
-          store: widget.store,
-          repository: widget.repository,
-          onOpenReport: _openReport,
-        ),
-        _ => LibraryPage(
-          saved: true,
-          store: widget.store,
-          refreshKey: _refreshKey,
-          onOpenReport: _openReport,
-          onLookup: () => _lookup(true),
-          onChanged: _changed,
-        ),
-      },
-      bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom > 0
-          ? null
-          : MobileNavigation(
-              selectedIndex: _tab,
-              onDestinationSelected: _selectTab,
+          ),
+          Visibility(
+            visible: _searching,
+            maintainState: true,
+            maintainAnimation: true,
+            maintainSize: true,
+            maintainFocusability: true,
+            child: TickerMode(
+              enabled: _searching,
+              child: ScaffoldMessenger(
+                child: ProductSearchPage(
+                  active: _searching,
+                  repository: widget.repository,
+                  focusNode: _searchFocus,
+                  autofocus: false,
+                  onClose: _closeSearch,
+                  onOpenReport: (report) => _openReport(report, record: true),
+                  onEnterLabel: () {
+                    _closeSearch();
+                    _selectTab(1);
+                  },
+                ),
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }

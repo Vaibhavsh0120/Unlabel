@@ -16,3 +16,8 @@
 *.ico binary
 *.age binary
 *.gz binary
+# Preserve vendored OCR and font-license bytes for their recorded source hashes.
+frontend/web/ocr/** -text
+frontend/web/ocr/provenance.json text eol=lf
+frontend/web/ocr/licenses/* -whitespace
+frontend/assets/brand/fonts/CormorantGaramond-OFL.txt -text -whitespace

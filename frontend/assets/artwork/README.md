@@ -100,3 +100,60 @@ Lighting/mood: soft warm diffuse studio daylight with subtle contact shadows lim
 Color palette: warm off-white and cream cubes, tiny pale mint outline accent.
 Constraints: actual transparent alpha background; exactly three solid sugar cubes and one empty dashed outline; no plate, opaque background, labels, numbers, text, logos, watermark, medical or nutritional claims. This is decorative illustrative artwork; no asserted quantity or serving equivalence.
 ```
+
+## Reference welcome and native startup artwork — 8 October 2026
+
+The user-selected mobile/desktop welcome and app startup references guided two project-authored raster assets made with the built-in `image_gen.imagegen` tool. Both final outputs were visually inspected and copied byte-for-byte from the default built-in destination into this directory. No external image service, API-key fallback, stock photo download, bitmap UI text or post-generation image editing was used. These illustrations are decorative and convey no real product, nutrition, safety or regulatory evidence.
+
+| File | Use | Dimensions | SHA-256 | Original final output |
+| --- | --- | --- | --- | --- |
+| welcome-scan-package.png | Unframed welcome package hero on mobile and desktop; transparent alpha preserved | 1254 × 1254 px | aae2a399b29faf1b32581803fc2cf0bdb04aaec36edd1c01c3055f3e254c58a0 | exec-5420febf-95ec-4fb9-b3bc-1c89d612f27d.png |
+| splash-botanical.png | Native app startup background while real startup work is pending; website has no branded loading screen | 941 × 1672 px | b62382569a2eee2c5b77c872a4c10492141a0fbbc85a09f000faf6925385a41f | exec-937c58c7-970e-417c-85ee-aecf5eee6680.png |
+
+Read-only bitmap inspection confirmed the welcome PNG uses 32-bit ARGB, a fully transparent top-left pixel and partially transparent subject pixels. The splash is an intentionally opaque 24-bit RGB background. Wordmarks, supporting copy, actions and loading dots are rendered as live Flutter widgets; decorative barcodes are never used for lookup. The existing `botanical-corner.png` cutout supplies the welcome page edge decoration without modifying that historical asset.
+
+Welcome hero initial prompt:
+
+```text
+Use case: stylized-concept. Asset type: square transparent hero artwork for Unlabel welcome screen. Primary request: isolated premium softly dimensional botanical food pouch illustration: one tall unbranded warm white cream paper stand-up resealable food pouch leaning slightly clockwise, visible folded bottom, subtle matte paper folds and top zipper seal. One simple mint green leaf emblem high on the pouch; one black decorative barcode lower on front surrounded by luminous bright mint green four-corner scanner brackets. Five graceful broad emerald and mint leaves on thin stems frame pouch left and right, a small floating leaf above, one tiny mint green heart upper right, two elegant mint four-point sparkle outlines and a few small mint dots. Soft translucent mint circular halo behind pouch and thin mint contact shadow below are part of the cutout. All leaves and accents fully visible with little transparent margin. Match sophisticated calm reference artwork for a food label scanner welcome, elegant soft 3D editorial illustration, delicate leaf veins, no faces or characters. Palette: dark forest #07594b, jade, mint #61cca0, pale mint halo, near-white cream pouch. Constraints: actual transparent alpha outside vignette; no opaque white square or rectangular backdrop; absolutely no text, letters, numbers, UI controls, watermarks, real brands, nutrition claims or safety scores. Only decorative product illustration, not a screenshot. Save through default built-in image output mechanism.
+```
+
+The final welcome refinement used the initial generated hero as the edit target and the user-supplied mobile welcome screenshot as a style/composition reference only:
+
+```text
+Use case: style-transfer. Image 1 is the EDIT TARGET, our transparent welcome hero asset. Image 2 is ONLY a STYLE AND COMPOSITION REFERENCE containing mobile UI; DO NOT create its text, buttons, page, or status bar. Refine Image 1 to closely match JUST the central botanical package illustration in Image 2: smooth pale WHITE lightly dimensional pouch with simple few soft folds, NO beige color, wrinkles, photoreal fabric/plastic texture, glossy metallic zipper or crumpling. Elegant illustrated cream white pouch with subtle clean side/bottom folds, slightly clockwise lean as reference. Replace pouch plant drawing with ONE simple flat mint leaf emblem. Raise and enlarge black decorative barcode/scanner brackets to the lower CENTRAL front as reference, not near bottom edge. Simplify surrounding leaves to about five clean elongated mint/forest broad leaves with subtle sparse vein lines and softly shaded 3D illustration surfaces, NO photoreal intricate veins, branched dense bushes or dark heavy foliage. Keep small floating green heart, two simple outline sparkles, mint dots, pale mint translucent circle behind package and light contact shadow. Use reference's soft mint and gentle jade palette. Preserve transparent alpha outside illustration and full vignette silhouette with clear margins. No text, numbers, wordmarks, logos except simple leaf, UI, frames, status bars or fake health claims. Output the hero illustration only, on genuine transparent background.
+```
+
+Splash background final prompt:
+
+```text
+Use case: stylized-concept. Asset type: portrait full-bleed botanical loading background for Unlabel app, about 9:16 portrait. Primary request: reproduce a very quiet soft near-white ivory/sage background with elegant pale sage botanical stems appearing only from the TOP LEFT corner and BOTTOM RIGHT corner. Top-left branch has three long translucent eucalyptus-like green leaves and extremely soft diffused leaf shadows drifting diagonally near the left edge; bottom-right branch has five slim broad pale sage leaves on a curved thin stem entering from the lower-right edge. Leaves partly cropped by canvas edges and delicate vein detail. Keep the CENTRAL 75 percent, especially middle and lower-middle, empty and smooth near-white for live dark green Unlabel logo and loading dots to be overlaid. No center objects. Match refined calm photographic botanical paper mood, not bright green cartoon. Lighting: diffuse natural daylight, subtle dreamy soft-focus botanical shadows only at corners, no vignette/dark borders. Palette: warm white #f8faf4, pale sage #b7c8b0, muted soft green. Constraints: no text, words, numbers, letters, logos, dots, loading indicators, status bar, phone frame, buttons, UI or watermark. This is only background art, all UI and branding will be rendered live. Save through default built-in image output mechanism.
+```
+
+## Profile reference artwork — 8 October 2026
+
+Two project-authored decorative PNG assets were generated with the built-in ImageGen tool using `transparent_background: true`. Original outputs were visually inspected and copied byte-for-byte into this directory. Both have real transparent alpha. The generated avatar is anonymous placeholder artwork, never the user's photograph; botanical artwork conveys no product, nutrition or regulatory evidence. The images load locally without a paid image service. No third-party stock source or input-image reproduction was used.
+
+### `profile-avatar.png`
+
+- Original final output: `exec-5581eba3-8c6e-4f08-b064-7d134cb0dbb1.png`.
+- SHA-256: `48797712123dc0ad933d8d4e58291739f343b22abacfd52b1d42c9926449b9bd`.
+- Intended use: generic anonymous profile avatar inside a mint circular medallion.
+
+Final built-in edit prompt (initial generic avatar was the edit target; the user's Profile screenshot supplied style guidance):
+
+```text
+Edit target: the first image, the circular anonymous illustrated avatar. Supporting style/reference: the profile screenshot in the second image, specifically its male avatar. Replace the long wavy hairstyle with the reference's short softly wavy dark forest-green male haircut and a faceless warm peach male head, with a dark green simple crew-neck T-shirt. Preserve the first image's centered shoulders-and-head composition inside a pale mint circular disc, clean smooth soft 3D editorial illustration, circular crop and transparent alpha outside the disc. Match the screenshot avatar closely: short dark hair lifted and swept slightly right, visible ears, clean-shaven smooth face without any eyes nose or mouth. No letters, no icons, no leaves, no heart, no UI, no square background. Deliver only this isolated circular avatar asset.
+```
+
+### `profile-botanical.png`
+
+- Original output: `exec-48f8feb3-d726-4d73-8930-b2c21e6752c1.png`.
+- SHA-256: `b2221f7daf6f63e55ddc53c98f73f6e484e1ba02d2c6c89077c8f8831fd38687`.
+- Intended use: decorative mint/forest leaves inside Profile identity and Settings cards.
+
+Final built-in generation prompt:
+
+```text
+Use case: stylized-concept. Asset type: isolated botanical decorative cluster for Unlabel profile identity and settings cards. Primary request: a graceful branch of seven broad elongated green leaves with softly detailed veins, three forest/jade leaves in upper right growing from lower right and four mint green leaves near bottom, tiny mint round accent dots. Style: polished softly dimensional editorial botanical illustration, clean smooth matte leaves, gentle natural shading, airy premium mobile app. Composition: square image, branch rises from bottom right toward upper right and upper center, left half mostly empty transparent space, all leaf silhouettes fully visible with small outer margin. Palette: forest #155B4B jade #318663 mint #A5E2C2. Constraints: actual transparent alpha background, no opaque backdrop, no food or people, no text, lettering, numbers, UI, logos or watermark. Calm cohesive branch, do not scatter isolated confetti.
+```

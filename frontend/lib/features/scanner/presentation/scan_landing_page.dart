@@ -12,14 +12,13 @@ class ScanLandingPage extends StatefulWidget {
   const ScanLandingPage({
     required this.onBarcode,
     required this.onEnterLabel,
-    required this.onSearch,
     this.onBack,
     this.onReviewCapture,
     this.camera,
     this.pickPhoto,
     super.key,
   });
-  final Future<void> Function() onBarcode, onEnterLabel, onSearch;
+  final Future<void> Function() onBarcode, onEnterLabel;
   final VoidCallback? onBack;
   final Future<void> Function(Map<int, Uint8List>)? onReviewCapture;
   final LiveCamera? camera;
@@ -56,7 +55,9 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         widget.pickPhoto == null) {
       setState(() => _working = true);
       try {
-        final response = await ImagePicker().retrieveLostData();
+        final response = await ImagePicker().retrieveLostData().timeout(
+          const Duration(seconds: 5),
+        );
         if (!mounted) return;
         final files = response.files;
         if (files != null && files.isNotEmpty) {
@@ -191,10 +192,11 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   }
 
   Future<Uint8List> _readPhoto(XFile file) async {
-    if (await file.length() > LiveCamera.maxCaptureBytes) {
+    if (await file.length().timeout(const Duration(seconds: 5)) >
+        LiveCamera.maxCaptureBytes) {
       throw StateError('large_photo');
     }
-    final bytes = await file.readAsBytes();
+    final bytes = await file.readAsBytes().timeout(const Duration(seconds: 10));
     if (bytes.isEmpty || bytes.length > LiveCamera.maxCaptureBytes) {
       throw StateError('invalid_photo');
     }
