@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from app.accounts.models import SyncFailure, SyncRequest, SyncSnapshot
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.claims.models import (
@@ -54,6 +55,9 @@ def test_all_examples_validate_for_teammate_consumers():
         "label-report-v1.historical.synthetic.json": LabelReport,
         "report-failure-v1.synthetic.json": ReportFailure,
         "ingredient-glossary-v1.synthetic.json": GlossaryResponse,
+        "personal-sync-v1.request.synthetic.json": SyncRequest,
+        "personal-sync-v1.snapshot.synthetic.json": SyncSnapshot,
+        "personal-sync-v1.failure.synthetic.json": SyncFailure,
     }.items():
         model.model_validate_json((CONTRACTS / "examples" / filename).read_text())
 
@@ -80,6 +84,9 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "label-report-v1.schema.json": LabelReport,
         "report-failure-v1.schema.json": ReportFailure,
         "ingredient-glossary-v1.schema.json": GlossaryResponse,
+        "personal-sync-request-v1.schema.json": SyncRequest,
+        "personal-sync-snapshot-v1.schema.json": SyncSnapshot,
+        "personal-sync-failure-v1.schema.json": SyncFailure,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

@@ -3,8 +3,11 @@
 Released v0.4.0 implements automatic structured public-product observations and
 private staging/receipts. Existing normalization/seven-claim evaluation remains
 stateless. Production v0.6.0 discovery is independently hosted-verified and released after v0.5.0/v0.4.0. Firebase
-Unlabel's first Standard `unlabel` database, anonymous Auth and deny-all client
-rules are configured with free tier/no linked billing. Frontend manual corrected-label saving is integrated; capture/OCR remains pending. Personal history, bookmarks and preferences stay on-device; public package facts alone use automatic catalogue intake. [Current gates](planning/BACKEND_V0_6_0_REVIEW.md)
+Unlabel's first Standard `unlabel` database, anonymous/email-password Auth and deny-all
+client rules are configured with free tier/no linked billing. Frontend v0.1.0+2 is
+published; manual corrected-label saving works and capture/OCR remains pending.
+Guests keep personal records locally. Implemented v0.7.0/v0.2.0 private account
+sync has separate push/hosted gates, with public package facts kept independent. [Current gates](planning/BACKEND_V0_6_0_REVIEW.md)
 · [Master plan](planning/MASTER_PLAN.md).
 
 Released v0.5.0 reports preserve corrected current-label and historical
@@ -14,12 +17,17 @@ technological functions only. Sugar cubes explicitly approximate 4 g each using
 the original table basis. Independent review, push, twenty hosted checks and publication passed; owned synthetic data was removed.
 [Report boundaries](architecture/LABEL_REPORT.md).
 
-The next accepted v0.7.0/v0.2.0 scope adds optional scanner login/profile/private
-sync. Until successful login, personal data remains local and all useful guest
-workflows continue. Signed-in personal records must be private to the verified
-account, with explicit sync/failure/logout/deletion behavior. This is planned
-scope, not an implemented cloud-personal-data claim. Public corrected package
-observations remain automatic and separate. [Accepted plan](planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+Implemented v0.7.0/v0.2.0 adds optional password scanner login and private
+display-name/saved/history sync. Guests retain all useful workflows without
+personal cloud storage. The client selects a separate UID-specific local namespace,
+never silently imports guest records, and requires explicit cloud/device choices
+when libraries differ. CAS revisions and immutable mutation IDs preserve edits,
+retries and versioned empty deletion. Sign-out returns to the guest namespace.
+Appearance/Welcome remain local; photos/raw OCR/email/credentials and dietary
+health preferences are excluded from private sync. Backend local/live-Firebase
+checks passed; hosted v0.7.0 and full frontend release checks are pending.
+[Private architecture](architecture/PRIVATE_ACCOUNT_SYNC.md) ·
+[Version gates](planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Findings and uncertainty
 
@@ -48,17 +56,19 @@ AI cannot invent missing quantities, decide allergy safety, alter findings or ad
 | Frames/photos/geometry | Device/browser; temporary, explicit choice to retain | No backend/Gemini image upload |
 | OCR/corrections | Local scan session or explicitly saved scan | Bounded confirmed/provisional structured public fields to HTTPS backend |
 | Diet/allergy preferences and personal suitability | Local device/browser, editable/deletable | None to backend/Gemini |
-| Scan history/reports | Local if saved, with scope/version/date | No private history/profile cloud database |
+| Scan history/reports | Guests device/browser-local; password account uses its isolated local namespace and bounded private snapshot | Optional login enables private caller-owned CAS sync; counts 50 saved/100 history, data 384 KiB; no silent trimming |
+| Account display name | Local account namespace and private snapshot after login | Bounded visible display name only; no email/UID/password/token fields in payload |
+| Appearance/Welcome completion | Device/browser-local | Never part of private cloud snapshot |
 | Public product observations | Configured Firebase Unlabel; automatic save/dedup of corrected confirmed facts, original revisions and dates | Product identity, paired back facts/declarations/claims only; no separate Share step, images/raw OCR/profile/location |
 | Provisional extraction candidates | Staged unverified structured public candidates | Not promoted as confirmed facts or regulatory findings; no raw private OCR dump |
-| Write ownership | Private keyed hash of automatically verified anonymous subject | Backend write/receipt boundaries; never public or a raw UID/token |
+| Write ownership | Private keyed hash of verified anonymous/password scanner subject | Backend write/receipt boundaries; never public or a raw UID/token |
 | Public evidence | Canonical files; bundled read-only assets/JSON | Permitted public snippets only to optional provider |
 | Credentials | Ignored local backend environment/host secret settings | Relevant provider over HTTPS only |
 | Explanation cache | Optional bounded public-output cache; disposable hosted instances | No profiles, photos or personal history |
 | Open Food Facts lookup/snapshot | Source-tagged public product data; optional dated local cache | Barcode and required public lookup options only to OFF through the backend; no photo/profile/history upload |
 | Logs | Minimal errors/metrics, redacted bodies/tokens | No telemetry prerequisite |
 
-Deleting a saved scan removes its local text/report and retained local photos; clearing preferences removes selections. Website storage/caching is a separate explicit implementation requirement, and may be cleared by the browser. No serverless filesystem is durable scan storage.
+Deleting a guest saved report removes its local copy. Signed-in saved/history/display-name changes sync a bounded private snapshot; clearing account data sends a versioned empty snapshot, and failed deletion stays pending locally. Guest copies and public observations remain separate. Captured photo retention is not implemented. Clearing local appearance/preferences removes device selections. Website storage/caching is a separate explicit implementation requirement, and may be cleared by the browser. No serverless filesystem is durable scan storage.
 
 Open Food Facts reads never automatically publish user corrections or photos. Its records may differ from the actual package; preserve source, age and conflicts, and never use missing fields or community tags as allergy-safety or Indian compliance proof. Local snapshots and exported/combined datasets retain applicable attribution/license obligations. [Provider boundaries](architecture/OPEN_FOOD_FACTS.md).
 
@@ -92,7 +102,7 @@ Before hosted use, verify Vercel's applicable data-use terms/account opt-out and
 
 Treat OCR, source excerpts and community data as untrusted data, including any embedded instructions. Bound text/response sizes and validate fixed schemas. Accept AI wording only when numbers, outcomes and allowed references agree with the deterministic report; otherwise keep reviewed templates.
 
-Current public writes use verified Firebase anonymous tokens; manual confirmed-entry requests are integrated in frontend v0.1.0. Optional non-anonymous scanner identity/private sync belongs to the next release. Direct Firestore access is denied even to authenticated clients;
+Public writes accept verified Firebase anonymous or password scanner tokens; private account sync requires password authentication and derives ownership from the verified subject. Payload-supplied identity cannot choose an owner. Manual confirmed-entry requests remain compatible with frontend v0.1.0; optional account sync is implemented for v0.2.0 with release verification pending. Direct Firestore access is denied even to authenticated clients;
 privileged SDK access requires dedicated private IAM credentials and server
 validation. Review is never client-assigned. Transactional admission cannot
 guarantee provider availability. Keep Spark/no linked billing and no paid fallback.
@@ -100,10 +110,9 @@ Local source/emulator and live Firebase checks are distinct from hosted API proo
 
 
 Gemini remains disabled unless a later measured benchmark justifies a bounded
-fallback with no-card/privacy and provider-eligibility controls. No new interactive
-login, admin/reviewer role or dashboard is selected. The app has only scanner/client
-identities with automatic anonymous write auth; public facts and reports need no
-account. CORS restricts browser access and is not authentication. Neither a shared
+fallback with no-card/privacy and provider-eligibility controls. Optional password login is implemented without an admin/reviewer role or
+dashboard. The app has one scanner/client role; public facts and useful analysis
+remain available to guests through automatic anonymous write authentication. CORS restricts browser access and is not authentication. Neither a shared
 APK/web secret nor a deployment-automation bypass token belongs in clients.
 `BACKEND_BASE_URL` is public configuration.
 

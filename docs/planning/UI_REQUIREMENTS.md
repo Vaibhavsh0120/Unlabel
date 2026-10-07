@@ -1,26 +1,32 @@
 # Unlabel UI and interaction requirements
 
-The **0.1.0+2 Connected Label Reader** is implemented in the existing Flutter
-application. Its green/white/mint direction follows the owner's five
-[reference images](../../design/references/README.md); the displayed example
-scores, product facts and claims are illustrative. Local analysis/tests passed.
-Rendered browser, push/publication and native-device checks remain separate in
-the [connected release plan](CONNECTED_RELEASE_PLAN.md).
+Frontend **v0.1.0+2 Connected Label Reader** is independently published.
+Frontend **v0.2.0 Welcome, Home and Optional Login** is implemented with full
+render/test/build/push/hosted gates pending. The supplied light/dark
+[references](../../design/references/README.md) set the forest/mint and charcoal
+direction; scores, sample foods and verdicts remain illustrative.
+First-use appearance is light. Cute generated artwork decorates the app without
+impersonating actual package images. Native camera/icon switching remain separate.
+[Accepted screen/version checklist](ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Current useful flow
 
 | Screen | Working behavior |
 | --- | --- |
-| Home | One primary product lookup, barcode/name entry paths, current-label entry, real recent history and saved products |
+| Welcome | Cute first-launch screen with Continue and no forced login; local completion sends returning users straight to Home |
+| Home | Reference-style light/dark cards, real recent records/empty states, Start Scan, barcode/search and working educational/source destinations |
+| Navigation | Five bottom tabs: Home, Scan, Compare, Saved, Profile; Scan retains useful manual/search paths pending camera/OCR |
+| Profile | Optional password sign-in/create/reset, display name, private sync/status/conflict choices, clear/sign out; guests continue freely |
+| Compare | Select actual saved/history/lookup reports, compatible-basis numeric rows and unknown/incompatible states; no universal healthier winner |
 | Product lookup | Manual barcode or submitted name/brand query; explicit candidates show barcode/brand/quantity; bounded Show more; empty/broad/unavailable states stay distinct |
 | Current-label form | Enter printed identity, table rows/basis/preparation, declarations and claims; confirm current facts and pairing; keep blanks unknown and draft retry identity stable |
 | Report | Show current versus historical evidence, nutrient units/bases, approximate total-sugar cubes, scoped claim outcomes, missing/conflicting facts and source references |
 | Ingredient insights | Original matched terms and three reviewed English/Hindi technological functions; unknown terms do not get invented explanations |
-| Saved/history | Device-local snapshots, explicit bookmarks/removal, independent history clearing and confirmed recovery of corrupt lists |
+| Saved/history | Guest-local or isolated account-local snapshots; explicit bookmarks/removal/clearing; optional private cloud sync after login with explicit replacement choices |
 | Appearance/About | Light (default)/Dark/System selection, build information and bundled icon attribution |
 
-Confirmed public package facts are saved automatically using the single anonymous
-scanner role. This is separate from an explicit local bookmark. Authentication,
+Confirmed public package facts save automatically using the single scanner role
+with anonymous guest or password session authentication. This is separate from an explicit local bookmark. Authentication,
 quota or storage failures do not discard the useful analysis. The UI never
 presents historical selection as confirmation of the current package.
 
@@ -31,7 +37,7 @@ enlarged text, actions and nutrient content reflow instead of shrinking. App bar
 safe areas and vertical scrolling keep the same reading order in landscape.
 Phone, tablet and desktop share real Material 3 controls and semantic colors.
 Solar feature icons are bundled locally; ordinary navigation/form controls use
-Material icons consistently. System fonts avoid remote font requests.
+Material icons consistently. Bundled Nunito and local icons avoid remote font/icon requests.
 
 Light is the initial appearance; the saved explicit choice persists locally. Light and dark have separate readable surface,
 foreground, action and selection roles. Main action icons use the matching

@@ -1,17 +1,23 @@
 # System architecture
 
-Updated **7 October 2026**. Backend **v0.6.0 Product Discovery** is independently
-pushed, hosted-verified and published after the separate v0.5.0/v0.4.0 releases.
-Nineteen routes preserve old contracts and add bounded dated identity search.
-Frontend **0.1.0+2 Connected Label Reader** implements manual barcode/name lookup,
-current/historical reports, corrected input and device-local libraries. Its
-rendered/release gates are tracked separately; camera/OCR remains future scope.
-Light is the first-use default; saved Light/Dark/System choice stays local.
-Personal history/preferences/saved lists stay on-device. Only public package facts
-use automatic anonymous-authenticated catalogue storage; no reviewer/admin app
-accounts. Firebase retains free tier/no linked billing.
-[Master plan](../planning/MASTER_PLAN.md) · [Backend review](../planning/BACKEND_V0_6_0_REVIEW.md)
-· [Connected plan](../planning/CONNECTED_RELEASE_PLAN.md).
+Updated **7 October 2026**.
+
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+
+v0.7.0 exports **20 API paths / 21 operations**, retaining all public contracts and
+adding authenticated GET/POST `/v1/account/sync`. Private ownership derives from
+verified password tokens. There is one scanner role and no admin/reviewer app.
+Light/dark/system appearance stays device-local; camera/OCR remains future work.
+[Private sync](PRIVATE_ACCOUNT_SYNC.md) · [Master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
 
@@ -50,7 +56,7 @@ flowchart LR
   Explain -.->|"Public product facts only"| Gemini["Optional Gemini Free Tier"]
 ~~~
 
-The two-file reviewed claim knowledge package and confirmed-label claim API are implemented. The broader frontend/report/ingredient/AI links in this diagram remain planned. Backend rule fixtures and provider/client contract fixtures verify missing values, applicability, provenance and compatible reports.
+The two-file reviewed claim knowledge package and confirmed-label claim API are implemented. Useful reports, the three-entry ingredient glossary and manual frontend paths are implemented; camera/OCR, broader ingredient coverage and optional AI remain planned. Private account sync is separate from the public analysis pipeline shown here. Backend rule fixtures and provider/client contract fixtures verify missing values, applicability, provenance and compatible reports.
 
 | Boundary | Responsibility |
 | --- | --- |
@@ -100,8 +106,9 @@ The reviewed claim subset uses bundled read-only JSON. Build access to root `kno
 
 Client `BACKEND_BASE_URL` is public configuration, never a credential. Gemini keys stay in backend environment settings. `AI_PROVIDER=disabled` and an empty model are the baseline. Public AI stays disabled until verified individual access for an eligible adult beta and bounded requests exist. CORS and an embedded shared app token cannot provide authentication.
 
-Preferences, personal suitability, photos/raw OCR and private scan history stay
-on the phone/browser. v0.4.0 stores structured public observations automatically,
+Guests keep history/saved data locally. Optional password accounts may sync only
+a bounded private display name/saved/history snapshot. Dietary/health preferences,
+photos/raw OCR, appearance and Welcome completion remain on the phone/browser. v0.4.0 stores structured public observations automatically,
 with private provisional staging and keyed anonymous write ownership. Confirmed
 compatible exact candidates may be public with an explicit unreviewed label;
 known conflicts/identity mismatches await exact-hash operator review. Semantic
@@ -109,7 +116,7 @@ deduplication avoids repeated revisions/review for identical rescans. Moderator
 state never proves safety or the caller's current packet.
 
 Firebase Unlabel has its free Standard `unlabel` database configured, with no
-linked billing, verified anonymous Auth and denied direct client access. No paid
+linked billing, verified anonymous/email-password Auth and denied direct client access. No paid
 fallback is permitted. Source originals remain intact and incompatible nutrition
 revisions stay unselected. [Community catalogue](COMMUNITY_CATALOGUE.md)
 · [Privacy](../SAFETY_PRIVACY.md).

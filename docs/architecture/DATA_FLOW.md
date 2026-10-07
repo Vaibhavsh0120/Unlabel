@@ -1,17 +1,24 @@
-# Unlabel data flow and ownership
+# Data flow
 
-Updated **7 October 2026**. Backend **v0.6.0 Product Discovery** is independently
-pushed, hosted-verified and published after the separate v0.5.0/v0.4.0 releases.
-Nineteen routes preserve old contracts and add bounded dated identity search.
-Frontend **0.1.0+2 Connected Label Reader** implements manual barcode/name lookup,
-current/historical reports, corrected input and device-local libraries. Its
-rendered/release gates are tracked separately; camera/OCR remains future scope.
-Light is the first-use default; saved Light/Dark/System choice stays local.
-Personal history/preferences/saved lists stay on-device. Only public package facts
-use automatic anonymous-authenticated catalogue storage; no reviewer/admin app
-accounts. Firebase retains free tier/no linked billing.
-[Master plan](../planning/MASTER_PLAN.md) · [Backend review](../planning/BACKEND_V0_6_0_REVIEW.md)
-· [Connected plan](../planning/CONNECTED_RELEASE_PLAN.md).
+Updated **7 October 2026**.
+
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+
+The public observation pipeline and private personal sync are independent.
+Guests use lazy anonymous auth only for automatic public facts. Optional password
+login selects a separate UID-specific local namespace and private sync endpoint.
+Cloud/device differences require an explicit replacement choice; uncertain writes
+retain their mutation UUID/payload and compare-and-set revision for safe retries.
+[Private sync](PRIVATE_ACCOUNT_SYNC.md) · [Current checklist](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 ## Preserved lookup, normalization and claim paths
 
@@ -84,7 +91,7 @@ flowchart TD
 8. `backend/app/services/personalization/` is reserved for a neutral product-fact and suitability-reason catalog/policy payload. It does not receive or store user profiles. The response identifies declared allergens, cross-contact statements, dietary declarations, nutritional findings, and evidence limitations.
 9. `backend/app/providers/ai/` may rephrase selected public facts and fixed findings using `backend/app/prompts/`. Its input excludes preferences, raw images, scan history, and personal identifiers. `backend/app/schemas/` validates output; conflicting, missing, or unsupported statements trigger template fallback.
 10. Shared `features/preferences/` maps backend-issued neutral facts to local preference IDs while completing an online report. This small mapper does not reproduce FSSAI thresholds. Analysis presents provider insights, Unlabel checks, personal reasons, dates, and limitations separately.
-11. `features/history/` explicitly saves the report through `core/storage/`, including selected source facts/corrections, findings, evidence/rule versions, dates, and the suitability snapshot/profile revision. Offline viewing preserves those dated findings rather than running fresh analysis. Phone/browser stores are separate; no automatic synchronization is planned.
+11. `features/history/` explicitly saves the report through `core/storage/`, including selected source facts/corrections, findings, evidence/rule versions, dates, and the suitability snapshot/profile revision. Offline viewing preserves those dated findings rather than running fresh analysis. Guest phone/browser stores remain separate. Signed-in profile/saved/history use the implemented private account sync with explicit cloud/device replacement and isolated UID namespaces.
 
 ## Where the knowledge originates
 
@@ -127,7 +134,7 @@ Open Food Facts is the selected primary product-data provider under `backend/app
 | Analysis request | Barcode/provider snapshot plus relevant confirmed public corrections/claims | Backend request memory; no default scan database or raw-content logs |
 | Neutral findings and citations | Source-tagged provider insights plus authoritative backend checks | Saved on client with origin/date/version; backend discards request state after completion |
 | Preferences/allergies | User on client | Phone/browser-local profile; editable/deletable; never sent to backend or Gemini |
-| Saved analyses | Explicit client save action | Phone/browser-local dated reports until deleted/cleared/evicted; offline read-only findings; no cloud sync |
+| Saved analyses | Explicit client save action | Guest reports stay device/browser-local; optional signed-in private sync carries bounded dated reports, preserving evidence and explicit deletion/conflict state |
 | Curated knowledge | Reviewed public references | Versioned canonical repository files; derived local bundles/indexes are rebuildable |
 | Gemini request | Allowlisted public facts and evidence summaries | Optional external processing under the provider's current terms; no Unlabel server archive |
 | Primary product facts/insights | Selected Open Food Facts online barcode lookup | Provider-tagged response and explicitly saved report; no persistent shared hosted cache required |

@@ -1,22 +1,29 @@
 # Frontend/backend API plan
 
-Released production **v0.6.0 Product Discovery** has nineteen mounted routes,
-exported in `contracts/schemas/backend-v0.6.0.openapi.json`. The earlier eighteen
-routes/components remain compatible. Indexed `GET /v1/catalogue/search` adds the
-actual `catalogue_search` capability and bounded candidate pagination.
-[Search bounds](PRODUCT_DISCOVERY.md) · [Current review](../planning/BACKEND_V0_6_0_REVIEW.md)
-· [23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json).
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
 
-Frontend v0.1.0+2 consumes metadata/search/report contracts and automatically
-submits confirmed public facts, while personal records remain local. Its final
-rendered/release checks are separate. Optional scanner login/private sync and
-comparison/insight support belong to the next accepted v0.7.0/v0.2.0 plan, not the
-current API. [Next scope](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+Implemented v0.7.0 exports **20 paths / 21 operations** in
+`contracts/schemas/backend-v0.7.0.openapi.json`. Every prior public path/component
+remains intact. GET/POST `/v1/account/sync` is a separate strict private contract;
+the capability is enabled only with configured account/community runtime.
+[Private sync and caps](PRIVATE_ACCOUNT_SYNC.md) ·
+[Backend release review](../planning/BACKEND_V0_7_0_REVIEW.md).
 
 ## Implemented endpoints and nutrition contract
 
 | Endpoint | Actual behavior |
 | --- | --- |
+| `GET /v1/account/sync` | Password-authenticated caller-owned private snapshot; 384 KiB data, 50 saved/100 history, no UID/email/photo/OCR fields |
+| `POST /v1/account/sync` | Strict CAS revision and immutable UUID retry; changed cloud state returns conflict; empty snapshots retain revision |
 | `GET /v1/health` | Ready/version; provider connectivity explicitly not checked |
 | `GET /v1/meta` | API/contract/product-adapter/nutrition-adapter/normalization versions and capabilities |
 | `GET /v1/products/{barcode}` | Unchanged typed OFF identity/ingredient/tag/computed-grade lookup |
@@ -66,7 +73,7 @@ The actual body limit is 32 KiB before JSON parsing, including chunked transfers
 Normalization/claims persist no scan/profile and log no content. Separate
 community intake persists bounded public assertions and private staging/receipts;
 images/raw OCR/profiles/history remain excluded. Exact-origin GET/POST CORS permits
-Authorization but is not authentication. Writes use verified anonymous tokens
+Authorization but is not authentication. Public writes accept verified anonymous or password scanner tokens; private account sync requires password authentication. Public writes
 without a Share flag. No AI is enabled. [Storage lifecycle](COMMUNITY_CATALOGUE.md).
 
 
@@ -74,7 +81,7 @@ Use the [export/example index](../../contracts/README.md) for actual schema file
 
 Raw text interpretation, capture geometry and universal health scoring remain outside this slice. Released v0.5.0 composes existing structured facts into a useful sourced report; [report contract](LABEL_REPORT.md). The independently released v0.3.0 claim/rule/evidence APIs remain intact; [historical accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
 
-`ClaimsRequest` extends confirmed normalization with 1–16 unique identified claims, `selected_table_id` and food category/form/preparation context. Numerical scope covers seven fibre/sugar/sodium claims for ordinary general food and matching table context. High/source protein, no added sugar and multigrain remain recognized but unreviewed. One applicable fibre alternative can support a criterion; a contradiction requires every applicable alternative known and failing. Missing/conflicting/unsupported or future-dated evidence yields insufficient information. Results include row/region/rule/source references, knowledge version and numerical-only scope. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal with version `fssai-schedule-i-note2-v1`; the returned normalization-v1 snapshot retains 4.184. All structured POST routes share checked numeric tokens, the 32 KiB body limit and redacted validation. Claim/rule/evidence reads use `no-store` and no external provider. [Detailed current criteria and synthetic integration pair](../../backend/README.md#reviewed-confirmed-label-claim-checks).
+`ClaimsRequest` extends confirmed normalization with 1–16 unique identified claims, `selected_table_id` and food category/form/preparation context. Numerical scope covers seven fibre/sugar/sodium claims for ordinary general food and matching table context. High/source protein, no added sugar and multigrain remain recognized but unreviewed. One applicable fibre alternative can support a criterion; a contradiction requires every applicable alternative known and failing. Missing/conflicting/unsupported or future-dated evidence yields insufficient information. Results include row/region/rule/source references, knowledge version and numerical-only scope. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal with version `fssai-schedule-i-note2-v1`; the returned normalization-v1 snapshot retains 4.184. Public structured POST routes share checked numeric tokens, the 32 KiB body limit and redacted validation. Private account sync has its own 512 KiB actual request-body cap and 384 KiB serialized data cap. Claim/rule/evidence reads use `no-store` and no external provider. [Detailed current criteria and synthetic integration pair](../../backend/README.md#reviewed-confirmed-label-claim-checks).
 
 ## Current report integration
 

@@ -66,7 +66,7 @@ def test_verification_requires_revocation_check_and_returns_only_uid(monkeypatch
         {"uid": ""},
         {"exp": 1},
         {"exp": True},
-        {"firebase": {"sign_in_provider": "password"}},
+        {"firebase": {"sign_in_provider": "google.com"}},
     ],
 )
 def test_claims_with_wrong_project_subject_or_expiry_are_invalid(monkeypatch, change):
@@ -88,6 +88,56 @@ def test_bounded_token_input_is_rejected_before_verification(monkeypatch, value)
     runtime = runtime_with_verifier(monkeypatch, no_call)
     with pytest.raises(AuthenticationInvalid):
         runtime.verify_token(value)
+
+
+def test_password_scanner_can_contribute_and_sync_but_anonymous_cannot_sync(monkeypatch):
+    from app.community.auth import AuthenticationInvalid
+
+    decoded = claims()
+    runtime = runtime_with_verifier(monkeypatch, lambda *args, **kwargs: decoded)
+    assert runtime.verify_token("opaque-token") == "private-subject"
+    with pytest.raises(AuthenticationInvalid):
+        runtime.verify_account_token("opaque-token")
+    decoded["firebase"]["sign_in_provider"] = "password"
+    assert runtime.verify_token("opaque-token") == "private-subject"
+    assert runtime.verify_account_token("opaque-token") == "private-subject"
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"aud": "other"},
+        {"iss": "https://securetoken.google.com/other"},
+        {"sub": "different"},
+        {"exp": 1},
+        {"exp": True},
+        {"firebase": {"sign_in_provider": "custom"}},
+    ],
+)
+def test_private_account_verification_preserves_project_subject_and_expiry_boundaries(
+    monkeypatch, change
+):
+    from app.community.auth import AuthenticationInvalid
+
+    decoded = claims() | {"firebase": {"sign_in_provider": "password"}} | change
+    runtime = runtime_with_verifier(monkeypatch, lambda *args, **kwargs: decoded)
+    with pytest.raises(AuthenticationInvalid):
+        runtime.verify_account_token("opaque-token")
+
+
+def test_private_account_verification_is_revocation_aware(monkeypatch):
+    from firebase_admin import auth
+
+    from app.community.auth import AuthenticationInvalid
+
+    def verify(token, *, app, check_revoked, clock_skew_seconds):
+        assert check_revoked is True and clock_skew_seconds == 0
+        raise auth.RevokedIdTokenError("PRIVATE-PROVIDER-TEXT")
+
+    runtime = runtime_with_verifier(monkeypatch, verify)
+    with pytest.raises(AuthenticationInvalid) as error:
+        runtime.verify_account_token("opaque-token")
+    assert "PRIVATE" not in str(error.value)
 
 
 def test_invalid_vs_transient_verification_errors_are_safe(monkeypatch):

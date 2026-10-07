@@ -1,0 +1,62 @@
+{
+  "component": "frontend",
+  "version": "0.1.0",
+  "source_sha": "1138c292296ae6c9309d73d430d267ec1a98fa80",
+  "deployment_id": "dpl_4PXNJDWP279VHSVmu94BoFt9WhmE",
+  "checked_at_utc": "2026-10-07T11:21:47.455362+00:00",
+  "checks": [
+    {
+      "asset": "index.html",
+      "status": 200,
+      "bytes": 1796,
+      "sha256": "068feb8b161f8bd5c16ef4800baf6288b6854823291fc6500e67af87514b0317"
+    },
+    {
+      "asset": "flutter_bootstrap.js",
+      "status": 200,
+      "bytes": 13094,
+      "sha256": "6918a3ff6596188deb35a3b0614829d94f042e0f9ae1843e92ad2c0f7debda04"
+    },
+    {
+      "asset": "main.dart.js",
+      "status": 200,
+      "bytes": 3122378,
+      "sha256": "9cee1e5a01f0a21f369190586a672b5c1b853eec133bcc5ba45c02a736d72e42"
+    },
+    {
+      "asset": "appearance.js",
+      "status": 200,
+      "bytes": 1019,
+      "sha256": "ab2ea598f82576aea3c56127234d3020c9556fbec3e0f89108a01c5fa6fe8b7f"
+    },
+    {
+      "asset": "favicon-light.png",
+      "status": 200,
+      "bytes": 1038,
+      "sha256": "1adeccdbeafe87eaf1c47cbb2967dc46816beebda9678b38219253869e2c6470"
+    },
+    {
+      "asset": "favicon-dark.png",
+      "status": 200,
+      "bytes": 1158,
+      "sha256": "e9ffd7a9b8e4a285fa0ad71375110bb32d691f0b6019a9341fdf993777c7a35e"
+    },
+    {
+      "asset": "manifest.json",
+      "status": 200,
+      "bytes": 881,
+      "sha256": "f397bc4ee4302a5fbc3d1a3fa4e7ff7d6d3224bf44024fe3280b67937b58c66f"
+    },
+    {
+      "asset": "manifest-dark.json",
+      "status": 200,
+      "bytes": 877,
+      "sha256": "6980e7b0a065b4a83772ac17583db380203024940ed9bdabec8b1e288cc10950"
+    }
+  ],
+  "browser_checks": [
+    "Hosted Home loaded",
+    "Name search aashirvaad returned 57 matches with explicit identity warning"
+  ],
+  "backend_version": "0.6.0"
+}

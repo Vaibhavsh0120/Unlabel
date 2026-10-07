@@ -15,10 +15,10 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - Build: `bash tool/vercel-build.sh`; output: `build/web`.
 - The tracked build script supplies Flutter **3.47.4** from the official SDK Git tag, checks that version, uses the tracked dependency lockfile and builds web in **release** mode.
 - Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is compiled through
-  Dart defines. Frontend version/build come from pubspec (0.1.0+2); commit comes
+  Dart defines. Frontend version/build come from pubspec (currently 0.2.0+3 source); commit comes
   from Vercel. The app checks API major/schema/capabilities and shows build info.
 - Locked restoration, Flutter analysis/tests and web compilation run in the build.
-  Light is the first-use default; saved appearance and libraries stay local.
+  Light is the first-use default; appearance and guest libraries stay local. Optional password accounts use bounded private backend sync.
 - Light/dark web icons and manifests are bundled. Missing assets are genuine 404s;
   no blanket rewrite hides deployment errors. Native releases stay manual.
 
@@ -119,7 +119,10 @@ backend `dpl_9exTaHEJZs6hCdbv1FTNB5iZ6HwS`. **23 hosted HTTP checks** verified t
 exact identity and historical report, broad/missing/bad query/cursor states,
 source/knowledge receipts, CORS and excluded private/artifact URLs. No private
 user record was written during these public discovery checks. Source-only v0.6.0
-was published separately. Frontend v0.1.0+2 still requires its own final rendered,
-push, exact hosted deployment and publication gates.
+was published separately. Frontend v0.1.0+2 independently passed its rendered/push/hosted/publication gates.
+Implementation `1138c292296ae6c9309d73d430d267ec1a98fa80` has dated
+[production asset/browser proof](../research/FRONTEND_V0_1_0_PRODUCTION.json).
+Backend v0.7.0 private sync is locally/live-Firebase verified and ready to push;
+its hosted/publication gate is pending. Frontend v0.2.0 full release checks remain pending.
 [Production proof](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
 [Review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).

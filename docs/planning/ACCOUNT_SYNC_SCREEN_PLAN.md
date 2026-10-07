@@ -1,7 +1,8 @@
 # Next accepted account and screen releases
 
-Accepted user steering: **7 October 2026**. Finish frontend v0.1.0+2 against the
-independently released backend v0.6.0 first. Then implement, review, push and verify
+Accepted user steering: **7 October 2026**. Frontend v0.1.0+2 and backend v0.6.0
+are independently published. Backend v0.7.0 is ready for its separate push;
+frontend v0.2.0 is implemented with release validation pending. Continue to review, push and verify
 **each version separately**: backend v0.7.0, frontend v0.2.0, then frontend v0.3.0.
 Preserve historical source tags; backend/tooling work does not rebuild APK/IPA.
 
@@ -10,41 +11,41 @@ Preserve historical source tags; backend/tooling work does not rebuild APK/IPA.
 Goal: optional scanner accounts can save and restore their own bounded personal
 records while guest scanning and automatic public-product facts continue to work.
 
-- [ ] Select/document the no-card login method using current Firebase docs. Keep
+- [x] Select/document the no-card login method using current Firebase docs. Keep
   one scanner role; no admin/reviewer app accounts, claims or dashboards.
-- [ ] Verify non-anonymous account identity for personal endpoints; derive ownership
+- [x] Verify non-anonymous account identity for personal endpoints; derive ownership
   from the token, never a caller-supplied UID.
-- [ ] Keep guest history/bookmarks/preferences local. Signed-in profile, saved
+- [x] Keep guest history/bookmarks/preferences local. Signed-in profile, saved
   reports and history use private per-user storage separate from public facts.
-- [ ] Bound counts/sizes, reads/writes and sync frequency within the existing free
+- [x] Bound counts/sizes, reads/writes and sync frequency within the existing free
   database. No Storage, Functions, billing, TTL, backups or PITR.
-- [ ] Define initial merge, edits/deletions, stale revisions, logout/account switching
+- [x] Define initial merge, edits/deletions, stale revisions, logout/account switching
   and offline/failed sync. Preserve local results and isolate different accounts.
-- [ ] Export additive contracts and test old clients, authentication, ownership,
+- [x] Export additive contracts and test old clients, authentication, ownership,
   quotas, deletion/conflicts, scripts, environment and Markdown.
-- [ ] Independently review, push, verify hosted/Firebase behavior and publish.
+- [ ] Independently push, hosted-verify and publish. Local/live Firebase review passed: 931 tests/5 emulator skips, 18 synthetic checks; test identities deleted and private snapshots cleared.
 
 ## Frontend v0.2.0 — Welcome, Home and Optional Login
 
 Goal: match the supplied light/dark Home direction, add optional private sync and
 make navigation useful. Implement/review one screen at a time.
 
-- [ ] Cute first-launch Welcome with Continue, without forced login; persist its
+- [x] Cute first-launch Welcome with Continue, without forced login; persist its
   completion locally and send returning users straight to Home.
-- [ ] Reference-style Home: forest/mint light, near-black/charcoal dark, rounded
+- [x] Reference-style Home: forest/mint light, near-black/charcoal dark, rounded
   cards, warm decorative art and actual recent records or useful empty states.
-- [ ] Five bottom destinations: **Home, Scan, Compare, Saved, Profile**. Every visible
+- [x] Five bottom destinations: **Home, Scan, Compare, Saved, Profile**. Every visible
   action opens a working flow. Until the v0.3.0 redesign, Scan uses existing manual
   lookup/corrected entry and Compare must use a useful implemented selection/facts
   flow; never leave a stale/disabled comparison button or fabricated result.
-- [ ] Optional scanner sign-in/create account/profile, sync state, sign out and
+- [x] Optional scanner sign-in/create account/profile, sync state, sign out and
   deletion controls. Guest workflows stay usable with personal records local.
-- [ ] Keep public corrected-package intake separate from personal account sync.
-- [ ] Light stays the first-use default; preserve explicit appearance locally.
+- [x] Keep public corrected-package intake separate from personal account sync.
+- [x] Light stays the first-use default; preserve explicit appearance locally.
   Reuse authored light/dark iOS/Android/web icons with separate native/device gates.
-- [ ] Generate cute decorative images where useful; never impersonate actual
+- [x] Generate cute decorative images where useful; never impersonate actual
   scanned product photos or package facts.
-- [ ] Test every visible action, guest/account isolation, sync failure/logout,
+- [ ] Complete full release verification of every visible action, guest/account isolation, sync failure/logout,
   first/return launch, small/large widths, large text and both appearances.
 - [ ] Review Markdown/scripts/dead code, build, push, hosted-verify and publish
   separately after backend v0.7.0 compatibility is established.

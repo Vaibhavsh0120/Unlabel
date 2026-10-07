@@ -6,8 +6,8 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.1.0-155b4b?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.6.0-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.2.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.7.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
@@ -21,25 +21,34 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Backend v0.6.0 Product Discovery is pushed, hosted-verified and published.**
-**Frontend v0.1.0+2 Connected Label Reader is implemented; its rendered/release
-checks are in progress.** [Release progress](docs/planning/CONNECTED_RELEASE_PLAN.md).
+**Backend v0.6.0 and frontend v0.1.0+2 are independently published.**
+**Backend v0.7.0 Private Account Sync is implemented and ready to push; hosted
+verification remains pending. Frontend v0.2.0 Welcome, Home and Optional Login is
+implemented with release validation pending.**
+[Version checklists](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
 - Enter a barcode or search name/brand words and choose an exact catalogue record.
 - Read dated historical reports, nutrition bases, source references and unknowns.
 - Enter and confirm current package facts for a separate useful label report.
 - See approximate total-sugar cubes, seven reviewed numerical claim types and
   three reviewed English/Hindi ingredient functions where evidence permits.
-- Keep saved reports, viewed history and appearance preferences on the device.
+- Continue as a guest with device-local saved reports/history, or optionally sign in
+  to sync a private account display name, saved reports and history across devices.
+- Use first-launch Welcome, light/dark Home and Home/Scan/Compare/Saved/Profile navigation;
+  v0.2.0 working destinations await their full release validation.
 - Save confirmed public package facts automatically to improve the shared catalogue.
 
-Personal history, saved lists and preferences are not uploaded. Photos and raw OCR
-are outside this release. Anonymous scanner authentication protects public-fact
-writes; there are no admin/reviewer app accounts. Storage failure does not discard
+Guests do not upload personal history or saved lists. Password accounts use a
+separate verified-UID namespace and private CAS sync, with explicit cloud/device
+replacement choices. Appearance and Welcome completion stay on the device; photos,
+raw OCR and dietary health preferences are excluded from private sync. Public facts
+use anonymous or signed-in scanner authentication; there are no admin/reviewer app accounts. Storage failure does not discard
 the useful report. [Privacy and evidence](docs/SAFETY_PRIVACY.md).
 
-Camera/gallery OCR, live highlights, comparison, personal suitability and an
-insight feed remain tracked follow-ups. Concept-image scores are illustrative;
+Camera/gallery OCR, live highlights, personal suitability, wider reviewed insight
+coverage and the remaining reference-style results screens stay tracked. v0.2.0
+adds compatible-basis client comparison and sourced educational destinations;
+their rendered/release validation remains pending. Concept-image scores are illustrative;
 the app does not invent a universal health or allergy-safety verdict.
 [20-group feature tracker](docs/planning/FEATURE_TRACKER.md).
 
@@ -87,7 +96,8 @@ No custom model/training is selected; Gemini remains disabled.
 
 Firebase **Unlabel**, project `unlabel-india-catalogue`, uses its first Standard
 database **unlabel** in Mumbai with free tier/no linked billing. Deny-all client
-rules and backend credentials protect structured public observations. No paid
+rules and backend credentials protect separate public observations and private
+account snapshots. Anonymous and email/password sign-in are configured. No paid
 Storage/Functions, billing upgrade or card is required.
 
 New lookup/analysis needs the backend. Already loaded dated reports can be read
@@ -100,10 +110,14 @@ Shared preferences are convenience storage, not an encrypted backup.
 
 ## Validation and releases
 
-Backend v0.6.0: **863 passed, five emulator-only skips**, clean Ruff/Pyright and
-**23 hosted checks**. [Review](docs/planning/BACKEND_V0_6_0_REVIEW.md).
-Frontend: **42 tests**, clean analysis and web compilation; rendered/hosted proof
-is recorded separately. [Frontend guide](frontend/README.md).
+Backend v0.7.0: **931 passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** using a local API with real Firebase; hosted/publication
+checks remain pending. [Review](docs/planning/BACKEND_V0_7_0_REVIEW.md).
+Frontend v0.1.0+2: independently published at exact source
+`1138c292296ae6c9309d73d430d267ec1a98fa80`, with production assets/browser checks.
+[Production proof](docs/research/FRONTEND_V0_1_0_PRODUCTION.json).
+Frontend v0.2.0: implemented; **25 focused account tests** pass, while full
+render/build/push/hosted validation remains pending. [Frontend guide](frontend/README.md).
 
 Vercel deploys separate backend/web projects from `main`. Backend source tags
 remain `v0.x.0`; frontend source uses `frontend-v0.1.0`; future manual mobile

@@ -1,4 +1,4 @@
-"""Explicit Firebase credentials and revocation-aware anonymous authentication."""
+"""Explicit credentials and revocation-aware scanner authentication."""
 
 import json
 import math
@@ -11,7 +11,7 @@ from uuid import uuid4
 
 class AuthenticationInvalid(Exception):
     def __init__(self) -> None:
-        super().__init__("A valid anonymous Firebase identity is required")
+        super().__init__("A valid Firebase scanner identity is required")
 
 
 class AuthenticationUnavailable(Exception):
@@ -21,6 +21,7 @@ class AuthenticationUnavailable(Exception):
 
 class CommunityRuntime:
     def __init__(self, application: Any, database: Any, project_id: str) -> None:
+        from app.accounts.store import FirestorePersonalStore
         from app.community.store import FirestoreContributionStore
 
         self._application = application
@@ -28,8 +29,15 @@ class CommunityRuntime:
         self._project_id = project_id
         self._closed = False
         self.store = FirestoreContributionStore(database)
+        self.personal_store = FirestorePersonalStore(database)
 
     def verify_token(self, token: str) -> str:
+        return self._verify_token(token, account=False)
+
+    def verify_account_token(self, token: str) -> str:
+        return self._verify_token(token, account=True)
+
+    def _verify_token(self, token: str, *, account: bool) -> str:
         from firebase_admin import auth
 
         if (
@@ -64,7 +72,8 @@ class CommunityRuntime:
             or not math.isfinite(expiry)
             or expiry <= time.time()
             or not isinstance(decoded.get("firebase"), dict)
-            or decoded["firebase"].get("sign_in_provider") != "anonymous"
+            or decoded["firebase"].get("sign_in_provider")
+            not in ({"password"} if account else {"anonymous", "password"})
         ):
             raise AuthenticationInvalid()
         return subject

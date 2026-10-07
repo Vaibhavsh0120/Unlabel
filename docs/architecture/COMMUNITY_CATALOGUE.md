@@ -34,8 +34,10 @@ review. Confirmation and review never prove allergy safety or the current
 caller's packet. Unconfirmed extraction cannot become selected public facts.
 
 The app has only scanner/client identities. There are no admin or reviewer app
-accounts, role claims or dashboard. Automatic anonymous authentication is the
-scanner write identity. The dedicated service account is a backend machine
+accounts, role claims or dashboard. Guests use automatic anonymous scanner authentication; optional password
+scanner accounts use their existing SDK session for public writes. Separate private
+account sync derives ownership from verified password tokens and never exposes
+personal libraries through public facts. [Private account architecture](PRIVATE_ACCOUNT_SYNC.md). The dedicated service account is a backend machine
 credential, not a person/user login. Existing exact-hash CLI operations are manual
 maintenance; ordinary compatible facts qualify without a central reviewer queue.
 Known conflicts remain unresolved until explicit maintenance or better evidence.
@@ -104,7 +106,7 @@ hosted secrets; public web config is not an admin credential. No implicit ambien
 credentials or auth/storage emulator shortcuts are accepted in production runtime.
 
 Direct Firestore clients are denied, including authenticated users. Backend Admin
-access uses dedicated least-privilege credentials and verifies anonymous tokens,
+access uses dedicated least-privilege credentials and verifies anonymous/password scanner tokens,
 project/issuer/expiry and revocation. Sync SDK operations use worker threads;
 runtime resources close on shutdown. Intake has an actual 32 KiB body limit,
 strict raw JSON numbers and bounded redacted errors. Safe typed failures distinguish

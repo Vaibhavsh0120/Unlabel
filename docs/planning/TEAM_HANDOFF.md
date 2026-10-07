@@ -8,12 +8,18 @@ the tracked India source and builds the current discovery index with progress.
 
 ## Current checkpoint
 
-Backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label Reader**
-have separate release gates: backend v0.6.0 is already published; frontend v0.1.0+2 is implemented with final rendered/release checks pending. Backend local verification:
-**863 passed, 5 emulator-only skipped**, Ruff/Pyright clean, nineteen exported
-routes and old eighteen-route compatibility preserved. Frontend analysis and
-interaction/data tests passed before final layout adjustments; the 42-test suite must pass again with those changes. Backend exact deployment and 23 hosted checks passed. Frontend browser/push/publication are separate gates, tracked in the [connected release plan](CONNECTED_RELEASE_PLAN.md)
-and [backend review](BACKEND_V0_6_0_REVIEW.md).
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+[Current account checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) ·
+[Private architecture](../architecture/PRIVATE_ACCOUNT_SYNC.md).
 
 Historical production **v0.5.0 Useful Label Report** and **v0.4.0 Community Product Catalogue**
 were independently pushed, hosted-verified and published. Preserve their source
@@ -49,8 +55,9 @@ functions. The person can explicitly bookmark a report and reopen bounded privat
 device-local saved/history lists. Appearance uses the owner's white/forest/mint
 direction, real Material 3 controls and locally licensed Solar icons.
 
-No camera/gallery/OCR, comparison, suitability profile, AI calls, training or fake
-85/100 score is part of this frontend release. Native device validation remains
+Camera/gallery/OCR, dietary suitability, AI calls, training and fake 85/100 scores
+remain outside this release. v0.2.0 client comparison and sourced educational
+destinations are implemented with validation pending. Native device validation remains
 separate from the web/widget checks.
 
 ## Integration and ownership
@@ -78,7 +85,8 @@ nine-calendar-month replacement due **2027-07-06T06:53:46Z**.
 
 ## Non-negotiable boundaries
 
-Only the scanner/client user authenticates, automatically and anonymously.
+Only the scanner/client user authenticates: guests use automatic anonymous public-write
+identity; optional password sign-in enables separate private profile/saved/history sync.
 There is no admin/reviewer app role or dashboard. The backend service account is
 a machine credential. Firebase Unlabel's first Standard database unlabel in
 Mumbai keeps its free tier, deny-all client rules and no linked billing.

@@ -1,10 +1,20 @@
 # Clone, restore, run
 
-Backend **v0.6.0 Product Discovery** is independently published and hosted-verified.
-Frontend **0.1.0+2** connects manual barcode/name lookup, reports and corrected
-label entry. Personal saved/history/preferences stay local; only public package
-facts use automatic catalogue storage. Light is the default; camera/OCR remains
-future work. [Connected plan](CONNECTED_RELEASE_PLAN.md).
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+
+Setup never provisions a cloud account or billing. Optional private sync requires
+the configured free Firebase project/password provider and `ACCOUNT_SYNC_ENABLED`.
+Safe defaults preserve fully useful guest/local workflows with cloud storage disabled.
+Light is the default; camera/OCR remains future work.
 
 ## Quick start
 

@@ -1,30 +1,25 @@
-# Unlabel backend: v0.6.0 Product Discovery
+# Unlabel backend: v0.7.0 Private Account Sync
 
-v0.6.0 adds bounded Unicode name/brand/quantity candidate discovery over the
-dated India snapshot. Local validation passed 863 tests with five emulator-only
-skips and clean Ruff/Pyright. Hosted verification/publication remain pending
-until its own push. It preserves all eighteen prior paths; the new search route
-makes nineteen. [Discovery contract](../docs/architecture/PRODUCT_DISCOVERY.md)
-· [v0.6.0 review](../docs/planning/BACKEND_V0_6_0_REVIEW.md).
+v0.7.0 is implemented and ready for its independent push after the published
+v0.6.0 Product Discovery. **20 paths / 21 operations** preserve all public
+contracts and add optional password-authenticated private profile/saved/history
+sync. Guests keep personal records locally; public package observations remain
+automatic and separate.
 
-Production **v0.5.0 Useful Label Report** was independently reviewed, pushed,
-hosted-verified and published after v0.4.0. Eighteen routes preserve live OFF,
-snapshot, normalization, seven numerical claims and automatic community
-observations, adding useful current/historical reports and a partial three-entry
-glossary. Firebase Unlabel stays free with no billing. Flutter remains
-**0.0.0+1**; camera/OCR/search, report UI and background saving need integration.
-[Report guide](../docs/architecture/LABEL_REPORT.md) ·
-[Feature tracker](../docs/planning/FEATURE_TRACKER.md) ·
-[Current review](../docs/planning/BACKEND_V0_5_0_REVIEW.md).
+Validation: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** through a local API using real Firebase. Two password
+identities and one anonymous identity tested ownership, anonymous rejection,
+CAS/retry/conflict, versioned clearing and no-store behavior; test accounts were
+deleted and private snapshots cleared. Email/password Auth was enabled without
+adding billing. Local `.env` changes were encrypted into `.env.age`. These checks
+do not establish hosted v0.7.0 behavior; its push/hosted/publication gate is pending.
+[Current review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
+[Private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md).
 
-Production API: **[unlabel-api.vercel.app](https://unlabel-api.vercel.app)** ·
-[Swagger](https://unlabel-api.vercel.app/docs) ·
-[Catalogue status](https://unlabel-api.vercel.app/v1/catalogue). Website:
-[unlabel-india.vercel.app](https://unlabel-india.vercel.app). Both projects deploy
-`main` pushes. [Twenty hosted checks](../docs/research/BACKEND_V0_5_0_PRODUCTION.json)
-verified real anonymous saving/retry, barcode-less/current/historical reports,
-glossary boundaries, anomalous-write blocking and matching source receipts.
-Owned synthetic records and anonymous identities were removed.
+API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app) ·
+[Swagger](https://unlabel-api.vercel.app/docs). Firebase remains free with no
+card/linked billing. Frontend v0.1.0+2 is independently published; v0.2.0 optional
+account/Home/navigation is implemented with release validation pending.
 
 ## Run locally
 
@@ -45,6 +40,8 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 
 | Endpoint | Behavior |
 | --- | --- |
+| `GET /v1/account/sync` | Verified password account owns its private snapshot; anonymous clients rejected; no caller UID |
+| `POST /v1/account/sync` | Bounded profile/saved/history CAS replacement and UUID retries; conflicts explicit; versioned empty clearing |
 | `GET /v1/health` | Backend readiness/version; external provider connectivity explicitly not checked |
 | `GET /v1/meta` | Backend/API/schema/adapter/normalization versions; product lookup, nutrition lookup and normalization enabled |
 | `GET /v1/products/{barcode}` | Fixed OFF v3.6 product read; stable typed source-tagged response |
@@ -89,7 +86,7 @@ Invoke-RestMethod http://127.0.0.1:8000/v1/products/3017620422003/nutrition
 | 502 | `incompatible_response` | Malformed/oversized data or mismatched product identity |
 | 422 | FastAPI validation error | Unsupported barcode input; no provider call |
 
-The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. This identity route exposes no raw provider internals or image fields; the separate snapshot facts route can expose a validated official image URL descriptor. Product/nutrition responses use `Cache-Control: no-store`; saved-result policy is future client work.
+The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. This identity route exposes no raw provider internals or image fields; the separate snapshot facts route can expose a validated official image URL descriptor. Product/nutrition responses use `Cache-Control: no-store`; guest saved results stay on the client; optional password accounts use the separate private sync contract.
 
 ## Snapshot rich facts
 
@@ -237,8 +234,9 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, eighteen mounted routes and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, twenty API paths/twenty-one operations and redacted validation failures.
 - `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed three-entry glossary.
+- `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
 - `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
 - `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
@@ -314,7 +312,7 @@ This uses the backend Python environment and checks backend application/build/te
 
 See [current v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
 [published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
-Current exports describe eighteen v0.5.0 routes, four added report/glossary
+Historical v0.5.0 exports describe eighteen routes and four added report/glossary
 schemas and 22 validated synthetic examples; historical v0.4.0 exports are preserved.
 Independent local/review/hosted gates passed; v0.5.0 is separately published.
 Review Markdown/scripts, affected tests/contracts and

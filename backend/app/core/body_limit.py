@@ -2,6 +2,7 @@ import json
 
 from starlette.responses import JSONResponse
 
+from app.accounts.models import MAX_BODY_BYTES
 from app.core.json_numbers import checked_float, reject_constant
 
 
@@ -16,10 +17,12 @@ class RequestBodyLimit:
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
+        personal = scope["path"].rstrip("/") == "/v1/account/sync"
+        max_bytes = MAX_BODY_BYTES if personal else self.max_bytes
         for name, value in scope.get("headers", []):
             if name.lower() == b"content-length":
                 try:
-                    if int(value) > self.max_bytes:
+                    if int(value) > max_bytes:
                         await self.reject(scope, receive, send)
                         return
                 except ValueError:
@@ -30,12 +33,28 @@ class RequestBodyLimit:
             if message["type"] == "http.disconnect":
                 return
             body.extend(message.get("body", b""))
-            if len(body) > self.max_bytes:
+            if len(body) > max_bytes:
                 await self.reject(scope, receive, send)
                 return
             if not message.get("more_body", False):
                 break
         consumed = False
+        if personal and (scope.get("query_string") or (scope["method"] == "GET" and body)):
+            await JSONResponse(
+                {
+                    "detail": [
+                        {
+                            "loc": ["query" if scope.get("query_string") else "body"],
+                            "type": "unexpected_input",
+                            "msg": "Invalid request data",
+                        }
+                    ],
+                    "errors_truncated": False,
+                },
+                status_code=422,
+                headers={"Cache-Control": "no-store"},
+            )(scope, receive, send)
+            return
 
         if (
             scope["path"].rstrip("/")
@@ -44,6 +63,7 @@ class RequestBodyLimit:
                 "/v1/claims/check",
                 "/v1/community/contributions",
                 "/v1/reports/check",
+                "/v1/account/sync",
             }
             and scope["method"] == "POST"
         ):
@@ -78,8 +98,9 @@ class RequestBodyLimit:
         await self.app(scope, replay, send)
 
     async def reject(self, scope, receive, send):
+        size = "512" if scope["path"].rstrip("/") == "/v1/account/sync" else "32"
         await JSONResponse(
-            {"detail": "Request body exceeds 32 KiB"},
+            {"detail": f"Request body exceeds {size} KiB"},
             status_code=413,
             headers={"Cache-Control": "no-store"},
         )(scope, receive, send)

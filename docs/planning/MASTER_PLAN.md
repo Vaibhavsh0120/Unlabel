@@ -1,12 +1,21 @@
 # Unlabel: useful product architecture and delivery plan
 
-Delivery checkpoint: **7 October 2026**. Backend **v0.6.0 Product Discovery**
-is pushed, hosted-verified and published independently after v0.5.0/v0.4.0.
-Frontend **0.1.0+2 Connected Label Reader** is implemented; its rendered/release
-checks are in progress. Light is the first-use default. Personal history, saved
-reports and preferences stay local; confirmed public product facts improve the
-catalogue automatically. Future flows below remain plans unless marked implemented.
-[Current backend review](BACKEND_V0_6_0_REVIEW.md) · [Connected release plan](CONNECTED_RELEASE_PLAN.md).
+Delivery checkpoint: **7 October 2026**.
+
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
+
+Light is the first-use default. Future camera/OCR, broad ingredient content,
+personal suitability and complete reference-style results remain plans.
+[Account plan](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
 
 ## Product goal
 
@@ -379,7 +388,7 @@ rows alone do not measure useful Indian-market coverage.
 The user authorized v0.4.0 followed by v0.5.0 as separate reviewed/pushed versions.
 The next backend v0.6.0 and frontend v0.1.0 are now authorized and in progress.
 Their [connected release plan](CONNECTED_RELEASE_PLAN.md) defines useful scope.
-Backend v0.6.0 is published; frontend v0.1.0+2 has final rendered/release gates pending. The user then authorized backend v0.7.0/frontend v0.2.0 optional scanner login/private sync, first-launch Welcome and all reference-style action destinations, implemented one screen at a time. [Next accepted scope](ACCOUNT_SYNC_SCREEN_PLAN.md). Finish each component release boundary before the next.
+Backend v0.6.0 and frontend v0.1.0+2 are published. Backend v0.7.0 private sync is implemented and locally/live-Firebase checked, with its separate hosted/publication gate pending. Frontend v0.2.0 Welcome/Home/optional account/navigation is implemented with release validation pending; frontend v0.3.0 completes remaining reference-style screens separately. [Accepted scope and checklists](ACCOUNT_SYNC_SCREEN_PLAN.md). Finish each component release boundary before the next.
 
 | Stage | Meaning and user value | Completion gate |
 | --- | --- | --- |

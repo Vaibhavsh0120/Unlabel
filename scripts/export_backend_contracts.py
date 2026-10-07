@@ -28,6 +28,7 @@ community_service = import_module("app.community.service")
 resolve_product = import_module("app.community.resolver").resolve_product
 reports = import_module("app.reports.models")
 glossary = import_module("app.reports.glossary")
+accounts = import_module("app.accounts.models")
 
 
 def write(directory: str, name: str, value):
@@ -67,6 +68,9 @@ def main():
         "label-report-v1.schema.json": reports.LabelReport,
         "report-failure-v1.schema.json": reports.ReportFailure,
         "ingredient-glossary-v1.schema.json": glossary.GlossaryResponse,
+        "personal-sync-request-v1.schema.json": accounts.SyncRequest,
+        "personal-sync-snapshot-v1.schema.json": accounts.SyncSnapshot,
+        "personal-sync-failure-v1.schema.json": accounts.SyncFailure,
     }.items():
         write("schemas", filename, model.model_json_schema())
 
@@ -426,6 +430,39 @@ def main():
             status="unavailable", code="ingredient_glossary_unavailable"
         ),
         "ingredient-glossary-v1.synthetic.json": report_glossary.response(),
+    }.items():
+        write("examples", filename, model.model_dump(mode="json"))
+    personal_data = accounts.PersonalData.model_validate(
+        {
+            "profile": {"display_name": "Synthetic scanner"},
+            "saved": [
+                {
+                    "entry_id": "10000000-0000-4000-8000-000000000011",
+                    "recorded_at": submitted_at,
+                    "report": current_report,
+                }
+            ],
+            "history": [],
+        }
+    )
+    for filename, model in {
+        "personal-sync-v1.request.synthetic.json": accounts.SyncRequest.model_validate(
+            {
+                "expected_revision": 0,
+                "mutation_id": "10000000-0000-4000-8000-000000000012",
+                "data": personal_data,
+            }
+        ),
+        "personal-sync-v1.snapshot.synthetic.json": accounts.SyncSnapshot(
+            revision=1,
+            updated_at=submitted_at,
+            data=personal_data,
+        ),
+        "personal-sync-v1.failure.synthetic.json": accounts.SyncFailure(
+            status="conflict",
+            code="account_revision_conflict",
+            current_revision=1,
+        ),
     }.items():
         write("examples", filename, model.model_dump(mode="json"))
     count = len(list((ROOT / "contracts/examples").glob("*.synthetic.json")))

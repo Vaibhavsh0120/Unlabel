@@ -38,8 +38,12 @@ sourced facts, and keep dated results locally.
 - [x] Implement bounded local saved reports/history and appearance preference, with
   deletion and explicit persistence failures; do not upload private history.
 - [x] Test meaningful data/behavior boundaries and small/large/light/dark/2x layouts.
-- [ ] Review rendered web flows, documentation, scripts and component-specific tags.
-- [ ] Push after backend discovery is hosted; publish source-only frontend-v0.1.0.
+- [x] Review rendered web flows, documentation, scripts and component-specific tags.
+- [x] Push after backend discovery is hosted; publish source-only frontend-v0.1.0.
+
+Frontend implementation `1138c292296ae6c9309d73d430d267ec1a98fa80` reached a
+READY production deployment; eight asset/HTTP checks and browser search-flow
+checks passed. [Dated production proof](../research/FRONTEND_V0_1_0_PRODUCTION.json).
 
 Camera, gallery/OCR highlights, comparison, personal suitability and insight feed
 remain follow-up work in the feature tracker. Do not add non-working buttons or

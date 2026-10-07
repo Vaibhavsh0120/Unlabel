@@ -1,0 +1,51 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "unauthorized",
+        "conflict",
+        "rate_limited",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "code": {
+      "enum": [
+        "account_authentication_required",
+        "account_sync_unavailable",
+        "account_revision_conflict",
+        "account_sync_limit"
+      ],
+      "title": "Code",
+      "type": "string"
+    },
+    "current_revision": {
+      "anyOf": [
+        {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Revision"
+    }
+  },
+  "required": [
+    "status",
+    "code"
+  ],
+  "title": "SyncFailure",
+  "type": "object"
+}

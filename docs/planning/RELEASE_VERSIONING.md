@@ -22,9 +22,10 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Backend **0.6.0 Product Discovery** is published after the independently released
-0.5.0 and 0.4.0. Frontend **0.1.0+2 Connected Label Reader** has separate source/web
-gates. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
+Backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label Reader**
+are independently published. Backend **0.7.0 Private Account Sync** is ready for its
+separate push/hosted gate; frontend **0.2.0 Welcome, Home and Optional Login** is
+implemented with release verification pending. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
 manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
 backend `v0.1.0` tag collision. All older tags/assets remain preserved.
 [Backend review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).

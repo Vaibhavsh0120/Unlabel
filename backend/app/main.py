@@ -12,6 +12,8 @@ from fastapi.responses import JSONResponse
 from starlette.concurrency import run_in_threadpool
 
 from app import __version__
+from app.accounts.models import MAX_SNAPSHOT_BYTES
+from app.api.v1.accounts import build_router as build_accounts_router
 from app.api.v1.claims import build_router
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.api.v1.community import build_router as build_community_router
@@ -236,6 +238,18 @@ def create_app(
                 "provider_connectivity": "not_checked",
                 "database_id": config.community_database_id if community_ready else None,
             },
+            "account_sync": {
+                "status": "ready"
+                if config.account_sync_enabled and community_ready
+                else "unavailable"
+                if config.account_sync_enabled
+                else "not_configured",
+                "sync_version": "personal-sync-v1",
+                "max_snapshot_bytes": MAX_SNAPSHOT_BYTES,
+                "max_saved": 50,
+                "max_history": 100,
+                "authentication": "password",
+            },
             "capabilities": {
                 "product_lookup": True,
                 "nutrition_lookup": True,
@@ -253,6 +267,7 @@ def create_app(
                 "ai_explanations": False,
                 "community_contributions": community_ready,
                 "community_lookup": community_ready,
+                "account_sync": config.account_sync_enabled and community_ready,
                 "resolved_product_lookup": community_ready
                 or (catalogue["status"] == "ready" and request.app.state.catalogue.supports_facts),
             },
@@ -477,6 +492,7 @@ def create_app(
             glossary=glossary,
         )
     )
+    application.include_router(build_accounts_router(config=config))
     return application
 
 

@@ -1,26 +1,24 @@
 # Implementation roadmap
 
-Checkpoint **7 October 2026**: backend **v0.6.0 Product Discovery** is independently
-published with 863 backend tests passed, five emulator-only skips and 23 hosted
-checks. Historical v0.5.0/v0.4.0 remain independently published. Frontend
-**v0.1.0+2 Connected Label Reader** implements manual lookup, correction, reports,
-local saved/history and light-default appearance; final rendered/release gates
-remain pending. [Current plan](CONNECTED_RELEASE_PLAN.md) ·
-[Review](BACKEND_V0_6_0_REVIEW.md) · [Tracker](FEATURE_TRACKER.md).
+Checkpoint: **7 October 2026**.
 
-Next accepted **backend v0.7.0/frontend v0.2.0** adds optional scanner login/profile
-and private sync after login. Guests retain useful local workflows. Complete the
-reference-style light/dark screens one at a time, beginning with a cute first-launch
-Welcome and Home, and give every visible action a working destination. The local
-Welcome completion flag sends returning users directly to Home. Comparison and
-reviewed insight destinations require sourced facts and honest missing states.
-[Next accepted plan](ACCOUNT_SYNC_SCREEN_PLAN.md).
+Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
+are independently pushed, hosted-verified and published. Frontend source commit
+`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
+Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
+push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
+**18 live synthetic checks** against a local API using real Firebase. Hosted
+v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
+and Optional Login** is implemented; full release/rendered validation is pending.
+Guests keep personal data locally; optional password sign-in enables private
+account profile/saved/history sync. Public package facts remain separate.
 
-Keep automatic public product observations separate from private personal sync.
-Firebase remains free/no linked billing; no admin/reviewer app role, custom model,
-Gemini requirement or universal score. Camera/OCR/native/device validation is a
-separate measured gate. The broad phases below describe remaining architecture,
-not completion claims.
+Frontend v0.2.0 provides a cute first-launch Welcome, returning-user Home,
+Home/Scan/Compare/Saved/Profile navigation and working manual/sourced destinations.
+Frontend v0.3.0 remains the separate next reference-style Scan/Results/Ingredients
+redesign. Camera/OCR and native/device proofs stay separate. Firebase stays free
+with no linked billing, admin role, custom model or Gemini requirement.
+[Accepted checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |
@@ -28,7 +26,7 @@ not completion claims.
 | 1. Evidence/feasibility | Small claim/category scope, reviewed sources/rights, native/browser OCR | Real-device geometry; source registry and licensed fixtures |
 | 2. Contracts/backend rules | Stable product/report schemas, canonical backend criteria | Missing values unknown; units/provenance and old-client parsing reviewed |
 | 3. Online product-to-result | OFF barcode facts, backend rules/templates; OCR for claims/gaps | Source-linked online result; package/provider differences preserved |
-| 4. Suitability/translation | Local preferences, English/Hindi explanations | No profile transfer; unknowns preserved; content reviewed |
+| 4. Suitability/translation | Local dietary preferences and English/Hindi explanations; optional private account display name/library sync is separate | Dietary/health preferences are not part of current private sync; unknowns preserved; content reviewed |
 | 5. Online backend/product data | Existing immutable OFF/claim bundles and implemented automatic public observations, staging and per-field derived view | Old-client compatibility, dedup/review/source provenance/quota and independent analysis; no paid fallback |
 | 6. Live overlay | Throttled native highlights; measured browser enhancement | Lifecycle/rotation/crop/stale-frame checks; no network per frame |
 | 7. Optional AI | Gemini wording, eligible HF experiment | No billing/card; failure preserves deterministic findings |
