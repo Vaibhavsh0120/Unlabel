@@ -1,9 +1,12 @@
 # Controlled Unlabel releases
 
-Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
-READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
-analysis, release web build and synthetic browser workflow checks. Its
-independent push/deployment verification is the remaining release gate.
+Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
+**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
+Their exact implementation deployments are READY with **26 backend / 49 frontend
+hosted checks**, including all 21 OCR asset hashes. The local suites passed
+**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
+release web build and synthetic browser workflows passed. Physical-device gates
+and separate GitHub source-release publication are not established by this proof.
 [Backend review](BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](FRONTEND_V0_4_0_REVIEW.md).
 
@@ -38,8 +41,8 @@ version** independently. Do not stage the entire mixed tree as one release.
 | Frontend v0.2.0+3 | Welcome/Home, optional account sync, basic capture and sourced report/Compare flows | Published: 135 tests, clean analyzer, hosted READY deployment and source release; native lane separate |
 | Frontend v0.3.0+4 | Visual Label Reader: reference Welcome/Profile, app-only startup, local OCR and bounded search behavior | Published: 168 tests, clean analysis/build, light phone/PC captures, READY deployment and 49 hosted checks; all 21 OCR hashes verified |
 | Backend v0.8.0 | Sourced Nutrient Comparison | Pushed `1a2fd25`, READY deployment and 25 hosted checks; source publication not established |
-| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Implementation/checks in progress; native/device gates remain separate |
-| Backend v0.9.0 | Reviewed Ingredient Functions | Six-entry partial glossary and integrity hardening; checks in progress; no suitability verdict |
+| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Independently pushed/READY, 181 tests and 49 hosted checks; native/device gates remain separate |
+| Backend v0.9.0 | Reviewed Ingredient Functions | Six-entry partial glossary and integrity hardening; independently pushed/READY, 1058 tests/five provider skips and 26 hosted checks; no suitability verdict |
 
 Stages: **Planned → Implemented → Tested → Visually verified → Pushed →
 Hosted verified → Published**. Backend visual verification is not applicable.

@@ -1,9 +1,10 @@
 # Documentation index
 
 Current work: [frontend v0.4.0+5/backend v0.9.0 implementation plan](planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
-Backend v0.9.0 is pushed/READY with 26 hosted checks. Frontend v0.4.0+5
-passes 181 tests, analysis/build and browser workflows; its independent
-push/deployment gate is next. [Backend review](planning/BACKEND_V0_9_0_REVIEW.md) ·
+Backend v0.9.0 and frontend v0.4.0+5 are independently pushed/READY with
+26 and 49 hosted checks respectively; all 21 OCR hashes pass. Local evidence is
+1058 backend tests (five provider skips), 181 Flutter tests, clean static checks,
+release web build and browser workflows. [Backend review](planning/BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](planning/FRONTEND_V0_4_0_REVIEW.md) ·
 [Repository audit](research/PROJECT_AUDIT_2026_10_08.md).
 
@@ -43,15 +44,20 @@ Native camera/OCR, installability and launcher switching remain separate gates.
 
 | Document | Read it for |
 | --- | --- |
-| [Current connected release plan](planning/CONNECTED_RELEASE_PLAN.md) | Published backend v0.6.0 and frontend v0.1.0+2 component gates |
-| [Current account and screen releases](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) | Published private-sync/account/screen boundaries, honest Profile controls and separate backend v0.8.0 gates |
+| [Connected release history](planning/CONNECTED_RELEASE_PLAN.md) | Published backend v0.6.0 and frontend v0.1.0+2 component gates |
+| [Accepted account and screen releases](planning/ACCOUNT_SYNC_SCREEN_PLAN.md) | Account/screen boundaries, honest Profile controls and independently verified current component gates |
+| [Frontend v0.4.0 review](planning/FRONTEND_V0_4_0_REVIEW.md) | Exact-source comparison, bilingual ingredient evidence, camera recovery, local/rendered/hosted proof and device gates |
+| [Frontend v0.4.0 production proof](research/FRONTEND_V0_4_0_PRODUCTION.json) | Exact implementation/READY deployment, 49 hosted checks and all 21 OCR hashes |
+| [Frontend v0.4.0 hosted browser proof](research/FRONTEND_V0_4_0_BROWSER.json) | Ten directly observed production guest/search/report/save/navigation checks |
+| [Backend v0.9.0 review](planning/BACKEND_V0_9_0_REVIEW.md) | Six reviewed ingredient functions, matching/integrity hardening, 1058 tests and 26 hosted checks |
+| [Backend v0.9.0 production proof](research/BACKEND_V0_9_0_PRODUCTION.json) | Exact independent implementation/READY deployment, 26 read-only hosted checks and source hashes |
 | [Frontend v0.3.0 review](planning/FRONTEND_V0_3_0_REVIEW.md) | Published local OCR, reference Welcome/Profile, search/navigation, bounded caches and remaining device gates |
 | [Frontend v0.3.0 production proof](research/FRONTEND_V0_3_0_PRODUCTION.json) | Exact implementation/READY deployment, 49 hosted checks, all 21 OCR hashes and backend v0.7.0 compatibility |
 | [Frontend v0.3.0 rendered checks](research/ui-v0.3.0/README.md) | Actual 390/1440/1728px light captures, app startup widget capture and Flutter DOM-measurement limits |
-| [Next frontend/backend versions](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Independently scoped v0.3.0/v0.8.0 releases and planned v0.4.0/v0.9.0 work |
+| [Frontend/backend version roadmap](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Independently completed v0.4.0/v0.9.0 scope and remaining feature/device ownership |
 | [Interface contract](../DESIGN.md) | Reference visual direction, real components, evidence and accessibility boundaries |
 | [Product Discovery](architecture/PRODUCT_DISCOVERY.md) | Bounded indexed Unicode search, candidate identity and cursor rules |
-| [Backend v0.8.0 review](planning/BACKEND_V0_8_0_REVIEW.md) | Independently implemented sourced comparison, local checks and hosted publication gates |
+| [Backend v0.8.0 review](planning/BACKEND_V0_8_0_REVIEW.md) | Historical sourced comparison implementation and local checks; its separate production receipt records 25 hosted checks |
 | [Sourced nutrient comparison](architecture/SOURCED_COMPARISON.md) | Strict selected-table provenance, compatible bases, signed differences and unknowns |
 | [Backend v0.6.0 review](planning/BACKEND_V0_6_0_REVIEW.md) | Completed 863-test local validation, 23 hosted checks and publication |
 | [Backend v0.6.0 production proof](research/BACKEND_V0_6_0_PRODUCTION.json) | Exact deployed implementation and actual catalogue/knowledge build receipts |

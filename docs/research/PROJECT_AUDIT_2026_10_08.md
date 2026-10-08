@@ -18,16 +18,17 @@ SDKs, generated builds/databases and private local settings are not source files
 | Default OFF request identity still named v0.7 | Derive current backend version; preserve explicit override; provider request regression |
 | Current docs described implemented OCR/login and hosted v0.8 as pending | Refresh active docs; preserve dated reviews and source implementation identities |
 | Comparison tests failed configured static typing | Precise optional/union assertions; configured Pyright reports zero issues |
-| Frontend build at backend commit `5ed899e` expected one fixture ingredient, but the expanded fixture matched four | Corrected the exported-contract expectation; final 181-test frontend suite passed. The frontend implementation push supplies this compatibility fix; the intermediate failed build did not replace the prior production frontend |
+| Frontend build at backend commit `5ed899e` expected one fixture ingredient, but the expanded fixture matched four | Corrected the exported-contract expectation; final 181-test frontend suite and replacement Vercel production build passed. Implementation `d8b2eb339b1ce05248bd2405ebcea650c846da52` is READY with 49 hosted checks; the failed intermediate build did not replace the prior production frontend |
 
 ## Validation boundaries
 
 - Backend: 1058 passed, 5 explicit live-provider skips; Ruff/Pyright clean;
   network-free 24,641-product catalogue and claim receipt build passed.
 - Frontend: 181 tests passed; analyzer and release web/Wasm dry run passed.
-- Source audit: 105 Python/106 JSON/99 Markdown files and 631 local links parsed
-  without errors before production receipt additions. All 613 source files were
-  inventoried; 541 UTF-8 texts checked for conflicts/fences/images. Binary source
+- Source audit: 105 Python/109 JSON/101 Markdown files and 664 local links parsed
+  without errors.
+  All 618 source files were inventoried; 546 UTF-8 texts checked for
+  conflicts/fences/images. Binary source
   bundles remain covered by format/provenance/hash/build validation.
 - YAML, nine embedded workflow shell scripts, TOML, 36 XML/SVG, four plist and
   bash checks passed; both PowerShell scripts parsed. Script Ruff and JS syntax
@@ -36,9 +37,21 @@ SDKs, generated builds/databases and private local settings are not source files
   backend review. They do not establish hosted/mobile performance percentiles.
 - Staged source scans found no actual local credentials or ownership secrets.
 
-Hosted and rendered closure evidence is added after verification. Physical camera,
+Backend source `5ed899e26941477f4b8c405da97ce5d297183e7d` and frontend source
+`d8b2eb339b1ce05248bd2405ebcea650c846da52` were independently pushed and have
+READY production deployments with 26/49 hosted checks. All 21 hosted OCR hashes
+match. Direct production browser checks passed Welcome/Home, focused search,
+dated results, unknown facts, device save/reopen, comparison selection and guest
+profile counts. Local synthetic workflows also exercised manual confirmation,
+bilingual ingredient evidence, exact current-table comparison and swap. Their
+separate environment/privacy limits remain in the component review.
+
+Physical camera,
 OCR accuracy, real account conflict reconciliation and provider/device behavior
 remain separate acceptance gates, not implied by passing software tests.
 
 [Backend review](../planning/BACKEND_V0_9_0_REVIEW.md) ·
-[Frontend review](../planning/FRONTEND_V0_4_0_REVIEW.md).
+[Frontend review](../planning/FRONTEND_V0_4_0_REVIEW.md) ·
+[Backend production proof](BACKEND_V0_9_0_PRODUCTION.json) ·
+[Frontend production proof](FRONTEND_V0_4_0_PRODUCTION.json) ·
+[Hosted browser proof](FRONTEND_V0_4_0_BROWSER.json).

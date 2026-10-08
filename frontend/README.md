@@ -3,7 +3,10 @@
 Current implementation: **0.4.0+5 — Sourced Comparison and Ingredient Detail**.
 181 tests, analysis, release web build, synthetic browser workflows and
 390/1440/1728 light/dark checks pass. Android preview starts while lost-gallery
-recovery runs concurrently. The separate push/hosted gate is next.
+recovery runs concurrently. Independently pushed source
+`d8b2eb339b1ce05248bd2405ebcea650c846da52` has READY deployment
+`dpl_7rQF1tNZQoiu1nev3tjQ3H39Y68j` with 49 hosted checks and all 21 OCR hashes.
+[Production proof](../docs/research/FRONTEND_V0_4_0_PRODUCTION.json).
 [Current review](../docs/planning/FRONTEND_V0_4_0_REVIEW.md).
 
 Historical frontend **0.3.0+4 — Visual Label Reader** is published from implementation source

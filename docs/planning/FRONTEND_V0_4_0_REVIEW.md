@@ -52,11 +52,36 @@ only six raw findings were Flutter's intentional 1 px off-screen screen-reader
 announcers at -99999 px. Excluding those two nonvisual tags left 57 measured
 shell/semantics elements per width and zero findings. Flutter canvas geometry
 cannot prove the internal visual spacing; screenshots and widget checks supply
-that separate evidence. Deployment evidence is recorded at closure.
+that separate evidence.
 
 The intermediate frontend Vercel build at backend commit `5ed899e` failed its
 old one-match fixture expectation. This frontend slice carries the four-match
 compatibility fix; the full 181-test suite and 12 final comparison tests pass.
+
+## Production closure
+
+Implementation source `d8b2eb339b1ce05248bd2405ebcea650c846da52` was independently
+pushed on `main`. Vercel production deployment
+`dpl_7rQF1tNZQoiu1nev3tjQ3H39Y68j` is READY and assigned to
+`https://unlabel-india.vercel.app`. Fresh deployment inspection matched the exact
+source SHA, production target and canonical alias. **49 hosted checks passed**,
+including the deployed 0.4.0/build 5 version, current backend v0.9.0 compatibility,
+lazy OCR loading and **all 21 exact OCR asset hashes**. The replacement build
+passed after the intermediate fixture failure reported by the user.
+[Production receipt](../research/FRONTEND_V0_4_0_PRODUCTION.json).
+
+A fresh browser session accessed production directly with no local proxy or
+response interception. Welcome/Home, immediate search focus, 10/203 oats search
+results, a dated public report, explicit unknown nutrition/ingredient facts,
+device save/reopen, comparison selection and real guest profile counts all
+passed. Guest comparison totals remain unavailable rather than fabricated.
+[Ten observed browser checks](../research/FRONTEND_V0_4_0_BROWSER.json).
+
+Later documentation-only closure commits preserve this implementation identity.
+The backend rebuild triggered by this frontend push is also READY at
+`dpl_3bXKJ6DAKPHWoGYoCNEDoe7G9BHQ`; backend implementation remains
+`5ed899e26941477f4b8c405da97ce5d297183e7d`, verified with 26 hosted checks in
+its independent receipt.
 
 [Implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) ·
 [Backend review](BACKEND_V0_9_0_REVIEW.md).

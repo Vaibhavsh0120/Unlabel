@@ -1,9 +1,12 @@
 # Feature and integration tracker
 
-Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
-READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
-analysis, release web build and synthetic browser workflow checks. Its
-independent push/deployment verification is the remaining release gate.
+Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
+**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
+Their exact implementation deployments are READY with **26 backend / 49 frontend
+hosted checks**, including all 21 OCR asset hashes. The local suites passed
+**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
+release web build and synthetic browser workflows passed. Physical-device gates
+and separate GitHub source-release publication are not established by this proof.
 [Backend review](BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](FRONTEND_V0_4_0_REVIEW.md).
 
@@ -71,8 +74,8 @@ sample products and health verdicts are illustrative.
 | Frontend v0.2.0+3 | Welcome, Home and Optional Login | Independently published; 135 tests and hosted production receipt |
 | Frontend v0.3.0+4 | Visual Label Reader and reference Welcome/Profile | Published exact implementation `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; 168 tests, READY deployment, 49 hosted checks and all 21 OCR hashes; native gates separate |
 | Backend v0.8.0 | Sourced Nutrient Comparison | Pushed exact source `1a2fd25`; READY hosted deployment and 25 checks; source-release publication not established |
-| Backend v0.9.0 | Reviewed Ingredient Functions | Six entries, strict source/alias validation and immutable evidence; implementation/checks in progress |
-| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Exact sources, selected tables, guarded responses and bilingual detail; implementation/checks in progress |
+| Backend v0.9.0 | Reviewed Ingredient Functions | Six entries, strict source/alias validation and immutable evidence; independently pushed/READY, 1058 tests/five provider skips and 26 hosted checks |
+| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Exact sources, selected tables, guarded responses and bilingual detail; independently pushed/READY, 181 tests and 49 hosted checks |
 
 Each component is reviewed, documented, pushed and verified before its separate
 publication. Historical tags and native artifacts are preserved. A backend test

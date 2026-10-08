@@ -1,9 +1,12 @@
 # Implementation roadmap
 
-Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
-READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
-analysis, release web build and synthetic browser workflow checks. Its
-independent push/deployment verification is the remaining release gate.
+Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
+**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
+Their exact implementation deployments are READY with **26 backend / 49 frontend
+hosted checks**, including all 21 OCR asset hashes. The local suites passed
+**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
+release web build and synthetic browser workflows passed. Physical-device gates
+and separate GitHub source-release publication are not established by this proof.
 [Backend review](BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](FRONTEND_V0_4_0_REVIEW.md).
 

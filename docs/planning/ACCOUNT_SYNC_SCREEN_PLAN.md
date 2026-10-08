@@ -3,8 +3,12 @@
 Updated **8 October 2026** from the user's latest screen, behavior and release
 instructions. Backend v0.7.0 and frontend v0.2.0+3 are independently published and
 hosted-verified. Frontend **v0.3.0+4 Visual Label Reader** is also independently
-published and hosted-verified. Current release work is the separate implemented
-backend **v0.8.0 Sourced Nutrient Comparison**, whose push/host/publication gates remain.
+published and hosted-verified. Backend **v0.8.0 Sourced Nutrient Comparison** is
+pushed and hosted-verified. Current backend **v0.9.0 Reviewed Ingredient Functions**
+and frontend **v0.4.0+5 Sourced Comparison and Ingredient Detail** were independently
+pushed and hosted-verified with 26 and 49 checks. Their reviews and receipts retain
+exact implementation identities; separate GitHub source-release publication is
+not established by these deployment receipts.
 Work directly on main, update docs before each push, and preserve historical tags.
 Backend work does not rebuild APK/IPA.
 

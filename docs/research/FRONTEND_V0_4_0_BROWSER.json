@@ -1,0 +1,68 @@
+{
+  "component": "frontend",
+  "version": "0.4.0",
+  "build_number": "5",
+  "source_sha": "d8b2eb339b1ce05248bd2405ebcea650c846da52",
+  "deployment_id": "dpl_7rQF1tNZQoiu1nev3tjQ3H39Y68j",
+  "origin": "https://unlabel-india.vercel.app",
+  "checked_at_utc": "2026-10-08T04:27:38Z",
+  "environment": "Fresh Chromium session; direct production frontend/backend; no local proxy or response interception",
+  "checks": [
+    {
+      "check": "Welcome",
+      "observed": "Get started and optional account actions rendered; Get started opened Home",
+      "passed": true
+    },
+    {
+      "check": "Home navigation",
+      "observed": "Home, Scan, Compare, Saved and the header Profile shortcut rendered",
+      "passed": true
+    },
+    {
+      "check": "Search focus",
+      "observed": "Opening header Search focused the Product name or brand textbox",
+      "passed": true
+    },
+    {
+      "check": "Catalogue search",
+      "observed": "Query oats displayed 10 products shown and 203 matches",
+      "passed": true
+    },
+    {
+      "check": "Public dated report",
+      "observed": "Baggrey white oats opened Analysis Results with Dated catalogue information",
+      "passed": true
+    },
+    {
+      "check": "Unknown evidence",
+      "observed": "Zero available nutrient facts retained nutrition/ingredient/allergen unknown states and current-package qualifications",
+      "passed": true
+    },
+    {
+      "check": "Device save",
+      "observed": "Save on this device produced one saved dated report",
+      "passed": true
+    },
+    {
+      "check": "Saved report reopen",
+      "observed": "Opening the saved report retained its dated/unknown evidence and Saved remove action",
+      "passed": true
+    },
+    {
+      "check": "Comparison navigation",
+      "observed": "Compare showed A/B selection cards and the two-label empty state",
+      "passed": true
+    },
+    {
+      "check": "Guest profile counts",
+      "observed": "Guest profile displayed Scans 1, Saved 1 and an unavailable comparison total",
+      "passed": true
+    }
+  ],
+  "cloud_write_scope": "No label submission, signed-in account sync, notification, or credentialed write was performed. Saved/history interactions remained in this isolated browser's guest device namespace.",
+  "limitations": [
+    "Physical camera/OCR/native performance not measured",
+    "Exact-source numerical comparison and ingredient evidence were separately exercised with synthetic local reports; this hosted browser pass used public catalogue data"
+  ],
+  "local_workflow_review": "../planning/FRONTEND_V0_4_0_REVIEW.md"
+}

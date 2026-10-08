@@ -1,9 +1,12 @@
 # Unlabel: useful product architecture and delivery plan
 
-Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
-READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
-analysis, release web build and synthetic browser workflow checks. Its
-independent push/deployment verification is the remaining release gate.
+Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
+**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
+Their exact implementation deployments are READY with **26 backend / 49 frontend
+hosted checks**, including all 21 OCR asset hashes. The local suites passed
+**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
+release web build and synthetic browser workflows passed. Physical-device gates
+and separate GitHub source-release publication are not established by this proof.
 [Backend review](BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](FRONTEND_V0_4_0_REVIEW.md).
 
@@ -409,9 +412,10 @@ rows alone do not measure useful Indian-market coverage.
 Historical backend v0.4.0/v0.5.0/v0.6.0 and frontend v0.1.0/v0.2.0 remain
 independently published with their original receipts. Backend v0.7.0 private sync
 and frontend v0.3.0 Visual Label Reader are published and hosted-verified.
-The active next release is separately implemented backend v0.8.0 Sourced Nutrient
-Comparison; its push/host/publication gates remain. Follow-on frontend v0.4.0 and
-backend v0.9.0 remain plans. [Accepted scope and checklists](ACCOUNT_SYNC_SCREEN_PLAN.md).
+Backend v0.8.0 Sourced Nutrient Comparison is pushed and hosted-verified with
+25 checks. Frontend v0.4.0+5 and backend v0.9.0 are independently pushed and
+hosted-verified with 49 and 26 checks. Their source-release publication remains
+separate from these completed implementation/deployment gates. [Accepted scope and checklists](ACCOUNT_SYNC_SCREEN_PLAN.md).
 Finish each component release boundary before the next.
 
 | Stage | Meaning and user value | Completion gate |
@@ -423,7 +427,9 @@ Finish each component release boundary before the next.
 | Published v0.7.0 Private Account Sync | Optional scanner accounts sync their own personal records; comparison/insight destinations use useful sourced contracts | Verified account ownership, bounded private storage, guest privacy, merge/deletion/logout/conflicts; compatible facts without universal winner |
 | Published frontend v0.2.0 Welcome, Home and Optional Login | First-launch Welcome and light/dark app journeys | Published exact source and hosted receipt; guest/account isolation; native gates separate |
 | Published frontend v0.3.0 Visual Label Reader | Reference Welcome/Profile, app-only startup, local OCR and search/navigation performance | 168 tests, rendered light phone/PC checks, READY source deployment, 49 hosted checks and independent source release |
-| Implemented backend v0.8.0 Sourced Nutrient Comparison | Exact sourced/confirmed compatible tables with unknown/conflict handling | Local tests/static/contracts pass; independent push, hosted verification and publication pending |
+| Verified backend v0.8.0 Sourced Nutrient Comparison | Exact sourced/confirmed compatible tables with unknown/conflict handling | Independent push and 25 hosted checks complete; source publication separate |
+| Verified backend v0.9.0 Reviewed Ingredient Functions | Six reviewed bilingual name/function entries and strict bounded source/alias matching | 1058 tests/five provider skips, clean static/contracts/build checks, independent push and 26 hosted checks |
+| Verified frontend v0.4.0+5 Sourced Comparison and Ingredient Detail | Exact source/table selection, guarded comparison, bilingual evidence and parallel camera/gallery recovery | 181 tests, clean analysis/web build, responsive browser checks, independent push and 49 hosted checks; physical-device proof separate |
 | Client integration alongside stable contracts | Barcode/manual scan, corrected front/back capture, results, automatic factual saving, local history/saved/preferences | Real-device/web OCR/camera tests, source/error/correction behavior and integration of each screen |
 
 Do not require v0.6.0 search to begin useful barcode/back-label frontend work.
@@ -478,7 +484,9 @@ frontend coalescing/outbox remains a client gate.
 - Implemented v0.7.0 adds private account CAS snapshots after optional password login; 931 tests/five emulator skips and 18 live synthetic Firebase checks passed, with its hosted verification and publication complete.
 - Frontend v0.2.0 Welcome/Home/optional account/four-tab navigation is independently published at exact source `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`; its original production receipt is preserved.
 - Frontend v0.3.0 Visual Label Reader is independently published and hosted-verified at exact source `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`, with 168 tests and 49 hosted checks and all 21 OCR hashes. Native/device and future feature boundaries remain in its review.
-- Backend v0.8.0 sourced comparison is implemented and locally verified; its independent release gate is next.
+- Backend v0.8.0 sourced comparison is independently pushed/hosted-verified at `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8`, with 25 checks; its receipt preserves the implementation identity.
+- Backend v0.9.0 is independently pushed/hosted-verified at `5ed899e26941477f4b8c405da97ce5d297183e7d`, with 26 checks. Six reviewed functions retain partial F08 coverage.
+- Frontend v0.4.0+5 is independently pushed/hosted-verified at `d8b2eb339b1ce05248bd2405ebcea650c846da52`, with 49 checks, all 21 OCR hashes and 181 local tests. Native camera/OCR proof remains separate.
 - No custom model, training or Gemini inference is implemented.
 
 

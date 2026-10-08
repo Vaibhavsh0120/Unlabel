@@ -26,8 +26,9 @@ glossary to six entries and hardens source/alias validation. **Frontend v0.4.0+5
 Sourced Comparison and Ingredient Detail** connects exact source/table comparison
 and bilingual evidence details to the existing screens. Android camera startup
 no longer waits for interrupted-gallery recovery. Backend is pushed/READY with
-26 hosted checks; frontend passes 181 tests, analysis, release build and browser
-workflow checks, with its separate push/deployment verification in progress.
+26 hosted checks; frontend is independently pushed/READY with 49 hosted checks,
+all 21 OCR hashes, 181 tests, clean analysis, release build and browser workflows.
+[Current production proof](docs/research/FRONTEND_V0_4_0_PRODUCTION.json).
 
 Historical frontend v0.3.0 remains published/hosted-verified with 49 checks.
 Backend v0.8.0 was pushed and hosted-verified with 25 checks.

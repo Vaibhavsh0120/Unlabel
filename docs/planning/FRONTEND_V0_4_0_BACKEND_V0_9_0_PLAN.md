@@ -70,7 +70,7 @@ and current OpenAPI/examples; historical `glossary-v1.json` remains unchanged.
   preserve explicit unavailable/conflicting report outcomes and partial coverage.
 - [x] Bump backend to 0.9.0; regenerate contracts while retaining old OpenAPI.
 - [x] Run focused/full backend pytest, Ruff, Pyright and network-free build.
-- [ ] Independently review changes, update component/shared docs, explicitly
+- [x] Independently review changes, update component/shared docs, explicitly
   stage backend/contracts/docs and push the backend commit on `main`.
 - [x] Check exact hosted deployment and synthetic glossary/report/meta contracts;
   record actual results separately from local source/test proof.
@@ -98,9 +98,9 @@ source-aware table choices and bilingual ingredient details in existing screens.
   boundaries. Bump frontend to 0.4.0+5; run full Flutter tests/analyzer/web build.
 - [x] Inspect rendered mobile/desktop light/dark/enlarged text states; run Better
   Design review/comprehension/spacing with the Flutter-canvas DOM limit recorded.
-- [ ] Independently review changes, update component/shared docs, explicitly
+- [x] Independently review changes, update component/shared docs, explicitly
   stage frontend/docs and push the frontend commit on `main`.
-- [ ] Verify deployed frontend version/source/assets and observable browser
+- [x] Verify deployed frontend version/source/assets and observable browser
   behavior; record remaining native/physical-device gates accurately.
 
 ## Completion evidence

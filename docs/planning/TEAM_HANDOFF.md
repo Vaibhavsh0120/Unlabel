@@ -1,9 +1,12 @@
 # Teammate handoff
 
-Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
-READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
-analysis, release web build and synthetic browser workflow checks. Its
-independent push/deployment verification is the remaining release gate.
+Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
+**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
+Their exact implementation deployments are READY with **26 backend / 49 frontend
+hosted checks**, including all 21 OCR asset hashes. The local suites passed
+**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
+release web build and synthetic browser workflows passed. Physical-device gates
+and separate GitHub source-release publication are not established by this proof.
 [Backend review](BACKEND_V0_9_0_REVIEW.md) ·
 [Frontend review](FRONTEND_V0_4_0_REVIEW.md).
 
@@ -15,7 +18,7 @@ the tracked India source and builds the current discovery index with progress.
 
 ## Current checkpoint
 
-Latest checkpoint: frontend v0.3.0+4 is published/hosted-verified; backend v0.8.0 is pushed/hosted-verified with 25 checks. Current v0.4.0+5/v0.9.0 work and its independent evidence live in the [implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) and [tracker](FEATURE_TRACKER.md). Earlier release identities below remain preserved.
+Current frontend v0.4.0+5/backend v0.9.0 are independently pushed and hosted-verified with 49/26 checks. Their completed scope and independent evidence live in the [implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) and [tracker](FEATURE_TRACKER.md). Published frontend v0.3.0+4 and pushed/hosted-verified backend v0.8.0 remain earlier checkpoints; their release identities below are preserved.
 
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
