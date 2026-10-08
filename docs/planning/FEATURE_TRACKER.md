@@ -1,7 +1,9 @@
 # Feature and integration tracker
 
-Current frontend correction: **v0.6.2+9** displays selected-only Profile summaries,
+Published frontend correction: **v0.6.2+9** displays selected-only Profile summaries,
 first two labels and `+N`, preserving complete separate editors and saved data.
+237 Flutter tests pass, analysis/build are clean, and production is READY with
+55 hosted frontend checks. The backend runtime is unchanged.
 [Review/deployment status](FRONTEND_V0_6_2_REVIEW.md).
 
 Preceding published checkpoint, 8 October 2026: **frontend v0.6.1+8 / backend v0.12.0**

@@ -1,8 +1,10 @@
 # Flutter frontend
 
-Current correction: **v0.6.2+9**, selected-only Profile summaries, first two chips
-plus `+N`. Empty selections show no chips; the complete separate editors retain
-all saved choices. [Review/deployment status](../docs/planning/FRONTEND_V0_6_2_REVIEW.md).
+Latest: **v0.6.2+9**, source `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137`,
+READY production with 55 hosted checks; 237 tests, clean analysis and release build.
+Profile shows only selected items: first two chips plus `+N`, or no chips when
+empty. Complete separate editors retain all saved choices.
+[Review and production proof](../docs/planning/FRONTEND_V0_6_2_REVIEW.md).
 
 Preceding: **v0.6.1+8**, source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`,
 READY production with 55 hosted checks; 232 tests, clean analysis and release build.

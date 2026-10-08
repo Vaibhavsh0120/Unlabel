@@ -5,8 +5,14 @@
   "build_number": "9",
   "reviewed_on": "2026-10-08",
   "build": "local release web with production backend",
-  "widths": [390, 1440, 1728],
-  "source_files": ["frontend/lib/features/account/presentation/profile_page.dart"],
+  "widths": [
+    390,
+    1440,
+    1728
+  ],
+  "source_files": [
+    "frontend/lib/features/account/presentation/profile_page.dart"
+  ],
   "before": {
     "reference": "User screenshot showing empty preferences with Low sugar, High fibre and Vegetarian chips",
     "previous_source_sha": "48b6f3e4632afb6565ac4261dc923f8b61e5cbdf"
@@ -22,8 +28,18 @@
     "personal_selections_saved_during_browser_review": false
   },
   "synthetic_widget_fixtures": {
-    "states": ["empty", "one selection", "two selections", "six selections", "all eight preferences", "all twelve allergens"],
-    "six_selection_widths": [390, 1440],
+    "states": [
+      "empty",
+      "one selection",
+      "two selections",
+      "six selections",
+      "all eight preferences",
+      "all twelve allergens"
+    ],
+    "six_selection_widths": [
+      390,
+      1440
+    ],
     "six_selection_appearance": "390 dark, 1440 light; two labels and +4 for each group",
     "overflow_checks": "Correct separate popup, hidden selections remain checked, Cancel preserves all saved choices"
   },
@@ -35,7 +51,11 @@
     "better_design_comprehension": "passed",
     "better_design_spacing": {
       "status": "completed",
-      "measured_widths": [390, 1440, 1728],
+      "measured_widths": [
+        390,
+        1440,
+        1728
+      ],
       "findings": 0,
       "scope": "Two affected summary disclosure headings only",
       "initial_findings": "Six moderate findings: preceding 35 px tap areas; repaired to 48 px"
@@ -46,5 +66,6 @@
     "Overflow selections are tested in disposable widget fixtures, not personal browser settings",
     "No new physical device, camera, OCR accuracy or authenticated hosted AI proof",
     "No new artwork or product data in this correction"
-  ]
+  ],
+  "source_sha": "ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137"
 }

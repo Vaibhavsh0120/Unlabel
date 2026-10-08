@@ -1,7 +1,7 @@
 # Frontend v0.6.2+9: selected-only Profile summaries
 
-Local correction, 8 October 2026. Source/deployment identity is pending the
-independent push and hosted verification below; v0.6.1 evidence stays historical.
+Published correction, 8 October 2026. Implementation source `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137` is
+pushed on main; v0.6.1 evidence stays historical.
 
 The empty Preferences summary previously displayed Low sugar, High fibre and
 Vegetarian as quick choices. It now shows only saved selections, matching the
@@ -37,8 +37,14 @@ heading controls at all three widths. [Render receipt](../research/FRONTEND_V0_6
 
 ## Production
 
-Push and hosted receipt pending. The unchanged backend remains v0.12.0; its
-preceding production receipt is retained independently.
+Deployment `dpl_8bC1g9PYP64j1hsdvdZ69oFGKyJZ` is READY at
+https://unlabel-india.vercel.app with **55 hosted checks**, all 21 pinned OCR
+hashes and all 13 pinned artwork assets.
+[Production receipt](../research/FRONTEND_V0_6_2_PRODUCTION.json).
+The unchanged backend remains v0.12.0; its preceding production receipt is
+retained independently. This frontend helper checks public backend compatibility
+but does not rerun the preceding 389-check backend audit. Later documentation-only
+closure commits preserve this implementation identity.
 
 [Preceding frontend review](FRONTEND_V0_6_1_REVIEW.md) ·
 [Backend review](BACKEND_V0_12_0_REVIEW.md).

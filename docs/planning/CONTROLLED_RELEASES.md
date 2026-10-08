@@ -1,5 +1,10 @@
 # Controlled Unlabel releases
 
+Latest frontend **v0.6.2+9** is pushed/READY with 55 hosted checks, 237 passing
+Flutter tests, clean analysis/build and selected-only Profile summaries.
+[Current review](FRONTEND_V0_6_2_REVIEW.md). Backend v0.12.0 is unchanged; earlier
+component checkpoints below preserve their exact historical identities.
+
 Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
 **v0.4.0+5** were independently reviewed, documented and pushed on `main`.
 Their exact implementation deployments are READY with **26 backend / 49 frontend

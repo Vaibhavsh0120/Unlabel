@@ -1,11 +1,15 @@
 # Unlabel workspace instructions
 
-- Current frontend correction v0.6.2+9: selected-only Profile summaries; no chips
-  when empty, first two labels plus `+N` otherwise. Preserve the complete separate
-  preference/allergen editors and device-only saved selections. Review and push
-  status: docs/planning/FRONTEND_V0_6_2_REVIEW.md. Backend v0.12.0 is unchanged.
+- Latest frontend v0.6.2+9 is pushed at `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137` and READY as
+  `dpl_8bC1g9PYP64j1hsdvdZ69oFGKyJZ`, with 55 hosted checks, all 21 OCR hashes, all
+  13 artwork hashes, 237 passing tests, clean analysis and release build. Profile
+  summaries are selected-only: no chips when empty, first two plus `+N` otherwise.
+  Preserve complete separate editors and every device-only saved choice.
+  Review/receipt: docs/planning/FRONTEND_V0_6_2_REVIEW.md. Backend v0.12.0 runtime
+  is unchanged; its preceding 389-check identity remains below. Later docs-only
+  closure commits do not replace the frontend implementation SHA.
 
-- Latest production checkpoint (8 October 2026): frontend v0.6.1+8 implementation
+- Preceding production checkpoint (8 October 2026): frontend v0.6.1+8 implementation
   `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is pushed and READY at
   `dpl_6yiUZas5iZqnZ21kzoxM9yfeWGy4`, with 55 hosted checks, all 21 OCR hashes,
   232 local tests, clean analysis and a release web build. Separate expanded

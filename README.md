@@ -6,7 +6,7 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.6.1-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.6.2-155b4b?style=flat-square)
 ![Backend](https://img.shields.io/badge/backend-0.12.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -24,13 +24,14 @@ white, forest-green and mint design, with light as the first-use default.
 Frontend **v0.6.2+9** corrects Profile summaries to show only selected items:
 first two chips, then `+N` for the rest. Empty groups show no chips. The complete
 separate editors preserve every selection.
-[Correction review and deployment status](docs/planning/FRONTEND_V0_6_2_REVIEW.md).
+**237 tests pass**; analysis/build are clean and production is READY with
+55 hosted checks. [Correction review and production proof](docs/planning/FRONTEND_V0_6_2_REVIEW.md).
 
-**Published: frontend v0.6.1+8 and backend v0.12.0.** Automatic barcode/front/back
+**Published: frontend v0.6.2+9 and backend v0.12.0.** Automatic barcode/front/back
 reading, post-capture highlights and the supplied Home/product result layouts are
 deployed. The Enter package label form is removed. Both production deployments are
 READY, with **55 frontend / 389 backend hosted checks** and all 21 OCR hashes.
-[Frontend review](docs/planning/FRONTEND_V0_6_1_REVIEW.md) ·
+[Frontend review](docs/planning/FRONTEND_V0_6_2_REVIEW.md) ·
 [Backend review](docs/planning/BACKEND_V0_12_0_REVIEW.md).
 
 **Frontend v0.6.1+8 correction:** sidebar decoration moves behind navigation, a
