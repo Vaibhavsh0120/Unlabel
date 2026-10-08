@@ -21,6 +21,11 @@ from app.community.models import (
 from app.comparison.models import ComparisonRequest, ComparisonResponse
 from app.reports.glossary import GlossaryResponse
 from app.reports.models import LabelReport, ReportCheckRequest, ReportFailure
+from app.research_catalogue.models import (
+    ResearchBarcodeLookup,
+    ResearchLookup,
+    ResearchSearchResult,
+)
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
 from app.schemas.products import ProductLookup
@@ -92,6 +97,9 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "personal-sync-failure-v1.schema.json": SyncFailure,
         "comparison-request-v1.schema.json": ComparisonRequest,
         "comparison-response-v1.schema.json": ComparisonResponse,
+        "research-search-v1.schema.json": ResearchSearchResult,
+        "research-lookup-v1.schema.json": ResearchLookup,
+        "research-barcode-lookup-v1.schema.json": ResearchBarcodeLookup,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

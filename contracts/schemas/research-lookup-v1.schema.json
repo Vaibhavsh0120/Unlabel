@@ -1,0 +1,656 @@
+{
+  "$defs": {
+    "JsonValue": {},
+    "ResearchIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "barcode": {
+          "anyOf": [
+            {
+              "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Barcode"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Brand"
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Variant"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quantity"
+        },
+        "market": {
+          "enum": [
+            "india",
+            "unknown"
+          ],
+          "title": "Market",
+          "type": "string"
+        },
+        "match": {
+          "enum": [
+            "exact_sku",
+            "brand_family_only",
+            "identity_unconfirmed"
+          ],
+          "title": "Match",
+          "type": "string"
+        },
+        "barcode_evidence_url": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Barcode Evidence Url"
+        }
+      },
+      "required": [
+        "barcode",
+        "name",
+        "brand",
+        "variant",
+        "quantity",
+        "market",
+        "match",
+        "barcode_evidence_url"
+      ],
+      "title": "ResearchIdentity",
+      "type": "object"
+    },
+    "ResearchLicense": {
+      "additionalProperties": false,
+      "properties": {
+        "database": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Database"
+        },
+        "contents": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contents"
+        },
+        "images": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Images"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Note"
+        },
+        "reuse_status": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Reuse Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database",
+        "contents",
+        "images",
+        "note",
+        "reuse_status"
+      ],
+      "title": "ResearchLicense",
+      "type": "object"
+    },
+    "ResearchNutrient": {
+      "additionalProperties": false,
+      "properties": {
+        "nutrient": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "ge": 0,
+              "le": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 32,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "qualifier": {
+          "enum": [
+            "exact",
+            "less_than",
+            "less_than_or_equal",
+            "greater_than",
+            "greater_than_or_equal",
+            "approximate",
+            "unknown"
+          ],
+          "title": "Qualifier",
+          "type": "string"
+        },
+        "raw_label": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Label"
+        }
+      },
+      "required": [
+        "nutrient",
+        "value",
+        "unit",
+        "qualifier",
+        "raw_label"
+      ],
+      "title": "ResearchNutrient",
+      "type": "object"
+    },
+    "ResearchNutrition": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "enum": [
+            "direct_reported",
+            "legacy_aggregate_only",
+            "missing"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "direct_tables": {
+          "items": {
+            "$ref": "#/$defs/ResearchTable"
+          },
+          "maxItems": 16,
+          "title": "Direct Tables",
+          "type": "array"
+        },
+        "legacy_present": {
+          "title": "Legacy Present",
+          "type": "boolean"
+        },
+        "legacy_aggregates": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "required": [
+        "availability",
+        "direct_tables",
+        "legacy_present",
+        "legacy_aggregates"
+      ],
+      "title": "ResearchNutrition",
+      "type": "object"
+    },
+    "ResearchObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "popular-india-research-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "observation_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ResearchSource"
+        },
+        "identity": {
+          "$ref": "#/$defs/ResearchIdentity"
+        },
+        "eligibility": {
+          "enum": [
+            "exact_sku",
+            "brand_family_only",
+            "identity_unconfirmed"
+          ],
+          "title": "Eligibility",
+          "type": "string"
+        },
+        "sections": {
+          "$ref": "#/$defs/ResearchSections"
+        },
+        "nutrition": {
+          "$ref": "#/$defs/ResearchNutrition"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "raw_projection": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raw Projection"
+        }
+      },
+      "required": [
+        "schema_version",
+        "observation_id",
+        "source",
+        "identity",
+        "eligibility",
+        "sections",
+        "nutrition",
+        "metadata"
+      ],
+      "title": "ResearchObservation",
+      "type": "object"
+    },
+    "ResearchSection": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 16000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "partial",
+            "unknown"
+          ],
+          "title": "Completeness",
+          "type": "string"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ResearchSource"
+        }
+      },
+      "required": [
+        "text",
+        "completeness",
+        "source_url",
+        "provenance"
+      ],
+      "title": "ResearchSection",
+      "type": "object"
+    },
+    "ResearchSections": {
+      "additionalProperties": false,
+      "properties": {
+        "ingredients": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResearchSection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contains": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResearchSection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "may_contain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResearchSection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ingredients",
+        "contains",
+        "may_contain"
+      ],
+      "title": "ResearchSections",
+      "type": "object"
+    },
+    "ResearchSource": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "enum": [
+            "open_food_facts",
+            "manufacturer",
+            "retailer"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "source_updated_at": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Updated At"
+        },
+        "license": {
+          "$ref": "#/$defs/ResearchLicense"
+        }
+      },
+      "required": [
+        "provider",
+        "url",
+        "retrieved_at",
+        "source_updated_at",
+        "license"
+      ],
+      "title": "ResearchSource",
+      "type": "object"
+    },
+    "ResearchTable": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "packaging",
+            "manufacturer",
+            "retailer_transcription"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "basis": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Basis",
+          "type": "object"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared",
+            "unknown"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/ResearchNutrient"
+          },
+          "maxItems": 200,
+          "minItems": 1,
+          "title": "Rows",
+          "type": "array"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "source_updated_at": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Updated At"
+        },
+        "provenance": {
+          "$ref": "#/$defs/ResearchSource"
+        }
+      },
+      "required": [
+        "source",
+        "basis",
+        "preparation",
+        "rows",
+        "source_url",
+        "retrieved_at",
+        "source_updated_at",
+        "provenance"
+      ],
+      "title": "ResearchTable",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "found",
+        "not_found",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "entry_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Entry Id",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Dataset Sha256"
+    },
+    "observation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ResearchObservation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "conflict_fields": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Conflict Fields",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "entry_id",
+    "dataset_sha256"
+  ],
+  "title": "ResearchLookup",
+  "type": "object"
+}

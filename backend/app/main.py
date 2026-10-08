@@ -38,6 +38,8 @@ from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import BARCODE_PATTERN, OpenFoodFactsProvider
 from app.reports.glossary import GlossaryStore
+from app.research_catalogue.router import build_router as build_research_router
+from app.research_catalogue.store import ResearchCatalogueStore
 from app.schemas.errors import ValidationFailure
 from app.schemas.nutrition import NormalizeRequest
 from app.schemas.nutrition_products import NormalizeResponse, NutritionLookup
@@ -84,6 +86,13 @@ def create_app(
             application.state.nutrition = NutritionProvider(application.state.products)
             application.state.catalogue = None
             application.state.catalogue_artifact = None
+            application.state.research_catalogue = None
+            try:
+                application.state.research_catalogue = ResearchCatalogueStore(
+                    config.research_catalogue_path()
+                )
+            except (OSError, ValueError):
+                pass
             application.state.community_runtime = None
             if config.community_enabled:
                 if community_runtime is not None and config.community_actor_secret is not None:
@@ -132,6 +141,9 @@ def create_app(
         responses={422: {"model": ValidationFailure, "description": "Invalid request data"}},
     )
     application.include_router(build_router(store=claim_store))
+    application.include_router(
+        build_research_router(lambda request: request.app.state.research_catalogue)
+    )
     application.add_middleware(RequestBodyLimit)
     application.add_middleware(
         CORSMiddleware,
@@ -213,6 +225,13 @@ def create_app(
     @application.get("/v1/meta", tags=["Service"])
     def meta(request: Request):
         catalogue = catalogue_metadata(request).model_dump(mode="json")
+        research = {"status": "unavailable"}
+        store = request.app.state.research_catalogue
+        if store is not None:
+            try:
+                research = store.status()
+            except (OSError, ValueError):
+                pass  # A changed bundle must not break unrelated service metadata.
         community_ready = request.app.state.community_runtime is not None
         return {
             "backend_version": __version__,
@@ -231,6 +250,7 @@ def create_app(
                 "artifact": glossary.artifact if glossary is not None else None,
             },
             "catalogue": catalogue,
+            "research_catalogue": research,
             "community": {
                 "status": "ready"
                 if community_ready
@@ -257,6 +277,7 @@ def create_app(
                 "nutrition_lookup": True,
                 "nutrition_normalization": True,
                 "catalogue_lookup": catalogue["status"] == "ready",
+                "research_catalogue": research["status"] == "ready",
                 "catalogue_facts": catalogue["status"] == "ready"
                 and request.app.state.catalogue.supports_facts,
                 "catalogue_search": catalogue["status"] == "ready"

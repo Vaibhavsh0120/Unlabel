@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     cors_origins: list[str] = Field(default_factory=list)
     catalogue_directory: str = Field(default="", max_length=1024)
     catalogue_require_receipt: bool = False
+    research_catalogue_directory: str = Field(default="", max_length=1024)
     claims_knowledge_directory: str = Field(default="", max_length=1024)
     community_enabled: bool = False
     account_sync_enabled: bool = False
@@ -56,6 +57,13 @@ class Settings(BaseSettings):
         if not directory.is_absolute():
             directory = Path(__file__).resolve().parents[2] / directory
         return directory.resolve()
+
+    def research_catalogue_path(self) -> Path:
+        backend = Path(__file__).resolve().parents[2]
+        if self.research_catalogue_directory.strip():
+            path = Path(self.research_catalogue_directory)
+            return path if path.is_absolute() else backend / path
+        return backend / "app/research_catalogue/data"
 
     def community_configured(self) -> bool:
         return bool(

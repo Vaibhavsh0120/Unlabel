@@ -1,5 +1,17 @@
 # Feature and integration tracker
 
+Research database checkpoint (8 October 2026): backend **v0.10.0** implements
+three independent researched-product read APIs. The generated database contains
+**243 source observations**: **49 manufacturer, 125 retailer and 69 exact-code OFF**.
+Frontend **v0.5.0+6** adds mixed-source search and qualified product details.
+Local generation is verified; independent final checks, push and hosted proof are
+tracked in the [backend review](BACKEND_V0_10_0_REVIEW.md) and
+[frontend review](FRONTEND_V0_5_0_REVIEW.md). The
+[full website product list](../research/POPULAR_PRODUCTS_ADDED.md) records packs,
+ingredients, table availability and source links. Unknown identities, missing
+values and incompatible formulas stay qualified. Retail coverage is unmeasured.
+
+
 Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
 **v0.4.0+5** were independently reviewed, documented and pushed on `main`.
 Their exact implementation deployments are READY with **26 backend / 49 frontend

@@ -21,11 +21,12 @@ def client_with(response):
     )
 
 
-def test_service_endpoints_do_not_call_provider_and_report_capabilities_are_explicit():
+def test_service_endpoints_do_not_call_provider_and_report_capabilities_are_explicit(tmp_path):
     def forbidden(request):
         raise AssertionError("Health/meta must not call OFF")
 
-    with TestClient(create_app(Settings(_env_file=None), httpx.MockTransport(forbidden))) as client:
+    settings = Settings(_env_file=None, research_catalogue_directory=str(tmp_path / "absent"))
+    with TestClient(create_app(settings, httpx.MockTransport(forbidden))) as client:
         assert client.get("/v1/health").json()["provider_connectivity"] == "not_checked"
         meta = client.get("/v1/meta").json()
         assert meta["backend_version"] == __version__

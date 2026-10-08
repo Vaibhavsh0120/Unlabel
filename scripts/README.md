@@ -1,4 +1,22 @@
 Current backend: [published v0.7.0 Private Account Sync](../docs/planning/BACKEND_V0_7_0_REVIEW.md).
+
+Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
+separate generated read-only SQLite with **243 observations** (49 manufacturer,
+125 retailer and 69 OFF). It preserves dated sources, unknown identities and
+formula conflicts. Three additive GETs expose researched product search,
+`by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
+The exported API now has 24 paths/25 operations and 29 synthetic examples.
+Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
+the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
+files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
+adds mixed-source search and qualified ingredient/nutrition/source details.
+Local verification and hosted/push status: [backend review](../docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
+[frontend review](../docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
+[product list](../docs/research/POPULAR_PRODUCTS_ADDED.md).
+The user's next automatic-capture/results redesign is recorded in the
+[automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
+Earlier release statements below retain their historical scope.
+
 Setup upgrades the same facts-enabled source index when discovery is missing; it
 preserves a different local snapshot. Export now writes 20 paths/21 operations and 27 synthetic
 examples, with a separate search schema. Existing receipts/progress/security remain.

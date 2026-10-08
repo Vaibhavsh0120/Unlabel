@@ -6,6 +6,7 @@ from pathlib import Path
 
 from app.catalogue.bundle import build_bundle
 from app.claims.bundle import build_knowledge_bundle
+from app.research_catalogue.store import build_research_bundle
 
 BACKEND_DIRECTORY = Path(__file__).resolve().parent
 
@@ -42,11 +43,24 @@ def main() -> int:
             args.knowledge_directory, args.knowledge_output_directory
         )
         receipt = build_bundle(args.source_directory, args.output_directory)
+        research_receipt = build_research_bundle(
+            BACKEND_DIRECTORY.parent / "data/catalogue/popular-india-v1",
+            BACKEND_DIRECTORY / "app/research_catalogue/data",
+        )
     except (ValueError, OSError):
         # Validation exceptions can carry input values; print no source rows or
         # private paths from an artifact assembled in an operator's environment.
         parser.exit(1, "Backend build failed: source or generated bundles did not validate.\n")
-    print(json.dumps({"catalogue": receipt, "claims_knowledge": knowledge_receipt}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "catalogue": receipt,
+                "claims_knowledge": knowledge_receipt,
+                "research_catalogue": research_receipt,
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

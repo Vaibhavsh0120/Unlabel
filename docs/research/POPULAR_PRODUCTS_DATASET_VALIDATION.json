@@ -1,0 +1,78 @@
+{
+  "checked_at": "2026-10-08",
+  "scope": "Acquired source and generated local read-only database; retail coverage/current packet identity remain unverified.",
+  "dataset_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
+  "normalized_observations": 243,
+  "provider_counts": {
+    "open_food_facts": 69,
+    "manufacturer": 49,
+    "retailer": 125
+  },
+  "web_observations": 174,
+  "distinct_literal_web_brand_variant_names": 146,
+  "web_with_ingredients": 139,
+  "web_partial_ingredients": 12,
+  "web_with_direct_nutrition": 83,
+  "web_direct_nutrition_tables": 83,
+  "all_ingredients_available": 152,
+  "all_direct_nutrition_observations": 111,
+  "local_runtime": {
+    "status": "ready",
+    "dataset_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
+    "database_sha256": "cba1a82b44dc74629b264609c2a287a90a6b795a79438e9e23c2af079cdcf4ce",
+    "observation_count": 243,
+    "search_version": "research-search-v1",
+    "format_version": 2,
+    "warnings": [
+      "researched_web_facts_not_current_package_confirmation",
+      "allergen_safety_not_assessed"
+    ]
+  },
+  "local_query_timings_30_runs": {
+    "Lays": {
+      "matched_count": 21,
+      "median_ms": 7.38,
+      "max_ms": 12.247
+    },
+    "Pepsi": {
+      "matched_count": 17,
+      "median_ms": 8.333,
+      "max_ms": 11.987
+    },
+    "Cadbury": {
+      "matched_count": 13,
+      "median_ms": 8.652,
+      "max_ms": 12.756
+    },
+    "Maggi": {
+      "matched_count": 9,
+      "median_ms": 6.906,
+      "max_ms": 8.091
+    },
+    "Real": {
+      "matched_count": 6,
+      "median_ms": 5.373,
+      "max_ms": 6.794
+    },
+    "7UP": {
+      "matched_count": 4,
+      "median_ms": 4.12,
+      "max_ms": 7.051
+    },
+    "Appy Fizz": {
+      "matched_count": 5,
+      "median_ms": 4.335,
+      "max_ms": 5.24
+    },
+    "Synthetic nonexistent food": {
+      "matched_count": 0,
+      "median_ms": 2.666,
+      "max_ms": 3.315
+    }
+  },
+  "original_bulk_compressed_sha256": "bbdd13097ede75777b2356e27910ae01aff38d7ad0c59598af6868dcf447db24",
+  "all_input_hashes_match": true,
+  "images_acquired": false,
+  "network_used_for_validation": false,
+  "production_verification": "pending"
+}

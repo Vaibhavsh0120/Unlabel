@@ -7,7 +7,7 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.4.0-155b4b?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.9.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.10.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
@@ -20,6 +20,14 @@ reviewed claim checks and clear missing-information states. The app uses a
 white, forest-green and mint design, with light as the first-use default.
 
 ## What works
+
+**Backend v0.10.0** adds a read-only researched-product database with **243 dated
+source observations**, including **174 manufacturer/retailer website records**.
+The next frontend **v0.5.0+6** searches these records and opens ingredient,
+allergen-declaration, nutrition-basis and source details even when the barcode is
+unknown. Final push/hosted checks are in progress; missing and conflicting facts
+remain explicit. [Product list](docs/research/POPULAR_PRODUCTS_ADDED.md) ·
+[Database plan](docs/planning/POPULAR_PRODUCTS_DATABASE_PLAN.md).
 
 **Backend v0.9.0 Reviewed Ingredient Functions** expands the partial English/Hindi
 glossary to six entries and hardens source/alias validation. **Frontend v0.4.0+5

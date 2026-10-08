@@ -30,6 +30,7 @@ reports = import_module("app.reports.models")
 glossary = import_module("app.reports.glossary")
 accounts = import_module("app.accounts.models")
 comparison = import_module("app.comparison.models")
+research = import_module("app.research_catalogue.models")
 compare = import_module("app.comparison.service").compare
 
 
@@ -75,6 +76,9 @@ def main():
         "personal-sync-failure-v1.schema.json": accounts.SyncFailure,
         "comparison-request-v1.schema.json": comparison.ComparisonRequest,
         "comparison-response-v1.schema.json": comparison.ComparisonResponse,
+        "research-search-v1.schema.json": research.ResearchSearchResult,
+        "research-lookup-v1.schema.json": research.ResearchLookup,
+        "research-barcode-lookup-v1.schema.json": research.ResearchBarcodeLookup,
     }.items():
         write("schemas", filename, model.model_json_schema())
 

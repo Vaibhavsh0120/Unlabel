@@ -2,10 +2,12 @@
 
 import http.client
 import importlib.util
+import io
 import json
 import sys
 import threading
 from contextlib import contextmanager
+from email.message import Message
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 
@@ -175,11 +177,16 @@ def test_proxy_covers_exact_current_operations(monkeypatch):
             "{source_id}", "fssai-ac-2022-schedule-i"
         )
         concrete = concrete.replace("{submission_id}", "01234567-89ab-cdef-0123-456789abcdef")
+        concrete = concrete.replace("{entry_id}", "a" * 64)
         for method in operations:
             assert handler.allowed_route(method.upper(), concrete), (method, path)
     assert not handler.allowed_route("POST", "/v1/account/admin")
     assert not handler.allowed_route("GET", "/v1/products/123")
     assert not handler.allowed_route("DELETE", "/v1/account/sync")
+    assert not handler.allowed_route("GET", "/v1/researched/products/" + "a" * 63)
+    assert not handler.allowed_route("GET", "/v1/researched/products/" + "g" * 64)
+    assert not handler.allowed_route("POST", "/v1/researched/products/search")
+    assert not handler.allowed_route("GET", "/v1/researched/products/by-barcode/123")
 
 
 def test_proxy_preserves_comparison_body_budget(tmp_path, monkeypatch):
@@ -188,18 +195,22 @@ def test_proxy_preserves_comparison_body_budget(tmp_path, monkeypatch):
     body = b" " * (64 * 1024)
     content_type = {"Content-Type": "application/json"}
     with preview(handler, tmp_path) as port:
-        status, headers, _ = request(
-            port, "POST", "/v1/reports/compare", body, content_type
-        )
+        status, headers, _ = request(port, "POST", "/v1/reports/compare", body, content_type)
         assert status == 200
         assert headers["Cache-Control"] == "no-store"
         assert calls[1][0:3] == ("POST", "/v1/reports/compare", body)
-        before = len(calls)
-        assert request(
-            port, "POST", "/v1/reports/compare", b"{}",
-            {**content_type, "Content-Length": str(64 * 1024 + 1)},
-        )[0] == 413
-        assert len(calls) == before
+        before = [call for call in calls if call[0] != "closed"]
+        assert (
+            request(
+                port,
+                "POST",
+                "/v1/reports/compare",
+                b"{}",
+                {**content_type, "Content-Length": str(64 * 1024 + 1)},
+            )[0]
+            == 413
+        )
+        assert [call for call in calls if call[0] != "closed"] == before
 
 
 def test_proxy_forwards_only_bearer_to_fixed_https_target(tmp_path, monkeypatch, capsys):
@@ -278,6 +289,7 @@ def test_proxy_bounds_body_and_preserves_account_sync_allowance(tmp_path, monkey
             )[0]
             == 413
         )
+        assert not calls
         snapshot = b"x" * (384 * 1024 + 1024)
         assert (
             request(
@@ -300,6 +312,86 @@ def test_proxy_bounds_body_and_preserves_account_sync_allowance(tmp_path, monkey
             )[0]
             == 413
         )
+    assert len([call for call in calls if call[0] == "connect"]) == 1
+    assert len([call for call in calls if call[0] == "POST"]) == 1
+
+
+@pytest.mark.parametrize(
+    ("path", "size"),
+    [
+        ("/v1/reports/check", 32 * 1024 + 1),
+        ("/v1/reports/compare", 64 * 1024 + 1),
+        ("/v1/account/sync", 512 * 1024 + 1),
+    ],
+)
+def test_proxy_delivers_body_rejection_without_upstream(tmp_path, monkeypatch, path, size):
+    handler = module("_preview_server", monkeypatch)
+    calls = upstream(monkeypatch, handler)
+    with preview(handler, tmp_path) as port:
+        status, headers, body = request(
+            port, "POST", path, b"x" * size, {"Content-Type": "application/json"}
+        )
+    assert status == 413 and json.loads(body) == {"error": "preview_request_too_large"}
+    assert headers["Cache-Control"] == "no-store"
+    assert not calls
+
+
+def rejected_body_fixture(handler, headers, body, consumed=0):
+    result = object.__new__(handler.web_handler(Path("."), "production"))
+    result.headers = Message()
+    for name, value in headers:
+        result.headers[name] = value
+    result.rfile = io.BytesIO(body)
+    result._body_consumed = consumed
+    timeouts = []
+
+    class Connection:
+        def settimeout(self, timeout):
+            timeouts.append(timeout)
+
+    result.connection = Connection()
+    return result, timeouts
+
+
+def test_rejected_body_cleanup_is_byte_bounded_and_skips_consumed_bytes(monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    body = b"x" * (handler.REJECTED_BODY_LIMIT + 100)
+    instance, timeouts = rejected_body_fixture(handler, [("Content-Length", str(len(body)))], body)
+    instance.discard_rejected_body()
+    assert instance.rfile.tell() == handler.REJECTED_BODY_LIMIT
+    assert instance._body_consumed == handler.REJECTED_BODY_LIMIT
+    assert all(0 < timeout <= handler.REJECTED_BODY_TIMEOUT for timeout in timeouts[:-1])
+    assert timeouts[-1] == 15
+    instance, timeouts = rejected_body_fixture(handler, [("Content-Length", "2")], b"", consumed=2)
+    instance.discard_rejected_body()
+    assert instance.rfile.tell() == 0 and not timeouts
+
+
+def test_rejected_body_cleanup_has_total_deadline(monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    instance, timeouts = rejected_body_fixture(handler, [("Content-Length", "70000")], b"x" * 70000)
+    instants = iter([1.0, 1.01, 1.0 + handler.REJECTED_BODY_TIMEOUT + 0.01])
+    monkeypatch.setattr(handler.time, "monotonic", lambda: next(instants))
+    instance.discard_rejected_body()
+    assert instance.rfile.tell() == 65536
+    assert 0 < timeouts[0] <= handler.REJECTED_BODY_TIMEOUT and timeouts[-1] == 15
+
+
+@pytest.mark.parametrize(
+    "headers",
+    [
+        [],
+        [("Content-Length", "-1")],
+        [("Content-Length", "2"), ("Content-Length", "2")],
+        [("Content-Length", "2"), ("Transfer-Encoding", "chunked")],
+        [("Content-Length", "2"), ("Expect", "100-continue")],
+    ],
+)
+def test_rejected_body_cleanup_never_interprets_ambiguous_framing(monkeypatch, headers):
+    handler = module("_preview_server", monkeypatch)
+    instance, timeouts = rejected_body_fixture(handler, headers, b"{}")
+    instance.discard_rejected_body()
+    assert instance.rfile.tell() == 0 and not timeouts
 
 
 @pytest.mark.parametrize(

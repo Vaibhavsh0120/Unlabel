@@ -1,0 +1,3016 @@
+{
+  "schema_version": 1,
+  "acquired_at": "2026-10-08T04:39:20Z",
+  "purpose": "Internet-discovered popular Indian beverage source candidates; barcode-null observations remain outside automatic product resolution.",
+  "observations": [
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Coca-Cola Original",
+        "brand": "Coca-Cola",
+        "variant": "Original",
+        "quantity": "750 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 338; caffeine (8.7 mg/100 g); colour 150d; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 44,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.9,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 8.5,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "The caffeine denominator is 100 g, retained without conversion to 100 mL."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Coca-Cola Original",
+        "brand": "Coca-Cola",
+        "variant": "Original",
+        "quantity": "330 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 338; caffeine (8.7 mg/100 g); colour 150d; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 44,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.9,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 8.5,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "The caffeine denominator is 100 g, retained without conversion to 100 mL."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Coca-Cola Zero Sugar",
+        "brand": "Coca-Cola",
+        "variant": "Zero Sugar",
+        "quantity": "600 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; acidity regulators 338 and 331; sweeteners 955 and 950; preservative 211; caffeine; colour 150d; natural cola-type flavouring.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 0,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 7.5,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "The English source does not state a caffeine amount; Hindi details are not silently added."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Coca-Cola Zero Sugar",
+        "brand": "Coca-Cola",
+        "variant": "Zero Sugar",
+        "quantity": "300 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; acidity regulators 338 and 331; sweeteners 955 and 950; preservative 211; caffeine; colour 150d; natural cola-type flavouring.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 0,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 7.5,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-coca-cola-zero-sugar",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "The English source does not state a caffeine amount; Hindi details are not silently added."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-diet-coke",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Diet Coke",
+        "brand": "Coca-Cola",
+        "variant": "Diet Coke",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; acidity regulators 338 and 331(iii); sweeteners 951 and 950; preservative 211; caffeine (10 mg/100 g); colour 150d; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-diet-coke"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 0,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 8.3,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/coca-cola/products-diet-coke",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "The official page supplies a variant table but no pack-size enumeration."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/limca",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Limca",
+        "brand": "Limca",
+        "variant": "Lemon-lime",
+        "quantity": "600 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulators 330 and 331(iii); stabilisers 414 and 471; preservative 211; lemon flavours from natural, nature-identical and artificial preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/limca"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 44,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 11.1,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 5.6,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/limca",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/limca",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Limca",
+        "brand": "Limca",
+        "variant": "Lemon-lime",
+        "quantity": "2000 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulators 330 and 331(iii); stabilisers 414 and 471; preservative 211; lemon flavours from natural, nature-identical and artificial preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/limca"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 44,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 11.1,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 5.6,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/limca",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/sprite",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Sprite",
+        "brand": "Sprite",
+        "variant": "Lemon-lime",
+        "quantity": "750 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulators 330 and 331(iii); preservative 211; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/sprite"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 49,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.2,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 11.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 11.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 10.1,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/sprite",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/sprite",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Sprite",
+        "brand": "Sprite",
+        "variant": "Lemon-lime",
+        "quantity": "250 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulators 330 and 331(iii); preservative 211; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/sprite"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 49,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.2,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 11.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 11.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 10.1,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/sprite",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Thums Up",
+        "brand": "Thums Up",
+        "variant": "Original cola",
+        "quantity": "750 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 338; caffeine; natural colour 150d; cola flavouring using natural, nature-identical and artificial preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 42,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.4,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.4,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 0.81,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Thums Up",
+        "brand": "Thums Up",
+        "variant": "Original cola",
+        "quantity": "300 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 338; caffeine; natural colour 150d; cola flavouring using natural, nature-identical and artificial preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 42,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.6,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.4,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.4,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 0.81,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/thums-up/products-thums-up",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Fanta",
+        "brand": "Fanta",
+        "variant": "Orange",
+        "quantity": "750 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 330; stabilisers 414 and 445; preservative 211; colour 110; natural and nature-identical flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 56,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 14,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 13.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 22.3,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Fanta",
+        "brand": "Fanta",
+        "variant": "Orange",
+        "quantity": "300 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulator 330; stabilisers 414 and 445; preservative 211; colour 110; natural and nature-identical flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 56,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 14,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 13.7,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.7,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 22.3,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Fanta Apple Delite",
+        "brand": "Fanta",
+        "variant": "Apple Delite",
+        "quantity": "250 mL bottle",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; apple juice reconstituted from concentrate (10.5%); acidity regulator 296; stabiliser 452(i); preservatives 202 and 211; colour 150d; nature-identical apple flavour.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 48,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.1,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 12,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 11,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 0,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "Source declares sodium as 0 g; represented here as 0 mg without changing the declared numerical zero."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Fanta Apple Delite",
+        "brand": "Fanta",
+        "variant": "Apple Delite",
+        "quantity": "600 mL bottle",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; apple juice reconstituted from concentrate (10.5%); acidity regulator 296; stabiliser 452(i); preservatives 202 and 211; colour 150d; nature-identical apple flavour.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 48,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.1,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 12,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 11,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 0,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/fanta/product-fanta",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "Source declares sodium as 0 g; represented here as 0 mg without changing the declared numerical zero."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/maaza",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Maaza Original",
+        "brand": "Maaza",
+        "variant": "Original mango",
+        "quantity": "600 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water; mango pulp (18.8%, with Alphonso comprising 14% of the total pulp); cane sugar; acidity regulators 330 and 331(iii); vitamin C antioxidant; preservative 202; colour 110; natural, nature-identical and artificial mango flavour preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/maaza"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 63,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 15.8,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 14.9,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.3,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 21.9,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/maaza",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "English page wording about 200 mL / 1.3 servings is inconsistent; only the explicit per-100 mL column was captured."
+      ],
+      "conflicts": [
+        {
+          "field": "ingredients.mango_pulp_percent",
+          "status": "unresolved",
+          "alternatives": [
+            {
+              "value": 18.8,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/en/brands/maaza",
+              "source_language": "en"
+            },
+            {
+              "value": 19.5,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+              "source_language": "hi"
+            }
+          ],
+          "resolution": "Neither composition replaces the other; language-page differences do not establish package compatibility."
+        }
+      ],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/en/brands/maaza",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Maaza Original",
+        "brand": "Maaza",
+        "variant": "Original mango",
+        "quantity": "200 mL carton",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water; mango pulp (18.8%, with Alphonso comprising 14% of the total pulp); cane sugar; acidity regulators 330 and 331(iii); vitamin C antioxidant; preservative 202; colour 110; natural, nature-identical and artificial mango flavour preparations.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/en/brands/maaza"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 63,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 15.8,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 14.9,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.3,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 21.9,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/en/brands/maaza",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official Coca-Cola India product page, including declared pack choices and nutrition table.",
+        "English page wording about 200 mL / 1.3 servings is inconsistent; only the explicit per-100 mL column was captured."
+      ],
+      "conflicts": [
+        {
+          "field": "ingredients.mango_pulp_percent",
+          "status": "unresolved",
+          "alternatives": [
+            {
+              "value": 18.8,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/en/brands/maaza",
+              "source_language": "en"
+            },
+            {
+              "value": 19.5,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+              "source_language": "hi"
+            }
+          ],
+          "resolution": "Neither composition replaces the other; language-page differences do not establish package compatibility."
+        }
+      ],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Maaza Original",
+        "brand": "Maaza",
+        "variant": "Original mango",
+        "quantity": "600 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water; mango pulp (19.5%); sugar; acidity regulators 330 and 331(iii); antioxidant 300; preservative 202; colour 110; mango flavour preparations from natural, nature-identical and artificial sources.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 63,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 15.8,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 14.9,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.3,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 21.9,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Inspected official India Hindi composition and the explicit 100 mL table; factual English rendering is authored for this candidate."
+      ],
+      "conflicts": [
+        {
+          "field": "ingredients.mango_pulp_percent",
+          "status": "unresolved",
+          "alternatives": [
+            {
+              "value": 18.8,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/en/brands/maaza",
+              "source_language": "en"
+            },
+            {
+              "value": 19.5,
+              "unit": "%",
+              "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+              "source_language": "hi"
+            }
+          ],
+          "resolution": "Neither composition replaces the other; language-page differences do not establish package compatibility."
+        }
+      ],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Maaza Aam Panna",
+        "brand": "Maaza",
+        "variant": "Aam Panna",
+        "quantity": "250 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water; sugar; green mango pulp (6.3%); mango juice reconstituted from concentrate (4.3%); acidity regulator 330; black salt (0.13%); stabiliser 466; iodised salt; antioxidant 300; colours 141(ii) and 160a(ii); natural and nature-identical mixed-spice flavours.",
+          "completeness": "complete",
+          "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "manufacturer",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 57,
+                "unit": "kcal",
+                "raw_label": "Energy"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 14.3,
+                "unit": "g",
+                "raw_label": "Carbohydrate"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 14.2,
+                "unit": "g",
+                "raw_label": "Total sugars"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 12,
+                "unit": "g",
+                "raw_label": "Added sugars"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Total fat"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "raw_label": "Protein"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 71.5,
+                "unit": "mg",
+                "raw_label": "Sodium"
+              }
+            ],
+            "source_url": "https://www.coca-cola.com/in/hi/brands/maaza/products-maaza",
+            "retrieved_at": "2026-10-08T04:39:20Z"
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Hindi India page lists PET sizes 250 and 600 mL; total mango pulp and juice is declared as 10.6%."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.parleagro.com/brand/5",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Frooti",
+        "brand": "Frooti",
+        "variant": "Mango",
+        "quantity": "200 mL carton",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Parle Agro page directly declares these pack sizes and mango-pulp product family."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "No full ingredient list or numeric nutrition table is exposed on the inspected official page. Mango-pulp marketing text cannot complete either section."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.parleagro.com/brand/5",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Frooti",
+        "brand": "Frooti",
+        "variant": "Mango",
+        "quantity": "600 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Parle Agro page directly declares these pack sizes and mango-pulp product family."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "No full ingredient list or numeric nutrition table is exposed on the inspected official page. Mango-pulp marketing text cannot complete either section."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.parleagro.com/brand/13",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Appy Fizz",
+        "brand": "Appy Fizz",
+        "variant": "Sparkling apple",
+        "quantity": "250 mL PET",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Parle Agro page directly enumerates PET 125/160/250/600/1000 mL and a separate 250 mL can."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "No full ingredient list or numeric nutrition table is exposed on the inspected official page."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.parleagro.com/brand/13",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Appy Fizz",
+        "brand": "Appy Fizz",
+        "variant": "Sparkling apple",
+        "quantity": "250 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Parle Agro page directly enumerates PET 125/160/250/600/1000 mL and a separate 250 mL can."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "No full ingredient list or numeric nutrition table is exposed on the inspected official page."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://shop.amul.com/en/product/amul-mango-lassi-1-l",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul Mango Lassi",
+        "brand": "Amul",
+        "variant": "Mango Lassi",
+        "quantity": "1000 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Milk solids; water; sugar; mango compound (2%); stabiliser 440; nature-identical and artificial mango flavour preparations; active culture; natural colour 160b.",
+          "completeness": "complete",
+          "source_url": "https://shop.amul.com/en/product/amul-mango-lassi-1-l"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Current official shop page title and ingredient section inspected."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded.",
+        "Numeric nutrition table is not exposed in inspected page text. A health/benefit description cannot substitute for nutrition."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://shop.amul.com/en/product/amul-kool-thandai-180-ml-or-pack-of-30",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul Kool Thandai",
+        "brand": "Amul",
+        "variant": "Kool Thandai",
+        "quantity": "180 mL unit; retailer offer 30 units",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Toned milk; sugar; milk solids; artificial thandai flavour preparations; colours 102 and 133.",
+          "completeness": "complete",
+          "source_url": "https://shop.amul.com/en/product/amul-kool-thandai-180-ml-or-pack-of-30"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Current official shop page title and ingredient section inspected; unit pack is distinguished from 30-unit offer."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded.",
+        "Numeric nutrition table is not exposed in inspected page text."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://shop.amul.com/en/product/amul-high-protein-plain-lassi-200-ml-or-pack-of-30",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul High Protein Plain Lassi",
+        "brand": "Amul",
+        "variant": "High Protein Plain Lassi",
+        "quantity": "200 mL unit; retailer offer 30 units",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Milk solids; water; sweeteners 965 and 960; stabilisers 440, 418 and 331(iii); acidity regulator 330; beta-galactosidase enzyme; active culture.",
+          "completeness": "complete",
+          "source_url": "https://shop.amul.com/en/product/amul-high-protein-plain-lassi-200-ml-or-pack-of-30"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Current official shop page title and ingredient section inspected; the product benefit advertises 15 g protein per pack."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded.",
+        "The 15 g protein marketing statement is preserved only as evidence, not promoted into a complete numeric table. Old amul.com/old.amul.com product URLs redirect to a new site; indexed legacy nutrition is withheld."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://shop.amul.com/en/product/amul-high-protein-rose-lassi-200-ml-or-pack-of-30",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul High Protein Rose Lassi",
+        "brand": "Amul",
+        "variant": "High Protein Rose Lassi",
+        "quantity": "200 mL unit; retailer offer 30 units",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Milk solids; water; sweeteners 965 and 960; stabilisers 440, 418 and 331(iii); acidity regulator 330; beta-galactosidase enzyme; artificial rose flavour preparations; active culture.",
+          "completeness": "complete",
+          "source_url": "https://shop.amul.com/en/product/amul-high-protein-rose-lassi-200-ml-or-pack-of-30"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Current official shop page title and ingredient section inspected; the product benefit advertises 15 g protein per pack."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded.",
+        "The 15 g protein marketing statement is preserved only as evidence, not promoted into a complete numeric table. Old amul.com/old.amul.com product URLs redirect to a new site; indexed legacy nutrition is withheld."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://blinkit.com/prn/pepsi-black-soft-drink/prid/415304",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Pepsi Black Soft Drink",
+        "brand": "Pepsi",
+        "variant": "Black",
+        "quantity": "500 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; acidity regulators 338 and 330; sweeteners 955 and 950; preservative 211; caffeine; natural colour 150d; natural flavouring substances.",
+          "completeness": "complete",
+          "source_url": "https://blinkit.com/prn/pepsi-black-soft-drink/prid/415304"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying Blinkit page attributes inspected: Ingredients, Unit=500 ml, Country of Origin=India; corroborated by a bounded direct retrieval."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient text is a factual, concise English enumeration of the inspected declaration; source typography and advertising copy are excluded.",
+        "Retailer text is not manufacturer or photographed-label proof. No numeric nutrition table was found; no assumption of zero values from the Black name."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://www.bigbasket.com/pd/40130830/7-up-soft-drink-lemon-750-ml/",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "7UP Soft Drink",
+        "brand": "7UP",
+        "variant": "Lemon-lime",
+        "quantity": "750 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying page title and 750 mL pack selector inspected."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Search discovery did not supply directly inspectable nutrition or ingredients; retailer item ID 40130830 is not asserted as a GTIN."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40195155/mountain-dew-soft-drink-750-ml/?nc=cl-prod-list&t_pos_item=1&t_pos_sec=1&t_s=Soft%2520Drink",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mountain Dew Soft Drink",
+        "brand": "Mountain Dew",
+        "variant": "Original",
+        "quantity": "750 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying page identifies 750 mL; search-indexed ingredients were discovery only."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Current opened page omits the ingredients/nutrition details seen in search, so those facts are withheld. Retailer item ID 40195155 is not a verified GTIN."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://blinkit.com/sadar-bazar/prn/mirinda-soft-drink/prid/95025",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mirinda Orange Soft Drink",
+        "brand": "Mirinda",
+        "variant": "Orange",
+        "quantity": "2250 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying page metadata identifies an India offer of 2.25 L."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Ingredient body could not be reliably extracted from the current underlying page; bounded direct retrieval returned HTTP 403. Search/AI aggregation is not used to fill it."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/265719/tropicana-delight-fruit-juice-orange-200-ml-tetra/?nc=l3category&t_pos_item=8&t_pos_sec=1&t_s=Fruit%2520Juice%2520-%2520Orange%2520Delight",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Tropicana Fruit Juice - Orange Delight",
+        "brand": "Tropicana",
+        "variant": "Orange Delight",
+        "quantity": "180 mL carton",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying current title/selector declares 180 mL despite historical URL slug saying 200 mL."
+      ],
+      "conflicts": [
+        {
+          "field": "quantity",
+          "status": "unresolved",
+          "alternatives": [
+            {
+              "value": 180,
+              "unit": "mL",
+              "source": "current page title"
+            },
+            {
+              "value": 200,
+              "unit": "mL",
+              "source": "URL slug"
+            }
+          ],
+          "resolution": "Do not associate old 200 mL identity/GTIN with the current 180 mL offer."
+        }
+      ],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Search-indexed nutrition lists a 180 mL serving, but underlying opened page omits the table. Those values and the indexed GTIN remain withheld."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://www.bigbasket.com/pd/40374671/slice-gold-mango-fruit-drink-600-ml/?nc=l3category&t_pos_item=20&t_pos_sec=1&t_s=Gold%2520Mango%2520Fruit%2520Drink",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Slice Gold Mango Fruit Drink",
+        "brand": "Slice",
+        "variant": "Gold Mango",
+        "quantity": "600 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying page title identifies distinct Gold Mango, 600 mL."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Underlying opened page omits search-indexed composition/nutrition/GTIN. No legacy Slice composition is copied onto the Gold variant."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://www.bigbasket.com/pd/40189384/slice-thickest-mango-drink-175-l/?nc=l3category&t_pos_item=38&t_pos_sec=1&t_s=Mango%2520Drink",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Slice Mango Drink",
+        "brand": "Slice",
+        "variant": "Mango",
+        "quantity": "1750 mL",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying page title/selector inspected; distinct from Slice Gold."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Search-indexed per-100 mL values and GTIN were not exposed in current opened page; nutrition remains unavailable."
+      ]
+    },
+    {
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.dabur.com/our-brand/real",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Réal Fruit Power",
+        "brand": "Réal",
+        "variant": "Mixed Fruit",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Official Dabur product-family page identifies Mixed Fruit, Guava, Litchi and Pomegranate offerings."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Page marketing names selected fruits but is not a complete ingredient declaration; no exact pack quantity, GTIN or numeric nutrition table is exposed."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40195155/mountain-dew-soft-drink-750-ml/?nc=cl-prod-list&t_pos_item=1&t_pos_sec=1&t_s=Soft%2520Drink",
+        "retrieved_at": "2026-10-08T04:39:20Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Pepsi Soft Drink",
+        "brand": "Pepsi",
+        "variant": "Original",
+        "quantity": "750 mL",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Opened Indian retailer page lists Pepsi Soft Drink 750 mL in related products; exact Pepsi detail page was inaccessible."
+      ],
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN shown in the inspected underlying source; no barcode attachment or automatic gap fill is authorized.",
+        "An inspected web declaration is not proof of the formula on a current physical packet.",
+        "Identity remains unconfirmed and ingredient/nutrition fields are absent. US Pepsi/HFCS facts from pepsi.com were rejected for this Indian candidate."
+      ],
+      "identity_note": "Related-product discovery only."
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://blinkit.com/prn/frooti-mango-fruit-drink-tetra-pak/prid/23864?_city=Delhi",
+        "retrieved_at": "2026-10-08T04:42:26Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Frooti Mango Drink",
+        "brand": "Frooti",
+        "variant": "Mango",
+        "quantity": "150 mL carton",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water; sugar; mango pulp (11.2%); acidity regulators 330 and 331(iii); stabiliser 466; nature-identical mango flavour preparations; antioxidant 300; colour 110.",
+          "completeness": "complete",
+          "source_url": "https://blinkit.com/prn/frooti-mango-fruit-drink-tetra-pak/prid/23864?_city=Delhi"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Opened underlying page and bounded direct retrieval verified Ingredients, Unit 150 ml, Packaging Type Tetra Pak, Country of Origin India, and structured attributes labelled per 100 g.",
+        "Underlying public retailer attributes are factual candidate observations; they do not establish a direct package or manufacturer nutrition table."
+      ],
+      "candidate_numeric_table": {
+        "source": "retailer_attributes",
+        "basis": {
+          "amount": 100,
+          "unit": "g"
+        },
+        "preparation": "as_sold",
+        "rows": [
+          {
+            "nutrient": "energy",
+            "value": 63,
+            "unit": "kcal",
+            "raw_label": "Energy Per 100 g"
+          },
+          {
+            "nutrient": "carbohydrates",
+            "value": 15.8,
+            "unit": "g",
+            "raw_label": "Total Carbohydrates Per 100 g"
+          },
+          {
+            "nutrient": "sugars",
+            "value": 15.6,
+            "unit": "g",
+            "raw_label": "Total Sugar Per 100 g"
+          },
+          {
+            "nutrient": "added_sugars",
+            "value": 14.2,
+            "unit": "g",
+            "raw_label": "Added Sugar Per 100 g"
+          },
+          {
+            "nutrient": "fat",
+            "value": 0,
+            "unit": "g",
+            "raw_label": "Total Fat Per 100 g"
+          },
+          {
+            "nutrient": "protein",
+            "value": 0,
+            "unit": "g",
+            "raw_label": "Protein Per 100 g"
+          },
+          {
+            "nutrient": "sodium",
+            "value": 24.2,
+            "unit": "mg",
+            "raw_label": "Sodium Per 100 g"
+          }
+        ],
+        "source_url": "https://blinkit.com/prn/frooti-mango-fruit-drink-tetra-pak/prid/23864?_city=Delhi",
+        "retrieved_at": "2026-10-08T04:42:26Z",
+        "status": "unconfirmed_retailer_candidate_not_runtime_nutrition"
+      },
+      "conflicts": [],
+      "unknowns": [
+        "No GTIN is exposed; no automatic attachment to the catalogue is authorized.",
+        "Physical package/formula compatibility remains unconfirmed.",
+        "Explicit 100 g basis is preserved and never converted to 100 mL without density."
+      ]
+    },
+    {
+      "source": {
+        "provider": "retailer",
+        "url": "https://blinkit.com/prn/Mountain-Dew-Soft-Drink/prid/555226",
+        "retrieved_at": "2026-10-08T04:42:26Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mountain Dew Soft Drink",
+        "brand": "Mountain Dew",
+        "variant": "Original citrus",
+        "quantity": "300 mL can",
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated water; sugar; acidity regulators 330 and 331; natural flavour preparations; preservative 211; caffeine (13 mg/100 g); stabiliser 445(iii); colour 102.",
+          "completeness": "complete",
+          "source_url": "https://blinkit.com/prn/Mountain-Dew-Soft-Drink/prid/555226"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": [
+        "Underlying bounded public-page retrieval verified Ingredients, Unit 300 ml, Packaging Type Can, Country of Origin India, and structured attributes labelled per 100 g.",
+        "Underlying public retailer attributes are factual candidate observations; they do not establish a direct package or manufacturer nutrition table."
+      ],
+      "candidate_numeric_table": {
+        "source": "retailer_attributes",
+        "basis": {
+          "amount": 100,
+          "unit": "g"
+        },
+        "preparation": "as_sold",
+        "rows": [
+          {
+            "nutrient": "energy",
+            "value": 49,
+            "unit": "kcal",
+            "raw_label": "Energy Per 100 g"
+          },
+          {
+            "nutrient": "carbohydrates",
+            "value": 12,
+            "unit": "g",
+            "raw_label": "Total Carbohydrates Per 100 g"
+          },
+          {
+            "nutrient": "sugars",
+            "value": 12.3,
+            "unit": "g",
+            "raw_label": "Total Sugar Per 100 g"
+          },
+          {
+            "nutrient": "added_sugars",
+            "value": 12.3,
+            "unit": "g",
+            "raw_label": "Added Sugar Per 100 g"
+          },
+          {
+            "nutrient": "fat",
+            "value": 0,
+            "unit": "g",
+            "raw_label": "Total Fat Per 100 g"
+          },
+          {
+            "nutrient": "protein",
+            "value": 0,
+            "unit": "g",
+            "raw_label": "Protein Per 100 g"
+          },
+          {
+            "nutrient": "sodium",
+            "value": 8,
+            "unit": "mg",
+            "raw_label": "Sodium Per 100 g"
+          }
+        ],
+        "source_url": "https://blinkit.com/prn/Mountain-Dew-Soft-Drink/prid/555226",
+        "retrieved_at": "2026-10-08T04:42:26Z",
+        "status": "unconfirmed_retailer_candidate_not_runtime_nutrition"
+      },
+      "conflicts": [
+        {
+          "field": "quantity",
+          "status": "unresolved",
+          "alternatives": [
+            {
+              "value": 300,
+              "unit": "mL",
+              "source": "structured Unit attribute"
+            },
+            {
+              "value": 330,
+              "unit": "mL",
+              "source": "description text"
+            }
+          ],
+          "resolution": "No GTIN inference; a package photograph is needed."
+        },
+        {
+          "field": "candidate_numeric_table.carbohydrates_and_sugars",
+          "status": "unresolved",
+          "values": {
+            "carbohydrates_g": 12,
+            "sugars_g": 12.3
+          },
+          "resolution": "Preserve contradictory retailer numbers without rounding or averaging; withhold runtime nutrition."
+        }
+      ],
+      "unknowns": [
+        "No GTIN is exposed; no automatic attachment to the catalogue is authorized.",
+        "Physical package/formula compatibility remains unconfirmed.",
+        "Explicit 100 g basis is preserved and never converted to 100 mL without density."
+      ]
+    }
+  ],
+  "coverage": {
+    "observation_count": 38,
+    "unique_variant_count": 26,
+    "with_ingredients": 26,
+    "with_direct_nutrition": 19,
+    "with_retailer_candidate_numeric_table": 2,
+    "verified_gtin_count": 0,
+    "coverage_status": "unverified"
+  },
+  "limitations": [
+    "No images, advertising paragraphs, AI answers, health ratings, or inferred allergen absence are bundled.",
+    "Source numbers and pack selections are retained as manufacturer/retailer observations, not evidence of the current physical Indian packet.",
+    "Missing and conflicting facts remain unknown; exact GTIN/variant/quantity/package compatibility must be established before runtime gap filling."
+  ],
+  "rejected_sources": [
+    {
+      "url": "https://www.pepsi.com/products/pepsi",
+      "reason": "US product, HFCS ingredient list and fluid-ounce table; incompatible with unverified Indian Pepsi formula."
+    },
+    {
+      "url": "https://blinkit.com/prn/7up-soft-drink-pack-of-2/prid/507764",
+      "reason": "Bounded underlying retrieval shows Britvic manufacturer and Country of Origin UK; imported 2 x 320 mL offer does not fill Indian 7UP."
+    },
+    {
+      "url": "https://old.amul.com/products/amul-highprotein-roselassi-info.php",
+      "reason": "Current underlying open redirects to new amul.com; indexed legacy nutrition not treated as directly verified current product declaration."
+    },
+    {
+      "url": "https://www.amul.com/products/amul-koolkoko-info.php",
+      "reason": "Current underlying open redirects to a JS-rendered category page with no inspected composition or numeric table; search-indexed old data withheld."
+    }
+  ]
+}

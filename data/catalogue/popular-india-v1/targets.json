@@ -1,0 +1,5181 @@
+{
+  "targets": [
+    {
+      "category": "lays",
+      "code": "4904659748749",
+      "name": "Lay's Crispz Herb & Onion Potato Chips",
+      "brand": "Lay's",
+      "quantity": "28 g"
+    },
+    {
+      "category": "lays",
+      "code": "8091491981538",
+      "name": "Chile Limon Lays",
+      "brand": "Lay's",
+      "quantity": "25g+7.5gExtra"
+    },
+    {
+      "category": "lays",
+      "code": "8901491001052",
+      "name": "Lays salted Chips 30",
+      "brand": "Lay's",
+      "quantity": "73g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491001069",
+      "name": "India’s Magic Masala 30",
+      "brand": "Lay's",
+      "quantity": "67g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491001076",
+      "name": "American Style Cream and onion chips",
+      "brand": "Lay's",
+      "quantity": "73g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491001120",
+      "name": "Lays american style cream and onion",
+      "brand": "Lays",
+      "quantity": "190g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491502016",
+      "name": "Classic Salted Potato Chips",
+      "brand": "Lay's",
+      "quantity": "11g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491504324",
+      "name": "Lay's American Cream",
+      "brand": "fritolay",
+      "quantity": "1"
+    },
+    {
+      "category": "lays",
+      "code": "8901491981538",
+      "name": "Lay’s Chile Limon",
+      "brand": "Lay’s",
+      "quantity": "10rs"
+    },
+    {
+      "category": "lays",
+      "code": "8901491982870",
+      "name": "SHAREZ CrisP HERB & ONION FLAVOUR",
+      "brand": "Lay's",
+      "quantity": "22gm 10rs"
+    },
+    {
+      "category": "lays",
+      "code": "8901491983198",
+      "name": "MAXX MACHO CHILLI FLAVOUR",
+      "brand": "Lays",
+      "quantity": "20g"
+    },
+    {
+      "category": "lays",
+      "code": "8901491001038",
+      "name": "Lays Spanish Tomato Tango",
+      "brand": "Lay's",
+      "quantity": "80g"
+    },
+    {
+      "category": "coca-cola",
+      "code": "0005537835804",
+      "name": "Pulpy",
+      "brand": "Coca cola",
+      "quantity": "250ml"
+    },
+    {
+      "category": "coca-cola",
+      "code": "0901764132919",
+      "name": "fanta Apple delite",
+      "brand": "coca cola",
+      "quantity": "the coca cola"
+    },
+    {
+      "category": "coca-cola",
+      "code": "3018764061257",
+      "name": "Diet coke",
+      "brand": "",
+      "quantity": "7"
+    },
+    {
+      "category": "coca-cola",
+      "code": "3948764021060",
+      "name": "Thums up",
+      "brand": "Coca cola",
+      "quantity": "750ml"
+    },
+    {
+      "category": "coca-cola",
+      "code": "3948764052279",
+      "name": "Limca line lemon flv 750ml",
+      "brand": "Coke",
+      "quantity": "14"
+    },
+    {
+      "category": "coca-cola",
+      "code": "3948764112751",
+      "name": "Coke Zero Sugar",
+      "brand": "Coca Cola",
+      "quantity": "500ml"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764011184",
+      "name": "Coca Cola Can 200 ml",
+      "brand": "coca cola",
+      "quantity": "200 ml"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764011634",
+      "name": "Coca cola pack of 6",
+      "brand": "Coca-Cola",
+      "quantity": "300x6"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764022302",
+      "name": "Fanta",
+      "brand": "Coca Cola",
+      "quantity": "1L"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764022807",
+      "name": "Fanta",
+      "brand": "Coca Cola",
+      "quantity": "2L"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764052309",
+      "name": "Limca",
+      "brand": "Coca Cola",
+      "quantity": "1L"
+    },
+    {
+      "category": "coca-cola",
+      "code": "8901764052408",
+      "name": "Limca 2ltr pet",
+      "brand": "Coca Cola",
+      "quantity": "2L"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080104345",
+      "name": "Pepsi Brand Drink 2.25 l",
+      "brand": "Pepsico",
+      "quantity": "54"
+    },
+    {
+      "category": "pepsi",
+      "code": "8906002488193",
+      "name": "boomer",
+      "brand": "Pepsi",
+      "quantity": "50"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080364060",
+      "name": "Mountain dew",
+      "brand": "Pepsi",
+      "quantity": "1l"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080000104",
+      "name": "Peps",
+      "brand": "Pepsi",
+      "quantity": "300ml"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080001286",
+      "name": "Pepsi black",
+      "brand": "Pepsi",
+      "quantity": "500ml"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080001293",
+      "name": "Black",
+      "brand": "Pepsi",
+      "quantity": "Bottle of 600ml"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080001828",
+      "name": "Pepsi Zero Sugar",
+      "brand": "PepsiCo Inc.",
+      "quantity": "400ml"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080104048",
+      "name": "Pepsi",
+      "brand": "Pepsi",
+      "quantity": "500ml"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080105021",
+      "name": "Pepsi Cola 250ml Can",
+      "brand": "Pepsico",
+      "quantity": "12"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080204342",
+      "name": "Pepsi Brand Mirinda orange flv 2ltr",
+      "brand": "Pepsico",
+      "quantity": "18"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080285020",
+      "name": "Pepsi Cola Zero Sugar 250ml Can",
+      "brand": "pepsico",
+      "quantity": "7"
+    },
+    {
+      "category": "pepsi",
+      "code": "8902080365029",
+      "name": "Mountain dew 250ml",
+      "brand": "pepsi",
+      "quantity": "6"
+    },
+    {
+      "category": "maaza",
+      "code": "3948764175091",
+      "name": "maaza",
+      "brand": "Tetra Pak",
+      "quantity": "153ml"
+    },
+    {
+      "category": "maaza",
+      "code": "8901764175091",
+      "name": "Fruit drink",
+      "brand": "Maaza",
+      "quantity": "135ml"
+    },
+    {
+      "category": "maaza",
+      "code": "8901764792335",
+      "name": "maaza",
+      "brand": "",
+      "quantity": "1.2l"
+    },
+    {
+      "category": "maaza",
+      "code": "3948764092800",
+      "name": "maaza",
+      "brand": "coco-cola",
+      "quantity": "200ml"
+    },
+    {
+      "category": "maaza",
+      "code": "3948764175022",
+      "name": "Maaza",
+      "brand": "Maaza",
+      "quantity": "150 mL"
+    },
+    {
+      "category": "maaza",
+      "code": "8901764092152",
+      "name": "Maaza Original 1.75ltr",
+      "brand": "HINDUSTAN COCO-COLA BEVERAGES PVT.LTD",
+      "quantity": "3"
+    },
+    {
+      "category": "maaza",
+      "code": "8901764092107",
+      "name": "Maaza 1.5L",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "maaza",
+      "code": "8908003001029",
+      "name": "Maaza Gold Tea",
+      "brand": "",
+      "quantity": ""
+    },
+    {
+      "category": "maaza",
+      "code": "11017630",
+      "name": null,
+      "brand": "Maaza",
+      "quantity": null
+    },
+    {
+      "category": "limca",
+      "code": "89000601",
+      "name": "limca",
+      "brand": "coco-cola",
+      "quantity": "500ml"
+    },
+    {
+      "category": "limca",
+      "code": "8901764051128",
+      "name": "Gluco Charge",
+      "brand": "Limca",
+      "quantity": "150ml"
+    },
+    {
+      "category": "limca",
+      "code": "3948764052309",
+      "name": "Limca 1ltr",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "limca",
+      "code": "4901263052910",
+      "name": "Limca 250ml",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "limca",
+      "code": "8901764052538",
+      "name": "Limca",
+      "brand": "Limca",
+      "quantity": ""
+    },
+    {
+      "category": "limca",
+      "code": "3948764052910",
+      "name": "Limca",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "kurkure",
+      "code": "00244931",
+      "name": "kurkure",
+      "brand": "kurkure",
+      "quantity": "dehli"
+    },
+    {
+      "category": "kurkure",
+      "code": "3964491366052",
+      "name": "Kurkure YUMMY CHEESE PLAV",
+      "brand": "Kurkure 20rs",
+      "quantity": "55gm"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491003681",
+      "name": "PLAYZ PUFF BaLS Kurkure",
+      "brand": "20rs",
+      "quantity": "54gm"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491103060",
+      "name": "Kurkure Hyderabadi Hungama",
+      "brand": "Kurkure",
+      "quantity": "47 g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491103329",
+      "name": "Kurkure NAUGHTY TOMATO",
+      "brand": "Kurkure",
+      "quantity": "38.5g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491002905",
+      "name": "Kurkure",
+      "brand": "",
+      "quantity": "20 grams"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491365666",
+      "name": "Kurkure Puffcorn",
+      "brand": "Kurkure",
+      "quantity": "16g"
+    },
+    {
+      "category": "kurkure",
+      "code": "0251921100519",
+      "name": "Kurkure",
+      "brand": null,
+      "quantity": "20g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491002486",
+      "name": "8901491002486",
+      "brand": "Kurkure",
+      "quantity": "84g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491100045",
+      "name": "Jowar puffs",
+      "brand": "Kurkure",
+      "quantity": "50g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491101905",
+      "name": "Kurkure - Green Chutney Style",
+      "brand": "PepsiCo, Inc.",
+      "quantity": "17 g"
+    },
+    {
+      "category": "kurkure",
+      "code": "8901491103046",
+      "name": "Kurkure Green chutney",
+      "brand": "",
+      "quantity": "33g"
+    },
+    {
+      "category": "maggi",
+      "code": "0011458003055",
+      "name": "Pazzta",
+      "brand": "Maggi",
+      "quantity": "150g"
+    },
+    {
+      "category": "maggi",
+      "code": "06342001",
+      "name": "maggi 2 minute noodles",
+      "brand": "maggi",
+      "quantity": "70gm"
+    },
+    {
+      "category": "maggi",
+      "code": "0941458017670",
+      "name": "maggi",
+      "brand": null,
+      "quantity": "280"
+    },
+    {
+      "category": "maggi",
+      "code": "0941458017687",
+      "name": "Maggi 70g",
+      "brand": "maggi",
+      "quantity": "70g"
+    },
+    {
+      "category": "maggi",
+      "code": "4901410891836",
+      "name": "Maggie Veggie Masala",
+      "brand": "Maggi",
+      "quantity": "62 Gram"
+    },
+    {
+      "category": "maggi",
+      "code": "6294003596620",
+      "name": "MAGGI SAFRON STOCK 1+1",
+      "brand": "Maggi",
+      "quantity": "24*20 g"
+    },
+    {
+      "category": "maggi",
+      "code": "6908058013635",
+      "name": "Maggi hot sweet",
+      "brand": "Maggi",
+      "quantity": "1"
+    },
+    {
+      "category": "maggi",
+      "code": "77881212",
+      "name": "Maggie Rich Tomato sauce",
+      "brand": "Maggi",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "maggi",
+      "code": "8901058001433",
+      "name": "Rich Tomato Ketchup",
+      "brand": "Maggi",
+      "quantity": "280 g"
+    },
+    {
+      "category": "maggi",
+      "code": "8901058003055",
+      "name": "Maggi pazzta cheese macaroni",
+      "brand": "Maggi",
+      "quantity": "150"
+    },
+    {
+      "category": "maggi",
+      "code": "8901058003734",
+      "name": "Maggie korean noodles",
+      "brand": "Maggi",
+      "quantity": "90g"
+    },
+    {
+      "category": "maggi",
+      "code": "8901058005424",
+      "name": "maggie koriean spicy cheesy",
+      "brand": "nestle",
+      "quantity": "71.5g"
+    },
+    {
+      "category": "cadbury",
+      "code": "0612001717926",
+      "name": "Cadbury lickables oreo",
+      "brand": null,
+      "quantity": "20g"
+    },
+    {
+      "category": "cadbury",
+      "code": "1157567116275",
+      "name": "Hazelnut",
+      "brand": "Cadbury",
+      "quantity": "58g"
+    },
+    {
+      "category": "cadbury",
+      "code": "2296637125669",
+      "name": "Oreo",
+      "brand": "Cadbury",
+      "quantity": "43.75 g"
+    },
+    {
+      "category": "cadbury",
+      "code": "6348042025426",
+      "name": "Dairy Milk CHOCOLATE",
+      "brand": null,
+      "quantity": "134g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201101428",
+      "name": "perk",
+      "brand": "perk",
+      "quantity": "16.5g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201138486",
+      "name": "Bournville",
+      "brand": "Cadbury",
+      "quantity": "80g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201150181",
+      "name": "Dairy Milk",
+      "brand": "Cadbury",
+      "quantity": "36g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201423155",
+      "name": "Bourn vita",
+      "brand": "bourn vita,Cadbury",
+      "quantity": "500g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201438371",
+      "name": "Cadbury",
+      "brand": "Cadbury",
+      "quantity": "177g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201443290",
+      "name": "Cadbury Dairy Milk",
+      "brand": "Cadbury",
+      "quantity": "468 g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201452674",
+      "name": "Dairy milk chocolate fruit and nut 55g",
+      "brand": null,
+      "quantity": "55g"
+    },
+    {
+      "category": "cadbury",
+      "code": "7622201452889",
+      "name": "silk oreo",
+      "brand": "cadbury",
+      "quantity": "130g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "0804410415009",
+      "name": "Kitkat chunky peanut butter",
+      "brand": "Nestle",
+      "quantity": "42g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "6009188004828",
+      "name": "Kitkat chunky white",
+      "brand": "Nestle",
+      "quantity": "40g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "89008294",
+      "name": "Munch",
+      "brand": "nestle",
+      "quantity": "10.4g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "89008478",
+      "name": "Milkybar",
+      "brand": "Nestle",
+      "quantity": "1"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "89009314",
+      "name": "Barone",
+      "brand": null,
+      "quantity": "1"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058007077",
+      "name": "Nestle KitKat Chocolate Combo Pack",
+      "brand": "Nestlé",
+      "quantity": "8*15.4 gm"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058009422",
+      "name": "munch",
+      "brand": "Nestle",
+      "quantity": "332.8 g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058010701",
+      "name": "Nestle Munch Vanilla Flavour",
+      "brand": "Nestlé",
+      "quantity": "14g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058027778",
+      "name": "Munch Max crunchies",
+      "brand": "Nestlé",
+      "quantity": "45g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058857245",
+      "name": "Kitkat",
+      "brand": "Nestle",
+      "quantity": "28.3g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058859331",
+      "name": "milkybar ( choo - mix fruit )",
+      "brand": "nestle",
+      "quantity": "308 g"
+    },
+    {
+      "category": "nestle-chocolate",
+      "code": "8901058869002",
+      "name": "Munch",
+      "brand": "Nestle",
+      "quantity": "12.5 g"
+    },
+    {
+      "category": "britannia",
+      "code": "0001203333018",
+      "name": "Britannia biscafe",
+      "brand": null,
+      "quantity": "100"
+    },
+    {
+      "category": "britannia",
+      "code": "0694189138724",
+      "name": "BOURBON",
+      "brand": "BRITANNIA",
+      "quantity": "50g g"
+    },
+    {
+      "category": "britannia",
+      "code": "0901063139213",
+      "name": "the Original bourbon",
+      "brand": "Britannia,chocolate",
+      "quantity": "150g"
+    },
+    {
+      "category": "britannia",
+      "code": "0941296142695",
+      "name": "Nutri choice digestive biscuits",
+      "brand": "Britannia Industries Ltd",
+      "quantity": "91.7 grams"
+    },
+    {
+      "category": "britannia",
+      "code": "3047063093522",
+      "name": "Good Day",
+      "brand": "BRITANNIA",
+      "quantity": "52.5g"
+    },
+    {
+      "category": "britannia",
+      "code": "3948063029422",
+      "name": "Jim jam",
+      "brand": "Britannia",
+      "quantity": "100g"
+    },
+    {
+      "category": "britannia",
+      "code": "3948063139190",
+      "name": "bourbon",
+      "brand": "britannia",
+      "quantity": "60g"
+    },
+    {
+      "category": "britannia",
+      "code": "3948063155619",
+      "name": "BRITANNIA marie GOLD",
+      "brand": "Britannia",
+      "quantity": "73.8 gram"
+    },
+    {
+      "category": "britannia",
+      "code": "3948063160293",
+      "name": "Pure magic chocolush",
+      "brand": "Britannia",
+      "quantity": "100"
+    },
+    {
+      "category": "britannia",
+      "code": "4901265094147",
+      "name": "Britannia good day pista",
+      "brand": null,
+      "quantity": "4"
+    },
+    {
+      "category": "britannia",
+      "code": "4901265161429",
+      "name": "Pure Magic Chocolush",
+      "brand": "Britannia",
+      "quantity": "300g"
+    },
+    {
+      "category": "britannia",
+      "code": "4901269412619",
+      "name": "Vita marie gold",
+      "brand": "Britannia",
+      "quantity": "248gm packet"
+    },
+    {
+      "category": "parle",
+      "code": "2947746117280",
+      "name": "Hide and Seek",
+      "brand": null,
+      "quantity": "india"
+    },
+    {
+      "category": "parle",
+      "code": "3948719131165",
+      "name": "Parle 20 20",
+      "brand": "Parle",
+      "quantity": "Rs 10"
+    },
+    {
+      "category": "parle",
+      "code": "3948719136504",
+      "name": "fab burbon chocolate",
+      "brand": "parle",
+      "quantity": "459"
+    },
+    {
+      "category": "parle",
+      "code": "4901119121944",
+      "name": "Parle happy cake",
+      "brand": null,
+      "quantity": "31"
+    },
+    {
+      "category": "parle",
+      "code": "4901218124860",
+      "name": "Parle Marie 300/g",
+      "brand": null,
+      "quantity": "17"
+    },
+    {
+      "category": "parle",
+      "code": "8901719100277",
+      "name": "Eclairs",
+      "brand": "Parle",
+      "quantity": "Gama"
+    },
+    {
+      "category": "parle",
+      "code": "8901719100956",
+      "name": "Parle G",
+      "brand": "Parle-G",
+      "quantity": "80g"
+    },
+    {
+      "category": "parle",
+      "code": "8901719103766",
+      "name": "Parle Happy Happy Tutti Frutty Cakes",
+      "brand": "parle",
+      "quantity": "40 gm"
+    },
+    {
+      "category": "parle",
+      "code": "8901719103896",
+      "name": "Parle Hide & Seek Choco Rolls 120 gm",
+      "brand": "parle",
+      "quantity": "120 gm"
+    },
+    {
+      "category": "parle",
+      "code": "8901719104640",
+      "name": "Parle-G",
+      "brand": "Parle",
+      "quantity": "70g"
+    },
+    {
+      "category": "parle",
+      "code": "8901719107474",
+      "name": "Fab Bourbon Biscuit",
+      "brand": "Parle",
+      "quantity": "150 gm"
+    },
+    {
+      "category": "parle",
+      "code": "8901719107740",
+      "name": "Parle Nutricrunch Honey & Oats Digestive Cookies",
+      "brand": "parle",
+      "quantity": "100 gm"
+    },
+    {
+      "category": "oreo",
+      "code": "7622201464486",
+      "name": "Oreo",
+      "brand": "Oreo",
+      "quantity": "7"
+    },
+    {
+      "category": "oreo",
+      "code": "7622201757274",
+      "name": "Orion Vanila cream",
+      "brand": "Oreo",
+      "quantity": "918.75g"
+    },
+    {
+      "category": "oreo",
+      "code": "7622202253614",
+      "name": "Oreo sandwich biscuits",
+      "brand": "",
+      "quantity": "459g"
+    },
+    {
+      "category": "oreo",
+      "code": "7622202304415",
+      "name": "oreo family pack chocolate",
+      "brand": "oreo",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "oreo",
+      "code": "8901030735363",
+      "name": "Oreo and cream",
+      "brand": "Kwality Wall's",
+      "quantity": "380 g"
+    },
+    {
+      "category": "oreo",
+      "code": "0622201428501",
+      "name": "Oreo Original chocolate sandwich biscuits",
+      "brand": "Oreo",
+      "quantity": "46.3g"
+    },
+    {
+      "category": "oreo",
+      "code": "7622201756789",
+      "name": "Oreo Strawberry Biscuit",
+      "brand": "Oreo",
+      "quantity": "43.75"
+    },
+    {
+      "category": "oreo",
+      "code": "8901030771699",
+      "name": "cornetto oreo disc",
+      "brand": "kwality walls",
+      "quantity": "72g"
+    },
+    {
+      "category": "oreo",
+      "code": "8992760221028",
+      "name": "17000725 Oreo Original (Vanilla)",
+      "brand": "BABYMONSTER OREO",
+      "quantity": "123g g"
+    },
+    {
+      "category": "oreo",
+      "code": "00551281",
+      "name": "Oreo dark chocolate creme flavored",
+      "brand": "Oreo",
+      "quantity": null
+    },
+    {
+      "category": "oreo",
+      "code": "0652509057575",
+      "name": "Oreo 7 pack",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "oreo",
+      "code": "0692707253614",
+      "name": "Oreo choco Crm",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bingo",
+      "code": "4901521111458",
+      "name": "chips",
+      "brand": "bingo",
+      "quantity": "90g"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725001315",
+      "name": "Bingo",
+      "brand": null,
+      "quantity": "1"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725004897",
+      "name": "Bingo! Chilli Lemon Nachos",
+      "brand": "itc limited",
+      "quantity": "42 gm"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725004910",
+      "name": "Bingo! Chilli Lemon Nachos",
+      "brand": "itc limited",
+      "quantity": "80 gm"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725007492",
+      "name": "Bingo",
+      "brand": "ITC",
+      "quantity": "90g"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725011017",
+      "name": "Bingo Tedhe Medhe Chatpata Twist",
+      "brand": "Bingo",
+      "quantity": "20g"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725013769",
+      "name": "Mad Angles Tomato Madness",
+      "brand": "Bingo",
+      "quantity": "66gm"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725111465",
+      "name": "Bingo potato Chips",
+      "brand": null,
+      "quantity": "100g"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725111489",
+      "name": "Bingo peri peri 50",
+      "brand": null,
+      "quantity": "130g"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725115098",
+      "name": "Bingo! Cream & Onion Potato Chips 100 gm",
+      "brand": "itc limited",
+      "quantity": "100 gm"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725119959",
+      "name": "bingo",
+      "brand": "Ziggy Marley's Coco'Mon",
+      "quantity": "1kg"
+    },
+    {
+      "category": "bingo",
+      "code": "8901725120016",
+      "name": "bingo salt sprinkled potato chips 45 gm",
+      "brand": "itc limited",
+      "quantity": "45 gm"
+    },
+    {
+      "category": "balaji",
+      "code": "26246246",
+      "name": "aloo sev",
+      "brand": "balaji",
+      "quantity": "25g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500474",
+      "name": "Crunchem Chat Chaska",
+      "brand": "Balaji wafers",
+      "quantity": "15g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500818",
+      "name": "Potato chips",
+      "brand": "Balaji",
+      "quantity": "100 gram"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010502171",
+      "name": "Gathiya",
+      "brand": "Balaji",
+      "quantity": "300g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500245",
+      "name": "Balaji Wafers Masala Sev Murmura",
+      "brand": "Balaji Wafers",
+      "quantity": "40 g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500894",
+      "name": "Chataka pataka",
+      "brand": "Balaji Wafers",
+      "quantity": "25g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010502508",
+      "name": "Crunchem Peri Peri Flavour",
+      "brand": "Balaji",
+      "quantity": "35g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010506582",
+      "name": "Masala Peanuts",
+      "brand": "Balaji Wafers",
+      "quantity": "37g"
+    },
+    {
+      "category": "balaji",
+      "code": "0710859306108",
+      "name": "CASHEWS",
+      "brand": "Vittal Balaji",
+      "quantity": "500g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500030",
+      "name": "Malasa Masti",
+      "brand": "Balaji wafers",
+      "quantity": "30g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500047",
+      "name": "masala masti",
+      "brand": "Balaji",
+      "quantity": "15g"
+    },
+    {
+      "category": "balaji",
+      "code": "8906010500269",
+      "name": "Poprings Masala flavour",
+      "brand": "Balaji",
+      "quantity": "22 g"
+    },
+    {
+      "category": "haldiram",
+      "code": "0904063230072",
+      "name": "Haldirams nut crackers",
+      "brand": "Haldirams",
+      "quantity": "400 g"
+    },
+    {
+      "category": "haldiram",
+      "code": "4904464200005",
+      "name": "Haldiram bhujia 220g",
+      "brand": "Haldiram's",
+      "quantity": "220g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8004004401247",
+      "name": "HALDIRAM Farali Chidwa",
+      "brand": "Haldiram",
+      "quantity": "200g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8540063200105",
+      "name": "Cornflakes mixture",
+      "brand": "Haldiram's",
+      "quantity": "200gm"
+    },
+    {
+      "category": "haldiram",
+      "code": "8901721002767",
+      "name": "Haldiram Mango Pickle350Gm 350G",
+      "brand": "Haldiram's",
+      "quantity": "350 g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8901721002842",
+      "name": "Haldiram Lemon Pickle 350Gm 350Ml",
+      "brand": "Haldiram's",
+      "quantity": "350 g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004400090",
+      "name": "Soya chips",
+      "brand": "haldirams",
+      "quantity": "50g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004400410",
+      "name": "Ratlami Sev",
+      "brand": "Haldiram's",
+      "quantity": "22g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004400496",
+      "name": "Masala Peanuts",
+      "brand": "Haldiram's, Haldiram Snacks Pvt. Ltd.",
+      "quantity": "20g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004400564",
+      "name": "Lite Chiwda Lite Bite",
+      "brand": "Haldiram's",
+      "quantity": "150 g"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004400625",
+      "name": "Lemon Bhel",
+      "brand": "Haldiram",
+      "quantity": "20"
+    },
+    {
+      "category": "haldiram",
+      "code": "8904004402223",
+      "name": "Haldiram 150G Phalhari Chiwda",
+      "brand": "Haldiram's",
+      "quantity": "150 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8905950001102",
+      "name": "Chips Mast Masala",
+      "brand": "Bikaji",
+      "quantity": "52g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8905950002819",
+      "name": "Bikaneri Bhujia",
+      "brand": "Bikaji",
+      "quantity": "36 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8905950003533",
+      "name": "All-in-One Kuch-Kuch",
+      "brand": "Bikaji",
+      "quantity": "59g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500243",
+      "name": "fatafat Bhelpuri",
+      "brand": "Bikaji",
+      "quantity": "60g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500397",
+      "name": "Bikaji aloo bhujia 1kg",
+      "brand": "Bikaji",
+      "quantity": "1kg"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500595",
+      "name": "Bikaji Hing Jeera Peanuts 50Gm",
+      "brand": "Bikaji",
+      "quantity": "50 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500625",
+      "name": "Bikaji Masala Peanut 50Gm",
+      "brand": "Bikaji",
+      "quantity": "50 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500656",
+      "name": "Bikaji 200G Lite Bite Masala Peanut",
+      "brand": "Bikaji",
+      "quantity": "200 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005500953",
+      "name": "Bikaji Masala Goldy Moong Dal Masala 200Gm",
+      "brand": "Bikaji",
+      "quantity": "200 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005501035",
+      "name": "Bikaji Moong Dal 40G",
+      "brand": "Bikaji",
+      "quantity": "40 g"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005502063",
+      "name": "rasgulla",
+      "brand": "bikaji",
+      "quantity": "100"
+    },
+    {
+      "category": "bikaji",
+      "code": "8906005502322",
+      "name": "Bikaji Potato Chips Classic Salted 40Gm",
+      "brand": "Bikaji",
+      "quantity": "40 g"
+    },
+    {
+      "category": "pringles",
+      "code": "0035000102560",
+      "name": "PRINGLES",
+      "brand": "Pringles",
+      "quantity": "165g"
+    },
+    {
+      "category": "pringles",
+      "code": "0200043820126",
+      "name": "PRINGLES",
+      "brand": "PRINGLES",
+      "quantity": "165g"
+    },
+    {
+      "category": "pringles",
+      "code": "0227809989040",
+      "name": "PRINGLES",
+      "brand": "PRINGLES",
+      "quantity": "165g"
+    },
+    {
+      "category": "pringles",
+      "code": "6291109980940",
+      "name": "Pringles - hot & spicy",
+      "brand": "Pringles",
+      "quantity": "165g"
+    },
+    {
+      "category": "pringles",
+      "code": "8886467122408",
+      "name": "Pringles Sour Cream & Onion Flavour Potato Crisps",
+      "brand": "Pringles",
+      "quantity": "107g"
+    },
+    {
+      "category": "pringles",
+      "code": "8886467122392",
+      "name": "PRINGLES ( ORIGINAL )",
+      "brand": "Pringles,Kellanova",
+      "quantity": "107g"
+    },
+    {
+      "category": "pringles",
+      "code": "8886467122415",
+      "name": "Pringles Pizza Flavour Potato Crisps",
+      "brand": "Pringles",
+      "quantity": "102g"
+    },
+    {
+      "category": "pringles",
+      "code": "8886467122422",
+      "name": "Fusion Chutney Flavour",
+      "brand": "Kellogg's, Pringles",
+      "quantity": "107 g"
+    },
+    {
+      "category": "pringles",
+      "code": "8886467122439",
+      "name": "Pringles Desi Masala Tadka Flavour",
+      "brand": "Pringles",
+      "quantity": "107 g"
+    },
+    {
+      "category": "pringles",
+      "code": "6291109980933",
+      "name": "Pringles",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "pringles",
+      "code": "8886467127977",
+      "name": "Pringles desi masala tadka 40g",
+      "brand": "Pringles",
+      "quantity": null
+    },
+    {
+      "category": "pringles",
+      "code": "8886467128127",
+      "name": "Pringles desi masala tadka 134g",
+      "brand": "Pringles",
+      "quantity": null
+    },
+    {
+      "category": "doritos",
+      "code": "8901491003025",
+      "name": "Dinamita Sizzling Hot",
+      "brand": "Doritos",
+      "quantity": "56 g"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491990097",
+      "name": "Doritos Sweet Chilli",
+      "brand": "Doritos",
+      "quantity": "110g"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491990219",
+      "name": "Doritos",
+      "brand": "Doritos",
+      "quantity": "10rs"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491000871",
+      "name": "Doritos Masala Mayhem Flavour",
+      "brand": "PepsiCo",
+      "quantity": "25 g"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491001083",
+      "name": "Doritos Sweet Chilli",
+      "brand": "Doritos",
+      "quantity": "56g"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491990080",
+      "name": "Doritos Nacho Cheese Flavours",
+      "brand": "PepsiCo, Doritos",
+      "quantity": "75 g"
+    },
+    {
+      "category": "doritos",
+      "code": "0028400679473",
+      "name": "Doritos & Cheetos Mix",
+      "brand": "Doritos",
+      "quantity": "18 bags"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491000208",
+      "name": "Sweet chilli Doritos",
+      "brand": "Doritos",
+      "quantity": "50gm"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491000253",
+      "name": "Dinamita",
+      "brand": "Doritos",
+      "quantity": "1 qty 65.2grams weight"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491001687",
+      "name": "Doritos",
+      "brand": "Unknown",
+      "quantity": "1"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491990028",
+      "name": "Doritos Sweet Chilli Flavour",
+      "brand": "Doritos, PepsiCo",
+      "quantity": "39 g"
+    },
+    {
+      "category": "doritos",
+      "code": "8901491001113",
+      "name": "Doritos Nacho Cheese 142g",
+      "brand": "Doritos",
+      "quantity": null
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491400008",
+      "name": "Uncle Chipps",
+      "brand": "Uncle Chipps,frito-lay",
+      "quantity": "11 g"
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491405003",
+      "name": "Plain Salted Potato Chipps",
+      "brand": "Uncle Chipps",
+      "quantity": "25g"
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491435000",
+      "name": "Potato Chips (Plain Salted flavour) 20rs",
+      "brand": "Uncle Chipps",
+      "quantity": "50g"
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491410106",
+      "name": "Uncle Chiprs",
+      "brand": "10 rs",
+      "quantity": "24gm"
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491435109",
+      "name": "Potato chips (Spicy Treat flavour)20rs",
+      "brand": "Uncle Chipps",
+      "quantity": "52 g"
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "3948491405003",
+      "name": "Plain",
+      "brand": "Uncle Chipps",
+      "quantity": ""
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491003155",
+      "name": "Uncle Chipps Plain Salty",
+      "brand": "Uncle Chipps",
+      "quantity": ""
+    },
+    {
+      "category": "uncle-chipps",
+      "code": "8901491003162",
+      "name": "Uncle Chipps Spicy Treat",
+      "brand": "chips",
+      "quantity": null
+    },
+    {
+      "category": "yippee",
+      "code": "7001376117500",
+      "name": "glucose biscuits",
+      "brand": "Sunfeast",
+      "quantity": "96g"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725000523",
+      "name": "yippee noodles",
+      "brand": "Sunfeast",
+      "quantity": "60"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725000592",
+      "name": "Sunfest Marie Light",
+      "brand": "Sunfeast",
+      "quantity": "1"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725000622",
+      "name": "sunfeast Mom",
+      "brand": "Sunfeast",
+      "quantity": "30"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725002237",
+      "name": "Digestive",
+      "brand": "Sunfeast",
+      "quantity": "50g"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725003036",
+      "name": "Bounce",
+      "brand": "Sunfeast",
+      "quantity": "32g"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725004545",
+      "name": "Sunfeast milk shek 300ml pet",
+      "brand": "Sunfeast",
+      "quantity": "26"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725004590",
+      "name": "Sunfeast Farmlite Veda Digestive Biscuits - High Fiber",
+      "brand": "itc limited",
+      "quantity": "100 gm"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725004606",
+      "name": "Sunfeast Farmlite Veda Digestive High Fibre Biscuits",
+      "brand": "itc limited",
+      "quantity": "250 gm"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725004613",
+      "name": "Sunfeast Farmlite Nuts Digestive Biscuits",
+      "brand": "itc limited",
+      "quantity": "100 gm"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725005900",
+      "name": "noodles",
+      "brand": "yippee",
+      "quantity": "140g"
+    },
+    {
+      "category": "yippee",
+      "code": "8901725005917",
+      "name": "Yippee magic masala",
+      "brand": "Sunfeast",
+      "quantity": "240g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "0209444847206",
+      "name": "Wai wai RTE veg noodles",
+      "brand": "Wai wai",
+      "quantity": "75g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013030138",
+      "name": "Hakka noodles",
+      "brand": "Wai wai",
+      "quantity": "160g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013030312",
+      "name": "X press noodles",
+      "brand": "Wai wai",
+      "quantity": "25g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013032644",
+      "name": "wai wai",
+      "brand": null,
+      "quantity": "200"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013032910",
+      "name": "wai wai atta noodles",
+      "brand": null,
+      "quantity": "360g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8901741000910",
+      "name": "wai wai noodles",
+      "brand": "Wai Wai",
+      "quantity": "75g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8901741003027",
+      "name": "Quick Chicken Pizza Instant Noodles",
+      "brand": "Wai Wai",
+      "quantity": "75 g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013030947",
+      "name": "X-press Instant Noodles Vegetable Flavour 70g",
+      "brand": "WAI WAI",
+      "quantity": "70g packet"
+    },
+    {
+      "category": "wai-wai",
+      "code": "8906013032194",
+      "name": "Wai Wai Ready to eat noodles",
+      "brand": "Wai Wai",
+      "quantity": "420g"
+    },
+    {
+      "category": "wai-wai",
+      "code": "4906475032613",
+      "name": "wai wai",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "wai-wai",
+      "code": "6909023032613",
+      "name": "wwai wai",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "wai-wai",
+      "code": "8901741000026",
+      "name": "Wai wai masala noodles",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014000159",
+      "name": "nissin",
+      "brand": "Nissin",
+      "quantity": "80"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014000395",
+      "name": "Top Ramen Curry",
+      "brand": "Nissin,Top Ramen",
+      "quantity": "420"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014000500",
+      "name": "cup noodles chilli chilli chilli super hot",
+      "brand": "Nissin",
+      "quantity": "45g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014000548",
+      "name": "Top Ramen(masala noodles)",
+      "brand": "Nissin",
+      "quantity": "50g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014002542",
+      "name": "Nissin Top Ramen Chicken Noodles",
+      "brand": "nissin",
+      "quantity": "70 gm"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014012312",
+      "name": "TANGY tomato",
+      "brand": "Nissin,Cup Noodles",
+      "quantity": "70 g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014000425",
+      "name": "nissin noodels",
+      "brand": "Nissin",
+      "quantity": "80"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014004737",
+      "name": "Mazeder  masala 70 g",
+      "brand": "Nissin",
+      "quantity": "70"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014003181",
+      "name": "top ramn",
+      "brand": "Nissin,Top Ramen",
+      "quantity": "280 g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014004744",
+      "name": "Cup Noodles Mazedaar Masala",
+      "brand": "Nissin",
+      "quantity": "1 Qty & Weight 45g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014004942",
+      "name": "Cup Noodles Spiced Chicken",
+      "brand": "Nissin",
+      "quantity": "55 g"
+    },
+    {
+      "category": "top-ramen",
+      "code": "8901014011124",
+      "name": "Top Ramen Atta Masala Noodles",
+      "brand": "Top Ramen,Nissin",
+      "quantity": "280g"
+    },
+    {
+      "category": "amul",
+      "code": "0890126226012",
+      "name": "milk",
+      "brand": "amul",
+      "quantity": "500ml"
+    },
+    {
+      "category": "amul",
+      "code": "18901262020265",
+      "name": "Processed cheese",
+      "brand": "Amul",
+      "quantity": "12kg"
+    },
+    {
+      "category": "amul",
+      "code": "3948262152334",
+      "name": "KOOL ROYAL ELAICHI",
+      "brand": "Amul",
+      "quantity": "180ml"
+    },
+    {
+      "category": "amul",
+      "code": "3948262211062",
+      "name": "Masti Dahi",
+      "brand": "Amul",
+      "quantity": "85g"
+    },
+    {
+      "category": "amul",
+      "code": "3948262220965",
+      "name": "AMUL PIZZA",
+      "brand": null,
+      "quantity": "210 g"
+    },
+    {
+      "category": "amul",
+      "code": "6945016062403",
+      "name": "Amul chocominis",
+      "brand": "Amul",
+      "quantity": "250 g"
+    },
+    {
+      "category": "amul",
+      "code": "8353962003964",
+      "name": "Amul creme rich",
+      "brand": "Amul",
+      "quantity": "125ml/87g"
+    },
+    {
+      "category": "amul",
+      "code": "8901262010436",
+      "name": "Amul White Unsalted Butter",
+      "brand": "Amul",
+      "quantity": "100g"
+    },
+    {
+      "category": "amul",
+      "code": "8901262020244",
+      "name": "Amul Cheese",
+      "brand": "Amul",
+      "quantity": "200g"
+    },
+    {
+      "category": "amul",
+      "code": "8901262020381",
+      "name": "Amul cheese",
+      "brand": "Amul",
+      "quantity": "500g"
+    },
+    {
+      "category": "amul",
+      "code": "8901262030021",
+      "name": "Amul Ghee",
+      "brand": null,
+      "quantity": "500g"
+    },
+    {
+      "category": "amul",
+      "code": "8901262030175",
+      "name": "Amul pur ghee 5 ltr",
+      "brand": null,
+      "quantity": "5 ltr"
+    },
+    {
+      "category": "hersheys",
+      "code": "6908425332413",
+      "name": "Hershey's milk shake (chocolate flavour)",
+      "brand": null,
+      "quantity": "180"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071701365",
+      "name": "Hershey's milk booster",
+      "brand": "Hershey's",
+      "quantity": "450g"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071701976",
+      "name": "Hershey's",
+      "brand": "chocolate",
+      "quantity": "100.8"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071702638",
+      "name": "HERSHEY'S Kisses Moments Assorted Chocolate",
+      "brand": "HERSHEY'S",
+      "quantity": "129g"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071702645",
+      "name": "hershey's exotic dark festive moments 129 gm",
+      "brand": "hershey's",
+      "quantity": "129 gm"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071702669",
+      "name": "hershey's exotic dark festive moments 87 gm",
+      "brand": "hershey's",
+      "quantity": "87 gm"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071702676",
+      "name": "hershey's kisses festive moments 129 gm",
+      "brand": "hershey's",
+      "quantity": "129 gm"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071702928",
+      "name": "Hershey's guava mexican chilli flavour",
+      "brand": null,
+      "quantity": "90g"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071704960",
+      "name": "Hershey's kisses cashews",
+      "brand": "Hershey's",
+      "quantity": "100.8g"
+    },
+    {
+      "category": "hersheys",
+      "code": "8901071732444",
+      "name": "Hershey's cookies 'n' creme flavor milk shake",
+      "brand": "Hershey's",
+      "quantity": "180 ml"
+    },
+    {
+      "category": "hersheys",
+      "code": "6942836715182",
+      "name": "Hersheys syrup indulgent caramel flavor",
+      "brand": "",
+      "quantity": "623 g"
+    },
+    {
+      "category": "hersheys",
+      "code": "6942836717957",
+      "name": "Cream Milk Chocolate",
+      "brand": "HERSHEY'S",
+      "quantity": "40g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "28853301006297",
+      "name": "Wiskas in gravy",
+      "brand": "Mars international India PVT. LTD.",
+      "quantity": "12 x 85 g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "5000159544917",
+      "name": "Bounty",
+      "brand": "",
+      "quantity": "57g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "50166480",
+      "name": "Twix",
+      "brand": "Mars",
+      "quantity": "20g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8452433000232",
+      "name": "Snickers Almond",
+      "brand": "Snickers,Mars",
+      "quantity": "20g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433001932",
+      "name": "Mars Miniatures Chocolates - Irresistible Treats",
+      "brand": "Mars",
+      "quantity": "8*10 gm"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433002014",
+      "name": "Bounty Miniatures",
+      "brand": null,
+      "quantity": "130g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433003882",
+      "name": "Galaxy Milk Chocolate with Fruit & Nut",
+      "brand": "Galaxy,Mars",
+      "quantity": "100 g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433003998",
+      "name": "Kesar Pista",
+      "brand": "Snickers",
+      "quantity": "42 g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433005398",
+      "name": "Snickers Miniatures",
+      "brand": "Snickers",
+      "quantity": "132g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433005411",
+      "name": "Snickers 13x Family treats",
+      "brand": "Snickers",
+      "quantity": "156g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433005787",
+      "name": "Galaxy Milk Chocolate Smooth Milk",
+      "brand": "Galaxy,Mars",
+      "quantity": "30g"
+    },
+    {
+      "category": "snickers-mars",
+      "code": "8902433007699",
+      "name": "Snickers miniatures",
+      "brand": "Snickers",
+      "quantity": "120g"
+    },
+    {
+      "category": "ferrero",
+      "code": "0077855496555",
+      "name": "nutella",
+      "brand": "nutella",
+      "quantity": "825 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "75267857",
+      "name": "Nutella",
+      "brand": "nutella",
+      "quantity": "1kg"
+    },
+    {
+      "category": "ferrero",
+      "code": "8000500289495",
+      "name": "H",
+      "brand": "Nutella",
+      "quantity": "825 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "8000500437162",
+      "name": "kinder joy happiness times",
+      "brand": "kider Joy",
+      "quantity": "61.4"
+    },
+    {
+      "category": "ferrero",
+      "code": "8000500437186",
+      "name": "Kinder happiness times",
+      "brand": "kider Joy",
+      "quantity": "122.8"
+    },
+    {
+      "category": "ferrero",
+      "code": "80972945",
+      "name": "Kinder joy",
+      "brand": "Kinder",
+      "quantity": "20g"
+    },
+    {
+      "category": "ferrero",
+      "code": "8000500394847",
+      "name": "Kinder Joy",
+      "brand": "Ferrero",
+      "quantity": "60 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "80135890",
+      "name": "Kinder joy boy",
+      "brand": "Ferrero",
+      "quantity": "20 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "8000500225615",
+      "name": "Nutella Ferrero",
+      "brand": "Nutella,Ferrero",
+      "quantity": "290 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "3017620425035",
+      "name": "Nutella",
+      "brand": "Nutella, FERRERO FRANCE COMMERCIALE",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "ferrero",
+      "code": "4008400351926",
+      "name": "Hanuta Minis",
+      "brand": "Ferrero",
+      "quantity": "200 g"
+    },
+    {
+      "category": "ferrero",
+      "code": "5020411121182",
+      "name": "Nutella & Go!",
+      "brand": "Nutella",
+      "quantity": "48 g"
+    },
+    {
+      "category": "sprite",
+      "code": "0001193432309",
+      "name": "Sprite",
+      "brand": null,
+      "quantity": "750"
+    },
+    {
+      "category": "sprite",
+      "code": "8901764032608",
+      "name": "sprite",
+      "brand": "Sprite",
+      "quantity": "1"
+    },
+    {
+      "category": "sprite",
+      "code": "8901764038877",
+      "name": "sprite",
+      "brand": "sprite",
+      "quantity": "750ml"
+    },
+    {
+      "category": "sprite",
+      "code": "8901764031250",
+      "name": "Sprite Lemon drink 300ml can",
+      "brand": "Sprite",
+      "quantity": "300ml"
+    },
+    {
+      "category": "sprite",
+      "code": "8000500407349",
+      "name": "Tic Tac Sprite",
+      "brand": "Tic Tac",
+      "quantity": "9.7 grams"
+    },
+    {
+      "category": "sprite",
+      "code": "8901764032301",
+      "name": "Sprite",
+      "brand": "Sprite",
+      "quantity": "1 L"
+    },
+    {
+      "category": "sprite",
+      "code": "8901764032806",
+      "name": "Sprite",
+      "brand": "Sprite",
+      "quantity": "1.25L"
+    },
+    {
+      "category": "sprite",
+      "code": "8992761002022",
+      "name": "Sprite 390ml",
+      "brand": "Sprite",
+      "quantity": "390ml"
+    },
+    {
+      "category": "sprite",
+      "code": "4901560032301",
+      "name": "Sprite 1ltr",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "sprite",
+      "code": "8901764031106",
+      "name": "Sprite",
+      "brand": "Sprite",
+      "quantity": null
+    },
+    {
+      "category": "sprite",
+      "code": "8901764031182",
+      "name": "Sprite",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "sprite",
+      "code": "8901764032158",
+      "name": "Sprite",
+      "brand": "Sprite",
+      "quantity": null
+    },
+    {
+      "category": "fanta",
+      "code": "6278814367808",
+      "name": "Fanta",
+      "brand": "Fanta",
+      "quantity": "1"
+    },
+    {
+      "category": "fanta",
+      "code": "8901764022906",
+      "name": "fanta",
+      "brand": "Fanta",
+      "quantity": "2.25 L"
+    },
+    {
+      "category": "fanta",
+      "code": "3948764022913",
+      "name": "Fanta Orange",
+      "brand": "Fanta",
+      "quantity": "Pepsi cold drink produced & Litchi,water 1ltr"
+    },
+    {
+      "category": "fanta",
+      "code": "8906000379134",
+      "name": "Orange",
+      "brand": "Fanta",
+      "quantity": "750ml"
+    },
+    {
+      "category": "fanta",
+      "code": "3948764022272",
+      "name": "Fanta",
+      "brand": "Fanta",
+      "quantity": null
+    },
+    {
+      "category": "fanta",
+      "code": "3948764022708",
+      "name": "FANTA",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "fanta",
+      "code": "8901764132919",
+      "name": "Fanta Apple Delite",
+      "brand": "Fanta",
+      "quantity": ""
+    },
+    {
+      "category": "fanta",
+      "code": "89000571",
+      "name": null,
+      "brand": "Fanta",
+      "quantity": null
+    },
+    {
+      "category": "fanta",
+      "code": "8904422703988",
+      "name": null,
+      "brand": "Fanta",
+      "quantity": null
+    },
+    {
+      "category": "thums-up",
+      "code": "0081200040300",
+      "name": "Thums Up",
+      "brand": "Thumsup",
+      "quantity": "1 ltr"
+    },
+    {
+      "category": "thums-up",
+      "code": "4901263042270",
+      "name": "Thums up 759 ml",
+      "brand": null,
+      "quantity": "52"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764041488",
+      "name": "Thums Up Charged Berry Bolt Energy Drink 300ml",
+      "brand": "thums up",
+      "quantity": "300 ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764042706",
+      "name": "Thumsup",
+      "brand": "Cola",
+      "quantity": "740ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764042935",
+      "name": "Thums up",
+      "brand": null,
+      "quantity": "8 x 250 ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764048319",
+      "name": "Charged berry bolt",
+      "brand": "Thums Up",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "3948764042508",
+      "name": "Thums Up",
+      "brand": "Thums Up",
+      "quantity": "2 L"
+    },
+    {
+      "category": "thums-up",
+      "code": "3948764042911",
+      "name": "thums up",
+      "brand": "thumsup",
+      "quantity": "250ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764042911",
+      "name": "Thums up",
+      "brand": "Thums up",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "8901764972065",
+      "name": "Thums Up",
+      "brand": "Thums Up",
+      "quantity": "250ml"
+    },
+    {
+      "category": "thums-up",
+      "code": "0940204042706",
+      "name": "ThumsUp",
+      "brand": "ThumsUp",
+      "quantity": null
+    },
+    {
+      "category": "thums-up",
+      "code": "3064860042904",
+      "name": "Thums up 2.25L",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "7up",
+      "code": "0949602304119",
+      "name": "7up",
+      "brand": "",
+      "quantity": "1"
+    },
+    {
+      "category": "7up",
+      "code": "19020808",
+      "name": "7up Nimbooz",
+      "brand": "7up,PepsiCo Inc.",
+      "quantity": "250ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080304097",
+      "name": "Frooti FOR MKT ADDS",
+      "brand": "7UP",
+      "quantity": "600ML"
+    },
+    {
+      "category": "7up",
+      "code": "8902080305025",
+      "name": "7up 250ml can",
+      "brand": null,
+      "quantity": "250 ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080003075",
+      "name": "nimbooz",
+      "brand": "7up",
+      "quantity": "345ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080304349",
+      "name": "7up 2.25",
+      "brand": "7up",
+      "quantity": "99"
+    },
+    {
+      "category": "7up",
+      "code": "8902080000425",
+      "name": "Nimbooz",
+      "brand": "7up",
+      "quantity": "250ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080002290",
+      "name": "7up",
+      "brand": "PepsiCo",
+      "quantity": "500 ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080334179",
+      "name": "Nimbooz",
+      "brand": "7up",
+      "quantity": "350ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080002283",
+      "name": "7up",
+      "brand": "PepsiCo Inc.",
+      "quantity": "400ml"
+    },
+    {
+      "category": "7up",
+      "code": "8902080304059",
+      "name": "7up Super Duper 750ml",
+      "brand": "PepsiCo",
+      "quantity": "16"
+    },
+    {
+      "category": "7up",
+      "code": "8902080334049",
+      "name": "7Up Nimbooz",
+      "brand": "7Up",
+      "quantity": ""
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080204052",
+      "name": "Mirinda orange Flavour 750ml",
+      "brand": "Mirinda",
+      "quantity": "24"
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080204083",
+      "name": "mirinda 2 ltr",
+      "brand": "pepsico india pvt ltd",
+      "quantity": "2 ltr"
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080205028",
+      "name": "Mirinda 300ml can",
+      "brand": "mirinda",
+      "quantity": "2"
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080001170",
+      "name": "Mirinda",
+      "brand": "Pepsico",
+      "quantity": "475 ml"
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080204021",
+      "name": "Mirinda",
+      "brand": "Mirinda, PepsiCo Inc.",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080204588",
+      "name": "8902080204588",
+      "brand": "Mirinda",
+      "quantity": null
+    },
+    {
+      "category": "mirinda",
+      "code": "8902080205042",
+      "name": "Mirinda can 330ml",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364053",
+      "name": "Mountain Dew",
+      "brand": "Pepsico",
+      "quantity": "750"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364022",
+      "name": "Mountain Dew",
+      "brand": "PepsiCo",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364343",
+      "name": "Mountain dew 2ltr",
+      "brand": "mountaindew,Pepsico",
+      "quantity": "2.25"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364589",
+      "name": "Mountain Dew",
+      "brand": "PepsiCo",
+      "quantity": "400 ml"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364596",
+      "name": "Mountain Dew",
+      "brand": "Dew",
+      "quantity": "1"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364565",
+      "name": "Mountain Dew",
+      "brand": "MEWATI 🔔",
+      "quantity": "1.25 l"
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080001798",
+      "name": "mountain dew",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080003020",
+      "name": "Mountain Dew 6p",
+      "brand": "Mountain Dew",
+      "quantity": null
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364084",
+      "name": "Mountain Dew",
+      "brand": "Pepsico",
+      "quantity": ""
+    },
+    {
+      "category": "mountain-dew",
+      "code": "8902080364091",
+      "name": "Mountain Dew",
+      "brand": "PepsiCo",
+      "quantity": ""
+    },
+    {
+      "category": "slice",
+      "code": "8902080001521",
+      "name": "Slice",
+      "brand": "Slice, Pepsico",
+      "quantity": "200ml"
+    },
+    {
+      "category": "slice",
+      "code": "8906069400626",
+      "name": "Veeba Pizza on a Slice Sandwich Spread",
+      "brand": "veeba",
+      "quantity": "310 gm"
+    },
+    {
+      "category": "slice",
+      "code": "8902080000722",
+      "name": "Slice",
+      "brand": "Pepsico",
+      "quantity": "125 ml"
+    },
+    {
+      "category": "slice",
+      "code": "8902080404094",
+      "name": "Mango Slice",
+      "brand": "PepsiCo",
+      "quantity": "600ml"
+    },
+    {
+      "category": "slice",
+      "code": "8902080404575",
+      "name": "Mango Slice 1.75ltr",
+      "brand": "PepsiCo Inc.",
+      "quantity": "29"
+    },
+    {
+      "category": "slice",
+      "code": "8902080404025",
+      "name": "Slice",
+      "brand": "Slice",
+      "quantity": "250ml"
+    },
+    {
+      "category": "slice",
+      "code": "8902080404117",
+      "name": "slice",
+      "brand": "PEPSICO INDIA HOLDINGS PVT LTD.",
+      "quantity": "1.2kg"
+    },
+    {
+      "category": "slice",
+      "code": "8904083310112",
+      "name": "Cheese Slice",
+      "brand": "Milky Mist",
+      "quantity": "100 g"
+    },
+    {
+      "category": "slice",
+      "code": "8906070390343",
+      "name": "Slice came",
+      "brand": "Royal",
+      "quantity": "40gms"
+    },
+    {
+      "category": "slice",
+      "code": "8901063401143",
+      "name": "BRITANIA CHEESE SLICE",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "slice",
+      "code": "8904474000462",
+      "name": "Prime Time White Slice Bread",
+      "brand": "Bonn",
+      "quantity": ""
+    },
+    {
+      "category": "slice",
+      "code": "8906006852082",
+      "name": "Red Velvet Ice Cream Cake Slice",
+      "brand": "Baskin Robins",
+      "quantity": null
+    },
+    {
+      "category": "frooti",
+      "code": "0890257900136",
+      "name": "Good Frooti 125 ml Tetra Pack",
+      "brand": "frooti",
+      "quantity": "125 ml"
+    },
+    {
+      "category": "frooti",
+      "code": "4908278001605",
+      "name": "Frooti",
+      "brand": null,
+      "quantity": "1l"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579002763",
+      "name": "Buy Frooti 40 pcs*125 ml Tetra Pack - Stock Up on Mango Juice",
+      "brand": "frooti",
+      "quantity": "40*125 ml"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579103187",
+      "name": "Frooti Mango Drink 1.2ltr",
+      "brand": null,
+      "quantity": "15"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579107017",
+      "name": "Frooti",
+      "brand": null,
+      "quantity": "2 l"
+    },
+    {
+      "category": "frooti",
+      "code": "8941158064617",
+      "name": "Mango Fruit Drink",
+      "brand": "RD,Frooti Plus",
+      "quantity": "500ml"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579001360",
+      "name": "Frooti 125ml",
+      "brand": "Frooti",
+      "quantity": "125 ml"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579001605",
+      "name": "Frooti mango drink",
+      "brand": null,
+      "quantity": "1"
+    },
+    {
+      "category": "frooti",
+      "code": "8902579103354",
+      "name": "Frooti",
+      "brand": "Frooti",
+      "quantity": ""
+    },
+    {
+      "category": "frooti",
+      "code": "8902579228170",
+      "name": "Frooti mango drink",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "frooti",
+      "code": "8902579001599",
+      "name": "Frooti",
+      "brand": "",
+      "quantity": ""
+    },
+    {
+      "category": "appy",
+      "code": "8902579001438",
+      "name": "Appy Fizz",
+      "brand": "Appy",
+      "quantity": "125 ml"
+    },
+    {
+      "category": "appy",
+      "code": "8902579131005",
+      "name": "Appy Fizz",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "appy",
+      "code": "8902579131029",
+      "name": "fizz",
+      "brand": "Appy Fizz",
+      "quantity": ""
+    },
+    {
+      "category": "appy",
+      "code": "9907179008046",
+      "name": "appy fizz",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "appy",
+      "code": "8902579002121",
+      "name": "Appy Fizz",
+      "brand": "Appy Fuzz",
+      "quantity": null
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002030",
+      "name": "Tropicana Apple Delight juice",
+      "brand": "Trooicana",
+      "quantity": "180 mL"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002047",
+      "name": "Tropicana guava",
+      "brand": "Tropicana",
+      "quantity": "180ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002054",
+      "name": "Tropicana Litchi Delight",
+      "brand": "PepsiCo",
+      "quantity": "180ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002689",
+      "name": "APPLETINI",
+      "brand": "Tropicana",
+      "quantity": "180ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002801",
+      "name": "tropicana fratz mixed fruit magic",
+      "brand": "tropicana",
+      "quantity": "1lt"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080013869",
+      "name": "Pomegranate juice",
+      "brand": "Tropicana",
+      "quantity": "1 l"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080001439",
+      "name": "guava delight",
+      "brand": "Tropicana",
+      "quantity": "200 ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080013395",
+      "name": "Tropicana Mixed Fruit Delight 1ltr Juice",
+      "brand": "Tropicana",
+      "quantity": "24"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002023",
+      "name": "Mixed Fruit Delight",
+      "brand": "Tropicana",
+      "quantity": "180 ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002085",
+      "name": "Tropicana Orange Delight 180ml",
+      "brand": "Tropicana",
+      "quantity": "180ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002733",
+      "name": "Tropicana Fruitz Mixed Fruit Magic",
+      "brand": "Tropicana",
+      "quantity": "180ml"
+    },
+    {
+      "category": "tropicana",
+      "code": "8902080002771",
+      "name": "Tropicana Fruitz",
+      "brand": "Pepsico,Tropicana",
+      "quantity": "500ml"
+    },
+    {
+      "category": "real-juice",
+      "code": "0941247444052",
+      "name": "ROGHAN BADAM SHIREEN",
+      "brand": "Dabur",
+      "quantity": "100g"
+    },
+    {
+      "category": "real-juice",
+      "code": "3948207035500",
+      "name": "Dabur Homemade",
+      "brand": null,
+      "quantity": "200"
+    },
+    {
+      "category": "real-juice",
+      "code": "3948207040337",
+      "name": "Dabur chyawanprash",
+      "brand": null,
+      "quantity": "950"
+    },
+    {
+      "category": "real-juice",
+      "code": "6901247038402",
+      "name": "dabur amla",
+      "brand": "dabur",
+      "quantity": "450ml"
+    },
+    {
+      "category": "real-juice",
+      "code": "8809111630258",
+      "name": "Peace Juice Drink With Real Fruit Pulp",
+      "brand": "T'Best",
+      "quantity": "238ml"
+    },
+    {
+      "category": "real-juice",
+      "code": "89009741",
+      "name": "Dabur Lal Dant Manjan Tooth Powder",
+      "brand": "Dabur",
+      "quantity": "50g"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207001321",
+      "name": "Dabur Keora Water 250 ml",
+      "brand": "dabur",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207001826",
+      "name": "Nature care isabgol",
+      "brand": "Dabur",
+      "quantity": "375 g"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207005374",
+      "name": "Honey",
+      "brand": "Dabur",
+      "quantity": "100"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207005671",
+      "name": "Dabur Chyawanprash",
+      "brand": "Dabur",
+      "quantity": "900g"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207013973",
+      "name": "Dabur Ratnaprash",
+      "brand": "Dabur",
+      "quantity": "900g"
+    },
+    {
+      "category": "real-juice",
+      "code": "8901207017889",
+      "name": "Dabur Vatik ENRICHE with HIBISCUS",
+      "brand": null,
+      "quantity": "300ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080600616",
+      "name": "Alphonso Mango",
+      "brand": "paper boat",
+      "quantity": "150ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080601477",
+      "name": "paper boat till chakki",
+      "brand": "paper boat",
+      "quantity": "800"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080602672",
+      "name": "Paper boat Slurpy Mango 750ml pet",
+      "brand": null,
+      "quantity": "3"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080602818",
+      "name": "Paper boat pomegranate 600ml",
+      "brand": "paper boat",
+      "quantity": "200"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080602832",
+      "name": "Swing paper boat (lush lychee)",
+      "brand": null,
+      "quantity": "600ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080603914",
+      "name": "Swing pomegranate",
+      "brand": "Paper boat",
+      "quantity": "250ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8908001705127",
+      "name": "Paper boat jamun",
+      "brand": "Paper boat",
+      "quantity": "200ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8908001705752",
+      "name": "Aamras Juice",
+      "brand": "Paperboat",
+      "quantity": "1"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080600982",
+      "name": "Jus de mangue",
+      "brand": "Paper boat",
+      "quantity": "180ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080600067",
+      "name": "Chikki",
+      "brand": "paper boat",
+      "quantity": "31 g"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080600180",
+      "name": "Paper Boat Apple Drink 150ml",
+      "brand": "Paper Boat",
+      "quantity": "150 ml"
+    },
+    {
+      "category": "paperboat",
+      "code": "8906080600647",
+      "name": "Santra",
+      "brand": "paper boat",
+      "quantity": "1L(1000ml)"
+    },
+    {
+      "category": "mtr",
+      "code": "4901448954176",
+      "name": "Mtr idli dosa chilly chutney power",
+      "brand": "",
+      "quantity": "200g"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954523",
+      "name": "Mtr Rava Idli 200 gm",
+      "brand": "mtr",
+      "quantity": "200 gm"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954639",
+      "name": "Dhokla",
+      "brand": "Mtr",
+      "quantity": "200 gm"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954653",
+      "name": "Mtr vada",
+      "brand": "1",
+      "quantity": "200g"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954677",
+      "name": "Badam drink mix",
+      "brand": "MTR",
+      "quantity": "500g"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954721",
+      "name": "Sambar Powder",
+      "brand": "MTR",
+      "quantity": "100 g"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954844",
+      "name": "jeera powder",
+      "brand": "MTR",
+      "quantity": "100g"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042954899",
+      "name": "Mtr Biryani/Pulav Masala Piece",
+      "brand": "MTR",
+      "quantity": "1 unit"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042962283",
+      "name": "Mtr Sweet Surprise 1 kg",
+      "brand": "mtr",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042962566",
+      "name": "MTR Vermicelli Payasam",
+      "brand": "mtr",
+      "quantity": "180 gm"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042963907",
+      "name": "Mtr Dosa 1 kg",
+      "brand": "mtr",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "mtr",
+      "code": "8901042964430",
+      "name": "MTR Oats Idli 500 gm",
+      "brand": "mtr",
+      "quantity": "500 gm"
+    },
+    {
+      "category": "gits",
+      "code": "5090006535250",
+      "name": "gulab jamun mix",
+      "brand": "gits",
+      "quantity": "250 g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155301443",
+      "name": "gits gulabi jamun",
+      "brand": "gits",
+      "quantity": "1kg"
+    },
+    {
+      "category": "gits",
+      "code": "8901155305359",
+      "name": "gits mini gulab jamun",
+      "brand": "Gits",
+      "quantity": "225 gram"
+    },
+    {
+      "category": "gits",
+      "code": "9907455093124",
+      "name": "dal palak",
+      "brand": "Gits",
+      "quantity": "300g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155101111",
+      "name": "Gulab Jamun mix",
+      "brand": "Gits",
+      "quantity": "100g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155101210",
+      "name": "Gulab Jamun",
+      "brand": "Gits",
+      "quantity": "200 g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155910126",
+      "name": "Vermicilli",
+      "brand": "Gits",
+      "quantity": "85 g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155102217",
+      "name": "Rice Idli",
+      "brand": "Gits",
+      "quantity": "200 g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155106550",
+      "name": "Khatta Dhokla",
+      "brand": "Gits",
+      "quantity": "200 g"
+    },
+    {
+      "category": "gits",
+      "code": "8901155113114",
+      "name": "Gits vermicelli kheer",
+      "brand": "1",
+      "quantity": null
+    },
+    {
+      "category": "kelloggs",
+      "code": "00012139",
+      "name": "Kellogg's fruit loops",
+      "brand": "Kellogg's",
+      "quantity": "250g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499008688",
+      "name": "kellogg's real strawberry puree corn flakes 575 gm (box)",
+      "brand": "Kellogg's",
+      "quantity": "575 gm"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499009135",
+      "name": "Corn Flakes Original",
+      "brand": "Kellogg's",
+      "quantity": "251"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499009500",
+      "name": "8901499009500",
+      "brand": "Kellogg's",
+      "quantity": "22g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499009968",
+      "name": "kellogg's multigrain chocos webs 300 gm (box)",
+      "brand": "Kellogg's",
+      "quantity": "300 gm"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499010469",
+      "name": "Kellogg's muesli nuts delight",
+      "brand": "Kellogg's",
+      "quantity": "500"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499010711",
+      "name": "Kellogg'sCHOCOS",
+      "brand": "Kellogg's",
+      "quantity": "250g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499010728",
+      "name": "Kellogg's chocos",
+      "brand": "Kellogg's",
+      "quantity": "385"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499011466",
+      "name": "Corn Flakes Real Almond Honey",
+      "brand": "Kellogg's",
+      "quantity": "180g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499012005",
+      "name": "Kellogg's chacos",
+      "brand": "Kellogg's",
+      "quantity": "170g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8901499025951",
+      "name": "Millet Muesli",
+      "brand": "Kellogg's",
+      "quantity": "400g"
+    },
+    {
+      "category": "kelloggs",
+      "code": "8908018045070",
+      "name": "Disney chocos pack of 6",
+      "brand": null,
+      "quantity": "26"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491003186",
+      "name": "Quaker otas",
+      "brand": null,
+      "quantity": "400g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491100304",
+      "name": "Oats",
+      "brand": "Quaker",
+      "quantity": "1.2kg"
+    },
+    {
+      "category": "quaker",
+      "code": "4901198103794",
+      "name": "Quaker Oats",
+      "brand": "Quaker",
+      "quantity": "40 g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491002196",
+      "name": "Oats Muesli",
+      "brand": "Quaker",
+      "quantity": "700g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491002820",
+      "name": "Oats Muesli Fruit & Nut",
+      "brand": "Pepsico,Quaker",
+      "quantity": "160g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491702546",
+      "name": "Oats Multigrain",
+      "brand": "Quaker",
+      "quantity": "600g"
+    },
+    {
+      "category": "quaker",
+      "code": "5000108478119",
+      "name": "Quaker White Oats",
+      "brand": "Quaker",
+      "quantity": "1.73 - 3.00"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491001243",
+      "name": "Oats with Flavour Mix",
+      "brand": "Quaker",
+      "quantity": "200g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491100106",
+      "name": "Rolled Oats (Natural Wholegrain)",
+      "brand": "Quaker",
+      "quantity": "1kg"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491100243",
+      "name": "Rolled Oats",
+      "brand": "Quaker",
+      "quantity": "500g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491103794",
+      "name": "Quaker Oats",
+      "brand": "Pepsico, Quaker",
+      "quantity": "400g"
+    },
+    {
+      "category": "quaker",
+      "code": "8901491103800",
+      "name": "Oats",
+      "brand": "Quaker",
+      "quantity": "1kg"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109400421",
+      "name": "Coconut Oil",
+      "brand": "Patanjali",
+      "quantity": "200ml"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109400667",
+      "name": "Soundarya sabun",
+      "brand": "Patanjali",
+      "quantity": "75g"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109400902",
+      "name": "Patanjali soyabin oil",
+      "brand": null,
+      "quantity": "2"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109401268",
+      "name": "Toothbrush",
+      "brand": "Patanjali",
+      "quantity": "80g"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109411120",
+      "name": "Patanjali Whole Wheat Atta 10Kg Pc",
+      "brand": "Patanjali",
+      "quantity": "10 kg"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109411144",
+      "name": "Patanjali Chakki Atta 5 kg",
+      "brand": "Patanjali",
+      "quantity": "5 kg"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109430022",
+      "name": "AYURVED LTD.",
+      "brand": "patanjali",
+      "quantity": "100g"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109440076",
+      "name": "Patanjali Honey 500Gms",
+      "brand": "Patanjali",
+      "quantity": "500 g"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109445330",
+      "name": "Patanjali Amla Aloe Litchi Juice 65 ml",
+      "brand": "Patanjali",
+      "quantity": "65 ml"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109460135",
+      "name": "Patanjali Lauki Amla Juice 1Ltr",
+      "brand": "Patanjali",
+      "quantity": "1 l"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109460234",
+      "name": "Patanjali Honey 250Ml",
+      "brand": "Patanjali",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "patanjali",
+      "code": "8904109463174",
+      "name": "Patanjali Super Dishwash Gel",
+      "brand": "Patanjali",
+      "quantity": "250ml"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725001070",
+      "name": "Aashirvaad Double Roasted Suji Rava",
+      "brand": "ITC",
+      "quantity": "500g"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725006679",
+      "name": "Atta with Multigrains kg",
+      "brand": "Aashirvaad",
+      "quantity": "5.5 kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725006686",
+      "name": "Aashirvaad Besan 1 kg",
+      "brand": "itc limited",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725100346",
+      "name": "Aashirvaad ghee",
+      "brand": "",
+      "quantity": "500g"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725114039",
+      "name": "aashirwad",
+      "brand": null,
+      "quantity": "60"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725118358",
+      "name": "Aashirvaad Multigrain Atta 5 kg",
+      "brand": "itc limited",
+      "quantity": "5 kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725121112",
+      "name": "Aashirvaad Atta",
+      "brand": "Aashirvaad",
+      "quantity": "10kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725121143",
+      "name": "Aashirvaad whole wheat atta",
+      "brand": "Aashirvaad",
+      "quantity": "1kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725121211",
+      "name": "Aashirvaad Select MP Sharbati atta",
+      "brand": "Aashirvaad",
+      "quantity": "10 kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725125264",
+      "name": "Aashirvaad coriander powder",
+      "brand": "Aashirvaad",
+      "quantity": "200g"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8909081005558",
+      "name": "Aashirvaad Salt",
+      "brand": null,
+      "quantity": "1 kg"
+    },
+    {
+      "category": "aashirvaad",
+      "code": "8901725100339",
+      "name": "Svasti pure cow ghee",
+      "brand": "Aashirvaad",
+      "quantity": "200ml"
+    },
+    {
+      "category": "fortune",
+      "code": "0003008811463",
+      "name": "Fortune Sugar",
+      "brand": null,
+      "quantity": "1kg"
+    },
+    {
+      "category": "fortune",
+      "code": "0006505088420",
+      "name": "Fortune soya chunks",
+      "brand": "Fortune",
+      "quantity": "200 g"
+    },
+    {
+      "category": "fortune",
+      "code": "0926997283205",
+      "name": "Fortune biryani spe basmati rice 1 kg",
+      "brand": null,
+      "quantity": "1 kg"
+    },
+    {
+      "category": "fortune",
+      "code": "19060088",
+      "name": "Fortune pro expert per oil",
+      "brand": "",
+      "quantity": "1l"
+    },
+    {
+      "category": "fortune",
+      "code": "3589008712001",
+      "name": "Fortune export total balance oil 5l",
+      "brand": null,
+      "quantity": "5ltr"
+    },
+    {
+      "category": "fortune",
+      "code": "4906400009444",
+      "name": "Fortune kachi ghani mustard",
+      "brand": null,
+      "quantity": "500 ml"
+    },
+    {
+      "category": "fortune",
+      "code": "4916534287045",
+      "name": "Besan",
+      "brand": "Fortune",
+      "quantity": "1kg"
+    },
+    {
+      "category": "fortune",
+      "code": "8146007283090",
+      "name": "Fortune mini soya chunks",
+      "brand": "Fortune",
+      "quantity": "200"
+    },
+    {
+      "category": "fortune",
+      "code": "8906007280020",
+      "name": "Fortune oil",
+      "brand": "",
+      "quantity": "500 ml"
+    },
+    {
+      "category": "fortune",
+      "code": "8906007280037",
+      "name": "Fortune Soya Health Refined Oil",
+      "brand": "Fortune",
+      "quantity": "1 l"
+    },
+    {
+      "category": "fortune",
+      "code": "8906007280044",
+      "name": "Fortune Oil",
+      "brand": null,
+      "quantity": "1l"
+    },
+    {
+      "category": "fortune",
+      "code": "8906007280310",
+      "name": "fortune sun lite sunflower oil 15 litre",
+      "brand": "fortune",
+      "quantity": "15 L"
+    },
+    {
+      "category": "saffola",
+      "code": "0041218716581",
+      "name": "Saffola Gold 5 Ltr(40)",
+      "brand": null,
+      "quantity": "5 Ltr"
+    },
+    {
+      "category": "saffola",
+      "code": "16121816",
+      "name": "honey",
+      "brand": "Saffola",
+      "quantity": "1kg"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088000765",
+      "name": "Saffola Total Oil 2 Ltr",
+      "brand": "Saffola",
+      "quantity": "2 ltr"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088000772",
+      "name": "Saffola Total Oil 5 Ltr",
+      "brand": "Saffola",
+      "quantity": "5 ltr"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088000994",
+      "name": "Saffola testy + oil 5lt",
+      "brand": null,
+      "quantity": "5lt"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088017411",
+      "name": "Saffola gold Blended oil 5 l",
+      "brand": "Saffola",
+      "quantity": "3"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088034616",
+      "name": "Saffola active",
+      "brand": "",
+      "quantity": "500 l pet"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088050562",
+      "name": "Saffola Oats",
+      "brand": "Saffola",
+      "quantity": "400g"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088068673",
+      "name": "Saffola Yummy Masala Oodles",
+      "brand": "Saffola",
+      "quantity": "53 gm"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088069090",
+      "name": "Saffola Honey 500 gm",
+      "brand": "Saffola",
+      "quantity": "500 gm"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088069120",
+      "name": "Saffola Honey Active",
+      "brand": "Saffola",
+      "quantity": "1kg"
+    },
+    {
+      "category": "saffola",
+      "code": "8901088072267",
+      "name": "Soya Chunks",
+      "brand": "Saffola",
+      "quantity": "1 Kg"
+    },
+    {
+      "category": "tata",
+      "code": "19082905",
+      "name": "Moong chilka",
+      "brand": "Tata sampann",
+      "quantity": "500 gm"
+    },
+    {
+      "category": "tata",
+      "code": "30010383",
+      "name": "BB Popular Raw Peanuts",
+      "brand": "BigBasket,Tata",
+      "quantity": "1kg"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000098",
+      "name": "Tata tea gold",
+      "brand": "Tata tea",
+      "quantity": "1kg"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000722",
+      "name": "TATA Tea Premium",
+      "brand": "TATA Tea",
+      "quantity": "100 tea bags"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000807",
+      "name": "TATA GOLD",
+      "brand": null,
+      "quantity": "250g"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000906",
+      "name": "Tata tea Gold",
+      "brand": "Tata Tea",
+      "quantity": "500g"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000913",
+      "name": "Gold Tata tea 1kg",
+      "brand": "Tata Tea",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "tata",
+      "code": "8901052000920",
+      "name": "Tata Tea Gold 1 kg (10 pack*100 gm)",
+      "brand": "tata",
+      "quantity": "10 pack*100 gm"
+    },
+    {
+      "category": "tata",
+      "code": "8901052003723",
+      "name": "Tata tea gold",
+      "brand": null,
+      "quantity": "500g"
+    },
+    {
+      "category": "tata",
+      "code": "8901052003839",
+      "name": "Tata Tea Agni",
+      "brand": "Tata Tea",
+      "quantity": "40g"
+    },
+    {
+      "category": "tata",
+      "code": "8901052003846",
+      "name": "Strong leaf tea",
+      "brand": "Tata tea",
+      "quantity": "1kg"
+    },
+    {
+      "category": "tata",
+      "code": "8901052004652",
+      "name": "Tata tea premium",
+      "brand": "Tata tea",
+      "quantity": "250g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "4901069901153",
+      "name": "nestlelactogen formula 1",
+      "brand": "Nestlé",
+      "quantity": "400g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "6294003572181",
+      "name": "Nescafe 3 in 1 Classic",
+      "brand": "Nescafe",
+      "quantity": "800g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "89005750",
+      "name": "Nescafe All in 1 Coffee 16 gm Pouch",
+      "brand": "Nestlé",
+      "quantity": "16 gm"
+    },
+    {
+      "category": "nestle-other",
+      "code": "89006511",
+      "name": "classic chocolate",
+      "brand": "nestle",
+      "quantity": "1 18g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058001983",
+      "name": "Nescafe All in 1 Frappe Coffee - Instant Refreshment",
+      "brand": "Nestlé",
+      "quantity": "28 gm"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058003802",
+      "name": "Nestle Everyday Dairy Whitener 15g",
+      "brand": "Nestle",
+      "quantity": "15g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058004700",
+      "name": "Nescafe classic Coffee",
+      "brand": "Nescafé",
+      "quantity": "90g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058004816",
+      "name": "Nestle class",
+      "brand": "chocolate",
+      "quantity": "120g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058005752",
+      "name": "a+ masala millet",
+      "brand": "Nestle la laitiere",
+      "quantity": "40g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058007473",
+      "name": "SUNRISE RS.10",
+      "brand": "Nescafe",
+      "quantity": "8g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058011371",
+      "name": "Nestle Cerelac",
+      "brand": "Nestle",
+      "quantity": "350g"
+    },
+    {
+      "category": "nestle-other",
+      "code": "8901058016895",
+      "name": "Nescafe Classic Coffee",
+      "brand": "Nestlé",
+      "quantity": "144 units*0.9 gm"
+    },
+    {
+      "category": "bru",
+      "code": "8901030080319",
+      "name": "Bru original",
+      "brand": null,
+      "quantity": "5"
+    },
+    {
+      "category": "bru",
+      "code": "8901030373916",
+      "name": "Bru Gold",
+      "brand": "Hindustan Unilever Brand",
+      "quantity": "50 g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030625381",
+      "name": "bru coffee",
+      "brand": "BRU",
+      "quantity": "100"
+    },
+    {
+      "category": "bru",
+      "code": "8901030646201",
+      "name": "Bru Green Lable",
+      "brand": "Bru",
+      "quantity": "16g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030646225",
+      "name": "green label bru",
+      "brand": "bRU",
+      "quantity": "500g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030774980",
+      "name": "Bru Green Label",
+      "brand": "Bru",
+      "quantity": "100 g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030935213",
+      "name": "coffee",
+      "brand": "BRU",
+      "quantity": "50g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030935237",
+      "name": "Bru Instant Coffee 200g Pouch - Rich, Smooth Coffee Anytime",
+      "brand": "bru",
+      "quantity": "200 gm"
+    },
+    {
+      "category": "bru",
+      "code": "8901030519017",
+      "name": "Bru Instant Coffee",
+      "brand": "Bru",
+      "quantity": "10g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030733994",
+      "name": "Bru Instant",
+      "brand": "Hindustan ,Unilever",
+      "quantity": "2 g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030974618",
+      "name": "BRU Gold",
+      "brand": "Hindustan Unilever Limited",
+      "quantity": "55g"
+    },
+    {
+      "category": "bru",
+      "code": "8901030986888",
+      "name": "Instant",
+      "brand": "Bru",
+      "quantity": "50 g"
+    },
+    {
+      "category": "bournvita",
+      "code": "0694600016983",
+      "name": "Bournvita",
+      "brand": "",
+      "quantity": "200g"
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202026584",
+      "name": "Bournvita Shakti 1kg pp",
+      "brand": null,
+      "quantity": "5"
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202026607",
+      "name": "Bournvita Shakti 1kg Pet",
+      "brand": "",
+      "quantity": "26"
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202309830",
+      "name": "Bournvita 200g",
+      "brand": null,
+      "quantity": "200g"
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202026447",
+      "name": "Bournvita Shakti 500g pp",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202237393",
+      "name": "Bournvita 70g",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202309885",
+      "name": "Bournvita 500g",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202319921",
+      "name": "Bournvita 750g",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202819780",
+      "name": "Bournvita biscuit",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202818516",
+      "name": "Bournvita",
+      "brand": "Bournvita",
+      "quantity": null
+    },
+    {
+      "category": "bournvita",
+      "code": "7622202026645",
+      "name": "Bournvita 14.4g pp",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030795855",
+      "name": "Horlicks Classic Malt",
+      "brand": "Horlicks",
+      "quantity": "1kg"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030795879",
+      "name": "Horlicks Classic Malt 2kg Jar",
+      "brand": null,
+      "quantity": "6"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030807138",
+      "name": "Horlicks Classic Malt",
+      "brand": "Horlicks",
+      "quantity": "200g"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030807183",
+      "name": "horlicks classic malt",
+      "brand": "Horlicks",
+      "quantity": "500g"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030807220",
+      "name": "horlicks classic malt 1kg",
+      "brand": null,
+      "quantity": "4"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030820021",
+      "name": "Junior Horlicks Vanilla flavour",
+      "brand": "Horlicks",
+      "quantity": "500g"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030824128",
+      "name": "Horlicks",
+      "brand": "Hindustan Uniliver",
+      "quantity": "20 g"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030824913",
+      "name": "Mother horlicks 500 g",
+      "brand": null,
+      "quantity": "4"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030825521",
+      "name": "Horlicks Protein Plus Chocolate Flavour",
+      "brand": "Horlicks Unilever",
+      "quantity": "200g"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030825675",
+      "name": "Horlicks Chocolate Delight Flavor 1kg (Pouch) -Perfect for All",
+      "brand": "Horlicks",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030825705",
+      "name": "Horlicks Chocolate Delight flavour 500g Cbd",
+      "brand": null,
+      "quantity": "8"
+    },
+    {
+      "category": "horlicks",
+      "code": "8901030825712",
+      "name": "Horlicks Chocolate Delight flavour 1kg CBD",
+      "brand": null,
+      "quantity": "41"
+    },
+    {
+      "category": "complan",
+      "code": "8901542000065",
+      "name": "Complan Kesar badam flavour",
+      "brand": "Complan",
+      "quantity": "500g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542000102",
+      "name": "Complan Pista Badam Flv 500g cbd",
+      "brand": null,
+      "quantity": "3"
+    },
+    {
+      "category": "complan",
+      "code": "8901542000430",
+      "name": "Complan Royale Chocolate Milk Drinks 1 kg",
+      "brand": "complan",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "complan",
+      "code": "8901542001789",
+      "name": "8901542001789",
+      "brand": "complan",
+      "quantity": "200g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542001796",
+      "name": "Explore Knowledge world",
+      "brand": "Complan",
+      "quantity": "500 g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542002298",
+      "name": "Complan",
+      "brand": "Complan",
+      "quantity": "18g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542003158",
+      "name": "Complan Rich Chocolate flavor",
+      "brand": "Complan",
+      "quantity": "75g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542000959",
+      "name": "Complan royale chocolate flavour",
+      "brand": "Complan",
+      "quantity": "500"
+    },
+    {
+      "category": "complan",
+      "code": "8901542001932",
+      "name": "Complan",
+      "brand": "Zydus Wellness",
+      "quantity": "500 g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542004285",
+      "name": "Power Play",
+      "brand": "Complan",
+      "quantity": "160ml"
+    },
+    {
+      "category": "complan",
+      "code": "8901542008764",
+      "name": "Royale Chocolate Flavour",
+      "brand": "Complan",
+      "quantity": "500 g"
+    },
+    {
+      "category": "complan",
+      "code": "8901542000027",
+      "name": "Complan",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "red-bull",
+      "code": "90415470",
+      "name": "Red bull energy drink 350ml",
+      "brand": "Red Bull",
+      "quantity": "3"
+    },
+    {
+      "category": "red-bull",
+      "code": "90448249",
+      "name": "The Red Edition Energy Drink",
+      "brand": "Redbull",
+      "quantity": "250ml"
+    },
+    {
+      "category": "red-bull",
+      "code": "90162602",
+      "name": "Red Bull Energy Drink",
+      "brand": "Red Bull",
+      "quantity": "250 ml"
+    },
+    {
+      "category": "monster",
+      "code": "4897036691427",
+      "name": "Monster Energy Drink 350ml",
+      "brand": "Monster, Monster Energy",
+      "quantity": "5"
+    },
+    {
+      "category": "monster",
+      "code": "4897036692455",
+      "name": "Monster Energy Ultra",
+      "brand": "Monster, Monster Energy",
+      "quantity": "350ml"
+    },
+    {
+      "category": "monster",
+      "code": "4897036695678",
+      "name": "Monster Energy Pipeline Punch",
+      "brand": "Monster Energy",
+      "quantity": "350ml"
+    },
+    {
+      "category": "monster",
+      "code": "5056784900093",
+      "name": "Orange Dreamsicle",
+      "brand": "Monster",
+      "quantity": "500ml"
+    },
+    {
+      "category": "monster",
+      "code": "5061013949910",
+      "name": "Energy Ultra Rosà",
+      "brand": "Monster, Monster Energy",
+      "quantity": "500ml"
+    },
+    {
+      "category": "monster",
+      "code": "4897036696040",
+      "name": "Predator Energy, Gold Strike",
+      "brand": "Monster Energy",
+      "quantity": null
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090571562",
+      "name": "Too Yumm - Multigrain Chips",
+      "brand": "RP Sanjeev Goenka Group",
+      "quantity": "1 -  25g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090572118",
+      "name": "Karare",
+      "brand": "Too yumm",
+      "quantity": "70 gm"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090572200",
+      "name": "Too Yummy!",
+      "brand": "RP - Sanjiv Goenka Group",
+      "quantity": "75 g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090574198",
+      "name": "Namkeen Bikaneri Bhujia",
+      "brand": "Too Yumm",
+      "quantity": "185g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090575607",
+      "name": "Smoking hot Bhoot Wafers",
+      "brand": "Too Yumm",
+      "quantity": "10.5 g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090572859",
+      "name": "Too Yumm! Rings - Tomato Twist",
+      "brand": "Too Yumm",
+      "quantity": "75g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090574495",
+      "name": "Karare Twisties Masala Blast",
+      "brand": "Too Yumm",
+      "quantity": "65g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090572217",
+      "name": "Too yumm",
+      "brand": "Too Yumm",
+      "quantity": "70 g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090574556",
+      "name": "Too Yumm! Namkeen - All In One",
+      "brand": "Too Yumm!",
+      "quantity": "400 g"
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090570848",
+      "name": "Veggie Sticks Sour Cream & Onion",
+      "brand": "Too Yumm",
+      "quantity": null
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090571241",
+      "name": "Multigrain Chips",
+      "brand": "Too Yumm",
+      "quantity": null
+    },
+    {
+      "category": "too-yumm",
+      "code": "8906090572941",
+      "name": "too yummi chips",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512500601",
+      "name": "ACT II Original",
+      "brand": "ACT II",
+      "quantity": "99g"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512507709",
+      "name": "ACT II Original",
+      "brand": "ACT II",
+      "quantity": "33g"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512541901",
+      "name": "BUTTER DELITE",
+      "brand": "ACT II",
+      "quantity": "70"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512558206",
+      "name": "ACT II Butter Delight flavour popcorn",
+      "brand": "ACT II",
+      "quantity": "150g"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512563002",
+      "name": "Actii Salte Popcorn",
+      "brand": "Actii",
+      "quantity": "40"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512890702",
+      "name": "Tortilla Chips",
+      "brand": "Act II",
+      "quantity": "150 gram"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512540102",
+      "name": "Act II Classic Salted",
+      "brand": "ACT II",
+      "quantity": "40g"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512540201",
+      "name": "ACT TT GOlDEN SIZZLE",
+      "brand": "ACT II",
+      "quantity": "35"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512540409",
+      "name": "chilli surprise",
+      "brand": "ACT II",
+      "quantity": "35"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512562906",
+      "name": "Act II Caramel Bliss",
+      "brand": "Act II,ConAgra",
+      "quantity": "70g"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512917805",
+      "name": "Act II Caramel Bliss",
+      "brand": "Act II",
+      "quantity": "168"
+    },
+    {
+      "category": "act-ii",
+      "code": "8901512001900",
+      "name": "ActII cheese brust",
+      "brand": null,
+      "quantity": null
+    },
+    {
+      "category": "cornitos",
+      "code": "0006612572096",
+      "name": "Cornitos crisps",
+      "brand": null,
+      "quantity": "75g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8906082572096",
+      "name": "cornitos nacho crisps sweet chili 71 gm",
+      "brand": "cornitos",
+      "quantity": "71 gm"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017046",
+      "name": "Cornitos nacho crips",
+      "brand": null,
+      "quantity": "10"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017473",
+      "name": "Cornitos Nacho Crisps Sweet Chili 55 gm",
+      "brand": "cornitos",
+      "quantity": "55 gm"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017848",
+      "name": "Cornitos Nacho Crisps Peri Peri",
+      "brand": "cornitos",
+      "quantity": "55 gm"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017916",
+      "name": "Cornitos Nacho Crisps Tikka Masala 150 gm",
+      "brand": "cornitos",
+      "quantity": "150 gm"
+    },
+    {
+      "category": "cornitos",
+      "code": "8906082570252",
+      "name": "Cornitos Roasted Cashew",
+      "brand": "Cornitos",
+      "quantity": "25g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8906082572072",
+      "name": "Cornitos cheese herbs 73g 50",
+      "brand": "Cornitos",
+      "quantity": "73g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8906082577466",
+      "name": "Cornitos Crusties Italian Cheese Potato Puffs",
+      "brand": "Cornitos",
+      "quantity": "50g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017053",
+      "name": "Sizzlin Jalapeno Nacho Crisps",
+      "brand": "Cornitos",
+      "quantity": "33g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017237",
+      "name": "Nacho Crisps Sizzling Jalapeno",
+      "brand": "Cornitos",
+      "quantity": "60 g"
+    },
+    {
+      "category": "cornitos",
+      "code": "8908001017855",
+      "name": "Peri Peri Nacho Crisps",
+      "brand": "Cornitos",
+      "quantity": "150g"
+    },
+    {
+      "category": "veeba",
+      "code": "0487559401869",
+      "name": "Pizza pasta saus3",
+      "brand": "Veeba",
+      "quantity": "100g"
+    },
+    {
+      "category": "veeba",
+      "code": "2201044872129",
+      "name": "Creamy cheesy blend",
+      "brand": "Veeba",
+      "quantity": "1kg"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400091",
+      "name": "Marinara Pizza & Pasta Sauce",
+      "brand": "Veeba",
+      "quantity": "310 g"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400121",
+      "name": "Veeba Tokyo Style Teriyaki Sauce",
+      "brand": "veeba",
+      "quantity": "250 gm"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400237",
+      "name": "white cheese sauce",
+      "brand": "veeba",
+      "quantity": "1kg"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400497",
+      "name": "Veeba Chilli Mayonnaise 250 gm",
+      "brand": "veeba",
+      "quantity": "250 gm"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400534",
+      "name": "Veeba Tartare Dip 300 gm",
+      "brand": "veeba",
+      "quantity": "300 gm"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400596",
+      "name": "Veeba English Mustard 250 gm",
+      "brand": "veeba",
+      "quantity": "250 gm"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069400602",
+      "name": "Veeba Cheese & Mushroom Sandwich Spread",
+      "brand": "veeba",
+      "quantity": "250 gm"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069401111",
+      "name": "Veeba  peanut butter",
+      "brand": "Veeba",
+      "quantity": "340g"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069401869",
+      "name": "Chef's Special Pasta & Pizza Sauce Herby Tomato",
+      "brand": "Veeba",
+      "quantity": "100g"
+    },
+    {
+      "category": "veeba",
+      "code": "8906069402385",
+      "name": "Veeba Alphonso Mango Topping 380 gm",
+      "brand": "veeba",
+      "quantity": "380 gm"
+    },
+    {
+      "category": "kissan",
+      "code": "4901034851070",
+      "name": "fruit jam",
+      "brand": "Kissan",
+      "quantity": "1kg"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030534973",
+      "name": "kissan orange marmalade jam 200 gm",
+      "brand": "kissan",
+      "quantity": "200 gm"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030535031",
+      "name": "Kissan Pineapple Jam 200 gm",
+      "brand": "kissan",
+      "quantity": "200 gm"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030634468",
+      "name": "Kissan Juicy Mango Squash 750 ml",
+      "brand": "kissan",
+      "quantity": "750 ml"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030686726",
+      "name": "Mixed fruit jam",
+      "brand": "kissan",
+      "quantity": "90g"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030702556",
+      "name": "Kissan sweet & spicy",
+      "brand": null,
+      "quantity": "415"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030855054",
+      "name": "Kissan Creamy Peanut Butter 920 gm",
+      "brand": "kissan",
+      "quantity": "920 gm"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030865237",
+      "name": "Tomato Ketchup",
+      "brand": "kissan",
+      "quantity": "weight: 1.2 kg"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030926457",
+      "name": "Orange marmalade",
+      "brand": "Kissan",
+      "quantity": "500g"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030930355",
+      "name": "kissan mango jam",
+      "brand": null,
+      "quantity": "188"
+    },
+    {
+      "category": "kissan",
+      "code": "8909106021792",
+      "name": "Tomato ketchup",
+      "brand": "Kissan",
+      "quantity": "80g"
+    },
+    {
+      "category": "kissan",
+      "code": "8901030743047",
+      "name": "Fresh Tomato Ketchup",
+      "brand": "Kissan",
+      "quantity": "12"
+    },
+    {
+      "category": "del-monte",
+      "code": "3948246006660",
+      "name": "Foodcraft Fusilli",
+      "brand": "Del Monte",
+      "quantity": "450"
+    },
+    {
+      "category": "del-monte",
+      "code": "4901049606665",
+      "name": "Del Monte Fusilli",
+      "brand": "Del Monte",
+      "quantity": "450"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246001283",
+      "name": "Del Monte Classic Blend Tomato Ketchup 500 gm",
+      "brand": "Del Monte",
+      "quantity": "500 gm"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246001320",
+      "name": "Del Monte Whole Kernel Corn 420 gm",
+      "brand": "Del Monte",
+      "quantity": "420 gm"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246001610",
+      "name": "Del Monte Farfalle Pasta 500 gm",
+      "brand": "Del Monte",
+      "quantity": "500 gm"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246001719",
+      "name": "Del Monte Pineapple Fruit Drink Can 240 ml",
+      "brand": "Del Monte",
+      "quantity": "240 ml"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246002167",
+      "name": "Del Monte Pomace Olive Oil 1 Ltr",
+      "brand": "Del Monte",
+      "quantity": "1 ltr"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246002235",
+      "name": "Del Monte Pomace Olive Oil 5 Ltr (Tin)",
+      "brand": "Del Monte",
+      "quantity": "5 ltr"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246002761",
+      "name": "Del Monte 1L Olive Oil",
+      "brand": "Del Monte",
+      "quantity": "1 ltr"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246002846",
+      "name": "Del Monte Pitted Prunes 130 gm - Natural, Sweet & Nutritious",
+      "brand": "Del Monte",
+      "quantity": "130 gm"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246003003",
+      "name": "Del Monte Green Chilli Sauce 190 gm",
+      "brand": "Del Monte",
+      "quantity": "190 gm"
+    },
+    {
+      "category": "del-monte",
+      "code": "8901246003140",
+      "name": "Penne Rigate",
+      "brand": "Del Monte",
+      "quantity": "1kg"
+    },
+    {
+      "category": "dawat",
+      "code": "0940947025127",
+      "name": "Dawat super basmati rice 1 kg",
+      "brand": null,
+      "quantity": "1 kg"
+    },
+    {
+      "category": "dawat",
+      "code": "4901135025127",
+      "name": "Dawat super basmati rice 1 kg",
+      "brand": "Daawat",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "dawat",
+      "code": "8901440256298",
+      "name": "TURMERIC POWDER",
+      "brand": "Shahi DAAWAT",
+      "quantity": "100g"
+    },
+    {
+      "category": "dawat",
+      "code": "8901440256304",
+      "name": "TURMERIC POWDER",
+      "brand": "Shahi DAAWAT",
+      "quantity": "50g"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537020214",
+      "name": "Daawat Brown Basmati Rice 1kg (Poly Pack)-Healthy & Nutritious",
+      "brand": "daawat",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537032019",
+      "name": "dubar basmati rice",
+      "brand": "daawat",
+      "quantity": "1kg"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537074248",
+      "name": "Daawat Pulav Basmati Rice 5 kg",
+      "brand": "daawat",
+      "quantity": "5 kg"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537074354",
+      "name": "brown rice",
+      "brand": "Daawat",
+      "quantity": "1kg"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537078338",
+      "name": "biryani kit",
+      "brand": "daawat",
+      "quantity": "200g"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537080768",
+      "name": "Daawat Super Basmati Rice 5 kg",
+      "brand": "daawat",
+      "quantity": "5 kg"
+    },
+    {
+      "category": "dawat",
+      "code": "3948537078321",
+      "name": "Daawat Biryani Kit Hyderabadi",
+      "brand": "Daawat",
+      "quantity": "334 g"
+    },
+    {
+      "category": "dawat",
+      "code": "8901537007123",
+      "name": "Dwt rozana supr basmati rice 1 kg",
+      "brand": "Daawat",
+      "quantity": "1kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225103138",
+      "name": "rice",
+      "brand": "India gate",
+      "quantity": "5+1 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225106801",
+      "name": "Unity biryani rice",
+      "brand": "India Gate",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225303903",
+      "name": "India Gate Basmati Rice Classic",
+      "brand": "India Gate",
+      "quantity": "500 g"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225305129",
+      "name": "daily premium basmati rice",
+      "brand": "India gate",
+      "quantity": "5kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225307284",
+      "name": "Baramati rice",
+      "brand": "INDIA GATE",
+      "quantity": "500 gms"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690425303284",
+      "name": "Basmati Rice",
+      "brand": "India Gate",
+      "quantity": "500 g"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225101127",
+      "name": "Basmati rice (raw)",
+      "brand": "India Gate",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225103633",
+      "name": "India Gate bsmt Rozana 5kg",
+      "brand": null,
+      "quantity": "5 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225309110",
+      "name": "India Gate Uplife Gut Pro",
+      "brand": "India Gate",
+      "quantity": "1l"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225101103",
+      "name": "India gate super Basmati rice 1.5 kg",
+      "brand": "KRBL limited",
+      "quantity": "1.5 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225101134",
+      "name": "India Gate Basmati Rice Dubar",
+      "brand": "India Gate",
+      "quantity": "1 kg"
+    },
+    {
+      "category": "india-gate",
+      "code": "0690225106467",
+      "name": "Sona Masoori Rice",
+      "brand": "India Gate",
+      "quantity": "5 kg"
+    }
+  ],
+  "baseline": {
+    "lays": {
+      "products": 76,
+      "with_ingredients": 41,
+      "with_direct_input_sets": 27
+    },
+    "coca-cola": {
+      "products": 96,
+      "with_ingredients": 57,
+      "with_direct_input_sets": 52
+    },
+    "pepsi": {
+      "products": 22,
+      "with_ingredients": 19,
+      "with_direct_input_sets": 8
+    },
+    "maaza": {
+      "products": 9,
+      "with_ingredients": 5,
+      "with_direct_input_sets": 3
+    },
+    "limca": {
+      "products": 6,
+      "with_ingredients": 3,
+      "with_direct_input_sets": 2
+    },
+    "kurkure": {
+      "products": 31,
+      "with_ingredients": 19,
+      "with_direct_input_sets": 12
+    },
+    "maggi": {
+      "products": 202,
+      "with_ingredients": 86,
+      "with_direct_input_sets": 57
+    },
+    "cadbury": {
+      "products": 313,
+      "with_ingredients": 131,
+      "with_direct_input_sets": 96
+    },
+    "nestle-chocolate": {
+      "products": 93,
+      "with_ingredients": 38,
+      "with_direct_input_sets": 33
+    },
+    "britannia": {
+      "products": 483,
+      "with_ingredients": 158,
+      "with_direct_input_sets": 116
+    },
+    "parle": {
+      "products": 397,
+      "with_ingredients": 102,
+      "with_direct_input_sets": 77
+    },
+    "oreo": {
+      "products": 26,
+      "with_ingredients": 7,
+      "with_direct_input_sets": 7
+    },
+    "bingo": {
+      "products": 70,
+      "with_ingredients": 29,
+      "with_direct_input_sets": 22
+    },
+    "balaji": {
+      "products": 85,
+      "with_ingredients": 66,
+      "with_direct_input_sets": 41
+    },
+    "haldiram": {
+      "products": 330,
+      "with_ingredients": 120,
+      "with_direct_input_sets": 86
+    },
+    "bikaji": {
+      "products": 88,
+      "with_ingredients": 23,
+      "with_direct_input_sets": 16
+    },
+    "pringles": {
+      "products": 22,
+      "with_ingredients": 6,
+      "with_direct_input_sets": 13
+    },
+    "doritos": {
+      "products": 17,
+      "with_ingredients": 9,
+      "with_direct_input_sets": 6
+    },
+    "uncle-chipps": {
+      "products": 8,
+      "with_ingredients": 6,
+      "with_direct_input_sets": 3
+    },
+    "yippee": {
+      "products": 220,
+      "with_ingredients": 72,
+      "with_direct_input_sets": 51
+    },
+    "wai-wai": {
+      "products": 20,
+      "with_ingredients": 6,
+      "with_direct_input_sets": 5
+    },
+    "top-ramen": {
+      "products": 33,
+      "with_ingredients": 17,
+      "with_direct_input_sets": 14
+    },
+    "amul": {
+      "products": 365,
+      "with_ingredients": 180,
+      "with_direct_input_sets": 151
+    },
+    "hersheys": {
+      "products": 75,
+      "with_ingredients": 26,
+      "with_direct_input_sets": 27
+    },
+    "snickers-mars": {
+      "products": 37,
+      "with_ingredients": 10,
+      "with_direct_input_sets": 9
+    },
+    "ferrero": {
+      "products": 30,
+      "with_ingredients": 11,
+      "with_direct_input_sets": 13
+    },
+    "sprite": {
+      "products": 18,
+      "with_ingredients": 6,
+      "with_direct_input_sets": 8
+    },
+    "fanta": {
+      "products": 9,
+      "with_ingredients": 2,
+      "with_direct_input_sets": 2
+    },
+    "thums-up": {
+      "products": 13,
+      "with_ingredients": 8,
+      "with_direct_input_sets": 4
+    },
+    "7up": {
+      "products": 14,
+      "with_ingredients": 7,
+      "with_direct_input_sets": 6
+    },
+    "mirinda": {
+      "products": 7,
+      "with_ingredients": 4,
+      "with_direct_input_sets": 4
+    },
+    "mountain-dew": {
+      "products": 10,
+      "with_ingredients": 5,
+      "with_direct_input_sets": 2
+    },
+    "slice": {
+      "products": 23,
+      "with_ingredients": 9,
+      "with_direct_input_sets": 8
+    },
+    "frooti": {
+      "products": 11,
+      "with_ingredients": 3,
+      "with_direct_input_sets": 2
+    },
+    "appy": {
+      "products": 5,
+      "with_ingredients": 1,
+      "with_direct_input_sets": 2
+    },
+    "tropicana": {
+      "products": 35,
+      "with_ingredients": 17,
+      "with_direct_input_sets": 8
+    },
+    "real-juice": {
+      "products": 146,
+      "with_ingredients": 60,
+      "with_direct_input_sets": 35
+    },
+    "paperboat": {
+      "products": 70,
+      "with_ingredients": 39,
+      "with_direct_input_sets": 30
+    },
+    "mtr": {
+      "products": 65,
+      "with_ingredients": 24,
+      "with_direct_input_sets": 13
+    },
+    "gits": {
+      "products": 10,
+      "with_ingredients": 3,
+      "with_direct_input_sets": 4
+    },
+    "kelloggs": {
+      "products": 79,
+      "with_ingredients": 38,
+      "with_direct_input_sets": 31
+    },
+    "quaker": {
+      "products": 21,
+      "with_ingredients": 13,
+      "with_direct_input_sets": 11
+    },
+    "patanjali": {
+      "products": 136,
+      "with_ingredients": 44,
+      "with_direct_input_sets": 20
+    },
+    "aashirvaad": {
+      "products": 66,
+      "with_ingredients": 30,
+      "with_direct_input_sets": 14
+    },
+    "fortune": {
+      "products": 76,
+      "with_ingredients": 32,
+      "with_direct_input_sets": 18
+    },
+    "saffola": {
+      "products": 73,
+      "with_ingredients": 26,
+      "with_direct_input_sets": 12
+    },
+    "tata": {
+      "products": 201,
+      "with_ingredients": 68,
+      "with_direct_input_sets": 50
+    },
+    "nestle-other": {
+      "products": 146,
+      "with_ingredients": 49,
+      "with_direct_input_sets": 31
+    },
+    "bru": {
+      "products": 25,
+      "with_ingredients": 10,
+      "with_direct_input_sets": 5
+    },
+    "bournvita": {
+      "products": 11,
+      "with_ingredients": 1,
+      "with_direct_input_sets": 1
+    },
+    "horlicks": {
+      "products": 99,
+      "with_ingredients": 30,
+      "with_direct_input_sets": 24
+    },
+    "complan": {
+      "products": 15,
+      "with_ingredients": 4,
+      "with_direct_input_sets": 2
+    },
+    "red-bull": {
+      "products": 3,
+      "with_ingredients": 3,
+      "with_direct_input_sets": 1
+    },
+    "monster": {
+      "products": 6,
+      "with_ingredients": 5,
+      "with_direct_input_sets": 6
+    },
+    "too-yumm": {
+      "products": 31,
+      "with_ingredients": 11,
+      "with_direct_input_sets": 19
+    },
+    "act-ii": {
+      "products": 17,
+      "with_ingredients": 5,
+      "with_direct_input_sets": 4
+    },
+    "cornitos": {
+      "products": 21,
+      "with_ingredients": 11,
+      "with_direct_input_sets": 6
+    },
+    "veeba": {
+      "products": 81,
+      "with_ingredients": 21,
+      "with_direct_input_sets": 22
+    },
+    "kissan": {
+      "products": 60,
+      "with_ingredients": 30,
+      "with_direct_input_sets": 21
+    },
+    "del-monte": {
+      "products": 79,
+      "with_ingredients": 12,
+      "with_direct_input_sets": 10
+    },
+    "dawat": {
+      "products": 26,
+      "with_ingredients": 8,
+      "with_direct_input_sets": 6
+    },
+    "india-gate": {
+      "products": 19,
+      "with_ingredients": 7,
+      "with_direct_input_sets": 7
+    }
+  }
+}

@@ -14,6 +14,9 @@ PRODUCTION_HOST = "unlabel-api.vercel.app"
 PRODUCTION_ORIGIN = f"https://{PRODUCTION_HOST}"
 BARCODE = r"(?:[0-9]{8}|[0-9]{12,14})"
 UUID = r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}"
+ENTRY_ID = r"[0-9a-f]{64}"
+REJECTED_BODY_LIMIT = 512 * 1024 + 1
+REJECTED_BODY_TIMEOUT = 0.2
 GET_ROUTES = (
     r"/v1/(?:health|meta|catalogue|catalogue/search|claims/rules|ingredients/glossary)",
     rf"/v1/catalogue/products/{BARCODE}(?:/facts)?",
@@ -21,6 +24,9 @@ GET_ROUTES = (
     r"/v1/evidence/[a-z][a-z0-9-]{0,63}",
     rf"/v1/community/contributions/{UUID}",
     rf"/v1/community/products/{BARCODE}",
+    r"/v1/researched/products/search",
+    rf"/v1/researched/products/{ENTRY_ID}",
+    rf"/v1/researched/products/by-barcode/{BARCODE}",
     r"/v1/account/sync",
 )
 POST_ROUTES = (
@@ -44,6 +50,7 @@ def web_handler(directory: Path, mode: str):
 
         def __init__(self, *args, **kwargs):
             self._cors_origin = None
+            self._body_consumed = 0
             super().__init__(*args, directory=str(root), **kwargs)
 
         def setup(self):
@@ -64,12 +71,45 @@ def web_handler(directory: Path, mode: str):
         def fail(self, status: int, code: str):
             body = json.dumps({"error": code}).encode("utf-8")
             self.close_connection = True
+            self.discard_rejected_body()
             self.send_response(status)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             if self.command != "HEAD":
                 self.wfile.write(body)
+
+        def discard_rejected_body(self):
+            """Bounded cleanup avoids resetting a socket with a small unread body."""
+            lengths = self.headers.get_all("Content-Length", [])
+            if (
+                self.headers.get("Transfer-Encoding")
+                or self.headers.get("Expect")
+                or len(lengths) != 1
+                or re.fullmatch(r"[0-9]{1,10}", lengths[0]) is None
+            ):
+                return
+            remaining = min(
+                max(0, int(lengths[0]) - self._body_consumed), REJECTED_BODY_LIMIT
+            )
+            if not remaining:
+                return
+            deadline = time.monotonic() + REJECTED_BODY_TIMEOUT
+            try:
+                while remaining:
+                    timeout = deadline - time.monotonic()
+                    if timeout <= 0:
+                        break
+                    self.connection.settimeout(timeout)
+                    chunk = self.rfile.read1(min(65536, remaining))
+                    if not chunk:
+                        break
+                    self._body_consumed += len(chunk)
+                    remaining -= len(chunk)
+            except OSError:
+                pass
+            finally:
+                self.connection.settimeout(15)
 
         def valid_request(self) -> bool:
             port = cast(ThreadingHTTPServer, self.server).server_port
@@ -214,6 +254,7 @@ def web_handler(directory: Path, mode: str):
             connection = None
             try:
                 body = self.rfile.read(size) if size else None
+                self._body_consumed = len(body) if body is not None else 0
                 if body is not None and len(body) != size:
                     self.fail(400, "incomplete_preview_body")
                     return

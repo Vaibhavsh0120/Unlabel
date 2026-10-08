@@ -1,3 +1,3 @@
 """Unlabel backend; version is independent of the Flutter client."""
 
-__version__ = "0.9.0"
+__version__ = "0.10.0"

@@ -72,6 +72,9 @@ backend/storage/runtime/**
 !backend/storage/runtime/.gitkeep
 backend/app/catalogue/data/
 backend/app/claims/data/
+backend/app/research_catalogue/data/
+output/playwright/
+.playwright-cli/
 data/private/**
 !data/private/.gitkeep
 knowledge/sources/downloads/**

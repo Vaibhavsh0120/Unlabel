@@ -205,6 +205,17 @@ def main() -> int:
             raise ValueError("Install Python 3.12+ to run setup.")
         if args.catalogue_only:
             prepare_catalogue(ROOT, replace=args.replace_catalogue)
+            from app.research_catalogue.store import build_research_bundle
+
+            with Progress("Build researched product database"):
+                receipt = build_research_bundle(
+                    ROOT / "data/catalogue/popular-india-v1",
+                    ROOT / "backend/app/research_catalogue/data",
+                )
+            print(
+                f"Restored researched database: {receipt['observation_count']} sourced observations.",
+                flush=True,
+            )
             return 0
         if args.scope in {"all", "backend"}:
             ensure_env(ROOT, args.identity, args.non_interactive)
