@@ -1,5 +1,12 @@
 # Documentation index
 
+Current frontend correction: **v0.6.3+10** replaces the desktop insight tile
+with fresh transparent artwork, contain fit and inner padding on the card's own
+light/dark background. Compact phone art and enlarged-text stacking remain.
+240 tests pass, analysis/build are clean and manual release defaults match
+`0.6.3+10`. Hosted verification is pending; work stops after the requested push.
+[Review/deployment status](planning/FRONTEND_V0_6_3_REVIEW.md).
+
 Published frontend correction: **v0.6.2+9** displays selected-only Profile summaries,
 first two labels and `+N`, preserving complete separate editors and saved data.
 237 Flutter tests pass, analysis/build are clean, and production is READY with

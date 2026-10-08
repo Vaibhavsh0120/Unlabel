@@ -1,5 +1,11 @@
 # Controlled Unlabel releases
 
+Frontend **v0.6.3+10** is prepared for its independent main push: fresh transparent
+insight artwork, 240 passing tests, clean analysis and release web build. Manual
+mobile defaults and uninjected About metadata match `0.6.3+10`. Hosted verification
+is pending; the user requested stopping immediately after pushing.
+[Candidate review](FRONTEND_V0_6_3_REVIEW.md). No native workflow was dispatched.
+
 Latest frontend **v0.6.2+9** is pushed/READY with 55 hosted checks, 237 passing
 Flutter tests, clean analysis/build and selected-only Profile summaries.
 [Current review](FRONTEND_V0_6_2_REVIEW.md). Backend v0.12.0 is unchanged; earlier

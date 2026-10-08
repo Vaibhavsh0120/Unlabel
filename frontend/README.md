@@ -1,6 +1,14 @@
 # Flutter frontend
 
-Latest: **v0.6.2+9**, source `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137`,
+Current correction: **v0.6.3+10**, transparent desktop insight artwork with contain
+fit, theme-compatible background and separate live copy. The complete bowl stays
+visible; compact phone art remains.
+240 tests pass, analysis/build are clean. Manual release defaults and uninjected
+About metadata match `0.6.3+10`. Hosted verification is pending; the user requested
+that work stop immediately after pushing this correction.
+[Review/deployment status](../docs/planning/FRONTEND_V0_6_3_REVIEW.md).
+
+Preceding: **v0.6.2+9**, source `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137`,
 READY production with 55 hosted checks; 237 tests, clean analysis and release build.
 Profile shows only selected items: first two chips plus `+N`, or no chips when
 empty. Complete separate editors retain all saved choices.
@@ -194,7 +202,7 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the v0.6.2 correction review for the current local check and deployment status.
+See the v0.6.3 correction review for the current local check and deployment status.
 
 ## Source ownership
 

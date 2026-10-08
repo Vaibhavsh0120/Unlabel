@@ -21,6 +21,12 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
+Frontend **v0.6.3+10** replaces the desktop insight tile with fresh transparent
+bowl-and-leaf artwork, keeping the whole illustration visible in both themes.
+240 tests pass, analysis/build are clean, and manual mobile release defaults
+match `0.6.3+10`. Hosted verification is pending; work stops after the requested push.
+[Correction review and deployment status](docs/planning/FRONTEND_V0_6_3_REVIEW.md).
+
 Frontend **v0.6.2+9** corrects Profile summaries to show only selected items:
 first two chips, then `+N` for the rest. Empty groups show no chips. The complete
 separate editors preserve every selection.

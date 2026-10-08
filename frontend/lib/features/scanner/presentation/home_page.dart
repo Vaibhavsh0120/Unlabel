@@ -828,34 +828,15 @@ class _InsightCard extends StatelessWidget {
               ),
             );
             final art = desktop
-                ? SizedBox(
-                    height: 128,
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  theme.colorScheme.surface,
-                                  theme.colorScheme.primaryContainer.withValues(
-                                    alpha: .8,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Image.asset(
-                            'assets/artwork/desktop-insight-banner.png',
-                            key: const Key('home-insight-art'),
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topRight,
-                            excludeFromSemantics: true,
-                          ),
-                        ),
-                      ],
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 12, 20, 12),
+                    child: Image.asset(
+                      'assets/artwork/desktop-insight-banner.png',
+                      key: const Key('home-insight-art'),
+                      height: stacked ? 96 : 132,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.centerRight,
+                      excludeFromSemantics: true,
                     ),
                   )
                 : CornerArtwork(

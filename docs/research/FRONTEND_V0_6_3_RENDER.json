@@ -1,0 +1,184 @@
+{
+  "format_version": "1",
+  "component": "frontend",
+  "version": "0.6.3",
+  "build_number": "10",
+  "reviewed_on": "2026-10-09",
+  "build": "local release web with production backend",
+  "source_files": [
+    "frontend/lib/features/scanner/presentation/home_page.dart",
+    "frontend/lib/app/build_info.dart"
+  ],
+  "before": {
+    "reference": "User desktop dark screenshot showing a hard pale rectangular Today’s Insight image inside a charcoal card",
+    "previous_source_sha": "ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137"
+  },
+  "artwork": {
+    "path": "frontend/assets/artwork/desktop-insight-banner.png",
+    "sha256": "7935cb0e93e2e43f873980c84a127d0f2a2915de547825d63b25285d33a9e6f5",
+    "width": 2172,
+    "height": 724,
+    "format": "32-bit RGBA PNG",
+    "source": "Fresh project-authored built-in ImageGen output, copied byte-for-byte",
+    "purpose": "Decorative bowl and leaf cutout; no product or nutrition evidence",
+    "layout": "Desktop contain fit, center-right alignment, 132 px image height or 96 px when stacked, with inner padding; mobile artwork unchanged"
+  },
+  "after": {
+    "method": "Actual local release-web screenshots in the Codex in-app browser and visible Flutter semantic geometry",
+    "persistent_screenshot_files": false,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 768,
+        "height": 942
+      },
+      {
+        "width": 1440,
+        "height": 730
+      },
+      {
+        "width": 1728,
+        "height": 942
+      }
+    ],
+    "states_reviewed": [
+      "Desktop bowl remains whole inside its reserved padded slot in both themes",
+      "The opaque rectangular image panel is absent in dark mode",
+      "No obvious edge halo in normal-size dark renders after enlarged asset preview raised an edge-fringe concern",
+      "Phone and tablet retain the compact mobile bowl artwork",
+      "Live insight copy remains separate from decorative artwork"
+    ],
+    "browser_state": {
+      "initial_appearance": "light",
+      "final_appearance": "light",
+      "appearance_changed_temporarily_for_review": true,
+      "preference_or_allergen_selections_changed": false
+    }
+  },
+  "verification": {
+    "full_flutter_tests_passed": 240,
+    "analysis": "No issues found",
+    "release_web_build": "passed",
+    "new_regression_tests": 3,
+    "bitmap_alpha": {
+      "actual_asset_decoded": true,
+      "aspect_ratio": 3,
+      "maximum_corner_alpha": 1,
+      "minimum_opaque_bowl_sample_alpha_exclusive": 240,
+      "alpha_range": "0 to 255"
+    },
+    "layout_regressions": {
+      "widths": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1728
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "text_scales": [
+        1,
+        2
+      ],
+      "configurations": 24,
+      "assertions": [
+        "Artwork stays within insight-card bounds",
+        "Artwork does not overlap the live copy region",
+        "No layout exceptions"
+      ]
+    },
+    "independent_source_review": "No source correctness, accessibility or sizing blocker; enlarged-preview fringe concern checked in normal-size dark browser renders",
+    "better_design_comprehension": {
+      "status": "passed",
+      "initial_false_positive": "LABEL TIP classified as an unexplained acronym",
+      "resolution": "LABEL and TIP supplied as known ordinary uppercase English words"
+    },
+    "better_design_spacing": {
+      "status": "completed",
+      "score": 100,
+      "findings": 0,
+      "scope": "Affected insight-card bounds only, both themes at 390/1440/1728; six measured states",
+      "raw_tool_json_persisted": false,
+      "measured_states": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "rect": {
+            "x": 16,
+            "y": 187,
+            "width": 358.39999,
+            "height": 145
+          }
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 730
+          },
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "rect": {
+            "x": 264,
+            "y": 516,
+            "width": 1152,
+            "height": 156
+          }
+        },
+        {
+          "viewport": {
+            "width": 1728,
+            "height": 942
+          },
+          "theme": "dark",
+          "rect": {
+            "x": 264,
+            "y": 546,
+            "width": 1440,
+            "height": 156
+          }
+        },
+        {
+          "viewport": {
+            "width": 1728,
+            "height": 942
+          },
+          "theme": "light",
+          "scrolled": true,
+          "rect": {
+            "x": 264,
+            "y": 480.6,
+            "width": 1440,
+            "height": 156
+          }
+        }
+      ]
+    }
+  },
+  "production_status": "Prepared for main push; hosted verification remains pending. User requested stopping immediately after pushing.",
+  "limits": [
+    "Inline browser screenshots were reviewed but no persistent screenshot files are available",
+    "Semantic geometry and the scoped spacing score do not establish canvas pixel equality or a whole-screen visual score",
+    "Tablet light/dark screenshots were visually reviewed, outside the six-state spacing inspection",
+    "Normal-size dark review is not proof that every image-edge artifact is absent",
+    "No new physical device, camera, OCR accuracy, recognition-latency, backend or hosted AI proof"
+  ]
+}

@@ -3,7 +3,7 @@
 Status: connected Flutter client and manual mobile release workflow implemented;
 production signing remains future work. Separate Git-connected Vercel projects are configured for automatic website/backend deployment; see [settings and URLs](VERCEL_SETUP.md). Remote native build results
 are recorded by GitHub Actions and the resulting release manifest.
-Official documentation checked: 2026-10-05 (Asia/Calcutta), with Context7 used
+Official documentation checked: 2026-10-09 (Asia/Calcutta), with Context7 used
 for Flutter and GitHub Actions documentation.
 
 ## Targets and current boundary
@@ -22,10 +22,11 @@ iOS release commitment as described below.
 
 ## Version identities
 
-Current web: **frontend v0.6.2+9 / backend v0.12.0**. Exact implementation and
-production identities are in [the current frontend review](FRONTEND_V0_6_2_REVIEW.md)
-and [backend review](BACKEND_V0_12_0_REVIEW.md). This UI correction does not publish
-new native artifacts or change manual workflow inputs. Older slices below are historical.
+Current frontend candidate: **v0.6.3+10 / backend v0.12.0**. Independent source and
+production verification are recorded in [the current frontend review](FRONTEND_V0_6_3_REVIEW.md)
+and [backend review](BACKEND_V0_12_0_REVIEW.md). Manual mobile workflow defaults
+now match frontend 0.6.3 and build 10. Updating these defaults does not run the
+workflow or publish new native artifacts. Older slices below are historical.
 
 Backend **0.7.0 Private Account Sync** and frontend **0.2.0+3 Welcome, Home and
 Optional Account** are independently published and hosted-verified. Earlier
@@ -65,7 +66,7 @@ in the release manifest. Never silently replace a published artifact.
 ## Manual release workflow design
 
 The release entry point is `workflow_dispatch`, with source reference,
-frontend version (legacy default `0.4.0`), mobile build number (legacy default `5`), required
+frontend version (default `0.6.3`), mobile build number (default `10`), required
 public backend URL, and a `publish_release` boolean (default true).
 Python validates environment values without shell interpolation. Version and
 build number override pubspec for both artifacts; the manifest records both.

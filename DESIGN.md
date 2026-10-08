@@ -12,6 +12,10 @@ Published/READY frontend v0.6.2+9 corrects Profile summaries: display saved sele
 first two labels followed by `+N` for the remaining count. Empty selections have
 no chips. Each heading/chip opens its separate complete editor; saved data is
 never truncated. Retain the existing card, colors and responsive wrapping.
+Frontend v0.6.3+10 replaces the opaque desktop insight banner with a fresh
+transparent bowl-and-leaf composition. The art uses contain fit, complete
+silhouettes and inner padding on the card's own light/dark surface. Keep live
+copy in its separate slot; preserve compact phone art and enlarged-text stacking.
 This supersedes the earlier manual-entry UI direction while preserving the
 existing mobile Home / Scan / Compare / Saved order and Profile shortcut.
 

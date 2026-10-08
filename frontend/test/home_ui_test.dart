@@ -37,11 +37,13 @@ Widget _app(
 );
 
 HomePage _home({
+  bool desktop = false,
   VoidCallback? onScan,
   ValueChanged<bool>? onLookup,
   VoidCallback? onCompare,
   ValueChanged<int>? onLibrary,
 }) => HomePage(
+  desktop: desktop,
   store: LocalStore(preferences: _MemoryPreferences()),
   onLookup: onLookup ?? (_) {},
   onEnterLabel: onScan ?? () {},
@@ -63,6 +65,86 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized().platformDispatcher
         .clearAccessibilityFeaturesTestValue();
   });
+
+  testWidgets('wide insight artwork has a real transparent background', (
+    tester,
+  ) async {
+    final alpha = await tester.runAsync(() async {
+      final data = await rootBundle.load(
+        'assets/artwork/desktop-insight-banner.png',
+      );
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+      final frame = await codec.getNextFrame();
+      final image = frame.image;
+      final pixels = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+      final result = [
+        image.width,
+        image.height,
+        for (final offset in [
+          3,
+          (image.width - 1) * 4 + 3,
+          (image.width * (image.height - 1)) * 4 + 3,
+          (image.width * image.height - 1) * 4 + 3,
+          (image.width * 350 + 1500) * 4 + 3,
+        ])
+          pixels!.getUint8(offset),
+      ];
+      image.dispose();
+      codec.dispose();
+      return result;
+    });
+    expect(alpha, isNotNull);
+    expect(alpha![0] / alpha[1], 3);
+    expect(alpha.sublist(2, 6), everyElement(lessThanOrEqualTo(1)));
+    expect(alpha[6], greaterThan(240));
+  });
+
+  for (final brightness in Brightness.values) {
+    testWidgets(
+      'insight art stays separate from copy across sizes $brightness',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        for (final width in [320.0, 390.0, 768.0, 1024.0, 1440.0, 1728.0]) {
+          tester.view.physicalSize = Size(width, 941);
+          for (final scale in [1.0, 2.0]) {
+            await tester.pumpWidget(
+              _app(
+                Scaffold(body: _home(desktop: width >= 1024)),
+                brightness: brightness,
+                scale: scale,
+              ),
+            );
+            await tester.pumpAndSettle();
+            await tester.ensureVisible(
+              find.byKey(const Key('home-insight-card')),
+            );
+            final card = tester.getRect(
+              find.byKey(const Key('home-insight-card')),
+            );
+            final copy = tester.getRect(
+              find.byKey(const Key('home-insight-copy')),
+            );
+            final art = tester.getRect(
+              find.byKey(const Key('home-insight-art')),
+            );
+            expect(art.left, greaterThanOrEqualTo(card.left));
+            expect(art.right, lessThanOrEqualTo(card.right));
+            expect(art.top, greaterThanOrEqualTo(card.top));
+            expect(art.bottom, lessThanOrEqualTo(card.bottom));
+            expect(art.overlaps(copy), isFalse);
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: '$width $brightness scale $scale',
+            );
+            await tester.pumpWidget(const SizedBox.shrink());
+          }
+        }
+      },
+    );
+  }
 
   testWidgets('desktop theme preserves full-size semantic button targets', (
     tester,

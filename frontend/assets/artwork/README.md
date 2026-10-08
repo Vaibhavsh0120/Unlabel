@@ -239,3 +239,26 @@ no bitmap editing or stock image acquisition.
   translucent mint curves/leaves, no dark background, lettering or logos.
 - Runtime: smaller right-hand banner slot with cover fit aligned to the top/right;
   card text remains live Flutter content and food artwork is excluded from semantics.
+
+## Transparent insight replacement — 9 October 2026
+
+The preceding opaque banner left a pale rectangular tile inside the dark card.
+`desktop-insight-banner.png` now contains a **newly generated transparent 3:1
+composition**, copied byte-for-byte from the built-in ImageGen output. The
+preceding hash above identifies its historical Git revision.
+
+- Dimensions: 2172 × 724 px, 1,837,292 bytes, 32-bit RGBA.
+- SHA-256: `7935cb0e93e2e43f873980c84a127d0f2a2915de547825d63b25285d33a9e6f5`.
+- Original output: `exec-9b10e2ed-b6ca-4f2a-91ab-1c33d28f3291.png`.
+- True alpha is retained. Sampled corner alpha is 0–1/255; the bowl is opaque.
+- Runtime uses contain fit with inner padding. The complete bowl and leaf sweep
+  scale within their reserved slot. The card supplies the light/dark background;
+  there is no separate opaque image panel. Live copy remains outside the art.
+- Source: project-authored built-in generation, no stock images, external image
+  API, provider-key fallback or post-generation bitmap editing. Decorative only.
+
+Final built-in generation prompt (`transparent_background: true`):
+
+```text
+Use case: stylized-concept. Asset type: wide transparent decorative food illustration for the RIGHT SIDE of Unlabel's desktop Today's Insight card, roughly 3:1 landscape. Create a NEW refined editorial food-and-botanical composition on genuine transparent alpha, not a banner background: one modest warm ivory ceramic breakfast bowl with granola oats, a few bright sliced strawberries, blueberries and a sprig of mint, seen from a gentle three-quarter overhead angle; bowl and entire rim fully visible. Bowl occupies the right-center 40 percent of image width and about 80 percent of image height. A graceful low, horizontal sweep of softly shaded sage, mint and jade leaves on thin curved stems extends from behind the bowl toward the LEFT, occupying the remaining width with airy gaps and plenty of transparent space between leaves. A few leaves frame the bowl at far right, all leaf tips inside margins. Maintain about 5 percent transparent margin around the whole composition. Soft dimensional premium editorial illustration with realistic appetizing food texture and elegant restrained matte watercolor-like leaf shading, matching white/forest/mint food-label app reference. Bowl and fruit remain clear at an eventual 130 px rendered image height; avoid tiny intricate decoration. Lighting: soft natural neutral diffuse light; a subtle translucent contact shadow only beneath bowl. Strong clean silhouette and gently fading semitransparent leaf tips, suitable placed directly over BOTH a pale white/mint card and a deep charcoal forest card. Constraints: actual alpha transparent canvas; absolutely NO opaque white, cream, mint or dark rectangular background, no panel, no tile, no frame, no horizon, no background gradient, no broad filled halo, no white edge outline, no text, letters, numbers, branding, icons, UI or watermark. Do not generate a screenshot. Decorative illustration only; no product nutrition claims. Output landscape 3:1 transparent composition.
+```

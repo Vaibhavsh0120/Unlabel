@@ -1,6 +1,15 @@
 # Unlabel workspace instructions
 
-- Latest frontend v0.6.2+9 is pushed at `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137` and READY as
+- Current frontend v0.6.3+10 correction: fresh transparent 3:1 insight artwork,
+  contain fit and padded complete silhouette on the card's own theme surface.
+  Preserve compact phone artwork, separate live copy, manual swipe and large-text
+  stacking. Local tests/build/render proof and independent push status belong to
+  docs/planning/FRONTEND_V0_6_3_REVIEW.md. 240 tests, clean analysis and release web
+  build pass. Manual release defaults/About fallback match 0.6.3+10. Hosted proof
+  remains pending; user requested stopping immediately after this push. Backend
+  v0.12.0 runtime is unchanged.
+
+- Preceding frontend v0.6.2+9 is pushed at `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137` and READY as
   `dpl_8bC1g9PYP64j1hsdvdZ69oFGKyJZ`, with 55 hosted checks, all 21 OCR hashes, all
   13 artwork hashes, 237 passing tests, clean analysis and release build. Profile
   summaries are selected-only: no chips when empty, first two plus `+N` otherwise.
