@@ -453,6 +453,56 @@
       ],
       "title": "ProviderSelection",
       "type": "object"
+    },
+    "StagingResult": {
+      "properties": {
+        "status": {
+          "enum": [
+            "private_unverified",
+            "not_stored"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "content_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Sha256"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "too_large",
+                "unavailable"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "deduplicated": {
+          "default": false,
+          "title": "Deduplicated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "StagingResult",
+      "type": "object"
     }
   },
   "properties": {
@@ -467,11 +517,15 @@
     },
     "ai": {
       "$ref": "#/$defs/ProviderSelection"
+    },
+    "storage": {
+      "$ref": "#/$defs/StagingResult"
     }
   },
   "required": [
     "extraction",
-    "ai"
+    "ai",
+    "storage"
   ],
   "title": "ExtractionResponse",
   "type": "object"

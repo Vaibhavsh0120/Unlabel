@@ -1,0 +1,18 @@
+{
+  "observation_count": 243,
+  "every_original_product_row_preserved": true,
+  "source_dataset_unchanged": true,
+  "new_bundle": {
+    "database_bytes": 2260992,
+    "database_file": "research.sqlite3",
+    "database_sha256": "822f6dd4d44149ad8e029c9532e7a26b8a442d4f3af7dab899aff0b1c35fa93d",
+    "dataset_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
+    "format_version": 3,
+    "observation_count": 243,
+    "schema_version": "research-catalogue-bundle-v1",
+    "source_compressed_sha256": "22109ef0d164b234b5aa43f359cdfe16e3be5d79322f78f1e697e6926748fc21",
+    "source_manifest_sha256": "d1d23e0d0a3a7eec020c0b8b9b178abfb9b2e5c7fceba0e439541f20a6417701"
+  },
+  "backup_receipt": "CATALOGUE_PRESERVATION_2026_10_08.json",
+  "change": "Derived search index adds ingredients, declarations and source label tags; no product facts changed."
+}

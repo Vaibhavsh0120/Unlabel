@@ -1,11 +1,27 @@
 # Unlabel: useful product architecture and delivery plan
 
+Local next checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
+implement automatic barcode/front/back reading, post-capture regions, the supplied
+desktop Home/mobile-PC result composition, private unverified fact staging and
+richer research search. All 243 source observations and the original SQLite
+catalogue are preserved. Separate image descriptors cover 120/243 research
+observations; full image coverage is incomplete. Local screenshot comparison,
+aggregate checks and release builds are complete. **The user authorized pushing
+after final review and documentation.**
+[Frontend local review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend local review](BACKEND_V0_12_0_REVIEW.md).
+
+The preceding backend v0.11.0 and frontend v0.5.0+6 source commits are pushed
+with READY deployments and 389 backend/49 frontend read-only hosted checks;
+subsequent local changes do not replace those implementation identities.
+
 Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
 bounded Gemini/OpenAI photo reading with exactly one globally active credential,
 sticky failure replacement and scanner authentication. **1,303 tests pass**, with
 five explicit provider/emulator skips. Keys are server-only; AI facts remain
 unverified and photos stay outside database/account sync. Deployment verification
-is pending. [Backend review](BACKEND_V0_11_0_REVIEW.md) ·
+passes for public API reads; authenticated hosted generation remains separate.
+[Backend review](BACKEND_V0_11_0_REVIEW.md) ·
 [Automatic scan plan](AUTOMATIC_SCAN_PLAN.md).
 
 The selected storage remains a verified read-only SQLite public catalogue plus
@@ -59,7 +75,9 @@ Follow [controlled releases](CONTROLLED_RELEASES.md): main only, explicit compon
 staging, docs before every push and preserved historical tags. The verified
 65-file local recovery snapshot remains private. Guests keep personal records
 local; signed-in private records and public package observations remain separate.
-Light is the first-use default. No Gemini, custom training, card or paid service.
+Light is the first-use default. Optional Gemini/OpenAI extraction is now authorized
+with consent, bounded output and server-only credentials. No custom training,
+Firebase billing/card setup or paid Firebase service is introduced.
 
 [Current release plan](FRONTEND_BACKEND_NEXT_VERSIONS.md) ·
 [Frontend review](FRONTEND_V0_3_0_REVIEW.md) ·
@@ -412,8 +430,11 @@ latency and failure rates. Include unreadable panels and incomplete evidence.
 Keep private images outside Git and outside shared facts/training unless separately
 licensed and authorized.
 
-Adopt optional Gemini only if a blinded comparison on the difficult-image cohort
-shows at least **20% less median correction time**, no regression on ordinary
+The user authorized a bounded optional Gemini/OpenAI prototype on 8 October,
+with explicit consent and qualified output. The earlier proposed benchmark gate
+below remains an accuracy evaluation target rather than a prohibition on that
+authorized prototype. Validate the fallback using a blinded difficult-image
+comparison that shows at least **20% less median correction time**, no regression on ordinary
 cases, acceptable latency and no increase in wrongly accepted identity/unit/basis
 facts. Human confirmation remains required. These are proposed acceptance criteria,
 not measured results.
@@ -511,7 +532,9 @@ frontend coalescing/outbox remains a client gate.
 - Backend v0.8.0 sourced comparison is independently pushed/hosted-verified at `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8`, with 25 checks; its receipt preserves the implementation identity.
 - Backend v0.9.0 is independently pushed/hosted-verified at `5ed899e26941477f4b8c405da97ce5d297183e7d`, with 26 checks. Six reviewed functions retain partial F08 coverage.
 - Frontend v0.4.0+5 is independently pushed/hosted-verified at `d8b2eb339b1ce05248bd2405ebcea650c846da52`, with 49 checks, all 21 OCR hashes and 181 local tests. Native camera/OCR proof remains separate.
-- No custom model, training or Gemini inference is implemented.
+- No custom model or training is selected. Backend v0.11.0 implements optional
+  Gemini/OpenAI extraction; local v0.12.0 adds private proposal storage. Synthetic,
+  hosted and physical-package accuracy evidence remain distinct.
 
 
 Before any push: finish the chosen slice, review code/Markdown/scripts, remove

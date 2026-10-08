@@ -5,6 +5,11 @@ must enter `AiGateway`; callers cannot supply keys, provider URLs, model names o
 choose a provider per task. The app has only scanner users, with anonymous or
 password Firebase authentication. No reviewer/admin app role is introduced.
 
+Local v0.12.0 adds bounded private structured machine proposals and an independent
+response storage status. Its local review is complete; publication is authorized
+after review/docs and the release review records actual deployment evidence. Historical v0.11 extraction does not persist
+output; the local v0.12 behavior below must not be inferred for that deployment.
+
 ## Selection and replacement
 
 `unlabel_service_configuration/ai-active` in the existing free `unlabel` Firestore
@@ -25,8 +30,9 @@ to a recovered primary while the active replacement is healthy.
 There are at most eight configured slots and two provider attempts per request.
 Malformed model output, invalid schemas, refusals and local connection-pool load
 do not change keys. HTTP quota deadlines are honored up to one day. Provider
-adapters make no retries. A 48-second extraction deadline leaves host response
-time; actual cold/authentication/network behavior remains a deployment gate.
+adapters make no retries. Local v0.12 bounds authentication to five seconds,
+extraction to 48 seconds and the private staging response wait to three seconds.
+Actual cold/authentication/network behavior remains a deployment gate.
 
 Adding/removing/rotating a credential changes the configuration digest. An old
 worker fails closed after deliberate activation of the new configuration rather
@@ -86,8 +92,22 @@ rules and backend-only credentials remain unchanged.
 Facts are `machine_extracted_unverified`, with missing fields remaining null,
 separate explicitly based tables, qualifiers and normalized detected regions.
 AI output does not become a confirmed package observation or overwrite canonical
-data. This route does not persist extraction output, raw OCR, prompts or images.
-The later app flow must qualify these results and keep photos outside sync.
+data. Local v0.12 may retain literal structured facts in private
+`unlabel_machine_staging`; photos, regions/region text, raw OCR, prompts, provider
+envelopes and credentials are excluded. The app qualifies these results and keeps
+photos outside sync. The response reports `private_unverified` or `not_stored`
+with a separate storage reason; storage failure preserves a useful reading and
+does not change the active AI credential.
+
+There are 256 fixed actor-hash staging buckets, eight items each and at most
+32 KiB of fact JSON per item. Identical actor/content proposals deduplicate
+without refreshing their original timestamp. Entries older than seven days are
+pruned on a later bucket write, and the oldest items are evicted at the item bound.
+No scheduled deletion, paid TTL, durable user library or public read endpoint is
+promised. A staging wait may expire while its idempotent private write finishes;
+it cannot publish facts. Separate human acceptance uses the existing strictly
+validated confirmed-observation path and does not turn unverified geometry or
+bounded nutrient qualifiers into exact public values.
 
 Provider handling differs: Google's free-tier data-use terms must be shown before
 transfer. OpenAI requests use `store:false`; that is not a promise of provider

@@ -13,6 +13,7 @@ from starlette.concurrency import run_in_threadpool
 from app.ai.gateway import AiGateway
 from app.ai.models import ExtractedLabel, ExtractionRequest
 from app.ai.providers import ProviderFailure
+from app.ai.staging import StagingResult
 from app.ai.store import AiSelectionConflict
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.service import actor_hash
@@ -57,6 +58,7 @@ class ExtractionResponse(BaseModel):
     status: Literal["extracted"] = "extracted"
     extraction: ExtractedLabel
     ai: ProviderSelection
+    storage: StagingResult
 
 
 def failure(status: int, code: str, *, retry_after: int | None = None) -> JSONResponse:
@@ -159,16 +161,27 @@ def build_router(config: Settings) -> APIRouter:
             secret = config.community_actor_secret
             if secret is None:
                 raise AuthenticationUnavailable()
-            subject = await run_in_threadpool(runtime.verify_token, parts[1])
+            async with asyncio.timeout(5):
+                subject = await run_in_threadpool(runtime.verify_token, parts[1])
             owner = actor_hash(subject, secret.get_secret_value())
             # Leave time for a sanitized response before the 60-second host limit.
             async with asyncio.timeout(48):
                 result, selection = await selected.extract(owner, body)
             value = selected.by_id[selection.credential_id]
+            try:
+                # Bound the response wait separately. An idempotent private write
+                # may finish after the wait expires; it cannot publish facts.
+                async with asyncio.timeout(3):
+                    storage = await run_in_threadpool(selected.store.stage, owner, result)
+            except (StoreUnavailable, TimeoutError):
+                # A staging outage does not destroy a useful reading or select
+                # another AI key; its explicit status lets the scanner retry.
+                storage = StagingResult(status="not_stored", reason="unavailable")
             return JSONResponse({
                 "status": "extracted", "extraction": result.model_dump(mode="json"),
                 "ai": {"scope": "global", "provider": value.provider,
                        "model": value.model, "revision": selection.revision},
+                "storage": storage.model_dump(mode="json"),
             }, headers={"Cache-Control": "no-store"})
         except AuthenticationInvalid:
             return failure(401, "scanner_authentication_required")

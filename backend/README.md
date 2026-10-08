@@ -1,15 +1,27 @@
-# Unlabel backend: v0.11.0 Automatic Photo Extraction
+# Unlabel backend: v0.12.0 local work
+
+Local next implementation adds bounded private unverified AI fact staging,
+ingredient/declaration/claim search terms and separate researched-product image
+descriptors. **No v0.12.0 push or deployment has been performed.** The user has authorized publication after final review and documentation.
+Local checks are complete; the review records the independent hosted gate. [Local review](../docs/planning/BACKEND_V0_12_0_REVIEW.md).
+
+The preceding v0.11.0 source `578a9afebae8f77fe98344233cdc9155e82bb37a` is pushed,
+with READY deployment `dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA` and 389 read-only public/API
+checks. Authenticated hosted AI generation/failover remains unexercised.
+[Production receipt](../docs/research/BACKEND_V0_11_0_PRODUCTION.json).
 
 Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
 bounded Gemini/OpenAI photo reading with exactly one globally active credential,
 sticky failure replacement and scanner authentication. **1,303 tests pass**, with
 five explicit provider/emulator skips. Keys are server-only; AI facts remain
-unverified and photos stay outside database/account sync. Deployment verification
-is pending. [Backend review](../docs/planning/BACKEND_V0_11_0_REVIEW.md) ·
+unverified and photos stay outside database/account sync. Public hosted verification
+passes; authenticated hosted extraction remains separate. These tests describe v0.11.0, not later working-tree edits.
+[Backend review](../docs/planning/BACKEND_V0_11_0_REVIEW.md) ·
 [Automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
 
 The selected storage remains a verified read-only SQLite public catalogue plus
-Firestore mutable observations/accounts/AI selection. New sourced data is
+Firestore mutable observations/accounts/AI selection and bounded private machine
+proposals. New sourced data is
 validated and rebuilt into SQLite; no existing dataset is deleted or migrated.
 
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
@@ -219,7 +231,7 @@ All claim criteria compare exact rational values constructed from the original n
 
 `GET /v1/claims/rules` returns the actual loaded rules and unsupported list. `/v1/evidence/{source_id}` returns one of the three reviewed metadata records with URL, PDF hash/size/pages, known publication/effective dates, verification date/status and qualifications. Unknown valid IDs return 404; malformed IDs return redacted 422. Missing/invalid knowledge returns typed 503 responses; known future publication/effective dates, non-current/future review status or unsupported applicability suppress affected assessments. Review status is maintained explicitly; no automatic statutory expiry is inferred from age. These endpoints make no OFF, Gemini or FSSAI request and persist no scan. Claim/rule/evidence responses use `no-store`.
 
-Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Flutter's connected manual correction/report flow is implemented; published v0.2.0+3 added local camera/gallery capture beside manual entry. Frontend v0.3.0+4 adds local OCR and editable suggestions behind the unchanged Scan Label screen. It still requires correction and confirmation before structured report submission. Native camera/keyboard/recognition acceptance remains separate from browser and source checks. Photos and raw OCR stay on-device; automatic live barcode decoding and the dedicated Ingredient Insights screen remain future frontend work.
+Use the validated [claims request](../contracts/examples/claims-check-v1.request.synthetic.json), [claims response](../contracts/examples/claims-check-v1.response.synthetic.json), [rules](../contracts/examples/claims-rules-v1.synthetic.json) and [evidence](../contracts/examples/evidence-v1.synthetic.json) fixtures for client integration. They contain synthetic rows, not a real scan. Historical frontend v0.3.0+4 used local OCR and editable suggestions. Local v0.6.0 removes mandatory entry and automatically reads barcode/front/back photos; separate explicit acceptance remains necessary for confirmed structured report submission. Native camera/recognition acceptance remains separate from browser and source checks. Optional photo transfer uses consent; photos/raw OCR stay outside database/account storage. Continuous live-feed decoding remains future work.
 
 ## Sourced nutrient comparison
 
@@ -331,11 +343,13 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `COMMUNITY_ACTOR_SECRET`: backend-only `SecretStr`, 32–1024 characters; keyed ownership hashes, never public.
 - `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source/bundle directory, relative to backend or absolute. Local default uses `app/claims/data` when it exists, otherwise canonical root `knowledge/`. An existing invalid packaged bundle never falls back to source. With `VERCEL=1`, the default selects the packaged path and every selected directory requires a verified knowledge receipt, including an explicit override; no source fallback is permitted.
 
-OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Gemini is disabled/unimplemented; reserved Gemini fields in `.env` are unused. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication. Public cloud AI needs a separate access/budget design before activation.
+OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Optional Gemini/OpenAI photo reading now uses server-only settings, scanner authentication, explicit consent and shared bounded admission. See [AI routing](../docs/architecture/AI_ROUTING.md) for keys and global selection. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication.
 
 ## Modules and constraints
 
-- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, twenty API paths/twenty-one operations and redacted validation failures.
+- `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, 27 API paths/28 operations and redacted validation failures.
+- `app/ai/`: scanner photo validation, one global provider selection, bounded adapters/admission and local v0.12 private structured proposal staging.
+- `app/research_catalogue/`: immutable mixed-source observations, derived search v3, source-qualified details and separate validated product-image descriptors.
 - `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed six-entry glossary.
 - `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
 - `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
@@ -359,7 +373,9 @@ retry or durable cache. Confirmed normalization, claims and useful current repor
 work independently of OFF connectivity and require no account. Released community
 transactions and admission counters protect automatic public observation storage;
 v0.7.0 adds separate password-owned private profile/saved/history snapshots.
-Guests retain personal records locally. No image-upload route exists. Current
+Guests retain personal records locally. Only the optional authenticated
+`/v1/ai/extract` route accepts bounded photos with consent; they are not retained
+in database/account storage. Current
 claim checks still require confirmed package rows and explicit context; historical
 reports preserve their source/date and do not establish current-label confirmation.
 

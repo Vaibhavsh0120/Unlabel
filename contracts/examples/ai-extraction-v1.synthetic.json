@@ -1,0 +1,63 @@
+{
+  "schema_version": "1",
+  "evidence": "machine_extracted_unverified",
+  "identity": {
+    "name": "Synthetic oats",
+    "brand": "Synthetic brand",
+    "variant": null,
+    "quantity": "300 g",
+    "barcode": "8901764051258"
+  },
+  "ingredients": "Oats, milk",
+  "contains": "Milk",
+  "may_contain": null,
+  "front_claims": [],
+  "nutrition_tables": [
+    {
+      "table_id": "back-100g",
+      "basis": {
+        "kind": "quantity",
+        "amount": 100,
+        "unit": "g",
+        "printed_text": "Per 100 g"
+      },
+      "preparation": "as_sold",
+      "rows": [
+        {
+          "nutrient": "sugars",
+          "value": 0,
+          "unit": "g",
+          "qualifier": "exact",
+          "printed_text": "Sugars 0 g"
+        },
+        {
+          "nutrient": "sodium",
+          "value": 5,
+          "unit": "mg",
+          "qualifier": "less_than",
+          "printed_text": "Sodium <5 mg"
+        },
+        {
+          "nutrient": "protein",
+          "value": null,
+          "unit": "g",
+          "qualifier": "unknown",
+          "printed_text": "Protein [unreadable]"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "slot": "back",
+      "label": "ingredients",
+      "text": "Oats, milk",
+      "box": {
+        "top": 0.1,
+        "left": 0.1,
+        "bottom": 0.5,
+        "right": 0.8
+      }
+    }
+  ]
+}

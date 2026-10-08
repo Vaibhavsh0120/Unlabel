@@ -188,7 +188,7 @@ def load_resume(path, targets):
             dates[key] = value
         projected_value = project_record(raw)
         if not isinstance(projected_value, dict):
-            raise ValueError("Resume product projection is invalid")
+            raise TypeError("Resume product projection is invalid")
         projected: dict[str, Any] = dict(projected_value)
         projected["nutrition_legacy_present"] = (
             raw.get("nutrition_legacy_present") is True

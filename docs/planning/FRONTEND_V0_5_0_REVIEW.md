@@ -1,7 +1,11 @@
 # Frontend v0.5.0+6: researched product information
 
-Implementation verified locally on `main`, 8 October 2026. The independent
-frontend push and hosted exact-source verification remain pending.
+Implementation verified locally on `main`, 8 October 2026. Source
+`00ae175993aa1cf435c3ff9ec9c8ee05cef94005` is independently pushed, with observed
+READY deployment `dpl_AscVhThAEqDPsd3E1REiFbpMLbPB`. Its exact-source read-only
+verification passed 49 checks, including all 21 OCR asset hashes. See the
+[production receipt](../research/FRONTEND_V0_5_0_PRODUCTION.json). Later local
+v0.6.0 changes do not replace this identity or inherit its hosted proof.
 
 Search includes sourced website records alongside existing OFF catalogue results.
 Research entries use immutable entry IDs, including records without a barcode.

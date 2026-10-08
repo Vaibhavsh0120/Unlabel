@@ -1,5 +1,20 @@
 # Reference screens and the next releases
 
+Current local work is **frontend v0.6.0+7 / backend v0.12.0**. The later desktop
+Home and mobile/PC result references replace the earlier manual-entry direction.
+Keep mobile Home / Scan / Compare / Saved; desktop has the requested expanded
+sidebar. Automatic barcode-first/photo reading, post-capture highlights, bounded
+private machine facts and richer sourced search are implemented locally.
+Local rendered comparison and validation are complete. **Push independently
+after review/docs**, following the user's latest release instruction.
+[Frontend local review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend local review](BACKEND_V0_12_0_REVIEW.md).
+
+The preceding frontend v0.5.0+6 and backend v0.11.0 sources are already pushed
+with READY deployments and 49 frontend/389 backend read-only hosted checks;
+authenticated AI generation and physical-device proof remain separate.
+The release/history sections below describe their original dated scope.
+
 Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
 **v0.4.0+5** were independently reviewed, documented and pushed on `main`.
 Their exact implementation deployments are READY with **26 backend / 49 frontend

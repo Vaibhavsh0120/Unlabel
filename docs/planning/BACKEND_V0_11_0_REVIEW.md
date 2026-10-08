@@ -1,5 +1,13 @@
 # Backend v0.11.0: automatic photo extraction
 
+Implementation source `578a9afebae8f77fe98344233cdc9155e82bb37a` is pushed, with
+READY deployment `dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA`. Read-only public/API
+verification passed 389 checks, preserving all 243 source observations and 24,641
+bulk catalogue products. Authenticated AI generation/failover remains unexercised.
+[Production receipt](../research/BACKEND_V0_11_0_PRODUCTION.json).
+Later v0.12.0 work is local and
+uncommitted under the user's no-push instruction.
+
 Optional authenticated photo reading now supports Gemini and OpenAI through one
 globally selected credential. A barcode catalogue hit remains independent of AI.
 This checkpoint adds the backend contract; frontend v0.6 automatic scanning is a
@@ -39,7 +47,8 @@ Both locally supplied keys passed model-access checks. One owned synthetic Gemin
 label passed 11 extraction checks in 3.88 seconds; see the
 [synthetic receipt](../research/AI_VISION_SYNTHETIC_CHECK.json). This does not
 establish real-package accuracy, OpenAI generation quota, native-device behavior
-or hosted deployment. Production verification is recorded separately after push.
+or authenticated hosted extraction. Public production verification is recorded
+separately in the dated receipt; it made no AI generation or account/data writes.
 
 ## Storage decision
 

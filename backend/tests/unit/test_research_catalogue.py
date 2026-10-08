@@ -6,6 +6,7 @@ import importlib
 import importlib.util
 import json
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -75,12 +76,86 @@ def source(tmp_path, rows=None):
     return directory
 
 
+def test_source_ingredient_tokens_are_searchable_without_rewriting_observations(tmp_path):
+    directory = source(tmp_path)
+    output = tmp_path / 'runtime'
+    api().build_research_bundle(directory, output)
+    store = api().ResearchCatalogueStore(output)
+    result = store.search('sugar')
+    assert result.status == 'ready'
+    assert result.candidates[0].identity.name == 'Synthetic cola'
+    observation = store.lookup(result.candidates[0].entry_id).observation
+    assert observation is not None
+    assert observation.sections.ingredients.text == 'Water, sugar'
+
+
 def built(tmp_path, rows=None):
     module = api()
     source_directory = source(tmp_path, rows)
     output = tmp_path / "runtime"
     receipt = module.build_research_bundle(source_directory, output)
     return module, source_directory, output, receipt, module.ResearchCatalogueStore(output)
+
+
+def previous_v2(module, output):
+    """Construct the published identity-only format without changing its facts."""
+    receipt = json.loads((output / module.RECEIPT_FILENAME).read_text())
+    receipt['format_version'] = 2
+    with closing(sqlite3.connect(output / module.DATABASE_FILENAME)) as connection:
+        connection.execute('PRAGMA user_version=2')
+        connection.execute('DELETE FROM research_terms')
+        for entry_id, data in connection.execute('SELECT entry_id,data FROM research_products'):
+            identity = json.loads(data)['identity']
+            tokens = module.identity_tokens(
+                module._search_text(identity[key])
+                for key in ('name', 'brand', 'variant', 'quantity') if identity[key] is not None
+            )
+            connection.executemany('INSERT INTO research_terms VALUES(?,?)',
+                                   ((token, entry_id) for token in tokens))
+        manifest = {key: value for key, value in receipt.items()
+                    if key not in ('database_sha256', 'database_bytes')}
+        connection.execute('UPDATE research_manifest SET data=?',
+                           (module.canonical(manifest).decode(),))
+        connection.commit()
+    database = (output / module.DATABASE_FILENAME).read_bytes()
+    receipt.update(database_bytes=len(database), database_sha256=hashlib.sha256(database).hexdigest())
+    (output / module.RECEIPT_FILENAME).write_bytes(module.canonical(receipt) + b'\n')
+    return receipt
+
+
+def test_previous_search_format_upgrades_only_after_verified_backup(tmp_path):
+    module, source_dir, output, _, _ = built(tmp_path)
+    old = previous_v2(module, output)
+    before = (output / module.DATABASE_FILENAME).read_bytes()
+    with pytest.raises(ValueError):
+        module.verify_research_bundle(output)
+    current = module.build_research_bundle(source_dir, output)
+    assert current['format_version'] == 3
+    backup = output / '.research-backups' / old['database_sha256']
+    assert (backup / module.DATABASE_FILENAME).read_bytes() == before
+    assert module.ResearchCatalogueStore(output).search('sugar').matched_count == 1
+
+
+def test_corrupt_previous_format_is_preserved_and_rejected(tmp_path):
+    module, source_dir, output, _, _ = built(tmp_path)
+    previous_v2(module, output)
+    with (output / module.DATABASE_FILENAME).open('ab') as stream:
+        stream.write(b'changed')
+    before = (output / module.DATABASE_FILENAME).read_bytes()
+    with pytest.raises(ValueError):
+        module.build_research_bundle(source_dir, output)
+    assert (output / module.DATABASE_FILENAME).read_bytes() == before
+    assert not (output / '.research-build.lock').exists()
+
+
+def test_rebuild_cannot_discard_newly_retained_source_records(tmp_path):
+    module, _, output, _, _ = built(tmp_path, [candidate(), candidate('Synthetic extra')])
+    (tmp_path / 'fewer').mkdir()
+    fewer = source(tmp_path / 'fewer', [candidate()])
+    before = (output / module.DATABASE_FILENAME).read_bytes()
+    with pytest.raises(ValueError, match='discard or alter'):
+        module.build_research_bundle(fewer, output)
+    assert (output / module.DATABASE_FILENAME).read_bytes() == before
 
 
 def test_brand_apostrophes_and_latin_accents_match_without_changing_sources(tmp_path):
@@ -92,7 +167,7 @@ def test_brand_apostrophes_and_latin_accents_match_without_changing_sources(tmp_
             candidate("सामग्री मिश्रण"),
         ],
     )
-    assert receipt["format_version"] == 2
+    assert receipt["format_version"] == 3
     for query in ["Lays", "Lay's", "Lay’s"]:
         result = store.search(query)
         assert result.matched_count == 1

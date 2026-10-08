@@ -1,5 +1,15 @@
 # Documentation index
 
+Current local work: [frontend v0.6.0+7](planning/FRONTEND_V0_6_0_REVIEW.md) and
+[backend v0.12.0](planning/BACKEND_V0_12_0_REVIEW.md). Automatic barcode/photo
+reading, reference desktop Home/mobile-PC results, private structured proposals,
+research search v3 and separate real-product image descriptors are implemented
+locally, with completed source checks and rendered comparison.
+**The user authorized component pushes after review/docs.** Previous frontend v0.5.0/backend
+v0.11 sources are pushed/READY with 49 frontend/389 backend read-only hosted
+checks; authenticated AI and device proof remain separate. Historical version
+sections below retain their scope.
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,
 125 retailer and 69 OFF). It preserves dated sources, unknown identities and
@@ -18,7 +28,7 @@ The user's next automatic-capture/results redesign is recorded in the
 Earlier release statements below retain their historical scope.
 
 
-Current work: [frontend v0.4.0+5/backend v0.9.0 implementation plan](planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
+Historical work: [frontend v0.4.0+5/backend v0.9.0 implementation plan](planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 Backend v0.9.0 and frontend v0.4.0+5 are independently pushed/READY with
 26 and 49 hosted checks respectively; all 21 OCR hashes pass. Local evidence is
 1058 backend tests (five provider skips), 181 Flutter tests, clean static checks,

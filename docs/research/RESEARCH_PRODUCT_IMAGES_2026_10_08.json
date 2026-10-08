@@ -1,0 +1,17 @@
+{
+  "checked_at_utc": "2026-10-08T11:13:19.325407+00:00",
+  "source_observations": 243,
+  "descriptor_count": 120,
+  "records_without_descriptor": 123,
+  "method_counts": {
+    "off_selected_front": 57,
+    "opengraph_product": 14,
+    "structured_product": 42,
+    "retailer_product_id": 7
+  },
+  "image_source_sha256": "e441ff3d845949fb72782bdabeb3c882a15d8aa90e8f691f648180a62b455b04",
+  "source_dataset_decoded_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
+  "validation": "Exact source-observation URL; selected OFF front metadata or identity-matched product listing. HEAD 200, reviewed origin, raster MIME and declared size <=2MB. No image bytes acquired.",
+  "limits": "Dated source illustration, not current package or barcode confirmation. Unknown image reuse license remains unknown; source owner retains rights. Missing images remain unknown. Logos/SVGs/staging origins/failures excluded.",
+  "observations_unchanged": true
+}

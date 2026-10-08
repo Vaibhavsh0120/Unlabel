@@ -1,0 +1,120 @@
+{
+  "checked_at_utc": "2026-10-08T11:31:52.676100+00:00",
+  "scope": "Read-only inspection of previously published production; no deployment, push, environment changes, account creation or AI generation",
+  "working_checkout": {
+    "head_sha": "578a9afebae8f77fe98344233cdc9155e82bb37a",
+    "branch": "main",
+    "unpublished_versions_excluded": [
+      "backend 0.12.0",
+      "frontend 0.6.0+7"
+    ],
+    "local_changes_are_not_production_proof": true
+  },
+  "backend": {
+    "version": "0.11.0",
+    "source_sha": "578a9afebae8f77fe98344233cdc9155e82bb37a",
+    "deployment": {
+      "id": "dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA",
+      "state": "READY",
+      "environment": "production",
+      "source_sha": "578a9afebae8f77fe98344233cdc9155e82bb37a",
+      "alias": "https://unlabel-api.vercel.app",
+      "metadata_verification": "Fresh supplied Vercel inspection matched ID, state, Git SHA, target and alias",
+      "inspection_sha256": "9fdfc928339c2002c0cff4e58355ff445c8382c2e7a46f87294d76cc59c4fded"
+    },
+    "public_and_synthetic_checks_passed": 389,
+    "receipt": "docs/research/BACKEND_V0_11_0_PRODUCTION.json",
+    "receipt_sha256": "07bf082f4e4d36a49dc3a054e74049d5977d82b0c2faa7912356446d20a03713",
+    "paths": 27,
+    "operations": 28,
+    "immutable_observations_exactly_equal_source": 243,
+    "original_catalogue_products": 24641
+  },
+  "frontend": {
+    "version": "0.5.0+6",
+    "source_sha": "00ae175993aa1cf435c3ff9ec9c8ee05cef94005",
+    "deployment": {
+      "id": "dpl_AscVhThAEqDPsd3E1REiFbpMLbPB",
+      "state": "READY",
+      "environment": "production",
+      "source_sha": "00ae175993aa1cf435c3ff9ec9c8ee05cef94005",
+      "alias": "https://unlabel-india.vercel.app",
+      "inspection_sha256": "ba071c1a2c0f01f098c60959b6f87bfc10057c3fc6b6eeacd6df2a555f2e8a89",
+      "metadata_verification": "Fresh supplied Vercel inspection matched ID, READY state, Git SHA, production target and canonical alias"
+    },
+    "public_asset_api_cors_checks_passed": 49,
+    "ocr_asset_hashes_matched": 21,
+    "receipt": "docs/research/FRONTEND_V0_5_0_PRODUCTION.json",
+    "receipt_sha256": "df846810553d94702fecb2c7a7b95ff8749e6dd958412eacabf4ec31c169f97c"
+  },
+  "supplemental_readonly_checks": [
+    {
+      "check": "Global AI status rejects unauthenticated callers without reading the selection store",
+      "method": "GET",
+      "path": "/v1/ai/active",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "Extraction preflight exact production origin",
+      "method": "OPTIONS",
+      "path": "/v1/ai/extract",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "check": "Extraction preflight rejects unrelated origin",
+      "method": "OPTIONS",
+      "path": "/v1/ai/extract",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "check": "Configured private provider/control secrets absent from public compiled bundle",
+      "passed": true,
+      "configured_secret_categories_checked": [
+        "gemini_api_key",
+        "openai_api_key",
+        "ai_control_secret"
+      ],
+      "private_values_retained": false,
+      "bundle_sha256": "f96a4d0c4fc21c13d479491734288732a475104d314fed18d988b7342f8c1ae3"
+    }
+  ],
+  "provider_model_metadata_checks": {
+    "checked_at_utc": "2026-10-08T11:29:28.365940+00:00",
+    "scope": "Locally configured keys: read-only provider model metadata GETs",
+    "checks": [
+      {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "status": 200,
+        "outcome": "model_metadata_accessible"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-4.1-mini",
+        "status": 200,
+        "outcome": "model_metadata_accessible"
+      }
+    ],
+    "generation_requests": 0,
+    "global_selection_touched": false,
+    "provider_bodies_retained": false,
+    "credentials_retained": false,
+    "limits": [
+      "Model metadata access does not establish generation quota, extraction accuracy or hosted credential availability."
+    ]
+  },
+  "issues_found": [],
+  "credentials_or_user_data_retained": false,
+  "limits": [
+    "Public metadata reports configured extraction; authenticated hosted extraction/generation and sticky failover are not exercised by this receipt.",
+    "Authenticated AI status was intentionally not called because an absent selection may be initialized by store.read().",
+    "Provider model GETs use locally configured keys; success does not prove production keys, generation quota or accuracy.",
+    "No browser interaction, native camera start time, physical scan accuracy, real package recognition, frame rate or full workflow proof is claimed.",
+    "No account, contribution, global selection, private staging or environment writes were performed.",
+    "The current local sidebar/artwork/automatic scan/results redesign, image descriptors, staging and search v3 remain excluded from published source verification.",
+    "Catalogue availability and exact acquired-source equality do not establish complete product information, retail coverage, package currency or allergen safety."
+  ]
+}

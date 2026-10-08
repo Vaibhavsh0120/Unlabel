@@ -1,7 +1,15 @@
 # Shared API contracts
 
+Local backend v0.12.0 adds independent private storage outcomes to extraction
+responses and typed researched-product image descriptors. The new exported
+snapshot is `schemas/backend-v0.12.0.openapi.json`, retaining 27 paths/28
+operations. It does not replace the preserved v0.11.0 production contract.
+The current changes are uncommitted and have not been deployed; final schema and
+synthetic-example validation is recorded in the
+[local review](../docs/planning/BACKEND_V0_12_0_REVIEW.md).
+
 Backend v0.11 adds six AI schemas for extraction requests, unverified label facts,
-extraction responses and machine-only status/activation. Current OpenAPI is
+extraction responses and machine-only status/activation. Its historical OpenAPI is
 `schemas/backend-v0.11.0.openapi.json` (27 paths/28 operations). Only scanner
 extraction accepts bounded photos with consent; other contracts continue to
 exclude photos/raw OCR. See [AI architecture](../docs/architecture/AI_ROUTING.md).

@@ -19,7 +19,10 @@ def main() -> int:
     )
     args = parser.parse_args()
     sys.path.insert(0, str(ROOT / "backend"))
-    from app.research_catalogue.store import build_research_bundle, verify_research_bundle
+    from app.research_catalogue.store import (
+        build_research_bundle,
+        verify_research_bundle,
+    )
 
     try:
         receipt = (

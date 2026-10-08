@@ -353,12 +353,64 @@ class ResearchSearchResult(ResearchModel):
     warnings: list[PUBLIC_TEXT] = Field(default_factory=list, max_length=100)
 
 
+IMAGE_HOSTS = {
+    'world.openfoodfacts.org': {'images.openfoodfacts.org'},
+    'blinkit.com': {'cdn.grofers.com'},
+    'business.bigbasket.com': {'www.bbassets.com'},
+    'bbnow.bigbasket.com': {'www.bbassets.com'},
+    'www.bigbasket.com': {'www.bbassets.com'},
+    'www.balajiwafers.com': {'www.balajiwafers.com'},
+    'www.bikaji.com': {'www.bikaji.com'},
+    'www.coca-cola.com': {'www.coca-cola.com'},
+    'instamart.in': {'instamart-media-assets.swiggy.com'},
+    'www.aamghar.in': {'www.aamghar.in'},
+}
+
+
+class ResearchImage(ResearchModel):
+    observation_id: str = Field(pattern=HASH_PATTERN)
+    url: str = Field(max_length=2048)
+    source_url: str = Field(max_length=2048)
+    provider: Provider
+    retrieved_at: str = Field(max_length=64)
+    evidence_sha256: str = Field(pattern=HASH_PATTERN)
+    method: str = Field(pattern=r'^(off_selected_front|structured_product|opengraph_product|retailer_product_id)$')
+    attribution: str = Field(min_length=1, max_length=256)
+    license: str = Field(min_length=1, max_length=256)
+    identity_scope: str = Field(pattern=r'^(source_barcode|source_listing)$')
+    content_type: str = Field(pattern=r'^image/(jpeg|png|webp)$')
+
+    _urls = field_validator('url', 'source_url')(public_url)
+    _date = field_validator('retrieved_at')(aware_date)
+
+    @model_validator(mode='after')
+    def approved_origins(self):
+        source_host = urlsplit(self.source_url).hostname
+        if source_host is None or urlsplit(self.url).hostname not in IMAGE_HOSTS.get(source_host, set()):
+            raise ValueError('Image origin is not reviewed for this source')
+        if self.provider == 'open_food_facts':
+            if self.method != 'off_selected_front' or self.identity_scope != 'source_barcode':
+                raise ValueError('OFF image metadata requires its original barcode scope')
+            from app.catalogue.facts import FrontImage, selected_front_url
+            FrontImage.official_image_url(self.url)
+            match = re.search(r'/product/([0-9]{8}|[0-9]{12,14})(?:\.json|/|$)', urlsplit(self.source_url).path)
+            if match is None:
+                raise ValueError('OFF image source must identify its original product barcode')
+            code = match.group(1)
+            if not self.url.startswith(selected_front_url(code, 'en', 1).rsplit('/', 1)[0] + '/'):
+                raise ValueError('Image barcode path disagrees with its source')
+        elif self.identity_scope != 'source_listing' or self.method == 'off_selected_front':
+            raise ValueError('A website image cannot confirm a barcode')
+        return self
+
+
 class ResearchLookup(ResearchModel):
     schema_version: Literal["1"] = "1"
     status: Literal["found", "not_found", "unavailable"]
     entry_id: Sha256
     dataset_sha256: Sha256 | None
     observation: ResearchObservation | None = None
+    image: ResearchImage | None = None
     conflict_fields: list[PUBLIC_TEXT] = Field(default_factory=list, max_length=16)
     warnings: list[PUBLIC_TEXT] = Field(default_factory=list, max_length=100)
 

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1",
+  "measured_at": "2026-10-08T12:27:40.863564Z",
+  "runtime": "Flutter unit test, windows, debug",
+  "dart_version": "3.13.3 (stable) (Tue Sep 1 01:07:17 2026 -0700) on \"windows_x64\"",
+  "fixture": "owned synthetic EAN-13, 600x180 PNG",
+  "pipeline": "actual image decode, ZXing, checksum and automatic reader; in-process HTTP responses and warm public report cache",
+  "samples_ms": [
+    60.653,
+    8.35,
+    9.976,
+    2.927,
+    2.853,
+    3.222,
+    2.52,
+    2.954,
+    2.389,
+    2.592,
+    2.471
+  ],
+  "cold_ms": 60.653,
+  "warm_count": 10,
+  "warm_p50_ms": 2.89,
+  "warm_p95_ms": 9.976,
+  "metadata_and_report_gets": 2,
+  "photo_posts": 0,
+  "consent_calls": 0,
+  "limitations": [
+    "No physical camera or permission timing",
+    "No internet or production server latency",
+    "No real package, glare, focus or barcode accuracy benchmark",
+    "No 3-5 second end-to-end guarantee established"
+  ]
+}

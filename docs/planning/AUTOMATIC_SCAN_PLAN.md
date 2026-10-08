@@ -1,6 +1,6 @@
 # Automatic scan and product results
 
-Accepted direction,8 October 2026: a shopper opens Scan, photographs a barcode or
+Accepted direction, 8 October 2026: a shopper opens Scan, photographs a barcode or
 package and gets readable product facts without mandatory transcription. The
 four supplied references establish mobile/desktop results composition and real
 photo highlights. This replaces the normal Enter package label route.
@@ -63,17 +63,21 @@ facts. If a score is added later it requires a documented, evaluated rubric.
 
 ## Delivery and acceptance
 
-First close the independently tested research database backend 0.10/frontend 0.5.
-Then backend 0.11 adds automatic extraction contracts and frontend 0.6
-replaces the manual route and results composition. Each is documented/tested/pushed
-on main independently; no worktrees, mobile builds for backend work or paid services.
+Backend 0.10/frontend 0.5 research sources and backend 0.11 extraction are already
+pushed with READY deployments and read-only hosted receipts; authenticated AI
+generation, local next versions and physical-device proof remain separate.
+Frontend 0.6 replaces the manual route and result composition. Backend 0.12 adds
+bounded private machine proposals, search v3 and separate image descriptors.
+These next changes were reviewed locally on `main`. The user's latest instruction
+authorizes independent pushes after completing review and documentation.
+No worktrees, mobile builds for backend-only work or paid Firebase services.
 
 Tests cover barcode image decoding/checksum, malformed/oversized/cancelled images,
 OCR geometry mapping with contain-fit/rotation, uncertain/duplicate table cells,
 identity ambiguity, provider errors/privacy, staging admission and fast exact hits.
 Render matching 390/1440/1728 widths with real states, measure spacing, validate
 known barcode-only and unknown front/back workflows, and verify exact deployment
-SHAs/versions.3–5seconds is a measured target for warm known products, not a promise
+SHAs/versions. 3–5 seconds is a measurement target for warm known products, not a promise
 for every cold camera/model/download/network/unknown package. Physical Android/iOS
 camera/accuracy and provider quota remain explicit until actually observed.
 
@@ -82,6 +86,14 @@ camera/accuracy and provider quota remain explicit until actually observed.
 The user requested the best storage choice rather than mandating Firebase. Keep
 SQLite as the read-only deployed public catalogue; add new sourced facts through
 validated source bundles and rebuild it. Firestore stores mutable community facts,
-private accounts and global AI selection. Vercel runtime writes cannot serve as
+private accounts, global AI selection and bounded private machine proposals.
+Vercel runtime writes cannot serve as
 persistent SQLite catalogue updates. Preserve all existing data and export a
 verified local backup before maintenance; do not delete or overwrite new records.
+
+The local research search v3 rebuild preserves all 243 original rows/source
+observations and adds ingredient/declaration/recorded claim terms. Separate
+sourced-image descriptors currently cover 120/243 observations; the remaining
+123 keep a missing-image state. See the
+[preservation receipt](../research/RESEARCH_SEARCH_V3_PRESERVATION.json) and
+[image receipt](../research/RESEARCH_PRODUCT_IMAGES_2026_10_08.json).

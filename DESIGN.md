@@ -1,5 +1,27 @@
 # Unlabel interface contract
 
+The latest 8 October references define desktop Home and mobile/PC single-product
+results. Local frontend v0.6.0+7 implements this direction; screenshot
+comparison has been reviewed at 390/1440/1728 px. Publication is authorized after
+review/docs; exact hosted identities belong to the release reviews.
+This supersedes the earlier manual-entry UI direction while preserving the
+existing mobile Home / Scan / Compare / Saved order and Profile shortcut.
+
+Desktop uses a 240 px sidebar with Home, Scan, Compare, Saved, History and Insights,
+a search/Profile top bar, a wide pale mint scan banner, four shortcuts, insight
+banner, actual recent scans or an illustrated empty state, and source footer.
+Fresh desktop artwork leaves quiet space behind live headings/buttons. The sidebar
+uses the newly supplied pale mint watercolor three-leaf branch and slender stem,
+with the reference footer text; the older dark glossy bouquet is unsuitable there.
+
+Single-product results preserve the supplied identity/image, mint summary,
+findings, front claims, nutrition, ingredient insights, declarations and sources
+hierarchy. Phone cards stack; desktop gives ingredients/sources a supporting
+column. Reference scores, health labels and sample facts remain illustrative.
+Use available-fact counts and qualified findings instead of inventing 85/100.
+Real product images come from sourced descriptors or the current front photo;
+the new result botanical decoration is never package evidence.
+
 8 October steering: Profile, app loading and mobile/desktop Welcome use the four
 new supplied references. Keep the existing four-tab navbar design/order and
 Profile shortcut; only reduce its bottom gap and refine the held active indicator
@@ -27,15 +49,21 @@ Today's Insight has a smaller heading gap and manually swiped label-reading
 tips with distinct decorative artwork. There is no autoplay, arrow or pause
 control; keyboard and accessibility adjustment also work. Navigation and
 confirmed saves have supported-platform haptics. The later 7 October instruction
-authorizes docs, push and publication after verification.
+authorized docs, push and publication at that historical checkpoint. The later
+8 October instruction authorizes pushing after completing review and docs.
 
 Scan uses a centered compact title with back/gallery controls and a fixed,
 non-scrolling viewport. Its camera area takes the remaining height above three
 modes and capture/review/gallery actions. Opening Scan requests camera access;
 the rear feed is preferred, audio is disabled, and leaving/backgrounding stops
-the session. Captures remain private in memory for manual review. Missing camera
-or denied access retains retry, gallery and manual entry. v0.3.0 added private
-local OCR and editable confirmation. v0.4.0 starts preview without awaiting
+the session. Captures remain in session memory. Missing camera or denied access
+retains retry and gallery. Local v0.6 reads barcode/front/back captures
+automatically, with optional backend transfer consent and conservative local
+fallback; it removes the Enter package label route. Known barcode reports open
+directly; unknown products request the missing/clearer photo. Actual normalized
+regions and barcode anchors are highlighted after capture, and the action becomes
+View results when useful facts are ready. Unverified reading and optional one-tap
+fact acceptance are distinct; there is no mandatory typing. v0.4.0 starts preview without awaiting
 interrupted Android gallery recovery and protects newer actions from late photos.
 Product search replaces the header with a long input and updates actual results
 while typing. Product names and images open sourced reports. Reports/comparison
@@ -57,7 +85,8 @@ references. Installing that React registry would change the chosen framework.
 Use the Flutter theme as the implementation contract and the user's palette as
 precedence. This is an explicit framework adaptation, not a React installation.
 
-Primary home action is label lookup. Corrected-label entry is a dedicated task.
+Primary Home action is Start Scan. Photographing and reading an unknown package
+is a dedicated task; mandatory corrected-label entry has been removed.
 Saved/history are secondary navigation, showing real local records or useful
 empty states. Never seed convincing fake products, scores, claims or users.
 Historical facts keep dates/source and must not become current package proof.

@@ -112,6 +112,87 @@
       "title": "ResearchIdentity",
       "type": "object"
     },
+    "ResearchImage": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 2048,
+          "title": "Url",
+          "type": "string"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "open_food_facts",
+            "manufacturer",
+            "retailer"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "maxLength": 64,
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "evidence_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Sha256",
+          "type": "string"
+        },
+        "method": {
+          "pattern": "^(off_selected_front|structured_product|opengraph_product|retailer_product_id)$",
+          "title": "Method",
+          "type": "string"
+        },
+        "attribution": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Attribution",
+          "type": "string"
+        },
+        "license": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "identity_scope": {
+          "pattern": "^(source_barcode|source_listing)$",
+          "title": "Identity Scope",
+          "type": "string"
+        },
+        "content_type": {
+          "pattern": "^image/(jpeg|png|webp)$",
+          "title": "Content Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation_id",
+        "url",
+        "source_url",
+        "provider",
+        "retrieved_at",
+        "evidence_sha256",
+        "method",
+        "attribution",
+        "license",
+        "identity_scope",
+        "content_type"
+      ],
+      "title": "ResearchImage",
+      "type": "object"
+    },
     "ResearchLicense": {
       "additionalProperties": false,
       "properties": {
@@ -618,6 +699,17 @@
       "anyOf": [
         {
           "$ref": "#/$defs/ResearchObservation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "image": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ResearchImage"
         },
         {
           "type": "null"

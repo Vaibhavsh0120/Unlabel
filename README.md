@@ -21,18 +21,29 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Backend v0.11.0** implements optional automatic photo reading through one
-globally selected Gemini/OpenAI key. The backend validation passes 1,303 tests
-(five provider/emulator skips). Automatic scanning and the new results composition
-are being integrated separately in frontend v0.6.0. Production verification is
-pending. [AI configuration](docs/architecture/AI_ROUTING.md) ·
-[Backend review](docs/planning/BACKEND_V0_11_0_REVIEW.md).
+**Local next versions: frontend v0.6.0+7 and backend v0.12.0.** Barcode-first
+automatic reading, front/back photo extraction, post-capture highlights and the
+supplied desktop Home/mobile-PC result layouts are implemented locally. The
+Enter package label form has been removed. Local review, screenshot comparison and release checks are complete. The user
+authorized independent component pushes after review and documentation; exact new
+hosted identities are recorded in each release review when verified.
+[Frontend local review](docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend local review](docs/planning/BACKEND_V0_12_0_REVIEW.md).
+
+The preceding **backend v0.11.0** and **frontend v0.5.0+6** sources are pushed
+with READY deployments and **389 backend / 49 frontend hosted checks**, including
+all 21 OCR asset hashes. This read-only audit excludes the local next versions
+and authenticated AI generation. Backend v0.11.0 passed 1,303 tests with five provider/emulator
+skips; that historical count does not certify subsequent v0.12.0 edits.
+[AI configuration](docs/architecture/AI_ROUTING.md) ·
+[Backend v0.11 review](docs/planning/BACKEND_V0_11_0_REVIEW.md) ·
+[Hosted audit](docs/research/HOSTED_READONLY_AUDIT_2026_10_08.json).
 
 **Backend v0.10.0** adds a read-only researched-product database with **243 dated
 source observations**, including **174 manufacturer/retailer website records**.
-The next frontend **v0.5.0+6** searches these records and opens ingredient,
+Frontend **v0.5.0+6** searches these records and opens ingredient,
 allergen-declaration, nutrition-basis and source details even when the barcode is
-unknown. Final push/hosted checks are in progress; missing and conflicting facts
+unknown. Its source is pushed and read-only hosted checks pass. Missing and conflicting facts
 remain explicit. [Product list](docs/research/POPULAR_PRODUCTS_ADDED.md) ·
 [Database plan](docs/planning/POPULAR_PRODUCTS_DATABASE_PLAN.md).
 
@@ -50,18 +61,20 @@ Backend v0.8.0 was pushed and hosted-verified with 25 checks.
 [Current implementation plan](docs/planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) ·
 [Feature tracker](docs/planning/FEATURE_TRACKER.md).
 
-- Enter a barcode or search name/brand words and choose an exact catalogue record.
+- Photograph a barcode or search sourced identity/ingredient/claim text and choose
+  the matching catalogue record. Known barcode reports do not need an AI request.
 - Read dated historical reports, nutrition bases, source references and unknowns.
-- Enter and confirm current package facts for a separate useful label report.
+- Photograph an unknown package's front/back for an extraction-qualified result;
+  optionally accept matching structured facts for a separate confirmed report.
 - See approximate total-sugar cubes, seven reviewed numerical claim types and
   six reviewed English/Hindi ingredient functions where evidence permits.
 - Continue as a guest with device-local saved reports/history, or optionally sign in
   to sync a private account display name, saved reports and history across devices.
 - Use responsive botanical Welcome on mobile and PC, compact light/dark Home and
   the existing floating Home/Scan/Compare/Saved navigation, with Profile at the top right.
-- Capture a private camera/gallery photo, read English/Hindi text locally, correct
-  suggested label fields and explicitly confirm facts before analysis. Nutrition
-  tables remain manually reviewed. Manual barcode fallback lives inside Scan Label.
+- Read private camera/gallery captures automatically through optional backend AI
+  with transfer consent, or conservative local English/Hindi OCR. Unreadable facts
+  request a clearer photo. Missing values and ambiguous tables remain unknown.
 - Open a reference-style Profile with actual library counts, optional account
   editing/sync, local reminders, appearance, privacy and help controls.
 - Save confirmed public package facts automatically to improve the shared catalogue.
@@ -79,7 +92,7 @@ bounded public-read caching and limited background thumbnail requests. The Scan
 Label layout and four-tab navigation design/order remain the established ones;
 the bar sits lower and its active icon can be held and dragged.
 
-Automatic barcode camera detection, continuous live highlights, personal
+Continuous live-feed recognition/highlights, personal
 suitability and wider reviewed insight coverage remain future work. Profile
 notifications are explicitly unavailable, and unrecorded comparison totals show
 an unknown count. Saved dietary/allergen choices are device-local reminders;
@@ -129,7 +142,14 @@ separate live product/nutrition APIs remain available.
 Generic IFCT/INDB/USDA food composition does not fill a branded packet's unknown
 values. Missing is unknown, not zero. Tables retain basis and preparation; source
 conflicts are preserved. Sugar cubes use the explicit approximate 4 g/cube policy.
-No custom model/training is selected; Gemini remains disabled.
+No custom model/training is selected. Optional Gemini/OpenAI extraction uses one
+globally active server credential with sticky manual/failure replacement.
+
+Local v0.12.0 retains the original SQLite data, extends the research index with
+ingredient/declaration/claim terms and attaches **120 sourced image descriptors
+to 243 research observations**; 123 still lack an image. Unverified structured AI
+facts use bounded private Firestore staging, separate from public admission and
+personal sync. Decorative artwork never fills missing product-image evidence.
 
 Firebase **Unlabel**, project `unlabel-india-catalogue`, uses its first Standard
 database **unlabel** in Mumbai with free tier/no linked billing. Deny-all client

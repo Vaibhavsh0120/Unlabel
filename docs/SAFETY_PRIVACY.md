@@ -1,5 +1,11 @@
 # Safety, evidence and privacy boundaries
 
+Current local v0.6.0 frontend/v0.12.0 backend adds optional automatic photo reading
+with transfer consent and bounded private structured proposals. This work is
+uncommitted and is not deployed under the user's no-push instruction. Previous
+version/deployment evidence below retains its historical scope. Photos, raw OCR,
+geometry and provider envelopes remain excluded from catalogue/account storage.
+
 Released v0.4.0 implements automatic structured public-product observations and
 private staging/receipts. Existing normalization/seven-claim evaluation remains
 stateless. Production v0.6.0 discovery is independently hosted-verified and released after v0.5.0/v0.4.0. Firebase
@@ -55,13 +61,14 @@ AI cannot invent missing quantities, decide allergy safety, alter findings or ad
 
 | Data | Location/retention | Optional transfer |
 | --- | --- | --- |
-| Frames/photos/geometry | Device/browser; temporary, explicit choice to retain | No backend/Gemini image upload |
+| Frames/photos/geometry | Temporary device/browser capture session; no durable photo store | With explicit consent, bounded PNG/JPEG photos go to backend and its globally active Gemini/OpenAI provider for reading; geometry is returned to the current session |
 | Raw OCR/corrections | Raw OCR stays in the local capture session; only structured corrected facts enter saved reports | Bounded confirmed/provisional structured public fields to HTTPS backend |
 | Diet/allergy preferences and personal suitability | Local device/browser, editable/deletable | None to backend/Gemini |
 | Scan history/reports | Guests device/browser-local; password account uses its isolated local namespace and bounded private snapshot | Optional login enables private caller-owned CAS sync; counts 50 saved/100 history, data 384 KiB; no silent trimming |
 | Account display name | Local account namespace and private snapshot after login | Bounded visible display name only; no email/UID/password/token fields in payload |
 | Appearance/Welcome completion | Device/browser-local | Never part of private cloud snapshot |
 | Public product observations | Configured Firebase Unlabel; automatic save/dedup of corrected confirmed facts, original revisions and dates | Product identity, paired back facts/declarations/claims only; no separate Share step, images/raw OCR/profile/location |
+| Unverified AI structured proposals | Local v0.12 backend-only Firestore staging; 256 buckets × eight items × 32 KiB facts, opportunistic seven-day expiry and oldest-item eviction | Literal extracted identity/claims/ingredient/declaration/nutrient fields only, with hashed ownership; no photos, raw OCR, region text/geometry, prompts or provider envelopes |
 | Provisional extraction candidates | Staged unverified structured public candidates | Not promoted as confirmed facts or regulatory findings; no raw private OCR dump |
 | Write ownership | Private keyed hash of verified anonymous/password scanner subject | Backend write/receipt boundaries; never public or a raw UID/token |
 | Public evidence | Canonical files; bundled read-only assets/JSON | Permitted public snippets only to optional provider |

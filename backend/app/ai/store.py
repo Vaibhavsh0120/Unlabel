@@ -1,7 +1,8 @@
 """One transactional AI selection for all workers, users and operations.
 
-Only slot identifiers, cooldowns and bounded counters are stored. Images, prompts,
-raw OCR, provider output and API keys never enter this store.
+Selection stores slot identifiers, cooldowns and bounded counters. Structured
+unverified facts use a separate bounded private staging collection; images,
+prompts, raw OCR, provider envelopes and API keys are never persisted.
 """
 
 import hashlib
@@ -12,6 +13,8 @@ from typing import Any, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.ai.models import ExtractedLabel
+from app.ai.staging import StagingResult, stage_machine_facts
 from app.community.store import FirestoreContributionStore, StoreQuotaExceeded, StoreUnavailable
 
 
@@ -55,12 +58,16 @@ class AiSelectionStore(Protocol):
         self, observed: ActiveSelection, candidates: tuple[str, ...], cooldown_seconds: int,
     ) -> ActiveSelection: ...
     def admit(self, actor: str, *, daily_limit: int, actor_limit: int) -> None: ...
+    def stage(self, actor: str, label: ExtractedLabel) -> StagingResult: ...
 
 
 class FirestoreAiSelectionStore:
     def __init__(self, database: Any, clock: Callable[[], datetime] | None = None) -> None:
         self._transactions = FirestoreContributionStore(database)
         self._clock = clock or (lambda: datetime.now(UTC))
+
+    def stage(self, actor: str, label: ExtractedLabel) -> StagingResult:
+        return stage_machine_facts(self._transactions, actor, label, now=self._now())
 
     @property
     def _reference(self):

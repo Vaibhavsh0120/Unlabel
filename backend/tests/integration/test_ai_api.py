@@ -65,7 +65,7 @@ def client_for(runtime=None, respond=None, **changes):
     )
 
 
-def test_authenticated_scanner_receives_qualified_facts_without_retaining_images_or_raw_output():
+def test_authenticated_scanner_receives_qualified_private_facts_without_retaining_images_or_raw_output():
     runtime = AiRuntime()
     with client_for(runtime) as client:
         response = client.post("/v1/ai/extract", json=body(), headers=SCANNER_HEADERS)
@@ -74,6 +74,7 @@ def test_authenticated_scanner_receives_qualified_facts_without_retaining_images
         result = response.json()
         assert result["status"] == "extracted"
         assert result["extraction"]["evidence"] == "machine_extracted_unverified"
+        assert result['storage']['status'] == 'private_unverified'
         assert result["ai"] == {
             "scope": "global",
             "provider": "gemini",
@@ -92,12 +93,34 @@ def test_authenticated_scanner_receives_qualified_facts_without_retaining_images
         OPENAI_KEY,
         CONTROL,
         "private-subject",
-        "Oats, milk",
         "data_base64",
         body()["images"][0]["data_base64"],
     ):
         assert private not in documents
+    staged = [value for key, value in runtime.database.documents.items()
+              if key.startswith('unlabel_machine_staging/')]
+    assert len(staged) == 1
+    facts = json.loads(staged[0]['items'][0]['facts_json'])
+    assert facts['ingredients'] == 'Oats, milk'
+    assert 'regions' not in facts
+    assert not any(key.startswith('community_') for key in runtime.database.documents)
     assert runtime.database.documents["unlabel_ai_limits/global"]["count"] == 1
+
+
+def test_staging_outage_keeps_useful_reading_and_does_not_switch_global_key(monkeypatch):
+    from app.community.store import StoreUnavailable
+    runtime = AiRuntime()
+    def unavailable(*args):
+        raise StoreUnavailable()
+    monkeypatch.setattr(runtime.ai_store, 'stage', unavailable)
+    with client_for(runtime) as client:
+        result = client.post('/v1/ai/extract', json=body(), headers=SCANNER_HEADERS)
+    assert result.status_code == 200
+    assert result.json()['storage'] == {
+        'status': 'not_stored', 'reason': 'unavailable', 'content_sha256': None, 'deduplicated': False,
+    }
+    assert result.json()['extraction']['ingredients'] == 'Oats, milk'
+    assert result.json()['ai']['revision'] == 1
 
 
 @pytest.mark.parametrize(

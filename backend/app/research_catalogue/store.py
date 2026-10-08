@@ -36,7 +36,7 @@ from app.research_catalogue.models import (
 DATABASE_FILENAME = "research.sqlite3"
 RECEIPT_FILENAME = "receipt.json"
 APPLICATION_ID = 0x554E5253
-DATABASE_VERSION = 2
+DATABASE_VERSION = 3
 MAX_BYTES = 64 * 1024**2
 MAX_SOURCE_BYTES = 32 * 1024**2
 MAX_METADATA_BYTES = 2 * 1024**2
@@ -58,7 +58,7 @@ class ResearchReceipt(ResearchModel):
     source_compressed_sha256: str = Field(pattern=HASH_PATTERN)
     source_manifest_sha256: str = Field(pattern=HASH_PATTERN)
     observation_count: int = Field(ge=1, le=MAX_OBSERVATIONS)
-    format_version: int = Field(ge=DATABASE_VERSION, le=DATABASE_VERSION)
+    format_version: int = Field(ge=2, le=DATABASE_VERSION)
 
 
 def _path(path: Path) -> Path:
@@ -144,9 +144,27 @@ def _search_text(value: str) -> str:
 
 def _tokens(observation: ResearchObservation) -> tuple[str, ...]:
     identity = observation.identity
+    text = [identity.name, identity.brand, identity.variant, identity.quantity]
+    # Retrieval may match source wording; it never promotes a marketing tag to
+    # a verified current-package claim or combines incompatible source records.
+    for section in (observation.sections.ingredients, observation.sections.contains,
+                    observation.sections.may_contain):
+        if section is not None:
+            text.append(section.text)
+    projection = observation.raw_projection or {}
+    for key in ("labels", "labels_tags"):
+        labels = projection.get(key)
+        if isinstance(labels, str):
+            text.append(labels)
+        elif isinstance(labels, list):
+            text.extend(value for value in labels if isinstance(value, str))
+    for key in ("front_claims", "claims"):
+        claims = observation.metadata.get(key)
+        if isinstance(claims, list):
+            text.extend(value for value in claims if isinstance(value, str))
     return identity_tokens(
         _search_text(value)
-        for value in (identity.name, identity.brand, identity.variant, identity.quantity)
+        for value in text
         if value is not None
     )
 
@@ -192,9 +210,9 @@ def _conflicts(value: str) -> list[str]:
     return raw
 
 
-def _database_manifest(connection: sqlite3.Connection) -> dict[str, Any]:
+def _database_manifest(connection: sqlite3.Connection, version: int = DATABASE_VERSION) -> dict[str, Any]:
     if connection.execute("PRAGMA application_id").fetchone()[0] != APPLICATION_ID or (
-        connection.execute("PRAGMA user_version").fetchone()[0] != DATABASE_VERSION
+        connection.execute("PRAGMA user_version").fetchone()[0] != version
     ):
         raise ValueError("Unrecognized research database")
     rows = connection.execute("SELECT id,data FROM research_manifest").fetchmany(2)
@@ -245,9 +263,15 @@ def _expected_conflicts(observations: list[ResearchObservation]) -> dict[str, li
 
 def verify_research_bundle(directory: Path) -> dict[str, Any]:
     """Verify the separate DB receipt and every immutable source/index relationship."""
+    return _verify_research_bundle(directory, DATABASE_VERSION)
+
+
+def _verify_research_bundle(directory: Path, version: int) -> dict[str, Any]:
     directory = _path(directory)
     receipt_data = _read(directory / RECEIPT_FILENAME, 64 * 1024)
     receipt = ResearchReceipt.model_validate(_json(receipt_data))
+    if receipt.format_version != version:
+        raise ValueError("Research format requires a verified source rebuild")
     database = _read(directory / DATABASE_FILENAME, MAX_BYTES)
     if (len(database), hashlib.sha256(database).hexdigest()) != (
         receipt.database_bytes,
@@ -282,7 +306,7 @@ def verify_research_bundle(directory: Path) -> dict[str, Any]:
             "token",
         ]:
             raise ValueError("Research database schema lacks its bounded query index")
-        manifest = _database_manifest(connection)
+        manifest = _database_manifest(connection, version)
         if manifest != receipt.model_dump(exclude={"database_sha256", "database_bytes"}):
             raise ValueError("Research database manifest differs from its receipt")
         count = connection.execute("SELECT COUNT(*) FROM research_products").fetchone()[0]
@@ -317,7 +341,13 @@ def verify_research_bundle(directory: Path) -> dict[str, Any]:
                 or name_sort != (observation.identity.name or "").casefold()
             ):
                 raise ValueError("Research identity index differs from original source identity")
-            expected_terms.update((token, entry_id) for token in _tokens(observation))
+            tokens = _tokens(observation) if version == DATABASE_VERSION else identity_tokens(
+                _search_text(value) for value in (
+                    observation.identity.name, observation.identity.brand,
+                    observation.identity.variant, observation.identity.quantity,
+                ) if value is not None
+            )
+            expected_terms.update((token, entry_id) for token in tokens)
         if source_digest.hexdigest() != receipt.dataset_sha256:
             raise ValueError(
                 "Research database records differ from the original acquired dataset hash"
@@ -391,15 +421,41 @@ def build_research_bundle(source_directory: Path, output_directory: Path) -> dic
     output_directory.mkdir(parents=True, exist_ok=True)
     for filename in (DATABASE_FILENAME, RECEIPT_FILENAME):
         _path(output_directory / filename)
-    if any(
+    existing = any(
         (output_directory / filename).exists() for filename in (DATABASE_FILENAME, RECEIPT_FILENAME)
-    ):
-        verify_research_bundle(output_directory)
+    )
     lock = output_directory / ".research-build.lock"
     descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     lock_identity = os.fstat(descriptor)
     os.close(descriptor)
     try:
+        previous_files = {}
+        if existing:
+            previous = ResearchReceipt.model_validate(_json(_read(
+                output_directory / RECEIPT_FILENAME, 64 * 1024
+            )))
+            _verify_research_bundle(output_directory, previous.format_version)
+            source_records = {observation.observation_id: data for data, observation in observations}
+            with read_only_connection(output_directory / DATABASE_FILENAME) as connection:
+                if any(source_records.get(entry_id) != data for entry_id, data in connection.execute(
+                    "SELECT entry_id,data FROM research_products"
+                )):
+                    raise ValueError("Source rebuild would discard or alter retained observations")
+            previous_files = {
+                filename: _read(output_directory / filename, MAX_BYTES)
+                for filename in (DATABASE_FILENAME, RECEIPT_FILENAME)
+            }
+            backup = _path(output_directory / ".research-backups" / previous.database_sha256)
+            backup.mkdir(parents=True, exist_ok=True)
+            for filename, contents in previous_files.items():
+                destination = _path(backup / filename)
+                if destination.exists():
+                    if _read(destination, MAX_BYTES) != contents:
+                        raise ValueError("Research backup differs from preserved bundle")
+                else:
+                    with destination.open("xb") as stream:
+                        stream.write(contents)
+            _verify_research_bundle(backup, previous.format_version)
         with tempfile.TemporaryDirectory(prefix=".research-build-", dir=output_directory) as name:
             staging = Path(name)
             with closing(sqlite3.connect(staging / DATABASE_FILENAME)) as connection:
@@ -466,6 +522,9 @@ def build_research_bundle(source_directory: Path, output_directory: Path) -> dic
                 != receipt.source_compressed_sha256
             ):
                 raise ValueError("Research acquisition changed during database build")
+            if any(_read(output_directory / filename, MAX_BYTES) != contents
+                   for filename, contents in previous_files.items()):
+                raise ValueError("Retained research bundle changed during rebuild")
             for filename in (DATABASE_FILENAME, RECEIPT_FILENAME):
                 current_lock = lock.lstat()
                 if (current_lock.st_dev, current_lock.st_ino) != (
@@ -499,10 +558,16 @@ class ResearchCatalogueStore:
         self._signature = _signature(self.path)
         if self._signature != before:
             raise ValueError("Research database changed during verification")
+        from app.research_catalogue.images import load_images
+        self._image_path = Path(__file__).with_name('image_sources.json')
+        self._images = load_images(self._image_path)
+        self._image_signature = _signature(self._image_path) if self._image_path.exists() else None
 
     def _unchanged(self) -> None:
         if _signature(self.path) != self._signature:
             raise ValueError("Research database changed inside an active deployment")
+        if self._image_signature is not None and _signature(self._image_path) != self._image_signature:
+            raise ValueError('Image descriptors changed inside an active deployment')
 
     def status(self) -> dict[str, Any]:
         self._unchanged()
@@ -533,6 +598,13 @@ class ResearchCatalogueStore:
                 warnings=WARNINGS,
             )
         self._unchanged()
+        image = self._images.get(entry_id)
+        if (image is not None and result.observation is not None and
+                image.source_url == result.observation.source.url and
+                image.provider == result.observation.source.provider):
+            # Extra response metadata has separate provenance; acquired source
+            # JSON and its content hash remain unchanged.
+            result = result.model_copy(update={'image': image})
         return result
 
     def by_barcode(self, barcode: str) -> ResearchBarcodeLookup:

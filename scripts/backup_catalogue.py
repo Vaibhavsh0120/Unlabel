@@ -44,14 +44,14 @@ def backup(source: Path, destination: Path) -> dict:
     os.close(descriptor)
     staging = Path(name)
     try:
-        with closing(sqlite3.connect(source.as_uri() + "?mode=ro", uri=True)) as original:
-            with closing(sqlite3.connect(staging)) as copy:
-                original.backup(copy)
-                if copy.execute("PRAGMA integrity_check").fetchone() != ("ok",):
-                    raise ValueError("Backup failed its integrity check")
-                inventory = logical_inventory(copy)
-                if inventory != logical_inventory(original):
-                    raise ValueError("Catalogue changed or backup lost records")
+        with (closing(sqlite3.connect(source.as_uri() + "?mode=ro", uri=True)) as original,
+              closing(sqlite3.connect(staging)) as copy):
+            original.backup(copy)
+            if copy.execute("PRAGMA integrity_check").fetchone() != ("ok",):
+                raise ValueError("Backup failed its integrity check")
+            inventory = logical_inventory(copy)
+            if inventory != logical_inventory(original):
+                raise ValueError("Catalogue changed or backup lost records")
         # Exclusive publication never replaces an earlier backup.
         os.link(staging, destination)
         with destination.open("rb") as stream:
