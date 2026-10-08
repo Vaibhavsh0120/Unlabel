@@ -412,10 +412,101 @@ def test_reviewed_glossary_is_public_and_versioned_without_external_requests():
     assert response.status_code == 200
     result = response.json()
     assert result["status"] == "ready"
-    assert result["glossary_version"] == "ingredients-2026-10-07.1"
-    assert result["artifact"]["entry_count"] == len(result["entries"]) == 3
-    assert len(result["sources"]) == 3
+    assert result["glossary_version"] == "ingredients-2026-10-08.1"
+    assert result["artifact"]["entry_count"] == len(result["entries"]) == 6
+    assert len(result["sources"]) == 6
     assert response.headers["cache-control"] == "no-store"
+
+
+def test_expanded_functions_work_for_corrected_current_labels_without_identity_or_cloud():
+    text = "Unknown spice, ग्वार गम, INS 211, potassium sorbate"
+    body = payload(
+        barcode=None,
+        ingredients={
+            "status": "present",
+            "text": text,
+            "completeness": "partial",
+            "origin": "independently_transcribed_package",
+        },
+    )
+    with client_for() as client:
+        response = client.post("/v1/reports/check", json=body)
+        glossary = client.get("/v1/ingredients/glossary").json()
+        meta = client.get("/v1/meta").json()
+    assert response.status_code == 200
+    result = response.json()
+    assert result["ingredients"]["text"] == text
+    assert [match["entry"]["entry_id"] for match in result["ingredient_insights"]] == [
+        "guar_gum", "sodium_benzoate", "potassium_sorbate"
+    ]
+    sources = {source["source_id"] for source in result["glossary_sources"]}
+    for match in result["ingredient_insights"]:
+        assert text[match["start"] : match["end"]] == match["matched_text"]
+        assert set(match["entry"]["source_ids"]) <= sources
+    assert result["storage"]["status"] == "unavailable"
+    assert result["glossary_artifact"] == glossary["artifact"] == meta["glossary"]["artifact"]
+    assert result["glossary_version"] == meta["glossary"]["version"]
+    assert response.headers["cache-control"] == "no-store"
+    assert "ingredients_partial_capture" in result["missing_inputs"]
+    assert "allergen_safety_not_assessed" in result["warnings"]
+
+
+def test_tampered_reviewed_projection_disables_only_explanations(monkeypatch, tmp_path):
+    from app.reports.glossary import GlossaryStore
+
+    origin = Path(__file__).resolve().parents[2] / "app/reports/glossary-v2.json"
+    value = json.loads(origin.read_text(encoding="utf-8"))
+    value["entries"][0]["function_en"] = "Synthetic unreviewed content"
+    (tmp_path / "glossary-v2.json").write_text(json.dumps(value), encoding="utf-8")
+    monkeypatch.setattr("app.main.GlossaryStore", lambda: GlossaryStore(tmp_path))
+    with client_for() as client:
+        glossary = client.get("/v1/ingredients/glossary")
+        report = client.post("/v1/reports/check", json=payload())
+        meta = client.get("/v1/meta").json()
+    assert glossary.status_code == 503
+    assert glossary.headers["cache-control"] == "no-store"
+    assert report.status_code == 200
+    assert report.json()["ingredient_insights"] == []
+    assert "reviewed_ingredient_glossary_unavailable" in report.json()["warnings"]
+    assert meta["glossary"] == {"status": "unavailable", "version": None, "artifact": None}
+    assert meta["capabilities"]["label_reports"] is True
+    assert meta["capabilities"]["comparison"] is True
+    assert "Synthetic unreviewed content" not in glossary.text
+
+
+def test_long_ins_spacing_stays_a_useful_partial_report_without_match_overflow():
+    body = payload(
+        ingredients={
+            "status": "present",
+            "text": "Oats, INS" + " " * 500 + "330",
+            "completeness": "partial",
+            "origin": "independently_transcribed_package",
+        }
+    )
+    with client_for() as client:
+        response = client.post("/v1/reports/check", json=body)
+    assert response.status_code == 200
+    assert response.json()["ingredient_insights"] == []
+    assert response.json()["nutrition"] is not None
+
+
+@pytest.mark.parametrize(
+    "text", ["E330\u00a0(i)", "INS 412\u202f(i)", "E211\u2003(ii)", "lecithin\u2060ase"]
+)
+def test_unicode_spacing_and_format_controls_cannot_expose_partial_ingredient_matches(text):
+    body = payload(
+        ingredients={
+            "status": "present",
+            "text": text,
+            "completeness": "partial",
+            "origin": "independently_transcribed_package",
+        }
+    )
+    with client_for() as client:
+        response = client.post("/v1/reports/check", json=body)
+    assert response.status_code == 200
+    assert response.json()["ingredients"]["text"] == text
+    assert response.json()["ingredient_insights"] == []
 
 
 def test_invalid_glossary_disables_explanations_without_disabling_reports(monkeypatch):

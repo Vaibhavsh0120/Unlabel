@@ -1,32 +1,21 @@
 # System architecture
 
-Updated **7 October 2026**.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is independently
-[published](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
-Implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is hosted on READY
-deployment `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`: **931 tests passed, five emulator-only
-skips**, clean Ruff/Pyright and **18 hosted synthetic checks**. Documentation-only
-closure `ec70568` also reached READY without replacing the implementation SHA.
-Frontend **v0.2.0+3** Welcome/Home/optional account/navigation, search, local
-camera/gallery manual capture and reference-style Results/Compare have passed
-local validation: **135 tests**, clean analysis and a release web build.
-Frontend hosted verification and publication remain pending.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
-
-v0.7.0 exports **20 API paths / 21 operations** and **27 validated synthetic examples**,
-retaining all public contracts and
-adding authenticated GET/POST `/v1/account/sync`. Private ownership derives from
-verified password tokens. There is one scanner role and no admin/reviewer app.
-Light/dark/system appearance stays device-local. Camera/gallery capture is locally
-implemented; automatic barcode reading, OCR and Ingredient Insights remain
-frontend v0.3.0 work. [Private sync](PRIVATE_ACCOUNT_SYNC.md) ·
-[Master plan](../planning/MASTER_PLAN.md) ·
-[Frontend release review](../planning/FRONTEND_V0_2_0_REVIEW.md).
+Current backend exports 21 paths / 22 operations and 29 validated synthetic
+examples. Comparison uses the read-only `/v1/reports/compare` route; glossary
+v0.9.0 adds six sourced functions. Private sync remains password-owned and
+separate. [Master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
 

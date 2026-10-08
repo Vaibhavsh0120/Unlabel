@@ -1,22 +1,24 @@
 # Shared API contracts
 
-Working backend **v0.8.0 Sourced Nutrient Comparison** exports schemas from
+Current backend **v0.9.0 Reviewed Ingredient Functions** exports schemas from
 `app.main.create_app().openapi()` and named Pydantic models. **21 API paths /
 22 operations** add one read-only comparison POST while preserving earlier
-public/private contracts and bounded indexed discovery. Final hosted v0.8.0
-verification and publication are pending; v0.7.0 remains the previously verified
-independent backend release.
+public/private contracts and bounded indexed discovery. The glossary expands
+its entry enum/counts to six reviewed entries without a new route or wire schema
+version. Historical v0.8.0 source is pushed/hosted-verified with 25 checks; source
+publication is tracked separately. v0.9.0 gets its own exact deployment check.
 Backend routes/models are the source of truth; regenerate exports after changes.
 Preserve historical OpenAPI and strict earlier response shapes. Frontend
-**0.2.0+3** is independently published and consumes the separate private-sync
-contract. Frontend **0.3.0+4** has separate screen/OCR/performance release gates.
-[Current backend review](../docs/planning/BACKEND_V0_8_0_REVIEW.md) ·
+**0.3.0+4** is independently published. Frontend **0.4.0+5** adds separate sourced
+comparison models and consumes the existing read-only comparison contract.
+[Current backend review](../docs/planning/BACKEND_V0_9_0_REVIEW.md) ·
 [Historical v0.7.0 hosted checks](../docs/research/BACKEND_V0_7_0_PRODUCTION.json) ·
 [Frontend review](../docs/planning/FRONTEND_V0_2_0_REVIEW.md).
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.8.0.openapi.json` | Current 21 paths/22 operations, with independent sourced comparison and preserved earlier public/private contracts. |
+| `schemas/backend-v0.9.0.openapi.json` | Current 21 paths/22 operations with six-entry reviewed ingredient functions. |
+| `schemas/backend-v0.8.0.openapi.json` | Historical sourced comparison release; preserved earlier public/private contracts. |
 | `schemas/comparison-request-v1.schema.json` | Two discriminated current-confirmed/OFF-snapshot/public-community-revision inputs, exact references and selected tables. |
 | `schemas/comparison-response-v1.schema.json` | Original rows, source/date qualifications, compatible per-100 basis, eleven distinct nutrient cells and signed differences or unknown reasons. |
 | `schemas/backend-v0.7.0.openapi.json` | Historical twenty paths/twenty-one operations, including private account sync; public contracts preserved. |
@@ -29,7 +31,7 @@ contract. Frontend **0.3.0+4** has separate screen/OCR/performance release gates
 | `schemas/report-check-request-v1.schema.json` | Corrected confirmed structured observation, optional barcode/table/context; no analysis auth requirement. |
 | `schemas/label-report-v1.schema.json` | Separate current/historical evidence, nutrition/claims/declarations, partial glossary, sugar approximation and independent storage outcome. |
 | `schemas/report-failure-v1.schema.json` | Typed unavailable/not-found report-section failures. |
-| `schemas/ingredient-glossary-v1.schema.json` | Three reviewed English/Hindi name/function entries, source metadata and artifact integrity. |
+| `schemas/ingredient-glossary-v1.schema.json` | Six reviewed English/Hindi name/function entries, source metadata and artifact integrity. |
 | `schemas/backend-v0.4.0.openapi.json` | Historical independently released fifteen-route community catalogue API. |
 | `schemas/community-contribution-request-v1.schema.json` | Strict provisional/confirmed public observations, optional barcode, original rows and origin/license. |
 | `schemas/community-contribution-receipt-v1.schema.json` | Private owned submission receipt, observation/factual hashes, state, expiry and deduplication. |
@@ -59,7 +61,7 @@ contract. Frontend **0.3.0+4** has separate screen/OCR/performance release gates
 
 The exporter validates and writes **29 synthetic examples**, including bounded search candidates and the preserved product example. `catalogue-facts-v1.synthetic.json` demonstrates separate `details`; product, catalogue/status and live nutrition examples preserve independent origins. The normalization request/response pair demonstrates confirmed rows. The claims request/response pair demonstrates synthetic identified claims, matching context, selected table, numerical outcomes and statutory conversion metadata. Separate claims-rules, claims-unavailable and evidence examples cover read/503 states. Six community examples cover confirmed and provisional intake, receipt, exact lookup, failure and resolved fields. Five report/glossary examples cover report input, current/historical reports, a typed failure and the glossary. Three private-sync examples cover a request, snapshot and typed failure. Two comparison examples cover a confirmed-input request and its read-only source-preserving response. The current report example keeps 12 g total sugar per 40 g quantity as approximately three cubes; the historical example has read-only storage and no current-label claim assessment. No real food or private scan is included. These are not health policies or complete regulatory verdicts.
 
-Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports`, with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary, whose version/artifact are separate metadata. v0.8.0 enables `comparison` with `comparison_version: sourced-nutrient-comparison-v1`, independently of catalogue/cloud/glossary readiness; unavailable historical inputs remain explicit. AI remains disabled. Frontend v0.2.0+3 provides its existing conservative client-side comparison view; connecting the new server contract is separate frontend work. Add separate client models instead of modifying the strict v1 identity parser. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md) · [Report contract](../docs/architecture/LABEL_REPORT.md).
+Check `/v1/meta` API/schema/capabilities. `catalogue_facts` requires a validated facts-enabled store; an older identity-only index keeps its routes without enabling facts. `claim_checks` requires valid loaded reviewed knowledge; `knowledge_version` identifies `claims-2026-10-06.1`, and `knowledge_artifact` summarizes a verified package receipt or is null for direct local source loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports`, with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded six-entry glossary, whose version/artifact are separate metadata. v0.8.0 enables `comparison` with `comparison_version: sourced-nutrient-comparison-v1`, independently of catalogue/cloud/glossary readiness; unavailable historical inputs remain explicit. AI remains disabled. Frontend v0.4.0+5 adds exact-source server comparison to the existing paired cards with separate models and guarded responses. Add separate client models instead of modifying the strict v1 identity parser. [Backend guide](../backend/README.md) · [API plan](../docs/architecture/API_PLAN.md) · [Report contract](../docs/architecture/LABEL_REPORT.md).
 
 Comparison has its own [request](examples/comparison-v1.request.synthetic.json) and
 [response](examples/comparison-v1.response.synthetic.json), plus the

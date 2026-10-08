@@ -5,9 +5,10 @@ private staging/receipts. Existing normalization/seven-claim evaluation remains
 stateless. Production v0.6.0 discovery is independently hosted-verified and released after v0.5.0/v0.4.0. Firebase
 Unlabel's first Standard `unlabel` database, anonymous/email-password Auth and deny-all
 client rules are configured with free tier/no linked billing. Frontend v0.1.0+2 is
-published; manual corrected-label saving works and capture/OCR remains pending.
+historically published; v0.3.0 adds private local capture/OCR with explicit
+correction and confirmation. Native-device accuracy remains a separate gate.
 Guests keep personal records locally. Implemented v0.7.0/v0.2.0 private account
-sync has separate push/hosted gates, with public package facts kept independent. [Current gates](planning/BACKEND_V0_6_0_REVIEW.md)
+sync is independently published/hosted-verified, with public package facts kept independent. [Current gates](planning/BACKEND_V0_6_0_REVIEW.md)
 · [Master plan](planning/MASTER_PLAN.md).
 
 Released v0.5.0 reports preserve corrected current-label and historical
@@ -25,7 +26,8 @@ when libraries differ. CAS revisions and immutable mutation IDs preserve edits,
 retries and versioned empty deletion. Sign-out returns to the guest namespace.
 Appearance/Welcome remain local; photos/raw OCR/email/credentials and dietary
 health preferences are excluded from private sync. Backend local/live-Firebase
-checks passed; hosted v0.7.0 and full frontend release checks are pending.
+checks passed; backend v0.7.0/frontend v0.2.0 and the later frontend v0.3.0
+are independently published/hosted-verified. Current v0.9.0/v0.4.0 checks are separate.
 [Private architecture](architecture/PRIVATE_ACCOUNT_SYNC.md) ·
 [Version gates](planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 
@@ -54,7 +56,7 @@ AI cannot invent missing quantities, decide allergy safety, alter findings or ad
 | Data | Location/retention | Optional transfer |
 | --- | --- | --- |
 | Frames/photos/geometry | Device/browser; temporary, explicit choice to retain | No backend/Gemini image upload |
-| OCR/corrections | Local scan session or explicitly saved scan | Bounded confirmed/provisional structured public fields to HTTPS backend |
+| Raw OCR/corrections | Raw OCR stays in the local capture session; only structured corrected facts enter saved reports | Bounded confirmed/provisional structured public fields to HTTPS backend |
 | Diet/allergy preferences and personal suitability | Local device/browser, editable/deletable | None to backend/Gemini |
 | Scan history/reports | Guests device/browser-local; password account uses its isolated local namespace and bounded private snapshot | Optional login enables private caller-owned CAS sync; counts 50 saved/100 history, data 384 KiB; no silent trimming |
 | Account display name | Local account namespace and private snapshot after login | Bounded visible display name only; no email/UID/password/token fields in payload |
@@ -102,7 +104,7 @@ Before hosted use, verify Vercel's applicable data-use terms/account opt-out and
 
 Treat OCR, source excerpts and community data as untrusted data, including any embedded instructions. Bound text/response sizes and validate fixed schemas. Accept AI wording only when numbers, outcomes and allowed references agree with the deterministic report; otherwise keep reviewed templates.
 
-Public writes accept verified Firebase anonymous or password scanner tokens; private account sync requires password authentication and derives ownership from the verified subject. Payload-supplied identity cannot choose an owner. Manual confirmed-entry requests remain compatible with frontend v0.1.0; optional account sync is implemented for v0.2.0 with release verification pending. Direct Firestore access is denied even to authenticated clients;
+Public writes accept verified Firebase anonymous or password scanner tokens; private account sync requires password authentication and derives ownership from the verified subject. Payload-supplied identity cannot choose an owner. Manual confirmed-entry requests remain compatible with frontend v0.1.0; optional account sync was independently published for v0.2.0. Direct Firestore access is denied even to authenticated clients;
 privileged SDK access requires dedicated private IAM credentials and server
 validation. Review is never client-assigned. Transactional admission cannot
 guarantee provider availability. Keep Spark/no linked billing and no paid fallback.

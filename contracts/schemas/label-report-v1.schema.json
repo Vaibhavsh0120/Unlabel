@@ -1152,8 +1152,9 @@
           "type": "integer"
         },
         "entry_count": {
-          "const": 3,
           "default": 3,
+          "maximum": 8,
+          "minimum": 1,
           "title": "Entry Count",
           "type": "integer"
         }
@@ -1172,7 +1173,10 @@
           "enum": [
             "lecithin",
             "citric_acid",
-            "xanthan_gum"
+            "xanthan_gum",
+            "guar_gum",
+            "sodium_benzoate",
+            "potassium_sorbate"
           ],
           "title": "Entry Id",
           "type": "string"

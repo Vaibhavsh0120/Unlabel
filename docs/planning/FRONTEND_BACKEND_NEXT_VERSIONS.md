@@ -2,8 +2,8 @@
 
 Accepted scope: **8 October 2026**. Work directly on `main` and preserve published
 backend v0.7.0/frontend v0.2.0 history. Frontend v0.3.0 is now published and
-hosted-verified; backend v0.8.0 is separately implemented/locally verified with
-push/host/publication pending. Later releases remain plans until their own checks close.
+hosted-verified. Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 
 The latest correction takes precedence: **do not change the navbar**. Preserve
 Home / Scan / Compare / Saved, their order and design. The user's clarification
@@ -18,9 +18,9 @@ actual account identity, stored counts and supported settings supply its content
 | Component/version | Delivery | Evidence / state |
 | --- | --- | --- |
 | Frontend v0.3.0+4 | Reference Welcome on phone/PC, botanical startup screen, reference Profile with working account/device settings, immediate Home search keyboard, opaque header, a single Scan Label entry with private capture/gallery and editable review | Published: 168 tests, clean analysis/build, 390/1440/1728px captures, READY deployment and 49 hosted checks and all 21 OCR hashes; physical keyboard/camera proof separate |
-| Backend v0.8.0 | Sourced Nutrient Comparison, with strict selected table basis/preparation, safe known unit conversion and original source references | Implemented/locally verified; separate push/host/publication pending. Existing v0.7.0 already accepts corrected labels; no photo/raw-OCR upload endpoint |
-| Frontend v0.4.0+5 | Remaining reference report/ingredient screens, remaining native OCR acceptance, automatic barcode camera detection, source-aware comparison details and persistence/notification design | Reviewed local extraction, editable candidate fields, explicit confirmation, bounded errors/cancellation and real camera/browser/device checks |
-| Backend v0.9.0 | Expand reviewed bilingual ingredient-function coverage and evidence references with explicit unavailable/conflict outcomes | Reviewed licensed source entries, immutable provenance, bounds and contract examples; no health/allergy/compliance verdict or invented score |
+| Backend v0.8.0 | Sourced Nutrient Comparison, with strict selected table basis/preparation, safe known unit conversion and original source references | Pushed/hosted-verified with 25 checks; source-release publication not established. Existing v0.7.0 already accepts corrected labels; no photo/raw-OCR upload endpoint |
+| Frontend v0.4.0+5 | Exact-source server comparison, original table selection, unknown/conflict states and matched-ingredient bilingual detail; native OCR/automatic barcode/notifications remain later gates | Bounded current-session confirmation, no confirmation reconstruction after restore, stale-response/privacy tests, responsive browser checks; physical-device proof separate |
+| Backend v0.9.0 | Expand to six reviewed bilingual ingredient-function entries with exact source/alias/INS validation and immutable evidence; preserve unavailable/conflict outcomes | Reviewed licensed source entries, immutable provenance, bounds and contract examples; no health/allergy/compliance verdict or invented score |
 
 Versions remain independent. A UI change does not require a new API or backend
 version. Backend v0.7.0 provides `/v1/reports/check` for confirmed manual and
@@ -31,8 +31,9 @@ Anything without passing implementation/acceptance evidence remains planned.
 ## Executed frontend order and remaining ownership
 
 The frontend steps below are complete for published v0.3.0. The next active
-component gate is backend v0.8.0's independent push, hosted verification and
-publication; source-aware frontend integration follows in v0.4.0.
+component work is frontend v0.4.0/backend v0.9.0 according to the
+[implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md). The v0.8.0
+source and hosted receipt remain historical proof, with publication tracked separately.
 
 1. Define scope and inspect current capture/report/account contracts.
 2. Implement Welcome/loading artwork and responsive composition. Keep live text

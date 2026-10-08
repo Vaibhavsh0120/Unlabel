@@ -308,8 +308,8 @@ def test_ingredient_glossary_matches_original_text_and_provides_resolvable_revie
         "citric_acid",
         "xanthan_gum",
     }
-    assert result.glossary_version == "ingredients-2026-10-07.1"
-    assert result.glossary_artifact is not None and result.glossary_artifact.entry_count == 3
+    assert result.glossary_version == "ingredients-2026-10-08.1"
+    assert result.glossary_artifact is not None and result.glossary_artifact.entry_count == 6
     sources = {source.source_id for source in result.glossary_sources}
     for match in result.ingredient_insights:
         assert text[match.start : match.end] == match.matched_text

@@ -1,7 +1,7 @@
 {
   "schema_version": "1",
   "report_version": "label-report-v1",
-  "backend_version": "0.8.0",
+  "backend_version": "0.9.0",
   "generated_at": "2026-10-07T12:00:00Z",
   "assessment_basis": "catalogue_historical",
   "status": "partial",
@@ -1134,32 +1134,53 @@
     "evidence_state": null
   },
   "ingredient_insights": [],
-  "glossary_version": "ingredients-2026-10-07.1",
+  "glossary_version": "ingredients-2026-10-08.1",
   "glossary_artifact": {
-    "sha256": "5ec790f80554de1e0727662b506b983d94a2c0d516153257e8d51542458b34e9",
-    "bytes": 2857,
-    "entry_count": 3
+    "sha256": "dcddf20de8627d14b94c796683412b01665afc27b9d8d0cbb41a6f3e908fe1ce",
+    "bytes": 5741,
+    "entry_count": 6
   },
   "glossary_sources": [
     {
       "source_id": "codex-gsfa-lecithin",
       "title": "Codex GSFA: Lecithin (322(i))",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=77",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=117ae6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     },
     {
       "source_id": "codex-gsfa-citric-acid",
       "title": "Codex GSFA: Citric acid (330)",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=173",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d8e9e6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     },
     {
       "source_id": "codex-gsfa-xanthan-gum",
       "title": "Codex GSFA: Xanthan gum (415)",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=48",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=f979e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-guar-gum",
+      "title": "Codex GSFA: Guar gum (412)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=cf79e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-sodium-benzoate",
+      "title": "Codex GSFA: Sodium benzoate (211)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=0deae6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-potassium-sorbate",
+      "title": "Codex GSFA: Potassium sorbate (202)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d379e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     }
   ],

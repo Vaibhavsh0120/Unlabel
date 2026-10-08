@@ -1,5 +1,7 @@
 # Connected product releases
 
+This is the accepted historical v0.6.0/v0.1.0 release plan. Current work is [frontend v0.4.0+5/backend v0.9.0](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md); use the [tracker](FEATURE_TRACKER.md) for current implementation and hosted gates.
+
 Accepted scope: 7 October 2026. The user authorized the next backend and frontend
 versions after the separately released v0.5.0 report backend. Preserve those tags.
 

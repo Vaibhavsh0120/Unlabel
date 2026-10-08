@@ -1,0 +1,111 @@
+{
+  "schema_version": "1",
+  "glossary_version": "ingredients-2026-10-08.1",
+  "reviewed_on": "2026-10-08",
+  "sources": [
+    {
+      "source_id": "codex-gsfa-lecithin",
+      "title": "Codex GSFA: Lecithin (322(i))",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=117ae6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-citric-acid",
+      "title": "Codex GSFA: Citric acid (330)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d8e9e6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-xanthan-gum",
+      "title": "Codex GSFA: Xanthan gum (415)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=f979e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-guar-gum",
+      "title": "Codex GSFA: Guar gum (412)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=cf79e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-sodium-benzoate",
+      "title": "Codex GSFA: Sodium benzoate (211)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=0deae6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-potassium-sorbate",
+      "title": "Codex GSFA: Potassium sorbate (202)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d379e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    }
+  ],
+  "entries": [
+    {
+      "entry_id": "lecithin",
+      "name_en": "Lecithin",
+      "name_hi": "लेसिथिन",
+      "aliases": ["lecithin", "लेसिथिन"],
+      "ins_codes": ["322(i)"],
+      "function_en": "An emulsifier used to help oil and water stay mixed.",
+      "function_hi": "यह एक इमल्सीफायर है, जो तेल और पानी को मिला हुआ रखने में मदद करता है।",
+      "source_ids": ["codex-gsfa-lecithin"]
+    },
+    {
+      "entry_id": "citric_acid",
+      "name_en": "Citric acid",
+      "name_hi": "साइट्रिक अम्ल",
+      "aliases": ["citric acid", "साइट्रिक अम्ल", "साइट्रिक एसिड"],
+      "ins_codes": ["330"],
+      "function_en": "An acidity regulator used to adjust the acidity of a food.",
+      "function_hi": "यह भोजन की अम्लता को नियंत्रित करने के लिए उपयोग किया जाता है।",
+      "source_ids": ["codex-gsfa-citric-acid"]
+    },
+    {
+      "entry_id": "xanthan_gum",
+      "name_en": "Xanthan gum",
+      "name_hi": "ज़ैंथन गम",
+      "aliases": ["xanthan gum", "ज़ैंथन गम", "जैंथन गम"],
+      "ins_codes": ["415"],
+      "function_en": "A thickener and stabilizer used to adjust a food's texture.",
+      "function_hi": "यह भोजन को गाढ़ा बनाने और उसकी बनावट को स्थिर रखने के लिए उपयोग किया जाता है।",
+      "source_ids": ["codex-gsfa-xanthan-gum"]
+    },
+    {
+      "entry_id": "guar_gum",
+      "name_en": "Guar gum",
+      "name_hi": "ग्वार गम",
+      "aliases": ["guar gum", "ग्वार गम"],
+      "ins_codes": ["412"],
+      "function_en": "A thickener and stabilizer used to thicken food and keep mixtures even.",
+      "function_hi": "ग्वार गम भोजन को गाढ़ा करने और मिश्रण को एकसमान रखने में मदद करता है।",
+      "source_ids": ["codex-gsfa-guar-gum"]
+    },
+    {
+      "entry_id": "sodium_benzoate",
+      "name_en": "Sodium benzoate",
+      "name_hi": "सोडियम बेंजोएट",
+      "aliases": ["sodium benzoate", "सोडियम बेंजोएट"],
+      "ins_codes": ["211"],
+      "function_en": "Sodium benzoate is used as a food preservative.",
+      "function_hi": "सोडियम बेंजोएट भोजन में परिरक्षक के रूप में उपयोग होता है।",
+      "source_ids": ["codex-gsfa-sodium-benzoate"]
+    },
+    {
+      "entry_id": "potassium_sorbate",
+      "name_en": "Potassium sorbate",
+      "name_hi": "पोटैशियम सोर्बेट",
+      "aliases": ["potassium sorbate", "पोटैशियम सोर्बेट"],
+      "ins_codes": ["202"],
+      "function_en": "Potassium sorbate is used as a food preservative.",
+      "function_hi": "पोटैशियम सोर्बेट भोजन में परिरक्षक के रूप में उपयोग होता है।",
+      "source_ids": ["codex-gsfa-potassium-sorbate"]
+    }
+  ]
+}

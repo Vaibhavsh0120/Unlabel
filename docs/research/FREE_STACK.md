@@ -1,6 +1,8 @@
 # Zero-cost stack and AI plan
 
-Provider/cost research checked: **2026-10-05**. Current implementation status: frontend **0.0.0+1**, backend **v0.3.0**, separate deployed Vercel website/API projects, and the manual native artifact workflow. Live product/nutrition lookup and confirmed-value normalization are implemented. The independently released v0.2.3 catalogue holds 24,641 validated rich-facts records; coverage remains unverified. v0.3.0 adds seven reviewed numerical confirmed-label claims, rules and public evidence metadata, using a verified two-file JSON bundle. Local/source/hosted gates are recorded in the current review. Broader rules, OCR, bilingual templates and AI remain proposals below.
+Current implementation status is tracked in the [master plan](../planning/MASTER_PLAN.md) and [feature tracker](../planning/FEATURE_TRACKER.md). The dated provider research and earlier implementation snapshot below remain historical; they do not describe current release gates.
+
+Provider/cost research checked: **2026-10-05**. Historical implementation snapshot (superseded): frontend **0.0.0+1**, backend **v0.3.0**, separate deployed Vercel website/API projects, and the manual native artifact workflow. Live product/nutrition lookup and confirmed-value normalization are implemented. The independently released v0.2.3 catalogue holds 24,641 validated rich-facts records; coverage remains unverified. v0.3.0 adds seven reviewed numerical confirmed-label claims, rules and public evidence metadata, using a verified two-file JSON bundle. Local/source/hosted gates are recorded in the current review. Broader rules, OCR, bilingual templates and AI remain proposals below.
 
 Unlabel's college demo must require **₹0 service charges, no credit card and no paid billing setup**.
 The hosted path uses the existing two Vercel Hobby projects: the website and one shared FastAPI backend.

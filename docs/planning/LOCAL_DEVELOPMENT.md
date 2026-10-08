@@ -1,20 +1,21 @@
 # Clone, restore, run
 
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is implemented and ready for its separate
-push: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright and
-**18 live synthetic checks** against a local API using real Firebase. Hosted
-v0.7.0 verification/publication remain pending. Frontend **v0.2.0 Welcome, Home
-and Optional Login** is implemented; full release/rendered validation is pending.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
-Setup never provisions a cloud account or billing. Optional private sync requires
-the configured free Firebase project/password provider and `ACCOUNT_SYNC_ENABLED`.
-Safe defaults preserve fully useful guest/local workflows with cloud storage disabled.
-Light is the default; camera/OCR remains future work.
+Existing restored environments run locally with the tracked OFF/claim bundles.
+Optional account sync needs the configured free Firebase password provider and
+`ACCOUNT_SYNC_ENABLED`; safe defaults retain useful guest workflows. Light is
+the default. See [the plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 
 ## Quick start
 

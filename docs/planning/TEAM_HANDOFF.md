@@ -8,6 +8,8 @@ the tracked India source and builds the current discovery index with progress.
 
 ## Current checkpoint
 
+Latest checkpoint: frontend v0.3.0+4 is published/hosted-verified; backend v0.8.0 is pushed/hosted-verified with 25 checks. Current v0.4.0+5/v0.9.0 work and its independent evidence live in the [implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) and [tracker](FEATURE_TRACKER.md). Earlier release identities below remain preserved.
+
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
@@ -52,7 +54,7 @@ Structured public facts save automatically through anonymous guest or password s
 Storage/auth failures are distinct from the useful report outcome.
 
 Reports show sourced current/historical facts, approximate original-basis sugar
-cubes, the reviewed numerical claim subset and only three English/Hindi ingredient
+cubes, the reviewed numerical claim subset and six reviewed English/Hindi ingredient
 functions. The person can explicitly bookmark a report and reopen bounded private
 device-local saved/history lists. Appearance uses the owner's white/forest/mint
 direction, real Material 3 controls and locally licensed Solar icons.

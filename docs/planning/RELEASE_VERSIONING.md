@@ -31,8 +31,9 @@ Label Reader** is independently published and hosted-verified from implementatio
 [Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
 [Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
 Later docs-only closure commits do not replace its implementation identity.
-Backend **0.8.0 Sourced Nutrient Comparison** is locally implemented/tested,
-with separate push/host/publication gates. The user authorizes completing that release;
+Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
+The user authorizes implementation and independent pushes;
 frontend v0.3.0 does not depend on the new comparison endpoint. Backend tags remain `vVERSION`; frontend source tags use `frontend-vVERSION`;
 manual native artifacts use `mobile-vVERSION+BUILD`. This avoids the historical
 backend `v0.1.0` tag collision. All older tags/assets remain preserved.

@@ -11,6 +11,8 @@ from pathlib import Path
 
 import pytest
 
+from app.main import create_app
+
 ROOT = Path(__file__).resolve().parents[3]
 
 
@@ -167,9 +169,7 @@ def test_modes_launch_only_owned_services(
 
 def test_proxy_covers_exact_current_operations(monkeypatch):
     handler = module("_preview_server", monkeypatch)
-    paths = json.loads((ROOT / "contracts/schemas/backend-v0.7.0.openapi.json").read_text())[
-        "paths"
-    ]
+    paths = create_app().openapi()["paths"]
     for path, operations in paths.items():
         concrete = path.replace("{barcode}", "12345678").replace(
             "{source_id}", "fssai-ac-2022-schedule-i"
@@ -180,6 +180,26 @@ def test_proxy_covers_exact_current_operations(monkeypatch):
     assert not handler.allowed_route("POST", "/v1/account/admin")
     assert not handler.allowed_route("GET", "/v1/products/123")
     assert not handler.allowed_route("DELETE", "/v1/account/sync")
+
+
+def test_proxy_preserves_comparison_body_budget(tmp_path, monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    calls = upstream(monkeypatch, handler)
+    body = b" " * (64 * 1024)
+    content_type = {"Content-Type": "application/json"}
+    with preview(handler, tmp_path) as port:
+        status, headers, _ = request(
+            port, "POST", "/v1/reports/compare", body, content_type
+        )
+        assert status == 200
+        assert headers["Cache-Control"] == "no-store"
+        assert calls[1][0:3] == ("POST", "/v1/reports/compare", body)
+        before = len(calls)
+        assert request(
+            port, "POST", "/v1/reports/compare", b"{}",
+            {**content_type, "Content-Length": str(64 * 1024 + 1)},
+        )[0] == 413
+        assert len(calls) == before
 
 
 def test_proxy_forwards_only_bearer_to_fixed_https_target(tmp_path, monkeypatch, capsys):

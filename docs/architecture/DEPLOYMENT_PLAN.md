@@ -1,18 +1,16 @@
 # Website and shared API deployment plan
 
-Updated **7 October 2026**.
-
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
-and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
-18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
-preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
-Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
-release validation and user preview review are required before its push.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
 Firebase's first Standard database `unlabel` in Mumbai stays on its free tier
 without linked billing. Anonymous/email-password Auth and deny-all client rules
@@ -26,7 +24,7 @@ API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
 | Target | Repository root | Runtime / scope | Calls |
 | --- | --- | --- | --- |
 | Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Published v0.7.0 OFF/normalization/claims/snapshot/community/report/glossary/discovery/private sync APIs; independently hosted-verified. |
+| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Current v0.9.0 OFF/normalization/claims/snapshot/community/report/glossary/discovery/private sync/comparison APIs; each deployment requires exact-source hosted checks. |
 | Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous/email-password Auth/rules/IAM; automatic public observations plus separately bounded private account snapshots; live synthetic checks passed, hosted v0.7.0 checks and publication completed. |
 | Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
 
@@ -37,8 +35,9 @@ There is no need to split every route into a separate function or create an extr
 [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi).
 
 The native apps are built through Flutter's platform tooling; Vercel hosts their API, not their installable packages.
-Use platform-specific OCR adapters in the same frontend: native ML Kit, future browser OCR with capture/image import first.
-Tesseract.js through browser interop is a candidate, not an installed dependency or implemented feature.
+Use platform-specific OCR adapters in the same frontend: bundled Android ML Kit, capability-checked iOS Vision and pinned same-origin
+browser Tesseract.js/Wasm/language assets loaded lazily after capture/image import.
+Browser synthetic OCR works; native device accuracy remains unverified.
 Send confirmed label text and region IDs to the backend. Photos and bounding-box coordinates remain local. Every target uses the same `contracts/`.
 The product is online-first. Python owns reviewed rule evaluation; Flutter receives stable reports and source-tagged OFF product snapshots. Limited offline scope is saved dated results, local preferences and an optional glossary. No second Dart rule engine or cross-evaluator parity system is required for the MVP.
 

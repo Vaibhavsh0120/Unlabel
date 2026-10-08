@@ -13,8 +13,8 @@ Hosted Welcome, actual Search input focus/results, public report save and Profil
 counts work. [Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
 [Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
 Later docs-only closure commits preserve that implementation identity.
-Backend v0.8.0 comparison is locally implemented
-and verified independently. [Next versions](FRONTEND_BACKEND_NEXT_VERSIONS.md) ·
+Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md). [Next versions](FRONTEND_BACKEND_NEXT_VERSIONS.md) ·
 [Frontend review](FRONTEND_V0_3_0_REVIEW.md).
 
 The five original concept screens describe **20 feature groups**. The historical
@@ -34,10 +34,10 @@ sample products and health verdicts are illustrative.
 | F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0–100 health score |
 | F06 | Unified report/reasons / Results | Ready: released v0.5.0 | Current/historical sourced reports and reference analysis published; hosted v0.3.0 public report opened/saved without stale SnackBar failure |
 | F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Manual identified claims, correction and scoped verdicts implemented; broader claims remain insufficient |
-| F08 | Ingredient explanations / Ingredients | Partial: three reviewed English/Hindi name/function entries | Expandable sourced functions implemented; full ingredient-screen layout and wider reviewed coverage pending |
+| F08 | Ingredient explanations / Ingredients | Partial: v0.9.0 expands to six reviewed English/Hindi name/function entries | v0.4.0 adds matched-ingredient detail with bilingual functions and evidence; broader ingredient coverage remains partial |
 | F09 | Allergens/traces / Scan, Ingredients | Ready: source availability and declarations | Confirmed declaration input and sourced report display implemented; no absence/safety inference |
 | F10 | Personal suitability / Results | Planned | Device-local dietary/allergen reminders implemented; suitability/filtering remains future and does not infer allergy safety |
-| F11 | Comparison / Compare | v0.8.0 sourced endpoint locally verified; hosted release pending | Published reference paired cards and compatible-basis client comparison; new server comparison awaits frontend v0.4.0 integration; no universal healthier verdict |
+| F11 | Comparison / Compare | v0.8.0 sourced endpoint pushed and hosted-verified; v0.9.0 preserves the route | v0.4.0 integrates exact-source table selection and server comparison into existing paired cards; no universal healthier verdict |
 | F12 | Sugar visualization / Results | Ready: released v0.5.0 | Approximate 4 g/cube total-sugar view with original basis implemented; added sugar stays distinct |
 | F13 | Reviewed insights / Home | Planned | Published educational list/detail destinations with source/applicability; broader reviewed coverage remains future; no fabricated health advice |
 | F14 | Front/back and gallery / Scan | Client-owned | Published camera/gallery capture, permissions, retry and manual review; v0.3.0 local post-capture reading published; automatic barcode detection and measured device accuracy remain future |
@@ -63,7 +63,9 @@ sample products and health verdicts are illustrative.
 | Backend v0.7.0 | Private Account Sync | Pushed and hosted-verified source 9d9a9b6; independently published; 931 passed/5 skips plus 18 hosted synthetic checks; [review](BACKEND_V0_7_0_REVIEW.md) |
 | Frontend v0.2.0+3 | Welcome, Home and Optional Login | Independently published; 135 tests and hosted production receipt |
 | Frontend v0.3.0+4 | Visual Label Reader and reference Welcome/Profile | Published exact implementation `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; 168 tests, READY deployment, 49 hosted checks and all 21 OCR hashes; native gates separate |
-| Backend v0.8.0 | Sourced Nutrient Comparison | Implemented and locally verified; separate push/hosted verification/publication pending |
+| Backend v0.8.0 | Sourced Nutrient Comparison | Pushed exact source `1a2fd25`; READY hosted deployment and 25 checks; source-release publication not established |
+| Backend v0.9.0 | Reviewed Ingredient Functions | Six entries, strict source/alias validation and immutable evidence; implementation/checks in progress |
+| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Exact sources, selected tables, guarded responses and bilingual detail; implementation/checks in progress |
 
 Each component is reviewed, documented, pushed and verified before its separate
 publication. Historical tags and native artifacts are preserved. A backend test

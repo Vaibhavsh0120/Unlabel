@@ -7,7 +7,7 @@
 **Understand the label. Know what is inside.**
 
 ![Frontend](https://img.shields.io/badge/frontend-0.3.0-155b4b?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.7.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.9.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
@@ -21,20 +21,22 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Frontend v0.3.0+4 Visual Label Reader and backend v0.7.0 Private Account Sync
-are independently published and hosted-verified.** Frontend source
-`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb` passed 49 hosted checks and browser
-Welcome/search checks. Backend **v0.8.0 Sourced Nutrient Comparison** is separately
-implemented and locally verified; its push, hosted verification and publication
-are the next release gates. The frontend does not require that endpoint.
-Historical releases remain preserved.
-[Version checklists](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+**Backend v0.9.0 Reviewed Ingredient Functions** expands the partial English/Hindi
+glossary to six entries and hardens source/alias validation. **Frontend v0.4.0+5
+Sourced Comparison and Ingredient Detail** connects exact source/table comparison
+and bilingual evidence details to the existing screens. Independent checks and
+pushes are in progress; no new hosted result is claimed before verification.
+
+Historical frontend v0.3.0 remains published/hosted-verified with 49 checks.
+Backend v0.8.0 was pushed and hosted-verified with 25 checks.
+[Current implementation plan](docs/planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) ·
+[Feature tracker](docs/planning/FEATURE_TRACKER.md).
 
 - Enter a barcode or search name/brand words and choose an exact catalogue record.
 - Read dated historical reports, nutrition bases, source references and unknowns.
 - Enter and confirm current package facts for a separate useful label report.
 - See approximate total-sugar cubes, seven reviewed numerical claim types and
-  three reviewed English/Hindi ingredient functions where evidence permits.
+  six reviewed English/Hindi ingredient functions where evidence permits.
 - Continue as a guest with device-local saved reports/history, or optionally sign in
   to sync a private account display name, saved reports and history across devices.
 - Use responsive botanical Welcome on mobile and PC, compact light/dark Home and
@@ -104,7 +106,7 @@ separate live product/nutrition APIs remain available.
 | Open Food Facts | Dated packaged-product identity and available direct label facts |
 | Confirmed package observations | Qualified compatible gap fills, original sources/dates and visible conflicts |
 | Reviewed FSSAI knowledge | Seven scoped numerical claim checks with sufficient confirmed inputs |
-| Reviewed ingredient glossary | Three technological-function entries in English/Hindi |
+| Reviewed ingredient glossary | Six technological-function entries; partial coverage in English/Hindi |
 
 Generic IFCT/INDB/USDA food composition does not fill a branded packet's unknown
 values. Missing is unknown, not zero. Tables retain basis and preparation; source

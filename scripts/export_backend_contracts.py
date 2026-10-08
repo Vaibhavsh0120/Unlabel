@@ -403,7 +403,10 @@ def main():
                 },
                 "ingredients": {
                     **community_request.ingredients.model_dump(mode="json"),
-                    "text": "Synthetic oats, milk, lecithin (INS 322(i))",
+                    "text": (
+                        "Synthetic oats, milk, lecithin (INS 322(i)), "
+                        "guar gum (INS 412), sodium benzoate, potassium sorbate"
+                    ),
                 },
                 "front_claims": ["Low sugar"],
                 "rows": [

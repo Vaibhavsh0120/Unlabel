@@ -9,7 +9,9 @@ Published production **v0.5.0** preserves and loads the reviewed claim subset **
 
 The reviewed source date is **6 October 2026**; v0.3.0 was independently released on **7 October 2026**; released v0.4.0 and v0.5.0 retain its knowledge unchanged in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
 
-The report glossary version is `ingredients-2026-10-07.1`, with an independent
+Backend v0.9.0 preserves that historical projection and loads six entries from
+`backend/app/reports/glossary-v2.json`. The current glossary version is
+`ingredients-2026-10-08.1`, with an independent
 SHA-256/byte/count artifact. It is not part of the unchanged two-file FSSAI claim
 receipt. [Report/glossary scope](../docs/architecture/LABEL_REPORT.md) ·
 [Dated source check](../docs/research/INGREDIENT_GLOSSARY_V0_5_0.md).

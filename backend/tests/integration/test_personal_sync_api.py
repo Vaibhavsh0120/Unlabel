@@ -208,7 +208,7 @@ def test_transactional_admission_returns_typed_429_without_partial_account_creat
     assert runtime.database.documents == before
 
 
-def test_new_openapi_is_additive_and_existing_response_components_unchanged():
+def test_new_openapi_preserves_existing_components_with_reviewed_glossary_additions_only():
     from pathlib import Path
 
     from app.accounts.models import SyncFailure, SyncRequest, SyncSnapshot
@@ -224,6 +224,31 @@ def test_new_openapi_is_additive_and_existing_response_components_unchanged():
     for name, path in old["paths"].items():
         assert current["paths"][name] == path
     for name, schema in old["components"]["schemas"].items():
-        assert current["components"]["schemas"][name] == schema
+        actual = copy.deepcopy(current["components"]["schemas"][name])
+        if name == "GlossaryArtifact":
+            count = actual["properties"]["entry_count"]
+            assert count["default"] == schema["properties"]["entry_count"]["default"] == 3
+            assert count["minimum"] == 1 and count["maximum"] == 8
+            assert count["type"] == "integer"
+            actual["properties"]["entry_count"] = schema["properties"]["entry_count"]
+        elif name == "GlossaryEntry":
+            assert actual["properties"]["entry_id"]["enum"] == (
+                schema["properties"]["entry_id"]["enum"]
+                + ["guar_gum", "sodium_benzoate", "potassium_sorbate"]
+            )
+            actual["properties"]["entry_id"] = schema["properties"]["entry_id"]
+        elif name == "GlossaryResponse":
+            version = actual["properties"]["glossary_version"]
+            assert version["enum"] == [
+                schema["properties"]["glossary_version"]["const"],
+                "ingredients-2026-10-08.1",
+            ]
+            actual["properties"]["glossary_version"] = schema["properties"]["glossary_version"]
+            for field in ("entries", "sources"):
+                expanded = actual["properties"][field]
+                assert expanded["minItems"] == 1 and expanded["maxItems"] == 8
+                expanded["minItems"] = schema["properties"][field]["minItems"]
+                expanded["maxItems"] = schema["properties"][field]["maxItems"]
+        assert actual == schema
     for model in (SyncRequest, SyncSnapshot, SyncFailure):
         assert model.__name__ in current["components"]["schemas"]

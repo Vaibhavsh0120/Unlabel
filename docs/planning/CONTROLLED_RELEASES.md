@@ -30,9 +30,9 @@ version** independently. Do not stage the entire mixed tree as one release.
 | Backend v0.7.0 | Private Account Sync | Published: 931 passed / 5 emulator-only skips; 18 synthetic + 13 fresh hosted checks; source tag v0.7.0 |
 | Frontend v0.2.0+3 | Welcome/Home, optional account sync, basic capture and sourced report/Compare flows | Published: 135 tests, clean analyzer, hosted READY deployment and source release; native lane separate |
 | Frontend v0.3.0+4 | Visual Label Reader: reference Welcome/Profile, app-only startup, local OCR and bounded search behavior | Published: 168 tests, clean analysis/build, light phone/PC captures, READY deployment and 49 hosted checks; all 21 OCR hashes verified |
-| Backend v0.8.0 | Sourced Nutrient Comparison | Implemented and locally tested separately; review/push/host/publication pending |
-| Frontend v0.4.0 | Source-aware comparison integration and remaining accepted UI/device work | Planned; no implementation or hosted claim |
-| Backend v0.9.0 | Reviewed bilingual ingredient knowledge and measured coverage | Planned; no universal suitability verdict |
+| Backend v0.8.0 | Sourced Nutrient Comparison | Pushed `1a2fd25`, READY deployment and 25 hosted checks; source publication not established |
+| Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Implementation/checks in progress; native/device gates remain separate |
+| Backend v0.9.0 | Reviewed Ingredient Functions | Six-entry partial glossary and integrity hardening; checks in progress; no suitability verdict |
 
 Stages: **Planned → Implemented → Tested → Visually verified → Pushed →
 Hosted verified → Published**. Backend visual verification is not applicable.

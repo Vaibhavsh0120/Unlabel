@@ -1,29 +1,21 @@
 # Frontend/backend API plan
 
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is independently
-[published](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
-Implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0` is hosted on READY
-deployment `dpl_5TNPc4yuis3tdLJ114jacroGvbvh`: **931 tests passed, five emulator-only
-skips**, clean Ruff/Pyright and **18 hosted synthetic checks**. Documentation-only
-closure `ec70568` also reached READY and retains the original implementation SHA.
-Frontend **v0.2.0+3** Welcome/Home/optional account/navigation, search, local
-camera/gallery manual capture and reference-style Results/Compare have passed
-local validation: **135 tests**, clean analysis and a release web build.
-Frontend hosted verification and publication remain pending.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
-Released v0.7.0 exports **20 paths / 21 operations** and **27 validated synthetic
-examples**, with OpenAPI in
-`contracts/schemas/backend-v0.7.0.openapi.json`. Every prior public path/component
-remains intact. GET/POST `/v1/account/sync` is a separate strict private contract;
-the capability is enabled only with configured account/community runtime.
-[Private sync and caps](PRIVATE_ACCOUNT_SYNC.md) ·
-[Backend release review](../planning/BACKEND_V0_7_0_REVIEW.md) ·
-[Frontend release review](../planning/FRONTEND_V0_2_0_REVIEW.md).
+Current exports: `contracts/schemas/backend-v0.9.0.openapi.json`, 21 paths /
+22 operations and 29 synthetic examples. Existing private sync and comparison
+paths stay compatible; glossary entry enums/counts expand to six. Historical
+versioned OpenAPI is preserved. [Contracts](../../contracts/README.md).
 
 ## Implemented endpoints and nutrition contract
 
@@ -63,7 +55,9 @@ No generic packet imputation or current-label confirmation is invented.
 [Community contract](COMMUNITY_CATALOGUE.md).
 
 
-Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded three-entry glossary. Glossary version/artifact and claim readiness remain independent. Backend comparison and AI stay disabled; frontend v0.2.0+3 provides a conservative client-side comparison view.
+Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded six-entry glossary. Glossary version/artifact and claim readiness remain independent. Backend comparison is enabled independently of catalogue/glossary/cloud readiness
+with `sourced-nutrient-comparison-v1`; frontend v0.4.0 consumes exact source/table
+references. AI stays disabled.
 
 `CatalogueStatus` reports `ready`, `not_configured` or `unavailable`, with nullable manifest/freshness/artifact and explicit field limits for the loaded store. Freshness is `within_refresh_window`, `refresh_due` or `source_date_in_future`; it uses nine calendar months from `exported_at`, not the build timestamp. Unconfigured/unavailable status returns 503 and claims no verified manifest. A ready but overdue catalogue remains readable with warnings. Existing `CatalogLookup` keys are unchanged; warnings remain within its 100-item bound. A 404 snapshot miss makes no upstream request. Catalogue status/identity/facts responses are `no-store`. The additive `catalogue_facts` capability is true only for a validated facts-enabled store. Older identity-only stores keep their old routes and return facts unavailable for a found identity.
 

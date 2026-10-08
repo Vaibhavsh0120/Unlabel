@@ -2,9 +2,13 @@
 
 Working implementation on `main`, 8 October 2026. Backend v0.8.0 adds one
 read-only selected-table comparison operation while preserving the independently
-published v0.7.0 account/public contracts. Independent publication and exact-commit
-hosted proof are pending. No deployment identity or
-source tag is claimed before those checks succeed.
+published v0.7.0 account/public contracts. The source is now pushed and exact-commit hosted proof is recorded below;
+source-release publication is not established by that proof.
+
+Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+[Production receipt](../research/BACKEND_V0_8_0_PRODUCTION.json).
+The 8 October follow-up independently rechecked deployment identity and current
+production meta. Later version checks do not replace this historical receipt.
 
 ## Delivered scope
 

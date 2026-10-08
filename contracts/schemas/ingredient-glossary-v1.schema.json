@@ -17,8 +17,9 @@
           "type": "integer"
         },
         "entry_count": {
-          "const": 3,
           "default": 3,
+          "maximum": 8,
+          "minimum": 1,
           "title": "Entry Count",
           "type": "integer"
         }
@@ -37,7 +38,10 @@
           "enum": [
             "lecithin",
             "citric_acid",
-            "xanthan_gum"
+            "xanthan_gum",
+            "guar_gum",
+            "sodium_benzoate",
+            "potassium_sorbate"
           ],
           "title": "Entry Id",
           "type": "string"
@@ -171,7 +175,10 @@
       "type": "string"
     },
     "glossary_version": {
-      "const": "ingredients-2026-10-07.1",
+      "enum": [
+        "ingredients-2026-10-07.1",
+        "ingredients-2026-10-08.1"
+      ],
       "title": "Glossary Version",
       "type": "string"
     },
@@ -182,8 +189,8 @@
       "items": {
         "$ref": "#/$defs/GlossaryEntry"
       },
-      "maxItems": 3,
-      "minItems": 3,
+      "maxItems": 8,
+      "minItems": 1,
       "title": "Entries",
       "type": "array"
     },
@@ -191,8 +198,8 @@
       "items": {
         "$ref": "#/$defs/GlossarySource"
       },
-      "maxItems": 3,
-      "minItems": 3,
+      "maxItems": 8,
+      "minItems": 1,
       "title": "Sources",
       "type": "array"
     },

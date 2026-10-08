@@ -1,6 +1,8 @@
 # Backend language options
 
-Language/provider research checked: **2026-10-05**. Implementation status updated for **backend v0.3.0**: **Python/FastAPI is selected** and implemented under `backend/app/`; Rust remains a deliberate later alternative. The backend supports live OFF product/nutrition lookup, confirmed-value normalization a verified read-only rich-facts catalogue and a seven-claim reviewed numerical subset with rules/evidence APIs. Frontend stays **0.0.0+1** with no API adapter; its mobile artifacts are unchanged. Broader reviewed rules, bilingual explanation templates and AI remain future work.
+Current implementation status is tracked in the [master plan](../planning/MASTER_PLAN.md) and [feature tracker](../planning/FEATURE_TRACKER.md). The dated provider research and earlier implementation snapshot below remain historical; they do not describe current release gates.
+
+Language/provider research checked: **2026-10-05**. Historical implementation snapshot for **backend v0.3.0**: **Python/FastAPI is selected** and implemented under `backend/app/`; Rust remains a deliberate later alternative. The backend supports live OFF product/nutrition lookup, confirmed-value normalization a verified read-only rich-facts catalogue and a seven-claim reviewed numerical subset with rules/evidence APIs. Frontend stays **0.0.0+1** with no API adapter; its mobile artifacts are unchanged. Broader reviewed rules, bilingual explanation templates and AI remain future work.
 
 ## Comparison
 

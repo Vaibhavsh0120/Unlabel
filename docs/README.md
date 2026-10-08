@@ -1,5 +1,8 @@
 # Documentation index
 
+Current work: [frontend v0.4.0+5/backend v0.9.0 implementation plan](planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
+Each new version has independent local, review, push and hosted gates.
+
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit
 `1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
@@ -20,7 +23,7 @@ Welcome/Profile captures at 390/1440/1728px. Exact implementation
 Hosted Welcome enters Home; Search focuses the actual input and returns ten of
 57 matches. [Production receipt](research/FRONTEND_V0_3_0_PRODUCTION.json).
 Later docs-only closure commits preserve that implementation identity. Backend **v0.8.0
-Sourced Nutrient Comparison** is a separate locally implemented/tested release;
+Sourced Nutrient Comparison** is pushed and hosted-verified with 25 checks; source-release publication is not established.
 the frontend remains compatible with published v0.7.0. App-only startup, unchanged
 Scan/navbar design, actual Profile controls and future-only features are recorded
 in the [current frontend review](planning/FRONTEND_V0_3_0_REVIEW.md) and

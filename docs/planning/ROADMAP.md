@@ -1,24 +1,16 @@
 # Implementation roadmap
 
-Checkpoint: **7 October 2026**.
+Checkpoint: **8 October 2026**.
 
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is independently published and hosted-verified:
-**931 tests passed, five emulator-only skips**, clean Ruff/Pyright, 18 hosted
-synthetic and 13 fresh read-only checks. Frontend **v0.2.0+3** is locally tested;
-its separate push, hosted verification and publication remain the active gates.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+Frontend v0.3.0+4 is independently published and hosted-verified with 168
+Flutter tests and 49 hosted checks. Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 
-Frontend v0.2.0 provides a cute first-launch Welcome, returning-user Home,
-Home/Scan/Compare/Saved navigation with top-right Profile, live camera/gallery,
-manual review, live header search and reference-style reports/comparison.
-Frontend v0.3.0 adds local OCR, automatic barcode decoding and Ingredient Insights.
-Native/device proofs stay separate. Firebase stays free
-with no linked billing, admin role, custom model or Gemini requirement.
-[Accepted checklist](ACCOUNT_SYNC_SCREEN_PLAN.md) · [Tracker](FEATURE_TRACKER.md).
+Guests retain device-local personal records; optional password accounts have
+separate private sync. Preserve Scan/navbar and the existing botanical brand.
+Automatic live barcode decoding, highlights, notifications, personal suitability
+and physical-device OCR acceptance remain future gates. No Gemini or billing.
+[Tracker](FEATURE_TRACKER.md) records per-feature implementation evidence.
 
 | Phase | Work | Acceptance |
 | --- | --- | --- |

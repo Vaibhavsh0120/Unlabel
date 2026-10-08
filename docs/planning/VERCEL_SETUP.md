@@ -16,8 +16,9 @@ The new `vercel.app` domains are verified free aliases, not purchased domains. E
 - The tracked build script supplies Flutter **3.47.4** from the official SDK Git tag, checks that version, uses the tracked dependency lockfile and builds web in **release** mode.
 - Public `BACKEND_BASE_URL=https://unlabel-api.vercel.app` is compiled through
   Dart defines. Frontend version/build come from pubspec; commit comes from Vercel.
-  Published production is v0.1.0+2. Local v0.2.0+3 source remains unreleased and
-  includes four bottom tabs, with Profile at the top right. The app checks API
+  Historical v0.3.0+4 is hosted-verified; v0.4.0+5 adds sourced comparison
+  and ingredient detail with its own exact-source hosted gate. The four bottom
+  tabs stay Home / Scan / Compare / Saved, with Profile at the top right. The app checks API
   major/schema/capabilities and shows build info.
 - Locked restoration, Flutter analysis/tests and web compilation run in the build.
   Light is the first-use default; appearance and guest libraries stay local. Optional password accounts use bounded private backend sync.

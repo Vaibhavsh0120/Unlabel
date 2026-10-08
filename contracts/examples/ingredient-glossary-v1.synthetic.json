@@ -1,11 +1,11 @@
 {
   "schema_version": "1",
   "status": "ready",
-  "glossary_version": "ingredients-2026-10-07.1",
+  "glossary_version": "ingredients-2026-10-08.1",
   "artifact": {
-    "sha256": "5ec790f80554de1e0727662b506b983d94a2c0d516153257e8d51542458b34e9",
-    "bytes": 2857,
-    "entry_count": 3
+    "sha256": "dcddf20de8627d14b94c796683412b01665afc27b9d8d0cbb41a6f3e908fe1ce",
+    "bytes": 5741,
+    "entry_count": 6
   },
   "entries": [
     {
@@ -60,28 +60,100 @@
       "source_ids": [
         "codex-gsfa-xanthan-gum"
       ]
+    },
+    {
+      "entry_id": "guar_gum",
+      "name_en": "Guar gum",
+      "name_hi": "\u0917\u094d\u0935\u093e\u0930 \u0917\u092e",
+      "aliases": [
+        "guar gum",
+        "\u0917\u094d\u0935\u093e\u0930 \u0917\u092e"
+      ],
+      "ins_codes": [
+        "412"
+      ],
+      "function_en": "A thickener and stabilizer used to thicken food and keep mixtures even.",
+      "function_hi": "\u0917\u094d\u0935\u093e\u0930 \u0917\u092e \u092d\u094b\u091c\u0928 \u0915\u094b \u0917\u093e\u0922\u093c\u093e \u0915\u0930\u0928\u0947 \u0914\u0930 \u092e\u093f\u0936\u094d\u0930\u0923 \u0915\u094b \u090f\u0915\u0938\u092e\u093e\u0928 \u0930\u0916\u0928\u0947 \u092e\u0947\u0902 \u092e\u0926\u0926 \u0915\u0930\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-guar-gum"
+      ]
+    },
+    {
+      "entry_id": "sodium_benzoate",
+      "name_en": "Sodium benzoate",
+      "name_hi": "\u0938\u094b\u0921\u093f\u092f\u092e \u092c\u0947\u0902\u091c\u094b\u090f\u091f",
+      "aliases": [
+        "sodium benzoate",
+        "\u0938\u094b\u0921\u093f\u092f\u092e \u092c\u0947\u0902\u091c\u094b\u090f\u091f"
+      ],
+      "ins_codes": [
+        "211"
+      ],
+      "function_en": "Sodium benzoate is used as a food preservative.",
+      "function_hi": "\u0938\u094b\u0921\u093f\u092f\u092e \u092c\u0947\u0902\u091c\u094b\u090f\u091f \u092d\u094b\u091c\u0928 \u092e\u0947\u0902 \u092a\u0930\u093f\u0930\u0915\u094d\u0937\u0915 \u0915\u0947 \u0930\u0942\u092a \u092e\u0947\u0902 \u0909\u092a\u092f\u094b\u0917 \u0939\u094b\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-sodium-benzoate"
+      ]
+    },
+    {
+      "entry_id": "potassium_sorbate",
+      "name_en": "Potassium sorbate",
+      "name_hi": "\u092a\u094b\u091f\u0948\u0936\u093f\u092f\u092e \u0938\u094b\u0930\u094d\u092c\u0947\u091f",
+      "aliases": [
+        "potassium sorbate",
+        "\u092a\u094b\u091f\u0948\u0936\u093f\u092f\u092e \u0938\u094b\u0930\u094d\u092c\u0947\u091f"
+      ],
+      "ins_codes": [
+        "202"
+      ],
+      "function_en": "Potassium sorbate is used as a food preservative.",
+      "function_hi": "\u092a\u094b\u091f\u0948\u0936\u093f\u092f\u092e \u0938\u094b\u0930\u094d\u092c\u0947\u091f \u092d\u094b\u091c\u0928 \u092e\u0947\u0902 \u092a\u0930\u093f\u0930\u0915\u094d\u0937\u0915 \u0915\u0947 \u0930\u0942\u092a \u092e\u0947\u0902 \u0909\u092a\u092f\u094b\u0917 \u0939\u094b\u0924\u093e \u0939\u0948\u0964",
+      "source_ids": [
+        "codex-gsfa-potassium-sorbate"
+      ]
     }
   ],
   "sources": [
     {
       "source_id": "codex-gsfa-lecithin",
       "title": "Codex GSFA: Lecithin (322(i))",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=77",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=117ae6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     },
     {
       "source_id": "codex-gsfa-citric-acid",
       "title": "Codex GSFA: Citric acid (330)",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=173",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d8e9e6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     },
     {
       "source_id": "codex-gsfa-xanthan-gum",
       "title": "Codex GSFA: Xanthan gum (415)",
-      "url": "https://www.fao.org/gsfaonline/additives/details.html?id=48",
-      "reviewed_on": "2026-10-07",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=f979e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-guar-gum",
+      "title": "Codex GSFA: Guar gum (412)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=cf79e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-sodium-benzoate",
+      "title": "Codex GSFA: Sodium benzoate (211)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=0deae6be-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
+      "scope": "name_and_technological_function_only"
+    },
+    {
+      "source_id": "codex-gsfa-potassium-sorbate",
+      "title": "Codex GSFA: Potassium sorbate (202)",
+      "url": "https://codex.fao.org/codex-texts/codex-online-databases/gsfa/food-additives-list/food-additive-details?additiveId=d379e6b8-249a-f111-b8dc-70a8a5613865",
+      "reviewed_on": "2026-10-08",
       "scope": "name_and_technological_function_only"
     }
   ],

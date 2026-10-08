@@ -13,7 +13,7 @@ sourced product facts. Frontend v0.1.0 implements manual current/historical repo
 | --- | --- |
 | `POST /v1/reports/check` | Report from corrected confirmed structured package facts; barcode may be null; automatic storage has a separate outcome |
 | `GET /v1/products/{barcode}/report` | Read-only report from exact historical OFF/community sources |
-| `GET /v1/ingredients/glossary` | Read-only reviewed three-entry English/Hindi ingredient name/function glossary |
+| `GET /v1/ingredients/glossary` | Read-only reviewed six-entry English/Hindi ingredient name/function glossary |
 
 Current report input is `ReportCheckRequest`: a confirmed `ContributionRequest`
 observation, optional `selected_table_id` and optional existing claim `context`.
@@ -58,8 +58,10 @@ as though it were the original portion.
 
 ## Small reviewed ingredient scope
 
-Version `ingredients-2026-10-07.1` contains three names/technological functions:
-lecithin **INS 322(i)**, citric acid **INS 330** and xanthan gum **INS 415**.
+Current version `ingredients-2026-10-08.1` contains six reviewed entries:
+lecithin **INS 322(i)**, citric acid **330**, xanthan gum **415**, guar gum **412**,
+sodium benzoate **211** and potassium sorbate **202**. The earlier three-entry
+projection remains historical.
 English/Hindi aliases preserve matched original text spans. Bare numbers,
 partial words and unsupported INS subtypes do not match. Other ingredients keep
 their original text with no fabricated explanation. This is **partial ingredient
@@ -67,12 +69,13 @@ coverage**, not a complete ingredient explorer or bilingual report.
 Aliases require complete words, including their Unicode combining marks; an
 unknown longer Hindi word cannot inherit a shorter ingredient's explanation.
 
-The [dated glossary source check](../research/INGREDIENT_GLOSSARY_V0_5_0.md)
-records official indexed source evidence and direct-fetch limitations. The bounded
-tracked `app/reports/glossary-v1.json` projection records official
+The [current source check](../research/INGREDIENT_GLOSSARY_V0_9_0.md)
+records exact official canonical records, source rights and projection hashes.
+The bounded tracked `app/reports/glossary-v2.json` projection records official
 Codex GSFA URLs, review date and function-only scope. A hash/byte/count artifact
-appears in metadata and report/glossary responses. Hindi descriptions are reviewed
-project translations. The sources do not establish allergy status, Indian category
+appears in metadata and report/glossary responses. Bilingual descriptions are
+independently authored explanations, not official Codex translations.
+The sources do not establish allergy status, Indian category
 permission, nutritional benefit or product safety. No glossary request fetches
 regulations or requires a provider key.
 

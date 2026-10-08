@@ -1,6 +1,13 @@
-# Unlabel backend: v0.8.0 Sourced Nutrient Comparison
+# Unlabel backend: v0.9.0 Reviewed Ingredient Functions
 
-v0.8.0 adds the read-only `POST /v1/reports/compare` contract to the independently
+v0.9.0 expands the reviewed English/Hindi ingredient glossary to six entries,
+preserving the historical projection and adding strict own-source, alias, INS
+and content validation. Evidence models returned to callers are independent
+copies. Coverage remains partial and describes technological functions only.
+[Current review](../docs/planning/BACKEND_V0_9_0_REVIEW.md) ·
+[Reviewed ingredient sources](../docs/research/INGREDIENT_GLOSSARY_V0_9_0.md).
+
+Earlier v0.8.0 added the read-only `POST /v1/reports/compare` contract to the independently
 published v0.7.0 backend. The working source exports **21 paths / 22 operations**
 and **29 validated synthetic examples**. It compares a selected nutrition table
 from each of two confirmed labels or exact historical source references, retaining
@@ -9,11 +16,12 @@ nutrient differences, without a winner, health score or safety verdict.
 [v0.8.0 review](../docs/planning/BACKEND_V0_8_0_REVIEW.md) ·
 [Comparison contract](../docs/architecture/SOURCED_COMPARISON.md).
 
-Local validation passed **975 tests with five emulator-only skips**; Ruff is clean
+Historical v0.8.0 local validation passed **975 tests with five emulator-only skips**; Ruff was clean
 and application Pyright reports zero errors/warnings. Subsequent body-limit wording,
 chunked-limit assertions and type narrowing passed the 25 affected comparison
-tests with clean Ruff/Pyright. Hosted exact-commit verification and independent
-publication remain pending.
+tests with clean Ruff/Pyright. Its exact implementation `1a2fd25` is pushed and
+hosted-verified with 25 checks; source-release publication is not established by
+the receipt. v0.9.0 receives its own current validation and deployment checks.
 Earlier deployment receipts below establish their recorded releases only.
 
 ## Published v0.7.0 evidence
@@ -88,7 +96,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | `POST /v1/reports/check` | Useful current report from confirmed structured facts; automatic public saving has a separate outcome |
 | `POST /v1/reports/compare` | Read-only exact-reference comparison of two selected compatible tables; unknown/conflict states retained |
 | `GET /v1/products/{barcode}/report` | Read-only sourced historical report, without current-label claim confirmation |
-| `GET /v1/ingredients/glossary` | Three reviewed English/Hindi ingredient names/functions and source metadata |
+| `GET /v1/ingredients/glossary` | Six reviewed English/Hindi ingredient names/functions and source metadata |
 
 Four additive routes are mounted in v0.4.0:
 
@@ -298,7 +306,7 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 ## Modules and constraints
 
 - `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, twenty API paths/twenty-one operations and redacted validation failures.
-- `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed three-entry glossary.
+- `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed six-entry glossary.
 - `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
 - `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
 - `app/comparison/` and `app/api/v1/comparison.py`: selected-table source resolution, original-row exact arithmetic and independent read-only comparison contract.
@@ -381,7 +389,7 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current v0.8.0 review](../docs/planning/BACKEND_V0_8_0_REVIEW.md),
+See [current v0.9.0 review](../docs/planning/BACKEND_V0_9_0_REVIEW.md),
 [published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
 [comparison contract](../docs/architecture/SOURCED_COMPARISON.md),
 [private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),

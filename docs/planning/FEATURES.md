@@ -1,9 +1,17 @@
 # Unlabel feature workflows
 
-The [20-group tracker](FEATURE_TRACKER.md) tracks the five supplied concept screens
-without treating each group as equally sized. The [connected release plan](CONNECTED_RELEASE_PLAN.md)
-selects backend **0.6.0 Product Discovery** and frontend **0.1.0+2 Connected Label
-Reader** as independently published releases. Backend v0.7.0 private sync is pushed, hosted-verified and published with 931 tests/5 emulator skips, 18 hosted synthetic checks and 13 fresh read-only hosted checks. Frontend v0.2.0 Welcome/Home/optional account/four-tab navigation and top-right Profile and useful destinations are implemented with release verification pending. Frontend v0.3.0 completes remaining reference-style screens separately. [Current checklist](ACCOUNT_SYNC_SCREEN_PLAN.md).
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
+[Tracker](FEATURE_TRACKER.md) · [Implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 
 ## Implemented connected slice
 
@@ -37,8 +45,9 @@ Total sugar cannot establish added sugar. Historical catalogue facts cannot prov
 a claim printed on the person's current packet. No full-compliance badge,
 fraud verdict or universal health score is produced.
 
-Future front/back OCR will extract provisional claims/rows for correction; it
-must preserve existing source identities and confirmation boundaries.
+Local front/back OCR extracts provisional text and conservative field suggestions
+for correction. Nutrition rows remain manually reviewed; source identities and
+confirmation boundaries are preserved.
 
 ## 2. Camera ingredient highlighting — future
 
@@ -64,8 +73,9 @@ a diagnosis or dietary treatment plan.
 
 ## 4. Ingredient explanations
 
-Current reports match only the reviewed glossary's three technological functions:
-lecithin INS 322(i), citric acid INS 330 and xanthan gum INS 415. English/Hindi
+Current v0.9.0 reports match six reviewed technological-function entries:
+lecithin INS 322(i), citric acid 330, xanthan gum 415, guar gum 412, sodium
+benzoate 211 and potassium sorbate 202. English/Hindi
 functions retain their original label match and source references. They do not
 establish health effects, allergy safety or Indian permission for a food category.
 
@@ -78,9 +88,9 @@ call is selected for these explanations.
 | Work | Acceptance boundary |
 | --- | --- |
 | Camera/barcode scanner and front/back/gallery OCR | Platform permission/lifecycle, local processing, correction/pairing and measured Indian-label accuracy |
-| Broader comparison presentation | v0.2.0 compatible-basis client comparison is implemented with validation pending; v0.3.0 completes reference-style presentation without overall-health ranking |
+| Broader comparison presentation | v0.4.0 integrates exact-source server comparison into existing paired cards; no overall-health ranking |
 | Preferences and broader language UI | Local privacy, traceable reasons and preserved qualifications |
-| Wider Home insight coverage | v0.2.0 educational destinations are implemented with validation pending; future content needs reviewed sources and no fake advice/recent scans |
+| Wider Home insight coverage | v0.2.0 educational destinations are published; broader future content needs reviewed sources and no fake advice/recent scans |
 | Broader source coverage | Rights-cleared data, exact product identity, original provenance and measured gaps; generic foods never impute branded nutrients |
 | Offline website and native devices | Explicit cached-asset/first-load behavior and actual Android/iOS/browser checks |
 | Signed iOS distribution | Separate signing/installability requirements; unsigned IPA is not an installable release |

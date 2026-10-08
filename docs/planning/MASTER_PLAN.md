@@ -17,14 +17,9 @@ Hosted Welcome enters Home; Search focuses the actual input and returns ten of
 [Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
 Later documentation-only closure commits preserve this implementation identity.
 
-Backend **v0.8.0 Sourced Nutrient Comparison** is implemented and locally verified
-as a separate release; its push, hosted verification and publication remain pending.
-Existing v0.7.0 already accepts confirmed corrected OCR
-facts; no image/raw-OCR upload API is added. Frontend v0.4.0 plans source-aware
-comparison integration, remaining insight refinements and native acceptance;
-backend v0.9.0 plans expanded reviewed bilingual ingredient-function evidence.
-Notifications, persistent comparison totals, automatic barcode camera detection,
-live highlighting and personal suitability remain explicitly future work.
+Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
+
+Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
 
 Follow [controlled releases](CONTROLLED_RELEASES.md): main only, explicit component
 staging, docs before every push and preserved historical tags. The verified

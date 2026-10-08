@@ -1,17 +1,20 @@
 # Working on Unlabel
 
-Published backend is **v0.7.0 Private Account Sync**; frontend **v0.1.0+2** remains
-historically published and **v0.2.0+3** is the active locally tested release.
-Backend v0.7.0 passed 931 tests, five emulator-only skips, static checks and its
-separate hosted gates. Follow the [master architecture](docs/planning/MASTER_PLAN.md).
-Latest direction automatically saves confirmed public facts and stages unverified
-candidates. Preserve the released OFF/claim foundation and [current release gates](docs/planning/CONTROLLED_RELEASES.md).
-Keep ₹0/no-card, review Markdown/scripts and update docs before a future push.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
-The active frontend adds optional scanner login/private sync, first-launch Welcome,
-four-tab navigation with top-right Profile and reference-style light/dark screens.
-Guests keep personal records local; signed-in sync remains private and separate
-from automatic public facts. [Next version boundaries](docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+Work directly on main, preserve teammate edits, review each component separately
+and update documentation before each authorized push. Keep ₹0/no-card and
+follow [controlled releases](docs/planning/CONTROLLED_RELEASES.md).
 
 ## Team boundaries
 

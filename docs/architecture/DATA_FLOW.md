@@ -1,18 +1,16 @@
 # Data flow
 
-Updated **7 October 2026**.
-
-Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
-are independently pushed, hosted-verified and published. Frontend source commit
-`1138c292296ae6c9309d73d430d267ec1a98fa80` passed production asset/browser checks.
-Backend **v0.7.0 Private Account Sync** is independently pushed, hosted-verified
-and published: **931 tests passed, five emulator-only skips**, clean Ruff/Pyright,
-18 hosted synthetic checks and 13 fresh read-only hosted checks. The source tag
-preserves implementation SHA `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`.
-Frontend **v0.2.0+3 Welcome, Home and Optional Account** is implemented locally;
-release validation and user preview review are required before its push.
-Guests keep personal data locally; optional password sign-in enables private
-account profile/saved/history sync. Public package facts remain separate.
+Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
+Its source-release publication is not established by that receipt.
+Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
+push and hosted evidence are recorded in the current component reviews.
+Guests keep personal records local; optional password accounts use private
+UID-specific sync, separately from public package facts. Capture/local OCR
+are implemented; physical-device accuracy, live barcode decoding, highlights,
+notifications and personal suitability remain separate future gates.
 
 The public observation pipeline and private personal sync are independent.
 Guests use lazy anonymous auth only for automatic public facts. Optional password
@@ -160,7 +158,8 @@ New analysis is online-first and needs the API within free limits; laptop/LAN re
 
 ## Validation planned for implementation
 
-Current synthetic tests cover product/provider states, strict nutrition input, provenance, unit/basis conversion, zero/unknown distinctions, conflicting contexts, bounded/redacted failures and unchanged product contracts. Release-specific live checks are recorded separately. Current claim fixtures also cover numerical boundaries, selected contexts, unknown alternatives, statutory energy conversion, evidence dates and knowledge packaging/failure isolation. Future fixtures cover OCR, broader package analysis and saved-report dates. Platform adapters share models; device checks measure boxes/browser OCR. Offline checks must prove saved data is readable without new provider/AI calls. Starter builds do not prove scanning or regulatory evaluation.
+Current synthetic tests cover product/provider states, strict nutrition input, provenance, unit/basis conversion, zero/unknown distinctions, conflicting contexts, bounded/redacted failures and unchanged product contracts. Release-specific live checks are recorded separately. Current claim fixtures also cover numerical boundaries, selected contexts, unknown alternatives, statutory energy conversion, evidence dates and knowledge packaging/failure isolation. Local OCR/request/lifecycle fixtures are implemented; further fixtures cover
+measured device accuracy, broader package analysis and saved-report dates. Platform adapters share models; device checks measure boxes/browser OCR. Offline checks must prove saved data is readable without new provider/AI calls. Starter builds do not prove scanning or regulatory evaluation.
 
 v0.2.3 completed the full JSONL acquisition with verified gzip EOF: 24,695 India rows and 24,641 supported unique codes, from source **2026-10-06T06:53:46Z**, due **2027-07-06T06:53:46Z**. All 24,641 supported facts passed strict validation; the local SQLite/receipt is verified at 62,472,192 bytes. [Dated strict field/build report](../research/CATALOGUE_V0_2_3_COVERAGE.json). Actual hosted facts/identity reads and build/public receipt agreement passed; [dated production proof](../research/BACKEND_V0_2_3_PRODUCTION.json). The [rich-facts source review](../planning/BACKEND_V0_2_3_REVIEW.md) records source/count/hash/field rates, artifact size and hosted gates; the [v0.2.2 coverage report](../research/CATALOGUE_V0_2_2_COVERAGE.json) remains historical. Coverage stays `unverified`; missing tags/dates/images and unsupported legacy nutrition remain explicit. Freshness uses nine calendar months from the actual source export time, never a new build date. A validated replacement creates a new immutable deployment; packaged files are never hot-swapped. [Catalogue workflow and rollback](CATALOGUE.md).
 

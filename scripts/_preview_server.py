@@ -24,7 +24,7 @@ GET_ROUTES = (
     r"/v1/account/sync",
 )
 POST_ROUTES = (
-    r"/v1/(?:nutrition/normalize|claims/check|community/contributions|reports/check|account/sync)",
+    r"/v1/(?:nutrition/normalize|claims/check|community/contributions|reports/check|reports/compare|account/sync)",
 )
 
 
@@ -181,7 +181,10 @@ def web_handler(directory: Path, mode: str):
                 self.fail(400, "invalid_preview_framing")
                 return
             size = int(lengths[0]) if lengths else 0
-            limit = 512 * 1024 if path == "/v1/account/sync" else 32 * 1024
+            limit = {
+                "/v1/account/sync": 512 * 1024,
+                "/v1/reports/compare": 64 * 1024,
+            }.get(path, 32 * 1024)
             if size > limit:
                 self.fail(413, "preview_request_too_large")
                 return

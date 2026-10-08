@@ -8,7 +8,12 @@ from pydantic import ValidationError
 
 from app.catalogue.facts import FactsLookup
 from app.community.models import CommunityLookup
-from app.comparison.models import ComparisonRequest, ComparisonResponse
+from app.comparison.models import (
+    CommunitySource,
+    ComparisonRequest,
+    ComparisonResponse,
+    OffSource,
+)
 from app.comparison.service import compare
 from tests.community_fixtures import CODE, candidate_revision, contribution_dict
 
@@ -64,6 +69,7 @@ def test_exact_conversion_and_signed_direction(left, unit, amount, right, expect
     assert result.status == "partial"
     assert row(result).difference == expected
     assert row(result).lower == ("a" if expected > 0 else "b" if expected < 0 else "equal")
+    assert result.a.snapshot is not None
     assert result.a.snapshot.original_rows[0].value == left
     assert row(result, "added_sugars").difference is None
     assert result.storage == "read_only"
@@ -145,6 +151,7 @@ def test_off_exact_reference_and_single_read_for_two_sides():
     facts = FactsLookup.model_validate_json(
         (ROOT / "contracts/examples/catalogue-facts-v1.synthetic.json").read_text()
     )
+    assert facts.manifest is not None and facts.details is not None
     value = payload()
     source = {
         "kind": "off_snapshot",
@@ -162,6 +169,7 @@ def test_off_exact_reference_and_single_read_for_two_sides():
 
     result = run(value, off_lookup=lookup)
     assert len(calls) == 1
+    assert isinstance(result.a.source, OffSource)
     assert result.a.source.manifest.source_sha256 == source["source_sha256"]
     assert result.a.assessment_basis == "catalogue_historical"
     value["b"]["source_sha256"] = "f" * 64
@@ -183,6 +191,7 @@ def test_public_active_community_revision_only_and_unknown_is_not_zero():
         "selected_table_id": "back-table",
     }
     result = run(value, community_lookup=lambda _: lookup)
+    assert isinstance(result.b.source, CommunitySource)
     assert result.b.source.reviewed_at is None
     assert result.b.source.review_state == "submitter_confirmed_not_moderator_reviewed"
     assert row(result).b.value == 0

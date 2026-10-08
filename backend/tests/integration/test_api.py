@@ -159,3 +159,22 @@ def test_backend_version_matches_its_independent_manifest():
     # Backend release gates must not pin or advance the independently released client.
     frontend = (backend.parent / "frontend/pubspec.yaml").read_text()
     assert any(line.startswith("version: ") and "+" in line for line in frontend.splitlines())
+
+
+@pytest.mark.parametrize("override", [None, "Unlabel/custom (https://example.test/contact)"])
+def test_off_requests_identify_the_current_backend_and_preserve_explicit_override(
+    monkeypatch, override
+):
+    monkeypatch.delenv("OFF_USER_AGENT", raising=False)
+    expected = override or f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)"
+    received = []
+
+    def provider(request):
+        received.append(request.headers["user-agent"])
+        return httpx.Response(404)
+
+    settings = Settings(_env_file=None, **({"off_user_agent": override} if override else {}))
+    with TestClient(create_app(settings, httpx.MockTransport(provider))) as client:
+        response = client.get("/v1/products/0123456789012")
+    assert response.status_code == 404
+    assert received == [expected]
