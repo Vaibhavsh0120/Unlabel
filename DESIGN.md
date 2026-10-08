@@ -34,10 +34,15 @@ non-scrolling viewport. Its camera area takes the remaining height above three
 modes and capture/review/gallery actions. Opening Scan requests camera access;
 the rear feed is preferred, audio is disabled, and leaving/backgrounding stops
 the session. Captures remain private in memory for manual review. Missing camera
-or denied access retains retry, gallery and manual entry. OCR is v0.3.0 work.
+or denied access retains retry, gallery and manual entry. v0.3.0 added private
+local OCR and editable confirmation. v0.4.0 starts preview without awaiting
+interrupted Android gallery recovery and protects newer actions from late photos.
 Product search replaces the header with a long input and updates actual results
 while typing. Product names and images open sourced reports. Reports/comparison
 follow reference card hierarchy without inventing scores or health verdicts.
+v0.4.0 keeps original source/table choices in the paired comparison cards and
+explains amounts, unknowns and original references separately. Matched ingredient
+details retain bilingual functions, reviewed URLs/dates and limited coverage.
 
 Preserve Flutter 3.47.4 and its real Material 3 components: Scaffold, Navigator,
 Card, FilledButton, TextFormField, DropdownButtonFormField, CheckboxListTile,

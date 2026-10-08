@@ -7,11 +7,13 @@ import 'package:http/http.dart' as http;
 import '../models/app_failure.dart';
 import '../models/label_draft.dart';
 import '../models/product_report.dart';
+import '../models/sourced_comparison.dart';
 import 'scanner_auth.dart';
 
 export '../models/app_failure.dart';
 export '../models/label_draft.dart';
 export '../models/product_report.dart';
+export '../models/sourced_comparison.dart';
 
 class UnlabelRepository {
   UnlabelRepository({
@@ -74,6 +76,8 @@ class UnlabelRepository {
         'unsupported_feature',
         capability == 'catalogue_search'
             ? 'Product search is not available on this service yet. You can enter a barcode or package label.'
+            : capability == 'comparison'
+            ? 'Sourced comparison is not available on this service yet. Your product selections are kept.'
             : 'Label reports are not available on this service yet. Please update the service configuration.',
       );
     }
@@ -176,7 +180,43 @@ class UnlabelRepository {
     // One POST only. An uncertain write is not replayed silently, including 401.
     return ProductReport.fromJson(
       await _request('POST', '/v1/reports/check', body: payload, token: token),
+      confirmedComparisonObservation: payload['observation'] as JsonMap,
     );
+  }
+
+  Future<SourcedComparison> compare(
+    ComparisonOption a,
+    ComparisonOption b, {
+    required String requestId,
+    required String sessionId,
+    required int revision,
+  }) async {
+    await _requireCapability('comparison');
+    if (_metadata?['comparison_version'] != comparisonVersion) {
+      throw const AppFailure(
+        'unsupported_feature',
+        'This service uses a different sourced comparison contract. Your product selections are kept.',
+      );
+    }
+    final body = <String, dynamic>{
+      'schema_version': '1',
+      'client_request_id': requestId,
+      'comparison_session_id': sessionId,
+      'input_revision': revision,
+      'a': a.input,
+      'b': b.input,
+    };
+    if (comparisonRequestBytes(body) > 64 * 1024) {
+      throw const AppFailure(
+        'invalid_input',
+        'These labels are too large to compare together. Choose a smaller label record.',
+      );
+    }
+    final result = SourcedComparison.fromJson(
+      await _request('POST', '/v1/reports/compare', body: body, readOnly: true),
+    );
+    result.requireRequest(a, b, requestId, sessionId, revision);
+    return result;
   }
 
   Future<JsonMap> _request(
@@ -185,6 +225,7 @@ class UnlabelRepository {
     Map<String, String>? query,
     JsonMap? body,
     String? token,
+    bool readOnly = false,
   }) async {
     _ensureOpen();
     final abort = Completer<void>();
@@ -207,7 +248,7 @@ class UnlabelRepository {
     } on TimeoutException {
       throw AppFailure(
         'timeout',
-        method == 'POST'
+        method == 'POST' && !readOnly
             ? 'The service took too long. A label save may have completed; retrying the unchanged form uses the same submission.'
             : 'The service took too long. Check your connection and try again.',
       );

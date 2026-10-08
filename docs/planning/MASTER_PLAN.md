@@ -1,5 +1,12 @@
 # Unlabel: useful product architecture and delivery plan
 
+Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
+READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
+analysis, release web build and synthetic browser workflow checks. Its
+independent push/deployment verification is the remaining release gate.
+[Backend review](BACKEND_V0_9_0_REVIEW.md) ·
+[Frontend review](FRONTEND_V0_4_0_REVIEW.md).
+
 Delivery checkpoint: **8 October 2026**. Published backend v0.7.0 and frontend
 v0.2.0+3 retain their exact historical source and hosted receipts. Current frontend
 **v0.3.0+4 Visual Label Reader** implements reference Welcome/Profile, app-only

@@ -6,7 +6,7 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.3.0-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.4.0-155b4b?style=flat-square)
 ![Backend](https://img.shields.io/badge/backend-0.9.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
@@ -24,8 +24,10 @@ white, forest-green and mint design, with light as the first-use default.
 **Backend v0.9.0 Reviewed Ingredient Functions** expands the partial English/Hindi
 glossary to six entries and hardens source/alias validation. **Frontend v0.4.0+5
 Sourced Comparison and Ingredient Detail** connects exact source/table comparison
-and bilingual evidence details to the existing screens. Independent checks and
-pushes are in progress; no new hosted result is claimed before verification.
+and bilingual evidence details to the existing screens. Android camera startup
+no longer waits for interrupted-gallery recovery. Backend is pushed/READY with
+26 hosted checks; frontend passes 181 tests, analysis, release build and browser
+workflow checks, with its separate push/deployment verification in progress.
 
 Historical frontend v0.3.0 remains published/hosted-verified with 49 checks.
 Backend v0.8.0 was pushed and hosted-verified with 25 checks.

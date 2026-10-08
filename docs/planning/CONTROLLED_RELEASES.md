@@ -1,5 +1,12 @@
 # Controlled Unlabel releases
 
+Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
+READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
+analysis, release web build and synthetic browser workflow checks. Its
+independent push/deployment verification is the remaining release gate.
+[Backend review](BACKEND_V0_9_0_REVIEW.md) ·
+[Frontend review](FRONTEND_V0_4_0_REVIEW.md).
+
 Updated **8 October 2026**. Work directly on **main only** and preserve historical
 source tags. The user has authorized finishing the requested screens, checking
 remaining tasks/docs/dead code, then pushing **one frontend version and one backend

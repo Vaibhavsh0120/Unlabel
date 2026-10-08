@@ -5,8 +5,8 @@ the repository's default branch. It runs only through **Run workflow** in the
 GitHub Actions tab (`workflow_dispatch`); pushes and tags do not trigger it.
 Remote build and release results are recorded by the action run and manifest.
 
-Inputs are `source_ref` (default `main`), `release_version` (`0.2.0`),
-`build_number` (`3`), `backend_url` (`https://unlabel-api.vercel.app`), and
+Inputs are `source_ref` (default `main`), `release_version` (`0.4.0`),
+`build_number` (`5`), `backend_url` (`https://unlabel-api.vercel.app`), and
 `publish_release` (default `true`; select `false` to retain a draft).
 Version and build number override the pubspec value for both mobile builds.
 Increase the build number for a new build and choose an unused release version.

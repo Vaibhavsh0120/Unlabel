@@ -894,7 +894,7 @@ class IngredientPage extends StatelessWidget {
         if (report.ingredientInsights.isEmpty)
           const StatusNotice(
             title: 'No glossary match for this label',
-            message: 'The current glossary covers three reviewed entries. An unmatched ingredient is unknown, not harmful or safe.',
+            message: 'This glossary covers a limited set of reviewed entries. An unmatched ingredient is unknown, not harmful or safe.',
           )
         else
           for (final insight in report.ingredientInsights) ...[
@@ -935,6 +935,55 @@ class IngredientPage extends StatelessWidget {
                     child: Text(
                       'Source references: ${insight.sourceIds.join(', ')}',
                     ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton.icon(
+                    onPressed: () => showDialog<void>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(insight.name),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Matched label text: ${insight.matchedText}',
+                              ),
+                              const SizedBox(height: 16),
+                              if (insight.nameHi != null) Text(insight.nameHi!),
+                              Text(insight.function),
+                              if (insight.functionHi != null)
+                                Text(insight.functionHi!),
+                              const SizedBox(height: 16),
+                              const Text('Reviewed source references'),
+                              for (final source in insight.sourceIds)
+                                SelectableText(source),
+                              for (final source in report.ingredientSources(
+                                insight,
+                              )) ...[
+                                const SizedBox(height: 8),
+                                Text(source['title'] as String),
+                                Text('Reviewed ${source['reviewed_on']}'),
+                                SelectableText(source['url'] as String),
+                              ],
+                              const SizedBox(height: 16),
+                              const Text(
+                                'This explains a technological function. It does not establish health effects, allergy safety, ingredient quantity or permission in a food category.',
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Close'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    icon: const Icon(Icons.info_outline),
+                    label: const Text('Read ingredient evidence'),
                   ),
                 ],
               ),

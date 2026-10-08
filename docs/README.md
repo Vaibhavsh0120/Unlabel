@@ -1,7 +1,11 @@
 # Documentation index
 
 Current work: [frontend v0.4.0+5/backend v0.9.0 implementation plan](planning/FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md).
-Each new version has independent local, review, push and hosted gates.
+Backend v0.9.0 is pushed/READY with 26 hosted checks. Frontend v0.4.0+5
+passes 181 tests, analysis/build and browser workflows; its independent
+push/deployment gate is next. [Backend review](planning/BACKEND_V0_9_0_REVIEW.md) ·
+[Frontend review](planning/FRONTEND_V0_4_0_REVIEW.md) ·
+[Repository audit](research/PROJECT_AUDIT_2026_10_08.md).
 
 Backend **v0.6.0 Product Discovery** and frontend **v0.1.0+2 Connected Label Reader**
 are independently pushed, hosted-verified and published. Frontend source commit

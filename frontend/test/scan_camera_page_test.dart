@@ -73,8 +73,57 @@ Future<void> _show(
 }
 
 void main() {
+  testWidgets('pending Android gallery recovery cannot replace a new capture', (
+    tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    const picker = MethodChannel('plugins.flutter.io/image_picker');
+    final pending = Completer<Object?>();
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      picker,
+      (call) async => call.method == 'retrieve' ? pending.future : null,
+    );
+    addTearDown(
+      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        picker,
+        null,
+      ),
+    );
+    final camera = _Camera();
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: UnlabelTheme.forBrightness(Brightness.light),
+        home: ScanLandingPage(
+          camera: camera,
+          onBarcode: () async {},
+          onEnterLabel: () async {},
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(camera.ready, isTrue);
+    await tester.tap(find.byKey(const Key('scan-primary')));
+    await tester.pumpAndSettle();
+    expect(camera.captures, 1);
+    pending.complete({
+      'pathList': ['/stale/recovered-photo.png'],
+      'type': 'image',
+    });
+    await tester.pumpAndSettle();
+    expect(find.text('Review Label'), findsOneWidget);
+    expect(find.textContaining('could not be restored'), findsNothing);
+    expect(
+      (tester.widget<Image>(find.byType(Image)).image as MemoryImage).bytes,
+      _photo,
+    );
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
   testWidgets(
-    'lost-gallery recovery times out and ignores late Android picker results',
+    'camera starts immediately while lost-gallery recovery times out safely',
     (tester) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
@@ -103,8 +152,9 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.text('Working…'), findsOneWidget);
-      expect(camera.starts, 0);
+      expect(find.text('Working…'), findsNothing);
+      expect(camera.starts, 1);
+      expect(camera.ready, isTrue);
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
       expect(find.text('Working…'), findsNothing);

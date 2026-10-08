@@ -346,7 +346,13 @@ class IngredientInsight {
 /// Retains the complete source contract without allowing UI mutation. Display
 /// helpers never turn an unavailable field or conflict into a selected value.
 class ProductReport {
-  ProductReport.fromJson(JsonMap value) : raw = _freeze(value) as JsonMap {
+  ProductReport.fromJson(
+    JsonMap value, {
+    JsonMap? confirmedComparisonObservation,
+  }) : raw = _freeze(value) as JsonMap,
+       confirmedComparisonObservation = confirmedComparisonObservation == null
+           ? null
+           : _freeze(confirmedComparisonObservation) as JsonMap {
     if (raw['schema_version'] != '1' ||
         raw['report_version'] != 'label-report-v1' ||
         !const ['ready', 'partial'].contains(raw['status']) ||
@@ -367,6 +373,10 @@ class ProductReport {
     _validateDisplayContract(raw);
   }
   final JsonMap raw;
+
+  /// Exact request confirmed in this client session. Never part of [raw], local
+  /// serialization or private sync. A restored report cannot recreate consent.
+  final JsonMap? confirmedComparisonObservation;
   bool get isHistorical => raw['assessment_basis'] == 'catalogue_historical';
   String get status => raw['status'] as String;
   String get storageStatus =>
@@ -429,6 +439,26 @@ class ProductReport {
         .where((item) => seen.add(item.name))
         .toList(growable: false);
   }
+
+  List<JsonMap> ingredientSources(IngredientInsight insight) =>
+      List.unmodifiable(
+        _list(raw['glossary_sources'])
+            .whereType<JsonMap>()
+            .where((source) {
+              final url = source['url'];
+              final uri = url is String ? Uri.tryParse(url) : null;
+              return insight.sourceIds.contains(source['source_id']) &&
+                  _validText(source['title'], 256) &&
+                  _validText(url, 512) &&
+                  uri?.scheme == 'https' &&
+                  uri!.host.isNotEmpty &&
+                  uri.userInfo.isEmpty &&
+                  source['reviewed_on'] is String &&
+                  RegExp(r'^\d{4}-\d{2}-\d{2}$')
+                      .hasMatch(source['reviewed_on'] as String);
+            })
+            .take(8),
+      );
 
   List<ReportNutrient> get nutrients {
     if (isHistorical) {

@@ -100,7 +100,15 @@ void main() {
         );
         expect(report.nutrients.first.sourceIds, ['confirmed-label']);
         expect(report.mayContain.status, 'not_captured');
-        expect(report.ingredientInsights, hasLength(1));
+        expect(
+          report.ingredientInsights.map((insight) => insight.name).toSet(),
+          containsAll([
+            'Lecithin',
+            'Guar gum',
+            'Sodium benzoate',
+            'Potassium sorbate',
+          ]),
+        );
         expect(report.claims.single.status, 'contradicted');
         expect(() => report.raw['status'] = 'ready', throwsUnsupportedError);
         expect(

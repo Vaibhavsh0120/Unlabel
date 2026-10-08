@@ -1,5 +1,12 @@
 # Reference screens and the next releases
 
+Current review checkpoint (8 October 2026): backend **v0.9.0** is pushed and
+READY with **26 hosted checks**; frontend **v0.4.0+5** passes **181 tests**,
+analysis, release web build and synthetic browser workflow checks. Its
+independent push/deployment verification is the remaining release gate.
+[Backend review](BACKEND_V0_9_0_REVIEW.md) ·
+[Frontend review](FRONTEND_V0_4_0_REVIEW.md).
+
 Accepted scope: **8 October 2026**. Work directly on `main` and preserve published
 backend v0.7.0/frontend v0.2.0 history. Frontend v0.3.0 is now published and
 hosted-verified. Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.

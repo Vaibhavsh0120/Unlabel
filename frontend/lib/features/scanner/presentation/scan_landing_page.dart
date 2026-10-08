@@ -33,6 +33,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   late final LiveCamera _camera = widget.camera ?? LiveCamera();
   final _photos = <int, Uint8List>{};
   int _mode = 0;
+  int _photoRevision = 0;
   bool _working = false, _routeOpen = false, _foreground = true;
   String? _photoError;
 
@@ -43,30 +44,36 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     _camera.addListener(_cameraChanged);
     final state = WidgetsBinding.instance.lifecycleState;
     _foreground = state == null || state == AppLifecycleState.resumed;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _restoreGallery());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Lost-picker recovery can take seconds on Android. It must not hold up
+      // camera permission/first preview on every ordinary Scan entry.
+      unawaited(_syncCamera());
+      unawaited(_restoreGallery());
+    });
   }
 
   Future<void> _restoreGallery() async {
     if (!mounted) return;
+    final revision = _photoRevision;
     // Android may recreate the activity while its system photo picker is open.
     // Restore only that pending selection; photos remain in this route's memory.
     if (!kIsWeb &&
         defaultTargetPlatform == TargetPlatform.android &&
         widget.pickPhoto == null) {
-      setState(() => _working = true);
       try {
         final response = await ImagePicker().retrieveLostData().timeout(
           const Duration(seconds: 5),
         );
-        if (!mounted) return;
+        if (!mounted || revision != _photoRevision) return;
         final files = response.files;
         if (files != null && files.isNotEmpty) {
           final bytes = await _readPhoto(files.first);
-          if (!mounted) return;
+          if (!mounted || revision != _photoRevision) return;
           setState(() {
             _mode = 1;
             _photos[1] = bytes;
           });
+          unawaited(_syncCamera());
         } else if (response.exception != null) {
           setState(
             () => _photoError =
@@ -74,16 +81,13 @@ class _ScanLandingPageState extends State<ScanLandingPage>
           );
         }
       } catch (_) {
-        if (mounted) {
+        if (mounted && revision == _photoRevision) {
           setState(
             () => _photoError = 'The photo selection could not be restored. Choose the image again.',
           );
         }
-      } finally {
-        if (mounted) setState(() => _working = false);
       }
     }
-    if (mounted) unawaited(_syncCamera());
   }
 
   void _cameraChanged() {
@@ -107,6 +111,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<void> _route(Future<void> Function() open) async {
     if (_working || _routeOpen) return;
+    _photoRevision++;
     _routeOpen = true;
     await _camera.stop();
     if (!mounted) return;
@@ -120,6 +125,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<void> _capture() async {
     if (_working || !_camera.ready) return;
+    _photoRevision++;
     setState(() {
       _working = true;
       _photoError = null;
@@ -149,6 +155,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<void> _gallery() async {
     if (_working) return;
+    _photoRevision++;
     setState(() {
       _working = true;
       _photoError = null;
@@ -205,6 +212,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   void _selectMode(int mode) {
     if (_working || _mode == mode) return;
+    _photoRevision++;
     setState(() {
       _mode = mode;
       _photoError = null;

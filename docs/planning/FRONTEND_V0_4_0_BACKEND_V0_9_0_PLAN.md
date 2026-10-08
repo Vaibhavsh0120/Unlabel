@@ -72,7 +72,7 @@ and current OpenAPI/examples; historical `glossary-v1.json` remains unchanged.
 - [x] Run focused/full backend pytest, Ruff, Pyright and network-free build.
 - [ ] Independently review changes, update component/shared docs, explicitly
   stage backend/contracts/docs and push the backend commit on `main`.
-- [ ] Check exact hosted deployment and synthetic glossary/report/meta contracts;
+- [x] Check exact hosted deployment and synthetic glossary/report/meta contracts;
   record actual results separately from local source/test proof.
 
 ## Task 3: Frontend v0.4.0+5
@@ -83,20 +83,20 @@ coordinator owns version, documentation, build and rendered checks.
 **Produces:** Exact-source comparison requests, validated response rendering,
 source-aware table choices and bilingual ingredient details in existing screens.
 
-- [ ] Add failing DTO/request/repository tests for exact source pins, current
+- [x] Add failing DTO/request/repository tests for exact source pins, current
   confirmation privacy, eleven nutrient cells, echoed request/session/revision,
   invalid numeric data, capability failures and no authentication callback.
-- [ ] Preserve the exact confirmed request in client session memory separately
+- [x] Preserve the exact confirmed request in client session memory separately
   from report `raw`; never serialize into local history/private sync. Restored
   current reports explicitly require review again for sourced comparison.
-- [ ] Integrate original source/table selection, per-100 amounts, source/date
+- [x] Integrate original source/table selection, per-100 amounts, source/date
   qualifications and unknown/incompatible reasons into existing Compare cards.
   Clear/invalidate results on selection/swap/namespace/disposal and support retry.
-- [ ] Add a readable ingredient detail interaction with English/Hindi functions
+- [x] Add a readable ingredient detail interaction with English/Hindi functions
   and actual evidence links, preserving partial coverage and existing disclaimers.
-- [ ] Test stale completions, changed sources, failures/retry and serialization
+- [x] Test stale completions, changed sources, failures/retry and serialization
   boundaries. Bump frontend to 0.4.0+5; run full Flutter tests/analyzer/web build.
-- [ ] Inspect rendered mobile/desktop light/dark/enlarged text states; run Better
+- [x] Inspect rendered mobile/desktop light/dark/enlarged text states; run Better
   Design review/comprehension/spacing with the Flutter-canvas DOM limit recorded.
 - [ ] Independently review changes, update component/shared docs, explicitly
   stage frontend/docs and push the frontend commit on `main`.

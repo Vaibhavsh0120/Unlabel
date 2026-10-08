@@ -1,19 +1,26 @@
 # Flutter frontend
 
-Frontend **0.3.0+4 — Visual Label Reader** is published from implementation source
+Current implementation: **0.4.0+5 — Sourced Comparison and Ingredient Detail**.
+181 tests, analysis, release web build, synthetic browser workflows and
+390/1440/1728 light/dark checks pass. Android preview starts while lost-gallery
+recovery runs concurrently. The separate push/hosted gate is next.
+[Current review](../docs/planning/FRONTEND_V0_4_0_REVIEW.md).
+
+Historical frontend **0.3.0+4 — Visual Label Reader** is published from implementation source
 `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; READY deployment
 `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8` passed 49 hosted checks, including all 21 OCR
 asset hashes. Hosted Welcome enters Home and Search focuses the actual input,
 returning ten results from 57 matches.
 [Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
 [Production receipt](../docs/research/FRONTEND_V0_3_0_PRODUCTION.json) ·
-[Current review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
+[Historical review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
 Later documentation-only closure commits do not replace this implementation SHA.
 Published frontend **0.2.0+3** remains at implementation commit
 `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`, with its
 [production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
 Backend **0.7.0 — Private Account Sync** is independently published;
-backend v0.8.0 comparison is a separate locally implemented release.
+backend v0.8.0 comparison is pushed/hosted-verified. Current backend v0.9.0 is
+READY with 26 hosted checks and six reviewed bilingual function entries.
 Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
 
 One application in this folder targets Android, iOS and web. The
@@ -46,8 +53,10 @@ See [deployment settings](../docs/planning/VERCEL_SETUP.md).
   claims, then explicitly confirm facts and front/back pairing before analysis.
   OCR does not silently confirm facts or infer a nutrition table.
 - Sourced current and dated historical reports retain original nutrition bases,
-  approximate 4 g sugar cubes, reviewed claim states and three English/Hindi
-  ingredient-function entries. Compatible-basis client comparison, Insights and
+  approximate 4 g sugar cubes, reviewed claim states and six English/Hindi
+  ingredient-function entries with source URL/date details. Exact-source server
+  comparison retains original tables, bounded session confirmation and explicit
+  unknown/conflicting outcomes. Insights and
   Sources remain useful. No universal health score or allergy-safe verdict is invented.
 - Profile has a botanical identity card, real current history/saved library sizes,
   optional sign-in/name editing, working library shortcuts, preferences and settings.
@@ -112,8 +121,9 @@ browser OCR assets offline; reacquisition is an explicit maintenance action.
 `python scripts/generate_app_icons.py --check` verifies the 42 existing icon assets.
 Artwork and the startup font retain source/license records under their asset folders.
 
-Fresh local evidence: **168 Flutter tests passed**, clean analysis, four browser
-OCR bridge tests and pinned asset checks. A real compiled local browser recognized
+Current local evidence: **181 Flutter tests passed**, clean analysis and web build,
+comparison/manual-report/evidence browser checks. Earlier v0.3.0 additionally
+passed four browser OCR bridge tests and pinned asset checks. Its compiled local browser recognized
 a synthetic oats/ingredients/protein label. Android Kotlin compilation passed;
 physical camera/OCR behavior still needs a device check. iOS Vision source has not
 been compiled on this Windows host. Web/widget tests do not prove installation,

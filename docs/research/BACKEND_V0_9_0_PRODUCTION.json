@@ -1,0 +1,245 @@
+{
+  "version": "0.9.0",
+  "origin": "https://unlabel-api.vercel.app",
+  "source_sha": "5ed899e26941477f4b8c405da97ce5d297183e7d",
+  "deployment": {
+    "id": "dpl_92aS6GAdUEeyonoy2XYuQogyxoz7",
+    "state": "READY",
+    "environment": "production",
+    "source_sha": "5ed899e26941477f4b8c405da97ce5d297183e7d",
+    "alias": "https://unlabel-api.vercel.app",
+    "metadata_verification": "Fresh supplied Vercel inspection matched ID, state, Git SHA, target and alias",
+    "inspection_sha256": "01db6565be13409c776c21b5622b39eef153bbae5b0b9ae9900bcf4a2ae04714"
+  },
+  "checked_at_utc": "2026-10-08T03:57:25.186053+00:00",
+  "checks": [
+    {
+      "check": "Backend v0.9.0 health",
+      "method": "GET",
+      "path": "/v1/health",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Comparison metadata and independent readiness",
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Exact v0.9.0 OpenAPI and preserved v0.8.0 contracts",
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "expected": 200,
+      "paths": 21,
+      "operations": 22,
+      "canonical_sha256": "049dd0e3e35d78f17f4d15ed697d8fd5823019a1d9ca54fd603e4fb105f1c678"
+    },
+    {
+      "check": "Six reviewed bilingual functions",
+      "method": "GET",
+      "path": "/v1/ingredients/glossary",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Confirmed synthetic labels; exact frontend CORS",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store",
+      "allowed_origin": "https://unlabel-india.vercel.app"
+    },
+    {
+      "check": "Original-row mg/serving conversion and corrected OCR input",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Negative signed nutrient difference",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Explicit zero stays known",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "All eleven explicit nutrients yield ready equal comparison",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact scientific kJ/kcal conversion",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Explicit unknown stays unknown",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Conflicting original rows need correction",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Different preparation cannot be compared",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Mass/volume mismatch cannot infer density",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unknown serving size cannot be invented",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Missing selected table cannot be substituted",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Untrusted origin receives no CORS permission",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact frontend comparison POST preflight",
+      "method": "OPTIONS",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "allowed_origin": "https://unlabel-india.vercel.app"
+    },
+    {
+      "check": "Unconfirmed input and redacted validation",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: NaN",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: Infinity",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: 1e-999",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: 1.0000000000000000000001",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exactly 64 KiB valid body accepted",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "64 KiB plus one actual byte rejected",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 413,
+      "expected": 413,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Client chunked oversize body rejected",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 413,
+      "expected": 413,
+      "cache_control": "no-store",
+      "client_transfer_encoding": "chunked"
+    }
+  ],
+  "passed": 26,
+  "openapi": {
+    "paths": 21,
+    "operations": 22,
+    "canonical_sha256": "049dd0e3e35d78f17f4d15ed697d8fd5823019a1d9ca54fd603e4fb105f1c678",
+    "historical_v0_8_0_paths_preserved": true,
+    "unchanged_components_preserved_except_documented_glossary_expansion": true
+  },
+  "comparison_version": "sourced-nutrient-comparison-v1",
+  "synthetic_only": true,
+  "credentials_used": false,
+  "writes": "Only the read-only comparison POST; no contribution/private-sync write or SDK identity creation",
+  "photos_or_raw_ocr_sent": false,
+  "limits": [
+    "Production deployment identity is validated from a fresh supplied Vercel inspection; the helper does not fetch private Vercel credentials",
+    "Hosted proxy may buffer the client chunked body; accumulated ASGI chunk enforcement is separately covered by local integration tests",
+    "No new Firebase ownership/write, emulator, native camera, keyboard or physical-device proof is claimed",
+    "Historical OFF/community reference arithmetic and source rotation retain separate synthetic local tests"
+  ]
+}

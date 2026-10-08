@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/network/unlabel_repository.dart';
@@ -174,16 +176,22 @@ class NutritionComparison {
     required this.left,
     required this.right,
     required this.compatible,
+    this.sourcedDifference,
+    this.sourcedSummary,
   });
   final String name;
   final ComparisonValue left;
   final ComparisonValue right;
   final bool compatible;
+  final double? sourcedDifference;
+  final String? sourcedSummary;
   double? get difference =>
-      compatible && left.value != null && right.value != null
-      ? right.value! - left.value!
-      : null;
+      sourcedDifference ??
+      (compatible && left.value != null && right.value != null
+          ? right.value! - left.value!
+          : null);
   String get summary {
+    if (sourcedSummary != null) return sourcedSummary!;
     final delta = difference;
     if (left.conflict || right.conflict) {
       return 'Conflicting facts need correction';
@@ -231,11 +239,13 @@ class ComparePage extends StatefulWidget {
     required this.store,
     required this.repository,
     this.onOpenReport,
+    this.sessionReports = const [],
     super.key,
   });
   final LocalStore store;
   final UnlabelRepository repository;
   final ValueChanged<ProductReport>? onOpenReport;
+  final List<ProductReport> sessionReports;
   @override
   State<ComparePage> createState() => _ComparePageState();
 }
@@ -243,17 +253,96 @@ class ComparePage extends StatefulWidget {
 class _ComparePageState extends State<ComparePage> {
   final _reports = <ProductReport?>[null, null];
   final _tableIds = <String?>[null, null];
+  final _sourceIds = <String?>[null, null];
+  final _sourceOptions = <List<ComparisonOption>>[[], []];
+  String _sessionId = newSubmissionId();
+  int _inputRevision = 0;
+  bool _comparing = false;
+  SourcedComparison? _sourced;
+  String? _comparisonError;
+
+  @override
+  void didUpdateWidget(ComparePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.store != widget.store ||
+        oldWidget.repository != widget.repository) {
+      _inputRevision++;
+      _sessionId = newSubmissionId();
+      _reports.fillRange(0, 2, null);
+      _tableIds.fillRange(0, 2, null);
+      _sourceIds.fillRange(0, 2, null);
+      _sourceOptions[0] = [];
+      _sourceOptions[1] = [];
+      _sourced = null;
+      _comparisonError = null;
+      _comparing = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _inputRevision++;
+    super.dispose();
+  }
+
+  ComparisonOption? _source(int index) {
+    final report = _reports[index];
+    if (report == null) return null;
+    return _sourceOptions[index]
+        .where((option) => option.id == _sourceIds[index])
+        .firstOrNull;
+  }
+
+  Future<void> _compare() async {
+    final revision = ++_inputRevision;
+    final a = _source(0), b = _source(1);
+    setState(() {
+      _sourced = null;
+      _comparisonError = null;
+      _comparing = a != null && b != null;
+    });
+    if (a == null || b == null) return;
+    try {
+      final result = await widget.repository.compare(
+        a,
+        b,
+        requestId: newSubmissionId(),
+        sessionId: _sessionId,
+        revision: revision,
+      );
+      if (mounted && revision == _inputRevision) {
+        setState(() => _sourced = result);
+      }
+    } on AppFailure catch (error) {
+      if (mounted && revision == _inputRevision) {
+        setState(() => _comparisonError = error.userMessage);
+      }
+    } catch (_) {
+      if (mounted && revision == _inputRevision) {
+        setState(
+          () => _comparisonError =
+              'The sourced amounts could not be compared. Please try again.',
+        );
+      }
+    } finally {
+      if (mounted && revision == _inputRevision) {
+        setState(() => _comparing = false);
+      }
+    }
+  }
 
   Future<void> _choose(int index) async {
+    final store = widget.store;
     final selected = await showDialog<ProductReport>(
       context: context,
       builder: (_) => _ProductPicker(
         store: widget.store,
         repository: widget.repository,
         side: index == 0 ? 'A' : 'B',
+        sessionReports: widget.sessionReports,
       ),
     );
-    if (selected == null || !mounted) return;
+    if (selected == null || !mounted || store != widget.store) return;
     final other = _reports[1 - index];
     if (other != null && other.id == selected.id) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -266,7 +355,10 @@ class _ComparePageState extends State<ComparePage> {
     setState(() {
       _reports[index] = selected;
       _tableIds[index] = comparisonTables(selected).firstOrNull?.id;
+      _sourceOptions[index] = sourcedComparisonOptions(selected);
+      _sourceIds[index] = _sourceOptions[index].firstOrNull?.id;
     });
+    _compare();
   }
 
   ComparisonTable? _table(int index) {
@@ -277,20 +369,30 @@ class _ComparePageState extends State<ComparePage> {
         .firstOrNull;
   }
 
-  void _swap() => setState(() {
-    final first = _reports[0];
-    _reports[0] = _reports[1];
-    _reports[1] = first;
-    final firstId = _tableIds[0];
-    _tableIds[0] = _tableIds[1];
-    _tableIds[1] = firstId;
-  });
+  void _swap() {
+    setState(() {
+      final first = _reports[0];
+      _reports[0] = _reports[1];
+      _reports[1] = first;
+      final firstId = _tableIds[0];
+      _tableIds[0] = _tableIds[1];
+      _tableIds[1] = firstId;
+      final source = _sourceIds[0];
+      _sourceIds[0] = _sourceIds[1];
+      _sourceIds[1] = source;
+      final options = _sourceOptions[0];
+      _sourceOptions[0] = _sourceOptions[1];
+      _sourceOptions[1] = options;
+    });
+    _compare();
+  }
 
   @override
   Widget build(BuildContext context) {
     final both = _reports.every((report) => report != null);
     final theme = Theme.of(context);
     final comparisons = compareTables(_table(0), _table(1));
+    final sourcePair = _source(0) != null && _source(1) != null;
     return PageBody(
       children: [
         Text('Compare products', style: theme.textTheme.headlineMedium),
@@ -326,44 +428,51 @@ class _ComparePageState extends State<ComparePage> {
         ),
         if (both) ...[
           const SizedBox(height: 20),
-          _comparisonSummary(),
-          const SizedBox(height: 20),
-          SectionCard(
-            padding: MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.spaceBetween,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 12,
-                  children: [
-                    Text(
-                      'Nutrition comparison',
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    TextButton.icon(
-                      onPressed: _swap,
-                      icon: const Icon(Icons.swap_horiz),
-                      label: const Text('Swap'),
-                    ),
-                  ],
-                ),
-                Text(
-                  'Original table values',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+          _sourcedPanel(),
+          if (!sourcePair) ...[
+            const SizedBox(height: 20),
+            _comparisonSummary(),
+            const SizedBox(height: 20),
+            SectionCard(
+              padding: MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 12,
+                    children: [
+                      Text(
+                        'Nutrition comparison',
+                        style: theme.textTheme.titleLarge,
+                      ),
+                      TextButton.icon(
+                        onPressed: _swap,
+                        icon: const Icon(Icons.swap_horiz),
+                        label: const Text('Swap'),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 8),
-                for (final row in comparisons) ...[
-                  _comparisonRow(row),
-                  if (row.name != comparisons.last.name)
-                    const Divider(height: 24),
+                  Text(
+                    'Original table values',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const Text(
+                    'Device comparison · matching original amounts only',
+                  ),
+                  const SizedBox(height: 8),
+                  for (final row in comparisons) ...[
+                    _comparisonRow(row),
+                    if (row.name != comparisons.last.name)
+                      const Divider(height: 24),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
+          ],
           const SizedBox(height: 20),
           SectionCard(
             padding: 20,
@@ -382,7 +491,7 @@ class _ComparePageState extends State<ComparePage> {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'Amounts are compared only with the same table basis, preparation and unit. Unknown values stay unknown. Bars show relative amounts, not an overall health score.',
+                        'Sourced amounts use a common 100 g or 100 mL basis and the same preparation. Original values keep their printed basis. Unknown values stay unknown. Bars show relative amounts, not an overall health score.',
                       ),
                       if (_reports.any(
                         (report) => report?.isHistorical ?? false,
@@ -422,6 +531,7 @@ class _ComparePageState extends State<ComparePage> {
         ? <ComparisonTable>[]
         : comparisonTables(report);
     final image = report == null ? null : _productImage(report);
+    final sources = _sourceOptions[index];
     return SectionCard(
       key: ValueKey('compare-product-$side'),
       padding: compact ? 12 : 20,
@@ -524,10 +634,48 @@ class _ComparePageState extends State<ComparePage> {
             ),
             const SizedBox(height: 8),
             Text(
-              _table(index)?.label ?? 'Nutrition table unavailable',
+              _source(index)?.basisLabel ??
+                  _table(index)?.label ??
+                  'Nutrition table unavailable',
               style: theme.textTheme.bodySmall,
             ),
-            if (tables.length > 1) ...[
+            if (sources.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                key: ValueKey(
+                  'source-$index:${report.id}:${_sourceIds[index]}',
+                ),
+                initialValue: _sourceIds[index],
+                isExpanded: true,
+                decoration: const InputDecoration(labelText: 'Source & table'),
+                itemHeight: null,
+                selectedItemBuilder: (_) => [
+                  for (final source in sources)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        source.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                ],
+                items: [
+                  for (final source in sources)
+                    DropdownMenuItem(
+                      value: source.id,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Text(source.label),
+                      ),
+                    ),
+                ],
+                onChanged: (value) {
+                  setState(() => _sourceIds[index] = value);
+                  _compare();
+                },
+              ),
+            ] else if (tables.length > 1) ...[
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 key: ValueKey('$index:${report.id}:${_tableIds[index]}'),
@@ -674,6 +822,116 @@ class _ComparePageState extends State<ComparePage> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _sourcedPanel() {
+    final result = _sourced;
+    final hasSources = _source(0) != null && _source(1) != null;
+    return SectionCard(
+      key: const Key('sourced-comparison'),
+      padding: 20,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Sourced comparison',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              if (hasSources)
+                TextButton.icon(
+                  onPressed: _swap,
+                  icon: const Icon(Icons.swap_horiz),
+                  label: const Text('Swap'),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          if (!hasSources)
+            Text(
+              _reports.any(
+                    (report) =>
+                        report != null &&
+                        !report.isHistorical &&
+                        report.confirmedComparisonObservation == null,
+                  )
+                  ? 'Review this label again to compare its amounts. Original values remain below.'
+                  : 'An exact public source and nutrition table are needed for each product. Original values remain below.',
+            ),
+          if (_comparing) const BusyNotice('Comparing sourced amounts…'),
+          if (_comparisonError != null) ...[
+            Text(_comparisonError!),
+            TextButton.icon(
+              onPressed: _compare,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry sourced comparison'),
+            ),
+          ],
+          if (result != null) ...[
+            Text(
+              result.status == 'not_comparable'
+                  ? 'These tables cannot be compared'
+                  : result.basisLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Numeric differences describe amounts only; they do not select a healthier product.',
+            ),
+            const SizedBox(height: 12),
+            for (final row in result.rows) ...[
+              _comparisonRow(
+                NutritionComparison(
+                  name: row.name,
+                  left: ComparisonValue(row.a.value, row.a.unit),
+                  right: ComparisonValue(row.b.value, row.b.unit),
+                  compatible: row.difference != null,
+                  sourcedDifference: row.difference,
+                  sourcedSummary: row.difference == null
+                      ? comparisonReason(
+                          row.reason ?? row.a.reason ?? row.b.reason,
+                        )
+                      : null,
+                ),
+              ),
+              if (row.name != result.rows.last.name) const Divider(height: 24),
+            ],
+            ExpansionTile(
+              title: const Text('Original rows & source references'),
+              tilePadding: EdgeInsets.zero,
+              children: [
+                for (final pair in [('A', result.a), ('B', result.b)])
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text('${pair.$1} · ${pair.$2.sourceLabel}'),
+                        const SizedBox(height: 8),
+                        for (final value in pair.$2.originalRows)
+                          Text(
+                            '${(value as JsonMap)['nutrient'].toString().replaceAll('_', ' ')}: ${value['value'] == null ? 'Unknown' : '${formatNumber((value['value'] as num).toDouble())} ${value['unit']}'} · ${basisDescription(value['basis'], value['preparation'])}',
+                          ),
+                        const SizedBox(height: 8),
+                        SelectableText('Table: ${pair.$2.tableId}'),
+                        if (pair.$2.raw['requested_reference'] != null)
+                          SelectableText(
+                            'Source reference: ${pair.$2.raw['requested_reference']}',
+                          ),
+                        for (final warning in (pair.$2.raw['warnings'] as List))
+                          Text(comparisonReason(warning as String)),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -834,10 +1092,12 @@ class _ProductPicker extends StatefulWidget {
     required this.store,
     required this.repository,
     required this.side,
+    required this.sessionReports,
   });
   final LocalStore store;
   final UnlabelRepository repository;
   final String side;
+  final List<ProductReport> sessionReports;
   @override
   State<_ProductPicker> createState() => _ProductPickerState();
 }
@@ -872,12 +1132,31 @@ class _ProductPickerState extends State<_ProductPicker> {
       final saved = await widget.store.saved();
       final history = await widget.store.history();
       final seen = <String>{};
+      final liveReports = {
+        for (final report in widget.sessionReports) report.id: report,
+      };
       if (mounted) {
         setState(
-          () => _items = [
-            ...saved,
-            ...history,
-          ].where((item) => seen.add(item.id)).toList(),
+          () => _items = [...saved, ...history]
+              .where((item) => seen.add(item.id))
+              .map((item) {
+                // Match the exact stored report, never just its barcode. Clearing
+                // both lists also removes access to session confirmations.
+                final candidate = liveReports[item.id];
+                final live =
+                    candidate != null &&
+                        jsonEncode(candidate.raw) == jsonEncode(item.report.raw)
+                    ? candidate
+                    : null;
+                return live == null
+                    ? item
+                    : LocalReport(
+                        id: item.id,
+                        report: live,
+                        storedAt: item.storedAt,
+                      );
+              })
+              .toList(),
         );
       }
     } on AppFailure catch (error) {

@@ -238,6 +238,9 @@ class _ClientHomeState extends State<_ClientHome> {
   int _tab = 0, _refreshKey = 0;
   bool _searching = false;
   final _searchFocus = FocusNode();
+  // This state is keyed by verified account UID/guest. Confirmation envelopes
+  // never leave memory, and disposal on sign-out/account changes drops them.
+  final _comparisonReports = <ProductReport>[];
 
   @override
   void dispose() {
@@ -274,6 +277,11 @@ class _ClientHomeState extends State<_ClientHome> {
   }
 
   Future<void> _record(ProductReport report) async {
+    if (report.confirmedComparisonObservation != null) {
+      _comparisonReports.removeWhere((entry) => entry.id == report.id);
+      _comparisonReports.insert(0, report);
+      if (_comparisonReports.length > 40) _comparisonReports.removeLast();
+    }
     try {
       await widget.store.record(report);
       _changed();
@@ -532,6 +540,7 @@ class _ClientHomeState extends State<_ClientHome> {
                   store: widget.store,
                   repository: widget.repository,
                   onOpenReport: _openReport,
+                  sessionReports: List.unmodifiable(_comparisonReports),
                 ),
                 _ => LibraryPage(
                   saved: true,

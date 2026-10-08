@@ -47,7 +47,14 @@ for text/conflict/fence problems; 72 binary/compressed files have separate
 format/hash/build checks. YAML/workflow shell/TOML/XML/plist/bash, script Ruff,
 42 icon hashes and all 21 OCR hashes passed. The OCR verifier regression passed
 26 tests. Independent backend review has no remaining blocker. Staged privacy
-and exact-source hosted checks are recorded at release closure.
+checks found no actual credentials or ownership secrets.
+
+Pushed implementation: `5ed899e26941477f4b8c405da97ce5d297183e7d`.
+Production deployment `dpl_92aS6GAdUEeyonoy2XYuQogyxoz7` is READY at that exact
+source, assigned to `unlabel-api.vercel.app`. **26 hosted checks passed**, covering
+health/meta/OpenAPI, exact glossary/example agreement, bounds, CORS and sourced
+comparison. [Production receipt](../research/BACKEND_V0_9_0_PRODUCTION.json).
+Later frontend/documentation commits retain this implementation identity.
 
 [Implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md) ·
 [Reviewed sources and hashes](../research/INGREDIENT_GLOSSARY_V0_9_0.md) ·
