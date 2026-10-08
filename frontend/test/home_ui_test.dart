@@ -234,10 +234,7 @@ void main() {
               ),
             );
             await tester.pumpAndSettle();
-            expect(
-              find.text('Scan food smarter'),
-              findsOneWidget,
-            );
+            expect(find.text('Scan food smarter'), findsOneWidget);
             expect(
               tester.takeException(),
               isNull,

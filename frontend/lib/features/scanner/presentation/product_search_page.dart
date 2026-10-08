@@ -7,6 +7,7 @@ import '../../../core/network/unlabel_repository.dart';
 import 'report_presentation.dart';
 import 'researched_product_page.dart';
 import 'ui_components.dart';
+import 'product_results_layout.dart';
 import '../../../core/widgets/search_skeleton.dart';
 
 /// Name search replaces the app header and keeps typing independent of requests.
@@ -19,6 +20,7 @@ class ProductSearchPage extends StatefulWidget {
     this.autofocus = true,
     this.onClose,
     this.active = true,
+    this.resultNavigation,
     super.key,
   });
   final UnlabelRepository repository;
@@ -28,6 +30,7 @@ class ProductSearchPage extends StatefulWidget {
   final bool autofocus;
   final VoidCallback? onClose;
   final bool active;
+  final ResultsNavigation? resultNavigation;
 
   @override
   State<ProductSearchPage> createState() => _ProductSearchPageState();
@@ -334,7 +337,10 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       if (!mounted || request != _request) return;
       await Navigator.of(context).push<void>(
         MaterialPageRoute(
-          builder: (_) => ResearchedProductPage(product: product),
+          builder: (_) => ResearchedProductPage(
+            product: product,
+            navigation: widget.resultNavigation,
+          ),
         ),
       );
     } on AppFailure catch (error) {

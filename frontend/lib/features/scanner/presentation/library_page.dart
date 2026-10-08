@@ -198,7 +198,7 @@ class _LibraryPageState extends State<LibraryPage> {
               : 'No labels viewed yet',
           message: widget.saved
               ? 'Open a report and choose Save to find it here later.'
-              : 'Look up a product or enter a label to start your history.',
+              : 'Scan a barcode or photograph a label to start your history.',
           action: FilledButton(
             onPressed: widget.onLookup,
             child: const Text('Look up a product'),

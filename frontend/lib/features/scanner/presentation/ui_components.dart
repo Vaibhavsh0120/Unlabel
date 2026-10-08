@@ -153,10 +153,16 @@ class FeatureIcon extends StatelessWidget {
 }
 
 class PageBody extends StatelessWidget {
-  const PageBody({required this.children, this.maxWidth = 1000, super.key});
+  const PageBody({
+    required this.children,
+    this.maxWidth = 1000,
+    this.padding,
+    super.key,
+  });
 
   final List<Widget> children;
   final double maxWidth;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -166,12 +172,14 @@ class PageBody extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
-              MediaQuery.sizeOf(context).width < 600 ? 16 : 24,
-              MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
-              40 + MediaQuery.paddingOf(context).bottom,
-            ),
+            padding:
+                padding ??
+                EdgeInsets.fromLTRB(
+                  MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
+                  MediaQuery.sizeOf(context).width < 600 ? 16 : 24,
+                  MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
+                  40 + MediaQuery.paddingOf(context).bottom,
+                ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: children,
@@ -254,14 +262,15 @@ class BusyNotice extends StatelessWidget {
 }
 
 class SectionTitle extends StatelessWidget {
-  const SectionTitle(this.title, {this.trailing, super.key});
+  const SectionTitle(this.title, {this.trailing, this.compact = false, super.key});
 
   final String title;
   final Widget? trailing;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 28, bottom: 16),
+    padding: EdgeInsets.only(top: compact ? 12 : 28, bottom: compact ? 8 : 16),
     child: Wrap(
       alignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,

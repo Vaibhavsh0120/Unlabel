@@ -6,25 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
+import 'package:unlabel/core/capture/automatic_label_reader.dart';
+import 'package:unlabel/core/capture/local_label_parser.dart';
 import 'package:unlabel/core/capture/live_camera.dart';
+import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
 
 final _photo = base64Decode(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB3sAAAAASUVORK5CYII=',
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGP4DwQACfsD/fteaysAAAAASUVORK5CYII=',
 );
 
 class _Camera extends LiveCamera {
-  int starts = 0, stops = 0, captures = 0;
-  bool active = false;
-  bool available = true;
+  int starts = 0, captures = 0;
+  bool active = false, available = true;
   @override
   bool get ready => active;
   @override
   bool get busy => false;
   @override
-  String? get error => available
-      ? null
-      : 'Camera permission is needed. Allow it in browser settings, then retry, or choose a photo.';
+  String? get error => available ? null : 'Camera permission is needed.';
   @override
   Future<void> start() async {
     starts++;
@@ -34,7 +34,6 @@ class _Camera extends LiveCamera {
 
   @override
   Future<void> stop() async {
-    stops++;
     active = false;
     notifyListeners();
   }
@@ -50,80 +49,184 @@ class _Camera extends LiveCamera {
       const ColoredBox(key: Key('test-live-feed'), color: Colors.green);
 }
 
+class _Reader extends AutomaticLabelReader {
+  _Reader() : super(UnlabelRepository(baseUrl: 'https://example.test'));
+  final reads = <Map<int, Uint8List>>[];
+  Future<AutomaticScanResult> Function()? operation;
+  int cancellations = 0;
+  @override
+  Future<AutomaticScanResult> read(
+    Map<int, Uint8List> photos, {
+    required Future<bool> Function() allowCloud,
+  }) async {
+    reads.add(photos);
+    return operation != null
+        ? operation!()
+        : AutomaticScanResult(
+            label: readLocalLabel('Synthetic oats', 'Ingredients: Oats'),
+          );
+  }
+
+  @override
+  void cancel() {
+    cancellations++;
+    super.cancel();
+  }
+
+  @override
+  void dispose() {
+    repository.close();
+    super.dispose();
+  }
+}
+
 Future<void> _show(
   WidgetTester tester,
-  _Camera camera, {
+  _Camera camera,
+  _Reader reader, {
   Future<Uint8List?> Function()? pickPhoto,
-  Future<void> Function(Map<int, Uint8List>)? review,
-  Future<void> Function()? onBarcode,
+  Future<void> Function(AutomaticScanResult, Uint8List?)? onResult,
 }) async {
   await tester.pumpWidget(
     MaterialApp(
       theme: UnlabelTheme.forBrightness(Brightness.light),
       home: ScanLandingPage(
         camera: camera,
+        reader: reader,
         pickPhoto: pickPhoto ?? () async => null,
-        onBarcode: onBarcode ?? () async {},
-        onEnterLabel: () async {},
-        onReviewCapture: review,
+        onResult: onResult ?? (_, _) async {},
       ),
     ),
   );
   await tester.pumpAndSettle();
 }
 
+Future<void> _finishRead(WidgetTester tester) async {
+  await tester.runAsync(
+    () async => Future<void>.delayed(const Duration(milliseconds: 30)),
+  );
+  await tester.pumpAndSettle();
+}
+
 void main() {
-  testWidgets('pending Android gallery recovery cannot replace a new capture', (
+  testWidgets('camera starts immediately; background and disposal stop it', (
     tester,
   ) async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
-    const picker = MethodChannel('plugins.flutter.io/image_picker');
-    final pending = Completer<Object?>();
-    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      picker,
-      (call) async => call.method == 'retrieve' ? pending.future : null,
-    );
-    addTearDown(
-      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-        picker,
-        null,
-      ),
-    );
     final camera = _Camera();
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: UnlabelTheme.forBrightness(Brightness.light),
-        home: ScanLandingPage(
-          camera: camera,
-          onBarcode: () async {},
-          onEnterLabel: () async {},
-        ),
-      ),
+    await _show(tester, camera, _Reader());
+    expect(camera.starts, 1);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    await tester.pumpAndSettle();
+    expect(camera.ready, isFalse);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+    expect(camera.starts, 2);
+    await tester.pumpWidget(const SizedBox());
+    expect(camera.ready, isFalse);
+    camera.dispose();
+  });
+  testWidgets('capture reads automatically and opens results without a form', (
+    tester,
+  ) async {
+    final camera = _Camera(), reader = _Reader();
+    AutomaticScanResult? opened;
+    Uint8List? front;
+    await _show(
+      tester,
+      camera,
+      reader,
+      onResult: (value, photo) async {
+        opened = value;
+        front = photo;
+      },
     );
-    await tester.pump();
-    expect(camera.ready, isTrue);
+    await tester.tap(find.byKey(const Key('scan-primary')));
+    await _finishRead(tester);
+    expect(camera.captures, 1);
+    expect(camera.ready, isFalse);
+    expect(reader.reads.single.keys, [0]);
+    expect(find.text('View results'), findsOneWidget);
+    expect(find.byType(TextField), findsNothing);
     await tester.tap(find.byKey(const Key('scan-primary')));
     await tester.pumpAndSettle();
-    expect(camera.captures, 1);
-    pending.complete({
-      'pathList': ['/stale/recovered-photo.png'],
-      'type': 'image',
-    });
+    expect(opened?.label?.ingredients, 'Oats');
+    expect(front, _photo);
+    await tester.tap(find.text('Retake'));
     await tester.pumpAndSettle();
-    expect(find.text('Review Label'), findsOneWidget);
-    expect(find.textContaining('could not be restored'), findsNothing);
-    expect(
-      (tester.widget<Image>(find.byType(Image)).image as MemoryImage).bytes,
-      _photo,
-    );
+    expect(camera.ready, isTrue);
     await tester.pumpWidget(const SizedBox());
     camera.dispose();
-    debugDefaultTargetPlatformOverride = null;
   });
-
+  testWidgets('gallery cancellation resumes camera; a chosen photo is read', (
+    tester,
+  ) async {
+    final camera = _Camera(), reader = _Reader();
+    var photos = 0;
+    await _show(
+      tester,
+      camera,
+      reader,
+      pickPhoto: () async => photos++ == 0 ? null : _photo,
+    );
+    await tester.tap(find.text('Use Gallery'));
+    await tester.pumpAndSettle();
+    expect(camera.ready, isTrue);
+    await tester.tap(find.text('Use Gallery'));
+    await _finishRead(tester);
+    expect(reader.reads, hasLength(1));
+    expect(find.text('View results'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+  });
+  testWidgets('unknown barcode requests front/back photos without typing', (
+    tester,
+  ) async {
+    final camera = _Camera(),
+        reader = _Reader()
+          ..operation = () async =>
+              const AutomaticScanResult(barcode: '8901764051258');
+    await _show(tester, camera, reader);
+    await tester.tap(find.text('Barcode'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('scan-primary')));
+    await _finishRead(tester);
+    expect(reader.reads.single.keys, [2]);
+    expect(
+      find.textContaining('Photograph the front and back'),
+      findsOneWidget,
+    );
+    expect(find.byType(TextField), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+  });
+  testWidgets('stop discards a late extraction and permits a new photo', (
+    tester,
+  ) async {
+    final camera = _Camera(), reader = _Reader();
+    final pending = Completer<AutomaticScanResult>();
+    reader.operation = () => pending.future;
+    await _show(tester, camera, reader);
+    await tester.tap(find.byKey(const Key('scan-primary')));
+    await tester.runAsync(
+      () async => Future<void>.delayed(const Duration(milliseconds: 30)),
+    );
+    await tester.pump();
+    await tester.tap(find.text('Stop reading'));
+    await tester.pumpAndSettle();
+    pending.complete(
+      AutomaticScanResult(label: readLocalLabel('Late oats', '')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('View results'), findsNothing);
+    expect(reader.cancellations, greaterThan(0));
+    await tester.tap(find.text('Retake'));
+    await tester.pumpAndSettle();
+    expect(camera.ready, isTrue);
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+  });
   testWidgets(
-    'camera starts immediately while lost-gallery recovery times out safely',
+    'Android lost-picker recovery cannot delay camera or replace a new capture',
     (tester) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
@@ -140,170 +243,60 @@ void main() {
         ),
       );
       final camera = _Camera();
-      var barcodes = 0;
       await tester.pumpWidget(
         MaterialApp(
-          theme: UnlabelTheme.forBrightness(Brightness.light),
           home: ScanLandingPage(
             camera: camera,
-            onBarcode: () async => barcodes++,
-            onEnterLabel: () async {},
+            reader: _Reader(),
+            onResult: (_, _) async {},
           ),
         ),
       );
       await tester.pump();
-      expect(find.text('Working…'), findsNothing);
-      expect(camera.starts, 1);
       expect(camera.ready, isTrue);
-      await tester.pump(const Duration(seconds: 5));
-      await tester.pumpAndSettle();
-      expect(find.text('Working…'), findsNothing);
-      expect(camera.ready, isTrue);
-      await tester.tap(find.text('Barcode'));
-      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('scan-primary')));
-      await tester.pumpAndSettle();
-      expect(barcodes, 1);
+      await _finishRead(tester);
       pending.complete({
-        'pathList': ['/late/private-photo.png'],
+        'pathList': ['/late/photo.png'],
         'type': 'image',
       });
       await tester.pumpAndSettle();
-      expect(find.byType(Image), findsNothing);
-      expect(camera.ready, isTrue);
-      expect(tester.takeException(), isNull);
+      expect(find.text('View results'), findsOneWidget);
+      expect(find.textContaining('could not be restored'), findsNothing);
       await tester.pumpWidget(const SizedBox());
       camera.dispose();
       debugDefaultTargetPlatformOverride = null;
     },
   );
-  testWidgets(
-    'opening Scan starts live preview; background and disposal stop it',
-    (tester) async {
-      final camera = _Camera();
-      await _show(tester, camera);
-      expect(camera.starts, 1);
-      expect(find.byKey(const Key('test-live-feed')), findsOneWidget);
-      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
-      await tester.pumpAndSettle();
-      expect(camera.ready, isFalse);
-      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      await tester.pumpAndSettle();
-      expect(camera.starts, 2);
-      await tester.pumpWidget(const SizedBox());
-      expect(camera.ready, isFalse);
-      camera.dispose();
-    },
-  );
-  testWidgets(
-    'capture freezes local photo, stops preview, reviews and retakes',
-    (tester) async {
-      final camera = _Camera();
-      Map<int, Uint8List>? reviewed;
-      await _show(tester, camera, review: (photos) async => reviewed = photos);
-      await tester.tap(find.byKey(const Key('scan-primary')));
-      await tester.pumpAndSettle();
-      expect(camera.captures, 1);
-      expect(camera.ready, isFalse);
-      expect(find.byType(Image), findsOneWidget);
-      expect(find.text('Review Label'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('scan-primary')));
-      await tester.pumpAndSettle();
-      expect(reviewed?.keys, [0]);
-      expect(reviewed?[0], _photo);
-      expect(camera.ready, isFalse);
-      await tester.tap(find.text('Retake'));
-      await tester.pumpAndSettle();
-      expect(camera.ready, isTrue);
-      await tester.pumpWidget(const SizedBox());
-      camera.dispose();
-    },
-  );
-  testWidgets(
-    'gallery cancellation resumes preview; a picked photo remains local',
-    (tester) async {
-      final camera = _Camera();
-      final result = Completer<Uint8List?>();
-      await _show(tester, camera, pickPhoto: () => result.future);
-      await tester.tap(find.text('Use Gallery'));
-      await tester.pump();
-      expect(camera.ready, isFalse);
-      result.complete(null);
-      await tester.pumpAndSettle();
-      expect(camera.ready, isTrue);
-      await tester.pumpWidget(const SizedBox());
-      camera.dispose();
-      final camera2 = _Camera();
-      await _show(tester, camera2, pickPhoto: () async => _photo);
-      await tester.tap(find.text('Use Gallery'));
-      await tester.pumpAndSettle();
-      expect(camera2.ready, isFalse);
-      expect(find.text('Review Label'), findsOneWidget);
-      await tester.pumpWidget(const SizedBox());
-      camera2.dispose();
-    },
-  );
-  testWidgets(
-    'manual barcode fallback pauses the camera until its sheet closes',
-    (tester) async {
-      final camera = _Camera();
-      final closeSheet = Completer<void>();
-      var opened = 0;
-      await _show(
-        tester,
-        camera,
-        onBarcode: () {
-          opened++;
-          return closeSheet.future;
-        },
+  testWidgets('Scan fits narrow, short, landscape and enlarged text', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    for (final sample in [
+      (const Size(320, 568), 1.0),
+      (const Size(390, 844), 1.0),
+      (const Size(844, 390), 1.0),
+      (const Size(320, 844), 2.0),
+    ]) {
+      tester.view.physicalSize = sample.$1;
+      tester.platformDispatcher.textScaleFactorTestValue = sample.$2;
+      final camera = _Camera()..available = false;
+      await _show(tester, camera, _Reader());
+      expect(find.byType(Scrollable), findsNothing);
+      expect(
+        tester.getSize(find.byKey(const Key('scan-preview'))).height,
+        greaterThan(120),
       );
-      await tester.tap(find.text('Barcode'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('scan-primary')));
-      await tester.pump();
-      expect(opened, 1);
-      expect(camera.ready, isFalse);
-      expect(camera.captures, 0);
-      closeSheet.complete();
-      await tester.pumpAndSettle();
-      expect(camera.ready, isTrue);
+      expect(
+        tester.getRect(find.text('Use Gallery')).bottom,
+        lessThan(sample.$1.height),
+      );
+      expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
       camera.dispose();
-    },
-  );
-  testWidgets(
-    'Scan fits narrow, short, landscape and enlarged text without scrolling',
-    (tester) async {
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetDevicePixelRatio);
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-      for (final sample in [
-        (const Size(320, 568), 1.0),
-        (const Size(390, 844), 1.0),
-        (const Size(844, 390), 1.0),
-        (const Size(320, 844), 2.0),
-      ]) {
-        tester.view.physicalSize = sample.$1;
-        tester.platformDispatcher.textScaleFactorTestValue = sample.$2;
-        final camera = _Camera()..available = false;
-        await _show(tester, camera);
-        expect(find.byType(Scrollable), findsNothing);
-        expect(find.text('Barcode lookup'), findsNothing);
-        expect(find.text('Find by name or brand'), findsNothing);
-        expect(find.byKey(const Key('scan-preview')), findsOneWidget);
-        expect(
-          tester.getSize(find.byKey(const Key('scan-preview'))).height,
-          greaterThan(120),
-        );
-        expect(
-          tester.getRect(find.text('Use Gallery')).bottom,
-          lessThan(sample.$1.height),
-        );
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox());
-        camera.dispose();
-      }
-    },
-  );
+    }
+  });
 }

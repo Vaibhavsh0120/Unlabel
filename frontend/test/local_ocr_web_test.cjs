@@ -43,7 +43,7 @@ function harness({creation, recognition, dimensions = [200, 100]} = {}) {
     },
   };
   vm.runInNewContext(source, {
-    window, document, URL, AbortController, Blob, queueMicrotask,
+    window, document, URL, AbortController, Blob, queueMicrotask, setTimeout, clearTimeout,
     createImageBitmap: async () => ({
       width: dimensions[0], height: dimensions[1], close: () => { state.closes++; },
     }),
@@ -68,6 +68,8 @@ test('startup loads no OCR engine, while recognition uses only same-origin asset
   assert.equal(options.workerBlobURL, false);
   assert.equal(options.cacheMethod, 'none');
   assert.equal(state.closes, 1);
+  assert.equal(state.terminates, 0);
+  api.cancel();
   assert.equal(state.terminates, 1);
   assert.equal(state.canvases[0].width, 0);
 });
@@ -94,6 +96,29 @@ test('cancel while model loads ignores late worker and permits retry', async () 
   assert.equal(state.terminates, 1);
   assert.equal(await api.recognize(image, 'en', () => {}), 'Ingredients: oats');
   assert.equal(state.closes, 2);
+  assert.equal(state.terminates, 1);
+  api.cancel();
+  assert.equal(state.terminates, 2);
+});
+
+test('adjacent front/back reads reuse one local model and release it on leaving Scan', async () => {
+  const {api, state} = harness();
+  await api.recognize(image, 'en', () => {});
+  await api.recognize(image, 'en', () => {});
+  assert.equal(state.options.length, 1);
+  assert.equal(state.terminates, 0);
+  assert.equal(state.closes, 2);
+  api.cancel();
+  assert.equal(state.terminates, 1);
+});
+
+test('language change replaces the warm worker rather than mixing models', async () => {
+  const {api, state} = harness();
+  await api.recognize(image, 'en', () => {});
+  await api.recognize(image, 'hi', () => {});
+  assert.equal(state.options.length, 2);
+  assert.equal(state.terminates, 1);
+  api.cancel();
   assert.equal(state.terminates, 2);
 });
 

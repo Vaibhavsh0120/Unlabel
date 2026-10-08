@@ -51,6 +51,23 @@ def request(port, method, path, body=None, headers=None):
         connection.close()
 
 
+def test_model_fetch_is_inline_binary_with_unchanged_compressed_bytes(tmp_path, monkeypatch):
+    handler = module('_preview_server', monkeypatch)
+    model = tmp_path / 'ocr/lang/eng.traineddata.gz'
+    model.parent.mkdir(parents=True)
+    data = b'\x1f\x8bowned-compressed-model-fixture'
+    model.write_bytes(data)
+    with preview(handler, tmp_path) as port:
+        status, headers, body = request(port, 'GET', '/ocr/lang/eng.traineddata.gz')
+    headers = {key.lower(): value for key, value in headers.items()}
+    assert status == 200
+    assert headers['content-type'] == 'application/octet-stream'
+    assert headers['content-disposition'] == 'inline'
+    assert headers['x-content-type-options'] == 'nosniff'
+    assert 'content-encoding' not in headers
+    assert body == data
+
+
 class UpstreamResponse:
     def __init__(self, payload=b'{"status":"ready"}', status=200, headers=None):
         self.payload = payload

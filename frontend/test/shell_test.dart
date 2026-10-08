@@ -106,6 +106,34 @@ class _Repository extends UnlabelRepository {
   Future<ProductReport> Function(String)? loader;
   int loads = 0;
   @override
+  Future<SearchPage> search(String query, {String? cursor}) async =>
+      SearchPage.fromJson({
+        'schema_version': '1',
+        'search_version': 'catalogue-search-v1',
+        'status': 'ready',
+        'normalized_query': query,
+        'candidates': [
+          {
+            'identity': {
+              'barcode': '0123456789012',
+              'name': 'Guest scanned oats',
+              'brands': 'Synthetic brand',
+              'quantity_text': '400 g',
+            },
+            'source_id': 'synthetic-source',
+          },
+        ],
+        'next_cursor': null,
+        'matched_count': 1,
+        'ambiguous': false,
+        'warnings': [],
+      });
+  @override
+  Future<ResearchSearchPage> searchResearch(
+    String query, {
+    String? cursor,
+  }) async => ResearchSearchPage.empty();
+  @override
   Future<ProductReport> loadReport(String barcode) async {
     loads++;
     return loader == null ? _report('Guest scanned oats') : loader!(barcode);
@@ -284,13 +312,13 @@ void main() {
       expect(focus.hasFocus, isFalse);
       await tester.tap(find.byTooltip('Search products'));
       await tester.pump();
-    expect(focus.hasFocus, isTrue);
-    expect(find.byKey(const Key('product-search-input')), findsOneWidget);
-    expect(find.byTooltip('Profile'), findsNothing);
+      expect(focus.hasFocus, isTrue);
+      expect(find.byKey(const Key('product-search-input')), findsOneWidget);
+      expect(find.byTooltip('Profile'), findsNothing);
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.pump();
-    expect(focus.hasFocus, isFalse);
-    expect(find.byTooltip('Profile'), findsOneWidget);
+      expect(focus.hasFocus, isFalse);
+      expect(find.byTooltip('Profile'), findsOneWidget);
     },
   );
 
@@ -449,7 +477,7 @@ void main() {
   });
 
   testWidgets(
-    'guest barcode and saved workflows make no private sync requests',
+    'guest search and saved workflows make no private sync requests',
     (tester) async {
       final guest = LocalStore(preferences: _Preferences());
       final auth = _Auth();
@@ -466,31 +494,30 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await _tap(tester, find.text('Barcode Scan'));
-      await _tap(tester, find.byKey(const Key('scan-mode-2')));
-      expect(find.text('Enter barcode'), findsOneWidget);
-      await _tap(tester, find.byKey(const Key('scan-primary')));
-      expect(find.byKey(const Key('barcode-input')), findsOneWidget);
+      await _tap(tester, find.byTooltip('Search products'));
       await tester.enterText(
-        find.byKey(const Key('barcode-input')),
-        '0123456789012',
+        find.byKey(const Key('product-search-input')),
+        'Oats',
       );
-      await _tap(tester, find.byKey(const Key('barcode-submit')));
-      expect(find.text('Guest scanned oats'), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle();
+      await _tap(tester, find.text('Guest scanned oats').first);
+      expect(find.text('Guest scanned oats').hitTestable(), findsOneWidget);
       expect((await guest.history()).single.report.name, 'Guest scanned oats');
       await _tap(tester, find.byKey(const Key('save-report')));
       expect((await guest.saved()).single.report.name, 'Guest scanned oats');
       await tester.pageBack();
       await tester.pumpAndSettle();
+      await _tap(tester, find.byTooltip('Close search'));
       await _tap(tester, find.byKey(const Key('mobile-nav-3')));
-      expect(find.text('Guest scanned oats'), findsOneWidget);
+      expect(find.text('Guest scanned oats').hitTestable(), findsOneWidget);
       await _tap(tester, find.byTooltip('Profile'));
       expect(find.text('Sign in'), findsOneWidget);
       expect(find.text('Continue as guest'), findsNothing);
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.text('Saved products'), findsOneWidget);
-      expect(find.text('Guest scanned oats'), findsOneWidget);
+      expect(find.text('Guest scanned oats').hitTestable(), findsOneWidget);
       await _tap(tester, find.byKey(const Key('mobile-nav-0')));
       expect(find.text('Scan your\nfood label'), findsOneWidget);
       expect(auth.signIns, 0);
@@ -595,16 +622,14 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await _tap(tester, find.text('Barcode Scan'));
-      await _tap(tester, find.byKey(const Key('scan-mode-2')));
-      expect(find.text('Enter barcode'), findsOneWidget);
-      await _tap(tester, find.byKey(const Key('scan-primary')));
-      expect(find.byKey(const Key('barcode-input')), findsOneWidget);
+      await _tap(tester, find.byTooltip('Search products'));
       await tester.enterText(
-        find.byKey(const Key('barcode-input')),
-        '0123456789012',
+        find.byKey(const Key('product-search-input')),
+        'Oats',
       );
-      await tester.tap(find.byKey(const Key('barcode-submit')));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Guest scanned oats').first);
       await tester.pump();
       auth.setUser('account-a');
       await tester.pumpAndSettle();

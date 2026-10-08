@@ -79,7 +79,7 @@ class LiveCamera extends ChangeNotifier {
         if (!_platform.isSupported) {
           throw const LiveCameraException(
             'Live camera is available on Android, iPhone, iPad and supported '
-            'web browsers. You can choose a photo or enter a label instead.',
+            'web browsers. You can choose a package photo instead.',
           );
         }
         final cameras = await _platform.availableCameras();

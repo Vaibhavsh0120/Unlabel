@@ -8,7 +8,7 @@ import 'package:unlabel/core/capture/local_ocr.dart';
 import 'package:unlabel/core/models/label_draft.dart';
 
 final _photo = base64Decode(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB3sAAAAASUVORK5CYII=',
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGP4DwQACfsD/fteaysAAAAASUVORK5CYII=',
 );
 
 class _Engine implements LocalOcrEngine {

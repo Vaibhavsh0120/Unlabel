@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/capture/live_camera.dart';
+import 'package:unlabel/core/capture/automatic_label_reader.dart';
 import 'package:unlabel/core/widgets/search_skeleton.dart';
 import 'package:unlabel/features/scanner/presentation/product_search_page.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
@@ -356,7 +357,7 @@ void main() {
   );
 
   testWidgets(
-    'scan choices retain working manual and barcode actions at narrow enlarged text',
+    'scan gallery and barcode-photo actions work at narrow enlarged text',
     (tester) async {
       tester.view.physicalSize = const Size(320, 844);
       tester.view.devicePixelRatio = 1;
@@ -369,19 +370,18 @@ void main() {
       addTearDown(
         tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
       );
-      var labels = 0, barcodes = 0;
+      var photos = 0;
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ScanLandingPage(
               camera: _UnavailableCamera(),
-              pickPhoto: () async => null,
-              onBarcode: () async {
-                barcodes++;
+              pickPhoto: () async {
+                photos++;
+                return null;
               },
-              onEnterLabel: () async {
-                labels++;
-              },
+              reader: AutomaticLabelReader(_Repository()),
+              onResult: (_, _) async {},
             ),
           ),
         ),
@@ -390,14 +390,14 @@ void main() {
       await tester.ensureVisible(find.byKey(const Key('scan-primary')));
       await tester.tap(find.byKey(const Key('scan-primary')));
       await tester.pumpAndSettle();
-      expect(labels, 1);
+      expect(photos, 1);
       await tester.ensureVisible(find.byKey(const Key('scan-mode-2')));
       await tester.tap(find.byKey(const Key('scan-mode-2')));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('scan-primary')));
       await tester.tap(find.byKey(const Key('scan-primary')));
       await tester.pumpAndSettle();
-      expect(barcodes, 1);
+      expect(photos, 2);
       expect(tester.takeException(), isNull);
     },
   );

@@ -272,6 +272,79 @@ class ResearchedProduct {
     sourceUrl = source.url;
     retrievedAt = source.retrievedAt;
     sourceUpdatedAt = source.sourceUpdatedAt;
+    final picture = value['image'];
+    if (picture != null) {
+      final descriptor = _map(picture);
+      if (descriptor['observation_id'] != entryId ||
+          descriptor['source_url'] != sourceUrl ||
+          descriptor['provider'] != provider ||
+          !const [
+            'source_listing',
+            'source_barcode',
+          ].contains(descriptor['identity_scope']) ||
+          !const [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+          ].contains(descriptor['content_type'])) {
+        throw _invalid;
+      }
+      const origins = {
+        'world.openfoodfacts.org': ['images.openfoodfacts.org'],
+        'blinkit.com': ['cdn.grofers.com'],
+        'business.bigbasket.com': ['www.bbassets.com'],
+        'bbnow.bigbasket.com': ['www.bbassets.com'],
+        'www.bigbasket.com': ['www.bbassets.com'],
+        'www.balajiwafers.com': ['www.balajiwafers.com'],
+        'www.bikaji.com': ['www.bikaji.com'],
+        'www.coca-cola.com': ['www.coca-cola.com'],
+        'instamart.in': ['instamart-media-assets.swiggy.com'],
+        'www.aamghar.in': ['www.aamghar.in'],
+      };
+      imageUrl = _sourceUrl(descriptor['url']);
+      if (!(origins[Uri.parse(sourceUrl).host] ?? []).contains(
+        Uri.parse(imageUrl!).host,
+      )) {
+        throw _invalid;
+      }
+      if (provider == 'open_food_facts') {
+        final sourceCode = RegExp(
+          r'/product/([0-9]{8}|[0-9]{12,14})(?:\.json|/|$)',
+        ).firstMatch(Uri.parse(sourceUrl).path)?.group(1);
+        if (sourceCode == null ||
+            sourceCode != barcode ||
+            descriptor['identity_scope'] != 'source_barcode' ||
+            descriptor['method'] != 'off_selected_front' ||
+            descriptor['content_type'] != 'image/jpeg') {
+          throw _invalid;
+        }
+        final significant = sourceCode.replaceFirst(RegExp(r'^0+'), '');
+        if (significant.length < 4) throw _invalid;
+        final digits = significant.padLeft(13, '0');
+        final folder =
+            '${digits.substring(0, 3)}/${digits.substring(3, 6)}/${digits.substring(6, 9)}/${digits.substring(9)}';
+        if (!RegExp(
+          '^https://images\\.openfoodfacts\\.org/images/products/$folder/front_[a-z]{2,3}\\.[1-9][0-9]{0,9}\\.400\\.jpg\$',
+        ).hasMatch(imageUrl!)) {
+          throw _invalid;
+        }
+      } else if (descriptor['identity_scope'] != 'source_listing' ||
+          !const [
+            'structured_product',
+            'opengraph_product',
+            'retailer_product_id',
+          ].contains(descriptor['method'])) {
+        throw _invalid;
+      }
+      if (!_hash.hasMatch(
+        _text(descriptor['evidence_sha256'], 64, required: true)!,
+      )) {
+        throw _invalid;
+      }
+      imageAttribution = _text(descriptor['attribution'], 256, required: true);
+      imageLicense = _text(descriptor['license'], 256, required: true);
+      _date(descriptor['retrieved_at']);
+    }
     final sections = _map(record['sections']);
     for (final key in ['ingredients', 'contains', 'may_contain']) {
       if (sections[key] == null) continue;
@@ -380,6 +453,7 @@ class ResearchedProduct {
   late final JsonMap raw;
   late final String entryId, name, match, provider, sourceUrl, retrievedAt;
   late final String? brand, variant, quantity, barcode, sourceUpdatedAt;
+  String? imageUrl, imageAttribution, imageLicense;
   late final List<String> conflictFields, warnings;
   String? section(String key) => raw['sections'][key]?['text'] as String?;
   JsonMap? sectionInfo(String key) => raw['sections'][key] as JsonMap?;

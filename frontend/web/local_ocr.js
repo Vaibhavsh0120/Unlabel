@@ -3,6 +3,16 @@
   'use strict';
   let active = null;
   let library = null;
+  let warm = null;
+  let idle = null;
+  const IDLE_MS = 15000;
+  function dropWarm() {
+    clearTimeout(idle);
+    idle = null;
+    const previous = warm;
+    warm = null;
+    if (previous) void previous.worker.terminate();
+  }
   const MAX_BYTES = 12 * 1024 * 1024;
   const MAX_PIXELS = 24000000;
   const localUrl = path => new URL(path, document.baseURI).href;
@@ -36,10 +46,13 @@
         throw new Error('ocr_input');
       }
       const controller = new AbortController();
+      controller.progress = progress;
       active = controller;
       const signal = controller.signal;
-      let worker, image, canvas;
-      const terminate = () => { if (worker) void worker.terminate(); };
+      let worker, image, canvas, reusable = false;
+      clearTimeout(idle);
+      idle = null;
+      const terminate = () => { dropWarm(); };
       signal.addEventListener('abort', terminate, { once: true });
       try {
         image = await createImageBitmap(new Blob([bytes]));
@@ -51,7 +64,8 @@
         canvas.height = Math.max(1, Math.round(image.height * scale));
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
         const tesseract = await raceAbort(loadLibrary(), signal);
-        const creation = tesseract.createWorker(language === 'hi' ? ['eng', 'hin'] : 'eng', 1, {
+        if (warm && warm.language !== language) dropWarm();
+        const creation = warm ? Promise.resolve(warm.worker) : tesseract.createWorker(language === 'hi' ? ['eng', 'hin'] : 'eng', 1, {
           workerPath: localUrl('ocr/worker.min.js'),
           corePath: localUrl('ocr/core/'),
           langPath: localUrl('ocr/lang/').replace(/\/$/, ''),
@@ -59,24 +73,27 @@
           cacheMethod: 'none',
           gzip: true,
           logger: message => {
-            if (!signal.aborted && message.status === 'recognizing text') progress(message.progress);
+            if (active && !active.signal.aborted && message.status === 'recognizing text') active.progress(message.progress);
           },
           errorHandler: () => {},
         });
         creation.then(value => { if (signal.aborted) void value.terminate(); }, () => {});
         worker = await raceAbort(creation, signal);
+        warm = {worker, language};
         const result = await raceAbort(worker.recognize(canvas), signal);
         if (signal.aborted) throw new Error('ocr_cancelled');
         if (result.data.text.length > 12000) throw new Error('ocr_text_limit');
+        reusable = true;
         return result.data.text;
       } finally {
         signal.removeEventListener('abort', terminate);
         image?.close();
         if (canvas) { canvas.width = 0; canvas.height = 0; }
-        if (worker) await worker.terminate();
+        if (!reusable && warm?.worker === worker) dropWarm();
+        if (reusable && warm?.worker === worker) idle = setTimeout(dropWarm, IDLE_MS);
         if (active === controller) active = null;
       }
     },
-    cancel() { active?.abort(); },
+    cancel() { active?.abort(); dropWarm(); },
   });
 })();

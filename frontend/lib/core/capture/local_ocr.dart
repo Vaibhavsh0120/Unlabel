@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
+
+import 'photo_decode.dart';
 
 import 'local_ocr_engine.dart';
 import 'local_ocr_stub.dart'
@@ -64,13 +65,13 @@ class LocalOcrReader {
     } on TimeoutException {
       cancel();
       throw const LocalOcrFailure(
-        'Text reading took too long. Try a smaller photo or enter the facts manually.',
+        'Text reading took too long. Try a smaller photo or use automatic AI reading.',
       );
     } on LocalOcrFailure {
       rethrow;
     } catch (_) {
       throw const LocalOcrFailure(
-        'This photo could not be read. Try another photo or enter the facts manually.',
+        'This photo could not be read. Try a clearer photo or use automatic AI reading.',
       );
     } finally {
       if (current()) _busy = false;
@@ -78,21 +79,8 @@ class LocalOcrReader {
   }
 
   Future<void> _validate(Uint8List bytes) async {
-    final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
-    ui.ImageDescriptor? descriptor;
-    try {
-      descriptor = await ui.ImageDescriptor.encoded(buffer);
-      if (descriptor.width <= 0 ||
-          descriptor.height <= 0 ||
-          descriptor.width * descriptor.height > maxPixels) {
-        throw const LocalOcrFailure(
-          'This photo is too large. Crop to the label panel and try again.',
-        );
-      }
-    } finally {
-      descriptor?.dispose();
-      buffer.dispose();
-    }
+    final photo = await decodePhoto(bytes, maxEdge: 1);
+    photo.image.dispose();
   }
 
   void cancel() {

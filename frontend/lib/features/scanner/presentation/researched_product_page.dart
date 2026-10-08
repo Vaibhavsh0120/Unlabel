@@ -5,10 +5,16 @@ import '../../../core/models/product_report.dart'
     show JsonMap, basisDescription;
 import '../../../core/models/researched_product.dart';
 import 'ui_components.dart';
+import 'product_results_layout.dart';
 
 class ResearchedProductPage extends StatelessWidget {
-  const ResearchedProductPage({required this.product, super.key});
+  const ResearchedProductPage({
+    required this.product,
+    this.navigation,
+    super.key,
+  });
   final ResearchedProduct product;
+  final ResultsNavigation? navigation;
 
   @override
   Widget build(BuildContext context) {
@@ -18,70 +24,158 @@ class ResearchedProductPage extends StatelessWidget {
         product.conflictFields.isNotEmpty ||
         (conflicts is List && conflicts.isNotEmpty);
     return Scaffold(
-      appBar: AppBar(title: const Text('Product information')),
-      body: PageBody(
-        maxWidth: 760,
-        children: [
-          Text(product.name, style: theme.textTheme.headlineMedium),
-          const SizedBox(height: 8),
-          if (product.brand != null)
-            Text(product.brand!, style: theme.textTheme.titleMedium),
-          if (product.variant != null) Text(product.variant!),
-          Text(product.quantity ?? 'Pack size unknown'),
-          const SizedBox(height: 16),
-          Text(
-            '${researchProviderLabel(product.provider)} · collected ${_day(product.retrievedAt)}',
-            style: theme.textTheme.bodySmall,
+      appBar: ResultsAppBar(
+        title: 'Product information',
+        navigation: navigation,
+      ),
+      body: ProductResultsLayout(
+        main: [
+          ResultsIdentityCard(
+            name: product.name,
+            brand: product.brand,
+            variant: product.variant,
+            quantity: product.quantity,
+            imageUrl: product.imageUrl,
+            imageDescription:
+                '${product.imageAttribution ?? ''}. ${product.imageLicense ?? ''}',
           ),
-          const SizedBox(height: 8),
-          Text(switch (product.match) {
-            'exact_sku' => 'Dated information. Check your current package.',
-            'brand_family_only' => 'Variant information. Barcode unconfirmed.',
-            _ => 'Package unconfirmed. Check the variant and size.',
-          }),
-          if (hasConflict) ...[
-            const SizedBox(height: 12),
-            const Text('Sources disagree. Read the source notes.'),
-          ],
-          for (final warning in product.warnings.map(_warning).toSet()) ...[
-            const SizedBox(height: 8),
-            Text(warning),
-          ],
-          for (final (key, title) in [
-            ('ingredients', 'Ingredients'),
-            ('contains', 'Contains'),
-            ('may_contain', 'May contain'),
-          ]) ...[
-            SectionTitle(title),
-            _selectable(product.section(key) ?? 'Not declared in this source'),
-            if (product.sectionInfo(key) case final info?) ...[
-              const SizedBox(height: 6),
-              Text(switch (info['completeness']) {
-                'partial' => 'Partial declaration',
-                'unknown' => 'Declaration completeness unknown',
-                _ => 'Complete declaration',
-              }, style: theme.textTheme.bodySmall),
-              _provenance(info['provenance'] as JsonMap, theme),
-            ],
-          ],
-          const SectionTitle('Nutrition'),
-          if (product.tables.isEmpty)
-            const Text('Nutrition table unavailable.'),
-          for (final table in product.tables) ...[
-            Text(
-              basisDescription(table['basis'], table['preparation']),
-              style: theme.textTheme.titleMedium,
+          const SizedBox(height: 16),
+          ResultsSummaryCard(
+            count: product.tables.fold<int>(
+              0,
+              (count, table) =>
+                  count +
+                  (table['rows'] as List)
+                      .where(
+                        (row) =>
+                            row is JsonMap &&
+                            row['value'] != null &&
+                            row['qualifier'] != 'unknown',
+                      )
+                      .length,
             ),
-            Text(switch (table['source']) {
-              'retailer_transcription' => 'Values reported by the retailer',
-              'packaging' => 'Recorded package table',
-              _ => 'Manufacturer declaration',
-            }, style: theme.textTheme.bodySmall),
-            _provenance(table['provenance'] as JsonMap, theme),
-            const SizedBox(height: 8),
-            for (final row in table['rows'] as List) _nutrient(row as JsonMap),
-            const SizedBox(height: 20),
-          ],
+            heading: 'Sourced product information',
+            message: 'Dated website facts for this product and variant.',
+            qualification: 'Check your package. No health score is assigned.',
+          ),
+          const SectionTitle('What the source shows'),
+          ResultsFactsGrid(
+            children: [
+              ResultsFact(
+                icon: 'document-text',
+                title: 'Ingredient declaration',
+                detail: product.section('ingredients') == null
+                    ? 'Not declared in this source'
+                    : 'Source wording and completeness retained.',
+                status: product.section('ingredients') == null
+                    ? 'Unknown'
+                    : 'Recorded',
+                uncertain: product.section('ingredients') == null,
+              ),
+              ResultsFact(
+                icon: 'fire',
+                title: 'Nutrition tables',
+                detail:
+                    '${product.tables.length} directly reported tables with their own basis.',
+                status: product.tables.isEmpty
+                    ? 'Unavailable'
+                    : 'Source attached',
+                uncertain: product.tables.isEmpty,
+              ),
+            ],
+          ),
+          const SectionTitle('Nutrition'),
+          SectionCard(
+            padding: 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (product.tables.isEmpty)
+                  const Text('Nutrition table unavailable.'),
+                for (final table in product.tables) ...[
+                  Text(
+                    basisDescription(table['basis'], table['preparation']),
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  Text(switch (table['source']) {
+                    'retailer_transcription' =>
+                      'Values reported by the retailer',
+                    'packaging' => 'Recorded package table',
+                    _ => 'Manufacturer declaration',
+                  }, style: theme.textTheme.bodySmall),
+                  _provenance(table['provenance'] as JsonMap, theme),
+                  const SizedBox(height: 8),
+                  for (final row in table['rows'] as List)
+                    _nutrient(row as JsonMap),
+                  const SizedBox(height: 20),
+                ],
+              ],
+            ),
+          ),
+        ],
+        aside: [
+          SectionCard(
+            padding: 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                Text(
+                  '${researchProviderLabel(product.provider)} · collected ${_day(product.retrievedAt)}',
+                  style: theme.textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
+                Text(switch (product.match) {
+                  'exact_sku' =>
+                    'Dated information. Check your current package.',
+                  'brand_family_only' =>
+                    'Variant information. Barcode unconfirmed.',
+                  _ => 'Package unconfirmed. Check the variant and size.',
+                }),
+                if (hasConflict) ...[
+                  const SizedBox(height: 12),
+                  const Text('Sources disagree. Read the source notes.'),
+                ],
+                for (final warning
+                    in product.warnings.map(_warning).toSet()) ...[
+                  const SizedBox(height: 8),
+                  Text(warning),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          ResultsAllergenNotice(
+            contains: product.section('contains'),
+            mayContain: product.section('may_contain'),
+          ),
+          SectionCard(
+            padding: 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final (key, title) in [
+                  ('ingredients', 'Ingredients'),
+                  ('contains', 'Contains'),
+                  ('may_contain', 'May contain'),
+                ]) ...[
+                  SectionTitle(title),
+                  _selectable(
+                    product.section(key) ?? 'Not declared in this source',
+                  ),
+                  if (product.sectionInfo(key) case final info?) ...[
+                    const SizedBox(height: 6),
+                    Text(switch (info['completeness']) {
+                      'partial' => 'Partial declaration',
+                      'unknown' => 'Declaration completeness unknown',
+                      _ => 'Complete declaration',
+                    }, style: theme.textTheme.bodySmall),
+                    _provenance(info['provenance'] as JsonMap, theme),
+                  ],
+                ],
+              ],
+            ),
+          ),
           const SectionTitle('Source'),
           _selectable(product.sourceUrl),
           TextButton.icon(
@@ -248,13 +342,8 @@ class ResearchedProductPage extends StatelessWidget {
     ),
   );
 
-  // Flutter web's selectable text can expose an empty disabled textarea.
-  // Keep pointer selection while making the full declaration readable to AT.
-  Widget _selectable(String text, {TextStyle? style}) => Semantics(
-    label: text,
-    excludeSemantics: true,
-    child: SelectableText(text, style: style),
-  );
+  Widget _selectable(String text, {TextStyle? style}) =>
+      ResultsSelectableText(text, style: style);
 
   String _day(String value) => value.substring(0, 10);
   String _warning(String code) => switch (code) {

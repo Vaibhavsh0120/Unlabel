@@ -65,10 +65,17 @@ def web_handler(directory: Path, mode: str):
         def end_headers(self):
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
+            if urlsplit(self.path).path.startswith("/ocr/lang/"):
+                self.send_header("Content-Disposition", "inline")
             if self._cors_origin:
                 self.send_header("Access-Control-Allow-Origin", self._cors_origin)
                 self.send_header("Vary", "Origin")
             super().end_headers()
+
+        def guess_type(self, path):
+            if str(path).endswith(".traineddata.gz"):
+                return "application/octet-stream"
+            return super().guess_type(path)
 
         def fail(self, status: int, code: str):
             body = json.dumps({"error": code}).encode("utf-8")

@@ -3,24 +3,28 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/capture/live_camera.dart';
+import '../../../core/capture/photo_decode.dart';
+import '../../../core/capture/automatic_label_reader.dart';
+import '../../../core/models/extracted_label.dart';
+import '../../../core/models/app_failure.dart';
 import '../../../core/interaction/ui_feedback.dart';
 import 'ui_components.dart';
 
 class ScanLandingPage extends StatefulWidget {
   const ScanLandingPage({
-    required this.onBarcode,
-    required this.onEnterLabel,
+    required this.reader,
+    required this.onResult,
     this.onBack,
-    this.onReviewCapture,
     this.camera,
     this.pickPhoto,
     super.key,
   });
-  final Future<void> Function() onBarcode, onEnterLabel;
+  final AutomaticLabelReader reader;
+  final Future<void> Function(AutomaticScanResult, Uint8List?) onResult;
   final VoidCallback? onBack;
-  final Future<void> Function(Map<int, Uint8List>)? onReviewCapture;
   final LiveCamera? camera;
   final Future<Uint8List?> Function()? pickPhoto;
 
@@ -32,6 +36,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     with WidgetsBindingObserver {
   late final LiveCamera _camera = widget.camera ?? LiveCamera();
   final _photos = <int, Uint8List>{};
+  final _sizes = <int, Size>{};
+  late final _reader = widget.reader;
+  AutomaticScanResult? _result;
+  bool _reading = false;
   int _mode = 0;
   int _photoRevision = 0;
   bool _working = false, _routeOpen = false, _foreground = true;
@@ -74,6 +82,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
             _photos[1] = bytes;
           });
           unawaited(_syncCamera());
+          unawaited(_analyze());
         } else if (response.exception != null) {
           setState(
             () => _photoError =
@@ -96,7 +105,11 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<void> _syncCamera() async {
     if (!mounted) return;
-    if (_foreground && !_routeOpen && !_working && _photos[_mode] == null) {
+    if (_foreground &&
+        !_routeOpen &&
+        !_working &&
+        !_reading &&
+        _photos[_mode] == null) {
       await _camera.start();
     } else {
       await _camera.stop();
@@ -117,6 +130,12 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     if (!mounted) return;
     try {
       await open();
+    } on AppFailure catch (error) {
+      if (mounted) setState(() => _photoError = error.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(() => _photoError = 'Results could not open. Try again.');
+      }
     } finally {
       _routeOpen = false;
       if (mounted) unawaited(_syncCamera());
@@ -137,6 +156,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         throw StateError('large_photo');
       }
       setState(() => _photos[_mode] = bytes);
+      unawaited(_analyze());
       unawaited(UiFeedback.confirmed());
     } catch (_) {
       if (mounted) {
@@ -170,13 +190,14 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       if (bytes.isEmpty || bytes.length > LiveCamera.maxCaptureBytes) {
         throw StateError('large_photo');
       }
-      setState(() => _photos[_mode == 2 ? 1 : _mode] = bytes);
-      if (_mode == 2) setState(() => _mode = 1);
+      setState(() => _photos[_mode] = bytes);
+      unawaited(_analyze());
       unawaited(UiFeedback.selection());
     } catch (_) {
       if (mounted) {
         setState(
-          () => _photoError = 'Could not open that image. Choose another photo or enter the label manually.',
+          () =>
+              _photoError = 'Could not open that image. Choose another photo.',
         );
       }
     } finally {
@@ -185,6 +206,96 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         unawaited(_syncCamera());
       }
     }
+  }
+
+  Future<bool> _allowCloud({bool force = false}) async {
+    final preferences = await SharedPreferences.getInstance();
+    final previous = preferences.getBool('unlabel.photo-reading-consent.v1');
+    if (previous != null && !force) return previous;
+    if (!mounted) return false;
+    final allowed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Automatic photo reading'),
+        content: const Text(
+          'Send package photos to our backend and its Gemini or OpenAI service for automatic reading. Our backend does not save photos. Extracted product facts stay in private, temporary staging until checked. Google may use free-tier inputs to improve its services; provider retention terms apply. Only photograph the package. You can also read on this device.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('On this device'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Use automatic AI'),
+          ),
+        ],
+      ),
+    );
+    if (allowed != null) {
+      await preferences.setBool('unlabel.photo-reading-consent.v1', allowed);
+    }
+    return allowed ?? false;
+  }
+
+  Future<void> _analyze() async {
+    if (_reading || !mounted || _photos.isEmpty) return;
+    final revision = _photoRevision;
+    setState(() {
+      _reading = true;
+      _result = null;
+      _photoError = null;
+    });
+    await _camera.stop();
+    try {
+      for (final entry in _photos.entries.toList()) {
+        final photo = await decodePhoto(entry.value, maxEdge: 1);
+        _sizes[entry.key] = photo.originalSize;
+        photo.image.dispose();
+      }
+      final result = await _reader.read(
+        Map.unmodifiable(_photos),
+        allowCloud: _allowCloud,
+      );
+      if (!mounted || revision != _photoRevision) return;
+      setState(() {
+        _result = result;
+        if (!result.useful) {
+          _photoError = result.barcode != null
+              ? 'This barcode needs more information. Photograph the front and back of the package.'
+              : 'No readable product information yet. Try a closer, clearer photo.';
+        }
+      });
+      if (_mode == 2 &&
+          (result.report != null || result.candidates.isNotEmpty)) {
+        _routeOpen = true;
+        try {
+          await widget.onResult(result, _photos[0]);
+        } finally {
+          _routeOpen = false;
+        }
+      }
+    } catch (_) {
+      if (mounted && revision == _photoRevision) {
+        setState(
+          () => _photoError = 'Could not read this photo. Retake it in good light or add the other side.',
+        );
+      }
+    } finally {
+      if (mounted && revision == _photoRevision) {
+        setState(() => _reading = false);
+        unawaited(_syncCamera());
+      }
+    }
+  }
+
+  void _stopReading() {
+    _photoRevision++;
+    _reader.cancel();
+    setState(() {
+      _reading = false;
+      _photoError = 'Reading stopped. You can retry or retake the photo.';
+    });
   }
 
   Future<Uint8List?> _pickPhoto() async {
@@ -211,7 +322,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   }
 
   void _selectMode(int mode) {
-    if (_working || _mode == mode) return;
+    if (_working || _reading || _mode == mode) return;
     _photoRevision++;
     setState(() {
       _mode = mode;
@@ -224,6 +335,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _reader.dispose();
     _camera.removeListener(_cameraChanged);
     if (widget.camera == null) {
       _camera.dispose();
@@ -249,8 +361,25 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         ),
         actions: [
           IconButton(
+            tooltip: 'Photo reading settings',
+            onPressed: _working || _reading
+                ? null
+                : () async {
+                    try {
+                      await _allowCloud(force: true);
+                    } catch (_) {
+                      if (mounted) {
+                        setState(
+                          () => _photoError = 'Photo reading settings could not be saved. Try again.',
+                        );
+                      }
+                    }
+                  },
+            icon: const Icon(Icons.tune_rounded),
+          ),
+          IconButton(
             tooltip: 'Choose label photo',
-            onPressed: _working ? null : _gallery,
+            onPressed: _working || _reading ? null : _gallery,
             icon: const FeatureIcon('gallery'),
           ),
           const SizedBox(width: 8),
@@ -366,40 +495,43 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         if (!compact) const SizedBox(height: 12),
         FilledButton.icon(
           key: const Key('scan-primary'),
-          onPressed: _working
+          onPressed: _working || _reading
               ? null
-              : _mode == 2
-              ? () => _route(widget.onBarcode)
+              : _result?.useful == true
+              ? () => _route(() => widget.onResult(_result!, _photos[0]))
               : hasPhoto
-              ? () => _route(
-                  () =>
-                      widget.onReviewCapture?.call(Map.unmodifiable(_photos)) ??
-                      widget.onEnterLabel(),
-                )
+              ? _analyze
               : _camera.ready
               ? _capture
-              : () => _route(widget.onEnterLabel),
+              : _gallery,
           icon: FeatureIcon(
             hasPhoto ? 'stars' : 'scanner',
             color: theme.colorScheme.onPrimary,
             size: 22,
           ),
           label: Text(
-            _working
+            _reading
+                ? 'Reading your package…'
+                : _working
                 ? 'Working…'
-                : _mode == 2
-                ? 'Enter barcode'
+                : _result?.useful == true
+                ? 'View results'
                 : hasPhoto
-                ? 'Review Label'
+                ? 'Read photo again'
                 : _camera.ready
                 ? 'Take Photo'
-                : 'Enter Label',
+                : 'Choose Photo',
           ),
         ),
         TextButton(
-          onPressed: _working ? null : _gallery,
+          onPressed: _working || _reading ? null : _gallery,
           child: const Text('Use Gallery'),
         ),
+        if (_reading)
+          TextButton(
+            onPressed: _stopReading,
+            child: const Text('Stop reading'),
+          ),
       ],
     );
   }
@@ -441,14 +573,43 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                 ),
               ),
             if (photo != null)
+              if (_sizes[_mode] != null && _result != null)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: CustomPaint(
+                      painter: LabelHighlightsPainter(
+                        (_result!.label?.regions ?? <ExtractedRegion>[])
+                            .where(
+                              (r) =>
+                                  r.slot ==
+                                  const ['front', 'back', 'barcode'][_mode],
+                            )
+                            .toList(),
+                        _sizes[_mode]!,
+                        barcodePoints: _result!.barcodeSlot == _mode
+                            ? _result!.barcodePoints
+                            : const [],
+                      ),
+                    ),
+                  ),
+                ),
+            if (photo != null)
               Positioned(
                 right: 12,
                 bottom: 12,
                 child: FilledButton.tonalIcon(
-                  onPressed: () {
-                    setState(() => _photos.remove(_mode));
-                    unawaited(_syncCamera());
-                  },
+                  onPressed: _reading
+                      ? null
+                      : () {
+                          _photoRevision++;
+                          _reader.cancel();
+                          setState(() {
+                            _photos.remove(_mode);
+                            _sizes.remove(_mode);
+                            _result = null;
+                          });
+                          unawaited(_syncCamera());
+                        },
                   icon: const Icon(Icons.refresh_rounded),
                   label: const Text('Retake'),
                 ),
@@ -460,7 +621,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                 bottom: 16,
                 child: Text(
                   _mode == 2
-                      ? 'Read the printed product code'
+                      ? 'Photograph the barcode for an instant lookup'
                       : _mode == 0
                       ? 'Keep the front label in the frame'
                       : 'Keep nutrition and ingredients in the frame',
@@ -609,6 +770,139 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       ),
     );
   }
+}
+
+Rect labelHighlightRect(Size viewport, Size image, Rect normalized) {
+  final fit = applyBoxFit(BoxFit.contain, image, viewport);
+  final destination = Alignment.center.inscribe(
+    fit.destination,
+    Offset.zero & viewport,
+  );
+  return Rect.fromLTRB(
+    destination.left + normalized.left * destination.width,
+    destination.top + normalized.top * destination.height,
+    destination.left + normalized.right * destination.width,
+    destination.top + normalized.bottom * destination.height,
+  );
+}
+
+class LabelHighlightsPainter extends CustomPainter {
+  const LabelHighlightsPainter(
+    this.regions,
+    this.imageSize, {
+    this.barcodePoints = const [],
+  });
+  final List<ExtractedRegion> regions;
+  final Size imageSize;
+  final List<Offset> barcodePoints;
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.width < 20 || size.height < 30) return;
+    final imageRect = labelHighlightRect(
+      size,
+      imageSize,
+      const Rect.fromLTWH(0, 0, 1, 1),
+    );
+    final anchors = barcodePoints
+        .map(
+          (point) => Offset(
+            imageRect.left + point.dx * imageRect.width,
+            imageRect.top + point.dy * imageRect.height,
+          ),
+        )
+        .toList();
+    final barcodePaint = Paint()
+      ..color = const Color(0xff70efba)
+      ..strokeWidth = 3;
+    for (var i = 0; i < anchors.length; i++) {
+      canvas.drawCircle(anchors[i], 4, barcodePaint);
+      if (i > 0) canvas.drawLine(anchors[i - 1], anchors[i], barcodePaint);
+    }
+    final usedLabels = <Rect>[];
+    for (final region in regions) {
+      final rect = labelHighlightRect(size, imageSize, region.box);
+      final color = switch (region.label) {
+        'allergen' => const Color(0xffffa5b0),
+        'nutrition' => const Color(0xffffd46c),
+        'barcode' => const Color(0xff79e5f1),
+        _ => const Color(0xff79f1c3),
+      };
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(5)),
+        Paint()..color = color.withValues(alpha: .12),
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(5)),
+        Paint()
+          ..color = color
+          ..strokeWidth = 2
+          ..style = PaintingStyle.stroke,
+      );
+      final label = switch (region.label) {
+        'nutrition' => 'Nutrients',
+        'ingredients' => 'Ingredients',
+        'claim' => 'Front claim',
+        'allergen' => 'Allergen text',
+        'barcode' => 'Barcode',
+        _ => 'Product',
+      };
+      final text = TextPainter(
+        text: TextSpan(
+          text: label,
+          style: const TextStyle(
+            color: Color(0xff073f31),
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+        maxLines: 1,
+      )..layout(maxWidth: size.width - 16);
+      final labelWidth = text.width + 12;
+      final labelHeight = text.height + 8;
+      final rightSpace = size.width - rect.right;
+      final side = rightSpace > labelWidth + 16;
+      final left = (side ? rect.right + 12 : rect.left).clamp(
+        4.0,
+        (size.width - text.width - 12).clamp(4.0, size.width),
+      );
+      var top =
+          (side ? rect.center.dy - labelHeight / 2 : rect.top - labelHeight - 4)
+              .clamp(4.0, size.height - text.height - 8);
+      var callout = Rect.fromLTWH(left, top, labelWidth, labelHeight);
+      for (
+        var attempt = 0;
+        attempt < 8 && usedLabels.any((old) => old.overlaps(callout));
+        attempt++
+      ) {
+        top = (top + labelHeight + 4).clamp(4.0, size.height - labelHeight - 4);
+        callout = Rect.fromLTWH(left, top, labelWidth, labelHeight);
+      }
+      usedLabels.add(callout);
+      if (side) {
+        canvas.drawLine(
+          rect.centerRight,
+          callout.centerLeft,
+          Paint()
+            ..color = color
+            ..strokeWidth = 2,
+        );
+        canvas.drawCircle(rect.centerRight, 3, Paint()..color = color);
+      }
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(callout, const Radius.circular(4)),
+        Paint()..color = color,
+      );
+      text.paint(canvas, Offset(left + 6, top + 4));
+      text.dispose();
+    }
+  }
+
+  @override
+  bool shouldRepaint(LabelHighlightsPainter oldDelegate) =>
+      oldDelegate.regions != regions ||
+      oldDelegate.imageSize != imageSize ||
+      oldDelegate.barcodePoints != barcodePoints;
 }
 
 class _ScanFramePainter extends CustomPainter {

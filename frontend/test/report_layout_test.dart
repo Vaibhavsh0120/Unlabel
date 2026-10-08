@@ -7,6 +7,7 @@ import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/models/product_report.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_results_layout.dart';
 
 class _MemoryPreferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -39,13 +40,39 @@ Widget _app(ProductReport report, Brightness brightness) => MaterialApp(
 );
 
 void main() {
+  testWidgets('desktop results navigation invokes each app destination', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1440, 900);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final visits = <String>[];
+    final nav = ResultsNavigation(
+      home: () => visits.add('home'), scan: () => visits.add('scan'),
+      history: () => visits.add('history'), learn: () => visits.add('learn'),
+      products: () => visits.add('products'), profile: () => visits.add('profile'),
+      notifications: () => visits.add('notifications'),
+    );
+    await tester.pumpWidget(MaterialApp(home: Scaffold(
+      appBar: ResultsAppBar(title: 'Scan Results', navigation: nav),
+    )));
+    await tester.pumpAndSettle();
+    for (final title in ['Unlabel', 'Scan', 'History', 'Learn', 'Products']) {
+      await tester.tap(find.text(title));
+    }
+    await tester.tap(find.text('Search product, ingredient or claim…'));
+    await tester.tap(find.byTooltip('Profile'));
+    await tester.tap(find.byTooltip('Notifications'));
+    expect(visits, ['home', 'scan', 'history', 'learn', 'products', 'products',
+      'profile', 'notifications']);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets(
     'reference report sections preserve facts and disclose all evidence',
     (tester) async {
       final report = _report();
       await tester.pumpWidget(_app(report, Brightness.light));
       await tester.pumpAndSettle();
-      expect(find.text('Analysis Results'), findsOneWidget);
+      expect(find.text('Scan Results'), findsOneWidget);
       expect(find.text(report.name), findsOneWidget);
       expect(find.byKey(const Key('report-product-card')), findsOneWidget);
       expect(find.byKey(const Key('report-evidence-summary')), findsOneWidget);

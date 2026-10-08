@@ -21,16 +21,16 @@ class _NativeEngine implements LocalOcrEngine {
           '';
     } on MissingPluginException {
       throw const LocalOcrFailure(
-        'Text reading is unavailable on this device. Enter the printed facts manually.',
+        'Text reading is unavailable on this device. Use automatic AI reading.',
       );
     } on PlatformException catch (failure) {
       if (failure.code == 'unsupported_language') {
         throw const LocalOcrFailure(
-          'Hindi text reading is unavailable on this device. Choose English or enter the printed Hindi text manually.',
+          'Hindi text reading is unavailable on this device. Use automatic AI reading.',
         );
       }
       throw const LocalOcrFailure(
-        'This photo could not be read. Try a clearer photo or enter the printed facts.',
+        'This photo could not be read. Retake it in good light or use automatic AI reading.',
       );
     }
   }

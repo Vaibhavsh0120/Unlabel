@@ -9,6 +9,7 @@ import '../models/label_draft.dart';
 import '../models/product_report.dart';
 import '../models/sourced_comparison.dart';
 import '../models/researched_product.dart';
+import '../models/extracted_label.dart';
 import 'scanner_auth.dart';
 
 export '../models/app_failure.dart';
@@ -16,6 +17,7 @@ export '../models/label_draft.dart';
 export '../models/product_report.dart';
 export '../models/sourced_comparison.dart';
 export '../models/researched_product.dart';
+export '../models/extracted_label.dart';
 
 class UnlabelRepository {
   UnlabelRepository({
@@ -92,11 +94,13 @@ class UnlabelRepository {
       throw AppFailure(
         'unsupported_feature',
         capability == 'catalogue_search'
-            ? 'Product search is not available on this service yet. You can enter a barcode or package label.'
+            ? 'Product search is not available on this service yet. Photograph the barcode or package label.'
             : capability == 'comparison'
             ? 'Sourced comparison is not available on this service yet. Your product selections are kept.'
             : capability == 'research_catalogue'
             ? 'Sourced product information is not available on this service yet. Search again after the service is updated.'
+            : capability == 'ai_extraction'
+            ? 'Automatic cloud reading is unavailable. Reading on this device instead.'
             : 'Label reports are not available on this service yet. Please update the service configuration.',
       );
     }
@@ -180,6 +184,123 @@ class UnlabelRepository {
       ),
       // Current-package checks belong only to their confirmed POST receipt.
       cacheable: (report) => report.isHistorical,
+    );
+  }
+
+  /// Consent is obtained by the capture flow before calling this method.
+  /// Cancellation stops this client's upload/response wait; the backend may
+  /// already have begun reading a photo. The POST is never replayed here.
+  Future<ExtractedLabel> extractPhotos(
+    Map<int, Uint8List> photos, {
+    Future<void>? abortTrigger,
+  }) async {
+    if (photos.isEmpty ||
+        photos.length > 3 ||
+        photos.keys.any((slot) => slot < 0 || slot > 2) ||
+        photos.values.any((bytes) => bytes.isEmpty || bytes.length > 900000)) {
+      throw const AppFailure(
+        'invalid_photo',
+        'Choose a clearer package photo.',
+      );
+    }
+    await _untilCancelled(_requireCapability('ai_extraction'), abortTrigger);
+    String? token;
+    try {
+      token = await _untilCancelled(
+        Future<String?>.sync(_auth.token).timeout(authTimeout),
+        abortTrigger,
+      );
+    } on AppFailure catch (failure) {
+      if (failure.kind == 'cancelled') rethrow;
+      throw const AppFailure(
+        'authentication',
+        'Automatic scanner access is unavailable. Try again.',
+      );
+    } catch (_) {
+      throw const AppFailure(
+        'authentication',
+        'Automatic scanner access is unavailable. Try again.',
+      );
+    }
+    if (token == null || token.isEmpty) {
+      throw const AppFailure(
+        'authentication',
+        'Automatic scanner access is unavailable. Try again.',
+      );
+    }
+    final result = await _request(
+      'POST',
+      '/v1/ai/extract',
+      token: token,
+      readOnly: true,
+      abortTrigger: abortTrigger,
+      requestTimeout: const Duration(seconds: 60),
+      body: {
+        'privacy_consent': true,
+        'images': [
+          for (final entry in photos.entries)
+            {
+              'slot': const ['front', 'back', 'barcode'][entry.key],
+              'mime_type': 'image/png',
+              'data_base64': base64Encode(entry.value),
+            },
+        ],
+      },
+    );
+    if (result['status'] != 'extracted' || result['extraction'] is! JsonMap) {
+      throw const AppFailure(
+        'invalid_response',
+        'The photo could not be read. Try a clearer photo.',
+      );
+    }
+    final storage = result['storage'];
+    if (storage != null &&
+        (storage is! JsonMap || storage['status'] is! String)) {
+      throw const AppFailure(
+        'invalid_response',
+        'The photo could not be read reliably. Try again.',
+      );
+    }
+    return ExtractedLabel.fromJson(
+      result['extraction'] as JsonMap,
+      storageStatus: storage == null ? null : (storage as JsonMap)['status'],
+    );
+  }
+
+  Future<T> _untilCancelled<T>(
+    Future<T> operation,
+    Future<void>? abortTrigger,
+  ) => abortTrigger == null
+      ? operation
+      : Future.any([
+          operation,
+          abortTrigger.then<T>((_) {
+            throw const AppFailure('cancelled', 'Reading stopped.');
+          }),
+        ]);
+
+  Future<List<ResearchedCandidate>> researchByBarcode(String code) async {
+    if (!validProductBarcode(code)) return const [];
+    final metadata = await _serviceMetadata();
+    if ((metadata['capabilities'] as JsonMap)['research_catalogue'] != true) {
+      return const [];
+    }
+    final value = await _request(
+      'GET',
+      '/v1/researched/products/by-barcode/$code',
+    );
+    final candidates = value['candidates'];
+    if (value['schema_version'] != '1' ||
+        value['barcode'] != code ||
+        candidates is! List ||
+        candidates.length > 20) {
+      throw const AppFailure(
+        'invalid_response',
+        'Product references could not be read.',
+      );
+    }
+    return List.unmodifiable(
+      candidates.map((v) => ResearchedCandidate.fromJson(v as JsonMap)),
     );
   }
 
@@ -311,6 +432,8 @@ class UnlabelRepository {
     JsonMap? body,
     String? token,
     bool readOnly = false,
+    Duration? requestTimeout,
+    Future<void>? abortTrigger,
   }) async {
     _ensureOpen();
     final abort = Completer<void>();
@@ -326,15 +449,39 @@ class UnlabelRepository {
     if (token != null && token.isNotEmpty) {
       request.headers['Authorization'] = 'Bearer $token';
     }
+    final cancelled = Completer<JsonMap>();
+    abortTrigger?.then((_) {
+      if (!abort.isCompleted) abort.complete();
+      if (!cancelled.isCompleted) {
+        cancelled.completeError(
+          const AppFailure('cancelled', 'Reading stopped.'),
+        );
+      }
+    });
+    Future<JsonMap> send() async {
+      // Let an already completed cancellation reach the abortable request
+      // before sending any body bytes.
+      if (abortTrigger != null) await Future<void>.value();
+      if (abort.isCompleted) {
+        throw const AppFailure('cancelled', 'Reading stopped.');
+      }
+      return _readResponse(request);
+    }
+
     try {
-      return await _readResponse(request).timeout(timeout);
+      return await Future.any([
+        send(),
+        if (abortTrigger != null) cancelled.future,
+      ]).timeout(requestTimeout ?? timeout);
     } on AppFailure {
       rethrow;
+    } on http.RequestAbortedException {
+      throw const AppFailure('cancelled', 'Reading stopped.');
     } on TimeoutException {
       throw AppFailure(
         'timeout',
         method == 'POST' && !readOnly
-            ? 'The service took too long. A label save may have completed; retrying the unchanged form uses the same submission.'
+            ? 'The save took too long and may have completed. Retry to check the same submission.'
             : 'The service took too long. Check your connection and try again.',
       );
     } catch (_) {
@@ -370,7 +517,7 @@ class UnlabelRepository {
     if (code == 404) {
       throw const AppFailure(
         'not_found',
-        'No catalogue report was found for this barcode. You can enter the package label instead.',
+        'This barcode needs more information. Photograph the front and back of the package.',
       );
     }
     if (code == 422 || code == 400) {
@@ -404,7 +551,7 @@ class UnlabelRepository {
           !value.containsKey('search_version')) {
         throw const AppFailure(
           'not_found',
-          'No catalogue report was found for this barcode. You can enter the package label instead.',
+          'This barcode needs more information. Photograph the front and back of the package.',
         );
       }
       return value;

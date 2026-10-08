@@ -2,9 +2,10 @@
   "library": "solar",
   "prefix": "solar",
   "source": "iconify",
-  "installedAt": "2026-10-07T09:14:02.722Z",
+  "installedAt": "2026-10-08T10:57:16.784Z",
   "icons": [
     "barcode-linear",
+    "bell-linear",
     "bookmark-linear",
     "cup-linear",
     "document-text-linear",

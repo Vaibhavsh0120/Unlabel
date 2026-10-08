@@ -254,6 +254,54 @@ Future<void> _query(WidgetTester tester, String value) async {
 }
 
 void main() {
+  test('product images retain source scope and reject private or incompatible descriptors', () {
+    JsonMap imageDetail() {
+      final value = _detail();
+      final record = value['observation'] as JsonMap;
+      const sourceUrl = 'https://blinkit.com/prn/synthetic/prid/123';
+      record['source']['url'] = sourceUrl;
+      record['sections']['ingredients']['source_url'] = sourceUrl;
+      record['sections']['ingredients']['provenance']['url'] = sourceUrl;
+      for (final table in record['nutrition']['direct_tables']) {
+        table['source_url'] = sourceUrl;
+        table['provenance']['url'] = sourceUrl;
+      }
+      value['image'] = {
+        'observation_id': value['entry_id'],
+        'source_url': sourceUrl,
+        'provider': 'retailer',
+        'url': 'https://cdn.grofers.com/product.jpg',
+        'identity_scope': 'source_listing',
+        'content_type': 'image/jpeg',
+        'method': 'structured_product',
+        'evidence_sha256': _id('b'),
+        'retrieved_at': '2026-10-08T04:00:00Z',
+        'attribution': 'Retailer product listing',
+        'license': 'URL descriptor only',
+      };
+      return value;
+    }
+
+    expect(
+      ResearchedProduct.fromJson(imageDetail()).imageUrl,
+      'https://cdn.grofers.com/product.jpg',
+    );
+    for (final change in <JsonMap>[
+      {'url': 'https://localhost/product.jpg'},
+      {'url': 'https://cdn.grofers.com/product.jpg?api_key=private'},
+      {'identity_scope': 'source_barcode'},
+      {'method': 'off_selected_front'},
+      {'content_type': 'image/svg+xml'},
+      {'observation_id': _id('c')},
+    ]) {
+      final value = imageDetail();
+      (value['image'] as JsonMap).addAll(change);
+      expect(
+        () => ResearchedProduct.fromJson(value),
+        throwsA(isA<AppFailure>()),
+      );
+    }
+  });
   testWidgets('research declarations remain readable by assistive technology', (
     tester,
   ) async {
@@ -270,6 +318,8 @@ void main() {
         ),
       ),
     );
+    await tester.ensureVisible(find.text('Wheat flour; sugar; milk solids.'));
+    await tester.pump();
     expect(
       find.bySemanticsLabel('Wheat flour; sugar; milk solids.'),
       findsOneWidget,

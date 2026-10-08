@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import '../../../core/models/product_report.dart';
 import '../../../core/storage/local_store.dart';
 import '../../../core/interaction/ui_feedback.dart';
 import 'report_presentation.dart';
+import 'product_results_layout.dart';
 import 'ui_components.dart';
 
 class ReportPage extends StatefulWidget {
@@ -14,12 +16,17 @@ class ReportPage extends StatefulWidget {
     required this.report,
     required this.store,
     required this.onChanged,
+    this.sessionPhoto,
+    this.navigation,
     super.key,
   });
 
   final ProductReport report;
   final LocalStore store;
   final VoidCallback onChanged;
+  // Never serialized into history, saved products or account synchronization.
+  final Uint8List? sessionPhoto;
+  final ResultsNavigation? navigation;
 
   @override
   State<ReportPage> createState() => _ReportPageState();
@@ -121,16 +128,23 @@ class _ReportPageState extends State<ReportPage> {
     return ScaffoldMessenger(
       key: _messenger,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Analysis Results')),
-        body: PageBody(
-          children: [
+        appBar: ResultsAppBar(
+          title: 'Scan Results',
+          navigation: widget.navigation,
+        ),
+        body: ProductResultsLayout(
+          main: [
             SectionCard(
               key: const Key('report-product-card'),
               padding: 18,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ProductIdentity(report: report, photo: photo),
+                  _ProductIdentity(
+                    report: report,
+                    photo: photo,
+                    sessionPhoto: widget.sessionPhoto,
+                  ),
                   const SizedBox(height: 16),
                   Wrap(
                     spacing: 16,
@@ -170,7 +184,7 @@ class _ReportPageState extends State<ReportPage> {
                     : 'No front claims captured',
                 message: report.isHistorical
                     ? 'Catalogue nutrient values cannot establish claims on a current package.'
-                    : 'Enter the printed front claims with enough back-label facts to check them.',
+                    : 'Photograph the front and back labels to check printed claims.',
               )
             else
               SectionCard(
@@ -201,6 +215,14 @@ class _ReportPageState extends State<ReportPage> {
               const SectionTitle('Sugar reality'),
               _SugarReality(sugar: report.sugar!),
             ],
+          ],
+          aside: [
+            _IngredientPreview(report: report),
+            const SizedBox(height: 16),
+            ResultsAllergenNotice(
+              contains: report.contains.text,
+              mayContain: report.mayContain.text,
+            ),
             const SectionTitle('Ingredients & allergens'),
             SectionCard(
               padding: 18,
@@ -271,12 +293,14 @@ class _ReportPageState extends State<ReportPage> {
                     for (final source in report.sourceLabels)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: SelectableText(source),
+                        child: ResultsSelectableText(source),
                       ),
                   if (photo != null) ...[
                     const SizedBox(height: 4),
-                    SelectableText('${photo.attribution} · ${photo.license}'),
-                    SelectableText(photo.licenseUrl),
+                    ResultsSelectableText(
+                      '${photo.attribution} · ${photo.license}',
+                    ),
+                    ResultsSelectableText(photo.licenseUrl),
                     const SizedBox(height: 12),
                   ],
                   const SizedBox(height: 8),
@@ -294,9 +318,14 @@ class _ReportPageState extends State<ReportPage> {
 }
 
 class _ProductIdentity extends StatelessWidget {
-  const _ProductIdentity({required this.report, required this.photo});
+  const _ProductIdentity({
+    required this.report,
+    required this.photo,
+    this.sessionPhoto,
+  });
   final ProductReport report;
   final ReportImageDescriptor? photo;
+  final Uint8List? sessionPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +344,14 @@ class _ProductIdentity extends StatelessWidget {
             dimension: size,
             child: ColoredBox(
               color: theme.colorScheme.surfaceContainerLow,
-              child: photo == null
+              child: sessionPhoto != null
+                  ? Image.memory(
+                      sessionPhoto!,
+                      fit: BoxFit.contain,
+                      semanticLabel: 'Your current package photo',
+                      errorBuilder: (_, _, _) => fallback,
+                    )
+                  : photo == null
                   ? fallback
                   : Image.network(
                       photo!.url,
@@ -379,94 +415,16 @@ class _ReportSummary extends StatelessWidget {
   final ProductReport report;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
-    return Container(
-      key: const Key('report-evidence-summary'),
-      decoration: BoxDecoration(
-        color: dark ? const Color(0xff18251f) : const Color(0xffecfaf2),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final wide =
-              constraints.maxWidth >= 660 &&
-              MediaQuery.textScalerOf(context).scale(14) <= 21;
-          final copy = Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(report.basisLabel, style: theme.textTheme.titleLarge),
-              const SizedBox(height: 10),
-              Text(
-                report.isHistorical
-                    ? 'These are dated catalogue observations. They may differ from the package in your hand.'
-                    : 'This report uses the package facts you confirmed. Missing or conflicting facts stay unknown.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          );
-          final mark = Container(
-            width: wide ? 90 : 56,
-            height: wide ? 90 : 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: theme.colorScheme.primaryContainer,
-              border: Border.all(color: theme.colorScheme.primary, width: 3),
-            ),
-            child: Center(
-              child: FeatureIcon(
-                report.isHistorical ? 'history' : 'leaf',
-                size: wide ? 42 : 28,
-              ),
-            ),
-          );
-          if (wide) {
-            return Row(
-              children: [
-                mark,
-                const SizedBox(width: 20),
-                Expanded(flex: 4, child: copy),
-                const SizedBox(width: 16),
-                const Expanded(
-                  child: CornerArtwork(
-                    asset: 'assets/artwork/botanical-corner.png',
-                    height: 140,
-                    animate: false,
-                  ),
-                ),
-              ],
-            );
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  mark,
-                  const SizedBox(
-                    width: 82,
-                    child: CornerArtwork(
-                      asset: 'assets/artwork/botanical-corner.png',
-                      height: 66,
-                      animate: false,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              copy,
-            ],
-          );
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ResultsSummaryCard(
+    key: const Key('report-evidence-summary'),
+    count: report.nutrients.where((item) => item.value != null).length,
+    heading: report.isHistorical ? 'Dated catalogue facts' : 'Confirmed label',
+    message: report.isHistorical
+        ? 'Dated observations may differ from the package in your hand.'
+        : 'Your confirmed facts, with missing or conflicting information kept unknown.',
+    qualification:
+        'Recorded values describe this label; they are not a health score.',
+  );
 }
 
 class _EvidenceOverview extends StatelessWidget {
@@ -479,74 +437,104 @@ class _EvidenceOverview extends StatelessWidget {
         .where((item) => item.value != null)
         .length;
     final unknown = report.nutrients.length - available;
-    return SectionCard(
-      padding: 18,
-      child: Column(
-        children: [
-          _EvidenceRow(
-            icon: 'document-text',
-            title: 'Nutrition facts',
-            detail:
-                '$available available'
-                '${unknown == 0 ? '' : ' · $unknown unknown or unresolved'}',
-          ),
-          const Divider(height: 24),
-          _EvidenceRow(
-            icon: 'shield',
-            title: 'Claim evidence',
-            detail: report.claims.isEmpty
-                ? 'No current-package claim assessments'
-                : '${report.claims.length} recorded ${report.claims.length == 1 ? 'assessment' : 'assessments'}',
-          ),
-          const Divider(height: 24),
-          _EvidenceRow(
-            icon: report.isHistorical ? 'history' : 'scanner',
-            title: report.isHistorical
-                ? 'Dated observations'
-                : 'Confirmed package facts',
-            detail: report.isHistorical
-                ? 'Dates and sources stay attached.'
-                : 'Package context preserved.',
-          ),
-        ],
-      ),
+    return ResultsFactsGrid(
+      children: [
+        ResultsFact(
+          icon: 'document-text',
+          title: 'Nutrition facts',
+          detail:
+              '$available available${unknown == 0 ? '' : ' · $unknown unknown or unresolved'}',
+          status: available > 0 ? 'Recorded' : 'Unknown',
+          uncertain: available == 0,
+        ),
+        ResultsFact(
+          icon: 'shield',
+          title: 'Claim evidence',
+          detail: report.claims.isEmpty
+              ? 'No current-package claim assessments'
+              : '${report.claims.length} recorded assessments',
+          status: report.claims.isEmpty
+              ? 'Not assessed'
+              : 'Checked against evidence',
+          uncertain: report.claims.isEmpty,
+        ),
+        ResultsFact(
+          icon: 'leaf',
+          title: 'Ingredient declaration',
+          detail: report.ingredients.text == null
+              ? 'No usable declaration available.'
+              : report.ingredients.completeness == 'partial'
+              ? 'Part of the printed declaration is available.'
+              : 'The recorded ingredient text is available.',
+          status: report.ingredients.text == null
+              ? 'Unknown'
+              : report.ingredients.completeness == 'partial'
+              ? 'Partial'
+              : 'Recorded',
+          uncertain: report.ingredients.text == null,
+        ),
+        ResultsFact(
+          icon: 'history',
+          title: 'Package context',
+          detail: report.isHistorical
+              ? 'Dates and sources stay attached.'
+              : 'Package context preserved.',
+          status: report.isHistorical
+              ? 'Dated observations'
+              : 'Confirmed package facts',
+          uncertain: report.isHistorical,
+        ),
+      ],
     );
   }
 }
 
-class _EvidenceRow extends StatelessWidget {
-  const _EvidenceRow({
-    required this.icon,
-    required this.title,
-    required this.detail,
-  });
-  final String icon, title, detail;
+class _IngredientPreview extends StatelessWidget {
+  const _IngredientPreview({required this.report});
+  final ProductReport report;
 
   @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Center(child: FeatureIcon(icon, size: 24)),
-      ),
-      const SizedBox(width: 14),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => SectionCard(
+    padding: 16,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
           children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 4),
-            Text(detail, style: Theme.of(context).textTheme.bodyMedium),
+            const FeatureIcon('document-text', size: 30),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Ingredient insights',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
           ],
         ),
-      ),
-    ],
+        const SizedBox(height: 8),
+        const Text('Reviewed explanations of what matched ingredients do.'),
+        if (report.ingredientInsights.isEmpty)
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: Text('No reviewed glossary match for this label.'),
+          ),
+        for (final insight in report.ingredientInsights)
+          ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            title: Text(insight.name),
+            subtitle: Text('Label text: ${insight.matchedText}'),
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(insight.function),
+                ),
+              ),
+            ],
+          ),
+      ],
+    ),
   );
 }
 
@@ -822,7 +810,7 @@ class _NutrientRow extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: SelectableText(source),
+                    child: ResultsSelectableText(source),
                   ),
                 ),
             ],
@@ -866,7 +854,7 @@ class _Declaration extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: SelectableText(source),
+                  child: ResultsSelectableText(source),
                 ),
               ),
           ],

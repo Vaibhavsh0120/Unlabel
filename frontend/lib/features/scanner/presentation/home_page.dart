@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
     required this.onLibrary,
     required this.refreshKey,
     this.onCompare,
+    this.desktop = false,
     super.key,
   });
 
@@ -28,6 +29,7 @@ class HomePage extends StatefulWidget {
   final ValueChanged<int> onLibrary;
   final int refreshKey;
   final VoidCallback? onCompare;
+  final bool desktop;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -89,17 +91,24 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => PageBody(
-    maxWidth: 1120,
+    maxWidth: widget.desktop ? 1800 : 1120,
+    padding: widget.desktop ? const EdgeInsets.fromLTRB(24, 0, 24, 16) : null,
     children: [
-      _ScanHero(onScan: widget.onEnterLabel),
-      const SizedBox(height: 24),
+      _ScanHero(onScan: widget.onEnterLabel, desktop: widget.desktop),
+      SizedBox(height: widget.desktop ? 16 : 24),
       LayoutBuilder(
         builder: (context, constraints) {
           final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
-          final columns = constraints.maxWidth >= 340 && !largeText ? 2 : 1;
+          final columns =
+              widget.desktop && constraints.maxWidth >= 850 && !largeText
+              ? 4
+              : constraints.maxWidth >= 340 && !largeText
+              ? 2
+              : 1;
           final width = (constraints.maxWidth - (columns - 1) * 16) / columns;
           final cards = [
             _ActionCard(
+              desktop: widget.desktop,
               width: width,
               icon: const FeatureIcon('barcode'),
               title: 'Barcode Scan',
@@ -107,6 +116,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () => widget.onLookup(true),
             ),
             _ActionCard(
+              desktop: widget.desktop,
               width: width,
               icon: widget.onCompare == null
                   ? const FeatureIcon('leaf')
@@ -120,6 +130,7 @@ class _HomePageState extends State<HomePage> {
               onTap: widget.onCompare ?? () => widget.onLookup(false),
             ),
             _ActionCard(
+              desktop: widget.desktop,
               width: width,
               icon: const FeatureIcon('bookmark'),
               title: 'Saved Products',
@@ -127,6 +138,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () => widget.onLibrary(1),
             ),
             _ActionCard(
+              desktop: widget.desktop,
               width: width,
               icon: const FeatureIcon('history'),
               title: 'History',
@@ -147,9 +159,14 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        cards[index],
-                        const SizedBox(width: 16),
-                        cards[index + 1],
+                        for (
+                          var offset = 0;
+                          offset < columns && index + offset < cards.length;
+                          offset++
+                        ) ...[
+                          if (offset > 0) const SizedBox(width: 16),
+                          cards[index + offset],
+                        ],
                       ],
                     ),
                   ),
@@ -159,7 +176,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 12),
+        padding: EdgeInsets.only(top: 12, bottom: widget.desktop ? 0 : 12),
         child: Wrap(
           alignment: WrapAlignment.spaceBetween,
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -182,9 +199,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      const _InsightCarousel(),
+      _InsightCarousel(desktop: widget.desktop),
       SectionTitle(
         'Recent scans',
+        compact: widget.desktop,
         trailing: TextButton.icon(
           onPressed: () => widget.onLibrary(2),
           label: const Text('See all'),
@@ -204,29 +222,56 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       else if (_recent.isEmpty)
-        LibraryEmptyState(
-          title: 'Your first food find starts here',
-          message: 'The labels you explore will appear here.',
-          action: TextButton.icon(
-            onPressed: widget.onEnterLabel,
-            icon: const FeatureIcon('scanner', size: 22),
-            label: const Text('Start Scan'),
-          ),
+        widget.desktop
+            ? _DesktopEmptyScans(
+                onScan: widget.onEnterLabel,
+                onSaved: () => widget.onLibrary(1),
+              )
+            : LibraryEmptyState(
+                title: 'Your first food find starts here',
+                message: 'The labels you explore will appear here.',
+                action: TextButton.icon(
+                  onPressed: widget.onEnterLabel,
+                  icon: const FeatureIcon('scanner', size: 22),
+                  label: const Text('Start Scan'),
+                ),
+              )
+      else if (widget.desktop)
+        Row(
+          key: const Key('desktop-recent-scans'),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var i = 0; i < _recent.length; i++) ...[
+              if (i > 0) const SizedBox(width: 12),
+              Expanded(
+                child: _RecentRow(
+                  item: _recent[i],
+                  desktop: true,
+                  onTap: () => widget.onOpenReport(_recent[i].report),
+                ),
+              ),
+            ],
+            for (var i = _recent.length; i < 3; i++) ...[
+              const SizedBox(width: 12),
+              const Spacer(),
+            ],
+          ],
         )
       else
         for (final item in _recent) ...[
           _RecentRow(item: item, onTap: () => widget.onOpenReport(item.report)),
           const SizedBox(height: 12),
         ],
-      const SizedBox(height: 32),
-      _SourcesCard(onTap: _showSources),
+      SizedBox(height: widget.desktop ? 12 : 32),
+      _SourcesCard(onTap: _showSources, desktop: widget.desktop),
     ],
   );
 }
 
 class _ScanHero extends StatelessWidget {
-  const _ScanHero({required this.onScan});
+  const _ScanHero({required this.onScan, this.desktop = false});
   final VoidCallback onScan;
+  final bool desktop;
 
   @override
   Widget build(BuildContext context) {
@@ -252,18 +297,30 @@ class _ScanHero extends StatelessWidget {
             ),
             SizedBox(height: compact ? 8 : 12),
             Text(
-              'Scan your\nfood label',
+              desktop ? 'Scan your food label' : 'Scan your\nfood label',
               style: theme.textTheme.headlineLarge?.copyWith(
-                fontSize: roomy ? 42 : 24,
+                fontSize: desktop
+                    ? (constraints.maxWidth >= 1200 ? 54 : 46)
+                    : roomy
+                    ? 42
+                    : 24,
                 height: 1.12,
-                color: theme.colorScheme.onSurface,
+                color: dark
+                    ? theme.colorScheme.onSurface
+                    : const Color(0xff073f34),
               ),
             ),
             SizedBox(height: compact ? 8 : 12),
             Text(
-              'Read nutrition, ingredients and claims.',
+              desktop
+                  ? 'Understand what’s really in your food\nwith clear, sourced label insights.'
+                  : 'Read nutrition, ingredients and claims.',
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: compact ? 13 : 16,
+                fontSize: desktop
+                    ? 20
+                    : compact
+                    ? 13
+                    : 16,
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.35,
               ),
@@ -273,11 +330,15 @@ class _ScanHero extends StatelessWidget {
               key: const Key('start-lookup'),
               onPressed: onScan,
               style: FilledButton.styleFrom(
-                minimumSize: const Size(0, 48),
+                minimumSize: Size(desktop ? 360 : 0, desktop ? 64 : 48),
                 backgroundColor: dark ? theme.colorScheme.surface : null,
                 foregroundColor: dark ? theme.colorScheme.onSurface : null,
                 textStyle: TextStyle(
-                  fontSize: compact ? 14 : 16,
+                  fontSize: desktop
+                      ? 22
+                      : compact
+                      ? 14
+                      : 16,
                   fontWeight: FontWeight.w600,
                 ),
                 padding: EdgeInsets.symmetric(
@@ -289,16 +350,27 @@ class _ScanHero extends StatelessWidget {
                     : BorderSide.none,
               ),
               icon: const FeatureIcon('scanner', size: 20, color: Colors.white),
-              label: const Text('Start Scan'),
+              label: desktop
+                  ? const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Start Scan'),
+                        SizedBox(width: 48),
+                        Icon(Icons.arrow_forward, size: 24),
+                      ],
+                    )
+                  : const Text('Start Scan'),
             ),
           ],
         );
         final background = Image.asset(
-          dark
+          desktop
+              ? 'assets/artwork/desktop-scan-hero.png'
+              : dark
               ? 'assets/artwork/scan-hero-dark.png'
               : 'assets/artwork/scan-hero-light.png',
           key: const Key('home-hero-background'),
-          fit: BoxFit.contain,
+          fit: desktop ? BoxFit.cover : BoxFit.contain,
           alignment: Alignment.centerRight,
           excludeFromSemantics: true,
           errorBuilder: (_, _, _) => const SizedBox.expand(),
@@ -321,8 +393,12 @@ class _ScanHero extends StatelessWidget {
                 )
               : ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: (constraints.maxWidth / (compact ? 1.85 : 2.8))
-                        .clamp(180, 360),
+                    minHeight: desktop
+                        ? (constraints.maxWidth / 4.8).clamp(260, 310)
+                        : (constraints.maxWidth / (compact ? 1.85 : 2.8)).clamp(
+                            180,
+                            360,
+                          ),
                   ),
                   child: Stack(
                     children: [
@@ -345,16 +421,20 @@ class _ScanHero extends StatelessWidget {
                                           : const Color(0xfff0faf5))
                                       .withValues(alpha: 0),
                                 ],
-                                stops: const [0, .48, .68],
+                                stops: desktop
+                                    ? const [0, .35, .58]
+                                    : const [0, .48, .68],
                               ),
                             ),
                           ),
                         ),
                       ),
                       FractionallySizedBox(
-                        widthFactor: .62,
+                        widthFactor: desktop ? .65 : .62,
                         child: Padding(
-                          padding: roomy
+                          padding: desktop
+                              ? const EdgeInsets.symmetric(horizontal: 32, vertical: 20)
+                              : roomy
                               ? const EdgeInsets.all(28)
                               : const EdgeInsets.fromLTRB(16, 16, 4, 16),
                           child: copy,
@@ -376,17 +456,19 @@ class _ActionCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.onTap,
+    this.desktop = false,
   });
   final double width;
   final Widget icon;
   final String title;
   final String description;
   final VoidCallback onTap;
+  final bool desktop;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final compact = width < 340;
+    final compact = width < 340 && !desktop;
     final words = Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -395,7 +477,11 @@ class _ActionCard extends StatelessWidget {
         Text(
           title,
           style: theme.textTheme.titleMedium?.copyWith(
-            fontSize: compact ? 13 : null,
+            fontSize: desktop
+                ? 15
+                : compact
+                ? 13
+                : null,
             height: compact ? 1.2 : 1.3,
           ),
         ),
@@ -404,14 +490,24 @@ class _ActionCard extends StatelessWidget {
           description,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
-            fontSize: compact ? 12 : null,
+            fontSize: desktop
+                ? 13
+                : compact
+                ? 12
+                : null,
             height: compact ? 1.3 : 1.4,
           ),
         ),
       ],
     );
     final iconTile = Container(
-      padding: EdgeInsets.all(compact ? 6 : 14),
+      padding: EdgeInsets.all(
+        desktop
+            ? 12
+            : compact
+            ? 6
+            : 14,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(compact ? 12 : 18),
@@ -419,7 +515,11 @@ class _ActionCard extends StatelessWidget {
       child: IconTheme(
         data: IconThemeData(color: theme.colorScheme.primary),
         child: SizedBox.square(
-          dimension: compact ? 20 : 28,
+          dimension: desktop
+              ? 28
+              : compact
+              ? 20
+              : 28,
           child: FittedBox(child: icon),
         ),
       ),
@@ -428,10 +528,9 @@ class _ActionCard extends StatelessWidget {
       width: width,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: (width / (width >= 240 && compact ? 4.5 : 2.6)).clamp(
-            64,
-            88,
-          ),
+          minHeight: desktop
+              ? 88
+              : (width / (width >= 240 && compact ? 4.5 : 2.6)).clamp(64, 88),
         ),
         child: Card(
           child: InkWell(
@@ -439,13 +538,23 @@ class _ActionCard extends StatelessWidget {
             onTap: onTap,
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: compact ? 12 : 18,
+                horizontal: desktop
+                    ? 12
+                    : compact
+                    ? 12
+                    : 18,
                 vertical: compact ? 8 : 14,
               ),
               child: Row(
                 children: [
                   iconTile,
-                  SizedBox(width: compact ? 8 : 16),
+                  SizedBox(
+                    width: desktop
+                        ? 12
+                        : compact
+                        ? 8
+                        : 16,
+                  ),
                   Expanded(child: words),
                   if (!compact) ...[
                     const SizedBox(width: 8),
@@ -502,7 +611,8 @@ const _labelTips = [
 ];
 
 class _InsightCarousel extends StatefulWidget {
-  const _InsightCarousel();
+  const _InsightCarousel({this.desktop = false});
+  final bool desktop;
 
   @override
   State<_InsightCarousel> createState() => _InsightCarouselState();
@@ -544,6 +654,7 @@ class _InsightCarouselState extends State<_InsightCarousel> {
       key: ValueKey(_selected),
       tip: tip,
       onTap: () => _openTip(tip),
+      desktop: widget.desktop,
     );
     return Focus(
       key: const Key('insight-keyboard-focus'),
@@ -617,31 +728,32 @@ class _InsightCarouselState extends State<_InsightCarousel> {
                       ),
                     ),
             ),
-            const SizedBox(height: 8),
-            ExcludeSemantics(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var index = 0; index < _labelTips.length; index++)
-                    Semantics(
-                      key: Key('insight-page-$index'),
-                      selected: index == _selected,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Icon(
-                          index == _selected
-                              ? Icons.circle
-                              : Icons.circle_outlined,
-                          size: index == _selected ? 8 : 6,
-                          color: index == _selected
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurfaceVariant,
+            if (!widget.desktop) const SizedBox(height: 8),
+            if (!widget.desktop)
+              ExcludeSemantics(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (var index = 0; index < _labelTips.length; index++)
+                      Semantics(
+                        key: Key('insight-page-$index'),
+                        selected: index == _selected,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            index == _selected
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            size: index == _selected ? 8 : 6,
+                            color: index == _selected
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -650,9 +762,15 @@ class _InsightCarouselState extends State<_InsightCarousel> {
 }
 
 class _InsightCard extends StatelessWidget {
-  const _InsightCard({required this.tip, required this.onTap, super.key});
+  const _InsightCard({
+    required this.tip,
+    required this.onTap,
+    this.desktop = false,
+    super.key,
+  });
   final _LabelTip tip;
   final VoidCallback onTap;
+  final bool desktop;
 
   @override
   Widget build(BuildContext context) {
@@ -714,16 +832,47 @@ class _InsightCard extends StatelessWidget {
                 ],
               ),
             );
-            final art = CornerArtwork(
-              key: const Key('home-insight-art'),
-              asset: tip.asset,
-              height: stacked
-                  ? 120
-                  : compact
-                  ? 180
-                  : 210,
-              scale: 1,
-            );
+            final art = desktop
+                ? SizedBox(
+                    height: 144,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  theme.colorScheme.surface,
+                                  theme.colorScheme.primaryContainer.withValues(
+                                    alpha: .8,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Image.asset(
+                            'assets/artwork/desktop-insight-bowl.png',
+                            key: const Key('home-insight-art'),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.centerRight,
+                            excludeFromSemantics: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : CornerArtwork(
+                    key: const Key('home-insight-art'),
+                    asset: tip.asset,
+                    height: stacked
+                        ? 120
+                        : compact
+                        ? 180
+                        : 210,
+                    scale: 1,
+                  );
             return stacked
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -740,8 +889,8 @@ class _InsightCard extends StatelessWidget {
                   )
                 : Row(
                     children: [
-                      Expanded(flex: 6, child: text),
-                      Expanded(flex: 4, child: art),
+                      Expanded(flex: desktop ? 5 : 6, child: text),
+                      Expanded(flex: desktop ? 5 : 4, child: art),
                     ],
                   );
           },
@@ -787,9 +936,14 @@ class _InsightDetailPage extends StatelessWidget {
 }
 
 class _RecentRow extends StatelessWidget {
-  const _RecentRow({required this.item, required this.onTap});
+  const _RecentRow({
+    required this.item,
+    required this.onTap,
+    this.desktop = false,
+  });
   final LocalReport item;
   final VoidCallback onTap;
+  final bool desktop;
 
   @override
   Widget build(BuildContext context) {
@@ -799,16 +953,23 @@ class _RecentRow extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(desktop ? 12 : 16),
           child: Row(
             children: [
-              StoredProductPhoto(report: item.report, size: 76),
-              const SizedBox(width: 16),
+              StoredProductPhoto(report: item.report, size: desktop ? 64 : 76),
+              SizedBox(width: desktop ? 12 : 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.report.name, style: theme.textTheme.titleMedium),
+                    Text(
+                      item.report.name,
+                      maxLines: desktop ? 2 : null,
+                      overflow: desktop ? TextOverflow.ellipsis : null,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: desktop ? 14 : null,
+                      ),
+                    ),
                     const SizedBox(height: 6),
                     Text(
                       [
@@ -834,8 +995,9 @@ class _RecentRow extends StatelessWidget {
 }
 
 class _SourcesCard extends StatelessWidget {
-  const _SourcesCard({required this.onTap});
+  const _SourcesCard({required this.onTap, this.desktop = false});
   final VoidCallback onTap;
+  final bool desktop;
 
   @override
   Widget build(BuildContext context) {
@@ -845,7 +1007,7 @@ class _SourcesCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(24),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(desktop ? 12 : 20),
           child: Row(
             children: [
               const FeatureIcon('shield', size: 30),
@@ -855,12 +1017,16 @@ class _SourcesCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Know where facts come from',
+                      desktop
+                          ? 'Data from package labels, manufacturer websites and Open Food Facts'
+                          : 'Know where facts come from',
                       style: theme.textTheme.titleMedium,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Open Food Facts, your confirmed label and reviewed FSSAI guidance.',
+                      desktop
+                          ? 'Source references stay attached. FSSAI guidance informs our label explanations.'
+                          : 'Open Food Facts, your confirmed label and reviewed FSSAI guidance.',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -872,6 +1038,91 @@ class _SourcesCard extends StatelessWidget {
               const Icon(Icons.chevron_right, size: 20),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DesktopEmptyScans extends StatelessWidget {
+  const _DesktopEmptyScans({required this.onScan, required this.onSaved});
+  final VoidCallback onScan, onSaved;
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      key: const Key('desktop-empty-scans'),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.primaryContainer.withValues(alpha: .4),
+              theme.colorScheme.surface,
+              theme.colorScheme.surface,
+              theme.colorScheme.primaryContainer.withValues(alpha: .35),
+            ],
+            stops: const [0, .3, .8, 1],
+          ),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 320,
+              height: 136,
+              child: Image.asset(
+                'assets/artwork/desktop-empty-scans.png',
+                fit: BoxFit.contain,
+                excludeFromSemantics: true,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'No recent scans yet',
+                      style: theme.textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Start scanning products to see them here.',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        FilledButton.icon(
+                          onPressed: onScan,
+                          icon: const FeatureIcon(
+                            'scanner',
+                            color: Colors.white,
+                          ),
+                          label: const Text('Start Scan'),
+                        ),
+                        TextButton.icon(
+                          onPressed: onSaved,
+                          label: const Text('Browse saved products'),
+                          icon: const Icon(Icons.chevron_right),
+                          iconAlignment: IconAlignment.end,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

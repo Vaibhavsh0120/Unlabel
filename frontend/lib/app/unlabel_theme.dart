@@ -31,10 +31,10 @@ abstract final class UnlabelTheme {
           surfaceContainerHighest: dark
               ? const Color(0xff2c3338)
               : const Color(0xffe4ede7),
-          onSurface: dark ? const Color(0xfff4f6f7) : const Color(0xff102e27),
+          onSurface: dark ? const Color(0xfff4f6f7) : const Color(0xff0b102a),
           onSurfaceVariant: dark
               ? const Color(0xffb6bec5)
-              : const Color(0xff53685f),
+              : const Color(0xff687999),
           outlineVariant: dark
               ? const Color(0xff3e474c)
               : const Color(0xffdce8e1),

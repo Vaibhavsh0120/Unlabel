@@ -1,5 +1,69 @@
 # Unlabel decorative artwork
 
+## Fresh desktop Home, results and corrected sidebar — 8 October 2026
+
+These five assets were newly generated with the built-in `image_gen.imagegen`
+tool for the latest supplied screens. They are not reuses of the older Welcome,
+Profile or dark glossy botanical assets below. The final originals were copied
+byte-for-byte into this folder; original/output equality and PNG dimensions were
+checked with the standard library. The hero is opaque RGB; the four cutouts are
+RGBA with transparent backgrounds. No external image service, product-photo
+download, API-key fallback or post-generation bitmap editing was used.
+
+The first desktop hero was rejected during screenshot comparison because its
+busy photographic backdrop differed from the supplied pale mint reference.
+`desktop-scan-hero.png` now contains the replacement described below. The sidebar
+branch was generated specifically from the user's later pale mint leaf reference
+and replaces the unsuitable dark dense bouquet in the desktop footer.
+Final app-layout comparison is recorded separately in the
+[frontend local review](../../../docs/planning/FRONTEND_V0_6_0_REVIEW.md).
+
+| Asset | Use / composition | Dimensions | Bytes | SHA-256 |
+| --- | --- | --- | --- | --- |
+| desktop-scan-hero.png | Quiet left 53% for live copy/action; pale mint background and translucent botanicals; tilted beige pouch and decorative barcode on right | 2172 × 724 | 1,689,460 | 497cf524a3dd0324d4a6f43f3e79e45e30c46ea89d80c636149228bf4fde15e7 |
+| desktop-insight-bowl.png | Granola/berries bowl with mint details for the reference insight banner | 1536 × 1024 | 1,844,510 | 2566adf22efdc376c52dadb49c3f59cba9b4b3800504924ed758c2ee7c6bd227 |
+| desktop-empty-scans.png | Mint pouch, decorative barcode, soft leaves and small accents for a truthful empty-history state | 1536 × 1024 | 2,107,491 | c170cde9874c42861a2b1a10856fe0e46fab1ac9b814b9b510d1ee3515f38498 |
+| results-botanical.png | Broad forest/translucent mint leaves on right, quiet left area; landscape replacement matching results reference | 2172 × 724 | 536,920 | 50018a4e1dd7fbca11cdb302e2d7e9c6c420592d0060131fa6c4217a976a2751 |
+| sidebar-mint-leaves.png | Three airy pale mint watercolor leaves on a slender curved stem; reference sidebar footer decoration | 1026 × 1532 | 454,998 | 3cbf0e2a79e542f14de6d6b79fec5e8435dbc9a75801fd5c5ca7268bf29f9b4b |
+
+Original built-in output IDs:
+
+- Hero: `exec-a0f7e37b-52f7-4017-bc1d-fa3ae8d2cd93.png`.
+- Insight: `exec-64c27d32-507f-446a-858f-7c854a45f0bd.png`.
+- Empty scans: `exec-f7a4014e-6b70-4b47-88a3-a982424fe6ad.png`.
+- Results: `exec-856d3d4b-aa1e-4929-b9a0-d17c45c8ead4.png`.
+- Sidebar: `exec-06914392-eaef-4c37-9e6e-2adf54aadf8e.png`.
+
+Generation briefs for hero/insight/empty/results summarize the requested
+composition, rather than claiming to reproduce their complete original prompts:
+
+- Hero: match the supplied desktop Home reference `codex-clipboard-f53e5e24…png`;
+  keep the left 53% quiet and near white/mint, add pale translucent botanical
+  shapes, and place a beige pouch tilted on the right around 71% of the width.
+  Its barcode has no usable digits or product identity. Avoid a photographic
+  background, nutrition/health claims, scores and baked-in UI controls.
+- Insight: isolated premium bowl of granola with strawberries, blueberries and
+  mint, suited to the screenshot's wide insight banner; no text, brands or UI.
+- Empty scans: an isolated mint paper pouch with a decorative barcode, soft
+  botanical shapes and restrained sparkle accents; no product digits, brands,
+  nutritional claims or text. This decorates a genuine empty state.
+- Results: landscape transparent botanical decoration with broad forest and translucent
+  mint leaves growing from the right edge; quiet left area, no product, words,
+  scores, factual claims or UI.
+
+The sidebar asset used the supplied crop `codex-clipboard-9c3d9d97…png`. Its exact
+generation prompt was:
+
+~~~text
+Create the sidebar botanical decoration from this reference as a transparent PNG cutout asset. Closely match ONLY its soft pale mint-green watercolor leaves and slender curved mint stem on the left edge: three elongated pointed oval leaves with understated translucent washes, faint simple veins, no dark-green glossy leaves, no photorealism, no dense bouquet, no flowers. Main branch rises from lower left and leans gently toward upper right with broad quiet empty space to its right. Use the same desaturated airy mint style as this exact reference. Include just the branch and its 3 leaves, not the small separate leaf lower right. Remove all text, underline, white background, rounded panel and UI. All non-leaf pixels must be transparent. Portrait asset with branch toward left, no shadows.
+~~~
+
+These are interface decorations, never actual catalogue images, a scanned
+package, a verified GTIN, a nutrition observation or a health/safety endorsement.
+Headings, buttons, footer copy, source information and result states are live
+Flutter UI. Real product imagery retains its separate source URL, attribution
+and reuse qualifications; generated art cannot satisfy missing-image coverage.
+
 
 ## Themed scan-banner backgrounds — 7 October 2026
 

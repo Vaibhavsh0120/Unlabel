@@ -30,7 +30,7 @@ class _WebEngine implements LocalOcrEngine {
       return text.toDart;
     } catch (_) {
       throw const LocalOcrFailure(
-        'Text reading could not finish. Try again or enter the printed facts manually.',
+        'Text reading could not finish. Retake the photo or use automatic AI reading.',
       );
     }
   }
@@ -40,7 +40,7 @@ class _WebEngine implements LocalOcrEngine {
     try {
       _cancel();
     } catch (_) {
-      // The manual form remains available if the bridge is unavailable.
+      // Retaking a photo remains available if the bridge is unavailable.
     }
   }
 
