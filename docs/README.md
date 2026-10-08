@@ -1,6 +1,10 @@
 # Documentation index
 
-Published checkpoint, 8 October 2026: **frontend v0.6.1+8 / backend v0.12.0**
+Current frontend correction: **v0.6.2+9** displays selected-only Profile summaries,
+first two labels and `+N`, preserving complete separate editors and saved data.
+[Review/deployment status](planning/FRONTEND_V0_6_2_REVIEW.md).
+
+Preceding published checkpoint, 8 October 2026: **frontend v0.6.1+8 / backend v0.12.0**
 are pushed on `main`, with READY production deployments and **55 frontend / 389
 backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
 observations and their separate 120 image descriptors match the pinned sources.

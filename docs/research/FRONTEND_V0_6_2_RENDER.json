@@ -1,0 +1,50 @@
+{
+  "format_version": "1",
+  "component": "frontend",
+  "version": "0.6.2",
+  "build_number": "9",
+  "reviewed_on": "2026-10-08",
+  "build": "local release web with production backend",
+  "widths": [390, 1440, 1728],
+  "source_files": ["frontend/lib/features/account/presentation/profile_page.dart"],
+  "before": {
+    "reference": "User screenshot showing empty preferences with Low sugar, High fibre and Vegetarian chips",
+    "previous_source_sha": "48b6f3e4632afb6565ac4261dc923f8b61e5cbdf"
+  },
+  "after": {
+    "method": "Codex in-app browser screenshots of affected Profile sections and visible Flutter semantic geometry",
+    "persistent_screenshot_files": false,
+    "states_reviewed": [
+      "Empty Profile at 390/1440/1728: no preference or allergen chips",
+      "Separate preferences editor opens from summary heading with all eight choices",
+      "Final disclosure heading hit areas are 48 px tall"
+    ],
+    "personal_selections_saved_during_browser_review": false
+  },
+  "synthetic_widget_fixtures": {
+    "states": ["empty", "one selection", "two selections", "six selections", "all eight preferences", "all twelve allergens"],
+    "six_selection_widths": [390, 1440],
+    "six_selection_appearance": "390 dark, 1440 light; two labels and +4 for each group",
+    "overflow_checks": "Correct separate popup, hidden selections remain checked, Cancel preserves all saved choices"
+  },
+  "verification": {
+    "full_flutter_tests_passed": 237,
+    "analysis": "No issues found",
+    "release_web_build": "passed",
+    "independent_source_review": "no actionable issues",
+    "better_design_comprehension": "passed",
+    "better_design_spacing": {
+      "status": "completed",
+      "measured_widths": [390, 1440, 1728],
+      "findings": 0,
+      "scope": "Two affected summary disclosure headings only",
+      "initial_findings": "Six moderate findings: preceding 35 px tap areas; repaired to 48 px"
+    }
+  },
+  "limits": [
+    "Flutter canvas appearance is reviewed from screenshots; semantic geometry is not pixel equality",
+    "Overflow selections are tested in disposable widget fixtures, not personal browser settings",
+    "No new physical device, camera, OCR accuracy or authenticated hosted AI proof",
+    "No new artwork or product data in this correction"
+  ]
+}

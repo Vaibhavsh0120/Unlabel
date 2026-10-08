@@ -716,8 +716,11 @@ void main() {
       expect(find.text('1'), findsNWidgets(2));
       expect(find.text('128'), findsNothing);
       expect(find.text('—'), findsOneWidget);
-      await tester.ensureVisible(find.text('Low sugar'));
+      await tester.ensureVisible(find.text('Preferences'));
+      await tester.tap(find.text('Preferences'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Low sugar'));
+      await tester.tap(find.text('Save preferences'));
       await tester.pumpAndSettle();
       expect(
         (await DeviceProfilePreferencesStore(prefs).read()).lowSugar,

@@ -8,6 +8,10 @@ v0.6.1+8 is now published/READY with 55 hosted checks and refines the shorter-wi
 separate Profile editors with eight food preferences, twelve allergen reminders,
 selected counts/chips and pinned actions. The mobile pill follows hold or direct
 horizontal drag, previews a destination and selects only on release.
+Frontend v0.6.2+9 corrects Profile summaries: display saved selections only,
+first two labels followed by `+N` for the remaining count. Empty selections have
+no chips. Each heading/chip opens its separate complete editor; saved data is
+never truncated. Retain the existing card, colors and responsive wrapping.
 This supersedes the earlier manual-entry UI direction while preserving the
 existing mobile Home / Scan / Compare / Saved order and Profile shortcut.
 

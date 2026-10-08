@@ -21,6 +21,11 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
+Frontend **v0.6.2+9** corrects Profile summaries to show only selected items:
+first two chips, then `+N` for the rest. Empty groups show no chips. The complete
+separate editors preserve every selection.
+[Correction review and deployment status](docs/planning/FRONTEND_V0_6_2_REVIEW.md).
+
 **Published: frontend v0.6.1+8 and backend v0.12.0.** Automatic barcode/front/back
 reading, post-capture highlights and the supplied Home/product result layouts are
 deployed. The Enter package label form is removed. Both production deployments are

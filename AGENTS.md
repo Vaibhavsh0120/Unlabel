@@ -1,5 +1,10 @@
 # Unlabel workspace instructions
 
+- Current frontend correction v0.6.2+9: selected-only Profile summaries; no chips
+  when empty, first two labels plus `+N` otherwise. Preserve the complete separate
+  preference/allergen editors and device-only saved selections. Review and push
+  status: docs/planning/FRONTEND_V0_6_2_REVIEW.md. Backend v0.12.0 is unchanged.
+
 - Latest production checkpoint (8 October 2026): frontend v0.6.1+8 implementation
   `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is pushed and READY at
   `dpl_6yiUZas5iZqnZ21kzoxM9yfeWGy4`, with 55 hosted checks, all 21 OCR hashes,

@@ -688,27 +688,30 @@ class _ProfilePageState extends State<ProfilePage> {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Row(
-          children: [
-            Icon(icon, color: theme.colorScheme.primary, size: 25),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                text,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: onTap == null ? 0 : 48),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Row(
+            children: [
+              Icon(icon, color: theme.colorScheme.primary, size: 25),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  text,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
-            ),
-            if (onTap != null)
-              Icon(
-                Icons.chevron_right,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-          ],
+              if (onTap != null)
+                Icon(
+                  Icons.chevron_right,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -730,47 +733,10 @@ class _ProfilePageState extends State<ProfilePage> {
           key: const ValueKey('profile-preferences-summary-count'),
           style: Theme.of(context).textTheme.bodySmall,
         ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 7,
-          runSpacing: 7,
-          children: [
-            _preferenceChip(
-              'Low sugar',
-              Icons.eco_outlined,
-              _preferences.lowSugar,
-              () => _savePreferences(
-                _preferences.copyWith(lowSugar: !_preferences.lowSugar),
-              ),
-            ),
-            _preferenceChip(
-              'High fibre',
-              Icons.grass_outlined,
-              _preferences.highFibre,
-              () => _savePreferences(
-                _preferences.copyWith(highFibre: !_preferences.highFibre),
-              ),
-            ),
-            _preferenceChip(
-              'Vegetarian',
-              Icons.restaurant_outlined,
-              _preferences.vegetarian,
-              () => _savePreferences(
-                _preferences.copyWith(vegetarian: !_preferences.vegetarian),
-              ),
-            ),
-            for (final preference
-                in DeviceProfilePreferences.extraPreferenceLabels.entries)
-              if (_preferences.extraPreferences.contains(preference.key))
-                ActionChip(
-                  avatar: const FeatureIcon('leaf', size: 17),
-                  label: Text(preference.value),
-                  onPressed: _preferencesBusy
-                      ? null
-                      : () => _choosePreferences(),
-                ),
-          ],
-        ),
+        if (_preferences.selectedPreferenceLabels.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          _selectionSummary(_preferences.selectedPreferenceLabels),
+        ],
         const SizedBox(height: 20),
         _sectionHeading(
           'Allergens to remember',
@@ -788,22 +754,12 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         if (_preferences.allergens.isNotEmpty) ...[
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 7,
-            runSpacing: 7,
-            children: [
-              for (final allergen
-                  in DeviceProfilePreferences.allergenLabels.entries)
-                if (_preferences.allergens.contains(allergen.key))
-                  ActionChip(
-                    avatar: const Icon(Icons.warning_amber_rounded, size: 17),
-                    label: Text('${allergen.value} reminder'),
-                    onPressed: _preferencesBusy
-                        ? null
-                        : () => _choosePreferences(allergensOnly: true),
-                  ),
-            ],
-          ),
+          _selectionSummary([
+            for (final allergen
+                in DeviceProfilePreferences.allergenLabels.entries)
+              if (_preferences.allergens.contains(allergen.key))
+                '${allergen.value} reminder',
+          ], allergensOnly: true),
         ],
         if (_preferenceError != null) ...[
           const SizedBox(height: 8),
@@ -813,25 +769,34 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
   );
 
-  Widget _preferenceChip(
-    String label,
-    IconData icon,
-    bool selected,
-    VoidCallback change,
-  ) => FilterChip(
-    label: Text(label),
-    avatar: Icon(icon, size: 18),
-    selected: selected,
-    showCheckmark: true,
-    onSelected: _preferencesBusy ? null : (_) => change(),
-    backgroundColor: _mint,
-    selectedColor: Theme.of(context).colorScheme.primaryContainer,
-    side: selected
-        ? BorderSide(color: Theme.of(context).colorScheme.primary)
-        : BorderSide.none,
-    shape: const StadiumBorder(),
-    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-  );
+  Widget _selectionSummary(List<String> labels, {bool allergensOnly = false}) {
+    final group = allergensOnly ? 'allergens' : 'preferences';
+    final edit = _preferencesBusy
+        ? null
+        : () => _choosePreferences(allergensOnly: allergensOnly);
+    return Wrap(
+      key: ValueKey('profile-$group-summary-chips'),
+      spacing: 7,
+      runSpacing: 7,
+      children: [
+        for (final label in labels.take(2))
+          ActionChip(
+            avatar: allergensOnly
+                ? const Icon(Icons.warning_amber_rounded, size: 17)
+                : const FeatureIcon('leaf', size: 17),
+            label: Text(label),
+            onPressed: edit,
+          ),
+        if (labels.length > 2)
+          ActionChip(
+            key: ValueKey('profile-$group-overflow'),
+            label: Text('+${labels.length - 2}'),
+            tooltip: 'View ${labels.length - 2} more selected $group',
+            onPressed: edit,
+          ),
+      ],
+    );
+  }
 
   Widget _setting(
     String label,

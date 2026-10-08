@@ -94,6 +94,154 @@ void _expectPinnedActions(WidgetTester tester, Size size) {
 }
 
 void main() {
+  testWidgets('empty profile summaries have no suggested or selected chips', (
+    tester,
+  ) async {
+    final harness = _Harness();
+    await harness.pump(tester);
+    expect(find.text('No preferences selected'), findsOneWidget);
+    expect(find.text('No allergens selected'), findsOneWidget);
+    expect(find.byType(ActionChip), findsNothing);
+    expect(find.byType(FilterChip), findsNothing);
+    for (final label in ['Preferences', 'Allergens to remember']) {
+      final disclosure = find
+          .ancestor(of: find.text(label), matching: find.byType(InkWell))
+          .first;
+      expect(tester.getSize(disclosure).height, greaterThanOrEqualTo(48));
+    }
+    for (final label in ['Low sugar', 'High fibre', 'Vegetarian']) {
+      expect(find.text(label), findsNothing);
+    }
+    await harness.open(tester);
+    expect(_choice('Low sugar'), findsOneWidget);
+    await tester.tap(_choice('Cancel'));
+    await tester.pumpAndSettle();
+    await harness.open(tester, allergensOnly: true);
+    expect(_choice('Milk'), findsOneWidget);
+    expect(harness.preferences.values, isEmpty);
+    expect(harness.requests, 0);
+  });
+
+  for (final count in [1, 2]) {
+    testWidgets('$count saved choices show without defaults or overflow', (
+      tester,
+    ) async {
+      final harness = _Harness();
+      await DeviceProfilePreferencesStore(harness.preferences).write(
+        DeviceProfilePreferences(
+          extraPreferences: count == 1 ? {'vegan'} : {'vegan', 'low_sodium'},
+          allergens: count == 1 ? {'soy'} : {'soy', 'milk'},
+        ),
+      );
+      await harness.pump(tester);
+      expect(find.byType(ActionChip), findsNWidgets(count * 2));
+      expect(find.text('Vegan'), findsOneWidget);
+      expect(find.text('Soy reminder'), findsOneWidget);
+      expect(find.text('Low sugar'), findsNothing);
+      expect(find.text('High fibre'), findsNothing);
+      expect(find.text('Vegetarian'), findsNothing);
+      expect(
+        find.byKey(const ValueKey('profile-preferences-overflow')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('profile-allergens-overflow')),
+        findsNothing,
+      );
+      if (count == 2) {
+        expect(find.text('Lower sodium'), findsOneWidget);
+        expect(find.text('Milk reminder'), findsOneWidget);
+      }
+      expect(tester.takeException(), isNull);
+      expect(harness.requests, 0);
+    });
+  }
+
+  for (final size in [const Size(390, 844), const Size(1440, 730)]) {
+    testWidgets('six choices show first two and +4 at $size', (tester) async {
+      final harness = _Harness();
+      final store = DeviceProfilePreferencesStore(harness.preferences);
+      const saved = DeviceProfilePreferences(
+        lowSugar: true,
+        highFibre: true,
+        vegetarian: true,
+        extraPreferences: {'vegan', 'low_sodium', 'high_protein'},
+        allergens: {'soy', 'tree_nuts', 'peanuts', 'eggs', 'gluten', 'milk'},
+      );
+      await store.write(saved);
+      await harness.pump(
+        tester,
+        size: size,
+        brightness: size.width == 390 ? Brightness.dark : Brightness.light,
+      );
+      final foods = find.byKey(
+        const ValueKey('profile-preferences-summary-chips'),
+      );
+      final allergens = find.byKey(
+        const ValueKey('profile-allergens-summary-chips'),
+      );
+      for (final summary in [foods, allergens]) {
+        expect(
+          find.descendant(of: summary, matching: find.byType(ActionChip)),
+          findsNWidgets(3),
+        );
+        expect(
+          find.descendant(of: summary, matching: find.text('+4')),
+          findsOneWidget,
+        );
+      }
+      expect(find.text('Low sugar'), findsOneWidget);
+      expect(find.text('High fibre'), findsOneWidget);
+      expect(find.text('Milk reminder'), findsOneWidget);
+      expect(find.text('Gluten reminder'), findsOneWidget);
+      expect(find.text('Vegetarian'), findsNothing);
+      expect(find.text('Soy reminder'), findsNothing);
+      final moreFoods = find.byKey(
+        const ValueKey('profile-preferences-overflow'),
+      );
+      final chip = tester.widget<ActionChip>(moreFoods);
+      expect(chip.tooltip, 'View 4 more selected preferences');
+      await tester.ensureVisible(moreFoods);
+      await tester.tap(moreFoods);
+      await tester.pumpAndSettle();
+      expect(_choice('Milk'), findsNothing);
+      await tester.ensureVisible(_choice('Vegan'));
+      expect(
+        tester
+            .getSemantics(find.byKey(const ValueKey('food-choice-vegan')))
+            .getSemanticsData()
+            .flagsCollection
+            .isChecked,
+        CheckedState.isTrue,
+      );
+      await tester.tap(_choice('Cancel'));
+      await tester.pumpAndSettle();
+      final moreAllergens = find.byKey(
+        const ValueKey('profile-allergens-overflow'),
+      );
+      await tester.ensureVisible(moreAllergens);
+      await tester.tap(moreAllergens);
+      await tester.pumpAndSettle();
+      expect(_choice('Low sugar'), findsNothing);
+      await tester.ensureVisible(_choice('Soy'));
+      expect(
+        tester
+            .getSemantics(find.byKey(const ValueKey('allergen-choice-soy')))
+            .getSemanticsData()
+            .flagsCollection
+            .isChecked,
+        CheckedState.isTrue,
+      );
+      await tester.tap(_choice('Cancel'));
+      await tester.pumpAndSettle();
+      final restored = await store.read();
+      expect(restored.selectedPreferenceLabels, saved.selectedPreferenceLabels);
+      expect(restored.allergens, saved.allergens);
+      expect(tester.takeException(), isNull);
+      expect(harness.requests, 0);
+    });
+  }
+
   testWidgets('desktop editors keep food and allergens in separate dialogs', (
     tester,
   ) async {
@@ -192,9 +340,13 @@ void main() {
             .data,
         '8 selected',
       );
+      expect(find.text('Low sugar'), findsOneWidget);
+      expect(find.text('High fibre'), findsOneWidget);
+      expect(find.text('+6'), findsOneWidget);
+      expect(find.text('Vegetarian'), findsNothing);
       for (final label
           in DeviceProfilePreferences.extraPreferenceLabels.values) {
-        expect(find.text(label), findsOneWidget);
+        expect(find.text(label), findsNothing);
       }
       expect(harness.preferences.values.keys, {
         DeviceProfilePreferencesStore.key,
@@ -304,8 +456,13 @@ void main() {
             .data,
         '12 selected',
       );
-      for (final label in DeviceProfilePreferences.allergenLabels.values) {
-        expect(find.text('$label reminder'), findsOneWidget);
+      expect(find.text('Milk reminder'), findsOneWidget);
+      expect(find.text('Gluten reminder'), findsOneWidget);
+      expect(find.text('+10'), findsOneWidget);
+      for (final label in DeviceProfilePreferences.allergenLabels.values.skip(
+        2,
+      )) {
+        expect(find.text('$label reminder'), findsNothing);
       }
       await harness.open(tester, allergensOnly: true);
       await tester.ensureVisible(_choice('Milk'));

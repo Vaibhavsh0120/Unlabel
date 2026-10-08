@@ -1,6 +1,10 @@
 # Flutter frontend
 
-Latest: **v0.6.1+8**, source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`,
+Current correction: **v0.6.2+9**, selected-only Profile summaries, first two chips
+plus `+N`. Empty selections show no chips; the complete separate editors retain
+all saved choices. [Review/deployment status](../docs/planning/FRONTEND_V0_6_2_REVIEW.md).
+
+Preceding: **v0.6.1+8**, source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`,
 READY production with 55 hosted checks; 232 tests, clean analysis and release build.
 See [the v0.6.1 review](../docs/planning/FRONTEND_V0_6_1_REVIEW.md).
 The v0.6.0 evidence below is the preceding release.
@@ -188,7 +192,7 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the v0.6.1 correction review for the current local check and deployment status.
+See the v0.6.2 correction review for the current local check and deployment status.
 
 ## Source ownership
 
