@@ -28,9 +28,11 @@ GET_ROUTES = (
     rf"/v1/researched/products/{ENTRY_ID}",
     rf"/v1/researched/products/by-barcode/{BARCODE}",
     r"/v1/account/sync",
+    r"/v1/ai/active",
 )
 POST_ROUTES = (
     r"/v1/(?:nutrition/normalize|claims/check|community/contributions|reports/check|reports/compare|account/sync)",
+    r"/v1/ai/extract",
 )
 
 
@@ -224,6 +226,7 @@ def web_handler(directory: Path, mode: str):
             limit = {
                 "/v1/account/sync": 512 * 1024,
                 "/v1/reports/compare": 64 * 1024,
+                "/v1/ai/extract": 4 * 1024 * 1024,
             }.get(path, 32 * 1024)
             if size > limit:
                 self.fail(413, "preview_request_too_large")

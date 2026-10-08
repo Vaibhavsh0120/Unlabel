@@ -15,6 +15,7 @@ class Settings(BaseSettings):
         env_file=Path(__file__).resolve().parents[2] / ".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        hide_input_in_errors=True,
     )
     off_user_agent: str = f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)"
     off_timeout_seconds: float = Field(default=8, ge=1, le=15)
@@ -32,6 +33,19 @@ class Settings(BaseSettings):
     community_database_id: Literal["unlabel"] = "unlabel"
     community_service_account_json: SecretStr | None = Field(default=None, repr=False)
     community_actor_secret: SecretStr | None = Field(default=None, repr=False)
+    ai_enabled: bool = False
+    ai_initial_credential_id: str = Field(
+        default="gemini-primary", pattern=r"^[a-z][a-z0-9-]{0,47}$"
+    )
+    ai_failover_enabled: bool = True
+    ai_daily_request_limit: int = Field(default=100, ge=1, le=200)
+    ai_actor_daily_limit: int = Field(default=10, ge=1, le=20)
+    ai_control_secret: SecretStr | None = Field(default=None, repr=False)
+    gemini_api_key: SecretStr | None = Field(default=None, repr=False)
+    openai_api_key: SecretStr | None = Field(default=None, repr=False)
+    gemini_model: str = Field(default="gemini-3.5-flash-lite", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
+    openai_model: str = Field(default="gpt-4.1-mini", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
+    ai_fallback_credentials_json: SecretStr | None = Field(default=None, repr=False)
 
     def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
         # Preserve BaseSettings' supported dotenv override in its typed signature.
@@ -72,6 +86,38 @@ class Settings(BaseSettings):
             and self.community_service_account_json is not None
             and self.community_actor_secret is not None
         )
+
+    @field_validator("gemini_model", "openai_model", mode="before")
+    @classmethod
+    def default_empty_model(cls, value: Any, info: Any) -> Any:
+        if value == "":
+            return "gemini-3.5-flash-lite" if info.field_name == "gemini_model" else "gpt-4.1-mini"
+        return value
+
+    @field_validator("gemini_api_key", "openai_api_key")
+    @classmethod
+    def bounded_ai_key(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None:
+            key = value.get_secret_value()
+            if not key:
+                return None
+            if not 16 <= len(key) <= 512 or any(ord(c) < 33 or ord(c) > 126 for c in key):
+                raise ValueError("Invalid AI credential")
+        return value
+
+    @field_validator("ai_fallback_credentials_json")
+    @classmethod
+    def bounded_ai_credentials(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None and len(value.get_secret_value().encode()) > 8192:
+            raise ValueError("AI replacement configuration exceeds its bound")
+        return value
+
+    @field_validator("ai_control_secret")
+    @classmethod
+    def bounded_ai_control_secret(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None and not 32 <= len(value.get_secret_value()) <= 512:
+            raise ValueError("AI control secret must contain 32-512 characters")
+        return value
 
     @field_validator("community_service_account_json")
     @classmethod

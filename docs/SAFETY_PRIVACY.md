@@ -96,7 +96,15 @@ does not independently verify the caller's current packet. Source reuse rights
 stay attached; automatic saving does not change OFF/image licenses. Generic-food
 composition cannot fill branded-package gaps. [Storage lifecycle](architecture/COMMUNITY_CATALOGUE.md).
 
-Gemini Free Tier inputs/outputs may improve Google products and be reviewed by humans. Obtain a clear optional cloud-wording choice; use only public package text, approved public snippets and generic findings. Exclude names, health profiles, personal suitability/history, photos and confidential information. Eligible adult access restrictions also apply. [Gemini terms](https://ai.google.dev/gemini-api/terms), [free-stack plan](research/FREE_STACK.md).
+Backend v0.11 adds optional package-photo reading, authorized by the user on
+8 October 2026. Obtain explicit transfer consent before sending package photos
+to the backend and its globally configured Gemini/OpenAI service. Gemini Free
+Tier inputs/outputs may improve Google products and be reviewed by humans.
+OpenAI uses `store:false`, which does not guarantee zero provider retention.
+Exclude people, private identities, health profiles, personal history and
+confidential information. Package photos and raw OCR are never stored in our
+database or private account sync. Eligible provider access restrictions apply.
+[AI privacy and limits](architecture/AI_ROUTING.md) · [Gemini terms](https://ai.google.dev/gemini-api/terms).
 
 Before hosted use, verify Vercel's applicable data-use terms/account opt-out and avoid logging request bodies or sensitive data. [Vercel terms](https://vercel.com/legal/terms). No billing upgrade is part of this plan.
 
@@ -111,11 +119,13 @@ guarantee provider availability. Keep Spark/no linked billing and no paid fallba
 Local source/emulator and live Firebase checks are distinct from hosted API proof.
 
 
-Gemini remains disabled unless a later measured benchmark justifies a bounded
-fallback with no-card/privacy and provider-eligibility controls. Optional password login is implemented without an admin/reviewer role or
+AI remains disabled in clean-clone defaults. The supplied operator keys enable
+bounded optional photo extraction; one shared Firestore selection applies to all
+tasks and users, with sticky manual/failure replacement. Synthetic evidence is
+separate from real-package or device accuracy. Optional password login is implemented without an admin/reviewer role or
 dashboard. The app has one scanner/client role; public facts and useful analysis
 remain available to guests through automatic anonymous write authentication. CORS restricts browser access and is not authentication. Neither a shared
 APK/web secret nor a deployment-automation bypass token belongs in clients.
 `BACKEND_BASE_URL` is public configuration.
 
-An optional `LOCAL_API_TOKEN` is solely a private development/tooling control, never production authentication or a shipped app credential. Native requests are not protected by CORS. Vercel instance caches/counters cannot guarantee a durable shared AI budget; on exhaustion/failure use reviewed templates or keep cloud AI disabled.
+An optional `LOCAL_API_TOKEN` is solely a private development/tooling control, never production authentication or a shipped app credential. Native requests are not protected by CORS. AI admission uses shared bounded Firestore counters rather than instance-only counters. On exhaustion/failure, keep unknowns or read locally.

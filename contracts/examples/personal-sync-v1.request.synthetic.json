@@ -13,7 +13,7 @@
         "report": {
           "schema_version": "1",
           "report_version": "label-report-v1",
-          "backend_version": "0.10.0",
+          "backend_version": "0.11.0",
           "generated_at": "2026-10-07T12:00:00Z",
           "assessment_basis": "user_confirmed_label",
           "status": "partial",

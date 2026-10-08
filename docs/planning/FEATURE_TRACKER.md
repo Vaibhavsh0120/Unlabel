@@ -1,5 +1,17 @@
 # Feature and integration tracker
 
+Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
+bounded Gemini/OpenAI photo reading with exactly one globally active credential,
+sticky failure replacement and scanner authentication. **1,303 tests pass**, with
+five explicit provider/emulator skips. Keys are server-only; AI facts remain
+unverified and photos stay outside database/account sync. Deployment verification
+is pending. [Backend review](BACKEND_V0_11_0_REVIEW.md) ·
+[Automatic scan plan](AUTOMATIC_SCAN_PLAN.md).
+
+The selected storage remains a verified read-only SQLite public catalogue plus
+Firestore mutable observations/accounts/AI selection. New sourced data is
+validated and rebuilt into SQLite; no existing dataset is deleted or migrated.
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** implements
 three independent researched-product read APIs. The generated database contains
 **243 source observations**: **49 manufacturer, 125 retailer and 69 exact-code OFF**.

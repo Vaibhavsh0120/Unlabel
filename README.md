@@ -6,8 +6,8 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.4.0-155b4b?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.10.0-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.5.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.11.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
@@ -20,6 +20,13 @@ reviewed claim checks and clear missing-information states. The app uses a
 white, forest-green and mint design, with light as the first-use default.
 
 ## What works
+
+**Backend v0.11.0** implements optional automatic photo reading through one
+globally selected Gemini/OpenAI key. The backend validation passes 1,303 tests
+(five provider/emulator skips). Automatic scanning and the new results composition
+are being integrated separately in frontend v0.6.0. Production verification is
+pending. [AI configuration](docs/architecture/AI_ROUTING.md) ·
+[Backend review](docs/planning/BACKEND_V0_11_0_REVIEW.md).
 
 **Backend v0.10.0** adds a read-only researched-product database with **243 dated
 source observations**, including **174 manufacturer/retailer website records**.

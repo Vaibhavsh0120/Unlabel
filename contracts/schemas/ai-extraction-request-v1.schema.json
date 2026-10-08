@@ -1,0 +1,62 @@
+{
+  "$defs": {
+    "ExtractionImage": {
+      "additionalProperties": false,
+      "properties": {
+        "slot": {
+          "enum": [
+            "front",
+            "back",
+            "barcode"
+          ],
+          "title": "Slot",
+          "type": "string"
+        },
+        "mime_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "data_base64": {
+          "maxLength": 1200000,
+          "minLength": 1,
+          "title": "Data Base64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slot",
+        "mime_type",
+        "data_base64"
+      ],
+      "title": "ExtractionImage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ExtractionImage"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Images",
+      "type": "array"
+    },
+    "privacy_consent": {
+      "const": true,
+      "title": "Privacy Consent",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "images",
+    "privacy_consent"
+  ],
+  "title": "ExtractionRequest",
+  "type": "object"
+}

@@ -1,5 +1,11 @@
 # Shared API contracts
 
+Backend v0.11 adds six AI schemas for extraction requests, unverified label facts,
+extraction responses and machine-only status/activation. Current OpenAPI is
+`schemas/backend-v0.11.0.openapi.json` (27 paths/28 operations). Only scanner
+extraction accepts bounded photos with consent; other contracts continue to
+exclude photos/raw OCR. See [AI architecture](../docs/architecture/AI_ROUTING.md).
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,
 125 retailer and 69 OFF). It preserves dated sources, unknown identities and

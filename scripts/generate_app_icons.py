@@ -103,7 +103,7 @@ def draw_icon(colors, transparent=False):
     for y in range(1024):
         for x in range(1024):
             t = max(0, min(1, ((x - 300) * 440 - (y - 650) * 450) / 396100))
-            pixels[x, y] = tuple(round(a + (b - a) * t) for a, b in zip(start, end))
+            pixels[x, y] = tuple(round(a + (b - a) * t) for a, b in zip(start, end, strict=True))
     gradient = small_gradient.resize(canvas.size, Image.Resampling.BILINEAR)
     canvas.paste(gradient, (0, 0), mask)
     draw = ImageDraw.Draw(canvas)

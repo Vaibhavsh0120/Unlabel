@@ -6,6 +6,15 @@ from app.accounts.models import MAX_BODY_BYTES
 from app.core.json_numbers import checked_float, reject_constant
 
 
+def unique_properties(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Duplicate JSON property")
+        result[key] = value
+    return result
+
+
 class RequestBodyLimit:
     """Bound actual ASGI chunks before FastAPI JSON parsing, including chunked requests."""
 
@@ -19,7 +28,11 @@ class RequestBodyLimit:
             return
         personal = scope["path"].rstrip("/") == "/v1/account/sync"
         comparison = scope["path"].rstrip("/") == "/v1/reports/compare"
-        max_bytes = MAX_BODY_BYTES if personal else 65536 if comparison else self.max_bytes
+        extraction = scope["path"].rstrip("/") == "/v1/ai/extract"
+        max_bytes = (
+            4 * 1024 * 1024 if extraction
+            else MAX_BODY_BYTES if personal else 65536 if comparison else self.max_bytes
+        )
         for name, value in scope.get("headers", []):
             if name.lower() == b"content-length":
                 try:
@@ -66,11 +79,17 @@ class RequestBodyLimit:
                 "/v1/reports/check",
                 "/v1/reports/compare",
                 "/v1/account/sync",
+                "/v1/ai/extract",
+                "/v1/ai/control/activate",
             }
             and scope["method"] == "POST"
         ):
             try:
-                json.loads(body, parse_float=checked_float, parse_constant=reject_constant)
+                ai_path = scope["path"].rstrip("/").startswith("/v1/ai/")
+                json.loads(
+                    body, parse_float=checked_float, parse_constant=reject_constant,
+                    object_pairs_hook=unique_properties if ai_path else dict,
+                )
             except (json.JSONDecodeError, UnicodeDecodeError):
                 pass  # Framework handles malformed JSON with its sanitized validation response.
             except (ValueError, RecursionError):
@@ -101,7 +120,10 @@ class RequestBodyLimit:
 
     async def reject(self, scope, receive, send):
         path = scope["path"].rstrip("/")
-        size = "512" if path == "/v1/account/sync" else "64" if path == "/v1/reports/compare" else "32"
+        size = (
+            "4096" if path == "/v1/ai/extract" else "512" if path == "/v1/account/sync"
+            else "64" if path == "/v1/reports/compare" else "32"
+        )
         await JSONResponse(
             {"detail": f"Request body exceeds {size} KiB"},
             status_code=413,

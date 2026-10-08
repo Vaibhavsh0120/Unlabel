@@ -30,11 +30,19 @@ photo highlights. This replaces the normal Enter package label route.
 - Local-first barcode and OCR are free/offline. Preserve model/worker reuse and
   bounded pixels/bytes/cancellation. Extend OCR results with line/word geometry,
   keeping text-only compatibility for existing tests/callers.
-- Optional backend Gemini vision improves difficult extraction. Use a server-only
+- Optional backend Gemini or OpenAI vision improves difficult extraction. Use a server-only
   secret, bounded image requests, structured JSON and deterministic validation.
   A missing key, quota, timeout or malformed response returns a useful local path.
-  No billing activation, paid fallback or automatic retries. User authorized this
+  No billing activation or unconfigured paid fallback. User authorized this
   hybrid choice and offered a key; configuration/live provider proof are separate.
+- Exactly one globally active credential serves every AI task and user. A shared
+  Firestore pointer survives server restarts. Manual selection uses an expected
+  revision; failures may atomically select one configured replacement. Selection
+  stays there until another manual change or failure; there is no task-specific
+  routing or rotation on success. In-flight requests admitted before a switch may
+  finish. A failed current request gets at most one replacement attempt. Respect
+  quota cooldowns and shared request limits; replacements are supplied by the
+  operator, never created automatically. OpenAI remains optional and user-funded.
 - Our backend does not retain photos or raw OCR. Google free-tier data-use terms
   are shown before optional image transfer; do not promise provider zero retention.
   Photos remain outside account sync and public product records.
@@ -56,7 +64,7 @@ facts. If a score is added later it requires a documented, evaluated rubric.
 ## Delivery and acceptance
 
 First close the independently tested research database backend 0.10/frontend 0.5.
-Then backend 0.11 adds automatic extraction/matching contracts and frontend 0.6
+Then backend 0.11 adds automatic extraction contracts and frontend 0.6
 replaces the manual route and results composition. Each is documented/tested/pushed
 on main independently; no worktrees, mobile builds for backend work or paid services.
 
@@ -68,3 +76,12 @@ known barcode-only and unknown front/back workflows, and verify exact deployment
 SHAs/versions.3–5seconds is a measured target for warm known products, not a promise
 for every cold camera/model/download/network/unknown package. Physical Android/iOS
 camera/accuracy and provider quota remain explicit until actually observed.
+
+## Database choice, 8 October 2026
+
+The user requested the best storage choice rather than mandating Firebase. Keep
+SQLite as the read-only deployed public catalogue; add new sourced facts through
+validated source bundles and rebuild it. Firestore stores mutable community facts,
+private accounts and global AI selection. Vercel runtime writes cannot serve as
+persistent SQLite catalogue updates. Preserve all existing data and export a
+verified local backup before maintenance; do not delete or overwrite new records.

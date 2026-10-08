@@ -1,4 +1,16 @@
-# Unlabel backend: v0.9.0 Reviewed Ingredient Functions
+# Unlabel backend: v0.11.0 Automatic Photo Extraction
+
+Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
+bounded Gemini/OpenAI photo reading with exactly one globally active credential,
+sticky failure replacement and scanner authentication. **1,303 tests pass**, with
+five explicit provider/emulator skips. Keys are server-only; AI facts remain
+unverified and photos stay outside database/account sync. Deployment verification
+is pending. [Backend review](../docs/planning/BACKEND_V0_11_0_REVIEW.md) ·
+[Automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
+
+The selected storage remains a verified read-only SQLite public catalogue plus
+Firestore mutable observations/accounts/AI selection. New sourced data is
+validated and rebuilt into SQLite; no existing dataset is deleted or migrated.
 
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,

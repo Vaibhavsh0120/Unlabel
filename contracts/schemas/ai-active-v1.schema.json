@@ -1,0 +1,71 @@
+{
+  "properties": {
+    "status": {
+      "enum": [
+        "ready",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "scope": {
+      "const": "global",
+      "default": "global",
+      "title": "Scope",
+      "type": "string"
+    },
+    "credential_id": {
+      "title": "Credential Id",
+      "type": "string"
+    },
+    "provider": {
+      "anyOf": [
+        {
+          "enum": [
+            "gemini",
+            "openai"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Provider"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Model"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "integer"
+    },
+    "configuration_matches": {
+      "title": "Configuration Matches",
+      "type": "boolean"
+    },
+    "retry_after": {
+      "title": "Retry After",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "credential_id",
+    "provider",
+    "model",
+    "revision",
+    "configuration_matches",
+    "retry_after"
+  ],
+  "title": "ActiveResponse",
+  "type": "object"
+}

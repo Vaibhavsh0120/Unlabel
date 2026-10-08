@@ -1,0 +1,22 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "checked_at_utc": "2026-10-08T08:52:47.629744+00:00",
+  "synthetic_fixture_sha256": "6df269dc9e9d726d2d7d508420324f990296d92748bac5d5273eeef00f74f728",
+  "seconds": 3.88,
+  "checks": {
+    "unverified_evidence": true,
+    "name": true,
+    "brand": true,
+    "quantity": true,
+    "ingredients": true,
+    "sugars": true,
+    "protein": true,
+    "sodium": true,
+    "basis": true,
+    "no_invented_barcode": true,
+    "regions": true
+  },
+  "all_passed": true,
+  "limitations": "Single clear synthetic label, not real package/device accuracy or production proof."
+}

@@ -22,6 +22,7 @@ class AuthenticationUnavailable(Exception):
 class CommunityRuntime:
     def __init__(self, application: Any, database: Any, project_id: str) -> None:
         from app.accounts.store import FirestorePersonalStore
+        from app.ai.store import FirestoreAiSelectionStore
         from app.community.store import FirestoreContributionStore
 
         self._application = application
@@ -30,6 +31,7 @@ class CommunityRuntime:
         self._closed = False
         self.store = FirestoreContributionStore(database)
         self.personal_store = FirestorePersonalStore(database)
+        self.ai_store = FirestoreAiSelectionStore(database)
 
     def verify_token(self, token: str) -> str:
         return self._verify_token(token, account=False)

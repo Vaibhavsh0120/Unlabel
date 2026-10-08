@@ -220,7 +220,7 @@ def test_new_openapi_preserves_existing_components_with_reviewed_glossary_additi
     )
     with make_client() as client:
         current = client.get("/openapi.json").json()
-    assert len(current["paths"]) == 24
+    assert len(current["paths"]) == 27
     for name, path in old["paths"].items():
         assert current["paths"][name] == path
     for name, schema in old["components"]["schemas"].items():

@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 
 from app.accounts.models import SyncFailure, SyncRequest, SyncSnapshot
+from app.ai.models import ExtractedLabel, ExtractionRequest
+from app.ai.router import ActivateRequest, ActivationResponse, ActiveResponse, ExtractionResponse
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
 from app.claims.models import (
@@ -100,6 +102,12 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "research-search-v1.schema.json": ResearchSearchResult,
         "research-lookup-v1.schema.json": ResearchLookup,
         "research-barcode-lookup-v1.schema.json": ResearchBarcodeLookup,
+        "ai-extraction-request-v1.schema.json": ExtractionRequest,
+        "ai-extracted-label-v1.schema.json": ExtractedLabel,
+        "ai-extraction-response-v1.schema.json": ExtractionResponse,
+        "ai-active-v1.schema.json": ActiveResponse,
+        "ai-activate-request-v1.schema.json": ActivateRequest,
+        "ai-activate-response-v1.schema.json": ActivationResponse,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

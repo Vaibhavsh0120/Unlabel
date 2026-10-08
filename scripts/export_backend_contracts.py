@@ -31,6 +31,8 @@ glossary = import_module("app.reports.glossary")
 accounts = import_module("app.accounts.models")
 comparison = import_module("app.comparison.models")
 research = import_module("app.research_catalogue.models")
+ai = import_module("app.ai.models")
+ai_router = import_module("app.ai.router")
 compare = import_module("app.comparison.service").compare
 
 
@@ -79,6 +81,12 @@ def main():
         "research-search-v1.schema.json": research.ResearchSearchResult,
         "research-lookup-v1.schema.json": research.ResearchLookup,
         "research-barcode-lookup-v1.schema.json": research.ResearchBarcodeLookup,
+        "ai-extraction-request-v1.schema.json": ai.ExtractionRequest,
+        "ai-extracted-label-v1.schema.json": ai.ExtractedLabel,
+        "ai-extraction-response-v1.schema.json": ai_router.ExtractionResponse,
+        "ai-active-v1.schema.json": ai_router.ActiveResponse,
+        "ai-activate-request-v1.schema.json": ai_router.ActivateRequest,
+        "ai-activate-response-v1.schema.json": ai_router.ActivationResponse,
     }.items():
         write("schemas", filename, model.model_json_schema())
 

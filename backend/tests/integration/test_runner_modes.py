@@ -173,6 +173,10 @@ def test_proxy_covers_exact_current_operations(monkeypatch):
     handler = module("_preview_server", monkeypatch)
     paths = create_app().openapi()["paths"]
     for path, operations in paths.items():
+        if path == "/v1/ai/control/activate":
+            # Machine control goes directly to the backend, outside app preview.
+            assert not handler.allowed_route("POST", path)
+            continue
         concrete = path.replace("{barcode}", "12345678").replace(
             "{source_id}", "fssai-ac-2022-schedule-i"
         )

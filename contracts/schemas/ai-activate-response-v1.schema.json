@@ -1,0 +1,44 @@
+{
+  "properties": {
+    "status": {
+      "const": "ready",
+      "default": "ready",
+      "title": "Status",
+      "type": "string"
+    },
+    "scope": {
+      "const": "global",
+      "default": "global",
+      "title": "Scope",
+      "type": "string"
+    },
+    "credential_id": {
+      "title": "Credential Id",
+      "type": "string"
+    },
+    "provider": {
+      "enum": [
+        "gemini",
+        "openai"
+      ],
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "credential_id",
+    "provider",
+    "model",
+    "revision"
+  ],
+  "title": "ActivationResponse",
+  "type": "object"
+}

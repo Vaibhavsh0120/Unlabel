@@ -13,6 +13,8 @@ from starlette.concurrency import run_in_threadpool
 
 from app import __version__
 from app.accounts.models import MAX_SNAPSHOT_BYTES
+from app.ai.gateway import AiGateway
+from app.ai.router import build_router as build_ai_router
 from app.api.v1.accounts import build_router as build_accounts_router
 from app.api.v1.claims import build_router
 from app.api.v1.community import CommunityRuntimeProtocol
@@ -51,6 +53,7 @@ def create_app(
     settings: Settings | None = None,
     transport: httpx.AsyncBaseTransport | None = None,
     community_runtime: CommunityRuntimeProtocol | None = None,
+    ai_transport: httpx.AsyncBaseTransport | None = None,
 ) -> FastAPI:
     config = settings or Settings()
     knowledge_artifact = None
@@ -94,6 +97,8 @@ def create_app(
             except (OSError, ValueError):
                 pass
             application.state.community_runtime = None
+            application.state.ai_gateway = None
+            application.state.ai_client = None
             if config.community_enabled:
                 if community_runtime is not None and config.community_actor_secret is not None:
                     application.state.community_runtime = community_runtime
@@ -109,6 +114,20 @@ def create_app(
                         )
                     except AuthenticationUnavailable:
                         pass
+            if config.ai_enabled and application.state.community_runtime is not None:
+                ai_store = getattr(application.state.community_runtime, "ai_store", None)
+                if ai_store is not None:
+                    ai_client = httpx.AsyncClient(
+                        timeout=httpx.Timeout(20, connect=5), trust_env=False,
+                        follow_redirects=False,
+                        limits=httpx.Limits(max_connections=2, max_keepalive_connections=1),
+                        transport=ai_transport,
+                    )
+                    try:
+                        application.state.ai_gateway = AiGateway(config, ai_store, ai_client)
+                        application.state.ai_client = ai_client
+                    except ValueError:
+                        await ai_client.aclose()
             directory = config.catalogue_path()
             if directory is not None:
                 try:
@@ -127,6 +146,8 @@ def create_app(
             try:
                 yield
             finally:
+                if application.state.ai_client is not None:
+                    await application.state.ai_client.aclose()
                 active = application.state.community_runtime
                 if active is not None:
                     try:
@@ -251,6 +272,12 @@ def create_app(
             },
             "catalogue": catalogue,
             "research_catalogue": research,
+            "ai": {
+                "status": "configured" if request.app.state.ai_gateway is not None else "not_configured",
+                "selection_scope": "global",
+                "provider_connectivity": "not_checked",
+                "photos_retained": False,
+            },
             "community": {
                 "status": "ready"
                 if community_ready
@@ -273,6 +300,7 @@ def create_app(
                 "authentication": "password",
             },
             "capabilities": {
+                "ai_extraction": request.app.state.ai_gateway is not None,
                 "product_lookup": True,
                 "nutrition_lookup": True,
                 "nutrition_normalization": True,
@@ -523,6 +551,7 @@ def create_app(
         )
     )
     application.include_router(build_accounts_router(config=config))
+    application.include_router(build_ai_router(config))
     return application
 
 

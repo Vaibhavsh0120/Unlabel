@@ -1,0 +1,22 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "credential_id": {
+      "pattern": "^[a-z][a-z0-9-]{0,47}$",
+      "title": "Credential Id",
+      "type": "string"
+    },
+    "expected_revision": {
+      "maximum": 9007199254740990,
+      "minimum": 1,
+      "title": "Expected Revision",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "credential_id",
+    "expected_revision"
+  ],
+  "title": "ActivateRequest",
+  "type": "object"
+}

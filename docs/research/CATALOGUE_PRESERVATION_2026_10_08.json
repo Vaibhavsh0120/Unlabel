@@ -1,0 +1,60 @@
+{
+  "schema_version": "catalogue-backup-v1",
+  "created_at": "2026-10-08T09:32:09.246586+00:00",
+  "databases": {
+    "catalogue": {
+      "database_bytes": 76111872,
+      "database_sha256": "fd60eed296f2932d0db6d2a522e6bdb4ca349020bb88830301af78338b2e089e",
+      "tables": {
+        "catalogue_facts": {
+          "rows": 24641,
+          "sha256": "04d78c58756a12a3fbcfff7c5e7a07a20faeba0bde3bf182733ee615c0a0a557"
+        },
+        "catalogue_manifest": {
+          "rows": 1,
+          "sha256": "f905873f03703f06d031d4fa96728a047f82a375efecc3a3c24fd9334cfcd4c9"
+        },
+        "catalogue_products": {
+          "rows": 24641,
+          "sha256": "a8559b01624cc675caa444b7b0696329a57938014635af4fd752d641d41ec00d"
+        },
+        "catalogue_search_counts": {
+          "rows": 41965,
+          "sha256": "cb3928a42b8ba568954df1b6523c84b1eaf6c95e0969f33ec2fc77d461dd68e4"
+        },
+        "catalogue_search_format": {
+          "rows": 1,
+          "sha256": "46e888c331359492eb3968d584a81008a2f8aaab5949dfc4d22b11fb5037ab75"
+        },
+        "catalogue_search_prefixes": {
+          "rows": 387731,
+          "sha256": "ccbc1b59a19275c14435ee84b1dde7f8811521e0de10c5b8fa3401917d6c84dc"
+        },
+        "catalogue_search_terms": {
+          "rows": 99133,
+          "sha256": "5c78fff7cd64fc75d90b7ab7976645f041bd41192628fb6c19d0dac3c88b67ac"
+        }
+      }
+    },
+    "research": {
+      "database_bytes": 1413120,
+      "database_sha256": "42646b30c2c6d10acba8d421a38477bf4f3f886655fd3cb3a8e89b3007e02ce7",
+      "tables": {
+        "research_manifest": {
+          "rows": 1,
+          "sha256": "ad60ee9ce4252863cfdafc7ce915d4b5d74da899f9a5d50460420edb8ce84f97"
+        },
+        "research_products": {
+          "rows": 243,
+          "sha256": "5f4681f7e1937e733863d55868f5eada5101b59330cabae00888caa7fc16d9f4"
+        },
+        "research_terms": {
+          "rows": 1652,
+          "sha256": "c4ca221fdbb4a886eacff0438be1e72d0f69cc94cb19f7679c074f0123d4be92"
+        }
+      }
+    }
+  },
+  "verification": "SQLite online backup, integrity_check and exact sorted row hashes for every table; no source writes",
+  "backup_location": "Ignored local .local-tools/catalogue-backups; original sources remain tracked in data/catalogue"
+}

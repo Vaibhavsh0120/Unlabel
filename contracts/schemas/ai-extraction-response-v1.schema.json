@@ -1,0 +1,478 @@
+{
+  "$defs": {
+    "ExtractedBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "quantity",
+            "serving"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Amount"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "mL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "printed_text": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Printed Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "amount",
+        "unit",
+        "printed_text"
+      ],
+      "title": "ExtractedBasis",
+      "type": "object"
+    },
+    "ExtractedIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Brand"
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Variant"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quantity"
+        },
+        "barcode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Barcode"
+        }
+      },
+      "required": [
+        "name",
+        "brand",
+        "variant",
+        "quantity",
+        "barcode"
+      ],
+      "title": "ExtractedIdentity",
+      "type": "object"
+    },
+    "ExtractedLabel": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "evidence": {
+          "const": "machine_extracted_unverified",
+          "default": "machine_extracted_unverified",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "identity": {
+          "$ref": "#/$defs/ExtractedIdentity"
+        },
+        "ingredients": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ingredients"
+        },
+        "contains": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contains"
+        },
+        "may_contain": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "May Contain"
+        },
+        "front_claims": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Front Claims",
+          "type": "array"
+        },
+        "nutrition_tables": {
+          "items": {
+            "$ref": "#/$defs/ExtractedNutritionTable"
+          },
+          "maxItems": 3,
+          "title": "Nutrition Tables",
+          "type": "array"
+        },
+        "regions": {
+          "items": {
+            "$ref": "#/$defs/ExtractedRegion"
+          },
+          "maxItems": 160,
+          "title": "Regions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identity",
+        "ingredients",
+        "contains",
+        "may_contain",
+        "front_claims",
+        "nutrition_tables",
+        "regions"
+      ],
+      "title": "ExtractedLabel",
+      "type": "object"
+    },
+    "ExtractedNutrient": {
+      "additionalProperties": false,
+      "properties": {
+        "nutrient": {
+          "enum": [
+            "energy",
+            "fat",
+            "saturated_fat",
+            "carbohydrates",
+            "carbohydrates_total",
+            "sugars",
+            "added_sugars",
+            "fibre",
+            "protein",
+            "sodium",
+            "salt"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "mg",
+            "ug",
+            "kcal",
+            "kJ"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "qualifier": {
+          "enum": [
+            "exact",
+            "less_than",
+            "less_than_or_equal",
+            "approximate",
+            "unknown"
+          ],
+          "title": "Qualifier",
+          "type": "string"
+        },
+        "printed_text": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Printed Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "nutrient",
+        "value",
+        "unit",
+        "qualifier",
+        "printed_text"
+      ],
+      "title": "ExtractedNutrient",
+      "type": "object"
+    },
+    "ExtractedNutritionTable": {
+      "additionalProperties": false,
+      "properties": {
+        "table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Table Id",
+          "type": "string"
+        },
+        "basis": {
+          "$ref": "#/$defs/ExtractedBasis"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared",
+            "unknown"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/ExtractedNutrient"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "table_id",
+        "basis",
+        "preparation",
+        "rows"
+      ],
+      "title": "ExtractedNutritionTable",
+      "type": "object"
+    },
+    "ExtractedRegion": {
+      "additionalProperties": false,
+      "properties": {
+        "slot": {
+          "enum": [
+            "front",
+            "back",
+            "barcode"
+          ],
+          "title": "Slot",
+          "type": "string"
+        },
+        "label": {
+          "enum": [
+            "identity",
+            "claim",
+            "ingredients",
+            "nutrition",
+            "allergen",
+            "barcode"
+          ],
+          "title": "Label",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "box": {
+          "$ref": "#/$defs/NormalizedBox"
+        }
+      },
+      "required": [
+        "slot",
+        "label",
+        "text",
+        "box"
+      ],
+      "title": "ExtractedRegion",
+      "type": "object"
+    },
+    "NormalizedBox": {
+      "additionalProperties": false,
+      "properties": {
+        "top": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Top",
+          "type": "number"
+        },
+        "left": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Left",
+          "type": "number"
+        },
+        "bottom": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Bottom",
+          "type": "number"
+        },
+        "right": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Right",
+          "type": "number"
+        }
+      },
+      "required": [
+        "top",
+        "left",
+        "bottom",
+        "right"
+      ],
+      "title": "NormalizedBox",
+      "type": "object"
+    },
+    "ProviderSelection": {
+      "properties": {
+        "scope": {
+          "const": "global",
+          "default": "global",
+          "title": "Scope",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "gemini",
+            "openai"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "revision"
+      ],
+      "title": "ProviderSelection",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "status": {
+      "const": "extracted",
+      "default": "extracted",
+      "title": "Status",
+      "type": "string"
+    },
+    "extraction": {
+      "$ref": "#/$defs/ExtractedLabel"
+    },
+    "ai": {
+      "$ref": "#/$defs/ProviderSelection"
+    }
+  },
+  "required": [
+    "extraction",
+    "ai"
+  ],
+  "title": "ExtractionResponse",
+  "type": "object"
+}
