@@ -4,7 +4,7 @@ The latest 8 October references define desktop Home and mobile/PC single-product
 results. Published frontend v0.6.0+7 implements this direction; screenshot
 comparison was reviewed at 390/1440/1728 px, and its READY deployment passed
 54 hosted checks. Exact identities belong to the release reviews. Frontend
-v0.6.1+8 refines the shorter-window sidebar and insight artwork, and rebuilds
+v0.6.1+8 is now published/READY with 55 hosted checks and refines the shorter-window sidebar and insight artwork, and rebuilds
 separate Profile editors with eight food preferences, twelve allergen reminders,
 selected counts/chips and pinned actions. The mobile pill follows hold or direct
 horizontal drag, previews a destination and selects only on release.

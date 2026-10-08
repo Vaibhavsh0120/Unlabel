@@ -1,6 +1,7 @@
 # Frontend v0.6.1+8: Home, Profile and draggable navigation
 
-Local reviewed correction, 8 October 2026. Source is not yet pushed. It follows
+Published correction, 8 October 2026. Implementation source is pushed at
+`48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`. It follows
 the user's new production screenshots after the v0.6.0 deployment.
 
 ## Changed behavior and composition
@@ -58,7 +59,14 @@ persistent tab destinations as competing page CTAs. They are the user's explicit
 navigation contract, so labels were retained; the tab-label/hint comprehension
 check passes with this context. Both separate editor copy checks also pass.
 
-Hosted asset verification will be added after the exact deployment is READY.
+Production deployment `dpl_6yiUZas5iZqnZ21kzoxM9yfeWGy4` is READY at
+https://unlabel-india.vercel.app with **55 hosted checks**, all 21 pinned OCR
+hashes and all 13 pinned artwork assets. The unchanged backend at this same
+source SHA is READY as `dpl_2ZYY8isvWLkWdBkbeW7c2wco4fkU`, with **389 hosted
+checks**, all 243 immutable observations and all 120 image descriptors exact.
+[Frontend receipt](../research/FRONTEND_V0_6_1_PRODUCTION.json) ·
+[Backend receipt](../research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json).
+Later documentation-only closure commits retain this implementation identity.
 Physical camera, recognition accuracy and the 3–5 second workflow remain unproven.
 The 243-observation catalogue and 120/243 researched images are unchanged.
 

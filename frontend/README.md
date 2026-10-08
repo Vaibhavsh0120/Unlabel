@@ -1,5 +1,10 @@
 # Flutter frontend
 
+Latest: **v0.6.1+8**, source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`,
+READY production with 55 hosted checks; 232 tests, clean analysis and release build.
+See [the v0.6.1 review](../docs/planning/FRONTEND_V0_6_1_REVIEW.md).
+The v0.6.0 evidence below is the preceding release.
+
 Published implementation: **v0.6.0+7 — Automatic Scan and Reference Layouts**.
 Desktop Home follows the supplied sidebar/banner/shortcuts/insight/recent-scans
 references; mobile retains the established four-tab order. Barcode photos are

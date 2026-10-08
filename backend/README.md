@@ -1,8 +1,14 @@
 # Unlabel backend: v0.12.0
 
+Latest hosted recheck: the unchanged backend at frontend v0.6.1 source
+`48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is READY at
+`dpl_2ZYY8isvWLkWdBkbeW7c2wco4fkU`, with all **389 checks** passing again.
+[Current receipt](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json).
+The preceding deployment identity below remains historical evidence.
+
 The private unverified AI fact staging, ingredient/declaration/claim search terms
 and separate researched-product image descriptors are pushed and deployed.
-Production is READY at `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, from repository source
+The preceding production was READY at `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, from repository source
 `6403517b11ea150cd43fdf37469911a5aaafa926`; its backend code is unchanged from
 implementation commit `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7`.
 All **389 hosted checks** passed, including source equality for all 243 research

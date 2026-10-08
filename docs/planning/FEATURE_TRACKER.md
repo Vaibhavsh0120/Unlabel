@@ -1,14 +1,14 @@
 # Feature and integration tracker
 
-Published checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
-are pushed on `main`, with READY production deployments and **54 frontend / 389
+Published checkpoint, 8 October 2026: **frontend v0.6.1+8 / backend v0.12.0**
+are pushed on `main`, with READY production deployments and **55 frontend / 389
 backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
 observations and their separate 120 image descriptors match the pinned sources.
 Automatic barcode/photo reading, the reference Home/results layout, private
 structured proposals and richer research search are deployed. Authenticated hosted
 AI generation, physical camera accuracy and the 3–5 second shopping target remain
 separate verification gates.
-[Frontend review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Frontend review](FRONTEND_V0_6_1_REVIEW.md) ·
 [Backend review](BACKEND_V0_12_0_REVIEW.md).
 
 The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,

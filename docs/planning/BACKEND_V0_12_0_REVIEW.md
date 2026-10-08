@@ -1,5 +1,12 @@
 # Backend v0.12.0: private proposals and richer researched lookup
 
+Latest hosted recheck, 8 October: unchanged backend runtime at frontend v0.6.1
+source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is READY as
+`dpl_2ZYY8isvWLkWdBkbeW7c2wco4fkU`, with all **389 hosted checks** passing,
+including all 243 observations and 120 image descriptors. The
+[new receipt](../research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json) is separate
+from the preserved preceding production identity below.
+
 Production checkpoint, 8 October 2026. Implementation commit
 `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7` was pushed independently after review/docs.
 Its first queued deployment was superseded by the following frontend push.
