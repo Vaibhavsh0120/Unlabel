@@ -227,15 +227,7 @@ class _HomePageState extends State<HomePage> {
                 onScan: widget.onEnterLabel,
                 onSaved: () => widget.onLibrary(1),
               )
-            : LibraryEmptyState(
-                title: 'Your first food find starts here',
-                message: 'The labels you explore will appear here.',
-                action: TextButton.icon(
-                  onPressed: widget.onEnterLabel,
-                  icon: const FeatureIcon('scanner', size: 22),
-                  label: const Text('Start Scan'),
-                ),
-              )
+            : _MobileEmptyScans(onScan: widget.onEnterLabel)
       else if (widget.desktop)
         Row(
           key: const Key('desktop-recent-scans'),
@@ -433,7 +425,10 @@ class _ScanHero extends StatelessWidget {
                         widthFactor: desktop ? .65 : .62,
                         child: Padding(
                           padding: desktop
-                              ? const EdgeInsets.symmetric(horizontal: 32, vertical: 20)
+                              ? const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 20,
+                                )
                               : roomy
                               ? const EdgeInsets.all(28)
                               : const EdgeInsets.fromLTRB(16, 16, 4, 16),
@@ -834,7 +829,7 @@ class _InsightCard extends StatelessWidget {
             );
             final art = desktop
                 ? SizedBox(
-                    height: 144,
+                    height: 128,
                     child: Stack(
                       children: [
                         Positioned.fill(
@@ -853,10 +848,10 @@ class _InsightCard extends StatelessWidget {
                         ),
                         Positioned.fill(
                           child: Image.asset(
-                            'assets/artwork/desktop-insight-bowl.png',
+                            'assets/artwork/desktop-insight-banner.png',
                             key: const Key('home-insight-art'),
                             fit: BoxFit.cover,
-                            alignment: Alignment.centerRight,
+                            alignment: Alignment.topRight,
                             excludeFromSemantics: true,
                           ),
                         ),
@@ -866,11 +861,7 @@ class _InsightCard extends StatelessWidget {
                 : CornerArtwork(
                     key: const Key('home-insight-art'),
                     asset: tip.asset,
-                    height: stacked
-                        ? 120
-                        : compact
-                        ? 180
-                        : 210,
+                    height: stacked ? 88 : 96,
                     scale: 1,
                   );
             return stacked
@@ -881,7 +872,7 @@ class _InsightCard extends StatelessWidget {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: FractionallySizedBox(
-                          widthFactor: .5,
+                          widthFactor: .3,
                           child: art,
                         ),
                       ),
@@ -889,8 +880,8 @@ class _InsightCard extends StatelessWidget {
                   )
                 : Row(
                     children: [
-                      Expanded(flex: desktop ? 5 : 6, child: text),
-                      Expanded(flex: desktop ? 5 : 4, child: art),
+                      Expanded(flex: 7, child: text),
+                      Expanded(flex: 3, child: art),
                     ],
                   );
           },
@@ -1044,6 +1035,76 @@ class _SourcesCard extends StatelessWidget {
   }
 }
 
+class _MobileEmptyScans extends StatelessWidget {
+  const _MobileEmptyScans({required this.onScan});
+  final VoidCallback onScan;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Card(
+      key: const Key('mobile-empty-scans'),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: scheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  alignment: Alignment.center,
+                  child: const FeatureIcon('barcode', size: 26),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'No recent scans yet',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Scans appear here.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            FilledButton.icon(
+              key: const Key('mobile-empty-start-scan'),
+              onPressed: onScan,
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(48, 48),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+              ),
+              icon: FeatureIcon('scanner', size: 22, color: scheme.onPrimary),
+              label: const Text('Start Scan'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _DesktopEmptyScans extends StatelessWidget {
   const _DesktopEmptyScans({required this.onScan, required this.onSaved});
   final VoidCallback onScan, onSaved;
@@ -1065,24 +1126,24 @@ class _DesktopEmptyScans extends StatelessWidget {
             stops: const [0, .3, .8, 1],
           ),
         ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 320,
-              height: 136,
-              child: Image.asset(
-                'assets/artwork/desktop-empty-scans.png',
-                fit: BoxFit.contain,
-                excludeFromSemantics: true,
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 16,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              SizedBox(
+                key: const Key('desktop-empty-scans-art'),
+                width: 160,
+                height: 106,
+                child: Image.asset(
+                  'assets/artwork/desktop-empty-scans.png',
+                  fit: BoxFit.contain,
+                  excludeFromSemantics: true,
                 ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
                 child: Column(
+                  key: const Key('desktop-empty-scans-content'),
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -1103,6 +1164,7 @@ class _DesktopEmptyScans extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         FilledButton.icon(
+                          key: const Key('desktop-empty-start-scan'),
                           onPressed: onScan,
                           icon: const FeatureIcon(
                             'scanner',
@@ -1121,8 +1183,8 @@ class _DesktopEmptyScans extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

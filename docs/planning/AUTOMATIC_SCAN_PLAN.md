@@ -65,11 +65,12 @@ facts. If a score is added later it requires a documented, evaluated rubric.
 
 Backend 0.10/frontend 0.5 research sources and backend 0.11 extraction are already
 pushed with READY deployments and read-only hosted receipts; authenticated AI
-generation, local next versions and physical-device proof remain separate.
+generation and physical-device proof remain separate. Frontend v0.6.0+7 and
+backend v0.12.0 are also pushed/READY, with 54/389 hosted checks respectively.
 Frontend 0.6 replaces the manual route and result composition. Backend 0.12 adds
 bounded private machine proposals, search v3 and separate image descriptors.
-These next changes were reviewed locally on `main`. The user's latest instruction
-authorizes independent pushes after completing review and documentation.
+These changes were reviewed, documented and pushed on `main`. The subsequent
+Home/Profile correction is tracked in [frontend v0.6.1](FRONTEND_V0_6_1_REVIEW.md).
 No worktrees, mobile builds for backend-only work or paid Firebase services.
 
 Tests cover barcode image decoding/checksum, malformed/oversized/cancelled images,

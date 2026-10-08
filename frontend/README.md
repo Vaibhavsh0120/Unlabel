@@ -1,6 +1,6 @@
 # Flutter frontend
 
-Local next implementation: **v0.6.0+7 — Automatic Scan and Reference Layouts**.
+Published implementation: **v0.6.0+7 — Automatic Scan and Reference Layouts**.
 Desktop Home follows the supplied sidebar/banner/shortcuts/insight/recent-scans
 references; mobile retains the established four-tab order. Barcode photos are
 decoded before AI/OCR, known reports open directly, and front/back photos produce
@@ -8,10 +8,11 @@ qualified results without the Enter package label form. Optional cloud reading
 requires transfer consent; unavailable cloud reading falls back locally.
 Actual post-capture regions are highlighted, and results use the supplied
 mobile/PC card hierarchy with factual availability rather than illustrative
-health scores. Local review is complete with 207 passing Flutter tests, six OCR bridge tests,
-clean analysis and a release web build. The user authorized the component push
-after review/docs; the release review records hosted verification separately.
-[Local review](../docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
+health scores. Its local review passed 207 Flutter tests, six OCR bridge tests, clean analysis
+and a release web build. The READY deployment passed 54 hosted checks and all
+21 OCR hashes. The v0.6.1+8 Home/Profile correction is recorded separately in
+[its review](../docs/planning/FRONTEND_V0_6_1_REVIEW.md).
+[Published review](../docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
 [Fresh artwork](assets/artwork/README.md).
 
 The preceding frontend v0.5.0+6 source
@@ -182,7 +183,7 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the v0.6.0 review for the current working tree's final-check status.
+See the v0.6.1 correction review for the current local check and deployment status.
 
 ## Source ownership
 

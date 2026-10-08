@@ -1,0 +1,1241 @@
+{
+  "format_version": "1",
+  "component": "frontend",
+  "version": "0.6.1",
+  "build_number": "8",
+  "reviewed_on": "2026-10-08",
+  "build": "local release web with production backend",
+  "widths": [
+    390,
+    1440,
+    1728
+  ],
+  "source_files": [
+    "frontend/lib/features/scanner/presentation/home_page.dart",
+    "frontend/lib/features/scanner/presentation/desktop_navigation.dart",
+    "frontend/lib/features/scanner/presentation/mobile_navigation.dart",
+    "frontend/lib/features/account/presentation/profile_page.dart",
+    "frontend/lib/features/account/data/device_profile_preferences.dart"
+  ],
+  "before": {
+    "deployment": "dpl_DFqy6kZQDRbhHdBSAmbLQ2xEhL7P",
+    "source_sha": "6403517b11ea150cd43fdf37469911a5aaafa926",
+    "local_ignored_captures": [
+      "output/playwright/home061-before-390.png",
+      "output/playwright/home061-before-1440.png",
+      "output/playwright/home061-before-1728.png",
+      "output/playwright/preferences061-before-390.png",
+      "output/playwright/preferences061-before-1440.png",
+      "output/playwright/preferences061-before-1728.png"
+    ]
+  },
+  "after": {
+    "method": "Codex in-app browser screenshots and visible semantic DOM, read-only CUA inspection",
+    "persistent_screenshot_files": false,
+    "reviewed_states": [
+      "Home 390, 1440, 1728; short-window sidebar six links visible",
+      "Desktop compact empty recent scans; insight artwork uses small right slot",
+      "Mobile compact recent scans with scan badge and one Start Scan action",
+      "Preferences separate 8-choice popup 390, 1440, 1728; mobile scroll reaches Vegan",
+      "Allergens separate 12-choice popup 390, 1440, 1728; mobile scroll reaches Sulphites",
+      "Selected Higher protein draft updates count, Cancel returns to unchanged profile",
+      "Final mobile build: direct drag Home to Compare and reverse to Home"
+    ]
+  },
+  "verification": {
+    "flutter_tests": 232,
+    "flutter_analysis": "No issues found",
+    "release_web_build": "passed",
+    "source_review": "No actionable Home/sidebar or Profile/model bugs; navbar pointer-cancel regression fixed and tested"
+  },
+  "spacing": {
+    "method": "Visible Flutter interactive semantic rectangles; duplicate nested Profile and source-text label extent excluded. This does not measure painted Canvas card surfaces, art or CSS styles.",
+    "result": {
+      "status": "completed",
+      "score": 100,
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "total": 0
+      },
+      "findings": [],
+      "states": [
+        {
+          "name": "home061-390",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "elements": [
+            {
+              "id": "control-0",
+              "label": "Search",
+              "rect": {
+                "x": 278.4,
+                "y": 8,
+                "width": 48,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-1",
+              "label": "Profile",
+              "rect": {
+                "x": 326.4,
+                "y": 4,
+                "width": 56,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-2",
+              "label": "Start Scan",
+              "rect": {
+                "x": 33,
+                "y": 227,
+                "width": 116.575,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-3",
+              "label": "Barcode Scan",
+              "rect": {
+                "x": 16,
+                "y": 316,
+                "width": 171.2,
+                "height": 67
+              }
+            },
+            {
+              "id": "control-4",
+              "label": "Compare Products",
+              "rect": {
+                "x": 203.2,
+                "y": 316,
+                "width": 171.2,
+                "height": 67
+              }
+            },
+            {
+              "id": "control-5",
+              "label": "Saved Products",
+              "rect": {
+                "x": 16,
+                "y": 399,
+                "width": 171.2,
+                "height": 65.8375
+              }
+            },
+            {
+              "id": "control-6",
+              "label": "History",
+              "rect": {
+                "x": 203.2,
+                "y": 399,
+                "width": 171.2,
+                "height": 65.8375
+              }
+            },
+            {
+              "id": "control-7",
+              "label": "See all insight",
+              "rect": {
+                "x": 276.6844,
+                "y": 476.8462,
+                "width": 97.7125,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-8",
+              "label": "Insight card",
+              "rect": {
+                "x": 16,
+                "y": 536.8461,
+                "width": 358.4,
+                "height": 145
+              }
+            },
+            {
+              "id": "control-9",
+              "label": "See all scans",
+              "rect": {
+                "x": 276.6844,
+                "y": 733.8461,
+                "width": 97.7125,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-10",
+              "label": "Home",
+              "rect": {
+                "x": 22,
+                "y": 776,
+                "width": 86.6,
+                "height": 60
+              }
+            },
+            {
+              "id": "control-11",
+              "label": "Scan",
+              "rect": {
+                "x": 108.6,
+                "y": 776,
+                "width": 86.6,
+                "height": 60
+              }
+            },
+            {
+              "id": "control-12",
+              "label": "Compare",
+              "rect": {
+                "x": 195.2,
+                "y": 776,
+                "width": 86.6,
+                "height": 60
+              }
+            },
+            {
+              "id": "control-13",
+              "label": "Saved",
+              "rect": {
+                "x": 281.8,
+                "y": 776,
+                "width": 86.6,
+                "height": 60
+              }
+            }
+          ]
+        },
+        {
+          "name": "home061-1440",
+          "viewport": {
+            "width": 1440,
+            "height": 730
+          },
+          "elements": [
+            {
+              "id": "control-0",
+              "label": "Search",
+              "rect": {
+                "x": 264,
+                "y": 14.5,
+                "width": 490,
+                "height": 51
+              }
+            },
+            {
+              "id": "control-1",
+              "label": "Notifications",
+              "rect": {
+                "x": 1244,
+                "y": 16,
+                "width": 48,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-2",
+              "label": "Profile",
+              "rect": {
+                "x": 1316,
+                "y": 12,
+                "width": 100,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-3",
+              "label": "Home",
+              "rect": {
+                "x": 16,
+                "y": 107,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-4",
+              "label": "Scan",
+              "rect": {
+                "x": 16,
+                "y": 171,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-5",
+              "label": "Compare",
+              "rect": {
+                "x": 16,
+                "y": 235,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-6",
+              "label": "Saved",
+              "rect": {
+                "x": 16,
+                "y": 299,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-7",
+              "label": "History",
+              "rect": {
+                "x": 16,
+                "y": 363,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-8",
+              "label": "Insights",
+              "rect": {
+                "x": 16,
+                "y": 427,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-9",
+              "label": "Start Scan",
+              "rect": {
+                "x": 297,
+                "y": 267,
+                "width": 360,
+                "height": 64
+              }
+            },
+            {
+              "id": "control-10",
+              "label": "Barcode Scan",
+              "rect": {
+                "x": 264,
+                "y": 368,
+                "width": 276,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-11",
+              "label": "Compare Products",
+              "rect": {
+                "x": 556,
+                "y": 368,
+                "width": 276,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-12",
+              "label": "Saved Products",
+              "rect": {
+                "x": 848,
+                "y": 368,
+                "width": 276,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-13",
+              "label": "History shortcut",
+              "rect": {
+                "x": 1140,
+                "y": 368,
+                "width": 276,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-14",
+              "label": "See all insight",
+              "rect": {
+                "x": 1318.2844,
+                "y": 468,
+                "width": 97.7125,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-15",
+              "label": "Insight card",
+              "rect": {
+                "x": 264,
+                "y": 516,
+                "width": 1152,
+                "height": 145
+              }
+            },
+            {
+              "id": "control-16",
+              "label": "See all scans",
+              "rect": {
+                "x": 1318.2844,
+                "y": 673,
+                "width": 97.7125,
+                "height": 48
+              }
+            }
+          ]
+        },
+        {
+          "name": "home061-1728",
+          "viewport": {
+            "width": 1728,
+            "height": 942
+          },
+          "elements": [
+            {
+              "id": "control-0",
+              "label": "Search",
+              "rect": {
+                "x": 264,
+                "y": 14.5,
+                "width": 634,
+                "height": 51
+              }
+            },
+            {
+              "id": "control-1",
+              "label": "Notifications",
+              "rect": {
+                "x": 1532,
+                "y": 16,
+                "width": 48,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-2",
+              "label": "Profile",
+              "rect": {
+                "x": 1604,
+                "y": 12,
+                "width": 100,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-3",
+              "label": "Home",
+              "rect": {
+                "x": 16,
+                "y": 107,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-4",
+              "label": "Scan",
+              "rect": {
+                "x": 16,
+                "y": 171,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-5",
+              "label": "Compare",
+              "rect": {
+                "x": 16,
+                "y": 235,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-6",
+              "label": "Saved",
+              "rect": {
+                "x": 16,
+                "y": 299,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-7",
+              "label": "History",
+              "rect": {
+                "x": 16,
+                "y": 363,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-8",
+              "label": "Insights",
+              "rect": {
+                "x": 16,
+                "y": 427,
+                "width": 208,
+                "height": 56
+              }
+            },
+            {
+              "id": "control-9",
+              "label": "Start Scan",
+              "rect": {
+                "x": 297,
+                "y": 275,
+                "width": 360,
+                "height": 64
+              }
+            },
+            {
+              "id": "control-10",
+              "label": "Barcode Scan",
+              "rect": {
+                "x": 264,
+                "y": 398,
+                "width": 348,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-11",
+              "label": "Compare Products",
+              "rect": {
+                "x": 628,
+                "y": 398,
+                "width": 348,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-12",
+              "label": "Saved Products",
+              "rect": {
+                "x": 992,
+                "y": 398,
+                "width": 348,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-13",
+              "label": "History shortcut",
+              "rect": {
+                "x": 1356,
+                "y": 398,
+                "width": 348,
+                "height": 88
+              }
+            },
+            {
+              "id": "control-14",
+              "label": "See all insight",
+              "rect": {
+                "x": 1606.2844,
+                "y": 498,
+                "width": 97.7125,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-15",
+              "label": "Insight card",
+              "rect": {
+                "x": 264,
+                "y": 546,
+                "width": 1440,
+                "height": 145
+              }
+            },
+            {
+              "id": "control-16",
+              "label": "See all scans",
+              "rect": {
+                "x": 1606.2844,
+                "y": 703,
+                "width": 97.7125,
+                "height": 48
+              }
+            },
+            {
+              "id": "control-17",
+              "label": "Recent Start Scan",
+              "rect": {
+                "x": 460,
+                "y": 835,
+                "width": 155.8125,
+                "height": 58
+              }
+            },
+            {
+              "id": "control-18",
+              "label": "Browse saved products",
+              "rect": {
+                "x": 631.8125,
+                "y": 840,
+                "width": 201.3875,
+                "height": 48
+              }
+            }
+          ]
+        }
+      ],
+      "capturedWidths": [
+        390,
+        1440,
+        1728
+      ],
+      "missingWidths": [],
+      "rubric": [
+        {
+          "id": "review-rules-visual-design",
+          "title": "Visual Design"
+        }
+      ],
+      "rubricStatus": "loaded"
+    },
+    "states": [
+      {
+        "name": "home061-390",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "elements": [
+          {
+            "id": "control-0",
+            "label": "Search",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 278.4,
+              "y": 8,
+              "width": 48,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-1",
+            "label": "Profile",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 326.4,
+              "y": 4,
+              "width": 56,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-2",
+            "label": "Start Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 33,
+              "y": 227,
+              "width": 116.575,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-3",
+            "label": "Barcode Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 316,
+              "width": 171.2,
+              "height": 67
+            }
+          },
+          {
+            "id": "control-4",
+            "label": "Compare Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 203.2,
+              "y": 316,
+              "width": 171.2,
+              "height": 67
+            }
+          },
+          {
+            "id": "control-5",
+            "label": "Saved Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 399,
+              "width": 171.2,
+              "height": 65.8375
+            }
+          },
+          {
+            "id": "control-6",
+            "label": "History",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 203.2,
+              "y": 399,
+              "width": 171.2,
+              "height": 65.8375
+            }
+          },
+          {
+            "id": "control-7",
+            "label": "See all insight",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 276.6844,
+              "y": 476.8462,
+              "width": 97.7125,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-8",
+            "label": "Insight card",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 536.8461,
+              "width": 358.4,
+              "height": 145
+            }
+          },
+          {
+            "id": "control-9",
+            "label": "See all scans",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 276.6844,
+              "y": 733.8461,
+              "width": 97.7125,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-10",
+            "label": "Home",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 22,
+              "y": 776,
+              "width": 86.6,
+              "height": 60
+            }
+          },
+          {
+            "id": "control-11",
+            "label": "Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 108.6,
+              "y": 776,
+              "width": 86.6,
+              "height": 60
+            }
+          },
+          {
+            "id": "control-12",
+            "label": "Compare",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 195.2,
+              "y": 776,
+              "width": 86.6,
+              "height": 60
+            }
+          },
+          {
+            "id": "control-13",
+            "label": "Saved",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 281.8,
+              "y": 776,
+              "width": 86.6,
+              "height": 60
+            }
+          }
+        ]
+      },
+      {
+        "name": "home061-1440",
+        "viewport": {
+          "width": 1440,
+          "height": 730
+        },
+        "elements": [
+          {
+            "id": "control-0",
+            "label": "Search",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 14.5,
+              "width": 490,
+              "height": 51
+            }
+          },
+          {
+            "id": "control-1",
+            "label": "Notifications",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1244,
+              "y": 16,
+              "width": 48,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-2",
+            "label": "Profile",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1316,
+              "y": 12,
+              "width": 100,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-3",
+            "label": "Home",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 107,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-4",
+            "label": "Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 171,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-5",
+            "label": "Compare",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 235,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-6",
+            "label": "Saved",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 299,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-7",
+            "label": "History",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 363,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-8",
+            "label": "Insights",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 427,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-9",
+            "label": "Start Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 297,
+              "y": 267,
+              "width": 360,
+              "height": 64
+            }
+          },
+          {
+            "id": "control-10",
+            "label": "Barcode Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 368,
+              "width": 276,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-11",
+            "label": "Compare Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 556,
+              "y": 368,
+              "width": 276,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-12",
+            "label": "Saved Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 848,
+              "y": 368,
+              "width": 276,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-13",
+            "label": "History shortcut",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1140,
+              "y": 368,
+              "width": 276,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-14",
+            "label": "See all insight",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1318.2844,
+              "y": 468,
+              "width": 97.7125,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-15",
+            "label": "Insight card",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 516,
+              "width": 1152,
+              "height": 145
+            }
+          },
+          {
+            "id": "control-16",
+            "label": "See all scans",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1318.2844,
+              "y": 673,
+              "width": 97.7125,
+              "height": 48
+            }
+          }
+        ]
+      },
+      {
+        "name": "home061-1728",
+        "viewport": {
+          "width": 1728,
+          "height": 942
+        },
+        "elements": [
+          {
+            "id": "control-0",
+            "label": "Search",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 14.5,
+              "width": 634,
+              "height": 51
+            }
+          },
+          {
+            "id": "control-1",
+            "label": "Notifications",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1532,
+              "y": 16,
+              "width": 48,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-2",
+            "label": "Profile",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1604,
+              "y": 12,
+              "width": 100,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-3",
+            "label": "Home",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 107,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-4",
+            "label": "Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 171,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-5",
+            "label": "Compare",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 235,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-6",
+            "label": "Saved",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 299,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-7",
+            "label": "History",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 363,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-8",
+            "label": "Insights",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 16,
+              "y": 427,
+              "width": 208,
+              "height": 56
+            }
+          },
+          {
+            "id": "control-9",
+            "label": "Start Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 297,
+              "y": 275,
+              "width": 360,
+              "height": 64
+            }
+          },
+          {
+            "id": "control-10",
+            "label": "Barcode Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 398,
+              "width": 348,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-11",
+            "label": "Compare Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 628,
+              "y": 398,
+              "width": 348,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-12",
+            "label": "Saved Products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 992,
+              "y": 398,
+              "width": 348,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-13",
+            "label": "History shortcut",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1356,
+              "y": 398,
+              "width": 348,
+              "height": 88
+            }
+          },
+          {
+            "id": "control-14",
+            "label": "See all insight",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1606.2844,
+              "y": 498,
+              "width": 97.7125,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-15",
+            "label": "Insight card",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 264,
+              "y": 546,
+              "width": 1440,
+              "height": 145
+            }
+          },
+          {
+            "id": "control-16",
+            "label": "See all scans",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 1606.2844,
+              "y": 703,
+              "width": 97.7125,
+              "height": 48
+            }
+          },
+          {
+            "id": "control-17",
+            "label": "Recent Start Scan",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 460,
+              "y": 835,
+              "width": 155.8125,
+              "height": 58
+            }
+          },
+          {
+            "id": "control-18",
+            "label": "Browse saved products",
+            "role": "button",
+            "interactive": true,
+            "rect": {
+              "x": 631.8125,
+              "y": 840,
+              "width": 201.3875,
+              "height": 48
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "No pixel-exact identity or Better Design dashboard visual approval claimed.",
+    "Browser screenshot review is separate from native iPhone gesture/camera proof.",
+    "Read-only hosted checks do not establish physical recognition speed or accuracy."
+  ]
+}

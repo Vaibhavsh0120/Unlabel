@@ -1,8 +1,16 @@
 # Backend v0.12.0: private proposals and richer researched lookup
 
-Local implementation checkpoint, 8 October 2026. Source review is complete
-on `main`. The user authorized independent publication after review/docs.
-Hosted v0.12 verification is recorded below only after the deployment is observed.
+Production checkpoint, 8 October 2026. Implementation commit
+`39e600e13cf38f57b34a1e1727dfa4a10d9f24e7` was pushed independently after review/docs.
+Its first queued deployment was superseded by the following frontend push.
+The unchanged backend is READY at `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, exact
+repository source `6403517b11ea150cd43fdf37469911a5aaafa926`, assigned to
+`https://unlabel-api.vercel.app`. All **389 read-only hosted checks** passed,
+including byte-equivalent source observations and separate image descriptors.
+The [production receipt](../research/BACKEND_V0_12_0_PRODUCTION.json) preserves
+that deployment identity. Subsequent documentation/UI commits are distinct.
+This audit does not send photos, generate AI output or write private staging.
+
 The preceding v0.11.0 implementation remains
 `578a9afebae8f77fe98344233cdc9155e82bb37a`, with observed READY deployment
 `dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA` and 389 read-only public/API checks.
@@ -78,8 +86,9 @@ paths/28 operations; the response/model changes must be exported together.
 
 The existing owned Gemini synthetic check is separate from real-package
 accuracy, OpenAI generation, native camera behavior and hosted v0.12.0 proof.
-The user has authorized the reviewed component push. Hosted v0.12.0 proof is a
-separate receipt; local checks alone do not establish that deployment.
+The reviewed component is pushed. Hosted v0.12.0 public/source verification is
+recorded separately above; local tests do not establish authenticated generation
+or private staging writes.
 
 See [AI architecture](../architecture/AI_ROUTING.md),
 [frontend v0.6 local review](FRONTEND_V0_6_0_REVIEW.md) and

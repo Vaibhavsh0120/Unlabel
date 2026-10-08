@@ -1,14 +1,23 @@
 # Feature and integration tracker
 
-Local next checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**.
-Automatic barcode/front/back reading replaces mandatory transcription. Desktop
-Home and mobile/PC results use the supplied white/forest/mint references, with
-fresh screen-specific artwork and corrected pale mint sidebar leaves. Private
-structured machine proposals, research search v3 and separate real-image
-descriptors are implemented locally. **Publication is authorized after review/docs.**
-Local review and rendered comparison are complete; hosted identities are recorded separately.
-[Frontend local review](FRONTEND_V0_6_0_REVIEW.md) ·
-[Backend local review](BACKEND_V0_12_0_REVIEW.md).
+Published checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
+are pushed on `main`, with READY production deployments and **54 frontend / 389
+backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
+observations and their separate 120 image descriptors match the pinned sources.
+Automatic barcode/photo reading, the reference Home/results layout, private
+structured proposals and richer research search are deployed. Authenticated hosted
+AI generation, physical camera accuracy and the 3–5 second shopping target remain
+separate verification gates.
+[Frontend review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend review](BACKEND_V0_12_0_REVIEW.md).
+
+The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,
+preserves navigation in shorter windows, replaces the tightly cropped insight
+image, compacts recent scans and adds separate expanded Profile editors. The
+mobile indicator follows hold/direct drag with release selection and cancellation.
+Its 232 passing tests, clean analysis, release build, local rendered review and
+independent deployment gate are recorded in
+[the correction review](FRONTEND_V0_6_1_REVIEW.md).
 
 The original 24,641 bulk records and all 243 research observations remain
 preserved. Real source-image descriptors cover 120 research observations; 123

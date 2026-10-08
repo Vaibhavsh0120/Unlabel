@@ -6,8 +6,8 @@
 
 **Understand the label. Know what is inside.**
 
-![Frontend](https://img.shields.io/badge/frontend-0.5.0-155b4b?style=flat-square)
-![Backend](https://img.shields.io/badge/backend-0.11.0-155b4b?style=flat-square)
+![Frontend](https://img.shields.io/badge/frontend-0.6.0-155b4b?style=flat-square)
+![Backend](https://img.shields.io/badge/backend-0.12.0-155b4b?style=flat-square)
 ![Flutter](https://img.shields.io/badge/Flutter-3.47.4-59636e?style=flat-square)
 ![Targets](https://img.shields.io/badge/targets-Android%20%C2%B7%20iOS%20%C2%B7%20Web-59636e?style=flat-square)
 
@@ -21,18 +21,23 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
-**Local next versions: frontend v0.6.0+7 and backend v0.12.0.** Barcode-first
-automatic reading, front/back photo extraction, post-capture highlights and the
-supplied desktop Home/mobile-PC result layouts are implemented locally. The
-Enter package label form has been removed. Local review, screenshot comparison and release checks are complete. The user
-authorized independent component pushes after review and documentation; exact new
-hosted identities are recorded in each release review when verified.
-[Frontend local review](docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
-[Backend local review](docs/planning/BACKEND_V0_12_0_REVIEW.md).
+**Published: frontend v0.6.0+7 and backend v0.12.0.** Automatic barcode/front/back
+reading, post-capture highlights and the supplied Home/product result layouts are
+deployed. The Enter package label form is removed. Both production deployments are
+READY, with **54 frontend / 389 backend hosted checks** and all 21 OCR hashes.
+[Frontend review](docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend review](docs/planning/BACKEND_V0_12_0_REVIEW.md).
+
+**Frontend v0.6.1+8 correction:** sidebar decoration moves behind navigation, a
+fresh wide insight banner replaces the close crop, and mobile recent scans is
+compact. Profile has separate editors with eight food preferences, twelve allergen
+reminders and selected counts/chips. The green mobile pill tracks hold or direct
+drag and selects on release. Its **232 passing tests**, review and deployment
+status are in [the correction review](docs/planning/FRONTEND_V0_6_1_REVIEW.md).
 
 The preceding **backend v0.11.0** and **frontend v0.5.0+6** sources are pushed
 with READY deployments and **389 backend / 49 frontend hosted checks**, including
-all 21 OCR asset hashes. This read-only audit excludes the local next versions
+all 21 OCR asset hashes. That historical read-only audit excludes subsequent versions
 and authenticated AI generation. Backend v0.11.0 passed 1,303 tests with five provider/emulator
 skips; that historical count does not certify subsequent v0.12.0 edits.
 [AI configuration](docs/architecture/AI_ROUTING.md) ·

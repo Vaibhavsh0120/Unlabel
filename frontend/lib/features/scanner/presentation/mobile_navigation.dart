@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/interaction/ui_feedback.dart';
@@ -19,11 +20,15 @@ class MobileNavigation extends StatefulWidget {
   State<MobileNavigation> createState() => _MobileNavigationState();
 }
 
+enum _NavigationDrag { hold, slide }
+
 class _MobileNavigationState extends State<MobileNavigation>
     with WidgetsBindingObserver {
   double? _dragCenter;
   int? _dragCandidate;
-  bool _holding = false;
+  _NavigationDrag? _dragKind;
+  bool _slideAllowed = false;
+  bool get _holding => _dragKind != null;
 
   @override
   void initState() {
@@ -41,7 +46,7 @@ class _MobileNavigationState extends State<MobileNavigation>
   void didUpdateWidget(MobileNavigation oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectedIndex != widget.selectedIndex) {
-      _holding = false;
+      _dragKind = null;
       _dragCenter = null;
       _dragCandidate = null;
     }
@@ -55,10 +60,18 @@ class _MobileNavigationState extends State<MobileNavigation>
   void _cancel() {
     if (!_holding) return;
     setState(() {
-      _holding = false;
+      _dragKind = null;
       _dragCenter = null;
       _dragCandidate = null;
     });
+  }
+
+  void _commit() {
+    final target = _dragCandidate;
+    _cancel();
+    if (target != null && target != widget.selectedIndex) {
+      widget.onDestinationSelected(target);
+    }
   }
 
   @override
@@ -130,91 +143,102 @@ class _MobileNavigationState extends State<MobileNavigation>
                       final left = _dragCenter == null
                           ? physicalSelected * slot
                           : _dragCenter! - slot / 2;
-                      return GestureDetector(
-                        key: const Key('navigation-slide-gesture'),
-                        behavior: HitTestBehavior.translucent,
-                        excludeFromSemantics: true,
-                        onLongPressStart: (details) {
-                          if (logicalSlot(details.localPosition.dx) !=
-                              widget.selectedIndex) {
-                            return;
-                          }
-                          _holding = true;
-                          move(details.localPosition.dx);
-                        },
-                        onLongPressMoveUpdate: (details) =>
-                            move(details.localPosition.dx),
-                        onLongPressCancel: _cancel,
-                        onLongPressEnd: (_) {
-                          final target = _dragCandidate;
-                          _cancel();
-                          if (target != null &&
-                              target != widget.selectedIndex) {
-                            widget.onDestinationSelected(target);
-                          }
-                        },
-                        child: Stack(
-                          children: [
-                            AnimatedPositioned(
-                              duration:
-                                  _holding ||
-                                      MediaQuery.disableAnimationsOf(context)
-                                  ? Duration.zero
-                                  : const Duration(milliseconds: 180),
-                              curve: Curves.easeOutCubic,
-                              left: left,
-                              top: 0,
-                              bottom: 0,
-                              width: slot,
-                              child: IgnorePointer(
-                                child: DecoratedBox(
-                                  key: const Key('navigation-active-indicator'),
-                                  decoration: BoxDecoration(
-                                    color: colors.primaryContainer,
-                                    borderRadius: BorderRadius.circular(26),
-                                    border: Border.all(
-                                      color: colors.primary.withValues(
-                                        alpha: .22,
+                      return Listener(
+                        // An accepted Flutter drag can end on PointerCancel.
+                        // Clear the preview before the recognizer ends it.
+                        onPointerCancel: (_) => _cancel(),
+                        child: GestureDetector(
+                          key: const Key('navigation-slide-gesture'),
+                          behavior: HitTestBehavior.translucent,
+                          excludeFromSemantics: true,
+                          dragStartBehavior: DragStartBehavior.down,
+                          onHorizontalDragDown: (details) {
+                            _slideAllowed =
+                                logicalSlot(details.localPosition.dx) ==
+                                widget.selectedIndex;
+                          },
+                          onHorizontalDragStart: (details) {
+                            if (!_slideAllowed) return;
+                            _dragKind = _NavigationDrag.slide;
+                            move(details.localPosition.dx);
+                          },
+                          onHorizontalDragUpdate: (details) {
+                            if (_dragKind == _NavigationDrag.slide) {
+                              move(details.localPosition.dx);
+                            }
+                          },
+                          onHorizontalDragCancel: () {
+                            if (_dragKind == _NavigationDrag.slide) _cancel();
+                          },
+                          onHorizontalDragEnd: (_) {
+                            if (_dragKind == _NavigationDrag.slide) _commit();
+                          },
+                          onLongPressStart: (details) {
+                            if (logicalSlot(details.localPosition.dx) !=
+                                widget.selectedIndex) {
+                              return;
+                            }
+                            _dragKind = _NavigationDrag.hold;
+                            move(details.localPosition.dx);
+                          },
+                          onLongPressMoveUpdate: (details) =>
+                              move(details.localPosition.dx),
+                          onLongPressCancel: () {
+                            if (_dragKind == _NavigationDrag.hold) _cancel();
+                          },
+                          onLongPressEnd: (_) {
+                            if (_dragKind == _NavigationDrag.hold) _commit();
+                          },
+                          child: Stack(
+                            children: [
+                              AnimatedPositioned(
+                                duration:
+                                    _holding ||
+                                        MediaQuery.disableAnimationsOf(context)
+                                    ? Duration.zero
+                                    : const Duration(milliseconds: 180),
+                                curve: Curves.easeOutCubic,
+                                left: left,
+                                top: 0,
+                                bottom: 0,
+                                width: slot,
+                                child: IgnorePointer(
+                                  child: DecoratedBox(
+                                    key: const Key(
+                                      'navigation-active-indicator',
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: colors.primaryContainer,
+                                      borderRadius: BorderRadius.circular(26),
+                                      border: Border.all(
+                                        color: colors.primary.withValues(
+                                          alpha: .22,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                for (var index = 0; index < 4; index++)
-                                  Expanded(
-                                    child: _Destination(
-                                      index: index,
-                                      selected: widget.selectedIndex == index,
-                                      highlighted:
-                                          (_dragCandidate ??
-                                              widget.selectedIndex) ==
-                                          index,
-                                      dragging:
-                                          _holding &&
-                                          widget.selectedIndex == index,
-                                      onTap: () =>
-                                          widget.onDestinationSelected(index),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  for (var index = 0; index < 4; index++)
+                                    Expanded(
+                                      child: _Destination(
+                                        index: index,
+                                        selected: widget.selectedIndex == index,
+                                        highlighted:
+                                            (_dragCandidate ??
+                                                widget.selectedIndex) ==
+                                            index,
+                                        onTap: () =>
+                                            widget.onDestinationSelected(index),
+                                      ),
                                     ),
-                                  ),
-                              ],
-                            ),
-                            if (_holding)
-                              Positioned(
-                                key: const Key('navigation-dragged-icon'),
-                                left: left + (slot - 24) / 2,
-                                top: 8,
-                                child: IgnorePointer(
-                                  child: _destinationIcon(
-                                    widget.selectedIndex,
-                                    colors.primary,
-                                  ),
-                                ),
+                                ],
                               ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -235,13 +259,11 @@ class _Destination extends StatelessWidget {
     required this.selected,
     required this.highlighted,
     required this.onTap,
-    this.dragging = false,
   });
   final int index;
   final bool selected;
   final bool highlighted;
   final VoidCallback onTap;
-  final bool dragging;
   static const _labels = ['Home', 'Scan', 'Compare', 'Saved'];
 
   @override
@@ -270,17 +292,14 @@ class _Destination extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Opacity(
-                      opacity: dragging ? 0 : 1,
-                      child: _destinationIcon(index, color),
-                    ),
+                    _destinationIcon(index, color),
                     const SizedBox(height: 4),
                     Text(
                       _labels[index],
                       textAlign: TextAlign.center,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: color,
-                        fontWeight: selected
+                        fontWeight: highlighted
                             ? FontWeight.w700
                             : FontWeight.w500,
                       ),

@@ -1,9 +1,15 @@
-# Unlabel backend: v0.12.0 local work
+# Unlabel backend: v0.12.0
 
-Local next implementation adds bounded private unverified AI fact staging,
-ingredient/declaration/claim search terms and separate researched-product image
-descriptors. **No v0.12.0 push or deployment has been performed.** The user has authorized publication after final review and documentation.
-Local checks are complete; the review records the independent hosted gate. [Local review](../docs/planning/BACKEND_V0_12_0_REVIEW.md).
+The private unverified AI fact staging, ingredient/declaration/claim search terms
+and separate researched-product image descriptors are pushed and deployed.
+Production is READY at `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, from repository source
+`6403517b11ea150cd43fdf37469911a5aaafa926`; its backend code is unchanged from
+implementation commit `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7`.
+All **389 hosted checks** passed, including source equality for all 243 research
+observations and 120 image descriptors. Authenticated AI generation and private
+staging writes are outside this read-only audit.
+[Review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) ·
+[Production receipt](../docs/research/BACKEND_V0_12_0_PRODUCTION.json).
 
 The preceding v0.11.0 source `578a9afebae8f77fe98344233cdc9155e82bb37a` is pushed,
 with READY deployment `dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA` and 389 read-only public/API
@@ -348,7 +354,7 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 ## Modules and constraints
 
 - `app/main.py`: app composition, lifespan-owned HTTP/Firebase runtime, catalogue/knowledge/glossary stores, 27 API paths/28 operations and redacted validation failures.
-- `app/ai/`: scanner photo validation, one global provider selection, bounded adapters/admission and local v0.12 private structured proposal staging.
+- `app/ai/`: scanner photo validation, one global provider selection, bounded adapters/admission and v0.12 private structured proposal staging.
 - `app/research_catalogue/`: immutable mixed-source observations, derived search v3, source-qualified details and separate validated product-image descriptors.
 - `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed six-entry glossary.
 - `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.

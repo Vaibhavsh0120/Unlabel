@@ -208,6 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _choosePreferences({bool allergensOnly = false}) async {
     final preferences = await showDialog<DeviceProfilePreferences>(
       context: context,
+      barrierDismissible: false,
       builder: (_) => _PreferencesDialog(
         preferences: _preferences,
         allergensOnly: allergensOnly,
@@ -722,6 +723,14 @@ class _ProfilePageState extends State<ProfilePage> {
           Icons.eco_outlined,
           onTap: _preferencesBusy ? null : () => _choosePreferences(),
         ),
+        Text(
+          _preferences.selectedPreferenceLabels.isEmpty
+              ? 'No preferences selected'
+              : '${_preferences.selectedPreferenceLabels.length} selected',
+          key: const ValueKey('profile-preferences-summary-count'),
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const SizedBox(height: 8),
         Wrap(
           spacing: 7,
           runSpacing: 7,
@@ -743,25 +752,59 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             _preferenceChip(
-              'Veg',
+              'Vegetarian',
               Icons.restaurant_outlined,
               _preferences.vegetarian,
               () => _savePreferences(
                 _preferences.copyWith(vegetarian: !_preferences.vegetarian),
               ),
             ),
-            for (final allergen in _preferences.allergens)
-              ActionChip(
-                avatar: const Icon(Icons.warning_amber_rounded, size: 17),
-                label: Text(
-                  '${DeviceProfilePreferences.allergenLabels[allergen]} alert',
+            for (final preference
+                in DeviceProfilePreferences.extraPreferenceLabels.entries)
+              if (_preferences.extraPreferences.contains(preference.key))
+                ActionChip(
+                  avatar: const FeatureIcon('leaf', size: 17),
+                  label: Text(preference.value),
+                  onPressed: _preferencesBusy
+                      ? null
+                      : () => _choosePreferences(),
                 ),
-                onPressed: _preferencesBusy
-                    ? null
-                    : () => _choosePreferences(allergensOnly: true),
-              ),
           ],
         ),
+        const SizedBox(height: 20),
+        _sectionHeading(
+          'Allergens to remember',
+          Icons.warning_amber_rounded,
+          onTap: _preferencesBusy
+              ? null
+              : () => _choosePreferences(allergensOnly: true),
+        ),
+        Text(
+          _preferences.allergens.isEmpty
+              ? 'No allergens selected'
+              : '${_preferences.allergens.length} selected',
+          key: const ValueKey('profile-allergens-summary-count'),
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        if (_preferences.allergens.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 7,
+            runSpacing: 7,
+            children: [
+              for (final allergen
+                  in DeviceProfilePreferences.allergenLabels.entries)
+                if (_preferences.allergens.contains(allergen.key))
+                  ActionChip(
+                    avatar: const Icon(Icons.warning_amber_rounded, size: 17),
+                    label: Text('${allergen.value} reminder'),
+                    onPressed: _preferencesBusy
+                        ? null
+                        : () => _choosePreferences(allergensOnly: true),
+                  ),
+            ],
+          ),
+        ],
         if (_preferenceError != null) ...[
           const SizedBox(height: 8),
           Text(_preferenceError!, style: Theme.of(context).textTheme.bodySmall),
@@ -917,6 +960,9 @@ class _ProfilePageState extends State<ProfilePage> {
           _setting(
             'Allergens',
             Icons.warning_amber_rounded,
+            subtitle: _preferences.allergens.isEmpty
+                ? 'None selected'
+                : '${_preferences.allergens.length} selected',
             onTap: _preferencesBusy
                 ? null
                 : () => _choosePreferences(allergensOnly: true),
@@ -1022,81 +1068,331 @@ class _PreferencesDialog extends StatefulWidget {
 
 class _PreferencesDialogState extends State<_PreferencesDialog> {
   late DeviceProfilePreferences _value = widget.preferences;
+
+  final _scroll = ScrollController();
+
   @override
-  Widget build(BuildContext context) => AlertDialog(
-    title: Text(
-      widget.allergensOnly ? 'Allergen reminders' : 'Your preferences',
-    ),
-    content: SizedBox(
-      width: 440,
-      child: SingleChildScrollView(
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  void _toggleAllergen(String key) {
+    setState(() {
+      final allergens = {..._value.allergens};
+      if (!allergens.add(key)) allergens.remove(key);
+      _value = _value.copyWith(allergens: allergens);
+    });
+  }
+
+  void _toggleExtraPreference(String key) {
+    setState(() {
+      final preferences = {..._value.extraPreferences};
+      if (!preferences.add(key)) preferences.remove(key);
+      _value = _value.copyWith(extraPreferences: preferences);
+    });
+  }
+
+  Widget _foodPreferences() {
+    final choices = [
+      _PreferenceChoice(
+        key: const ValueKey('food-choice-low-sugar'),
+        label: 'Low sugar',
+        icon: 'leaf',
+        selected: _value.lowSugar,
+        onTap: () => setState(
+          () => _value = _value.copyWith(lowSugar: !_value.lowSugar),
+        ),
+      ),
+      _PreferenceChoice(
+        key: const ValueKey('food-choice-high-fibre'),
+        label: 'High fibre',
+        icon: 'leaf',
+        selected: _value.highFibre,
+        onTap: () => setState(
+          () => _value = _value.copyWith(highFibre: !_value.highFibre),
+        ),
+      ),
+      _PreferenceChoice(
+        key: const ValueKey('food-choice-vegetarian'),
+        label: 'Vegetarian',
+        icon: 'leaf',
+        selected: _value.vegetarian,
+        onTap: () => setState(
+          () => _value = _value.copyWith(vegetarian: !_value.vegetarian),
+        ),
+      ),
+      for (final preference
+          in DeviceProfilePreferences.extraPreferenceLabels.entries)
+        _PreferenceChoice(
+          key: ValueKey('food-choice-${preference.key}'),
+          label: preference.value,
+          icon: preference.key == 'high_protein' ? 'dumbbell' : 'leaf',
+          selected: _value.extraPreferences.contains(preference.key),
+          onTap: () => _toggleExtraPreference(preference.key),
+        ),
+    ];
+    return LayoutBuilder(
+      key: const ValueKey('food-preferences-section'),
+      builder: (context, box) {
+        final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+        final columns = box.maxWidth >= 420 && !largeText ? 2 : 1;
+        final width = (box.maxWidth - (columns - 1) * 10) / columns;
+        return Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            for (final choice in choices) SizedBox(width: width, child: choice),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _allergenPreferences() => Column(
+    key: const ValueKey('allergen-preferences-section'),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      LayoutBuilder(
+        builder: (context, box) {
+          final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+          final columns = box.maxWidth >= 300 && !largeText ? 2 : 1;
+          final width = (box.maxWidth - (columns - 1) * 10) / columns;
+          return Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              for (final allergen
+                  in DeviceProfilePreferences.allergenLabels.entries)
+                SizedBox(
+                  width: width,
+                  child: _PreferenceChoice(
+                    key: ValueKey('allergen-choice-${allergen.key}'),
+                    label: allergen.value,
+                    selected: _value.allergens.contains(allergen.key),
+                    onTap: () => _toggleAllergen(allergen.key),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    ],
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final size = MediaQuery.sizeOf(context);
+    final inset = size.width < 600 ? 16.0 : 32.0;
+    return Dialog(
+      key: const ValueKey('profile-preferences-dialog'),
+      backgroundColor: scheme.surfaceContainerLowest,
+      surfaceTintColor: Colors.transparent,
+      insetPadding: EdgeInsets.all(inset),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: scheme.outlineVariant),
+      ),
+      constraints: BoxConstraints(
+        maxWidth: widget.allergensOnly ? 620 : 560,
+        maxHeight: 680,
+      ),
+      child: SizedBox(
+        key: const ValueKey('profile-preferences-panel'),
+        width: widget.allergensOnly ? 620 : 560,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'These choices stay on this device. They are personal reminders and do not mark any food as safe or suitable.',
+            Flexible(
+              child: Scrollbar(
+                controller: _scroll,
+                child: SingleChildScrollView(
+                  key: const ValueKey('profile-preferences-scroll'),
+                  controller: _scroll,
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Semantics(
+                        namesRoute: true,
+                        header: true,
+                        child: Text(
+                          widget.allergensOnly
+                              ? 'Allergen reminders'
+                              : 'Your preferences',
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          '${widget.allergensOnly ? _value.allergens.length : _value.selectedPreferenceLabels.length} selected',
+                          key: const ValueKey('profile-selection-count'),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: scheme.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const FeatureIcon('shield', size: 22),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'Saved only on this device. Reminders cannot confirm food safety or suitability.',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      widget.allergensOnly
+                          ? _allergenPreferences()
+                          : _foodPreferences(),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 14),
-            if (!widget.allergensOnly) ...[
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Low sugar'),
-                value: _value.lowSugar,
-                onChanged: (value) =>
-                    setState(() => _value = _value.copyWith(lowSugar: value)),
-              ),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('High fibre'),
-                value: _value.highFibre,
-                onChanged: (value) =>
-                    setState(() => _value = _value.copyWith(highFibre: value)),
-              ),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Vegetarian'),
-                value: _value.vegetarian,
-                onChanged: (value) =>
-                    setState(() => _value = _value.copyWith(vegetarian: value)),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Allergens to remember',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ],
-            for (final allergen
-                in DeviceProfilePreferences.allergenLabels.entries)
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(allergen.value),
-                value: _value.allergens.contains(allergen.key),
-                onChanged: (value) => setState(() {
-                  final allergens = {..._value.allergens};
-                  if (value == true) {
-                    allergens.add(allergen.key);
-                  } else {
-                    allergens.remove(allergen.key);
+            Divider(height: 1, color: scheme.outlineVariant),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: LayoutBuilder(
+                builder: (context, box) {
+                  final save = FilledButton(
+                    key: const ValueKey('save-profile-preferences'),
+                    onPressed: () => Navigator.pop(context, _value),
+                    child: Text(
+                      widget.allergensOnly
+                          ? 'Save allergens'
+                          : 'Save preferences',
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                  final cancel = TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel'),
+                  );
+                  if (box.maxWidth < 300 ||
+                      MediaQuery.textScalerOf(context).scale(16) > 24) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [save, const SizedBox(height: 4), cancel],
+                    );
                   }
-                  _value = _value.copyWith(allergens: allergens);
-                }),
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      cancel,
+                      const SizedBox(width: 12),
+                      Flexible(child: save),
+                    ],
+                  );
+                },
               ),
+            ),
           ],
         ),
       ),
-    ),
-    actions: [
-      TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Cancel'),
+    );
+  }
+}
+
+class _PreferenceChoice extends StatelessWidget {
+  const _PreferenceChoice({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    this.icon,
+    super.key,
+  });
+
+  final String label;
+  final String? icon;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Semantics(
+      checked: selected,
+      label: label,
+      onTap: onTap,
+      child: ExcludeSemantics(
+        child: Material(
+          color: selected
+              ? scheme.primaryContainer
+              : scheme.surfaceContainerLowest,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(
+              color: selected ? scheme.primary : scheme.outlineVariant,
+            ),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(14),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 56),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 13,
+                ),
+                child: Row(
+                  children: [
+                    if (icon != null) ...[
+                      FeatureIcon(icon!, size: 25),
+                      const SizedBox(width: 12),
+                    ],
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: selected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                          height: 1.25,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Icon(
+                      selected
+                          ? Icons.check_circle_rounded
+                          : Icons.circle_outlined,
+                      size: 22,
+                      color: selected ? scheme.primary : scheme.outline,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
-      FilledButton(
-        onPressed: () => Navigator.pop(context, _value),
-        child: const Text('Save preferences'),
-      ),
-    ],
-  );
+    );
+  }
 }
 
 class _NameDialog extends StatefulWidget {

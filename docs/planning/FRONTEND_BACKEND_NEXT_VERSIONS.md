@@ -1,14 +1,21 @@
 # Reference screens and the next releases
 
-Current local work is **frontend v0.6.0+7 / backend v0.12.0**. The later desktop
-Home and mobile/PC result references replace the earlier manual-entry direction.
-Keep mobile Home / Scan / Compare / Saved; desktop has the requested expanded
-sidebar. Automatic barcode-first/photo reading, post-capture highlights, bounded
-private machine facts and richer sourced search are implemented locally.
-Local rendered comparison and validation are complete. **Push independently
-after review/docs**, following the user's latest release instruction.
-[Frontend local review](FRONTEND_V0_6_0_REVIEW.md) ·
-[Backend local review](BACKEND_V0_12_0_REVIEW.md).
+Published checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
+are pushed on `main`, with READY production deployments and **54 frontend / 389
+backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
+observations and their separate 120 image descriptors match the pinned sources.
+Automatic barcode/photo reading, the reference Home/results layout, private
+structured proposals and richer research search are deployed. Authenticated hosted
+AI generation, physical camera accuracy and the 3–5 second shopping target remain
+separate verification gates.
+[Frontend review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend review](BACKEND_V0_12_0_REVIEW.md).
+
+The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,
+preserves navigation in shorter windows, replaces the tightly cropped insight
+image, and redesigns Profile preferences/allergens. Its local verification and
+independent deployment gate are recorded in
+[the correction review](FRONTEND_V0_6_1_REVIEW.md).
 
 The preceding frontend v0.5.0+6 and backend v0.11.0 sources are already pushed
 with READY deployments and 49 frontend/389 backend read-only hosted checks;

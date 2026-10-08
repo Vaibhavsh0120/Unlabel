@@ -538,10 +538,8 @@ void main() {
       );
       expect(moved.left, greaterThan(initial.left));
       expect(moved.center.dx, closeTo(target.dx, 1));
-      final draggedIcon = tester.getRect(
-        find.byKey(const Key('navigation-dragged-icon')),
-      );
-      expect(draggedIcon.center.dx, closeTo(target.dx, 1));
+      // Tab icons keep their own positions while the pill follows the finger.
+      expect(find.byKey(const Key('mobile-nav-0')), findsOneWidget);
       await gesture.up();
       await tester.pumpAndSettle();
       expect(selected, [2]);

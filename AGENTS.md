@@ -1,5 +1,20 @@
 # Unlabel workspace instructions
 
+- Latest production checkpoint (8 October 2026): backend v0.12.0 implementation
+  `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7` is pushed; unchanged backend source at
+  `6403517b11ea150cd43fdf37469911a5aaafa926` is READY at
+  `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, with 389 read-only hosted checks. Frontend
+  v0.6.0+7 source `6403517b11ea150cd43fdf37469911a5aaafa926` is READY at
+  `dpl_DFqy6kZQDRbhHdBSAmbLQ2xEhL7P`, with 54 hosted checks and all 21 OCR hashes.
+  Frontend v0.6.1+8 is the reviewed Home/Profile/drag-navigation correction with
+  232 passing tests, clean analysis and a release web build; its exact
+  independent push/deployment evidence belongs to FRONTEND_V0_6_1_REVIEW.md.
+  Retain 24,641 bulk records, 243 source observations, research search v3 and
+  120 separate image descriptors. Physical camera/accuracy/3–5 second and
+  authenticated hosted AI/staging writes remain separate. Older checkpoints below
+  are historical; preserve their identities. Work on main only and update docs
+  before every push.
+
 - Research database checkpoint: backend v0.10.0 is pushed and READY from `e04ba543bbda129fd031d44ec7c307c4e870f02d`, deployment `dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9`, with 389 hosted checks. Frontend v0.5.0+6 has 194 passing tests, clean analysis, a release web build and 390/1440/1728 research workflow review; its independent push/hosted checks are pending. See docs/planning/BACKEND_V0_10_0_REVIEW.md and FRONTEND_V0_5_0_REVIEW.md. data/catalogue/popular-india-v1 holds 243 immutable observations (49 manufacturer/125 retailer/69 OFF); a separate generated read-only SQLite supports search/details without fake GTINs. Website facts retain their own provenance, unknowns and conflicts; they cannot become confirmed-label claims/comparison/private sync. Original bulk OFF source stays unchanged.
 
 

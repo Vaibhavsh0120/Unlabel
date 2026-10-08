@@ -730,7 +730,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Allergen reminders'), findsOneWidget);
       await tester.tap(find.text('Milk'));
-      await tester.tap(find.text('Save preferences'));
+      await tester.tap(find.text('Save allergens'));
       await tester.pumpAndSettle();
       expect((await DeviceProfilePreferencesStore(prefs).read()).allergens, {
         'milk',

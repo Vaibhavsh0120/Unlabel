@@ -1,9 +1,13 @@
 # Unlabel interface contract
 
 The latest 8 October references define desktop Home and mobile/PC single-product
-results. Local frontend v0.6.0+7 implements this direction; screenshot
-comparison has been reviewed at 390/1440/1728 px. Publication is authorized after
-review/docs; exact hosted identities belong to the release reviews.
+results. Published frontend v0.6.0+7 implements this direction; screenshot
+comparison was reviewed at 390/1440/1728 px, and its READY deployment passed
+54 hosted checks. Exact identities belong to the release reviews. Frontend
+v0.6.1+8 refines the shorter-window sidebar and insight artwork, and rebuilds
+separate Profile editors with eight food preferences, twelve allergen reminders,
+selected counts/chips and pinned actions. The mobile pill follows hold or direct
+horizontal drag, previews a destination and selects only on release.
 This supersedes the earlier manual-entry UI direction while preserving the
 existing mobile Home / Scan / Compare / Saved order and Profile shortcut.
 
@@ -25,7 +29,8 @@ the new result botanical decoration is never package evidence.
 8 October steering: Profile, app loading and mobile/desktop Welcome use the four
 new supplied references. Keep the existing four-tab navbar design/order and
 Profile shortcut; only reduce its bottom gap and refine the held active indicator
-so both its icon and green selection surface track the finger. Do not copy the
+so its green selection surface tracks the finger while tab icons stay in place.
+Cancel returns to the active tab; motion preferences are respected. Do not copy the
 five-tab screenshot navbar or add a redundant Profile settings button. The
 botanical loading screen is app-only; the website has no branded loading screen.
 Welcome uses live copy/actions and a generated package/leaf illustration, with

@@ -221,3 +221,21 @@ Final built-in generation prompt:
 ```text
 Use case: stylized-concept. Asset type: isolated botanical decorative cluster for Unlabel profile identity and settings cards. Primary request: a graceful branch of seven broad elongated green leaves with softly detailed veins, three forest/jade leaves in upper right growing from lower right and four mint green leaves near bottom, tiny mint round accent dots. Style: polished softly dimensional editorial botanical illustration, clean smooth matte leaves, gentle natural shading, airy premium mobile app. Composition: square image, branch rises from bottom right toward upper right and upper center, left half mostly empty transparent space, all leaf silhouettes fully visible with small outer margin. Palette: forest #155B4B jade #318663 mint #A5E2C2. Constraints: actual transparent alpha background, no opaque backdrop, no food or people, no text, lettering, numbers, UI, logos or watermark. Calm cohesive branch, do not scatter isolated confetti.
 ```
+
+
+## Insight banner correction — 8 October 2026
+
+`desktop-insight-banner.png` is a fresh built-in image generation for the user's
+wide Today’s Insight reference: pale mint botanical curves and a smaller cream
+bowl with berries/oats at the right. It replaces the close crop in desktop Home.
+It is decorative, with no product or nutrition evidence. Copied byte-for-byte;
+no bitmap editing or stock image acquisition.
+
+- Dimensions: 2172 × 724 px; 1,826,994 bytes.
+- SHA-256: `80324b0733a1e5e3dca7fc7a8ea31d295a29029d81401561b6c80cdda043e67f`.
+- Original output: `exec-7bb06f56-bc31-44bf-b26c-7786009b242a.png`.
+- Prompt: new premium white/forest/mint wide 3:1 banner; modest right-hand cream
+  granola/berry bowl, rim and food in the visible top band, quiet left space,
+  translucent mint curves/leaves, no dark background, lettering or logos.
+- Runtime: smaller right-hand banner slot with cover fit aligned to the top/right;
+  card text remains live Flutter content and food artwork is excluded from semantics.

@@ -1,15 +1,21 @@
 # Unlabel: useful product architecture and delivery plan
 
-Local next checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
-implement automatic barcode/front/back reading, post-capture regions, the supplied
-desktop Home/mobile-PC result composition, private unverified fact staging and
-richer research search. All 243 source observations and the original SQLite
-catalogue are preserved. Separate image descriptors cover 120/243 research
-observations; full image coverage is incomplete. Local screenshot comparison,
-aggregate checks and release builds are complete. **The user authorized pushing
-after final review and documentation.**
-[Frontend local review](FRONTEND_V0_6_0_REVIEW.md) ·
-[Backend local review](BACKEND_V0_12_0_REVIEW.md).
+Published checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
+are pushed on `main`, with READY production deployments and **54 frontend / 389
+backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
+observations and their separate 120 image descriptors match the pinned sources.
+Automatic barcode/photo reading, the reference Home/results layout, private
+structured proposals and richer research search are deployed. Authenticated hosted
+AI generation, physical camera accuracy and the 3–5 second shopping target remain
+separate verification gates.
+[Frontend review](FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend review](BACKEND_V0_12_0_REVIEW.md).
+
+The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,
+preserves navigation in shorter windows, replaces the tightly cropped insight
+image, and redesigns Profile preferences/allergens. Its local verification and
+independent deployment gate are recorded in
+[the correction review](FRONTEND_V0_6_1_REVIEW.md).
 
 The preceding backend v0.11.0 and frontend v0.5.0+6 source commits are pushed
 with READY deployments and 389 backend/49 frontend read-only hosted checks;

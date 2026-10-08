@@ -1,14 +1,21 @@
 # Documentation index
 
-Current local work: [frontend v0.6.0+7](planning/FRONTEND_V0_6_0_REVIEW.md) and
-[backend v0.12.0](planning/BACKEND_V0_12_0_REVIEW.md). Automatic barcode/photo
-reading, reference desktop Home/mobile-PC results, private structured proposals,
-research search v3 and separate real-product image descriptors are implemented
-locally, with completed source checks and rendered comparison.
-**The user authorized component pushes after review/docs.** Previous frontend v0.5.0/backend
-v0.11 sources are pushed/READY with 49 frontend/389 backend read-only hosted
-checks; authenticated AI and device proof remain separate. Historical version
-sections below retain their scope.
+Published checkpoint, 8 October 2026: **frontend v0.6.0+7 / backend v0.12.0**
+are pushed on `main`, with READY production deployments and **54 frontend / 389
+backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
+observations and their separate 120 image descriptors match the pinned sources.
+Automatic barcode/photo reading, the reference Home/results layout, private
+structured proposals and richer research search are deployed. Authenticated hosted
+AI generation, physical camera accuracy and the 3–5 second shopping target remain
+separate verification gates.
+[Frontend review](planning/FRONTEND_V0_6_0_REVIEW.md) ·
+[Backend review](planning/BACKEND_V0_12_0_REVIEW.md).
+
+The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,
+preserves navigation in shorter windows, replaces the tightly cropped insight
+image, and redesigns Profile preferences/allergens. Its local verification and
+independent deployment gate are recorded in
+[the correction review](planning/FRONTEND_V0_6_1_REVIEW.md).
 
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,

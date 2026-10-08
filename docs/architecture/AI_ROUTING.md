@@ -5,10 +5,11 @@ must enter `AiGateway`; callers cannot supply keys, provider URLs, model names o
 choose a provider per task. The app has only scanner users, with anonymous or
 password Firebase authentication. No reviewer/admin app role is introduced.
 
-Local v0.12.0 adds bounded private structured machine proposals and an independent
-response storage status. Its local review is complete; publication is authorized
-after review/docs and the release review records actual deployment evidence. Historical v0.11 extraction does not persist
-output; the local v0.12 behavior below must not be inferred for that deployment.
+Published v0.12.0 adds bounded private structured machine proposals and an
+independent response storage status. Its READY deployment passed 389 read-only
+hosted checks; authenticated extraction/staging is outside that audit. See the
+[release review](../planning/BACKEND_V0_12_0_REVIEW.md). Historical v0.11 extraction
+does not persist output; v0.12 behavior must not be inferred for that deployment.
 
 ## Selection and replacement
 

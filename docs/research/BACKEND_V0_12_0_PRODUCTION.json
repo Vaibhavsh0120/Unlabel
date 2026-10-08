@@ -1,0 +1,3236 @@
+{
+  "version": "0.12.0",
+  "origin": "https://unlabel-api.vercel.app",
+  "source_sha": "6403517b11ea150cd43fdf37469911a5aaafa926",
+  "deployment": {
+    "id": "dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf",
+    "state": "READY",
+    "environment": "production",
+    "source_sha": "6403517b11ea150cd43fdf37469911a5aaafa926",
+    "alias": "https://unlabel-api.vercel.app",
+    "metadata_verification": "Fresh supplied Vercel inspection matched ID, state, Git SHA, target and alias",
+    "inspection_sha256": "1dd27a741918e521be1511185eb1163522010a8d6040ad3d73e6a355ae21b0da"
+  },
+  "checked_at_utc": "2026-10-08T13:04:21.203442+00:00",
+  "checks": [
+    {
+      "check": "Backend v0.12.0 health",
+      "method": "GET",
+      "path": "/v1/health",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Comparison metadata and independent readiness",
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Exact v0.12.0 OpenAPI and preserved v0.9.0 contracts",
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "expected": 200,
+      "paths": 27,
+      "operations": 28,
+      "canonical_sha256": "7b4de5f472649e68157e3524cd937701efc9cc971cfbd38968a8b121bc82842e"
+    },
+    {
+      "check": "Six reviewed bilingual functions",
+      "method": "GET",
+      "path": "/v1/ingredients/glossary",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Confirmed synthetic labels; exact frontend CORS",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store",
+      "allowed_origin": "https://unlabel-india.vercel.app"
+    },
+    {
+      "check": "Original-row mg/serving conversion and corrected OCR input",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Negative signed nutrient difference",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Explicit zero stays known",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "All eleven explicit nutrients yield ready equal comparison",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact scientific kJ/kcal conversion",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Explicit unknown stays unknown",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Conflicting original rows need correction",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Different preparation cannot be compared",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Mass/volume mismatch cannot infer density",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unknown serving size cannot be invented",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Missing selected table cannot be substituted",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Untrusted origin receives no CORS permission",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact frontend comparison POST preflight",
+      "method": "OPTIONS",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "allowed_origin": "https://unlabel-india.vercel.app"
+    },
+    {
+      "check": "Unconfirmed input and redacted validation",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: NaN",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: Infinity",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: 1e-999",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unsafe JSON number rejected: 1.0000000000000000000001",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exactly 64 KiB valid body accepted",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "64 KiB plus one actual byte rejected",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 413,
+      "expected": 413,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Client chunked oversize body rejected",
+      "method": "POST",
+      "path": "/v1/reports/compare",
+      "status": 413,
+      "expected": 413,
+      "cache_control": "no-store",
+      "client_transfer_encoding": "chunked"
+    },
+    {
+      "check": "Immutable researched observation 0674bb99d57a28a78aceed973d2d072dcad57e228e03b26ceb6e56bf68e1e998",
+      "method": "GET",
+      "path": "/v1/researched/products/0674bb99d57a28a78aceed973d2d072dcad57e228e03b26ceb6e56bf68e1e998",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 06b86828c2df697ddc7d3993f3edd4026772b5d9e0cf6528e36220d1782cb617",
+      "method": "GET",
+      "path": "/v1/researched/products/06b86828c2df697ddc7d3993f3edd4026772b5d9e0cf6528e36220d1782cb617",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 07763d2cd479de622b8e00c2fd6623c1626db50d3110dc0186ebb94c2ef0f7c5",
+      "method": "GET",
+      "path": "/v1/researched/products/07763d2cd479de622b8e00c2fd6623c1626db50d3110dc0186ebb94c2ef0f7c5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 072097840a58505eb44f75e14733f8dc1d4ff59b80006fb7716aecc54be9bb30",
+      "method": "GET",
+      "path": "/v1/researched/products/072097840a58505eb44f75e14733f8dc1d4ff59b80006fb7716aecc54be9bb30",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0903b4f74367d354dc119ac1fe65abd4e6a19291f0f81060eacca19a4fe09230",
+      "method": "GET",
+      "path": "/v1/researched/products/0903b4f74367d354dc119ac1fe65abd4e6a19291f0f81060eacca19a4fe09230",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0a85ea22d1b60df02585636cad9d0603542c51c839da02f0a632d2943611648b",
+      "method": "GET",
+      "path": "/v1/researched/products/0a85ea22d1b60df02585636cad9d0603542c51c839da02f0a632d2943611648b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0be676d45e580a6e7bb118315da63fef580ef75404901d21ebba38bd3ffec835",
+      "method": "GET",
+      "path": "/v1/researched/products/0be676d45e580a6e7bb118315da63fef580ef75404901d21ebba38bd3ffec835",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0e34389114162ea9ca61ab99fce73d11b502e9b08da1c13228626d89f9ffb718",
+      "method": "GET",
+      "path": "/v1/researched/products/0e34389114162ea9ca61ab99fce73d11b502e9b08da1c13228626d89f9ffb718",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0f09d28a79730a73a0b0c28c95a64eecc4adfaa36765d72a7d0da7c5e4c64810",
+      "method": "GET",
+      "path": "/v1/researched/products/0f09d28a79730a73a0b0c28c95a64eecc4adfaa36765d72a7d0da7c5e4c64810",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0f119543a5dbbf32fc951a2b3080c0fd77f184342cf3269b13ab3ce80904029b",
+      "method": "GET",
+      "path": "/v1/researched/products/0f119543a5dbbf32fc951a2b3080c0fd77f184342cf3269b13ab3ce80904029b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0f6de02db46e77c8f384a3b80a24fca66ed2336141799245a953ae0c8e41cc66",
+      "method": "GET",
+      "path": "/v1/researched/products/0f6de02db46e77c8f384a3b80a24fca66ed2336141799245a953ae0c8e41cc66",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0f840756ec066ab171d125ba9144a6c6a4cca37709f6c0ecac8d200ff1dc2002",
+      "method": "GET",
+      "path": "/v1/researched/products/0f840756ec066ab171d125ba9144a6c6a4cca37709f6c0ecac8d200ff1dc2002",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0f9d1be890e907da68d4334077f957ff47a14eada0486482e9037898dbb19969",
+      "method": "GET",
+      "path": "/v1/researched/products/0f9d1be890e907da68d4334077f957ff47a14eada0486482e9037898dbb19969",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0ffec4412c2ab67586cf3eb3105009aef270ccef2c190b311e169c6eef424cde",
+      "method": "GET",
+      "path": "/v1/researched/products/0ffec4412c2ab67586cf3eb3105009aef270ccef2c190b311e169c6eef424cde",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 11dce1577a0a36e805bfb6b74308ef0bf3220ede36b1ce640db2502d576f89d5",
+      "method": "GET",
+      "path": "/v1/researched/products/11dce1577a0a36e805bfb6b74308ef0bf3220ede36b1ce640db2502d576f89d5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 15298747570da1c0dc3fc40452acc0e3833fe4e25a92f9915e1e918b864fd537",
+      "method": "GET",
+      "path": "/v1/researched/products/15298747570da1c0dc3fc40452acc0e3833fe4e25a92f9915e1e918b864fd537",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 169a198f04d2ade24d6601c9bc5212dddbe832b3d164cb0315b0a64e992971e2",
+      "method": "GET",
+      "path": "/v1/researched/products/169a198f04d2ade24d6601c9bc5212dddbe832b3d164cb0315b0a64e992971e2",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 17ee917cec0d536b2c46100f93bc981cb9276f88aa50cc645b31872e0346ec1f",
+      "method": "GET",
+      "path": "/v1/researched/products/17ee917cec0d536b2c46100f93bc981cb9276f88aa50cc645b31872e0346ec1f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1948682547fff54cc3ddc113f6922ba801ba79e7848ab2d8b3a3ba18ba4fe1ab",
+      "method": "GET",
+      "path": "/v1/researched/products/1948682547fff54cc3ddc113f6922ba801ba79e7848ab2d8b3a3ba18ba4fe1ab",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1a7336e2f9faa61e39e9fe6d4b61cc819b3f9e595fe522694615ab75f3a53b6d",
+      "method": "GET",
+      "path": "/v1/researched/products/1a7336e2f9faa61e39e9fe6d4b61cc819b3f9e595fe522694615ab75f3a53b6d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1a3b7debe8aabd1d37b2adecd23aca4d2c3920b51d96562f8424c5458f01439f",
+      "method": "GET",
+      "path": "/v1/researched/products/1a3b7debe8aabd1d37b2adecd23aca4d2c3920b51d96562f8424c5458f01439f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1ade123fa50cffe76a9469ca8f8ca15aad4c59fa1ef45d0528b2299e66c0a438",
+      "method": "GET",
+      "path": "/v1/researched/products/1ade123fa50cffe76a9469ca8f8ca15aad4c59fa1ef45d0528b2299e66c0a438",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1ba6c21bc18eefd62adfbc86fbdd4ba4a75851807088db8276a4270ab948f7eb",
+      "method": "GET",
+      "path": "/v1/researched/products/1ba6c21bc18eefd62adfbc86fbdd4ba4a75851807088db8276a4270ab948f7eb",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1dbe4b615236180fee68ecacc62feeaedf2abd86a0592571a53cd9c899aeaf88",
+      "method": "GET",
+      "path": "/v1/researched/products/1dbe4b615236180fee68ecacc62feeaedf2abd86a0592571a53cd9c899aeaf88",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1f8316e31faab6aba140600fe4e9eef1d4fc37d9c50bfaafa3bafebdea85eafb",
+      "method": "GET",
+      "path": "/v1/researched/products/1f8316e31faab6aba140600fe4e9eef1d4fc37d9c50bfaafa3bafebdea85eafb",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1f904103166fd138196b17c9bcf18a27b45428f807a8ce38a380cc8b65e3418b",
+      "method": "GET",
+      "path": "/v1/researched/products/1f904103166fd138196b17c9bcf18a27b45428f807a8ce38a380cc8b65e3418b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 21cbd3bbf955f41b1c73bf437cbd2c3cf7fc127cb05b2a9ce5236224bb07b8a6",
+      "method": "GET",
+      "path": "/v1/researched/products/21cbd3bbf955f41b1c73bf437cbd2c3cf7fc127cb05b2a9ce5236224bb07b8a6",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2200bf0a1cd6c73eb9342c963d2e46664f6078f9c4889bbb156fd2f26bfdc2c3",
+      "method": "GET",
+      "path": "/v1/researched/products/2200bf0a1cd6c73eb9342c963d2e46664f6078f9c4889bbb156fd2f26bfdc2c3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 221a880871d8bc4174297e9691b7a8731f990127ddfc6eeac11e5f9c1c0ce52f",
+      "method": "GET",
+      "path": "/v1/researched/products/221a880871d8bc4174297e9691b7a8731f990127ddfc6eeac11e5f9c1c0ce52f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2723d25ff20251bd7e933678d2a728296734e72bc21d811a691316021e42a913",
+      "method": "GET",
+      "path": "/v1/researched/products/2723d25ff20251bd7e933678d2a728296734e72bc21d811a691316021e42a913",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 28130554faa7485ecc3df44da696e78b692ccd7dce51d7e523dba061935f72af",
+      "method": "GET",
+      "path": "/v1/researched/products/28130554faa7485ecc3df44da696e78b692ccd7dce51d7e523dba061935f72af",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 290f1ef2039c657bc25ab9cde98a6fcb9f46cd379cc233ee1fb2fc8994cec09a",
+      "method": "GET",
+      "path": "/v1/researched/products/290f1ef2039c657bc25ab9cde98a6fcb9f46cd379cc233ee1fb2fc8994cec09a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 293131edb03cc7e9dd6bd029c2ac71ca25fa088b9fbd166a5830f4619d52db22",
+      "method": "GET",
+      "path": "/v1/researched/products/293131edb03cc7e9dd6bd029c2ac71ca25fa088b9fbd166a5830f4619d52db22",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 29b5b443b9c14e8ef75b4f88e49c1a790321a1d0e2f8e6c1f0c76c04cad78ede",
+      "method": "GET",
+      "path": "/v1/researched/products/29b5b443b9c14e8ef75b4f88e49c1a790321a1d0e2f8e6c1f0c76c04cad78ede",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2a3624ea851347c0a4b7f33882c1b8171042cb6b71579577014d04886d639258",
+      "method": "GET",
+      "path": "/v1/researched/products/2a3624ea851347c0a4b7f33882c1b8171042cb6b71579577014d04886d639258",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2b0c5a9ff49c0db7342a4c1bf3ec16118c0a361394b3bf5a83eab577026c9006",
+      "method": "GET",
+      "path": "/v1/researched/products/2b0c5a9ff49c0db7342a4c1bf3ec16118c0a361394b3bf5a83eab577026c9006",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2c619da45f0ada5ea07c633f604e46e7f05cd8d47799567a312d87670c08f62d",
+      "method": "GET",
+      "path": "/v1/researched/products/2c619da45f0ada5ea07c633f604e46e7f05cd8d47799567a312d87670c08f62d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2d4e2e19afa3c284744ad1b03a25c712c98a246262b91044e756089ac533ab00",
+      "method": "GET",
+      "path": "/v1/researched/products/2d4e2e19afa3c284744ad1b03a25c712c98a246262b91044e756089ac533ab00",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 2cb08f4e6816b20ba010acc5e8b754cd8a9813742ba67c2534f7e3b7adb68491",
+      "method": "GET",
+      "path": "/v1/researched/products/2cb08f4e6816b20ba010acc5e8b754cd8a9813742ba67c2534f7e3b7adb68491",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 304948c0500365096583831a55d75c3f52084b0773390aff7c78195ee3f0ba15",
+      "method": "GET",
+      "path": "/v1/researched/products/304948c0500365096583831a55d75c3f52084b0773390aff7c78195ee3f0ba15",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 30a9920ef913ca70c43af30314aebc84ac527641a27a53b2d3dc6c5840fc7a90",
+      "method": "GET",
+      "path": "/v1/researched/products/30a9920ef913ca70c43af30314aebc84ac527641a27a53b2d3dc6c5840fc7a90",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 0af83736cd8acaa3f2dc02517f519e6a510b9224fb83991cc5ace5de179adac9",
+      "method": "GET",
+      "path": "/v1/researched/products/0af83736cd8acaa3f2dc02517f519e6a510b9224fb83991cc5ace5de179adac9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 31709086f035b6d7397ebe80d41b346bc53223423caa536e3a5afcd79b0e7e12",
+      "method": "GET",
+      "path": "/v1/researched/products/31709086f035b6d7397ebe80d41b346bc53223423caa536e3a5afcd79b0e7e12",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 32795ce0d224b46a62153be6f9d4ee4217ce6f34ca5a396870aca4338728359a",
+      "method": "GET",
+      "path": "/v1/researched/products/32795ce0d224b46a62153be6f9d4ee4217ce6f34ca5a396870aca4338728359a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3339616d4ab27e5c54dc7ad2b8e1477a8e96bdba869ca1f281fee145bf9472a5",
+      "method": "GET",
+      "path": "/v1/researched/products/3339616d4ab27e5c54dc7ad2b8e1477a8e96bdba869ca1f281fee145bf9472a5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 34a75160f50b3fa6fd9f4fc76869b0af82901402b9df53795ffa3caa2277c6fc",
+      "method": "GET",
+      "path": "/v1/researched/products/34a75160f50b3fa6fd9f4fc76869b0af82901402b9df53795ffa3caa2277c6fc",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 34c435f54358d74166b226f4b5b1dd000b19bd5c7455f317d57745a542501e72",
+      "method": "GET",
+      "path": "/v1/researched/products/34c435f54358d74166b226f4b5b1dd000b19bd5c7455f317d57745a542501e72",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 38849118b1776395aa35c0742ab63bc087e652abb6c8301d9f901d52a2104e0f",
+      "method": "GET",
+      "path": "/v1/researched/products/38849118b1776395aa35c0742ab63bc087e652abb6c8301d9f901d52a2104e0f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3b41bae4fa64ecb437a82ec97e158b990133f2b96ce25f97652539d852e9e302",
+      "method": "GET",
+      "path": "/v1/researched/products/3b41bae4fa64ecb437a82ec97e158b990133f2b96ce25f97652539d852e9e302",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3b5dc693609f5bdb1ff867d019cecb3936569bd4a6b7f7dd392cd02e47210df2",
+      "method": "GET",
+      "path": "/v1/researched/products/3b5dc693609f5bdb1ff867d019cecb3936569bd4a6b7f7dd392cd02e47210df2",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3bb1299eb57d01927ee54b99834f17b360c9e8ff735ce9bc4832e1dc311e0c3b",
+      "method": "GET",
+      "path": "/v1/researched/products/3bb1299eb57d01927ee54b99834f17b360c9e8ff735ce9bc4832e1dc311e0c3b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3cedd3146804cfcd9c71788e10a3bce02b35ba7c68e737e592fd46a52e41bf31",
+      "method": "GET",
+      "path": "/v1/researched/products/3cedd3146804cfcd9c71788e10a3bce02b35ba7c68e737e592fd46a52e41bf31",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 3fef435066118c064b2b84a0fb48919017b816a087d4d0f4b06856cce732aa8b",
+      "method": "GET",
+      "path": "/v1/researched/products/3fef435066118c064b2b84a0fb48919017b816a087d4d0f4b06856cce732aa8b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 406686a0fab9aceee8a1b945197263a65db2a1b5b9646700fe86eeb4be77a0cb",
+      "method": "GET",
+      "path": "/v1/researched/products/406686a0fab9aceee8a1b945197263a65db2a1b5b9646700fe86eeb4be77a0cb",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 40738bdc9cd0999cf149630971151595bdd5b4e44decedfe93f2dd14bef2d70d",
+      "method": "GET",
+      "path": "/v1/researched/products/40738bdc9cd0999cf149630971151595bdd5b4e44decedfe93f2dd14bef2d70d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 410332633441c5ccd21243a5c14038fdaba73941467db8662ec5bc410a71bc1b",
+      "method": "GET",
+      "path": "/v1/researched/products/410332633441c5ccd21243a5c14038fdaba73941467db8662ec5bc410a71bc1b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4220c72eb978383ad62952883f820574d39ad63565a6bd139e3d50f38bedc498",
+      "method": "GET",
+      "path": "/v1/researched/products/4220c72eb978383ad62952883f820574d39ad63565a6bd139e3d50f38bedc498",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 429a9c2c3b6df1e10f04bbdcba85f1f1572874717ea6b345a6879b6a2146f03f",
+      "method": "GET",
+      "path": "/v1/researched/products/429a9c2c3b6df1e10f04bbdcba85f1f1572874717ea6b345a6879b6a2146f03f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 43156027ca542870607e40d63e725538d72aadd7c63b2c9e20d4df40c51a0de3",
+      "method": "GET",
+      "path": "/v1/researched/products/43156027ca542870607e40d63e725538d72aadd7c63b2c9e20d4df40c51a0de3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4401c16e67f61a57dae24e31edb1891157e76ff5618adc9a0004a2ed772761b4",
+      "method": "GET",
+      "path": "/v1/researched/products/4401c16e67f61a57dae24e31edb1891157e76ff5618adc9a0004a2ed772761b4",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4523c7b6823a85db7531191f7538c4cd15c8b55bfd3ed0c585e9677a0c1d36df",
+      "method": "GET",
+      "path": "/v1/researched/products/4523c7b6823a85db7531191f7538c4cd15c8b55bfd3ed0c585e9677a0c1d36df",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 470e8448167219f7f811772a8b6e09b7c82d7ea7ce09c51c68473b181e02cbf0",
+      "method": "GET",
+      "path": "/v1/researched/products/470e8448167219f7f811772a8b6e09b7c82d7ea7ce09c51c68473b181e02cbf0",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 47861a585ff4b5fc52c928e6d0231b2f0ef26f0043a4f11f467d3dc74533b567",
+      "method": "GET",
+      "path": "/v1/researched/products/47861a585ff4b5fc52c928e6d0231b2f0ef26f0043a4f11f467d3dc74533b567",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 478a92f007d96459744e7dc778bd131a6d10e915437262d8142e61676b4abe38",
+      "method": "GET",
+      "path": "/v1/researched/products/478a92f007d96459744e7dc778bd131a6d10e915437262d8142e61676b4abe38",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 490595c1f9ac0279e001575ffe994c69265bb2662e508614d1cee07595ba8919",
+      "method": "GET",
+      "path": "/v1/researched/products/490595c1f9ac0279e001575ffe994c69265bb2662e508614d1cee07595ba8919",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 1cd1663664bf6c1503c7920023e7ad34146437eeda623ac4e8165680b3020ec8",
+      "method": "GET",
+      "path": "/v1/researched/products/1cd1663664bf6c1503c7920023e7ad34146437eeda623ac4e8165680b3020ec8",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 49753d5f668c0730526cc9267acae48a19e93c89d362b319ad22d3ae82acf0c0",
+      "method": "GET",
+      "path": "/v1/researched/products/49753d5f668c0730526cc9267acae48a19e93c89d362b319ad22d3ae82acf0c0",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 497f8a9de18361298cb586274b95975572e74ff2c304fdb01a2e20b2e4ae0771",
+      "method": "GET",
+      "path": "/v1/researched/products/497f8a9de18361298cb586274b95975572e74ff2c304fdb01a2e20b2e4ae0771",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 498bf71f51acaba6eab30f6386207d40029c871394659fa6c0a483212e458f52",
+      "method": "GET",
+      "path": "/v1/researched/products/498bf71f51acaba6eab30f6386207d40029c871394659fa6c0a483212e458f52",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 49922b0e53a5c376e1684d0a02538a6af961d1f723069879209676f1dc3c9a15",
+      "method": "GET",
+      "path": "/v1/researched/products/49922b0e53a5c376e1684d0a02538a6af961d1f723069879209676f1dc3c9a15",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 49d7597b7ab1776f95c2f216ec9830e5d22cfbc168a5971ed4fd3daed4dfc094",
+      "method": "GET",
+      "path": "/v1/researched/products/49d7597b7ab1776f95c2f216ec9830e5d22cfbc168a5971ed4fd3daed4dfc094",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4a20ddb4c2f7d18673ab3d75666b6b3faaa473ea00c829a142098a433ea9fd84",
+      "method": "GET",
+      "path": "/v1/researched/products/4a20ddb4c2f7d18673ab3d75666b6b3faaa473ea00c829a142098a433ea9fd84",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4d9437f867fe9f70a8bdb3771e1daea60188657ff89e6b289f31709b775694fe",
+      "method": "GET",
+      "path": "/v1/researched/products/4d9437f867fe9f70a8bdb3771e1daea60188657ff89e6b289f31709b775694fe",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 4f683a8e95d2a7104a0e88b12cd7a50b395ebef43d640df07a9030d2dd9aa503",
+      "method": "GET",
+      "path": "/v1/researched/products/4f683a8e95d2a7104a0e88b12cd7a50b395ebef43d640df07a9030d2dd9aa503",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 50e455220f83e42cb151f748f4e4d6f95c060b9e8ada379b80c4e79f67692daf",
+      "method": "GET",
+      "path": "/v1/researched/products/50e455220f83e42cb151f748f4e4d6f95c060b9e8ada379b80c4e79f67692daf",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 528ad341cfb03414159039d64164da79242d3fdfa4ea592270dd2edce5637e01",
+      "method": "GET",
+      "path": "/v1/researched/products/528ad341cfb03414159039d64164da79242d3fdfa4ea592270dd2edce5637e01",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 52fa708ed15a9988db811808e97a38b8b8f77ba576e138eac14b9048be8bb618",
+      "method": "GET",
+      "path": "/v1/researched/products/52fa708ed15a9988db811808e97a38b8b8f77ba576e138eac14b9048be8bb618",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5577b5868bc8424c47a6ae28dbb3a698f65d113b96e13c5107427f8b86b3f7e8",
+      "method": "GET",
+      "path": "/v1/researched/products/5577b5868bc8424c47a6ae28dbb3a698f65d113b96e13c5107427f8b86b3f7e8",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 55988837bed06c79d9cff3ffbf30778f067dd3c2a0a87c1d9b3cdbb76b8d1a70",
+      "method": "GET",
+      "path": "/v1/researched/products/55988837bed06c79d9cff3ffbf30778f067dd3c2a0a87c1d9b3cdbb76b8d1a70",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 588cbf6dfdbe2425e8f429c52899fcddc531bfa52a3cf0fe6aebf0abab960963",
+      "method": "GET",
+      "path": "/v1/researched/products/588cbf6dfdbe2425e8f429c52899fcddc531bfa52a3cf0fe6aebf0abab960963",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 55cc3f530a4fae7bf9ce3d09e6ae9c80d317bf1674c68b98154652bd1bb65b41",
+      "method": "GET",
+      "path": "/v1/researched/products/55cc3f530a4fae7bf9ce3d09e6ae9c80d317bf1674c68b98154652bd1bb65b41",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5ae17edb833ce6140418f095c3d291a02163e75d24d8e35bcf72c67f74385338",
+      "method": "GET",
+      "path": "/v1/researched/products/5ae17edb833ce6140418f095c3d291a02163e75d24d8e35bcf72c67f74385338",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5c2b871688ae598404915624ca22db7d644fc056526057277bb2994f99187e1f",
+      "method": "GET",
+      "path": "/v1/researched/products/5c2b871688ae598404915624ca22db7d644fc056526057277bb2994f99187e1f",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5c30f83fbaceb1160f6e8e8682cd2bb4205016febc458729274dcc13dd5ecedd",
+      "method": "GET",
+      "path": "/v1/researched/products/5c30f83fbaceb1160f6e8e8682cd2bb4205016febc458729274dcc13dd5ecedd",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5c5794a602597991114be7fe4b9c0c136bcbe108e42a2fa9a0386a1cd985f13e",
+      "method": "GET",
+      "path": "/v1/researched/products/5c5794a602597991114be7fe4b9c0c136bcbe108e42a2fa9a0386a1cd985f13e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5c734c2a5b5cd1cdad54fa2b2d4f06720f176f65de3e612fdf73cb8c95b53210",
+      "method": "GET",
+      "path": "/v1/researched/products/5c734c2a5b5cd1cdad54fa2b2d4f06720f176f65de3e612fdf73cb8c95b53210",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5cb5160665861fc5589b5bee6cc0cf43667224d58ff42d2c0d17d13a465a70f1",
+      "method": "GET",
+      "path": "/v1/researched/products/5cb5160665861fc5589b5bee6cc0cf43667224d58ff42d2c0d17d13a465a70f1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5ebeaa56c476dac5301bf561d523a06d4d798ae6e16cd58c8db0cd14689956d9",
+      "method": "GET",
+      "path": "/v1/researched/products/5ebeaa56c476dac5301bf561d523a06d4d798ae6e16cd58c8db0cd14689956d9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5e5bba8fec64ec6759018c4a24c85cfe36866bce5794081127c8dc87f2e8de06",
+      "method": "GET",
+      "path": "/v1/researched/products/5e5bba8fec64ec6759018c4a24c85cfe36866bce5794081127c8dc87f2e8de06",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5ec675d19965853526e06bb9f43bd72def86245a71d3564e17ca77bc9ba8e740",
+      "method": "GET",
+      "path": "/v1/researched/products/5ec675d19965853526e06bb9f43bd72def86245a71d3564e17ca77bc9ba8e740",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5f598f006e3f8f0dde6f55c07a93b1116252bc5c714122c85de9bc6d67fc3f8d",
+      "method": "GET",
+      "path": "/v1/researched/products/5f598f006e3f8f0dde6f55c07a93b1116252bc5c714122c85de9bc6d67fc3f8d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5f5b7a055184487f33d00771781f0bcb1f49287a0efe5882de79913200eddc1b",
+      "method": "GET",
+      "path": "/v1/researched/products/5f5b7a055184487f33d00771781f0bcb1f49287a0efe5882de79913200eddc1b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5f97d8be3bf216ee77e0ed1e6f1f8641a15cce009dba154d75c05e4df5d6ace6",
+      "method": "GET",
+      "path": "/v1/researched/products/5f97d8be3bf216ee77e0ed1e6f1f8641a15cce009dba154d75c05e4df5d6ace6",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 5ffd790b3fe48da74661c40dbd52deb2c5b3405580be769473ee2895b75ee015",
+      "method": "GET",
+      "path": "/v1/researched/products/5ffd790b3fe48da74661c40dbd52deb2c5b3405580be769473ee2895b75ee015",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 633bbe7355438cae64735cf7a618b4278048d9ed1ae0feda1dc65be844e378bf",
+      "method": "GET",
+      "path": "/v1/researched/products/633bbe7355438cae64735cf7a618b4278048d9ed1ae0feda1dc65be844e378bf",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 66ab0914cbdb2865f565471d562238503cf5db72df37fcd36723e846260fdbc8",
+      "method": "GET",
+      "path": "/v1/researched/products/66ab0914cbdb2865f565471d562238503cf5db72df37fcd36723e846260fdbc8",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 66d1a6885d27b39160be38390b6e3523dea85d37e1c1b4e88920f3b17255ebc1",
+      "method": "GET",
+      "path": "/v1/researched/products/66d1a6885d27b39160be38390b6e3523dea85d37e1c1b4e88920f3b17255ebc1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 672585b284e07975c3ee665ca856532e9326f96ced29ec1fda74a9944bea62f7",
+      "method": "GET",
+      "path": "/v1/researched/products/672585b284e07975c3ee665ca856532e9326f96ced29ec1fda74a9944bea62f7",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 6e014cc29cafc6b72ca1eba499826972ffdc96c7a28dc2e0f52627d7bd07c514",
+      "method": "GET",
+      "path": "/v1/researched/products/6e014cc29cafc6b72ca1eba499826972ffdc96c7a28dc2e0f52627d7bd07c514",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 6ebac31a071dd160bbfc0332ad43af87443fbffc6ca4541c6b60eb6dbc615763",
+      "method": "GET",
+      "path": "/v1/researched/products/6ebac31a071dd160bbfc0332ad43af87443fbffc6ca4541c6b60eb6dbc615763",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 6f7ea41644627d3f26b4ee9bd442fc14538e174d4d332c03ecd9f477a52a8738",
+      "method": "GET",
+      "path": "/v1/researched/products/6f7ea41644627d3f26b4ee9bd442fc14538e174d4d332c03ecd9f477a52a8738",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7017b38345cae0a9d50f761afe2e05b55375e8efb6b156536d9b3c48edc97f24",
+      "method": "GET",
+      "path": "/v1/researched/products/7017b38345cae0a9d50f761afe2e05b55375e8efb6b156536d9b3c48edc97f24",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 70d4e2d4028a72da80a5f08c0f3dead656d7c0bba1c538ca478cdad076c9fe01",
+      "method": "GET",
+      "path": "/v1/researched/products/70d4e2d4028a72da80a5f08c0f3dead656d7c0bba1c538ca478cdad076c9fe01",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 70fe5239fe0dc95d30949c55e91ad8c232f89497d668a2eed9077b60bb6deaed",
+      "method": "GET",
+      "path": "/v1/researched/products/70fe5239fe0dc95d30949c55e91ad8c232f89497d668a2eed9077b60bb6deaed",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7116c67455ad074a0c5e81ab84bc1a1757c01bb16a8e6a46cac4ef6c31623f75",
+      "method": "GET",
+      "path": "/v1/researched/products/7116c67455ad074a0c5e81ab84bc1a1757c01bb16a8e6a46cac4ef6c31623f75",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7174e50a7b51aba85dcc7f7d1176e3771dec3d82ca0f854153291bf5e4cac444",
+      "method": "GET",
+      "path": "/v1/researched/products/7174e50a7b51aba85dcc7f7d1176e3771dec3d82ca0f854153291bf5e4cac444",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 72455e3d93ce39b888a5403321a3d23ca7b2210f22e03a1979b901c82139ec2c",
+      "method": "GET",
+      "path": "/v1/researched/products/72455e3d93ce39b888a5403321a3d23ca7b2210f22e03a1979b901c82139ec2c",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 73ea9f3e5d59d0b33c0f0b0c26b5ea96e6f9f81474caa7a797af19ed4b61ef5e",
+      "method": "GET",
+      "path": "/v1/researched/products/73ea9f3e5d59d0b33c0f0b0c26b5ea96e6f9f81474caa7a797af19ed4b61ef5e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7469ce8400b1d0c3f4b9ff144ad2c34fb679f8c4ae2aed56322d61a245c33d79",
+      "method": "GET",
+      "path": "/v1/researched/products/7469ce8400b1d0c3f4b9ff144ad2c34fb679f8c4ae2aed56322d61a245c33d79",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 765417c5e3a43d691411c11afda096bdcb730302f37ced5d6846cda9637c78d6",
+      "method": "GET",
+      "path": "/v1/researched/products/765417c5e3a43d691411c11afda096bdcb730302f37ced5d6846cda9637c78d6",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 76fdd285ab63e83cb543620b3fad88d12e699cead79df73ba1b51cf311352b3d",
+      "method": "GET",
+      "path": "/v1/researched/products/76fdd285ab63e83cb543620b3fad88d12e699cead79df73ba1b51cf311352b3d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 77586edf96059f66f000b1c33f03df5c5c83242f6b222822b2efa3aba04c5baf",
+      "method": "GET",
+      "path": "/v1/researched/products/77586edf96059f66f000b1c33f03df5c5c83242f6b222822b2efa3aba04c5baf",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 77bcac8cc19e8c5e888f0034d7c0c2a0d60e4749773fbe15af5c3c5a7922902e",
+      "method": "GET",
+      "path": "/v1/researched/products/77bcac8cc19e8c5e888f0034d7c0c2a0d60e4749773fbe15af5c3c5a7922902e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7835c5d3174a431a39c918204096a928814d47336e32eebd2c0d53716db446c9",
+      "method": "GET",
+      "path": "/v1/researched/products/7835c5d3174a431a39c918204096a928814d47336e32eebd2c0d53716db446c9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 788c35141f3fdc679da96327d549c41e17b9464b3f0d8a7c6dce8dce67aab093",
+      "method": "GET",
+      "path": "/v1/researched/products/788c35141f3fdc679da96327d549c41e17b9464b3f0d8a7c6dce8dce67aab093",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 78effa59280261d23e478b50ccd0157c113481a932f2c88fc4eef32ff17e16cd",
+      "method": "GET",
+      "path": "/v1/researched/products/78effa59280261d23e478b50ccd0157c113481a932f2c88fc4eef32ff17e16cd",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 79e48bb9be0f21d2ccb75c24b08154b2cd43daf8d6bbde86419fbdbd578b422d",
+      "method": "GET",
+      "path": "/v1/researched/products/79e48bb9be0f21d2ccb75c24b08154b2cd43daf8d6bbde86419fbdbd578b422d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7a932692edd9ae4e3b4837d1bbd7a725f33c23d38993ecb70a9f804ae177a65e",
+      "method": "GET",
+      "path": "/v1/researched/products/7a932692edd9ae4e3b4837d1bbd7a725f33c23d38993ecb70a9f804ae177a65e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7b28804b442f20613c74a56792bee58908da948bfa006831d45d49d3dc6ba068",
+      "method": "GET",
+      "path": "/v1/researched/products/7b28804b442f20613c74a56792bee58908da948bfa006831d45d49d3dc6ba068",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7d421718bbd0bd29c14ce18131660e73e69f466c2fee05e4de29429afa749640",
+      "method": "GET",
+      "path": "/v1/researched/products/7d421718bbd0bd29c14ce18131660e73e69f466c2fee05e4de29429afa749640",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7d752fccb730426e981302b3816a886a904ecf057355902a13344f8e5c732ad3",
+      "method": "GET",
+      "path": "/v1/researched/products/7d752fccb730426e981302b3816a886a904ecf057355902a13344f8e5c732ad3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7f40e631471ef500013ae69d8f75182234fb123260bedbfc7a2cd3a5a40f4de4",
+      "method": "GET",
+      "path": "/v1/researched/products/7f40e631471ef500013ae69d8f75182234fb123260bedbfc7a2cd3a5a40f4de4",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 7f4a9fb6f42d346cf72d1bc585ec91a6d1756f3b5d27dd759cf011154d8c7990",
+      "method": "GET",
+      "path": "/v1/researched/products/7f4a9fb6f42d346cf72d1bc585ec91a6d1756f3b5d27dd759cf011154d8c7990",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 84d8b910e576fd4bee136434c757d23bfaa22fc2bf22b34d6ac1ddb8fd5a8562",
+      "method": "GET",
+      "path": "/v1/researched/products/84d8b910e576fd4bee136434c757d23bfaa22fc2bf22b34d6ac1ddb8fd5a8562",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 85ce5e23a1835cf3fc79c8e2c2df57e8109ba701230976b22fa968507e02cd2d",
+      "method": "GET",
+      "path": "/v1/researched/products/85ce5e23a1835cf3fc79c8e2c2df57e8109ba701230976b22fa968507e02cd2d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 853787fc0bb0a8d7b4c9158921d8663fb52d3575cbaf5e2027daf9a7285a0e5d",
+      "method": "GET",
+      "path": "/v1/researched/products/853787fc0bb0a8d7b4c9158921d8663fb52d3575cbaf5e2027daf9a7285a0e5d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8759df4f105100597f41feae947512458bbe715d5b19dd82415398bf026a86a9",
+      "method": "GET",
+      "path": "/v1/researched/products/8759df4f105100597f41feae947512458bbe715d5b19dd82415398bf026a86a9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 877430cd6d9815801fb539f224e067535a2f582126324c03b54849df958b343b",
+      "method": "GET",
+      "path": "/v1/researched/products/877430cd6d9815801fb539f224e067535a2f582126324c03b54849df958b343b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8b3258f9dba0bf1ea3c018aa3e134fe9129e38e7574c8cbe9c9f0984b4aa1fd1",
+      "method": "GET",
+      "path": "/v1/researched/products/8b3258f9dba0bf1ea3c018aa3e134fe9129e38e7574c8cbe9c9f0984b4aa1fd1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8b9bb932487d86ffd2e630368a52fcceff275069db0aaeec5d17a3cc4938f68c",
+      "method": "GET",
+      "path": "/v1/researched/products/8b9bb932487d86ffd2e630368a52fcceff275069db0aaeec5d17a3cc4938f68c",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8e6e812fe6fdb10527d65e88ac11afc4e0aee3f038746b5482aab4ba61a38c63",
+      "method": "GET",
+      "path": "/v1/researched/products/8e6e812fe6fdb10527d65e88ac11afc4e0aee3f038746b5482aab4ba61a38c63",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8e7cefde10a29e13c63d8c62a2feeec6bc812d3b452d51976165c6d2c495f63b",
+      "method": "GET",
+      "path": "/v1/researched/products/8e7cefde10a29e13c63d8c62a2feeec6bc812d3b452d51976165c6d2c495f63b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8ef6b0823f9f62fcb64504c34a641d3f7b52e63f21a2cb455473859f0d4f630a",
+      "method": "GET",
+      "path": "/v1/researched/products/8ef6b0823f9f62fcb64504c34a641d3f7b52e63f21a2cb455473859f0d4f630a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 8fbbe809fcb6b4a8a124fbba278b61fdc1b8122e0709cf2a16bb3831887aa89d",
+      "method": "GET",
+      "path": "/v1/researched/products/8fbbe809fcb6b4a8a124fbba278b61fdc1b8122e0709cf2a16bb3831887aa89d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 93a722291660606fa379f0a87320ace2b3ce48c63f59a261218f87eff513a326",
+      "method": "GET",
+      "path": "/v1/researched/products/93a722291660606fa379f0a87320ace2b3ce48c63f59a261218f87eff513a326",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 952c37a9906f6c89cf507b55df87dd7f308a6cd6451316b7fb5bd178a90da408",
+      "method": "GET",
+      "path": "/v1/researched/products/952c37a9906f6c89cf507b55df87dd7f308a6cd6451316b7fb5bd178a90da408",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 95564c5ee5925d7a21dee88a737494972b557f7043aae2847d119b39135243ca",
+      "method": "GET",
+      "path": "/v1/researched/products/95564c5ee5925d7a21dee88a737494972b557f7043aae2847d119b39135243ca",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 98dd289b7a71fee1cf3d4bb9809ed1eabceb6cf4cd35dc4c34d1cf708905a613",
+      "method": "GET",
+      "path": "/v1/researched/products/98dd289b7a71fee1cf3d4bb9809ed1eabceb6cf4cd35dc4c34d1cf708905a613",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9ad4ca879e20bb1163fa8287f00aea11f37b82004d8a30cdd2c74423c03eec39",
+      "method": "GET",
+      "path": "/v1/researched/products/9ad4ca879e20bb1163fa8287f00aea11f37b82004d8a30cdd2c74423c03eec39",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9afffe2b04be98b4026a2ecebdc025b898084a22baa40e8a3fb30d66aa1858c7",
+      "method": "GET",
+      "path": "/v1/researched/products/9afffe2b04be98b4026a2ecebdc025b898084a22baa40e8a3fb30d66aa1858c7",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9bb2b46545a09c33c4703daaedb6749b51a8689f20350f03243821c67efbd3d0",
+      "method": "GET",
+      "path": "/v1/researched/products/9bb2b46545a09c33c4703daaedb6749b51a8689f20350f03243821c67efbd3d0",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9c056754f3c9d3b85d01e20d94d2aa2fd930a885042052a39fe8d82afa56e454",
+      "method": "GET",
+      "path": "/v1/researched/products/9c056754f3c9d3b85d01e20d94d2aa2fd930a885042052a39fe8d82afa56e454",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9c59eb7c8d1234f0bb55782e3f39ca758cb49be2a4af21dc105985ef2a4ae669",
+      "method": "GET",
+      "path": "/v1/researched/products/9c59eb7c8d1234f0bb55782e3f39ca758cb49be2a4af21dc105985ef2a4ae669",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9d35ada61149b61def6c54c14e3b770669043a8cb24bfb27191d95f79fec996a",
+      "method": "GET",
+      "path": "/v1/researched/products/9d35ada61149b61def6c54c14e3b770669043a8cb24bfb27191d95f79fec996a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation 9d6ed9ece44af693e52552c53c0843626dcff8fbfd748e6d88e50108eec74a78",
+      "method": "GET",
+      "path": "/v1/researched/products/9d6ed9ece44af693e52552c53c0843626dcff8fbfd748e6d88e50108eec74a78",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a07c3e21367e6ab8f4641bd531cccf89e0e6ca8546a906d2b3d4ab391ddfe2b5",
+      "method": "GET",
+      "path": "/v1/researched/products/a07c3e21367e6ab8f4641bd531cccf89e0e6ca8546a906d2b3d4ab391ddfe2b5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a116b41b1530ab0890ccee6db417997968abb6646573fbf9a3c2006ed32a7ac1",
+      "method": "GET",
+      "path": "/v1/researched/products/a116b41b1530ab0890ccee6db417997968abb6646573fbf9a3c2006ed32a7ac1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a204ac59e980438afaeee5b7afcf06a8fea0f5f179dccc71217a2c50a9d380ec",
+      "method": "GET",
+      "path": "/v1/researched/products/a204ac59e980438afaeee5b7afcf06a8fea0f5f179dccc71217a2c50a9d380ec",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a329da61089bbe46b43753e8df0e49c9f1fccdc79f1db27c4b8eee0554aec3e4",
+      "method": "GET",
+      "path": "/v1/researched/products/a329da61089bbe46b43753e8df0e49c9f1fccdc79f1db27c4b8eee0554aec3e4",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a2ff9fd167de6d02f9a08bad253995c7023aa15b7d9ba45493f1412404a08274",
+      "method": "GET",
+      "path": "/v1/researched/products/a2ff9fd167de6d02f9a08bad253995c7023aa15b7d9ba45493f1412404a08274",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a3941527b3eb0c6ce1d94363fa11531085fea11290d93a1fb67176bf5909fc28",
+      "method": "GET",
+      "path": "/v1/researched/products/a3941527b3eb0c6ce1d94363fa11531085fea11290d93a1fb67176bf5909fc28",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a3a06faced5b218cd478071ca69f4cd7939d0053ce001957a4bf96f442720cf3",
+      "method": "GET",
+      "path": "/v1/researched/products/a3a06faced5b218cd478071ca69f4cd7939d0053ce001957a4bf96f442720cf3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a4324ae023c0eee28e1d196c548d76027f274d1dc289e673074873ee690fc55a",
+      "method": "GET",
+      "path": "/v1/researched/products/a4324ae023c0eee28e1d196c548d76027f274d1dc289e673074873ee690fc55a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a4ddc37968acda92680611fe2f3db5647fc5fc670350422f063a910e63768b97",
+      "method": "GET",
+      "path": "/v1/researched/products/a4ddc37968acda92680611fe2f3db5647fc5fc670350422f063a910e63768b97",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a526c1d4fdda2c0b608895dea3490437d5d8368dcc35d07950772a54f690d999",
+      "method": "GET",
+      "path": "/v1/researched/products/a526c1d4fdda2c0b608895dea3490437d5d8368dcc35d07950772a54f690d999",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a7389c593f88354771e3a7b61bbddfb3638455bc4f032802a7b929ec3c8eeb0a",
+      "method": "GET",
+      "path": "/v1/researched/products/a7389c593f88354771e3a7b61bbddfb3638455bc4f032802a7b929ec3c8eeb0a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a89158427457c4417c96736986a076c4827bc825687b9804f96bfc6042efca64",
+      "method": "GET",
+      "path": "/v1/researched/products/a89158427457c4417c96736986a076c4827bc825687b9804f96bfc6042efca64",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a995514261af9be68cb335371257d1d9d9939174e81a60f13d0c0b4d68641ac9",
+      "method": "GET",
+      "path": "/v1/researched/products/a995514261af9be68cb335371257d1d9d9939174e81a60f13d0c0b4d68641ac9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation a9d952244b8bb49319bc1f9ba5585dc1f93c31c86a17d42a52c25434d5c3817e",
+      "method": "GET",
+      "path": "/v1/researched/products/a9d952244b8bb49319bc1f9ba5585dc1f93c31c86a17d42a52c25434d5c3817e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation aa1826065e8aa6c78efc1cc86d428241b71ddcb211113a20f98a90b0670e06db",
+      "method": "GET",
+      "path": "/v1/researched/products/aa1826065e8aa6c78efc1cc86d428241b71ddcb211113a20f98a90b0670e06db",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ad08d97ccc3be53ebc05c5b8e8ef712d8efac9a9ffcb234d42e0be7c6e612c8a",
+      "method": "GET",
+      "path": "/v1/researched/products/ad08d97ccc3be53ebc05c5b8e8ef712d8efac9a9ffcb234d42e0be7c6e612c8a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation aa35a0cc015b7045cd94255ad0281512dda135f5c6535f73d85aa1e215e468cf",
+      "method": "GET",
+      "path": "/v1/researched/products/aa35a0cc015b7045cd94255ad0281512dda135f5c6535f73d85aa1e215e468cf",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ad3c6610060d3e03e871ac7288a145083e23b958b217bca947e8de7201962e23",
+      "method": "GET",
+      "path": "/v1/researched/products/ad3c6610060d3e03e871ac7288a145083e23b958b217bca947e8de7201962e23",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ae14b39c1c53bf0369df5d01423ba25d6ac33e598e32e53797132e55f8578826",
+      "method": "GET",
+      "path": "/v1/researched/products/ae14b39c1c53bf0369df5d01423ba25d6ac33e598e32e53797132e55f8578826",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ae6ad7eb710c2ccd40684ef867493d514fa4892fb3e11fcc2d867a028c6e1530",
+      "method": "GET",
+      "path": "/v1/researched/products/ae6ad7eb710c2ccd40684ef867493d514fa4892fb3e11fcc2d867a028c6e1530",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ae5eec652d50f8ed80f37d92385dcecd2b6e24260428742ebb0ea3a3e0d64ef9",
+      "method": "GET",
+      "path": "/v1/researched/products/ae5eec652d50f8ed80f37d92385dcecd2b6e24260428742ebb0ea3a3e0d64ef9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation af28d8d1a85b281495fc9918520ee666d85ad6cbd28011c21c72dbcb9fdd700b",
+      "method": "GET",
+      "path": "/v1/researched/products/af28d8d1a85b281495fc9918520ee666d85ad6cbd28011c21c72dbcb9fdd700b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b0b2a3f65ece1d4efde126397012cdc19de5bc563655b725eb86955ecd95b7fa",
+      "method": "GET",
+      "path": "/v1/researched/products/b0b2a3f65ece1d4efde126397012cdc19de5bc563655b725eb86955ecd95b7fa",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b10a1a752148a102f82accd9b148695a2524c5c9ff351ce514e1d770706cd678",
+      "method": "GET",
+      "path": "/v1/researched/products/b10a1a752148a102f82accd9b148695a2524c5c9ff351ce514e1d770706cd678",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b27d75b17c8d7fbd4cbb8c2820d931e04ffda8b63a859957a31465c2629bf94a",
+      "method": "GET",
+      "path": "/v1/researched/products/b27d75b17c8d7fbd4cbb8c2820d931e04ffda8b63a859957a31465c2629bf94a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b2ce6d1b20f7c7467a34a3f94bae47883537d5cd20b20d6d3311b89a968116d4",
+      "method": "GET",
+      "path": "/v1/researched/products/b2ce6d1b20f7c7467a34a3f94bae47883537d5cd20b20d6d3311b89a968116d4",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b2f80328b9725982b6cbceef4284e28a5939d98e7d1a8817b599cd06368c2f76",
+      "method": "GET",
+      "path": "/v1/researched/products/b2f80328b9725982b6cbceef4284e28a5939d98e7d1a8817b599cd06368c2f76",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b304016896e6e61489ba5f2db872f235cd3b8b6d9f0cddb3a5e64824d3aaca11",
+      "method": "GET",
+      "path": "/v1/researched/products/b304016896e6e61489ba5f2db872f235cd3b8b6d9f0cddb3a5e64824d3aaca11",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b30b7e65be866fcf86fe4624a9c2f4da21845b11e9b8a6d70bca1af1e304fba5",
+      "method": "GET",
+      "path": "/v1/researched/products/b30b7e65be866fcf86fe4624a9c2f4da21845b11e9b8a6d70bca1af1e304fba5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b519bb0d7f7b2694863c0f5677d315b19ec1f1becbfc57bb32ed097ffdb37378",
+      "method": "GET",
+      "path": "/v1/researched/products/b519bb0d7f7b2694863c0f5677d315b19ec1f1becbfc57bb32ed097ffdb37378",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b53761401b6b147ddeb00a31632c0daca134e9597ef11ceb4462f99f2dd94198",
+      "method": "GET",
+      "path": "/v1/researched/products/b53761401b6b147ddeb00a31632c0daca134e9597ef11ceb4462f99f2dd94198",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b5fe3503317d62e6c8c4cd82e31965f204a46da2229ab3224ea25b53b71391d2",
+      "method": "GET",
+      "path": "/v1/researched/products/b5fe3503317d62e6c8c4cd82e31965f204a46da2229ab3224ea25b53b71391d2",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b701ceb4d29ad350f255a93df47760151eec868964c5fe6efb07e8ddb39006c9",
+      "method": "GET",
+      "path": "/v1/researched/products/b701ceb4d29ad350f255a93df47760151eec868964c5fe6efb07e8ddb39006c9",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b7ae9c66802c9e92ac3733553926230931439cea7f70569db4a4825fa4ff2471",
+      "method": "GET",
+      "path": "/v1/researched/products/b7ae9c66802c9e92ac3733553926230931439cea7f70569db4a4825fa4ff2471",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation b9487955b6340bbf1deb2e037ccb5c72b8731c69e5149f365d90a0a976afaaf4",
+      "method": "GET",
+      "path": "/v1/researched/products/b9487955b6340bbf1deb2e037ccb5c72b8731c69e5149f365d90a0a976afaaf4",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ba487a7cff0ddd702c2e3d9167a2bfe75f11b3116e27999f6dc03ad4ab3255df",
+      "method": "GET",
+      "path": "/v1/researched/products/ba487a7cff0ddd702c2e3d9167a2bfe75f11b3116e27999f6dc03ad4ab3255df",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation bcd581bdbae39107d8e9146617155f41d2554730ac72dc19781bbd608140a411",
+      "method": "GET",
+      "path": "/v1/researched/products/bcd581bdbae39107d8e9146617155f41d2554730ac72dc19781bbd608140a411",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation bd260003482e68dbd2aa13dee220415e0d43cec3135cc057e8d69c058bcc8181",
+      "method": "GET",
+      "path": "/v1/researched/products/bd260003482e68dbd2aa13dee220415e0d43cec3135cc057e8d69c058bcc8181",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation be48c90a65ae024d18a76f9f1fb073beceaf35e8c4043860c3428c656e110cbc",
+      "method": "GET",
+      "path": "/v1/researched/products/be48c90a65ae024d18a76f9f1fb073beceaf35e8c4043860c3428c656e110cbc",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation bd34167412baed303ccf538abc27485d50d18abddec763030db510baad714b5b",
+      "method": "GET",
+      "path": "/v1/researched/products/bd34167412baed303ccf538abc27485d50d18abddec763030db510baad714b5b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c0b42f71f57447403eda1eb3557a05f23708aef150b3ffc4889bbb2b49f34d1b",
+      "method": "GET",
+      "path": "/v1/researched/products/c0b42f71f57447403eda1eb3557a05f23708aef150b3ffc4889bbb2b49f34d1b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c1f2c19a2ad83433e70de44b02519efa6474a781b88968ecbf0a9461161b8ef5",
+      "method": "GET",
+      "path": "/v1/researched/products/c1f2c19a2ad83433e70de44b02519efa6474a781b88968ecbf0a9461161b8ef5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c2771106b29b1ac503fb4002a911f77cf4f9e7e077a21afb9d418d9230d00ccd",
+      "method": "GET",
+      "path": "/v1/researched/products/c2771106b29b1ac503fb4002a911f77cf4f9e7e077a21afb9d418d9230d00ccd",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c2d8991f9ee06aa6382da79c3af53d8f02589cc17e5987e8d6f4482e961ce618",
+      "method": "GET",
+      "path": "/v1/researched/products/c2d8991f9ee06aa6382da79c3af53d8f02589cc17e5987e8d6f4482e961ce618",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c3485f085aec7787d2ffd666060e80b6f3dcb22162154d402cd378f891aa9d76",
+      "method": "GET",
+      "path": "/v1/researched/products/c3485f085aec7787d2ffd666060e80b6f3dcb22162154d402cd378f891aa9d76",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c36b45c4ece7650b70a30b6ea2b0dd5caff42e173c983a5d13d4aac0aa2748af",
+      "method": "GET",
+      "path": "/v1/researched/products/c36b45c4ece7650b70a30b6ea2b0dd5caff42e173c983a5d13d4aac0aa2748af",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c51642d6d1d098c3f86857cdff3fdadc2d3a665dfb869653ecbaaf1aceaf5e0e",
+      "method": "GET",
+      "path": "/v1/researched/products/c51642d6d1d098c3f86857cdff3fdadc2d3a665dfb869653ecbaaf1aceaf5e0e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c54dde4ca60d6dcc27b6617f43dce8d81b98022dbc269c963d2f1fc4c371e280",
+      "method": "GET",
+      "path": "/v1/researched/products/c54dde4ca60d6dcc27b6617f43dce8d81b98022dbc269c963d2f1fc4c371e280",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c56b0a7c1a08333279f5f4ccd0d9d9c97b6c02e3eb20a64ecd8bdcfc731792b3",
+      "method": "GET",
+      "path": "/v1/researched/products/c56b0a7c1a08333279f5f4ccd0d9d9c97b6c02e3eb20a64ecd8bdcfc731792b3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c6889880035bb9f589b612a4ef5f3c43f8f1aa74b939bf46ed7239b85a5069fb",
+      "method": "GET",
+      "path": "/v1/researched/products/c6889880035bb9f589b612a4ef5f3c43f8f1aa74b939bf46ed7239b85a5069fb",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c83de6a549ea61e5033d43e1adedf6cb3da2d8286711eb03cdba2cd3f33dd18e",
+      "method": "GET",
+      "path": "/v1/researched/products/c83de6a549ea61e5033d43e1adedf6cb3da2d8286711eb03cdba2cd3f33dd18e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation c99bf8dcfad0fec4bd45e500aee776ec1574e2fd329941a6ed19fdec6793d4e1",
+      "method": "GET",
+      "path": "/v1/researched/products/c99bf8dcfad0fec4bd45e500aee776ec1574e2fd329941a6ed19fdec6793d4e1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation cacf23097ac394e4cb1632ed26f2ee337aab1ad980acd8fe9286b037b7610fc0",
+      "method": "GET",
+      "path": "/v1/researched/products/cacf23097ac394e4cb1632ed26f2ee337aab1ad980acd8fe9286b037b7610fc0",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation cb90b2d3e90d992abed172849890d7e8a91d43fa5587f8897090d6d151bf19f6",
+      "method": "GET",
+      "path": "/v1/researched/products/cb90b2d3e90d992abed172849890d7e8a91d43fa5587f8897090d6d151bf19f6",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation cf77e0fb80f855a0db55ee562c39c873e0eea1875655f7261f481da600bdee20",
+      "method": "GET",
+      "path": "/v1/researched/products/cf77e0fb80f855a0db55ee562c39c873e0eea1875655f7261f481da600bdee20",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d03ac0a8a2b19f165cf1b36c5a2ee032b20d87ccd51c31b370a256e01219d560",
+      "method": "GET",
+      "path": "/v1/researched/products/d03ac0a8a2b19f165cf1b36c5a2ee032b20d87ccd51c31b370a256e01219d560",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d0cbc286eb05c01fd8144424ae503c67699fe1b79c8fc418ab679eeb83970f11",
+      "method": "GET",
+      "path": "/v1/researched/products/d0cbc286eb05c01fd8144424ae503c67699fe1b79c8fc418ab679eeb83970f11",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d202114f6a396fd8d6d6a245aef5246737b6d8ea39a519d2d4fc604cd9f9b767",
+      "method": "GET",
+      "path": "/v1/researched/products/d202114f6a396fd8d6d6a245aef5246737b6d8ea39a519d2d4fc604cd9f9b767",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d39c4eafd4ddf9549261f1fbcd4bb4c3478601432906878058a7efd4e677b685",
+      "method": "GET",
+      "path": "/v1/researched/products/d39c4eafd4ddf9549261f1fbcd4bb4c3478601432906878058a7efd4e677b685",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d6158b199f2b86a84ee20370bfe05eaf75a033361a818f46f6662a32a2ab1b39",
+      "method": "GET",
+      "path": "/v1/researched/products/d6158b199f2b86a84ee20370bfe05eaf75a033361a818f46f6662a32a2ab1b39",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d68edc33d60c8ef66e07fb4a0892c06a92694d274aa1882af8b35d583c30d3df",
+      "method": "GET",
+      "path": "/v1/researched/products/d68edc33d60c8ef66e07fb4a0892c06a92694d274aa1882af8b35d583c30d3df",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation d81bab33981cd5a1cf93aceebbf76ac47f0417fc64f0ef8f39f9dc72ca74f59b",
+      "method": "GET",
+      "path": "/v1/researched/products/d81bab33981cd5a1cf93aceebbf76ac47f0417fc64f0ef8f39f9dc72ca74f59b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation db24e519305f75f0f25b73c19ac69b364a05ba82523c3aa1e2719ae83bac2a18",
+      "method": "GET",
+      "path": "/v1/researched/products/db24e519305f75f0f25b73c19ac69b364a05ba82523c3aa1e2719ae83bac2a18",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation dbfe45a6ec98c42d3d5b35f00d9f52c80a98dc72362801498220f240510e0a80",
+      "method": "GET",
+      "path": "/v1/researched/products/dbfe45a6ec98c42d3d5b35f00d9f52c80a98dc72362801498220f240510e0a80",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation dd63edde4f73af2f8377c2e2247ace34215831755b638052aa0f8cb0a2c5e43b",
+      "method": "GET",
+      "path": "/v1/researched/products/dd63edde4f73af2f8377c2e2247ace34215831755b638052aa0f8cb0a2c5e43b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ddf524ff381dcdab4a3334a96c4e8f4f3f46b1dbd86914bc3d5ccd71d39fb56c",
+      "method": "GET",
+      "path": "/v1/researched/products/ddf524ff381dcdab4a3334a96c4e8f4f3f46b1dbd86914bc3d5ccd71d39fb56c",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation de304f7bf1e3daf6604dc90ef52bd51b3b8465ee96f677510f07e6e2450e6a6c",
+      "method": "GET",
+      "path": "/v1/researched/products/de304f7bf1e3daf6604dc90ef52bd51b3b8465ee96f677510f07e6e2450e6a6c",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e112e63dc563bf398e4329f9941d92bc080ec3cc10b54d51940906b590054f47",
+      "method": "GET",
+      "path": "/v1/researched/products/e112e63dc563bf398e4329f9941d92bc080ec3cc10b54d51940906b590054f47",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e18522b7f8a639ec68c091c5a735065141192428905f5a3d6241f0684d042373",
+      "method": "GET",
+      "path": "/v1/researched/products/e18522b7f8a639ec68c091c5a735065141192428905f5a3d6241f0684d042373",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e3124bd29935d594fac4625dbafc077b92751508043dd7ac9f0e0d7537df28b8",
+      "method": "GET",
+      "path": "/v1/researched/products/e3124bd29935d594fac4625dbafc077b92751508043dd7ac9f0e0d7537df28b8",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e34934de1f6d7ccd82e1298566899314f66137a800c19d0a93649bb3de88638a",
+      "method": "GET",
+      "path": "/v1/researched/products/e34934de1f6d7ccd82e1298566899314f66137a800c19d0a93649bb3de88638a",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e4ef51f5201181ae81f92bc02cfa9428bf2c6d06b732d1772ff4786e86a1f39e",
+      "method": "GET",
+      "path": "/v1/researched/products/e4ef51f5201181ae81f92bc02cfa9428bf2c6d06b732d1772ff4786e86a1f39e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e550f00b93e9f904161e050e76a9162485dd9480213156eb4cddccd58698a83d",
+      "method": "GET",
+      "path": "/v1/researched/products/e550f00b93e9f904161e050e76a9162485dd9480213156eb4cddccd58698a83d",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e5e055d1615d9b0b4808a4b1ba57fe1fc7c453d69b590b0502ab47d0165935ca",
+      "method": "GET",
+      "path": "/v1/researched/products/e5e055d1615d9b0b4808a4b1ba57fe1fc7c453d69b590b0502ab47d0165935ca",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e66ae061a4e0e63ebe4b1ce147cc6cdab6e3cefb04b9a3641b3db803cb18692b",
+      "method": "GET",
+      "path": "/v1/researched/products/e66ae061a4e0e63ebe4b1ce147cc6cdab6e3cefb04b9a3641b3db803cb18692b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e6ae6323cc626853ad27014d40aeca114bd60f24d79c312c724e5c585d3a9860",
+      "method": "GET",
+      "path": "/v1/researched/products/e6ae6323cc626853ad27014d40aeca114bd60f24d79c312c724e5c585d3a9860",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e6e782ee21c04d5539f2c8ca05bf11b6191ded1b7009d7d322882e10cb7a4e49",
+      "method": "GET",
+      "path": "/v1/researched/products/e6e782ee21c04d5539f2c8ca05bf11b6191ded1b7009d7d322882e10cb7a4e49",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e81b200bc01fffbe2e09c3b20c32bed6b8ce2042bcb3fc3b25423f99930054f2",
+      "method": "GET",
+      "path": "/v1/researched/products/e81b200bc01fffbe2e09c3b20c32bed6b8ce2042bcb3fc3b25423f99930054f2",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e8d139b3090e5b8b3d35c1eda19ba02ac409c79d82e910b4b4fa58e8025a5ffc",
+      "method": "GET",
+      "path": "/v1/researched/products/e8d139b3090e5b8b3d35c1eda19ba02ac409c79d82e910b4b4fa58e8025a5ffc",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation edc92e2838a17365c1ca9ed4f71419d8d733dd765d35ec33622face56ebd5277",
+      "method": "GET",
+      "path": "/v1/researched/products/edc92e2838a17365c1ca9ed4f71419d8d733dd765d35ec33622face56ebd5277",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation e9099f94b2db0ab5f398c1fd2b9acb87a7af9929faca1eb2b802d9d8bdd20eaa",
+      "method": "GET",
+      "path": "/v1/researched/products/e9099f94b2db0ab5f398c1fd2b9acb87a7af9929faca1eb2b802d9d8bdd20eaa",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ee199a11c04350e154390ff5b688556f5d8ed637973319352b91b0244a90dded",
+      "method": "GET",
+      "path": "/v1/researched/products/ee199a11c04350e154390ff5b688556f5d8ed637973319352b91b0244a90dded",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ee5fbe036ba2edfa77f1a164fcc15fb635fa6364dbc03a83010ef8f203aa4f1e",
+      "method": "GET",
+      "path": "/v1/researched/products/ee5fbe036ba2edfa77f1a164fcc15fb635fa6364dbc03a83010ef8f203aa4f1e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f22e214d854890712c99fe717b3e01a605edeea0cbff6445c70374edbd0517a3",
+      "method": "GET",
+      "path": "/v1/researched/products/f22e214d854890712c99fe717b3e01a605edeea0cbff6445c70374edbd0517a3",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f0be8198a1edab882e5ad76f2b0cf236e56e77d78c46c7714420354c0a6a7383",
+      "method": "GET",
+      "path": "/v1/researched/products/f0be8198a1edab882e5ad76f2b0cf236e56e77d78c46c7714420354c0a6a7383",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f25a04aa33a3ba7ec75919e6dd3152f18c38ed797a9784d10296fe48f10fab1b",
+      "method": "GET",
+      "path": "/v1/researched/products/f25a04aa33a3ba7ec75919e6dd3152f18c38ed797a9784d10296fe48f10fab1b",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f623db2bf0a454073f511777c17d1c38fab22f930ddb1e9a3910242d9a02d1e1",
+      "method": "GET",
+      "path": "/v1/researched/products/f623db2bf0a454073f511777c17d1c38fab22f930ddb1e9a3910242d9a02d1e1",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f6317dda391f2c5cbb31c45e4cd779c05d312deb581f5cb0c84d481dd6979c20",
+      "method": "GET",
+      "path": "/v1/researched/products/f6317dda391f2c5cbb31c45e4cd779c05d312deb581f5cb0c84d481dd6979c20",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f738aec1252f0b68298fd2e0867f7a5814244b83bababa2a9c6f481d86ad7628",
+      "method": "GET",
+      "path": "/v1/researched/products/f738aec1252f0b68298fd2e0867f7a5814244b83bababa2a9c6f481d86ad7628",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f793def42b10edc29c751fd05768d4df779bb020e3b47896cc93e306cf43ae6c",
+      "method": "GET",
+      "path": "/v1/researched/products/f793def42b10edc29c751fd05768d4df779bb020e3b47896cc93e306cf43ae6c",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f85d21537d8ae1e989364a6601bb6a3966ed535409e6945b5519ec54f4831b71",
+      "method": "GET",
+      "path": "/v1/researched/products/f85d21537d8ae1e989364a6601bb6a3966ed535409e6945b5519ec54f4831b71",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation f8ef151d81136bc4f8137b36d4d5c5245f238b7c03e55196af67b0632b1c409e",
+      "method": "GET",
+      "path": "/v1/researched/products/f8ef151d81136bc4f8137b36d4d5c5245f238b7c03e55196af67b0632b1c409e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation fa7114d392163780845c6e01ffbaf4c60b3df16c27e76bcde4f151e37661198e",
+      "method": "GET",
+      "path": "/v1/researched/products/fa7114d392163780845c6e01ffbaf4c60b3df16c27e76bcde4f151e37661198e",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation fba0f3f02e6e7aa56cd78bda0ef81f4e2b060ba1410369b404c13101eeb37afb",
+      "method": "GET",
+      "path": "/v1/researched/products/fba0f3f02e6e7aa56cd78bda0ef81f4e2b060ba1410369b404c13101eeb37afb",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation fc432447600b86cc553827808a6db5d4fdd6e1d0e8862457e504ac0d9094cd64",
+      "method": "GET",
+      "path": "/v1/researched/products/fc432447600b86cc553827808a6db5d4fdd6e1d0e8862457e504ac0d9094cd64",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation fce27301585c760a12d6c61a9e9c9ce574fd1a8b20293eef4850ae2fefecb4c5",
+      "method": "GET",
+      "path": "/v1/researched/products/fce27301585c760a12d6c61a9e9c9ce574fd1a8b20293eef4850ae2fefecb4c5",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation fe7efe21b8c1a15671b5ec2bae2ba0ded05d3223d1b9e90181322028b24339fd",
+      "method": "GET",
+      "path": "/v1/researched/products/fe7efe21b8c1a15671b5ec2bae2ba0ded05d3223d1b9e90181322028b24339fd",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Immutable researched observation ff438eadec405b3b329464f488df0c7956f688caa1d088a8d32989426f11d188",
+      "method": "GET",
+      "path": "/v1/researched/products/ff438eadec405b3b329464f488df0c7956f688caa1d088a8d32989426f11d188",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Pepsi",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Cadbury",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Maggi",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Real",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: 7UP",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Appy Fizz",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Synthetic nonexistent food",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lay's",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lay\u2019s",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: R\u00e9al",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research name search: Lays",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Bounded research query/cursor rejection",
+      "method": "GET",
+      "path": "/v1/researched/products/search",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 0005537835804",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0005537835804",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 0622201428501",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0622201428501",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 06342001",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/06342001",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 0652509057575",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0652509057575",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 0804410415009",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0804410415009",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 0901063139213",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0901063139213",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 0901764132919",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/0901764132919",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 3018764061257",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3018764061257",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 3047063093522",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3047063093522",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 3948719131165",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3948719131165",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 3948764021060",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3948764021060",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 3948764052279",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3948764052279",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 3948764112751",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3948764112751",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 3948764175091",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/3948764175091",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 4901263052910",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/4901263052910",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 4904464200005",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/4904464200005",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 4904659748749",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/4904659748749",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 6291109980940",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/6291109980940",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 6908058013635",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/6908058013635",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 7622201138486",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/7622201138486",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 7622201452674",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/7622201452674",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8091491981538",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8091491981538",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8886467122392",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8886467122392",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901058001433",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901058001433",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901058857245",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901058857245",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491001038",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491001038",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491001052",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491001052",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491001069",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491001069",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491001076",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491001076",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491001120",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491001120",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901491003681",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491003681",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491103329",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491103329",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491502016",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491502016",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901491504324",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491504324",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901491981538",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491981538",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901491982870",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491982870",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901491983198",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491983198",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901491990219",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901491990219",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901719100956",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901719100956",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901719103896",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901719103896",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901725004910",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901725004910",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901725115098",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901725115098",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764011184",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764011184",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901764011634",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764011634",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764022302",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764022302",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764022807",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764022807",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764052309",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764052309",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764052408",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764052408",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8901764175091",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764175091",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8901764792335",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8901764792335",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080000104",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080000104",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080001286",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080001286",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080001293",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080001293",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080001828",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080001828",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080104048",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080104048",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8902080104345",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080104345",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8902080105021",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080105021",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8902080204342",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080204342",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8902080285020",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080285020",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8902080364060",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080364060",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8902080365029",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8902080365029",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8904004400090",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8904004400090",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8904004402223",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8904004402223",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8905950002819",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8905950002819",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8906002488193",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8906002488193",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8906005502063",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8906005502063",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8906010500818",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8906010500818",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Exact research barcode 8906010506582",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8906010506582",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Unconfirmed barcode remains unlinked 8908003001029",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/8908003001029",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Well-formed unknown research identity",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/00000000",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Well-formed unknown research identity",
+      "method": "GET",
+      "path": "/v1/researched/products/0000000000000000000000000000000000000000000000000000000000000000",
+      "status": 404,
+      "expected": 404,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Malformed research identity rejected",
+      "method": "GET",
+      "path": "/v1/researched/products/by-barcode/not-a-barcode",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Malformed research identity rejected",
+      "method": "GET",
+      "path": "/v1/researched/products/not-a-hash",
+      "status": 422,
+      "expected": 422,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Research search exact frontend preflight",
+      "method": "OPTIONS",
+      "path": "/v1/researched/products/search",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Disallowed research origin rejected",
+      "method": "OPTIONS",
+      "path": "/v1/researched/products/search",
+      "status": 400,
+      "expected": 400
+    },
+    {
+      "check": "Preserved original OFF catalogue metadata",
+      "method": "GET",
+      "path": "/v1/catalogue",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved original OFF search",
+      "method": "GET",
+      "path": "/v1/catalogue/search",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved original OFF identity",
+      "method": "GET",
+      "path": "/v1/catalogue/products/0041240100044",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved original OFF facts",
+      "method": "GET",
+      "path": "/v1/catalogue/products/0041240100044/facts",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved historical product report",
+      "method": "GET",
+      "path": "/v1/products/0041240100044/report",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Preserved synthetic nutrient normalization",
+      "method": "POST",
+      "path": "/v1/nutrition/normalize",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved synthetic reviewed claim check",
+      "method": "POST",
+      "path": "/v1/claims/check",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved synthetic corrected label report",
+      "method": "POST",
+      "path": "/v1/reports/check",
+      "status": 200,
+      "expected": 200,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "Preserved reviewed claim rule registry",
+      "method": "GET",
+      "path": "/v1/claims/rules",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "check": "Private source/runtime path unavailable",
+      "method": "GET",
+      "path": "/.env",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "check": "Private source/runtime path unavailable",
+      "method": "GET",
+      "path": "/.env.age",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "check": "Private source/runtime path unavailable",
+      "method": "GET",
+      "path": "/app/main.py",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "check": "Private source/runtime path unavailable",
+      "method": "GET",
+      "path": "/app/research_catalogue/data/research.sqlite3",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "check": "Private source/runtime path unavailable",
+      "method": "GET",
+      "path": "/app/catalogue/data/catalogue.sqlite3",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "check": "Research metadata remains stable after source audit",
+      "method": "GET",
+      "path": "/v1/meta",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "passed": 389,
+  "openapi": {
+    "paths": 27,
+    "operations": 28,
+    "canonical_sha256": "7b4de5f472649e68157e3524cd937701efc9cc971cfbd38968a8b121bc82842e",
+    "historical_v0_9_0_paths_preserved": true,
+    "all_v0_9_0_schema_components_preserved": true
+  },
+  "comparison_version": "sourced-nutrient-comparison-v1",
+  "research_catalogue_verification": {
+    "hosted_status": {
+      "status": "ready",
+      "dataset_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
+      "database_sha256": "985c9b7d239cd28c2dfddcc7587ca160b980a0cc9705e724c1ca548a0fc826bf",
+      "observation_count": 243,
+      "search_version": "research-search-v1",
+      "format_version": 3,
+      "warnings": [
+        "researched_web_facts_not_current_package_confirmation",
+        "allergen_safety_not_assessed"
+      ]
+    },
+    "source_compressed_sha256": "22109ef0d164b234b5aa43f359cdfe16e3be5d79322f78f1e697e6926748fc21",
+    "pinned_observation_count": 243,
+    "hosted_observations_exactly_equal_source": 243,
+    "immutable_observation_hashes_verified": 243,
+    "provider_counts": {
+      "manufacturer": 49,
+      "open_food_facts": 69,
+      "retailer": 125
+    },
+    "all_acquired_barcode_groups_checked": 69,
+    "eligible_exact_barcode_groups_found": 41,
+    "unconfirmed_barcode_groups_remain_unlinked": 28,
+    "query_expected_counts": {
+      "Lays": 21,
+      "Pepsi": 17,
+      "Cadbury": 13,
+      "Maggi": 9,
+      "Real": 6,
+      "7UP": 4,
+      "Appy Fizz": 5,
+      "Synthetic nonexistent food": 0
+    },
+    "complete_cursor_query": {
+      "q": "Lays",
+      "page_limit": 2,
+      "unique_observations": 21
+    },
+    "original_catalogue": {
+      "schema_version": "1",
+      "status": "ready",
+      "manifest": {
+        "schema_version": "1",
+        "snapshot_id": "fc32464a-d084-416c-99e5-014f58a2469f",
+        "source_url": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+        "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+        "source_format": "off_jsonl",
+        "coverage": "unverified",
+        "exported_at": "2026-10-06T06:53:46Z",
+        "indexed_at": "2026-10-08T12:55:16.824331Z",
+        "market_tag": "en:india",
+        "rows_read": 24695,
+        "india_rows": 24695,
+        "indexed_products": 24641,
+        "duplicate_barcodes": 0,
+        "unsupported_barcodes": 54,
+        "missing_name": 3545,
+        "missing_ingredients": 18088,
+        "database_license": "ODbL-1.0",
+        "contents_license": "DbCL-1.0",
+        "attribution": "Product data from Open Food Facts",
+        "license_url": "https://openfoodfacts.org/terms-of-use"
+      },
+      "freshness": {
+        "status": "within_refresh_window",
+        "evaluated_at": "2026-10-08T13:04:16.313179Z",
+        "age_seconds": 195030,
+        "refresh_due_at": "2027-07-06T06:53:46Z",
+        "refresh_interval_months": 9
+      },
+      "artifact": {
+        "database_sha256": "31426849dd18e02ea2079c4f3a7d83b1583558875e143b3861cbdc16c83d2707",
+        "database_bytes": 76111872,
+        "source_sha256": "e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f",
+        "snapshot_id": "fc32464a-d084-416c-99e5-014f58a2469f"
+      },
+      "data_kind": "product_identity",
+      "field_limits": [
+        "nutrition_direct_tables_only",
+        "images_are_source_urls_only",
+        "per_product_dates_may_be_missing",
+        "missing_allergen_tags_do_not_mean_allergen_free"
+      ]
+    },
+    "bounded_source_audit_http_timings": {
+      "concurrency": 4,
+      "requests": 243,
+      "median_ms": 251.33,
+      "maximum_ms": 4665.92,
+      "meaning": "Observed network/API time during source equality checks; not cold-start, load, scanner, OCR or end-to-end performance proof"
+    }
+  },
+  "synthetic_requests_only": true,
+  "public_acquired_observation_reads": true,
+  "credentials_used": false,
+  "writes": "Only read-only synthetic normalization, claim, report and comparison POSTs; no contribution/private-sync writes or SDK identity creation",
+  "photos_or_raw_ocr_sent": false,
+  "limits": [
+    "Production deployment identity is validated from a fresh supplied Vercel inspection; the helper does not fetch private Vercel credentials",
+    "Hosted proxy may buffer the client chunked body; accumulated ASGI chunk enforcement is separately covered by local integration tests",
+    "No new Firebase ownership/write, emulator, native camera, keyboard or physical-device proof is claimed",
+    "Historical OFF/community reference arithmetic and source rotation retain separate synthetic local tests",
+    "All 243 hosted source observations match the pinned acquired bundle; this does not establish retail coverage, current-package compatibility, complete products or allergen safety",
+    "Generated SQLite hashes are recorded for this hosted build and may differ from local rebuilds because generated metadata timestamps and original catalogue snapshot IDs differ; immutable source digests remain exact"
+  ]
+}

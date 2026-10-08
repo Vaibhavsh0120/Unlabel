@@ -1,8 +1,15 @@
 # Frontend v0.6.0+7: automatic scans and reference layouts
 
-Local implementation checkpoint, 8 October 2026. Local review is complete
-on `main`. The user authorized publication after review and documentation.
-Hosted v0.6.0 verification is recorded separately after the deployment is observed.
+Production checkpoint, 8 October 2026. Implementation/source commit
+`6403517b11ea150cd43fdf37469911a5aaafa926` is pushed after review/docs and READY at
+`dpl_DFqy6kZQDRbhHdBSAmbLQ2xEhL7P`, assigned to
+`https://unlabel-india.vercel.app`. All **54 read-only hosted checks** passed,
+including the five fresh artwork assets, corrected inline model headers and all
+21 OCR asset hashes. The [production receipt](../research/FRONTEND_V0_6_0_PRODUCTION.json)
+does not establish physical camera accuracy or hosted AI generation.
+
+The user's subsequent short-window sidebar/insight and Profile editor corrections
+are tracked separately in [frontend v0.6.1](FRONTEND_V0_6_1_REVIEW.md).
 
 The previous frontend v0.5.0+6 implementation remains at
 `00ae175993aa1cf435c3ff9ec9c8ee05cef94005`, with observed READY deployment
