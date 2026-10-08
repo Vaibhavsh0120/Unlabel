@@ -8,12 +8,14 @@ import '../models/app_failure.dart';
 import '../models/label_draft.dart';
 import '../models/product_report.dart';
 import '../models/sourced_comparison.dart';
+import '../models/researched_product.dart';
 import 'scanner_auth.dart';
 
 export '../models/app_failure.dart';
 export '../models/label_draft.dart';
 export '../models/product_report.dart';
 export '../models/sourced_comparison.dart';
+export '../models/researched_product.dart';
 
 class UnlabelRepository {
   UnlabelRepository({
@@ -51,6 +53,16 @@ class UnlabelRepository {
     maxEntries: 40,
     clock: _clock,
   );
+  late final _researchSearchCache = _PublicReadCache<ResearchSearchPage>(
+    ttl: const Duration(seconds: 60),
+    maxEntries: 20,
+    clock: _clock,
+  );
+  late final _researchDetailCache = _PublicReadCache<ResearchedProduct>(
+    ttl: const Duration(minutes: 5),
+    maxEntries: 40,
+    clock: _clock,
+  );
 
   void _ensureOpen() {
     if (_closed) {
@@ -58,7 +70,7 @@ class UnlabelRepository {
     }
   }
 
-  Future<void> _requireCapability(String capability) async {
+  Future<JsonMap> _serviceMetadata() async {
     _ensureOpen();
     if (_metadataAt == null ||
         _clock().difference(_metadataAt!) >= const Duration(minutes: 5)) {
@@ -70,6 +82,11 @@ class UnlabelRepository {
           () => _metadataPending = null,
         ));
     _ensureOpen();
+    return metadata;
+  }
+
+  Future<void> _requireCapability(String capability) async {
+    final metadata = await _serviceMetadata();
     final capabilities = metadata['capabilities'] as JsonMap;
     if (capabilities[capability] != true) {
       throw AppFailure(
@@ -78,6 +95,8 @@ class UnlabelRepository {
             ? 'Product search is not available on this service yet. You can enter a barcode or package label.'
             : capability == 'comparison'
             ? 'Sourced comparison is not available on this service yet. Your product selections are kept.'
+            : capability == 'research_catalogue'
+            ? 'Sourced product information is not available on this service yet. Search again after the service is updated.'
             : 'Label reports are not available on this service yet. Please update the service configuration.',
       );
     }
@@ -162,6 +181,72 @@ class UnlabelRepository {
       // Current-package checks belong only to their confirmed POST receipt.
       cacheable: (report) => report.isHistorical,
     );
+  }
+
+  Future<ResearchSearchPage> searchResearch(
+    String query, {
+    String? cursor,
+  }) async {
+    final text = query.trim();
+    if (text.length < 2 || text.length > 128) {
+      throw const AppFailure(
+        'invalid_input',
+        'Enter 2 to 128 characters from the product name or brand.',
+      );
+    }
+    final metadata = await _serviceMetadata();
+    if ((metadata['capabilities'] as JsonMap)['research_catalogue'] != true) {
+      return ResearchSearchPage.empty();
+    }
+    return _researchSearchCache.read(
+      jsonEncode([text, cursor]),
+      () async => ResearchSearchPage.fromJson(
+        await _request(
+          'GET',
+          '/v1/researched/products/search',
+          query: {'q': text, 'limit': '10', 'cursor': ?cursor},
+        ),
+      ),
+      cacheable: (page) => page.status != 'unavailable',
+    );
+  }
+
+  Future<ResearchedProduct> loadResearchProduct(String entryId) async {
+    if (!RegExp(r'^[0-9a-f]{64}$').hasMatch(entryId)) {
+      throw const AppFailure(
+        'invalid_input',
+        'This product reference is invalid. Search again.',
+      );
+    }
+    await _requireCapability('research_catalogue');
+    return _researchDetailCache.read(entryId, () async {
+      JsonMap value;
+      try {
+        value = await _request('GET', '/v1/researched/products/$entryId');
+      } on AppFailure catch (error) {
+        if (error.kind == 'not_found') {
+          throw const AppFailure(
+            'not_found',
+            'This product source is unavailable. Search again for the latest records.',
+          );
+        }
+        rethrow;
+      }
+      if (value['status'] != 'found') {
+        throw const AppFailure(
+          'not_found',
+          'This product source is unavailable. Search again for the latest records.',
+        );
+      }
+      final product = ResearchedProduct.fromJson(value);
+      if (product.entryId != entryId) {
+        throw const AppFailure(
+          'invalid_response',
+          'The returned product does not match your selection. Search again.',
+        );
+      }
+      return product;
+    }, cacheable: (_) => true);
   }
 
   Future<ProductReport> checkLabel(LabelDraft draft) async {
@@ -341,6 +426,8 @@ class UnlabelRepository {
     _metadataPending = null;
     _searchCache.close();
     _reportCache.close();
+    _researchSearchCache.close();
+    _researchDetailCache.close();
     _client.close();
   }
 }

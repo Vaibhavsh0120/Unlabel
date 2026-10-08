@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/network/unlabel_repository.dart';
 import 'report_presentation.dart';
+import 'researched_product_page.dart';
 import 'ui_components.dart';
 import '../../../core/widgets/search_skeleton.dart';
 
@@ -39,13 +40,17 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   final _thumbnails = <_ThumbnailJob>[];
   int _thumbnailRequests = 0;
   final _items = <SearchCandidate>[];
+  final _researchItems = <ResearchedCandidate>[];
   Timer? _debounce;
   SearchPage? _page;
+  ResearchSearchPage? _researchPage;
   String _query = '';
   String _resultsQuery = '';
   final _noThumbnail = Future<ProductReport?>.value(null);
   String? _error, _opening;
   bool _busy = false;
+  bool _offRetryPending = false, _researchRetryPending = false;
+  String? _offSearchError, _researchSearchError;
   int _request = 0;
 
   @override
@@ -101,7 +106,9 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       _busy = query.length >= 2;
       if (query.length < 2) {
         _items.clear();
+        _researchItems.clear();
         _page = null;
+        _researchPage = null;
         _reports.clear();
         _resultsQuery = '';
       }
@@ -111,38 +118,135 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     }
   }
 
+  Future<(T?, AppFailure?)> _readSource<T>(Future<T> Function() read) async {
+    try {
+      return (await read(), null);
+    } on AppFailure catch (error) {
+      return (null, error);
+    } catch (_) {
+      return (
+        null,
+        const AppFailure(
+          'invalid_response',
+          'Some product information could not be read. Please retry search.',
+        ),
+      );
+    }
+  }
+
   Future<void> _search({bool more = false}) async {
     _debounce?.cancel();
     if (_query.length < 2 || !widget.active) return;
     final query = _query;
+    // Pagination belongs to the query that produced these cursors.
+    more = more && query == _resultsQuery;
     final request = ++_request;
+    var replaced = more;
     setState(() {
       _busy = true;
       _error = null;
     });
-    try {
-      final page = await widget.repository.search(
-        query,
-        cursor: more ? _page?.nextCursor : null,
-      );
+
+    void accept(VoidCallback update) {
       if (!mounted || request != _request) return;
-      if (!more) {
-        _discardThumbnails();
-        _reports.clear();
-      }
       setState(() {
-        _page = page;
-        _resultsQuery = query;
-        if (!more) _items.clear();
-        final codes = _items.map((item) => item.barcode).toSet();
-        for (final item in page.candidates) {
-          if (codes.add(item.barcode) && _items.length < 100) _items.add(item);
+        if (!replaced) {
+          _discardThumbnails();
+          _reports.clear();
+          _items.clear();
+          _researchItems.clear();
+          _page = null;
+          _researchPage = null;
+          _offRetryPending = false;
+          _researchRetryPending = false;
+          _offSearchError = null;
+          _researchSearchError = null;
+          _resultsQuery = query;
+          replaced = true;
         }
+        update();
+        final messages = [
+          _offSearchError,
+          _researchSearchError,
+        ].whereType<String>().toSet().toList();
+        _error = messages.isEmpty ? null : messages.join(' ');
       });
-    } on AppFailure catch (error) {
-      if (mounted && request == _request) {
-        setState(() => _error = error.userMessage);
-      }
+    }
+
+    final skipOff =
+        more &&
+        (_items.length >= 100 ||
+            (!_offRetryPending && _page?.nextCursor == null));
+    final skipResearch =
+        more &&
+        (_researchItems.length >= 100 ||
+            (!_researchRetryPending && _researchPage?.nextCursor == null));
+    final offFuture = skipOff
+        ? Future<(SearchPage?, AppFailure?)>.value((_page, null))
+        : _readSource(
+            () => widget.repository.search(
+              query,
+              cursor: more ? _page?.nextCursor : null,
+            ),
+          );
+    final researchFuture = skipResearch
+        ? Future<(ResearchSearchPage?, AppFailure?)>.value((
+            _researchPage,
+            null,
+          ))
+        : _readSource(
+            () => widget.repository.searchResearch(
+              query,
+              cursor: more ? _researchPage?.nextCursor : null,
+            ),
+          );
+
+    try {
+      // Each source becomes readable as soon as it finishes. A slow or failed
+      // source does not discard the other source's results or pagination.
+      await Future.wait([
+        offFuture.then<void>((result) {
+          final (page, error) = result;
+          accept(() {
+            _offSearchError = error?.userMessage;
+            _offRetryPending = error != null;
+            if (page == null) return;
+            if (more && page.status == 'unavailable') {
+              _offSearchError = 'Catalogue labels are temporarily unavailable.';
+              _offRetryPending = true;
+              return;
+            }
+            _page = page;
+            final codes = _items.map((item) => item.barcode).toSet();
+            for (final item in page.candidates) {
+              if (codes.add(item.barcode) && _items.length < 100) {
+                _items.add(item);
+              }
+            }
+          });
+        }),
+        researchFuture.then<void>((result) {
+          final (page, error) = result;
+          accept(() {
+            _researchSearchError = error?.userMessage;
+            _researchRetryPending = error != null;
+            if (page == null) return;
+            if (more && page.status == 'unavailable') {
+              _researchSearchError =
+                  'Sourced product information is temporarily unavailable.';
+              _researchRetryPending = true;
+              return;
+            }
+            _researchPage = page;
+            final ids = _researchItems.map((item) => item.entryId).toSet();
+            for (final item in page.candidates) {
+              if (ids.add(item.entryId) && _researchItems.length < 100) {
+                _researchItems.add(item);
+              }
+            }
+          });
+        }),
+      ]);
     } finally {
       if (mounted && request == _request) setState(() => _busy = false);
     }
@@ -217,11 +321,46 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     }
   }
 
+  Future<void> _openResearch(ResearchedCandidate item) async {
+    if (_opening != null) return;
+    final request = _request;
+    _focus.unfocus();
+    setState(() {
+      _opening = item.entryId;
+      _error = null;
+    });
+    try {
+      final product = await widget.repository.loadResearchProduct(item.entryId);
+      if (!mounted || request != _request) return;
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (_) => ResearchedProductPage(product: product),
+        ),
+      );
+    } on AppFailure catch (error) {
+      if (mounted && request == _request) {
+        setState(() => _error = error.userMessage);
+      }
+    } finally {
+      if (mounted) setState(() => _opening = null);
+    }
+  }
+
+  String get _emptyStatus {
+    final statuses = [_page?.status, _researchPage?.status];
+    if (statuses.contains('ready') || statuses.contains('not_found')) {
+      return 'not_found';
+    }
+    if (statuses.contains('refine_query')) return 'refine_query';
+    return 'unavailable';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final ready = _page?.status == 'ready';
-    final showItems = _query.length >= 2 && _items.isNotEmpty;
+    final ready = _page?.status == 'ready' || _researchPage?.status == 'ready';
+    final showItems =
+        _query.length >= 2 && (_items.isNotEmpty || _researchItems.isNotEmpty);
     return CallbackShortcuts(
       bindings: {const SingleActivator(LogicalKeyboardKey.escape): _close},
       child: Scaffold(
@@ -289,7 +428,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         if (_busy) const LinearProgressIndicator(minHeight: 2),
-                        if (_busy && _items.isEmpty)
+                        if (_busy && _items.isEmpty && _researchItems.isEmpty)
                           const Padding(
                             padding: EdgeInsets.only(top: 16),
                             child: SearchSkeleton(),
@@ -297,7 +436,9 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                         if (_error != null) ...[
                           const SizedBox(height: 12),
                           StatusNotice(
-                            title: 'Search could not be completed',
+                            title: showItems
+                                ? 'Some sources could not be loaded'
+                                : 'Search could not be completed',
                             message: _error!,
                             action: TextButton(
                               onPressed: _busy ? null : _search,
@@ -312,17 +453,17 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             icon: Icons.search_rounded,
                           )
                         else if (!_busy &&
-                            _page != null &&
-                            (!ready || _items.isEmpty))
+                            (_page != null || _researchPage != null) &&
+                            (!ready || !showItems))
                           StatusNotice(
-                            title: switch (_page!.status) {
+                            title: switch (_emptyStatus) {
                               'refine_query' =>
                                 'Add a more specific name or brand',
                               'unavailable' =>
                                 'Catalogue search is unavailable',
                               _ => 'No matches for “$_query”',
                             },
-                            message: _page!.status == 'unavailable'
+                            message: _emptyStatus == 'unavailable'
                                 ? 'Try again later, or enter the facts on your package.'
                                 : 'Try fewer words, check the spelling, or enter the package label.',
                             action: TextButton(
@@ -337,7 +478,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             child: Text(
                               _busy
                                   ? 'Updating matches…'
-                                  : '${_items.length} products shown${_page?.matchedCount == null ? '' : ' · ${_page!.matchedCount} matches'}',
+                                  : '${_items.length + _researchItems.length} product records shown',
                               style: theme.textTheme.titleMedium,
                             ),
                           ),
@@ -351,6 +492,54 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                     ),
                   ),
                 ),
+                if (showItems && _researchItems.isNotEmpty)
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverList.builder(
+                      itemCount: _researchItems.length,
+                      itemBuilder: (context, index) {
+                        final item = _researchItems[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: ListTile(
+                              key: ValueKey('research-${item.entryId}'),
+                              contentPadding: const EdgeInsets.all(16),
+                              title: Text(item.name),
+                              subtitle: Text(
+                                [
+                                  if (item.brand != null) item.brand!,
+                                  if (item.variant != null &&
+                                      !item.name.toLowerCase().contains(
+                                        item.variant!.toLowerCase(),
+                                      ))
+                                    item.variant!,
+                                  item.quantity ?? 'Pack size unknown',
+                                  researchProviderLabel(item.provider),
+                                  'Collected ${item.source.retrievedAt.substring(0, 10)}',
+                                  if (item.eligibility == 'conflicting')
+                                    'Conflicting source information',
+                                ].join(' · '),
+                              ),
+                              trailing: _opening == item.entryId
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(Icons.chevron_right_rounded),
+                              onTap: _opening != null || _query != _resultsQuery
+                                  ? null
+                                  : () => _openResearch(item),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 if (showItems)
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -365,7 +554,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             item: item,
                             report: _report(item.barcode),
                             opening: _opening == item.barcode,
-                            onTap: _opening != null || _busy
+                            onTap: _opening != null || _query != _resultsQuery
                                 ? null
                                 : () => _open(item),
                           ),
@@ -377,9 +566,13 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
                     child:
-                        _page?.nextCursor != null &&
+                        (((_page?.nextCursor != null || _offRetryPending) &&
+                                    _items.length < 100) ||
+                                ((_researchPage?.nextCursor != null ||
+                                        _researchRetryPending) &&
+                                    _researchItems.length < 100)) &&
                             showItems &&
-                            _items.length < 100
+                            (_items.length < 100 || _researchItems.length < 100)
                         ? OutlinedButton(
                             onPressed: _busy ? null : () => _search(more: true),
                             child: const Text('Show more products'),

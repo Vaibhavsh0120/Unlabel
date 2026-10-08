@@ -1,7 +1,7 @@
 # Frontend v0.5.0+6: researched product information
 
-Implementation in progress on `main`, 8 October 2026. Push and hosted verification
-remain pending until the checks below are closed.
+Implementation verified locally on `main`, 8 October 2026. The independent
+frontend push and hosted exact-source verification remain pending.
 
 Search includes sourced website records alongside existing OFF catalogue results.
 Research entries use immutable entry IDs, including records without a barcode.
@@ -23,11 +23,34 @@ confirmed-source requirements.
 
 ## Verification
 
-Analyzer clean; **193 tests pass**, including all243 acquired observations. Final
-release web build and rendered checks are pending. Meaningful
+Analyzer clean; **194 tests pass**, including all 243 acquired observations.
+The production-target release web build passes. Meaningful
 model/repository/widget tests cover malformed sources, null barcodes, frozen
 observations, qualifiers, mixed source failures, cursor exhaustion, stale requests
 and readable small/large screens. Physical-device proof is separate.
+
+Playwright CLI reviewed real mixed-source search, unknown-data retailer details,
+manufacturer ingredient/nutrition details, copy-source feedback, expandable notes
+and the retained back-to-search path against the READY backend v0.10.0. Light-theme
+search, manufacturer details and expanded notes were captured and visually
+reviewed at 390, 1440 and 1728 px. The browser uses the supported debug loopback
+production preview proxy; the separate release build targets the canonical HTTPS
+API. This does not establish a frontend production deployment or native behavior.
+See the [render evidence](../research/FRONTEND_V0_5_0_RENDER.json).
+
+Rendered review found that Flutter web exposed `SelectableText` declarations as
+empty disabled textareas. Explicit static semantics now make the complete
+ingredients, unknown declarations, source URL and source notes readable while
+preserving pointer selection. The targeted accessibility regression and final
+browser snapshot verify the repair.
+
+Better Design review and comprehension checks are recorded in the render
+evidence. Raw spacing checks included Flutter's intentionally offscreen live
+announcements and the final partially visible card in a scrolling list. Their
+dispositions are explicit; the final product-layout measurement excludes only
+the screen-reader-only announcement tags and reports no findings at all three
+widths. The screenshot review establishes visible layout separately. A new
+dark-theme visual recheck is not included in this checkpoint's receipt.
 
 Final review replaced internal warning codes with understandable qualifications
 and exposed useful variant/import context in result rows. Unknown warning codes

@@ -1,7 +1,12 @@
 # Backend v0.10.0: researched product database
 
-Local verification complete on `main`, 8 October 2026. Independent push and hosted
-verification remain pending.
+Independently pushed from `e04ba543bbda129fd031d44ec7c307c4e870f02d` on `main`,
+8 October 2026. Production deployment `dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9` is
+**READY with 389 hosted checks passed** at
+[the production API](https://unlabel-api.vercel.app). See the
+[pinned production receipt](../research/BACKEND_V0_10_0_PRODUCTION.json).
+Frontend v0.5.0 integration/render/deployment verification remains independent
+and pending; this receipt establishes the backend v0.10.0 checkpoint only.
 
 Manufacturer/retailer website observations now enter a separate generated,
 read-only SQLite product database. Unknown barcodes remain searchable by name,
@@ -60,6 +65,29 @@ not hosted/device/end-to-end latency. Original bulk source hashes still match.
 Independent source review identified retailer formula/quantity conflicts, partial
 declarations, restricted-reuse records and discovery-only records. These remain
 visible qualifications. The original OFF bulk gzip and receipt are preserved.
+
+## Hosted verification
+
+A fresh Vercel inspection matched the implementation SHA, READY state,
+production target and canonical alias. The 389 public HTTP checks include exact
+payload and immutable-hash equality for all 243 acquired observations; all 69
+barcode groups (41 exact groups found and 28 unconfirmed groups left unlinked);
+complete 21-observation Lays pagination; Unicode brand matching; bounded query,
+cursor and identity rejection; CORS and `no-store`; and preserved original OFF,
+claim, nutrition, historical-report and comparison behavior. Hosted OpenAPI
+matches the tracked export: 24 paths and 25 operations, preserving every v0.9.0
+path and schema component. No authenticated writes, credentials, photos or raw
+OCR were sent.
+
+The hosted research source digest is
+`1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52`.
+Its generated database digest is
+`fef4a8395e0c257daf2890c1a76258680a04ffe055f0f155a0b9c9220f360158`.
+Generated build timestamps and catalogue snapshot IDs can differ from local
+rebuilds; the receipt records this hosted build separately and all immutable
+source observations remain exact. These checks establish acquired-source
+delivery, not complete retail coverage, current-packet compatibility, allergen
+safety, physical camera accuracy or end-to-end scan latency.
 
 See [plan](POPULAR_PRODUCTS_DATABASE_PLAN.md),
 [source inventory](../research/POPULAR_PRODUCTS_ADDED.md), and

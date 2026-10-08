@@ -30,6 +30,12 @@ class _Repository extends UnlabelRepository {
   }
 
   @override
+  Future<ResearchSearchPage> searchResearch(
+    String query, {
+    String? cursor,
+  }) async => ResearchSearchPage.empty();
+
+  @override
   Future<ProductReport> loadReport(String barcode) async {
     reports++;
     if (reportLoader != null) return reportLoader!(barcode);

@@ -1,6 +1,6 @@
 {
   "checked_at": "2026-10-08",
-  "scope": "Acquired source and generated local read-only database; retail coverage/current packet identity remain unverified.",
+  "scope": "Acquired source and generated local read-only database with separate pinned hosted backend verification; retail coverage/current packet identity remain unverified.",
   "dataset_sha256": "1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52",
   "normalized_observations": 243,
   "provider_counts": {
@@ -73,6 +73,20 @@
   "original_bulk_compressed_sha256": "bbdd13097ede75777b2356e27910ae01aff38d7ad0c59598af6868dcf447db24",
   "all_input_hashes_match": true,
   "images_acquired": false,
-  "network_used_for_validation": false,
-  "production_verification": "pending"
+  "network_used_for_validation": true,
+  "local_source_validation_network_used": false,
+  "production_verification": {
+    "version": "0.10.0",
+    "status": "READY",
+    "source_sha": "e04ba543bbda129fd031d44ec7c307c4e870f02d",
+    "deployment_id": "dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9",
+    "origin": "https://unlabel-api.vercel.app",
+    "checks_passed": 389,
+    "receipt": "BACKEND_V0_10_0_PRODUCTION.json",
+    "hosted_observations_exactly_equal_source": 243,
+    "eligible_exact_barcode_groups_found": 41,
+    "unconfirmed_barcode_groups_remain_unlinked": 28,
+    "hosted_database_sha256": "fef4a8395e0c257daf2890c1a76258680a04ffe055f0f155a0b9c9220f360158",
+    "frontend_v0_5_0_verification": "independent_pending"
+  }
 }

@@ -1,6 +1,6 @@
 # Popular Indian packaged product information collected
 
-Collection date: 8 October 2026. These are sourced website observations imported into the local researched-product database. App integration/deployment verification is still in progress. A row is a source/pack observation, not a guarantee that its formula matches a current packet. Unknown barcodes, incomplete declarations and conflicting values remain qualified.
+Collection date: 8 October 2026. These are sourced website observations imported into the researched-product database. Backend v0.10.0 was independently pushed from `e04ba543bbda129fd031d44ec7c307c4e870f02d`; production deployment `dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9` is READY with 389 hosted checks passed, including exact source equality for all 243 acquired observations. See the [backend production receipt](BACKEND_V0_10_0_PRODUCTION.json). Frontend v0.5.0 integration/render/deployment verification is still in progress. A row is a source/pack observation, not a guarantee that its formula matches a current packet. Unknown barcodes, incomplete declarations and conflicting values remain qualified.
 
 The table lists the 174 manufacturer/retailer observations collected in 5 batches. An additional 69 exact-code OFF observations are retained separately; the original 24,641-code OFF database remains available. Repeated packs of a manufacturer product can share the same formula declaration.
 

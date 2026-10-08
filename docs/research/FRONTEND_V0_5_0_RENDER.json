@@ -1,0 +1,730 @@
+{
+  "schema_version": "1",
+  "checked_on": "2026-10-08",
+  "frontend_version": "0.5.0+6",
+  "scope": "Local Flutter web research browsing against real hosted public backend responses through the existing bounded loopback production preview proxy.",
+  "backend": {
+    "origin": "https://unlabel-api.vercel.app",
+    "implementation_sha": "e04ba543bbda129fd031d44ec7c307c4e870f02d",
+    "deployment_id": "dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9",
+    "deployment_state": "READY"
+  },
+  "frontend_source_sha256": {
+    "frontend/lib/core/models/researched_product.dart": "e10dfeceb5479f95801959f9c549fcc58f54db08e250481b2bae338cc9303389",
+    "frontend/lib/core/network/unlabel_repository.dart": "3d2a05afaf65dfec73fc07c12d8a9a2f053f7e475c015456113bb0adc799705d",
+    "frontend/lib/features/scanner/presentation/product_search_page.dart": "8a7e47b68213c0b4e096684d9f7f6494fd203f8377e6dd3d87cec5aa6f2e37e6",
+    "frontend/lib/features/scanner/presentation/researched_product_page.dart": "4f1ab8c01035b92eb642ca8bb44e6c5a3a22365e5e9b7dbb1f8af5111b00f4b8",
+    "frontend/test/researched_product_test.dart": "d651dccbadf167d637a98c6a51f9919f27103d60fcc303c0b05c26507aa81e6e"
+  },
+  "browser": {
+    "automation": "Microsoft Playwright CLI, named session unlabel-research",
+    "preview_origin": "http://127.0.0.1:7361",
+    "build_mode": "debug; supported loopback HTTP preview",
+    "theme": "light",
+    "console_errors_after_configured_preview": 0,
+    "artifacts_are_local_ignored_outputs": true,
+    "states": [
+      {
+        "state": "research-search-390",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "dd6e32a68893a250a987fe6c77f7d7a6fc49ebd19fabcd447f32169296e4f4bd",
+        "screenshot_sha256": "4e8f46ed63c664a5e93e00bb8037ac3c9f2e8940da6a9ad3ca24dfea90f6a4cd",
+        "local_geometry_path": "output/playwright/research-search-390.json",
+        "local_screenshot_path": "output/playwright/research-search-390.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-search-1440",
+        "viewport": {
+          "width": 1440,
+          "height": 1000,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "2c35dc50b46933d5b95aac011f176370caae0efa394c85461eaa213f89094699",
+        "screenshot_sha256": "a3e171b94acc7481b401ddae252df0d2d662c4d1837452d3b550e315f35ce13e",
+        "local_geometry_path": "output/playwright/research-search-1440.json",
+        "local_screenshot_path": "output/playwright/research-search-1440.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-search-1728",
+        "viewport": {
+          "width": 1728,
+          "height": 1117,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "77b21cd9d6d7ab26b5912e486f501bc3dd6ba93de6cfa8d0b07b97f4ea9b4e72",
+        "screenshot_sha256": "a9420ef7451552b4c8978f7860b94a5cc7beec1f196e366c46ccf2ae8a4fba79",
+        "local_geometry_path": "output/playwright/research-search-1728.json",
+        "local_screenshot_path": "output/playwright/research-search-1728.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-nutrition-390",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "2248cfd6e6e1fb09cb02819b76ad17a4c866bf8cca416adbc68cd40707d0bff0",
+        "screenshot_sha256": "2c94b513d2acbf55c7055d91565cb4810e79bd90f8d4f59dc79b43e14a31c96e",
+        "local_geometry_path": "output/playwright/research-nutrition-390.json",
+        "local_screenshot_path": "output/playwright/research-nutrition-390.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-nutrition-1440",
+        "viewport": {
+          "width": 1440,
+          "height": 1000,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "82c3c9598ed5b4e389aec8519bf99f39a3daf5d7cdfa7572ade1ecd783e5bd58",
+        "screenshot_sha256": "ddd49ef3d92b49d9f29f314f3fd455d3d93285ad93787c44788eea0d8129581f",
+        "local_geometry_path": "output/playwright/research-nutrition-1440.json",
+        "local_screenshot_path": "output/playwright/research-nutrition-1440.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-nutrition-1728",
+        "viewport": {
+          "width": 1728,
+          "height": 1117,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "e00742c5aeb65b41229c400a8b3a79b6ad8989f3b7b09204490cf9669154a317",
+        "screenshot_sha256": "4c9b1d91874e1e4bb9fc3014e5d1eeeb22f4f9f41ad7aefec0210d61e1ef94c0",
+        "local_geometry_path": "output/playwright/research-nutrition-1728.json",
+        "local_screenshot_path": "output/playwright/research-nutrition-1728.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-notes-390",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "553f419c93fba2e2df8865280b4086eb29ddabc6044a3e1f0ea714b372c2f870",
+        "screenshot_sha256": "b62c93bd67fa75bbb24e9ba32bb3123adf13354a25b75d38e8570bb2b49812a7",
+        "local_geometry_path": "output/playwright/research-notes-390.json",
+        "local_screenshot_path": "output/playwright/research-notes-390.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-notes-1440",
+        "viewport": {
+          "width": 1440,
+          "height": 1000,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "33b9827b7f20246a98f9644fd169742052998711aeeaeee156100936bbb63abe",
+        "screenshot_sha256": "c1a2c9e1f1234d36aa3e04cea99284eccc5d238e34f5a3432ab1635287db290a",
+        "local_geometry_path": "output/playwright/research-notes-1440.json",
+        "local_screenshot_path": "output/playwright/research-notes-1440.png",
+        "screenshot_visually_reviewed": true
+      },
+      {
+        "state": "research-notes-1728",
+        "viewport": {
+          "width": 1728,
+          "height": 1117,
+          "devicePixelRatio": 1
+        },
+        "geometry_sha256": "424162e6c19ea754bb797620eae4b666850dc10fcc70bf5c8823fc9695c50926",
+        "screenshot_sha256": "cde16bc9c6d058e9bbadb8e0875937f732ad9ab416c6e7159968326089504cb0",
+        "local_geometry_path": "output/playwright/research-notes-1728.json",
+        "local_screenshot_path": "output/playwright/research-notes-1728.png",
+        "screenshot_visually_reviewed": true
+      }
+    ]
+  },
+  "workflow_checks": [
+    "Home opens focused search; query remains editable while requests run.",
+    "Lays search loads 20 initial records from independent research and catalogue sources, with brand, quantity and provenance.",
+    "Retailer Lay's 24 g details retain unknown ingredients, nutrition and barcode instead of inventing values.",
+    "Limca 600 mL manufacturer record shows its complete ingredient declaration and explicit per-100-mL as-sold nutrition table.",
+    "Limca nutrition values match the sourced table: 44 kcal energy, 11.1 g carbohydrate, 10.7 g total/added sugars, 0 g fat/protein and 5.6 mg sodium.",
+    "Undeclared contains/may-contain sections remain unknown, and package/variant limitations stay visible.",
+    "Copy source link produces Source link copied feedback; source notes expand and remain reachable by scrolling.",
+    "Back returns to the retained search query/results.",
+    "Full ingredient/source/note text appears in the final accessibility snapshot after the explicit Semantics fix."
+  ],
+  "accessibility_fix": {
+    "finding": "Flutter web SelectableText rendered ingredient/source declarations as disabled empty textarea semantics.",
+    "fix": "An explicit static semantic label preserves full declaration text while the underlying SelectableText keeps pointer selection.",
+    "regression_test": "research declarations remain readable by assistive technology",
+    "rendered_recheck": "Final Limca snapshot contains the complete ingredient enumeration, unknown declarations, source URL and expanded source notes as readable generic text."
+  },
+  "better_design": {
+    "review_rules_loaded": true,
+    "comprehension": {
+      "search_summary": "pass, 22 words, 13-second heuristic",
+      "product_top_summary": "pass, 37 words, 12-second heuristic",
+      "full_document_attempt": "66 words exceeded the heuristic when all lower sections were supplied together; preserved required provenance and measured the actual top summary separately. Detailed source/nutrition content remains below."
+    },
+    "spacing": {
+      "search": {
+        "status": "completed",
+        "score": 10,
+        "summary": {
+          "critical": 0,
+          "serious": 6,
+          "moderate": 6,
+          "total": 12
+        },
+        "findings": [
+          {
+            "ruleId": "spacing/off-scale-value",
+            "state": "research-search-390",
+            "severity": "moderate",
+            "message": "research-search-390 uses 1 off-scale spacing value across 1 element: 1px.",
+            "fix": "Replace the measured values with the nearest project spacing token. Active scale: 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128px.",
+            "elementIds": [
+              "input:nth-of-type(1)@13"
+            ],
+            "evidence": [
+              {
+                "label": "Product name or brand padding top",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding right",
+                "value": 2,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding bottom",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding left",
+                "value": 2,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-1"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-390",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 390px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 390,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-2"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-390",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 390px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 390,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-3"
+          },
+          {
+            "ruleId": "spacing/touch-target",
+            "state": "research-search-390",
+            "severity": "moderate",
+            "message": "#flt-semantic-node-79 measures 358x32px, below the recommended 44x44px touch target.",
+            "fix": "Increase the interactive hit area to at least 44x44px without relying on the visible icon size.",
+            "elementIds": [
+              "#flt-semantic-node-79"
+            ],
+            "evidence": [
+              {
+                "label": "Width",
+                "value": 358,
+                "unit": "px"
+              },
+              {
+                "label": "Height",
+                "value": 32,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-4"
+          },
+          {
+            "ruleId": "spacing/off-scale-value",
+            "state": "research-search-1440",
+            "severity": "moderate",
+            "message": "research-search-1440 uses 1 off-scale spacing value across 1 element: 1px.",
+            "fix": "Replace the measured values with the nearest project spacing token. Active scale: 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128px.",
+            "elementIds": [
+              "input:nth-of-type(1)@13"
+            ],
+            "evidence": [
+              {
+                "label": "Product name or brand padding top",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding right",
+                "value": 2,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding bottom",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding left",
+                "value": 2,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-5"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-1440",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 1440px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1440,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-6"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-1440",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 1440px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1440,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-7"
+          },
+          {
+            "ruleId": "spacing/touch-target",
+            "state": "research-search-1440",
+            "severity": "moderate",
+            "message": "#flt-semantic-node-83 measures 968x36px, below the recommended 44x44px touch target.",
+            "fix": "Increase the interactive hit area to at least 44x44px without relying on the visible icon size.",
+            "elementIds": [
+              "#flt-semantic-node-83"
+            ],
+            "evidence": [
+              {
+                "label": "Width",
+                "value": 968,
+                "unit": "px"
+              },
+              {
+                "label": "Height",
+                "value": 36,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-8"
+          },
+          {
+            "ruleId": "spacing/off-scale-value",
+            "state": "research-search-1728",
+            "severity": "moderate",
+            "message": "research-search-1728 uses 1 off-scale spacing value across 1 element: 1px.",
+            "fix": "Replace the measured values with the nearest project spacing token. Active scale: 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128px.",
+            "elementIds": [
+              "input:nth-of-type(1)@13"
+            ],
+            "evidence": [
+              {
+                "label": "Product name or brand padding top",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding right",
+                "value": 2,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding bottom",
+                "value": 1,
+                "unit": "px"
+              },
+              {
+                "label": "Product name or brand padding left",
+                "value": 2,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-9"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-1728",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 1728px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1728,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-10"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-search-1728",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 1728px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1728,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-11"
+          },
+          {
+            "ruleId": "spacing/touch-target",
+            "state": "research-search-1728",
+            "severity": "moderate",
+            "message": "#flt-semantic-node-85 measures 968x37px, below the recommended 44x44px touch target.",
+            "fix": "Increase the interactive hit area to at least 44x44px without relying on the visible icon size.",
+            "elementIds": [
+              "#flt-semantic-node-85"
+            ],
+            "evidence": [
+              {
+                "label": "Width",
+                "value": 968,
+                "unit": "px"
+              },
+              {
+                "label": "Height",
+                "value": 37,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-12"
+          }
+        ]
+      },
+      "nutrition_raw": {
+        "status": "completed",
+        "score": 40,
+        "summary": {
+          "critical": 0,
+          "serious": 6,
+          "moderate": 0,
+          "total": 6
+        },
+        "findings": [
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-390",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 390px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 390,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-1"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-390",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 390px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 390,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-2"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-1440",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 1440px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1440,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-3"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-1440",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 1440px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1440,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-4"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-1728",
+            "severity": "serious",
+            "message": "flt-announcement-polite:nth-of-type(1)@1 extends outside the 1728px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-polite:nth-of-type(1)@1"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1728,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-5"
+          },
+          {
+            "ruleId": "spacing/viewport-overflow",
+            "state": "research-nutrition-1728",
+            "severity": "serious",
+            "message": "flt-announcement-assertive:nth-of-type(1)@2 extends outside the 1728px viewport.",
+            "fix": "Constrain the element to the viewport and verify the same content at narrow and wide breakpoints.",
+            "elementIds": [
+              "flt-announcement-assertive:nth-of-type(1)@2"
+            ],
+            "evidence": [
+              {
+                "label": "Left edge",
+                "value": -99999,
+                "unit": "px"
+              },
+              {
+                "label": "Right edge",
+                "value": -99998,
+                "unit": "px"
+              },
+              {
+                "label": "Viewport width",
+                "value": 1728,
+                "unit": "px"
+              }
+            ],
+            "id": "spacing-6"
+          }
+        ]
+      },
+      "nutrition_canvas": {
+        "status": "completed",
+        "score": 100,
+        "summary": {
+          "critical": 0,
+          "serious": 0,
+          "moderate": 0,
+          "total": 0
+        },
+        "findings": []
+      }
+    },
+    "finding_dispositions": [
+      "Raw search/nutrition inspections include intentional Flutter live-announcement nodes at x=-99999; these are screen-reader-only announcements, not visible product overflow. Keep their accessibility purpose.",
+      "The final nutrition canvas inspection excludes only those two announcement tags per viewport, preserves all other measured geometry, completes at all three widths, and reports no findings.",
+      "Search off-scale 1/2 px input padding belongs to the invisible native text-editing overlay; actual Flutter outlined field follows the existing design and screenshot review.",
+      "Search touch-target flags concern the partial final card at the bottom of each scroll viewport. The full card is 104 px high in the same captured states at larger heights; scrolling reveals its complete target. It is ordinary viewport clipping, not a shortened control."
+    ],
+    "visual_verdict": "No material visible layout blocker in reviewed light-theme research search/details/expanded notes at 390, 1440 and 1728 px. This is the research checkpoint, not the subsequent reference-results redesign."
+  },
+  "local_checks": {
+    "flutter_analyze_no_pub": "pass, no issues",
+    "flutter_test_no_pub": "194 passed",
+    "targeted_research_tests": "13 passed",
+    "release_web_build_production_target": "pass after accessibility fix, 43.6 seconds; BACKEND_BASE_URL=https://unlabel-api.vercel.app"
+  },
+  "remaining_gates": [
+    "Independent frontend source push and hosted exact-source verification.",
+    "Dark-theme visual recheck of the new research screens is not included in this receipt.",
+    "Native accessibility/camera/device tests and 3-5 second shop latency are separate, unverified gates."
+  ]
+}
