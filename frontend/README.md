@@ -7,7 +7,8 @@ The desktop Insights shell/rail and mobile feed follow the supplied references.
 Preference/allergen editors and summaries use distinct corresponding symbols.
 267 tests pass; analysis and the production web build are clean. Light/dark
 renders at 390/1440/1728 are reviewed. The dot strip is compact (32 px).
-Source is prepared for the requested main push; hosted proof is pending.
+Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
+hosted proof is pending.
 [Feature contract](../docs/architecture/INSIGHTS.md) ·
 [Review](../docs/planning/FRONTEND_V0_7_0_REVIEW.md).
 

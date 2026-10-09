@@ -201,10 +201,11 @@
     "backend_source": "unchanged"
   },
   "review_fixture": "Real UnlabelApp shell/controllers, memory-only guest storage, disabled account transport, rejecting product MockClient, optional explicit saved article IDs. Production main.dart never imports fixture.",
-  "publication": "Prepared for user-authorized main push; hosted deployment and native release proof pending.",
+  "publication": "Implementation source pushed to origin/main. Later docs-only closure preserves the implementation identity. Hosted deployment and native release proof remain pending.",
   "limits": [
     "Semantic featured-card measurement is not whole-screen or pixel equality proof.",
     "External browser/native source dispatch and clipboard outcome are not established by in-app browser feedback; exact plugin arguments and false/throw recovery are tested.",
     "No new physical camera/OCR/provider/backend proof."
-  ]
+  ],
+  "implementation_source_sha": "8b5f9064d61c4003a2fd0ae180d0ece933070cfa"
 }

@@ -10,7 +10,8 @@
   See docs/architecture/INSIGHTS.md and docs/planning/FRONTEND_V0_7_0_REVIEW.md.
   All 267 tests pass, analysis is clean and the production release web build
   passes. Light/dark 390/1440/1728 renders are reviewed; the dot strip is 32 px.
-  Source is prepared for the user-authorized main push; hosted proof is pending.
+  Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
+  later docs-only closure preserves that identity. Hosted proof is pending.
   Backend unchanged.
 
 - Preceding frontend v0.6.3+10 correction: fresh transparent 3:1 insight artwork,

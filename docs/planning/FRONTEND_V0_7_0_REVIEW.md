@@ -1,7 +1,8 @@
 # Frontend v0.7.0+11: daily insights collection
 
 Implementation on main, 9 October 2026; final checks completed during the
-9–10 October session. Source is prepared for the user's requested main push.
+9–10 October session. Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa
+is pushed on main; later docs-only closure preserves that source identity.
 Hosted verification and Android/iOS publication remain separate. Backend
 v0.12.0 runtime and catalogue observations are unchanged.
 
@@ -82,11 +83,11 @@ the real preferences adapter and all twenty matching images.
 
 ## Publication
 
-The user authorized completing docs and pushing main. Local implementation and
-verification are complete; this document is prepared before that push. The final
-push receipt must identify the implementation commit separately from any later
-docs-only closure commit. No hosted deployment, new native artifact or release
-tag is established by the local checks.
+Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa was successfully pushed
+from main to origin/main; the remote tracking check matched at 0 ahead/0 behind.
+This docs-only closure preserves that implementation identity and records the
+actual push separately from local validation. Hosted verification remains
+pending. No new native artifact or release tag was created by this request.
 
 [Feature contract](../architecture/INSIGHTS.md) ·
 [Artwork prompts and hashes](../../frontend/assets/artwork/insights/generation-manifest.json) ·

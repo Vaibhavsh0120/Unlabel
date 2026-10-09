@@ -6,8 +6,8 @@ device-local bookmarks. Home shares the daily set; PC/mobile use manual swipe,
 dots and keyboard. All preference/allergen choices have distinct corresponding
 symbols. All 267 tests pass, analysis is clean and the production release web
 build passes. Renders at 390/1440/1728 are reviewed in both themes. The dot strip
-is compact (32 px). Source is prepared for the authorized main push; hosted
-verification remains pending. [Feature contract](../architecture/INSIGHTS.md) ·
+is compact (32 px). Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
+hosted verification remains pending. [Feature contract](../architecture/INSIGHTS.md) ·
 [Review](FRONTEND_V0_7_0_REVIEW.md).
 
 Preceding frontend correction: **v0.6.3+10** replaces the desktop insight tile

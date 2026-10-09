@@ -26,8 +26,8 @@ four daily picks shared with Home, topic browsing, full reading views and
 device-local bookmarks. PC and mobile support manual swipe, dots and keyboard.
 Preference and allergen choices each have their own corresponding symbol.
 All 267 tests pass, analysis is clean and the production web build passes.
-The dot row is now compact (32 px). Source is prepared for the requested main
-push; hosted verification and native releases remain separate.
+The dot row is now compact (32 px). Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
+hosted verification and native releases remain separate.
 [Insights feature and review](docs/planning/FRONTEND_V0_7_0_REVIEW.md).
 
 Frontend **v0.6.3+10** replaces the desktop insight tile with fresh transparent
