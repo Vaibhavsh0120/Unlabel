@@ -1,0 +1,210 @@
+{
+  "format_version": "1",
+  "component": "frontend",
+  "version": "0.7.0",
+  "build_number": "11",
+  "review_period": "2026-10-09 to 2026-10-10",
+  "source_base": "afccb9c",
+  "build": "Production lib/main.dart release web, plus separate real-shell developer preview",
+  "articles": 20,
+  "daily_selection": {
+    "count": 4,
+    "different_topics": 4,
+    "local_date_seed": true,
+    "automatic_midnight_test": true,
+    "resume_refresh": true,
+    "vm_javascript_identical_dates": 3653,
+    "determinism_output_sha256": "5055dd356899940718cd7ec43e884bb1132e31474829450568a54a01c7934cd1"
+  },
+  "artwork": {
+    "directory": "frontend/assets/artwork/insights",
+    "generator": "built-in image_gen.imagegen",
+    "transparent": true,
+    "distinct_pngs": 20,
+    "total_bytes": 3174817,
+    "dimensions": [
+      512,
+      512
+    ],
+    "manifest": "frontend/assets/artwork/insights/generation-manifest.json"
+  },
+  "symbols": {
+    "distinct_meanings": 20,
+    "new_original_svgs": 19,
+    "existing_protein_icon": "Solar dumbbell"
+  },
+  "controls": {
+    "autoplay": false,
+    "swipe": true,
+    "desktop_mouse": true,
+    "keyboard": true,
+    "screen_reader_adjustment": true,
+    "screen_reader_dot_tap": true,
+    "dot_strip_height_before_px": 56,
+    "dot_strip_height_after_px": 32,
+    "dot_target_width_px": 48,
+    "dot_target_height_px": 28
+  },
+  "verification": {
+    "flutter_tests_passed": 267,
+    "analysis": "No issues found",
+    "production_release_web": "passed",
+    "preview_release_web": "passed",
+    "layout_configurations": 24,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "text_scales": [
+      1,
+      2
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440,
+      1728
+    ],
+    "primary_review_screenshots": [
+      {
+        "state": "Insights 1440 light",
+        "path": "frontend/build/insights-review/insights-1440-light.png"
+      },
+      {
+        "state": "Insights 1728 light",
+        "path": "frontend/build/insights-review/insights-1728-light.png"
+      },
+      {
+        "state": "Insights 390 light",
+        "path": "frontend/build/insights-review/insights-390-light.png"
+      },
+      {
+        "state": "Insights 1440 dark",
+        "path": "frontend/build/insights-review/insights-1440-dark.png"
+      },
+      {
+        "state": "Insights 1728 dark",
+        "path": "frontend/build/insights-review/insights-1728-dark.png"
+      },
+      {
+        "state": "Insights 390 dark",
+        "path": "frontend/build/insights-review/insights-390-dark.png"
+      }
+    ],
+    "other_screenshots": [
+      "frontend/build/insights-review/home-1440-light.png",
+      "frontend/build/insights-review/article-1440-light.png",
+      "frontend/build/insights-review/preferences-1440-light.png"
+    ],
+    "better_design_spacing": {
+      "status": "completed",
+      "score": 100,
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "total": 0
+      },
+      "scope": "Featured card semantic DOM bounds only; both themes at 390,1440,1728; no pixel equality or whole-screen visual score.",
+      "measurements": [
+        {
+          "name": "Insights 1440 light",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 942,
+            "width": 1440
+          },
+          "featured": {
+            "height": 340,
+            "width": 820,
+            "x": 268,
+            "y": 276
+          }
+        },
+        {
+          "name": "Insights 1728 light",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 942,
+            "width": 1728
+          },
+          "featured": {
+            "height": 340,
+            "width": 1108,
+            "x": 268,
+            "y": 276
+          }
+        },
+        {
+          "name": "Insights 390 light",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 844,
+            "width": 390
+          },
+          "featured": {
+            "height": 280,
+            "width": 358.3999938964844,
+            "x": 16,
+            "y": 237
+          }
+        },
+        {
+          "name": "Insights 1440 dark",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 942,
+            "width": 1440
+          },
+          "featured": {
+            "height": 340,
+            "width": 820,
+            "x": 268,
+            "y": 276
+          }
+        },
+        {
+          "name": "Insights 1728 dark",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 942,
+            "width": 1728
+          },
+          "featured": {
+            "height": 340,
+            "width": 1108,
+            "x": 268,
+            "y": 276
+          }
+        },
+        {
+          "name": "Insights 390 dark",
+          "viewport": {
+            "devicePixelRatio": 1.0000000149011612,
+            "height": 844,
+            "width": 390
+          },
+          "featured": {
+            "height": 280,
+            "width": 358.3999938964844,
+            "x": 16,
+            "y": 237
+          }
+        }
+      ]
+    },
+    "workflow_yaml": "passed",
+    "embedded_python_blocks": 6,
+    "production_asset_hashes": "verified separately against generation manifest",
+    "backend_source": "unchanged"
+  },
+  "review_fixture": "Real UnlabelApp shell/controllers, memory-only guest storage, disabled account transport, rejecting product MockClient, optional explicit saved article IDs. Production main.dart never imports fixture.",
+  "publication": "Prepared for user-authorized main push; hosted deployment and native release proof pending.",
+  "limits": [
+    "Semantic featured-card measurement is not whole-screen or pixel equality proof.",
+    "External browser/native source dispatch and clipboard outcome are not established by in-app browser feedback; exact plugin arguments and false/throw recovery are tested.",
+    "No new physical camera/OCR/provider/backend proof."
+  ]
+}

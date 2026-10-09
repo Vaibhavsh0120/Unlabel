@@ -182,6 +182,50 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 }
 
 void main() {
+  testWidgets('Insights retains desktop shell and returns to Home', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1100);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final guest = LocalStore(preferences: _Preferences());
+    final auth = _Auth();
+    final sync = _Sync();
+    final repository = _Repository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(
+      UnlabelApp(
+        repository: repository,
+        store: guest,
+        accountController: _controller(auth, sync, guest),
+        showWelcome: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('desktop-nav-5')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+    expect(find.byKey(const Key('insight-featured')), findsOneWidget);
+    expect(find.byTooltip('Search products'), findsNothing);
+    expect(
+      find.text('Search for a product, brand or ingredient...'),
+      findsOneWidget,
+    );
+    final selected = tester.widget<Semantics>(
+      find
+          .ancestor(
+            of: find.byKey(const Key('desktop-nav-5')),
+            matching: find.byType(Semantics),
+          )
+          .first,
+    );
+    expect(selected.properties.selected, isTrue);
+    await tester.tap(find.byKey(const Key('desktop-nav-0')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
   setUp(() {
     // Widget tests retain the packages' MethodChannel implementations, rather
     // than registering the Android Pigeon implementations. Complete both

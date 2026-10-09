@@ -21,6 +21,15 @@ white, forest-green and mint design, with light as the first-use default.
 
 ## What works
 
+Frontend **v0.7.0+11** adds twenty sourced insights with distinct illustrations,
+four daily picks shared with Home, topic browsing, full reading views and
+device-local bookmarks. PC and mobile support manual swipe, dots and keyboard.
+Preference and allergen choices each have their own corresponding symbol.
+All 267 tests pass, analysis is clean and the production web build passes.
+The dot row is now compact (32 px). Source is prepared for the requested main
+push; hosted verification and native releases remain separate.
+[Insights feature and review](docs/planning/FRONTEND_V0_7_0_REVIEW.md).
+
 Frontend **v0.6.3+10** replaces the desktop insight tile with fresh transparent
 bowl-and-leaf artwork, keeping the whole illustration visible in both themes.
 240 tests pass, analysis/build are clean, and manual mobile release defaults
@@ -109,8 +118,9 @@ bounded public-read caching and limited background thumbnail requests. The Scan
 Label layout and four-tab navigation design/order remain the established ones;
 the bar sits lower and its active icon can be held and dragged.
 
-Continuous live-feed recognition/highlights, personal
-suitability and wider reviewed insight coverage remain future work. Profile
+Continuous live-feed recognition/highlights and personal
+suitability remain future work. v0.7.0 implements twenty sourced editorial
+insights with unique artwork, daily selection, readers and local bookmarks. Profile
 notifications are explicitly unavailable, and unrecorded comparison totals show
 an unknown count. Saved dietary/allergen choices are device-local reminders;
 they do not filter products or establish allergy safety. v0.2.0 introduced live

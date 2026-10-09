@@ -2,11 +2,11 @@
 abstract final class BuildInfo {
   static const version = String.fromEnvironment(
     'APP_VERSION',
-    defaultValue: '0.6.3',
+    defaultValue: '0.7.0',
   );
   static const buildNumber = String.fromEnvironment(
     'BUILD_NUMBER',
-    defaultValue: '10',
+    defaultValue: '11',
   );
   static const commitSha = String.fromEnvironment(
     'COMMIT_SHA',

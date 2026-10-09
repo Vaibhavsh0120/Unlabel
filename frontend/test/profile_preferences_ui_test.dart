@@ -94,6 +94,114 @@ void _expectPinnedActions(WidgetTester tester, Size size) {
 }
 
 void main() {
+  testWidgets('every food and allergen meaning has its own symbol', (
+    tester,
+  ) async {
+    final harness = _Harness();
+    await harness.pump(tester);
+    await harness.open(tester);
+    final foodSymbols = <String>{};
+    for (final key in [
+      'low-sugar',
+      'high-fibre',
+      'vegetarian',
+      ...DeviceProfilePreferences.extraPreferenceLabels.keys,
+    ]) {
+      final choice = find.byKey(ValueKey('food-choice-$key'));
+      final symbol = find.descendant(
+        of: choice,
+        matching: find.byType(FeatureIcon),
+      );
+      expect(symbol, findsOneWidget, reason: key);
+      foodSymbols.add(tester.widget<FeatureIcon>(symbol).name);
+    }
+    expect(foodSymbols, hasLength(8));
+    await tester.tap(_choice('Cancel'));
+    await tester.pumpAndSettle();
+    await harness.open(tester, allergensOnly: true);
+    final allergenSymbols = <String>{};
+    for (final key in DeviceProfilePreferences.allergenLabels.keys) {
+      final choice = find.byKey(ValueKey('allergen-choice-$key'));
+      final symbol = find.descendant(
+        of: choice,
+        matching: find.byType(FeatureIcon),
+      );
+      expect(symbol, findsOneWidget, reason: key);
+      allergenSymbols.add(tester.widget<FeatureIcon>(symbol).name);
+    }
+    expect(allergenSymbols, hasLength(12));
+    expect({...foodSymbols, ...allergenSymbols}, hasLength(20));
+    expect(tester.takeException(), isNull);
+    expect(harness.requests, 0);
+  });
+
+  testWidgets('selected summaries retain the matching choice symbols', (
+    tester,
+  ) async {
+    final harness = _Harness();
+    await DeviceProfilePreferencesStore(harness.preferences).write(
+      const DeviceProfilePreferences(
+        lowSugar: true,
+        highFibre: true,
+        allergens: {'milk', 'gluten'},
+      ),
+    );
+    await harness.pump(tester);
+    String summarySymbol(String label) {
+      final chip = find.ancestor(
+        of: find.text(label),
+        matching: find.byType(ActionChip),
+      );
+      return tester
+          .widget<FeatureIcon>(
+            find.descendant(of: chip, matching: find.byType(FeatureIcon)),
+          )
+          .name;
+    }
+
+    final symbols = {
+      for (final label in [
+        'Low sugar',
+        'High fibre',
+        'Milk reminder',
+        'Gluten reminder',
+      ])
+        label: summarySymbol(label),
+    };
+    expect(symbols.values.toSet(), hasLength(4));
+    await harness.open(tester);
+    for (final label in ['Low sugar', 'High fibre']) {
+      final choice = find
+          .ancestor(of: _choice(label), matching: find.byType(InkWell))
+          .first;
+      expect(
+        tester
+            .widget<FeatureIcon>(
+              find.descendant(of: choice, matching: find.byType(FeatureIcon)),
+            )
+            .name,
+        symbols[label],
+      );
+    }
+    await tester.tap(_choice('Cancel'));
+    await tester.pumpAndSettle();
+    await harness.open(tester, allergensOnly: true);
+    for (final label in ['Milk', 'Gluten']) {
+      final choice = find
+          .ancestor(of: _choice(label), matching: find.byType(InkWell))
+          .first;
+      expect(
+        tester
+            .widget<FeatureIcon>(
+              find.descendant(of: choice, matching: find.byType(FeatureIcon)),
+            )
+            .name,
+        symbols['$label reminder'],
+      );
+    }
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('empty profile summaries have no suggested or selected chips', (
     tester,
   ) async {
@@ -366,7 +474,7 @@ void main() {
           matching: find.byType(FeatureIcon),
         ),
       );
-      expect(icon.name, 'leaf');
+      expect(icon.name, 'food-low-sugar');
     },
   );
 

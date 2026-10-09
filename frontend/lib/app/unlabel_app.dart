@@ -17,6 +17,8 @@ import '../features/scanner/presentation/compare_page.dart';
 import '../features/scanner/presentation/home_page.dart';
 import '../features/scanner/presentation/desktop_navigation.dart';
 import '../features/scanner/presentation/insights_page.dart';
+import '../features/scanner/domain/insight_controller.dart';
+import '../features/scanner/domain/insight_catalogue.dart';
 import '../core/capture/automatic_label_reader.dart';
 import '../features/scanner/presentation/extracted_product_page.dart';
 import '../features/scanner/presentation/researched_product_page.dart';
@@ -238,10 +240,13 @@ class _ClientHome extends StatefulWidget {
   State<_ClientHome> createState() => _ClientHomeState();
 }
 
-class _ClientHomeState extends State<_ClientHome> {
+class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
   int _tab = 0, _refreshKey = 0;
   bool _searching = false;
   final _searchFocus = FocusNode();
+  late final _insightController = InsightController(
+    preferences: widget.store.preferences,
+  );
   // This state is keyed by verified account UID/guest. Confirmation envelopes
   // never leave memory, and disposal on sign-out/account changes drops them.
   final _comparisonReports = <ProductReport>[];
@@ -269,7 +274,21 @@ class _ClientHomeState extends State<_ClientHome> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    unawaited(_insightController.start());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _insightController.refreshDay();
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _insightController.dispose();
     _searchFocus.dispose();
     super.dispose();
   }
@@ -544,9 +563,10 @@ class _ClientHomeState extends State<_ClientHome> {
     );
   }
 
-  void _insights() =>
-      Navigator.of(context)
-          .push<void>(MaterialPageRoute(builder: (_) => const InsightsPage()));
+  void _insights() {
+    _insightController.setTopic(InsightTopic.all);
+    _selectTab(5);
+  }
 
   void _notifications() => showDialog<void>(
     context: context,
@@ -570,9 +590,13 @@ class _ClientHomeState extends State<_ClientHome> {
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
     final desktop = MediaQuery.sizeOf(context).width >= 1200 && !largeText;
     return PopScope(
-      canPop: !_searching,
+      canPop: !_searching && _tab != 5,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop && _searching) _closeSearch();
+        if (!didPop && _searching) {
+          _closeSearch();
+        } else if (!didPop && _tab == 5) {
+          _selectTab(0);
+        }
       },
       child: Stack(
         children: [
@@ -599,6 +623,9 @@ class _ClientHomeState extends State<_ClientHome> {
                         : _tab == 1
                         ? null
                         : AppBar(
+                            leading: _tab == 5
+                                ? BackButton(onPressed: () => _selectTab(0))
+                                : null,
                             toolbarHeight: largeText ? 112 : 64,
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,6 +694,8 @@ class _ClientHomeState extends State<_ClientHome> {
                         onOpenReport: _openReport,
                         onLibrary: _library,
                         desktop: desktop,
+                        insightController: _insightController,
+                        onInsights: _insights,
                       ),
                       1 => ScanLandingPage(
                         reader: AutomaticLabelReader(widget.repository),
@@ -679,6 +708,10 @@ class _ClientHomeState extends State<_ClientHome> {
                         onOpenReport: _openReport,
                         sessionReports: List.unmodifiable(_comparisonReports),
                       ),
+                      5 => InsightsPage(
+                        controller: _insightController,
+                        embedded: true,
+                      ),
                       _ => LibraryPage(
                         saved: true,
                         store: widget.store,
@@ -689,7 +722,9 @@ class _ClientHomeState extends State<_ClientHome> {
                       ),
                     },
                     bottomNavigationBar:
-                        desktop || MediaQuery.viewInsetsOf(context).bottom > 0
+                        desktop ||
+                            _tab == 5 ||
+                            MediaQuery.viewInsetsOf(context).bottom > 0
                         ? null
                         : MobileNavigation(
                             selectedIndex: _tab,

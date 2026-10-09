@@ -1,5 +1,24 @@
 # Clone, restore, run
 
+Frontend v0.7.0+11 includes a bundled twenty-article Insights collection and
+four stable daily picks. No backend/feed service or key is needed to read or
+bookmark insights. Full local verification: 267 tests, clean analysis and a
+production release web build. [Feature contract](../architecture/INSIGHTS.md) ·
+[Review](FRONTEND_V0_7_0_REVIEW.md).
+
+For isolated visual review from the frontend folder, build the real app shell
+with the developer-only entry point, then serve its output:
+
+~~~powershell
+flutter build web --release --target tool/insights_preview.dart --output build/insights-preview
+python -m http.server 7360 --bind 127.0.0.1 --directory build/insights-preview
+~~~
+
+Open http://127.0.0.1:7360/ and use Home's See all or the desktop Insights menu.
+Optional query parameters appearance=dark, scale=2 and saved=1 select explicit
+review conditions. The preview uses memory-only guest data and rejects product
+and account network requests. Production main.dart never imports it.
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,
 125 retailer and 69 OFF). It preserves dated sources, unknown identities and

@@ -1,5 +1,19 @@
 # Unlabel interface contract
 
+9 October Insights references are implemented in frontend v0.7.0+11: one featured
+daily article, three distinct illustrated cards, topic filters, full articles and
+device-local saved insights. Desktop retains the sidebar/top bar and a saved/
+quick-topic rail; phones place saved insights below the feed. Today's four picks
+are shared with Home and refresh by local calendar date. Both Home carousels use
+manual swipe, selectable dots and keyboard/screen-reader adjustment, without
+autoplay. Every article owns its artwork; no generic bowl repeats across facts.
+All eight food preferences and twelve allergen reminders use different matching
+symbols in their editors and selected summaries. Large text stacks the layout.
+The [v0.7 review](docs/planning/FRONTEND_V0_7_0_REVIEW.md) records local checks and
+the independent publication gate. The reference composition takes precedence
+over tool heuristics that would remove its requested topic filters. The existing
+Flutter framework, forest/mint palette and control icons remain the contract.
+
 The latest 8 October references define desktop Home and mobile/PC single-product
 results. Published frontend v0.6.0+7 implements this direction; screenshot
 comparison was reviewed at 390/1440/1728 px, and its READY deployment passed

@@ -1,0 +1,554 @@
+{
+  "version": 1,
+  "generator": "built-in image_gen.imagegen",
+  "generated_date": "2026-10-09",
+  "transparent_background": true,
+  "references": [
+    "User supplied desktop Insights reference",
+    "User supplied mobile Insights reference"
+  ],
+  "reference_role": "Style, material and botanical art direction only; UI and article text remain separate live elements.",
+  "processing": "The entire original generated RGBA canvas was resampled with Lanczos to fit 460x460 pixels and centered on a 512x512 transparent canvas. Generated transparency was retained through RGBA resampling; there was no silhouette crop, recoloring, background removal, alpha thresholding or object edit.",
+  "assets": [
+    {
+      "id": "added-sugar",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small warm wooden bowl filled with distinct white textured sugar cubes, one cube resting just in front of the bowl, with a few vibrant green leaves behind. This is the featured artwork: let the bowl and cube arrangement feel rich and dimensional, like the sugar-bowl image in the reference.",
+      "generated_source": "exec-54044164-6c5f-4891-bf4a-f33f6fdb45a8.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "17c160bc1828d5b261183182bd694fc8992e024f83a50906c3a6c2f648440e8a",
+      "asset": "added-sugar.png",
+      "sha256": "e7e7181473b384e8283fa8e3e31f134779afeefdbc701a06128cad0ae9eef0a5",
+      "bytes": 126123,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        119,
+        477,
+        395
+      ]
+    },
+    {
+      "id": "total-sugar",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small clear bottle of plain white milk beside a ripe red apple cut to reveal its pale inside and two blueberries, with a fresh green leaf. A compact still life illustrating sugar can be present naturally in different foods.",
+      "generated_source": "exec-1982fb4b-26e5-4acd-8cf5-e8048b9c6005.png",
+      "generated_dimensions": [
+        1223,
+        1286
+      ],
+      "generated_sha256": "9f96210edd5bc6a22c4cbcde3828164ecc3bdf18c47d6fcc464d21dfb98a4077",
+      "asset": "total-sugar.png",
+      "sha256": "eb9e6471a4079d5f535a0ed84707b24edaacadc0f7503bccdfe57dbb70814e22",
+      "bytes": 203664,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        37,
+        45,
+        470,
+        486
+      ]
+    },
+    {
+      "id": "sugar-names",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small clear honey jar with a cream lid and a wooden honey dipper resting diagonally beside it, a golden amber droplet on the dipper and green leaves. Keep the composition elegant, clean and entirely contained.",
+      "generated_source": "exec-6ae08364-98cd-4f55-8f0d-cd1085ff0e8f.png",
+      "generated_dimensions": [
+        1312,
+        1199
+      ],
+      "generated_sha256": "67ada3e19772bee7aeb96aa816e20a997a9e605e5495efa890b1a5bd89079059",
+      "asset": "sugar-names.png",
+      "sha256": "383d1593504c11d11cdab7c9f630cdd8c8141dc10d0e3d4ea60e4559e92c5f5c",
+      "bytes": 186683,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        42,
+        71,
+        477,
+        460
+      ]
+    },
+    {
+      "id": "sugary-drinks",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A simple clear short drinking glass filled with amber juice or soda, beside three white sugar cubes and a small citrus wedge; one green leaf behind. No straws or spilled liquid.",
+      "generated_source": "exec-f12d511d-5596-49aa-b415-915bc4895758.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "4686b4e86ae05ddfd5a36a47a353847947414754fa971548c3ebcd91d9bd8a58",
+      "asset": "sugary-drinks.png",
+      "sha256": "b5a70623747d67f8c5233423250ebf70a1596aa732ca77be535fd7875f9e1d65",
+      "bytes": 139852,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        36,
+        111,
+        464,
+        376
+      ]
+    },
+    {
+      "id": "fibre-foods",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small attractive pile of golden rolled oats with two slender oat grain kernels and a fresh green botanical leaf, shaped as a neat complete vignette. Do not include a large bowl; the oats should be the main visible subject.",
+      "generated_source": "exec-8d6a0b51-71c0-4b64-a5d9-80dcc1921926.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "d4fa3cf0a0365e12662b04da2470f6304d62d6dc1c0fdfdcb102ec8d04804ca5",
+      "asset": "fibre-foods.png",
+      "sha256": "6355c2608a0e1c7a788e809a9283a3bb7a97698bf9e045c83761ebefb2bc2af9",
+      "bytes": 167429,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        107,
+        486,
+        406
+      ]
+    },
+    {
+      "id": "whole-grains",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: Two thick slices of rustic wholegrain bread with an intact miniature bread loaf, visible grain seeds and two wheat ears with a small green leaf. Warm golden bread texture, soft dimensional composition.",
+      "generated_source": "exec-ae79fb8f-5c42-43b7-b5d9-a65ae4b2b8c8.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "41fd8e973ddc50bf18b238306f17cfea16e85bf4a6771bb9af1a3698a370fd31",
+      "asset": "whole-grains.png",
+      "sha256": "aa69a4ee3a96333f80a838e9deabed839f9bf087c7d2bfc99bc571cc9d28d345",
+      "bytes": 225833,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        50,
+        126,
+        474,
+        398
+      ]
+    },
+    {
+      "id": "fibre-labels",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: An unbranded cream cereal packet angled slightly toward viewer with a plain outlined blank label panel and three simple forest green horizontal bars, a spoonful of rolled oats and two leaves. No words, letters or numerals.",
+      "generated_source": "exec-b227f3e1-97b1-4a1f-9604-1c86f4e808ae.png",
+      "generated_dimensions": [
+        1312,
+        1199
+      ],
+      "generated_sha256": "d7c2d730757819b21b2424d63b9f187facc0b3d92597dd907a8feb24dc151d34",
+      "asset": "fibre-labels.png",
+      "sha256": "ea3ab1e4b3ff030b982b8d489abd790c48ac166bad5598149aa3969407486354",
+      "bytes": 197518,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        41,
+        46,
+        467,
+        452
+      ]
+    },
+    {
+      "id": "protein-basics",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small off-white ceramic bowl containing distinct cooked chickpeas and lentils, with a few dry red kidney beans beside the bowl and a green leaf. Believable warm food textures, calm balanced arrangement.",
+      "generated_source": "exec-547e216e-43ac-4be2-9a2b-c3ac17f67b7a.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "3fff271a33bfd77a6abfc2d8e9246586d6f324ab466583a196e1a903d0157555",
+      "asset": "protein-basics.png",
+      "sha256": "e93079ed84dd2bcb319f94a3e7d5d549a736eace795d3a23325dae82c2aef975",
+      "bytes": 137102,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        104,
+        484,
+        389
+      ]
+    },
+    {
+      "id": "protein-portions",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small cream ceramic bowl of chickpeas beside one whole egg and a little open cup of plain yogurt, with two green leaves. The egg, legumes, and yogurt are distinct and easy to recognize in a compact balanced arrangement.",
+      "generated_source": "exec-262b8294-3da4-4f7d-9f40-819450f20924.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "43e9fc8b9493b9069e6d19be9dc72503efdef85c2121dde0e90bf2993c9430a6",
+      "asset": "protein-portions.png",
+      "sha256": "b26561e64909725f71ac33d85d02f5ed1d47878fca45ee63d0502b6bc0182e87",
+      "bytes": 141961,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        110,
+        480,
+        404
+      ]
+    },
+    {
+      "id": "claim-check",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A thick cream paper document with a folded corner and three clean dark green horizontal lines, alongside a small mint and forest green shield with a raised white check mark, complemented by two leaves. Soft realistic 3D paper and enamel, no words or letters.",
+      "generated_source": "exec-b906b71f-e87b-4d32-a913-c2ba403b0a77.png",
+      "generated_dimensions": [
+        1374,
+        1145
+      ],
+      "generated_sha256": "90e46b3f0e0e088b70ebe162f315be4fefed16de544ef4e4c3322fb74ca8769c",
+      "asset": "claim-check.png",
+      "sha256": "b1ea4ce923fe3ae0ba70be695dbc7d944b1d08b46a9a70fe81b796457a4aa17f",
+      "bytes": 156531,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        100,
+        474,
+        444
+      ]
+    },
+    {
+      "id": "no-added-sugar",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: An unbranded cream and pale green fruit snack packet with a simple apple illustration but no words, beside a fresh sliced red apple and two white sugar cubes spaced to the side. A small green leaf ties the objects together. This is illustrative label-reading content, not a certification badge.",
+      "generated_source": "exec-7fb37079-7b44-4025-8a14-90949a022f1d.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "d263446dccb9095ab9e9d86058b49bdf80f2f3fa30eee0f9f109e8a18c172793",
+      "asset": "no-added-sugar.png",
+      "sha256": "b93b33c9d1ac4a038a0896d8252de728b0e096b4cbabd7763e19d995843f6d9d",
+      "bytes": 127868,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        51,
+        112,
+        462,
+        400
+      ]
+    },
+    {
+      "id": "front-back-labels",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: Two small upright unbranded food packets, one showing a plain leafy front and one showing a cream back with simple forest green lines and tiny grid squares suggesting a nutrition table. No words, letters or numerals. Make both packet silhouettes clean and distinct.",
+      "generated_source": "exec-30f60b64-77aa-43ac-99e9-a461d3b0186f.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "c96ed5f6d0fc80681fc1a684f6814704a746ddfe03f28b4abc034ebcc8887fec",
+      "asset": "front-back-labels.png",
+      "sha256": "7568bbc1f6a15ee604ce1531e34334a115313ce77954697bbd8671a2394d5859",
+      "bytes": 141566,
+      "dimensions": [
+        512,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        105,
+        465,
+        403
+      ]
+    },
+    {
+      "id": "ingredient-order",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A cream paper ingredient list sheet with a slightly curled lower corner and four descending length dark green horizontal bars, beside a simple folded blank cream food wrapper and two fresh green leaves. No readable text, letters or numerals. The sheet should be the main recognizable object.",
+      "generated_source": "exec-c58b9798-e3d6-499c-8fa5-ebee2e7be372.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "01f539931ae56e994dfa54649d3f1df83e361bfebaa3d25ef6bf2d8d853a8c93",
+      "asset": "ingredient-order.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "f6969261f87db927061ed5e15a60daa96727bc035b354b5d92d855f04905133a",
+      "bytes": 124485,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        107,
+        461,
+        401
+      ]
+    },
+    {
+      "id": "additive-functions",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small clear jar containing white emulsion dressing beside a tiny clear amber oil bottle and a miniature stainless steel whisk with an off-white handle, with two small green leaves. This illustrates mixing ingredients and texture functions without any certification symbols.",
+      "generated_source": "exec-2befef56-54b2-4b10-9a6f-e446d20cbd32.png",
+      "generated_dimensions": [
+        1374,
+        1145
+      ],
+      "generated_sha256": "9174e7883523f1ca7829227301e2d8d081b0f62289b50a06c53e56bfc6ebaf4e",
+      "asset": "additive-functions.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "2580e1bb86e957d502511851d2370c11e9095113a635a09de5e1b1d8340738f7",
+      "bytes": 183503,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        32,
+        96,
+        478,
+        433
+      ]
+    },
+    {
+      "id": "allergen-statements",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: An unbranded cream paper nut packet with a green outlined blank label and visible peanuts and almonds neatly placed beside it, with one green leaf. No shield, check mark, safety symbol, word, letter or numeral.",
+      "generated_source": "exec-4af459de-f37d-4c21-8769-0de37e0f2377.png",
+      "generated_dimensions": [
+        1312,
+        1199
+      ],
+      "generated_sha256": "5f053cd69fd617145efe97802b10aed1b4a4ba688eb1e7320f7355dbac9525ee",
+      "asset": "allergen-statements.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "5a0e57c5c58e308cec30d7a112e5ccbe53fc923b988bf7e1f4173b9f96de19a0",
+      "bytes": 199115,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        52,
+        51,
+        466,
+        460
+      ]
+    },
+    {
+      "id": "serving-size",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: One small off-white ceramic bowl holding a modest portion of golden cereal flakes, beside a tiny cream measuring scoop with no printed markings and a fresh green leaf. Show restrained realistic food quantities in a clean compact still life.",
+      "generated_source": "exec-089b006d-a072-46fe-b917-687da25b78fa.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "ac64b52ccadbf274af1df59dd7264f94ecd015843a3ccc80f2dea4a52626f8da",
+      "asset": "serving-size.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "5d8f9a856eca1a88b15f73be56014d6f299451ae5b4b1b9aa36025a3139276e8",
+      "bytes": 117172,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        56,
+        124,
+        444,
+        406
+      ]
+    },
+    {
+      "id": "same-amount",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: Two identical small off-white ceramic bowls with equal-looking portions of breakfast cereal, alongside a miniature elegant analog kitchen balance scale in muted forest green and cream; no words or numbers. Balanced symmetric compact vignette with two leaves, completely contained.",
+      "generated_source": "exec-c1918ac2-61d2-437a-800f-e7410fa742f0.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "d035d7ccbae867203fa65e31b0d853070c9288f7d4d369531ac10e3f398c6e94",
+      "asset": "same-amount.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "9764dbf5ca35e83e5963ddec2c214177ee66b3455cb347ba4b2e5f335f25f862",
+      "bytes": 132126,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        107,
+        466,
+        409
+      ]
+    },
+    {
+      "id": "sodium-salt",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A small clear glass salt shaker with a brushed silver cap, beside a neat wooden teaspoon holding white salt crystals and two green leaves. No spilled salt cloud, no logo or text. Make the shaker material bright and believable.",
+      "generated_source": "exec-ef107781-aead-4cae-b99b-f3ccb9e1cd6a.png",
+      "generated_dimensions": [
+        1374,
+        1145
+      ],
+      "generated_sha256": "0dc1ec0467d0ad105f62c8ecf1d56cd9bf8ef8b39e860967c9c84f30da833690",
+      "asset": "sodium-salt.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "18bd0c2a4d0e8a487cbfabdb98b9702111b9020981cac0e1c2d3f36d68e87763",
+      "bytes": 165050,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        40,
+        77,
+        482,
+        427
+      ]
+    },
+    {
+      "id": "snack-portions",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A round off-white ceramic yogurt bowl seen at a pleasing three-quarter angle, topped with two strawberry slices, a few whole dark blueberries, golden oat granola and a small green mint leaf. The bowl is fully visible with tidy contents and no spoon.",
+      "generated_source": "exec-8bb164e4-156b-4855-be4b-970ccc0f4d99.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "4b955462f0f7cacc177d96ede5f9c74f7241b4a0c7aff751c90b2b201bcaa417",
+      "asset": "snack-portions.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "62f88e540ed1550331bce43ae9a17f6701743ed69387984f26fc7d4549cff1cf",
+      "bytes": 131619,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        102,
+        117,
+        464,
+        389
+      ]
+    },
+    {
+      "id": "everyday-swaps",
+      "prompt": "Use case: stylized-concept. Asset type: transparent editorial illustration for a food label education insight card in the Unlabel app. Primary request: Generate ONE polished realistic soft 3D food/object illustration matching the supplied green botanical food editorial references in feel, not a UI screenshot. Style: premium gentle 3D product rendering with real subtle material textures, soft studio daylight, crisp clean edges, inviting believable objects. Color palette: natural food colors, creamy off-white pottery, forest green and fresh mint leaves. Composition: single complete centered vignette, front three-quarter view, all objects including shadows fully inside canvas with at least 10% clear margin on every side. Two or three small green botanical leaves can complement subject without obscuring it. Transparent background with genuine alpha; no opaque mint blob, no environment, no hard ground plane, no border, no text, no numerals, no logo, no watermark. Soft minimal contact shadow only. The object silhouette must remain completely visible and suitable for contain fit in mobile and desktop cards. Subject: A ripe avocado half with a smooth brown pit next to a small off-white ceramic bowl of green avocado dip with a soft swirl, two little oat crackers beside it and a few fresh green leaves behind. Food editorial premium soft realistic 3D styling, warm appetizing textures.",
+      "generated_source": "exec-8c6abc87-b571-46af-81e4-022dd40a33a2.png",
+      "generated_dimensions": [
+        1536,
+        1024
+      ],
+      "generated_sha256": "a33d70936faa1dfe7917a544a97db723103302fe39d5c608ad31b3bf1af867b1",
+      "asset": "everyday-swaps.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "e2bcdada67722d3054422f965ebce8cd5d3f25e49b1a45499b99e699c23e403c",
+      "bytes": 169617,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        26,
+        117,
+        480,
+        402
+      ]
+    }
+  ]
+}

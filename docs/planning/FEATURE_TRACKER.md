@@ -1,6 +1,16 @@
 # Feature and integration tracker
 
-Current frontend correction: **v0.6.3+10** replaces the desktop insight tile
+Current implementation: **frontend v0.7.0+11**, twenty sourced insights with
+distinct illustrations, stable daily four, topic/all browsing, full articles and
+device-local bookmarks. Home shares the daily set; PC/mobile use manual swipe,
+dots and keyboard. All preference/allergen choices have distinct corresponding
+symbols. All 267 tests pass, analysis is clean and the production release web
+build passes. Renders at 390/1440/1728 are reviewed in both themes. The dot strip
+is compact (32 px). Source is prepared for the authorized main push; hosted
+verification remains pending. [Feature contract](../architecture/INSIGHTS.md) ·
+[Review](FRONTEND_V0_7_0_REVIEW.md).
+
+Preceding frontend correction: **v0.6.3+10** replaces the desktop insight tile
 with fresh transparent artwork, contain fit and inner padding on the card's own
 light/dark background. Compact phone art and enlarged-text stacking remain.
 240 tests pass, analysis/build are clean and manual release defaults match
@@ -111,13 +121,13 @@ sample products and health verdicts are illustrative.
 | F10 | Personal suitability / Results | Planned | Device-local dietary/allergen reminders implemented; suitability/filtering remains future and does not infer allergy safety |
 | F11 | Comparison / Compare | v0.8.0 sourced endpoint pushed and hosted-verified; v0.9.0 preserves the route | v0.4.0 integrates exact-source table selection and server comparison into existing paired cards; no universal healthier verdict |
 | F12 | Sugar visualization / Results | Ready: released v0.5.0 | Approximate 4 g/cube total-sugar view with original basis implemented; added sugar stays distinct |
-| F13 | Reviewed insights / Home | Planned | Published educational list/detail destinations with source/applicability; broader reviewed coverage remains future; no fabricated health advice |
+| F13 | Reviewed insights / Home | Implemented locally in v0.7.0 | 20 sourced articles and unique artwork, stable daily four shared with Home, full topic/all browsing, source-linked readers, local bookmarks and recovery; hosted verification pending; no product-safety verdict |
 | F14 | Front/back and gallery / Scan | Optional authenticated photo reading implemented in v0.11; local v0.12 stages only private structured proposals | Local v0.6 automatically reads front/back/barcode capture/gallery photos with transfer consent and local fallback; no mandatory typing. Measured physical-device accuracy remains open |
 | F15 | OCR/live highlights / Scan | Bounded machine facts/normalized regions; confirmed rows use separate admission | Local v0.6 paints actual post-capture regions and decoder anchors, with View results action; continuous live highlights and real-device accuracy remain future |
 | F16 | Saved products / Home | Client-owned; private sync published in v0.7.0 | Published bounded bookmarks/reopening/removal; guests local, signed-in UID-specific private sync; hosted v0.3.0 public report save and Saved count verified |
 | F17 | History / Home | Client-owned guest local; optional private sync published | Published bounded dated history/clearing, guest/account isolation and optional private sync; hosted v0.3.0 Profile Scans count verified |
 | F18 | Profile/preferences / Home | Client-owned private choices | Optional password sign-in/create/reset, display name/private sync, explicit conflict choices and sign out implemented; guest mode fully usable; v0.3.0 reference Profile uses real controls/counts and explicitly unavailable notifications/comparison totals |
-| F19 | Responsive/light/dark / All | Client-owned | Local v0.6 adds reference desktop sidebar/Home and stacked/two-column product results. Final screenshot comparison at 390/1440/1728 is in progress; earlier Welcome/Profile checks retain historical scope |
+| F19 | Responsive/light/dark / All | Client-owned | v0.6 adds reference sidebar/Home and responsive results; preceding reviews retain their scope. v0.7 Insights has reviewed 390/1440/1728 light/dark renders and 24 feed text/theme/width configurations without layout exceptions; native proof remains separate |
 | F20 | Attribution/age/version / All | Ready | Published metadata/source/date/evidence/build information and working source details; exact hosted v0.3.0 version/build/assets verified |
 | C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
 | C02 | Optional scanner account/private sync | v0.7.0 pushed and hosted-verified; 931 passed/5 skips and 18 hosted synthetic checks; independently published | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; 135 tests, clean analyzer, hosted READY web deployment and source release published |

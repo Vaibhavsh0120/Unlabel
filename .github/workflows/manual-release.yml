@@ -11,12 +11,12 @@ on:
       release_version:
         description: Product version (overrides pubspec version for both artifacts)
         required: true
-        default: '0.6.3'
+        default: '0.7.0'
         type: string
       build_number:
         description: Positive mobile build number; increase for each new build
         required: true
-        default: '10'
+        default: '11'
         type: string
       backend_url:
         description: Public HTTPS backend origin used by the connected client

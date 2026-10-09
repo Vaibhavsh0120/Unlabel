@@ -1,6 +1,19 @@
 # Unlabel workspace instructions
 
-- Current frontend v0.6.3+10 correction: fresh transparent 3:1 insight artwork,
+- Frontend v0.7.0+11 is locally verified on main: complete reviewed
+  insights collection (20 articles, unique illustrations, stable daily four),
+  topic/all browsing, full source-linked reader and device-local bookmarks with
+  protected storage/recovery. Home and Insights share the daily controller;
+  desktop/mobile swipe, selectable dots and keyboard remain manual. Eight food
+  preferences and twelve allergen reminders have distinct corresponding symbols
+  in editors/summaries. Reference desktop shell/rail and phone feed apply.
+  See docs/architecture/INSIGHTS.md and docs/planning/FRONTEND_V0_7_0_REVIEW.md.
+  All 267 tests pass, analysis is clean and the production release web build
+  passes. Light/dark 390/1440/1728 renders are reviewed; the dot strip is 32 px.
+  Source is prepared for the user-authorized main push; hosted proof is pending.
+  Backend unchanged.
+
+- Preceding frontend v0.6.3+10 correction: fresh transparent 3:1 insight artwork,
   contain fit and padded complete silhouette on the card's own theme surface.
   Preserve compact phone artwork, separate live copy, manual swipe and large-text
   stacking. Local tests/build/render proof and independent push status belong to

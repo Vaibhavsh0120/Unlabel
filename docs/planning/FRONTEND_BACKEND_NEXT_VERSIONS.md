@@ -1,6 +1,16 @@
 # Reference screens and the next releases
 
-Current frontend correction: **v0.6.3+10** replaces the desktop insight tile
+Current implementation: **frontend v0.7.0+11**, twenty sourced insights with
+distinct illustrations, stable daily four, topic/all browsing, full articles and
+device-local bookmarks. Home shares the daily set; PC/mobile use manual swipe,
+dots and keyboard. All preference/allergen choices have distinct corresponding
+symbols. All 267 tests pass, analysis is clean and the production release web
+build passes. Renders at 390/1440/1728 are reviewed in both themes. The dot strip
+is compact (32 px). Source is prepared for the authorized main push; hosted
+verification remains pending. [Feature contract](../architecture/INSIGHTS.md) ·
+[Review](FRONTEND_V0_7_0_REVIEW.md).
+
+Preceding frontend correction: **v0.6.3+10** replaces the desktop insight tile
 with fresh transparent artwork, contain fit and inner padding on the card's own
 light/dark background. Compact phone art and enlarged-text stacking remain.
 240 tests pass, analysis/build are clean and manual release defaults match

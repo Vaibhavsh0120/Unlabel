@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/models/app_failure.dart';
 import '../../../core/models/product_report.dart';
 import '../../../core/storage/local_store.dart';
+import '../domain/insight_catalogue.dart';
+import '../domain/insight_controller.dart';
 import 'insights_page.dart';
 import 'library_page.dart';
 import 'sources_page.dart';
@@ -18,6 +22,8 @@ class HomePage extends StatefulWidget {
     required this.onLibrary,
     required this.refreshKey,
     this.onCompare,
+    this.onInsights,
+    this.insightController,
     this.desktop = false,
     super.key,
   });
@@ -29,31 +35,62 @@ class HomePage extends StatefulWidget {
   final ValueChanged<int> onLibrary;
   final int refreshKey;
   final VoidCallback? onCompare;
+  final VoidCallback? onInsights;
+  final InsightController? insightController;
   final bool desktop;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<LocalReport> _recent = [];
   bool _loading = true;
   String? _error;
   int _loadGeneration = 0;
+  late InsightController _insights;
+  late bool _ownsInsights;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _attachInsights();
     _refresh();
+  }
+
+  void _attachInsights() {
+    _ownsInsights = widget.insightController == null;
+    _insights =
+        widget.insightController ??
+        InsightController(preferences: widget.store.preferences);
+    unawaited(_insights.start());
   }
 
   @override
   void didUpdateWidget(HomePage oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.insightController != widget.insightController ||
+        (_ownsInsights && oldWidget.store != widget.store)) {
+      if (_ownsInsights) _insights.dispose();
+      _attachInsights();
+    }
     if (oldWidget.refreshKey != widget.refreshKey ||
         oldWidget.store != widget.store) {
       _refresh();
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _insights.refreshDay();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (_ownsInsights) _insights.dispose();
+    super.dispose();
   }
 
   Future<void> _refresh() async {
@@ -81,9 +118,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showInsights() =>
-      Navigator.of(context)
-          .push<void>(MaterialPageRoute(builder: (_) => const InsightsPage()));
+  void _showInsights() {
+    if (widget.onInsights != null) {
+      widget.onInsights!();
+      return;
+    }
+    Navigator.of(context).push<void>(
+      MaterialPageRoute(builder: (_) => InsightsPage(controller: _insights)),
+    );
+  }
 
   void _showSources() =>
       Navigator.of(context)
@@ -199,7 +242,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      _InsightCarousel(desktop: widget.desktop),
+      _InsightCarousel(controller: _insights, desktop: widget.desktop),
       SectionTitle(
         'Recent scans',
         compact: widget.desktop,
@@ -565,48 +608,9 @@ class _ActionCard extends StatelessWidget {
   }
 }
 
-class _LabelTip {
-  const _LabelTip({
-    required this.title,
-    required this.summary,
-    required this.detail,
-    required this.asset,
-  });
-
-  final String title, summary, detail, asset;
-}
-
-// These explanations are the same reviewed label-reading tips in InsightsPage.
-// Decorative pictures illustrate the app, never a reported product or score.
-const _labelTips = [
-  _LabelTip(
-    title: 'Start with the serving size',
-    summary: 'Check the printed amount before comparing nutrition numbers.',
-    detail: 'The table may describe 100 g, 100 ml or one serving. Read its printed basis before using a number.',
-    asset: 'assets/artwork/breakfast-leaf.png',
-  ),
-  _LabelTip(
-    title: 'Compare the same amount',
-    summary: 'Use the same amount when comparing two products.',
-    detail: 'Use the same basis for both products. A smaller serving can make a number look lower.',
-    asset: 'assets/artwork/label-leaf.png',
-  ),
-  _LabelTip(
-    title: 'Missing does not mean zero',
-    summary: 'Missing label information stays unknown.',
-    detail: 'When a nutrient or ingredient is missing, Unlabel keeps it unknown. Check your package for the current details.',
-    asset: 'assets/artwork/botanical-corner.png',
-  ),
-  _LabelTip(
-    title: 'Total sugar and added sugar differ',
-    summary: 'Read total sugar and added sugar as separate rows.',
-    detail: 'Total sugar can include naturally occurring sugar and added sugar. Read each declared row separately.',
-    asset: 'assets/artwork/sugar-cubes.png',
-  ),
-];
-
 class _InsightCarousel extends StatefulWidget {
-  const _InsightCarousel({this.desktop = false});
+  const _InsightCarousel({required this.controller, this.desktop = false});
+  final InsightController controller;
   final bool desktop;
 
   @override
@@ -618,9 +622,40 @@ class _InsightCarouselState extends State<_InsightCarousel> {
   int _selected = 0;
   double _dragDistance = 0;
   int _slideDirection = 1;
+  late String _dailyIdentity;
+
+  @override
+  void initState() {
+    super.initState();
+    _dailyIdentity = _identity;
+    widget.controller.addListener(_dailyChanged);
+  }
+
+  String get _identity =>
+      widget.controller.daily.map((article) => article.id).join('|');
+
+  void _dailyChanged() {
+    if (_dailyIdentity == _identity) return;
+    setState(() {
+      _dailyIdentity = _identity;
+      _selected = 0;
+    });
+  }
+
+  @override
+  void didUpdateWidget(_InsightCarousel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_dailyChanged);
+      widget.controller.addListener(_dailyChanged);
+      _dailyIdentity = _identity;
+      _selected = 0;
+    }
+  }
 
   void _select(int index) {
-    final selected = (index + _labelTips.length) % _labelTips.length;
+    final tips = widget.controller.daily;
+    final selected = (index + tips.length) % tips.length;
     if (selected == _selected) return;
     setState(() {
       _slideDirection = index > _selected ? 1 : -1;
@@ -628,12 +663,16 @@ class _InsightCarouselState extends State<_InsightCarousel> {
     });
   }
 
-  void _openTip(_LabelTip tip) => Navigator.of(
-    context,
-  ).push<void>(MaterialPageRoute(builder: (_) => _InsightDetailPage(tip: tip)));
+  void _openTip(InsightArticle tip) => Navigator.of(context).push<void>(
+    MaterialPageRoute(
+      builder: (_) =>
+          InsightArticlePage(article: tip, controller: widget.controller),
+    ),
+  );
 
   @override
   void dispose() {
+    widget.controller.removeListener(_dailyChanged);
     _focusNode.dispose();
     super.dispose();
   }
@@ -644,7 +683,8 @@ class _InsightCarouselState extends State<_InsightCarousel> {
     final reduced = MediaQuery.disableAnimationsOf(context);
     final rtl = Directionality.of(context) == TextDirection.rtl;
     const duration = Duration(milliseconds: 180);
-    final tip = _labelTips[_selected];
+    final tips = widget.controller.daily;
+    final tip = tips[_selected];
     final card = _InsightCard(
       key: ValueKey(_selected),
       tip: tip,
@@ -671,11 +711,11 @@ class _InsightCarouselState extends State<_InsightCarousel> {
         container: true,
         explicitChildNodes: true,
         label: 'Label tips',
-        value: 'Tip ${_selected + 1} of ${_labelTips.length}',
+        value: 'Tip ${_selected + 1} of ${tips.length}',
         increasedValue:
-            'Tip ${(_selected + 1) % _labelTips.length + 1} of ${_labelTips.length}',
+            'Tip ${(_selected + 1) % tips.length + 1} of ${tips.length}',
         decreasedValue:
-            'Tip ${(_selected - 1 + _labelTips.length) % _labelTips.length + 1} of ${_labelTips.length}',
+            'Tip ${(_selected - 1 + tips.length) % tips.length + 1} of ${tips.length}',
         onIncrease: () => _select(_selected + 1),
         onDecrease: () => _select(_selected - 1),
         child: Column(
@@ -723,19 +763,33 @@ class _InsightCarouselState extends State<_InsightCarousel> {
                       ),
                     ),
             ),
-            if (!widget.desktop) const SizedBox(height: 8),
-            if (!widget.desktop)
-              ExcludeSemantics(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (var index = 0; index < _labelTips.length; index++)
-                      Semantics(
-                        key: Key('insight-page-$index'),
-                        selected: index == _selected,
-                        child: Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Icon(
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (var index = 0; index < tips.length; index++)
+                  Semantics(
+                    key: Key('insight-page-$index'),
+                    selected: index == _selected,
+                    button: true,
+                    label: 'Show insight ${index + 1}: ${tips[index].title}',
+                    onTap: () => _select(index),
+                    child: ExcludeSemantics(
+                      child: SizedBox(
+                        width: 48,
+                        height: 28,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints.tightFor(
+                            width: 48,
+                            height: 28,
+                          ),
+                          style: IconButton.styleFrom(
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () => _select(index),
+                          tooltip: 'Show insight ${index + 1}',
+                          icon: Icon(
                             index == _selected
                                 ? Icons.circle
                                 : Icons.circle_outlined,
@@ -746,9 +800,10 @@ class _InsightCarouselState extends State<_InsightCarousel> {
                           ),
                         ),
                       ),
-                  ],
-                ),
-              ),
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),
@@ -763,7 +818,7 @@ class _InsightCard extends StatelessWidget {
     this.desktop = false,
     super.key,
   });
-  final _LabelTip tip;
+  final InsightArticle tip;
   final VoidCallback onTap;
   final bool desktop;
 
@@ -831,7 +886,7 @@ class _InsightCard extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.fromLTRB(0, 12, 20, 12),
                     child: Image.asset(
-                      'assets/artwork/desktop-insight-banner.png',
+                      tip.asset,
                       key: const Key('home-insight-art'),
                       height: stacked ? 96 : 132,
                       fit: BoxFit.contain,
@@ -870,41 +925,6 @@ class _InsightCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class _InsightDetailPage extends StatelessWidget {
-  const _InsightDetailPage({required this.tip});
-  final _LabelTip tip;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Label tip')),
-    body: PageBody(
-      maxWidth: 760,
-      children: [
-        SectionCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(tip.title, style: Theme.of(context).textTheme.headlineSmall),
-              const SizedBox(height: 16),
-              Text(tip.detail, style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 20),
-              CornerArtwork(asset: tip.asset, height: 160),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        OutlinedButton.icon(
-          onPressed: () => Navigator.of(
-            context,
-          ).push<void>(MaterialPageRoute(builder: (_) => const InsightsPage())),
-          icon: const FeatureIcon('lightbulb'),
-          label: const Text('All label tips'),
-        ),
-      ],
-    ),
-  );
 }
 
 class _RecentRow extends StatelessWidget {

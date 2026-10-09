@@ -7,6 +7,31 @@ import '../../../core/models/app_failure.dart';
 import '../../scanner/presentation/ui_components.dart';
 import '../data/device_profile_preferences.dart';
 
+// Choice symbols match the same meaning in editors and selected summaries.
+// Food pictograms are project-authored companions to the Solar line controls.
+const _preferenceSymbols = <String, String>{
+  'Low sugar': 'food-low-sugar',
+  'High fibre': 'food-fibre',
+  'Vegetarian': 'food-carrot',
+  'Higher protein': 'dumbbell',
+  'Lower sodium': 'food-salt',
+  'Less saturated fat': 'food-fat',
+  'No added sugar': 'food-no-added-sugar',
+  'Vegan': 'food-seedling',
+  'Milk': 'food-milk',
+  'Gluten': 'food-bread',
+  'Eggs': 'food-egg',
+  'Peanuts': 'food-peanut',
+  'Tree nuts': 'food-walnut',
+  'Soy': 'food-soy',
+  'Fish': 'food-fish',
+  'Shellfish': 'food-shrimp',
+  'Sesame': 'food-sesame',
+  'Mustard': 'food-mustard',
+  'Celery': 'food-celery',
+  'Sulphites': 'food-sulphites',
+};
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     required this.controller,
@@ -781,9 +806,12 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         for (final label in labels.take(2))
           ActionChip(
-            avatar: allergensOnly
-                ? const Icon(Icons.warning_amber_rounded, size: 17)
-                : const FeatureIcon('leaf', size: 17),
+            avatar: FeatureIcon(
+              _preferenceSymbols[allergensOnly
+                  ? label.substring(0, label.length - ' reminder'.length)
+                  : label]!,
+              size: 17,
+            ),
             label: Text(label),
             onPressed: edit,
           ),
@@ -1063,7 +1091,7 @@ class _PreferencesDialogState extends State<_PreferencesDialog> {
       _PreferenceChoice(
         key: const ValueKey('food-choice-low-sugar'),
         label: 'Low sugar',
-        icon: 'leaf',
+        icon: _preferenceSymbols['Low sugar']!,
         selected: _value.lowSugar,
         onTap: () => setState(
           () => _value = _value.copyWith(lowSugar: !_value.lowSugar),
@@ -1072,7 +1100,7 @@ class _PreferencesDialogState extends State<_PreferencesDialog> {
       _PreferenceChoice(
         key: const ValueKey('food-choice-high-fibre'),
         label: 'High fibre',
-        icon: 'leaf',
+        icon: _preferenceSymbols['High fibre']!,
         selected: _value.highFibre,
         onTap: () => setState(
           () => _value = _value.copyWith(highFibre: !_value.highFibre),
@@ -1081,7 +1109,7 @@ class _PreferencesDialogState extends State<_PreferencesDialog> {
       _PreferenceChoice(
         key: const ValueKey('food-choice-vegetarian'),
         label: 'Vegetarian',
-        icon: 'leaf',
+        icon: _preferenceSymbols['Vegetarian']!,
         selected: _value.vegetarian,
         onTap: () => setState(
           () => _value = _value.copyWith(vegetarian: !_value.vegetarian),
@@ -1092,7 +1120,7 @@ class _PreferencesDialogState extends State<_PreferencesDialog> {
         _PreferenceChoice(
           key: ValueKey('food-choice-${preference.key}'),
           label: preference.value,
-          icon: preference.key == 'high_protein' ? 'dumbbell' : 'leaf',
+          icon: _preferenceSymbols[preference.value]!,
           selected: _value.extraPreferences.contains(preference.key),
           onTap: () => _toggleExtraPreference(preference.key),
         ),
@@ -1134,6 +1162,7 @@ class _PreferencesDialogState extends State<_PreferencesDialog> {
                   child: _PreferenceChoice(
                     key: ValueKey('allergen-choice-${allergen.key}'),
                     label: allergen.value,
+                    icon: _preferenceSymbols[allergen.value]!,
                     selected: _value.allergens.contains(allergen.key),
                     onTap: () => _toggleAllergen(allergen.key),
                   ),
@@ -1286,12 +1315,12 @@ class _PreferenceChoice extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
-    this.icon,
+    required this.icon,
     super.key,
   });
 
   final String label;
-  final String? icon;
+  final String icon;
   final bool selected;
   final VoidCallback onTap;
 
@@ -1326,10 +1355,8 @@ class _PreferenceChoice extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    if (icon != null) ...[
-                      FeatureIcon(icon!, size: 25),
-                      const SizedBox(width: 12),
-                    ],
+                    FeatureIcon(icon, size: 25),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         label,

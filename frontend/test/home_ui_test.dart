@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/storage/local_store.dart';
+import 'package:unlabel/features/scanner/domain/insight_catalogue.dart';
+import 'package:unlabel/features/scanner/domain/insight_controller.dart';
 import 'package:unlabel/features/scanner/presentation/home_page.dart';
 import 'package:unlabel/features/scanner/presentation/insights_page.dart';
 import 'package:unlabel/features/scanner/presentation/mobile_navigation.dart';
@@ -23,6 +25,16 @@ class _MemoryPreferences implements PreferencesAdapter {
   Future<void> remove(String key) async => values.remove(key);
 }
 
+// Widget tests advance their own lifecycle clock; the catalogue/controller
+// suite separately verifies midnight scheduling. Avoid a real midnight timer
+// owned outside the widget tree under test.
+class _TestInsightController extends InsightController {
+  _TestInsightController({super.preferences, super.clock});
+
+  @override
+  Future<void> start() => reloadSaved();
+}
+
 Widget _app(
   Widget child, {
   Brightness brightness = Brightness.light,
@@ -36,22 +48,48 @@ Widget _app(
   home: child,
 );
 
+final _insightDay = DateTime(2026, 10, 9);
+final _dailyInsights = InsightCatalogue.daily(_insightDay);
+
+InsightsPage _insightsPage() {
+  final controller = _TestInsightController(
+    preferences: _MemoryPreferences(),
+    clock: () => _insightDay,
+  );
+  addTearDown(controller.dispose);
+  return InsightsPage(controller: controller);
+}
+
 HomePage _home({
   bool desktop = false,
   VoidCallback? onScan,
   ValueChanged<bool>? onLookup,
   VoidCallback? onCompare,
   ValueChanged<int>? onLibrary,
-}) => HomePage(
-  desktop: desktop,
-  store: LocalStore(preferences: _MemoryPreferences()),
-  onLookup: onLookup ?? (_) {},
-  onEnterLabel: onScan ?? () {},
-  onCompare: onCompare ?? () {},
-  onOpenReport: (_) {},
-  onLibrary: onLibrary ?? (_) {},
-  refreshKey: 0,
-);
+  VoidCallback? onInsights,
+  InsightController? insightController,
+}) {
+  final store = LocalStore(preferences: _MemoryPreferences());
+  final controller =
+      insightController ??
+      _TestInsightController(
+        preferences: store.preferences,
+        clock: () => _insightDay,
+      );
+  if (insightController == null) addTearDown(controller.dispose);
+  return HomePage(
+    desktop: desktop,
+    store: store,
+    insightController: controller,
+    onInsights: onInsights,
+    onLookup: onLookup ?? (_) {},
+    onEnterLabel: onScan ?? () {},
+    onCompare: onCompare ?? () {},
+    onOpenReport: (_) {},
+    onLibrary: onLibrary ?? (_) {},
+    refreshKey: 0,
+  );
+}
 
 void main() {
   setUp(() {
@@ -266,7 +304,7 @@ void main() {
     expect(scan.left, greaterThanOrEqualTo(hero.left + 20));
     expect(scan.right, lessThanOrEqualTo(hero.right - 20));
     expect(scan.height, greaterThanOrEqualTo(48));
-    await tester.ensureVisible(find.text('Start with the serving size'));
+    await tester.ensureVisible(find.text(_dailyInsights.first.title));
     await tester.pumpAndSettle();
     final insightCopy = tester.getRect(
       find.byKey(const Key('home-insight-copy')),
@@ -322,7 +360,7 @@ void main() {
               isNull,
               reason: 'Welcome $width $brightness scale $scale',
             );
-            for (final page in [const InsightsPage(), const SourcesPage()]) {
+            for (final page in [_insightsPage(), const SourcesPage()]) {
               await tester.pumpWidget(
                 _app(page, brightness: brightness, scale: scale),
               );
@@ -332,16 +370,18 @@ void main() {
                 isNull,
                 reason: '${page.runtimeType} $width $brightness scale $scale',
               );
-              final toggle = find.byType(ExpansionTile);
-              await tester.ensureVisible(toggle);
-              await tester.tap(toggle);
-              await tester.pumpAndSettle();
-              expect(
-                tester.takeException(),
-                isNull,
-                reason:
-                    'Expanded ${page.runtimeType} $width $brightness scale $scale',
-              );
+              if (page is SourcesPage) {
+                final toggle = find.byType(ExpansionTile);
+                await tester.ensureVisible(toggle);
+                await tester.tap(toggle);
+                await tester.pumpAndSettle();
+                expect(
+                  tester.takeException(),
+                  isNull,
+                  reason:
+                      'Expanded ${page.runtimeType} $width $brightness scale $scale',
+                );
+              }
             }
             await tester.pumpWidget(const SizedBox());
           }
@@ -385,11 +425,11 @@ void main() {
     expect(lookups, [true]);
     expect(comparisons, 1);
     expect(libraries, [1, 2]);
-    await tester.ensureVisible(find.text('Start with the serving size'));
-    await tester.tap(find.text('Start with the serving size'));
+    await tester.ensureVisible(find.text(_dailyInsights.first.title));
+    await tester.tap(find.text(_dailyInsights.first.title));
     await tester.pumpAndSettle();
-    expect(find.text('Label tip'), findsOneWidget);
-    expect(find.text('All label tips'), findsOneWidget);
+    expect(find.byType(InsightArticlePage), findsOneWidget);
+    expect(find.text(_dailyInsights.first.takeaway), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Know where facts come from'));
@@ -408,7 +448,7 @@ void main() {
       await tester.pumpWidget(_app(Scaffold(body: _home())));
       await tester.pumpAndSettle();
       await tester.pump(const Duration(seconds: 12));
-      expect(find.text('Start with the serving size'), findsOneWidget);
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       expect(find.byKey(const Key('insight-next')), findsNothing);
       expect(find.byKey(const Key('insight-previous')), findsNothing);
       expect(find.byKey(const Key('insight-pause')), findsNothing);
@@ -428,19 +468,16 @@ void main() {
         }
       }
       expect(assets.length, 4);
-      expect(find.text('Total sugar and added sugar differ'), findsOneWidget);
+      expect(find.text(_dailyInsights.last.title), findsOneWidget);
       await tester.tap(find.byKey(const Key('home-insight-card')));
       await tester.pumpAndSettle();
-      expect(find.text('Label tip'), findsOneWidget);
-      expect(
-        find.text(
-          'Total sugar can include naturally occurring sugar and added sugar. Read each declared row separately.',
-        ),
-        findsOneWidget,
-      );
-      await tester.tap(find.text('All label tips'));
-      await tester.pumpAndSettle();
-      expect(find.text('Label Insights'), findsOneWidget);
+      expect(find.byType(InsightArticlePage), findsOneWidget);
+      for (final section in _dailyInsights.last.sections) {
+        expect(find.text(section.heading), findsOneWidget);
+        expect(find.text(section.body), findsOneWidget);
+      }
+      expect(find.text(_dailyInsights.last.takeaway), findsOneWidget);
+      expect(find.text('Sources'), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
@@ -462,12 +499,12 @@ void main() {
       await tester.pumpWidget(_app(Scaffold(body: _home())));
       await tester.pump();
       await tester.pump(const Duration(seconds: 30));
-      expect(find.text('Start with the serving size'), findsOneWidget);
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await tester.pump(const Duration(seconds: 30));
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pump(const Duration(seconds: 30));
-      expect(find.text('Start with the serving size'), findsOneWidget);
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       final focus = tester
           .widget<Focus>(find.byKey(const Key('insight-keyboard-focus')))
           .focusNode!;
@@ -475,13 +512,183 @@ void main() {
       await tester.pump();
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Compare the same amount'), findsOneWidget);
+      expect(find.text(_dailyInsights[1].title), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowLeft);
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Start with the serving size'), findsOneWidget);
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
+
+  testWidgets('desktop daily dots select four different article artworks', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 941);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(_app(Scaffold(body: _home(desktop: true))));
+    await tester.pumpAndSettle();
+    final assets = <String>{};
+    for (var index = 0; index < 4; index++) {
+      final dot = find.byKey(Key('insight-page-$index'));
+      await tester.ensureVisible(dot);
+      expect(tester.getSize(dot).width, greaterThanOrEqualTo(48));
+      expect(tester.getSize(dot).height, 28);
+      await tester.tap(dot);
+      await tester.pumpAndSettle();
+      expect(find.text(_dailyInsights[index].title), findsOneWidget);
+      expect(tester.widget<Semantics>(dot).properties.selected, true);
+      final art = tester.widget<Image>(
+        find.byKey(const Key('home-insight-art')),
+      );
+      expect(art.fit, BoxFit.contain);
+      final asset = (art.image as AssetImage).assetName;
+      expect(asset, _dailyInsights[index].asset);
+      assets.add(asset);
+    }
+    expect(assets, hasLength(4));
+    expect(
+      tester.getSize(find.byKey(const Key('home-insight-carousel'))).height -
+          tester.getSize(find.byKey(const Key('home-insight-card'))).height,
+      32,
+    );
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('desktop mouse swipe changes the daily fact and its artwork', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 941);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    var insightVisits = 0;
+    await tester.pumpWidget(
+      _app(
+        Scaffold(body: _home(desktop: true, onInsights: () => insightVisits++)),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final card = find.byKey(const Key('home-insight-card'));
+    await tester.ensureVisible(card);
+    await tester.drag(
+      card,
+      const Offset(-220, 0),
+      kind: ui.PointerDeviceKind.mouse,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(_dailyInsights[1].title), findsOneWidget);
+    final art = tester.widget<Image>(find.byKey(const Key('home-insight-art')));
+    expect((art.image as AssetImage).assetName, _dailyInsights[1].asset);
+    expect(find.byType(InsightArticlePage), findsNothing);
+    expect(insightVisits, 0);
+    await tester.drag(
+      card,
+      const Offset(220, 0),
+      kind: ui.PointerDeviceKind.mouse,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(_dailyInsights.first.title), findsOneWidget);
+    expect(find.byType(InsightArticlePage), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('Home refreshes daily picks on resume without autoplay', (
+    tester,
+  ) async {
+    var now = DateTime(2026, 10, 9, 23, 59);
+    final controller = _TestInsightController(
+      preferences: _MemoryPreferences(),
+      clock: () => now,
+    );
+    addTearDown(controller.dispose);
+    addTearDown(
+      () => tester.binding.handleAppLifecycleStateChanged(
+        AppLifecycleState.resumed,
+      ),
+    );
+    tester.view.physicalSize = const Size(390, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      _app(Scaffold(body: _home(insightController: controller))),
+    );
+    await tester.pumpAndSettle();
+    final dot = find.byKey(const Key('insight-page-2'));
+    await tester.ensureVisible(dot);
+    await tester.tap(dot);
+    await tester.pumpAndSettle();
+    expect(find.text(controller.daily[2].title), findsOneWidget);
+    final previous = controller.daily.first.id;
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    now = DateTime(2026, 10, 10, 0, 1);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+    expect(controller.daily.first.id, isNot(previous));
+    expect(find.text(InsightCatalogue.daily(now).first.title), findsOneWidget);
+    await tester.pump(const Duration(seconds: 20));
+    expect(find.text(controller.daily.first.title), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('Home See all uses the shell Insights callback', (tester) async {
+    var visits = 0;
+    await tester.pumpWidget(
+      _app(Scaffold(body: _home(onInsights: () => visits++))),
+    );
+    await tester.pumpAndSettle();
+    final seeAll = find.widgetWithText(TextButton, 'See all').first;
+    await tester.ensureVisible(seeAll);
+    await tester.tap(seeAll);
+    expect(visits, 1);
+    expect(find.byType(InsightsPage), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('daily dots can be activated directly by a screen reader', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    try {
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      for (final size in [const Size(390, 1200), const Size(1440, 941)]) {
+        tester.view.physicalSize = size;
+        await tester.pumpWidget(
+          _app(Scaffold(body: _home(desktop: size.width >= 1200))),
+        );
+        await tester.pumpAndSettle();
+        for (var index = 0; index < 4; index++) {
+          final dot = find.byKey(Key('insight-page-$index'));
+          await tester.ensureVisible(dot);
+          final node = tester.getSemantics(dot);
+          expect(
+            node.getSemanticsData().hasAction(ui.SemanticsAction.tap),
+            isTrue,
+            reason: 'Daily dot ${index + 1} at ${size.width}',
+          );
+          tester.binding.performSemanticsAction(
+            ui.SemanticsActionEvent(
+              type: ui.SemanticsAction.tap,
+              viewId: tester.view.viewId,
+              nodeId: node.id,
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(find.text(_dailyInsights[index].title), findsOneWidget);
+        }
+        await tester.pumpWidget(const SizedBox.shrink());
+      }
+      expect(tester.takeException(), isNull);
+    } finally {
+      semantics.dispose();
+    }
+  });
 
   testWidgets(
     'tip carousel exposes adjustable screen-reader actions and RTL swipes',
@@ -519,13 +726,13 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Compare the same amount'), findsOneWidget);
+      expect(find.text(_dailyInsights[1].title), findsOneWidget);
       await tester.drag(
         find.byKey(const Key('home-insight-card')),
         const Offset(220, 0),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Missing does not mean zero'), findsOneWidget);
+      expect(find.text(_dailyInsights[2].title), findsOneWidget);
       tester.binding.performSemanticsAction(
         ui.SemanticsActionEvent(
           type: ui.SemanticsAction.decrease,
@@ -536,7 +743,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Compare the same amount'), findsOneWidget);
+      expect(find.text(_dailyInsights[1].title), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
       semantics.dispose();
     },

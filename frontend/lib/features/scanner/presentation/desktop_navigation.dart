@@ -123,9 +123,9 @@ class DesktopNavigation extends StatelessWidget {
                                           8,
                                         ),
                                         child: Semantics(
-                                          selected: i == selectedIndex && i < 4,
+                                          selected: i == selectedIndex,
                                           child: Material(
-                                            color: i == selectedIndex && i < 4
+                                            color: i == selectedIndex
                                                 ? colors.primaryContainer
                                                       .withValues(alpha: .65)
                                                 : Colors.transparent,

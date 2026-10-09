@@ -1,6 +1,17 @@
 # Flutter frontend
 
-Current correction: **v0.6.3+10**, transparent desktop insight artwork with contain
+Current implementation: **v0.7.0+11**, twenty sourced insights with unique
+illustrations, stable daily four, full readers, topic browsing and device-local
+bookmarks. Both Home carousels support manual swipe, selectable dots and keyboard.
+The desktop Insights shell/rail and mobile feed follow the supplied references.
+Preference/allergen editors and summaries use distinct corresponding symbols.
+267 tests pass; analysis and the production web build are clean. Light/dark
+renders at 390/1440/1728 are reviewed. The dot strip is compact (32 px).
+Source is prepared for the requested main push; hosted proof is pending.
+[Feature contract](../docs/architecture/INSIGHTS.md) ·
+[Review](../docs/planning/FRONTEND_V0_7_0_REVIEW.md).
+
+Preceding correction: **v0.6.3+10**, transparent desktop insight artwork with contain
 fit, theme-compatible background and separate live copy. The complete bowl stays
 visible; compact phone art remains.
 240 tests pass, analysis/build are clean. Manual release defaults and uninjected
