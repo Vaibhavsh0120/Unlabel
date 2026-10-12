@@ -792,9 +792,6 @@ class _ComparePageState extends State<ComparePage> {
         padding: const EdgeInsets.all(20),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final artwork =
-                constraints.maxWidth >= 280 &&
-                MediaQuery.textScalerOf(context).scale(16) < 24;
             return Row(
               children: [
                 Expanded(
@@ -807,17 +804,6 @@ class _ComparePageState extends State<ComparePage> {
                     ],
                   ),
                 ),
-                if (artwork) ...[
-                  const SizedBox(width: 12),
-                  SizedBox(
-                    width: constraints.maxWidth < 400 ? 72 : 100,
-                    child: const CornerArtwork(
-                      asset: 'assets/artwork/botanical-corner.png',
-                      height: 110,
-                      animate: false,
-                    ),
-                  ),
-                ],
               ],
             );
           },

@@ -13,6 +13,11 @@ import 'package:unlabel/core/accounts/account_store.dart';
 import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
+import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
+import 'package:unlabel/features/scanner/presentation/insights_page.dart';
+import 'package:unlabel/features/scanner/presentation/library_page.dart';
+import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/sources_page.dart';
 
 class _Preferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -27,6 +32,15 @@ class _Preferences implements PreferencesAdapter {
 
   @override
   Future<void> remove(String key) async => values.remove(key);
+}
+
+class _SlowPreferences extends _Preferences {
+  final restored = Completer<void>();
+  @override
+  Future<String?> read(String key) async {
+    await restored.future;
+    return super.read(key);
+  }
 }
 
 class _Auth extends AccountAuth {
@@ -182,6 +196,139 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 }
 
 void main() {
+  testWidgets(
+    'desktop History and Saved switch content without moving the shell',
+    (tester) async {
+      tester.view.physicalSize = const Size(1440, 1100);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final guest = LocalStore(preferences: _Preferences());
+      await guest.record(_report('History-only oats'));
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(_Auth(), _Sync(), guest),
+          showWelcome: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      final sidebar = find.byKey(const Key('desktop-sidebar'));
+      final header = find.byType(DesktopTopBar);
+      final sidebarElement = tester.element(sidebar);
+      final headerElement = tester.element(header);
+      final sidebarBounds = tester.getRect(sidebar);
+      final headerBounds = tester.getRect(header);
+      final navigator = Navigator.of(sidebarElement);
+      expect(navigator.canPop(), isFalse);
+
+      for (final index in [4, 4, 3, 4, 0]) {
+        await tester.tap(find.byKey(Key('desktop-nav-$index')));
+        for (final elapsed in [
+          Duration.zero,
+          const Duration(milliseconds: 16),
+          const Duration(milliseconds: 100),
+        ]) {
+          await tester.pump(elapsed);
+          expect(tester.element(sidebar), same(sidebarElement));
+          expect(tester.element(header), same(headerElement));
+          expect(tester.getRect(sidebar), sidebarBounds);
+          expect(tester.getRect(header), headerBounds);
+          expect(
+            navigator.canPop(),
+            isFalse,
+            reason: 'a primary destination must not push a second entire shell',
+          );
+        }
+        await tester.pumpAndSettle();
+        if (index == 4) {
+          expect(
+            tester.widget<LibraryPage>(find.byType(LibraryPage)).saved,
+            isFalse,
+          );
+          expect(find.text('History-only oats'), findsOneWidget);
+        } else if (index == 3) {
+          expect(
+            tester.widget<LibraryPage>(find.byType(LibraryPage)).saved,
+            isTrue,
+          );
+          expect(find.text('History-only oats'), findsNothing);
+        }
+      }
+      await tester.tap(find.byKey(const Key('desktop-nav-4')));
+      await tester.pumpAndSettle();
+      await _tap(tester, find.text('History-only oats'));
+      final reportRoute =
+          ModalRoute.of(tester.element(find.byType(ReportPage)))!
+              as PageRoute<void>;
+      expect(reportRoute.transitionDuration, Duration.zero);
+      expect(reportRoute.reverseTransitionDuration, Duration.zero);
+      await tester.tap(find.widgetWithText(TextButton, 'History'));
+      await tester.pump();
+      expect(find.byType(ReportPage), findsNothing);
+      expect(tester.element(sidebar), same(sidebarElement));
+      expect(tester.getRect(header), headerBounds);
+      await tester.tap(find.byKey(const Key('desktop-nav-3')));
+      await tester.pump();
+      expect(tester.element(sidebar), same(sidebarElement));
+      expect(tester.getRect(sidebar), sidebarBounds);
+      expect(tester.getRect(header), headerBounds);
+      expect(navigator.canPop(), isFalse);
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<LibraryPage>(find.byType(LibraryPage)).saved,
+        isTrue,
+      );
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets('mobile History remains a separate page with Back to Home', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final guest = LocalStore(preferences: _Preferences());
+    final repository = _Repository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(
+      UnlabelApp(
+        repository: repository,
+        store: guest,
+        accountController: _controller(_Auth(), _Sync(), guest),
+        showWelcome: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _tap(tester, find.text('History').hitTestable());
+    expect(tester.widget<LibraryPage>(find.byType(LibraryPage)).saved, isFalse);
+    expect(
+      tester.widget<LibraryPage>(find.byType(LibraryPage)).showTitle,
+      isFalse,
+    );
+    expect(find.text('History'), findsOneWidget);
+    expect(find.text('Your history'), findsNothing);
+    expect(
+      find.text(
+        'Stored on this device. These reports are snapshots of what you viewed.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(BackButton), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    expect(find.byKey(const Key('mobile-nav-3')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('Insights retains desktop shell and returns to Home', (
     tester,
   ) async {
@@ -221,9 +368,330 @@ void main() {
           .first,
     );
     expect(selected.properties.selected, isTrue);
+    await tester.tap(find.byKey(const Key('desktop-brand-home')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+  for (final width in [390.0, 1440.0]) {
+    testWidgets('Sources uses root content and returns Home at $width px', (
+      tester,
+    ) async {
+      tester.view.physicalSize = Size(width, 1000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final guest = LocalStore(preferences: _Preferences());
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(_Auth(), _Sync(), guest),
+          showWelcome: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      final header = width >= 1200
+          ? find.byType(DesktopTopBar)
+          : find.byType(AppBar).hitTestable();
+      final headerBounds = tester.getRect(header);
+      final headerElement = tester.element(header);
+      await _tap(
+        tester,
+        find.text(
+          width >= 1200
+              ? 'Data from package labels, manufacturer websites and Open Food Facts'
+              : 'Know where facts come from',
+        ),
+      );
+      expect(
+        tester.widget<SourcesPage>(find.byType(SourcesPage)).embedded,
+        isTrue,
+      );
+      expect(find.text('Our Sources'), findsOneWidget);
+      expect(tester.element(header), same(headerElement));
+      expect(tester.getRect(header), headerBounds);
+      expect(Navigator.of(tester.element(header)).canPop(), isFalse);
+      if (width >= 1200) {
+        expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+      } else {
+        expect(find.byKey(const Key('floating-navigation')), findsNothing);
+      }
+      if (width >= 1200) {
+        expect(find.byType(BackButton), findsNothing);
+        await _tap(tester, find.byKey(const Key('desktop-nav-0')));
+      } else {
+        expect(find.byType(BackButton), findsOneWidget);
+        await _tap(tester, find.byType(BackButton));
+      }
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+      if (width >= 1200) {
+        await tester.tap(find.byKey(const Key('desktop-nav-5')));
+        await tester.pumpAndSettle();
+      } else {
+        await _tap(tester, find.text('See all').first);
+        expect(find.text('Insights'), findsOneWidget);
+      }
+      await _tap(tester, find.text('Where the facts come from'));
+      expect(find.text('Our Sources'), findsOneWidget);
+      if (width >= 1200) {
+        expect(find.byType(BackButton), findsNothing);
+        await _tap(tester, find.byKey(const Key('desktop-nav-5')));
+      } else {
+        await _tap(tester, find.byType(BackButton));
+      }
+      expect(find.byType(InsightsPage), findsOneWidget);
+      expect(find.byType(SourcesPage), findsNothing);
+      expect(tester.element(header), same(headerElement));
+      expect(tester.getRect(header), headerBounds);
+      if (width < 1200) expect(find.text('Insights'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets(
+      'unknown link renders its shell before local restore at $width px',
+      (tester) async {
+        tester.view.physicalSize = Size(width, 1000);
+        tester.view.devicePixelRatio = 1;
+        tester.platformDispatcher.defaultRouteNameTestValue = '/missing/deep';
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.platformDispatcher.clearDefaultRouteNameTestValue);
+        final preferences = _SlowPreferences();
+        final guest = LocalStore(preferences: preferences);
+        final repository = _Repository();
+        addTearDown(repository.close);
+        await tester.pumpWidget(
+          UnlabelApp(
+            repository: repository,
+            store: guest,
+            accountController: _controller(_Auth(), _Sync(), guest),
+          ),
+        );
+        expect(find.text('Page not found'), findsOneWidget);
+        if (width >= 1200) {
+          expect(find.byType(DesktopTopBar), findsOneWidget);
+          expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+        } else {
+          expect(find.byKey(const Key('mobile-brand-home')), findsOneWidget);
+          expect(find.byKey(const Key('floating-navigation')), findsOneWidget);
+        }
+        await tester.tap(find.widgetWithText(FilledButton, 'Go to Home'));
+        await tester.pump();
+        expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+        preferences.restored.complete();
+        await tester.pumpAndSettle();
+        expect(find.text('Page not found'), findsNothing);
+        expect(find.byKey(const Key('welcome-continue')), findsNothing);
+        expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    testWidgets('unknown initial link keeps working shell at $width px', (
+      tester,
+    ) async {
+      tester.view.physicalSize = Size(width, 1000);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.defaultRouteNameTestValue = '/missing/deep';
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.platformDispatcher.clearDefaultRouteNameTestValue);
+      final guest = LocalStore(preferences: _Preferences());
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(_Auth(), _Sync(), guest),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Page not found'), findsOneWidget);
+      if (width >= 1200) {
+        expect(find.byType(DesktopTopBar), findsOneWidget);
+        expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+        expect(
+          find.byKey(const Key('not-found-desktop-content')),
+          findsOneWidget,
+        );
+      } else {
+        expect(find.byKey(const Key('mobile-brand-home')), findsOneWidget);
+        expect(find.byKey(const Key('floating-navigation')), findsOneWidget);
+        expect(
+          find.byKey(const Key('navigation-active-indicator')),
+          findsNothing,
+        );
+      }
+      await _tap(tester, find.widgetWithText(FilledButton, 'Go to Home'));
+      expect(find.text('Page not found'), findsNothing);
+      expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
+
+  testWidgets(
+    'recovered initial missing route stays Home across account changes',
+    (tester) async {
+      tester.platformDispatcher.defaultRouteNameTestValue = '/missing/deep';
+      addTearDown(tester.platformDispatcher.clearDefaultRouteNameTestValue);
+      final guest = LocalStore(preferences: _Preferences());
+      final auth = _Auth();
+      final sync = _Sync();
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(auth, sync, guest),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Page not found'), findsOneWidget);
+      await _tap(tester, find.widgetWithText(FilledButton, 'Go to Home'));
+      expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+      for (final uid in ['account-a', 'account-b', null]) {
+        auth.setUser(uid);
+        await tester.pumpAndSettle();
+        expect(find.text('Page not found'), findsNothing);
+        expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+      }
+      unawaited(
+        Navigator.of(tester.element(find.byKey(const Key('mobile-brand-home'))))
+            .pushNamed('/another-missing-link'),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Page not found'),
+        findsOneWidget,
+        reason: 'recovering one route must not hide later unknown routes',
+      );
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets('mobile brand returns from Saved to Home', (tester) async {
+    tester.view.physicalSize = const Size(390, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final guest = LocalStore(preferences: _Preferences());
+    final repository = _Repository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(
+      UnlabelApp(
+        repository: repository,
+        store: guest,
+        accountController: _controller(_Auth(), _Sync(), guest),
+        showWelcome: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('mobile-nav-3')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsNothing);
+    await tester.tap(find.byKey(const Key('mobile-brand-home')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets(
+    'an unknown pushed route can recover and navigate its own shell',
+    (tester) async {
+      final guest = LocalStore(preferences: _Preferences());
+      final repository = _Repository();
+      addTearDown(repository.close);
+      await tester.pumpWidget(
+        UnlabelApp(
+          repository: repository,
+          store: guest,
+          accountController: _controller(_Auth(), _Sync(), guest),
+          showWelcome: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      unawaited(
+        Navigator.of(tester.element(find.byKey(const Key('mobile-brand-home'))))
+            .pushNamed('/missing'),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Page not found'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('mobile-nav-3')));
+      await tester.pumpAndSettle();
+      expect(find.text('Page not found'), findsNothing);
+      await tester.tap(find.byKey(const Key('mobile-brand-home')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets('History and saved Insight readers retain desktop shell', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1100);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final guest = LocalStore(preferences: _Preferences());
+    final repository = _Repository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(
+      UnlabelApp(
+        repository: repository,
+        store: guest,
+        accountController: _controller(_Auth(), _Sync(), guest),
+        showWelcome: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('desktop-nav-4')));
+    await tester.pumpAndSettle();
+    expect(find.byType(DesktopTopBar), findsOneWidget);
+    expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+    expect(find.text('History'), findsWidgets);
     await tester.tap(find.byKey(const Key('desktop-nav-0')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('desktop-nav-5')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('insight-featured')));
+    await tester.pumpAndSettle();
+    expect(find.byType(InsightArticlePage), findsOneWidget);
+    expect(find.byType(DesktopTopBar), findsOneWidget);
+    expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+    final article = tester
+        .widget<InsightArticlePage>(find.byType(InsightArticlePage))
+        .article;
+    await tester.tap(find.byKey(Key('insight-save-${article.id}')));
+    await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await _tap(tester, find.byKey(const Key('insights-see-saved')));
+    expect(find.byType(DesktopTopBar), findsOneWidget);
+    await tester.tap(find.byKey(Key('insight-card-${article.id}')));
+    await tester.pumpAndSettle();
+    expect(find.byType(InsightArticlePage), findsOneWidget);
+    expect(find.byType(DesktopTopBar), findsOneWidget);
+    expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.text('Saved insights'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('desktop-brand-home')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('home-insight-carousel')), findsOneWidget);
+    expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
   });
   setUp(() {

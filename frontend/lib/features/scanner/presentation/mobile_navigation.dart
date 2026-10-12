@@ -12,7 +12,9 @@ class MobileNavigation extends StatefulWidget {
     required this.selectedIndex,
     required this.onDestinationSelected,
     super.key,
-  }) : assert(selectedIndex >= 0 && selectedIndex < 4);
+  }) : assert(selectedIndex >= -1 && selectedIndex < 4);
+
+  /// -1 leaves all destinations unselected on the missing-page screen.
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
 
@@ -191,34 +193,37 @@ class _MobileNavigationState extends State<MobileNavigation>
                           },
                           child: Stack(
                             children: [
-                              AnimatedPositioned(
-                                duration:
-                                    _holding ||
-                                        MediaQuery.disableAnimationsOf(context)
-                                    ? Duration.zero
-                                    : const Duration(milliseconds: 180),
-                                curve: Curves.easeOutCubic,
-                                left: left,
-                                top: 0,
-                                bottom: 0,
-                                width: slot,
-                                child: IgnorePointer(
-                                  child: DecoratedBox(
-                                    key: const Key(
-                                      'navigation-active-indicator',
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: colors.primaryContainer,
-                                      borderRadius: BorderRadius.circular(26),
-                                      border: Border.all(
-                                        color: colors.primary.withValues(
-                                          alpha: .22,
+                              if (widget.selectedIndex >= 0)
+                                AnimatedPositioned(
+                                  duration:
+                                      _holding ||
+                                          MediaQuery.disableAnimationsOf(
+                                            context,
+                                          )
+                                      ? Duration.zero
+                                      : const Duration(milliseconds: 180),
+                                  curve: Curves.easeOutCubic,
+                                  left: left,
+                                  top: 0,
+                                  bottom: 0,
+                                  width: slot,
+                                  child: IgnorePointer(
+                                    child: DecoratedBox(
+                                      key: const Key(
+                                        'navigation-active-indicator',
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: colors.primaryContainer,
+                                        borderRadius: BorderRadius.circular(26),
+                                        border: Border.all(
+                                          color: colors.primary.withValues(
+                                            alpha: .22,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

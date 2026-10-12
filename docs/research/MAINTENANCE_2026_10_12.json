@@ -1,30 +1,192 @@
 {
   "schema_version": "1",
   "checkpoint_date_asia_calcutta": "2026-10-12",
-  "scope": "maintenance_without_feature_or_product_version_update",
-  "versions": {"frontend": "0.7.0+11", "backend": "0.12.0"},
-  "canonical_files": {"frontend": "frontend/pubspec.yaml", "backend": "backend/pyproject.toml"},
+  "scope": "maintenance_and_frontend_ui_patch_no_new_product_features",
+  "versions": {
+    "frontend": "0.7.1+12",
+    "backend": "0.12.0"
+  },
+  "canonical_files": {
+    "frontend": "frontend/pubspec.yaml",
+    "backend": "backend/pyproject.toml"
+  },
   "local": {
-    "backend_full_suite": {"passed": 1343, "skipped": 5},
-    "later_ios_source_subset": {"passed": 13},
-    "flutter_tests": 268,
-    "browser_ocr_tests": 6,
+    "backend_full_suite": {
+      "passed": 1343,
+      "skipped": 5
+    },
+    "later_ios_source_subset": {
+      "passed": 13
+    },
+    "flutter_tests": 324,
     "mobile_publication_tests": 10,
     "flutter_analysis": "passed",
     "web_release_build": "passed",
     "ruff": "passed",
-    "pyright": {"errors": 0, "warnings": 0},
+    "pyright": {
+      "errors": 0,
+      "warnings": 0
+    },
     "actionlint_workflows": 2,
     "synthetic_schema_examples": 30,
-    "source_build_receipts": ["catalogue", "claims_knowledge", "research_catalogue"],
+    "source_build_receipts": [
+      "catalogue",
+      "claims_knowledge",
+      "research_catalogue"
+    ],
     "icons_verified": 42,
     "ocr_assets_verified": 21,
     "compiled_web_configured_secret_matches": 0,
-    "workspace": {"python": 147, "json": 154, "toml": 1, "markdown": 118, "local_links": 700, "errors": 0}
+    "workspace": {
+      "python": 147,
+      "json": 159,
+      "toml": 1,
+      "markdown": 119,
+      "local_links": 732,
+      "errors": 0
+    },
+    "browser_bridge_tests": 11
   },
-  "cleanup": {"redundant_gitkeeps": 64, "empty_scaffold_directories": 45, "unreferenced_images": ["breakfast-leaf.png", "welcome-garden.png"], "orphan_runtime_modules_found": 0, "cupertino_dependency": "retained_after_compiled_font_evidence"},
-  "github": {"missing_reviewed_source_releases_published": 12, "original_published_tags_and_assets_preserved": true, "historical_mobile_override": "draft_preserved_and_labeled"},
-  "native_workflow": {"status": "awaiting_fresh_dispatch", "old_run_id": 38044207593, "old_ios": "success_capacity_notice_only", "old_android": "timed_out_during_assembleRelease", "full_archived_android_log": "unavailable", "single_definitive_root_cause": "not_established_from_available_log"},
-  "livecontainer": {"source_url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json", "publication": "pending_verified_native_release", "physical_device_runtime": "unverified"},
-  "hosted_backend_and_web": "separate_current_source_verification_gate"
+  "cleanup": {
+    "redundant_gitkeeps": 64,
+    "empty_scaffold_directories": 45,
+    "unreferenced_images": [
+      "breakfast-leaf.png",
+      "welcome-garden.png"
+    ],
+    "orphan_runtime_modules_found": 0,
+    "cupertino_dependency": "retained_after_compiled_font_evidence"
+  },
+  "github": {
+    "missing_reviewed_source_releases_published": 12,
+    "original_published_tags_and_assets_preserved": true,
+    "historical_mobile_override": "draft_preserved_and_labeled"
+  },
+  "native_workflow": {
+    "version": "0.7.1+12",
+    "status": "pending_final_source_publication"
+  },
+  "livecontainer": {
+    "source_url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json",
+    "preceding_verified_version": "0.7.0+11",
+    "source_http_status": 200,
+    "new_patch_feed_status": "pending_verified_native_publication",
+    "physical_device_runtime": "unverified"
+  },
+  "preceding_native_build": {
+    "source_sha": "6fe7037a12b9d595c98a85c94f6b9e8b4fbfc01e",
+    "version": "0.7.0+11",
+    "run_id": 38250931887,
+    "status": "success",
+    "android_duration": "7m16s",
+    "ios_duration": "16m51s",
+    "ipa_sha256": "28ebbec88c85c803c131170a1cb7b84efb06a39114a2d6afa195f661c3cb72cd",
+    "downloaded_ipa_verified": true
+  },
+  "artwork": {
+    "raster_artifacts": 41,
+    "total_bytes": 3335158,
+    "errors": [],
+    "unique_section_artwork": true,
+    "insight_images": "each belongs to its article previews/readers",
+    "retired_additional_artifacts": [
+      "desktop-insight-bowl.png",
+      "desktop-insight-banner.webp",
+      "desktop-empty-scans.webp",
+      "label-leaf.webp",
+      "botanical-corner.webp"
+    ]
+  },
+  "ui": {
+    "desktop_embedded_destinations": [
+      "Home",
+      "Scan",
+      "Compare",
+      "Saved",
+      "History",
+      "Insights",
+      "Sources"
+    ],
+    "desktop_history_has_no_back_title_row": true,
+    "sources_desktop_has_no_separate_back_title_row": true,
+    "mobile_secondary_pages_keep_back_without_duplicate_heading": true,
+    "sources": "six concise tappable cards; full details and copy links on request; bigger phone art/icons; no phone chevrons",
+    "insight_cards": "equal height, centered image/copy, bottom-aligned read badge",
+    "recent_scans": "fresh art, 208px natural desktop minimum, no extra dot trailing padding",
+    "404": "HTTP404; loading fallback; navigation in first Flutter frame; stable recovery across identity/local restore",
+    "logo": "Home action, 1.025 hover scale, no tooltip/layout shift",
+    "scroll_performance": "public decoded artwork warmup; early fetches; visible decorative motion pauses during scroll; no scroll-time visibility work",
+    "mobile_library": "Existing text/padding/art size preserved; side art/copy vertically aligned at normal phone widths; centered artwork when stacked"
+  },
+  "hosted": {
+    "preceding_backend_recovery": {
+      "failed_deployment": "dpl_4knV7cBZ88WGpQFdjDY8ZmmV63LC",
+      "failure": "git_info_fail_before_build",
+      "ready_retry": "dpl_2jrYwftiptFZJHbBFgV1Lt9bWJ6B"
+    },
+    "new_frontend_patch": "pending_exact_source_verification"
+  },
+  "rendered": {
+    "widths": [
+      390,
+      1440,
+      1728
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "pages": [
+      "Home",
+      "History",
+      "Saved",
+      "Insights",
+      "Sources",
+      "404"
+    ],
+    "ui_screenshots": 36,
+    "readme_screenshots": 6,
+    "readme_broken_images": 0,
+    "readme_horizontal_overflow": false,
+    "spacing": {
+      "readme": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 18
+      },
+      "sources_visible_controls": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 6
+      },
+      "exclusions": "Flutter offscreen ARIA announcements and intentional scroll viewport containers; screenshot/widget scroll proof supplements CanvasKit semantics"
+    }
+  },
+  "image_loading": {
+    "profile": "Local Chrome, cold HTTP cache, 10Mbps download, 40ms latency, 1440x1000",
+    "measurement": {
+      "firstFrameMs": 7760,
+      "assets": [
+        {
+          "asset": "desktop-scan-hero.webp",
+          "startMs": 154,
+          "endMs": 395,
+          "bytes": 68346
+        },
+        {
+          "asset": "recent-scans-empty.webp",
+          "startMs": 154,
+          "endMs": 359,
+          "bytes": 47620
+        },
+        {
+          "asset": "main.dart.js",
+          "startMs": 270,
+          "endMs": 6097,
+          "bytes": 5073433
+        }
+      ]
+    },
+    "limit": "One controlled loading observation; not a universal network or FPS guarantee."
+  }
 }

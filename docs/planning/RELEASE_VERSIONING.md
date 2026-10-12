@@ -1,6 +1,6 @@
 # Release and versioning
 
-Maintenance checkpoint: **12 October 2026**, frontend **0.7.0+11** and backend
+Maintenance started at frontend **0.7.0+11** and backend
 **0.12.0**. Components deploy independently. Historical reviews and manifests
 remain bound to their source commits; a documentation change does not replace
 that identity. See [release ledger](CONTROLLED_RELEASES.md).
@@ -79,5 +79,7 @@ build-stage evidence and a fresh run after repair.
 Official references: [Flutter Android](https://docs.flutter.dev/deployment/android),
 [Flutter iOS](https://docs.flutter.dev/deployment/ios),
 [GitHub manual runs](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow),
-[standard runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
-[LiveContainer](https://github.com/LiveContainer/LiveContainer).
+[standard runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+Use the [LiveContainer source instructions](../../README.md#use-unlabel) for
+Unlabel's verified hosted feed; the upstream project link was unavailable during
+the 12 October link audit.

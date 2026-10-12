@@ -1,0 +1,79 @@
+{
+  "schema_version": "1",
+  "generated_at_utc": "2026-10-12T13:38:26.064749+00:00",
+  "intent": "Distinct History and Saved empty-state illustrations; decorative, no product evidence.",
+  "constraints": [
+    "no botanical elements",
+    "no text or numerals",
+    "no product identity or health claims",
+    "complete silhouettes with transparent padding"
+  ],
+  "encoding": {
+    "format": "WebP",
+    "lossless": true,
+    "method": 6,
+    "exact": true,
+    "resize": "Entire canvas fits within 512x384; aspect ratio preserved, no crop.",
+    "resampling": "Pillow LANCZOS",
+    "alpha_preserved": true
+  },
+  "review": "Source and resized previews visually reviewed; different clock/report and bookmark/tray silhouettes.",
+  "assets": [
+    {
+      "purpose": "history",
+      "asset": "frontend/assets/artwork/history-empty.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-eeb01ff2-f94d-4ea2-afa4-a240b99f141e.png",
+      "source_copy": ".local-tools/empty-state-sources/history-empty.png",
+      "source_copy_tracked": false,
+      "source_sha256": "73a75d84166fa8b3ef95b20606a7475ed57def5e86cba6232f5d38327bd8a5d1",
+      "source_bytes": 1494728,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: compact food-label scanner app History empty-state illustration. Create a premium, softly lit 3D illustration on a genuinely transparent alpha background. Subject: a small neatly fanned stack of three cream-white food-label report cards, with simple embossed horizontal information lines and abstract barcode bars but absolutely no readable text or numerals. A small forest-green and mint analog clock with no numbers sits beside the stack, clearly suggesting recent scans. Materials: smooth matte cream paper, softly rounded corners, restrained mint highlights and forest-green details, subtle realistic contact shading. Composition: compact landscape approximately 3:2, three-quarter view, fully visible complete objects centered with generous transparent padding on every edge; legible at a 200x150 app slot. Quiet, warm, polished, gentle dimensionality matching a cream/forest/mint app. No leaves, no plants, no botanical shapes, no fruit or food props, no hearts, no health scores, no product branding, no UI buttons, no interface panels, no background disk, no solid backdrop, no floor plane, no text, no letters, no numerals, no watermark. Keep shadows subtle and transparent, not a boxed background.",
+      "sha256": "90b2a4f84492d5e52d6a089c042c1931fa940ab057afba84e1837035f29db806",
+      "bytes": 85190,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.557391,
+      "resized_rgba_equality_verified": true
+    },
+    {
+      "purpose": "saved",
+      "asset": "frontend/assets/artwork/saved-empty.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-0a196af3-9e25-4188-9cca-64be68d9a27f.png",
+      "source_copy": ".local-tools/empty-state-sources/saved-empty.png",
+      "source_copy_tracked": false,
+      "source_sha256": "1d0f997394999b13d027ee77c23fc84f7844f943dd0549ff16a32160538044aa",
+      "source_bytes": 1365752,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: compact food-label scanner app Saved empty-state illustration. Create a premium, softly lit 3D illustration on a genuinely transparent alpha background. Subject: one upright cream-white food-label report card with a prominent forest-green bookmark ribbon folded over its upper edge, standing in a small rounded pale-mint storage tray; a second thin cream card peeks from behind. The report card has only a few subtle embossed information lines and abstract barcode bars, absolutely no readable text or numerals. Distinct silhouette: tall bookmarked card in a low horizontal tray, no clock and no fanned report stack. Materials: smooth matte cream paper, soft mint ceramic-like tray, rounded corners, restrained forest-green ribbon, subtle realistic contact shading. Composition: compact landscape approximately 3:2, three-quarter view, fully visible complete objects centered with generous transparent padding on every edge; legible at a 200x150 app slot. Quiet, warm, polished, gentle dimensionality matching a cream/forest/mint app. No leaves, no plants, no botanical shapes, no clock, no fruit or food props, no hearts, no health scores, no product branding, no UI buttons, no interface panels, no background disk, no solid backdrop, no floor plane, no text, no letters, no numerals, no watermark. Keep shadows subtle and transparent, not a boxed background.",
+      "sha256": "b1d220be7653ee240b36739e55301fb170a4c9714831e14b8b4b9612d453bdbc",
+      "bytes": 56130,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.663816,
+      "resized_rgba_equality_verified": true
+    }
+  ]
+}

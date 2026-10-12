@@ -1,5 +1,28 @@
 # Unlabel interface contract
 
+12 October maintenance keeps component versions unchanged and applies the latest
+user references. The desktop Recent scans empty state has a larger complete
+package illustration, a spacious live-copy/action row and quiet mint botanicals;
+the phone stays compact. Home's desktop daily Insight illustration is larger,
+and the three supporting Insights cards stretch to the tallest natural row
+height without clipping enlarged text. Remove the floating leaf next to the
+Insights heading. History and Saved empty states have distinct report/clock and
+bookmark/tray illustrations, with no leaf substitute.
+
+404 recovery keeps the existing desktop sidebar/header and phone header/navbar.
+Desktop History and individual Insight readers use that same shell. Brand logos
+return Home. Sources follows the supplied desktop/phone reference: an illustrated
+introduction and separate source rows with real copy/link/detail actions, keeping
+unknowns and the limits of official guidance explicit. Public artwork uses sized
+WebP assets and nonblocking preloading; never delay navigation to reveal an image.
+No product photos or private records enter the decorative-image warmup.
+Later steering reduces the desktop Recent scans card to a 208 px natural minimum
+and removes padding below the four dots. History/Sources switch inside the fixed
+desktop shell; readers open without whole-shell motion. The 404 pre-app fallback
+shows loading, and its first Flutter frame already has the navigation shell.
+Logo hover enlarges slightly without a tooltip or layout shift. New section
+illustrations have separate purposes; unused artwork is removed from the bundle.
+
 9 October Insights references are implemented in frontend v0.7.0+11: one featured
 daily article, three distinct illustrated cards, topic filters, full articles and
 device-local saved insights. Desktop retains the sidebar/top bar and a saved/

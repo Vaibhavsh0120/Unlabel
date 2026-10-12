@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/models/app_failure.dart';
 import '../../../core/models/product_report.dart';
@@ -9,6 +10,7 @@ import '../../../core/storage/local_store.dart';
 import '../domain/insight_catalogue.dart';
 import '../domain/insight_controller.dart';
 import 'insights_page.dart';
+import 'app_shell.dart';
 import 'library_page.dart';
 import 'sources_page.dart';
 import 'ui_components.dart';
@@ -23,6 +25,7 @@ class HomePage extends StatefulWidget {
     required this.refreshKey,
     this.onCompare,
     this.onInsights,
+    this.onSources,
     this.insightController,
     this.desktop = false,
     super.key,
@@ -36,6 +39,7 @@ class HomePage extends StatefulWidget {
   final int refreshKey;
   final VoidCallback? onCompare;
   final VoidCallback? onInsights;
+  final VoidCallback? onSources;
   final InsightController? insightController;
   final bool desktop;
 
@@ -124,13 +128,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       return;
     }
     Navigator.of(context).push<void>(
-      MaterialPageRoute(builder: (_) => InsightsPage(controller: _insights)),
+      ShellContentRoute<void>(
+        context: context,
+        builder: (_) => InsightsPage(controller: _insights),
+      ),
     );
   }
 
-  void _showSources() =>
-      Navigator.of(context)
-          .push<void>(MaterialPageRoute(builder: (_) => const SourcesPage()));
+  void _showSources() {
+    if (widget.onSources != null) {
+      widget.onSources!();
+      return;
+    }
+    Navigator.of(context).push<void>(
+      ShellContentRoute<void>(
+        context: context,
+        builder: (_) => AppShellScope.wrap(context, const SourcesPage()),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) => PageBody(
@@ -246,6 +262,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       SectionTitle(
         'Recent scans',
         compact: widget.desktop,
+        topSpacing: 0,
         trailing: TextButton.icon(
           onPressed: () => widget.onLibrary(2),
           label: const Text('See all'),
@@ -400,10 +417,10 @@ class _ScanHero extends StatelessWidget {
         );
         final background = Image.asset(
           desktop
-              ? 'assets/artwork/desktop-scan-hero.png'
+              ? 'assets/artwork/desktop-scan-hero.webp'
               : dark
-              ? 'assets/artwork/scan-hero-dark.png'
-              : 'assets/artwork/scan-hero-light.png',
+              ? 'assets/artwork/scan-hero-dark.webp'
+              : 'assets/artwork/scan-hero-light.webp',
           key: const Key('home-hero-background'),
           fit: desktop ? BoxFit.cover : BoxFit.contain,
           alignment: Alignment.centerRight,
@@ -664,9 +681,12 @@ class _InsightCarouselState extends State<_InsightCarousel> {
   }
 
   void _openTip(InsightArticle tip) => Navigator.of(context).push<void>(
-    MaterialPageRoute(
-      builder: (_) =>
-          InsightArticlePage(article: tip, controller: widget.controller),
+    ShellContentRoute<void>(
+      context: context,
+      builder: (_) => AppShellScope.wrap(
+        context,
+        InsightArticlePage(article: tip, controller: widget.controller),
+      ),
     ),
   );
 
@@ -888,7 +908,7 @@ class _InsightCard extends StatelessWidget {
                     child: Image.asset(
                       tip.asset,
                       key: const Key('home-insight-art'),
-                      height: stacked ? 96 : 132,
+                      height: stacked ? 96 : 164,
                       fit: BoxFit.contain,
                       alignment: Alignment.centerRight,
                       excludeFromSemantics: true,
@@ -1112,82 +1132,164 @@ class _DesktopEmptyScans extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      key: const Key('desktop-empty-scans'),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.primaryContainer.withValues(alpha: .4),
-              theme.colorScheme.surface,
-              theme.colorScheme.surface,
-              theme.colorScheme.primaryContainer.withValues(alpha: .35),
-            ],
-            stops: const [0, .3, .8, 1],
+    final colors = theme.colorScheme;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stacked =
+            constraints.maxWidth < 760 ||
+            MediaQuery.textScalerOf(context).scale(14) > 21;
+        final artwork = SizedBox(
+          key: const Key('desktop-empty-scans-art'),
+          width: stacked ? 200 : 220,
+          height: stacked ? 140 : 176,
+          child: Image.asset(
+            'assets/artwork/recent-scans-empty.webp',
+            fit: BoxFit.contain,
+            excludeFromSemantics: true,
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              SizedBox(
-                key: const Key('desktop-empty-scans-art'),
-                width: 160,
-                height: 106,
-                child: Image.asset(
-                  'assets/artwork/desktop-empty-scans.png',
-                  fit: BoxFit.contain,
-                  excludeFromSemantics: true,
-                ),
+        );
+        final copy = Column(
+          key: const Key('desktop-empty-scans-content'),
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'No recent scans yet',
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontSize: 28,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
               ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  key: const Key('desktop-empty-scans-content'),
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'No recent scans yet',
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Start scanning products to see them here.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Start scanning products to see them here.',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                fontSize: 18,
+                color: colors.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Wrap(
+              spacing: 16,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                FilledButton.icon(
+                  key: const Key('desktop-empty-start-scan'),
+                  onPressed: onScan,
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(176, 56),
+                  ),
+                  icon: FeatureIcon(
+                    'scanner',
+                    size: 24,
+                    color: colors.onPrimary,
+                  ),
+                  label: const Text('Start Scan'),
+                ),
+                TextButton.icon(
+                  onPressed: onSaved,
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 56)),
+                  label: const Text('Browse saved products'),
+                  icon: const Icon(Icons.chevron_right),
+                  iconAlignment: IconAlignment.end,
+                ),
+              ],
+            ),
+          ],
+        );
+        return Card(
+          key: const Key('desktop-empty-scans'),
+          clipBehavior: Clip.antiAlias,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  colors.primaryContainer.withValues(alpha: .32),
+                  colors.surface,
+                  colors.surface,
+                  colors.primaryContainer.withValues(alpha: .28),
+                ],
+                stops: const [0, .3, .72, 1],
+              ),
+            ),
+            child: Stack(
+              children: [
+                if (!stacked) ...[
+                  Positioned(
+                    right: -64,
+                    bottom: -176,
+                    width: 450,
+                    height: 300,
+                    child: IgnorePointer(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: colors.primaryContainer.withValues(alpha: .2),
+                          borderRadius: BorderRadius.circular(240),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 8,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        FilledButton.icon(
-                          key: const Key('desktop-empty-start-scan'),
-                          onPressed: onScan,
-                          icon: const FeatureIcon(
-                            'scanner',
-                            color: Colors.white,
+                  ),
+                  Positioned(
+                    right: -28,
+                    bottom: -60,
+                    width: 220,
+                    height: 330,
+                    child: IgnorePointer(
+                      child: Transform.flip(
+                        flipX: true,
+                        child: SvgPicture.asset(
+                          'assets/artwork/recent-scans-botanical.svg',
+                          key: const Key('desktop-empty-scans-botanical'),
+                          fit: BoxFit.contain,
+                          colorFilter: ColorFilter.mode(
+                            colors.primary.withValues(
+                              alpha: theme.brightness == Brightness.dark
+                                  ? .18
+                                  : .12,
+                            ),
+                            BlendMode.srcIn,
                           ),
-                          label: const Text('Start Scan'),
+                          excludeFromSemantics: true,
                         ),
-                        TextButton.icon(
-                          onPressed: onSaved,
-                          label: const Text('Browse saved products'),
-                          icon: const Icon(Icons.chevron_right),
-                          iconAlignment: IconAlignment.end,
-                        ),
-                      ],
+                      ),
                     ),
-                  ],
+                  ),
+                ],
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 208),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                    child: stacked
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Center(child: artwork),
+                              const SizedBox(height: 20),
+                              copy,
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              artwork,
+                              const SizedBox(width: 32),
+                              Expanded(child: copy),
+                              SizedBox(
+                                width: constraints.maxWidth >= 1100 ? 120 : 72,
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

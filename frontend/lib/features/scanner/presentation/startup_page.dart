@@ -20,7 +20,7 @@ class StartupPage extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                'assets/artwork/splash-botanical.png',
+                'assets/artwork/splash-botanical.webp',
                 fit: BoxFit.cover,
                 cacheWidth: 900,
                 excludeFromSemantics: true,

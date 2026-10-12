@@ -44,7 +44,7 @@ sync is accepted only for the next v0.7.0/v0.2.0 scope.
 [23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
 [Subsequently implemented account plan](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
-API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
+API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).
 
 ## Storage and source
 

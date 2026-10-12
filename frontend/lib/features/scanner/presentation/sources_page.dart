@@ -1,201 +1,401 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'app_shell.dart';
 import 'ui_components.dart';
 
-class SourcesPage extends StatelessWidget {
-  const SourcesPage({super.key});
+const _sources = [
+  _SourceInfo(
+    id: 'facts',
+    summary: 'Every fact keeps its source. Unknowns stay visible.',
+    title: 'Facts with a source',
+    icon: 'shield',
+    artwork: 'assets/artwork/sources-facts.webp',
+    body: 'Your confirmed package, dated product records and reviewed food guidance. Missing information stays unknown; disagreements stay visible.',
+    detail: 'A report keeps the origin of a fact visible. Confirmed package facts and dated catalogue observations remain separate when they disagree.',
+  ),
+  _SourceInfo(
+    id: 'package',
+    summary: 'Facts confirmed from the label in your hand.',
+    title: 'Your current package',
+    icon: 'scanner',
+    artwork: 'assets/artwork/sources-package.webp',
+    body: 'Facts you check and confirm from your own label describe that package. Unlabel shows them separately from older catalogue records.',
+    detail: 'Check the product identity, package size and nutrition basis before confirming a fact. An older record does not establish what is on your current package.',
+  ),
+  _SourceInfo(
+    id: 'off',
+    summary: 'Open catalogue records with their source and date.',
+    title: 'Open Food Facts',
+    icon: Icons.public_outlined,
+    artwork: 'assets/artwork/sources-globe.webp',
+    body: 'An open catalogue of packaged foods. Product records can be incomplete or older than the package in your hand. Their source and date stay attached to the facts.',
+    url: 'https://world.openfoodfacts.org/',
+    detail: 'Use the package in your hand to check the record. Missing values remain unknown, and a catalogue record is not proof of the current label.',
+  ),
+  _SourceInfo(
+    id: 'fssai',
+    summary: 'Reviewed guidance, not official product approval.',
+    title: 'FSSAI guidance',
+    icon: 'shield',
+    artwork: 'assets/artwork/sources-guidance.webp',
+    body: 'The Food Safety and Standards Authority of India publishes food rules. Unlabel uses reviewed evidence for the specific claims it supports; this is not official product approval.',
+    url: 'https://www.fssai.gov.in/',
+    detail: 'Reviewed guidance supports specific explanations. Unlabel does not represent FSSAI or give an official compliance or product-approval verdict.',
+  ),
+  _SourceInfo(
+    id: 'codex',
+    summary: 'What supported additives do, without a health verdict.',
+    title: 'Codex ingredient functions',
+    icon: Icons.menu_book_outlined,
+    artwork: 'assets/artwork/sources-books.webp',
+    body: 'A small reviewed glossary explains the technological role of supported additives. It does not give a health or allergy verdict.',
+    url: 'https://www.fao.org/fao-who-codexalimentarius/en/',
+    detail: 'An ingredient function explains its technological role. It does not establish permission for every food category or whether a product suits your allergies.',
+  ),
+  _SourceInfo(
+    id: 'boundary',
+    summary: 'Missing facts stay unknown. Labels stay product-specific.',
+    title: 'A clear boundary for every fact',
+    icon: Icons.info_outline,
+    artwork: 'assets/artwork/sources-boundary.webp',
+    body: 'Generic food values do not fill gaps in a branded product’s label. These explanations do not replace professional advice.',
+    detail: 'Missing information is unknown, not zero. Unlabel does not turn incomplete evidence into a health, allergy-safety or compliance verdict.',
+  ),
+];
 
+class _SourceInfo {
+  const _SourceInfo({
+    required this.id,
+    required this.summary,
+    required this.title,
+    required this.body,
+    required this.icon,
+    required this.artwork,
+    required this.detail,
+    this.url,
+  });
+  final String id, title, body, artwork, detail;
+  final String summary;
+  final Object icon;
+  final String? url;
+}
+
+class SourcesPage extends StatelessWidget {
+  const SourcesPage({this.embedded = false, this.onBack, super.key});
+  final bool embedded;
+  final VoidCallback? onBack;
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Our Sources')),
-    body: const PageBody(
-      maxWidth: 760,
+  Widget build(BuildContext context) {
+    final desktop =
+        MediaQuery.sizeOf(context).width >= 1200 &&
+        MediaQuery.textScalerOf(context).scale(14) <= 21;
+    final body = PageBody(
+      maxWidth: 1440,
       children: [
-        _SourcesIntro(),
-        SizedBox(height: 28),
-        Card(
-          clipBehavior: Clip.antiAlias,
-          child: ExpansionTile(
-            title: Text('Read source details'),
-            tilePadding: EdgeInsets.all(20),
-            childrenPadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-            children: [
-              _Source(
-                title: 'Your current package',
-                body: 'Facts you check and confirm from your own label describe that package. Unlabel shows them separately from older catalogue records.',
-                icon: Icons.document_scanner_outlined,
-              ),
-              SizedBox(height: 16),
-              _Source(
-                title: 'Open Food Facts',
-                body: 'An open catalogue of packaged foods. Product records can be incomplete or older than the package in your hand. Their source and date stay attached to the facts.',
-                icon: Icons.public_outlined,
-                url: 'https://world.openfoodfacts.org/',
-              ),
-              SizedBox(height: 16),
-              _Source(
-                title: 'FSSAI guidance',
-                body: 'The Food Safety and Standards Authority of India publishes food rules. Unlabel uses reviewed evidence for the specific claims it supports; this is not official product approval.',
-                icon: Icons.verified_user_outlined,
-                url: 'https://www.fssai.gov.in/',
-              ),
-              SizedBox(height: 16),
-              _Source(
-                title: 'Codex ingredient functions',
-                body: 'A small reviewed glossary explains the technological role of supported additives. It does not give a health or allergy verdict.',
-                icon: Icons.menu_book_outlined,
-                url: 'https://www.fao.org/fao-who-codexalimentarius/en/',
-              ),
-              SizedBox(height: 16),
-              StatusNotice(
-                title: 'A clear boundary for every fact',
-                message: 'Generic food values do not fill gaps in a branded product’s label. These explanations do not replace professional advice.',
-                icon: Icons.info_outline,
-              ),
-            ],
+        _SourcesIntro(showHeading: embedded && desktop),
+        const SizedBox(height: 24),
+        for (final source in _sources) ...[
+          _SourceCard(source),
+          if (source != _sources.last) const SizedBox(height: 12),
+        ],
+      ],
+    );
+    return embedded ? body : ShellPage(title: 'Our Sources', body: body);
+  }
+}
+
+class _SourcesIntro extends StatelessWidget {
+  const _SourcesIntro({this.showHeading = false});
+  final bool showHeading;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final theme = Theme.of(context);
+      final compact = constraints.maxWidth < 600;
+      final stacked =
+          constraints.maxWidth < 330 ||
+          MediaQuery.textScalerOf(context).scale(14) > 21;
+      final copy = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (showHeading) ...[
+            Text('Our Sources', style: theme.textTheme.headlineLarge),
+            const SizedBox(height: 8),
+          ],
+          Text(
+            'Trusted sources, clear information',
+            style: compact
+                ? theme.textTheme.titleLarge
+                : theme.textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'We combine data from reliable and well-known sources to bring you product facts and food guidance. Here’s where our information comes from.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: compact ? 12 : 14,
+              height: 1.4,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      );
+      final art = _SourceArtwork(
+        asset: 'assets/artwork/sources-intro.webp',
+        width: compact ? 112 : 280,
+        height: compact ? 128 : 160,
+      );
+      return stacked
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                copy,
+                const SizedBox(height: 8),
+                Align(alignment: Alignment.centerRight, child: art),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(child: copy),
+                const SizedBox(width: 16),
+                art,
+              ],
+            );
+    },
+  );
+}
+
+class _SourceCard extends StatelessWidget {
+  const _SourceCard(this.source);
+  final _SourceInfo source;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final theme = Theme.of(context);
+      final compact = constraints.maxWidth < 600;
+      final stacked =
+          constraints.maxWidth < 330 ||
+          MediaQuery.textScalerOf(context).scale(14) > 21;
+      final copy = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            source.title,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontSize: compact ? 14 : 16,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            source.summary,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: compact ? 12 : 14,
+              height: 1.4,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          if (source.url != null && !compact) ...[
+            const SizedBox(height: 8),
+            SelectableText(source.url!, style: theme.textTheme.bodySmall),
+            _CopySourceLink(url: source.url!, id: source.id),
+          ],
+        ],
+      );
+      final details = IconButton(
+        key: Key('source-details-${source.id}'),
+        tooltip: 'Read ${source.title} details',
+        onPressed: () => _showSourceDetails(context, source),
+        icon: Icon(Icons.chevron_right, color: theme.colorScheme.primary),
+      );
+      final art = _SourceArtwork(
+        asset: source.artwork,
+        width: compact ? 112 : 172,
+        height: compact ? 112 : 104,
+      );
+      return Card(
+        key: Key('source-card-${source.id}'),
+        color: source.id == 'facts'
+            ? theme.colorScheme.primaryContainer.withValues(alpha: .24)
+            : null,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: compact ? Key('source-details-${source.id}') : null,
+          onTap: () => _showSourceDetails(context, source),
+          child: Padding(
+            padding: EdgeInsets.all(compact ? 12 : 20),
+            child: stacked
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          _SourceIcon(source.icon, compact: compact),
+                          const Spacer(),
+                          if (!compact) details,
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      copy,
+                      Align(alignment: Alignment.centerRight, child: art),
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _SourceIcon(source.icon, compact: compact),
+                      SizedBox(width: compact ? 8 : 24),
+                      Expanded(child: copy),
+                      SizedBox(width: compact ? 4 : 16),
+                      art,
+                      if (!compact) details,
+                    ],
+                  ),
           ),
         ),
-      ],
+      );
+    },
+  );
+}
+
+class _SourceIcon extends StatelessWidget {
+  const _SourceIcon(this.icon, {required this.compact});
+  final Object icon;
+  final bool compact;
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      width: compact ? 48 : 56,
+      height: compact ? 48 : 56,
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: scheme.outlineVariant),
+      ),
+      alignment: Alignment.center,
+      child: icon is String
+          ? FeatureIcon(icon as String, size: 28)
+          : Icon(icon as IconData, size: 28, color: scheme.primary),
+    );
+  }
+}
+
+class _SourceArtwork extends StatelessWidget {
+  const _SourceArtwork({
+    required this.asset,
+    required this.width,
+    required this.height,
+  });
+  final String asset;
+  final double width, height;
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: IgnorePointer(
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Image.asset(
+          asset,
+          fit: BoxFit.contain,
+          excludeFromSemantics: true,
+        ),
+      ),
     ),
   );
 }
 
-class _SourcesIntro extends StatelessWidget {
-  const _SourcesIntro();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final stacked =
-              constraints.maxWidth < 330 ||
-              MediaQuery.textScalerOf(context).scale(14) > 21;
-          final compact = constraints.maxWidth < 560;
-          final copy = Padding(
-            padding: compact && !stacked
-                ? const EdgeInsets.fromLTRB(20, 20, 8, 20)
-                : const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FeatureIcon('shield', size: compact ? 24 : 32),
-                const SizedBox(height: 12),
-                Text(
-                  'Facts with a source',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontSize: compact ? 20 : null,
+Future<void> _showSourceDetails(BuildContext context, _SourceInfo source) =>
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      constraints: const BoxConstraints(maxWidth: 640),
+      sheetAnimationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : null,
+      builder: (context) => SafeArea(
+        top: false,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * .8,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    source.title,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Your confirmed package, dated product records and reviewed food guidance. Missing information stays unknown; disagreements stay visible.',
-                  style:
-                      (compact
-                              ? theme.textTheme.bodyMedium
-                              : theme.textTheme.bodyLarge)
-                          ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                ),
-              ],
-            ),
-          );
-          final art = CornerArtwork(
-            asset: 'assets/artwork/botanical-corner.png',
-            height: stacked
-                ? 120
-                : compact
-                ? 160
-                : 180,
-            scale: 1,
-          );
-          return stacked
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    copy,
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: FractionallySizedBox(widthFactor: .5, child: art),
+                  const SizedBox(height: 16),
+                  Text(source.body),
+                  const SizedBox(height: 16),
+                  Text(source.detail),
+                  if (source.url != null) ...[
+                    const SizedBox(height: 16),
+                    SelectableText(source.url!),
+                    _CopySourceLink(url: source.url!, id: '${source.id}-sheet'),
+                  ],
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Close'),
                     ),
-                  ],
-                )
-              : Row(
-                  children: [
-                    Expanded(flex: 6, child: copy),
-                    Expanded(flex: 4, child: art),
-                  ],
-                );
-        },
-      ),
-    );
-  }
-}
-
-class _Source extends StatelessWidget {
-  const _Source({
-    required this.title,
-    required this.body,
-    required this.icon,
-    this.url,
-  });
-  final String title;
-  final String body;
-  final IconData icon;
-  final String? url;
-
-  Future<void> _copyLink(BuildContext context) async {
-    try {
-      await Clipboard.setData(ClipboardData(text: url!));
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Source link copied')));
-      }
-    } on PlatformException {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Could not copy the link. Select the address to copy it.',
+                  ),
+                ],
+              ),
             ),
           ),
-        );
-      }
+        ),
+      ),
+    );
+
+class _CopySourceLink extends StatefulWidget {
+  const _CopySourceLink({required this.url, required this.id});
+  final String url, id;
+  @override
+  State<_CopySourceLink> createState() => _CopySourceLinkState();
+}
+
+class _CopySourceLinkState extends State<_CopySourceLink> {
+  String? _feedback;
+  Future<void> _copy() async {
+    try {
+      await Clipboard.setData(ClipboardData(text: widget.url));
+      if (!mounted) return;
+      setState(() => _feedback = 'Source link copied');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Source link copied')));
+    } on PlatformException {
+      if (!mounted) return;
+      setState(
+        () => _feedback = 'Could not copy. Select the address to copy it.',
+      );
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SectionCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: theme.colorScheme.primary, size: 30),
-          const SizedBox(height: 16),
-          Text(title, style: theme.textTheme.titleLarge),
-          const SizedBox(height: 8),
-          Text(
-            body,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              height: 1.5,
-            ),
-          ),
-          if (url != null) ...[
-            const SizedBox(height: 16),
-            SelectableText(url!, style: theme.textTheme.bodyMedium),
-            const SizedBox(height: 8),
-            TextButton.icon(
-              onPressed: () => _copyLink(context),
-              icon: const Icon(Icons.copy_outlined, size: 18),
-              label: const Text('Copy website link'),
-            ),
-          ],
-        ],
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      TextButton.icon(
+        key: Key('source-copy-${widget.id}'),
+        onPressed: _copy,
+        style: TextButton.styleFrom(padding: EdgeInsets.zero),
+        icon: const Icon(Icons.copy_outlined, size: 16),
+        label: const Text('Copy website link'),
       ),
-    );
-  }
+      if (_feedback != null)
+        Semantics(
+          liveRegion: true,
+          child: Text(_feedback!, style: Theme.of(context).textTheme.bodySmall),
+        ),
+    ],
+  );
 }

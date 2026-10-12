@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-12",
+  "purpose": "Decorative Sources illustrations; no official endorsement, logos or product evidence",
+  "assets": [
+    {
+      "asset": "assets/artwork/sources-intro.webp",
+      "description": "Open book with a botanical branch and source symbols",
+      "generation": "Built-in image_gen, generated for the 12 October 2026 Sources reference redesign",
+      "generation_output": "exec-086d7880-1576-426a-890b-a8a3a5c0c7f4.png",
+      "original_sha256": "e516109b35281bdc3c3ee7ab6f258b7291ab1d2b988839b79478d47d1a94113f",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "delivery_dimensions": [
+        512,
+        384
+      ],
+      "sha256": "512f12564b8aec22ea1126864e98479cbc6b9df78da142e764b0ef3d10f51bd2",
+      "bytes": 43098,
+      "encoding": "WebP quality 90, method 6, exact transparent RGB; entire canvas resized without cropping",
+      "decorative_only": true
+    },
+    {
+      "asset": "assets/artwork/sources-globe.webp",
+      "description": "Globe with a restrained botanical surround",
+      "generation": "Built-in image_gen, generated for the 12 October 2026 Sources reference redesign",
+      "generation_output": "exec-94210f59-f4fe-4e5a-8e35-9fcb8dcbfd49.png",
+      "original_sha256": "42453838650141322a55eff1326dd5a3f8644291d4226e594593ed50e25ba267",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "delivery_dimensions": [
+        512,
+        384
+      ],
+      "sha256": "7c1e9cfe0b11bb2bfec35797bc38564ec2e46f09f23fd762df981e625ceb4976",
+      "bytes": 48366,
+      "encoding": "WebP quality 90, method 6, exact transparent RGB; entire canvas resized without cropping",
+      "decorative_only": true
+    },
+    {
+      "asset": "assets/artwork/sources-guidance.webp",
+      "description": "Generic guidance document with shield, without an official seal",
+      "generation": "Built-in image_gen, generated for the 12 October 2026 Sources reference redesign",
+      "generation_output": "exec-cfea8784-19dd-4b6c-94d9-2369fd3ad135.png",
+      "original_sha256": "1c2e18261de3133a9e1726442812630000ec8936dbd315ce366f8d937c58b6de",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "delivery_dimensions": [
+        512,
+        384
+      ],
+      "sha256": "2ecc672fc5bf5b8bb17c184b82d330d9038d2df94a03915f215b610121c87455",
+      "bytes": 24138,
+      "encoding": "WebP quality 90, method 6, exact transparent RGB; entire canvas resized without cropping",
+      "decorative_only": true
+    },
+    {
+      "asset": "assets/artwork/sources-books.webp",
+      "description": "Stack of source books with botanical details",
+      "generation": "Built-in image_gen, generated for the 12 October 2026 Sources reference redesign",
+      "generation_output": "exec-11aae681-1658-43ac-b2bf-430e0c879425.png",
+      "original_sha256": "2849a69c3c83d075d647be4f4bd638448a21d462c50904f369ede249d065e53d",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "delivery_dimensions": [
+        512,
+        384
+      ],
+      "sha256": "6bfb5d0cefc561ecf93802cdb72bad6d9591f3be2a54d480963f01cf903ae5c5",
+      "bytes": 39626,
+      "encoding": "WebP quality 90, method 6, exact transparent RGB; entire canvas resized without cropping",
+      "decorative_only": true
+    },
+    {
+      "asset": "assets/artwork/sources-boundary.webp",
+      "description": "Wooden signpost expressing the boundaries of evidence",
+      "generation": "Built-in image_gen, generated for the 12 October 2026 Sources reference redesign",
+      "generation_output": "exec-e7b77ee4-17c0-492a-90db-4beb453b42ae.png",
+      "original_sha256": "37c1f6166bab34e7e4366ea69980fb4d4e3318e732da05ca5fd651c935a6d714",
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "delivery_dimensions": [
+        512,
+        384
+      ],
+      "sha256": "d9196e399a2d42f0cf3ba05875333a6ed01f963dda60f9607f51efbdb2c3148b",
+      "bytes": 44924,
+      "encoding": "WebP quality 90, method 6, exact transparent RGB; entire canvas resized without cropping",
+      "decorative_only": true
+    }
+  ]
+}

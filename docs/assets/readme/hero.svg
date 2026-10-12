@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Read the label. Know what's inside.</title>
+  <desc id="desc">Unlabel's forest-green typography on mint, with an illustrated food packet, barcode and leaf. Decorative artwork, not product evidence.</desc>
+  <rect width="1200" height="360" rx="28" fill="#E9F3EC"/>
+  <circle cx="1055" cy="160" r="206" fill="#D9EBDD"/>
+  <path d="M800 360C861 284 982 280 1200 323V360Z" fill="#CCE2D1"/>
+  <g fill="#163D31" font-family="Segoe UI,Arial,sans-serif" font-weight="700">
+    <text x="56" y="136" font-size="78" letter-spacing="-3">Read the label.</text>
+    <text x="56" y="222" font-size="70" letter-spacing="-2.8">Know what's inside.</text>
+  </g>
+  <text x="60" y="285" fill="#365B4A" font-family="Segoe UI,Arial,sans-serif" font-size="25">Sourced facts. Clear explanations. Visible unknowns.</text>
+  <g transform="translate(878 44) rotate(8 102 136)">
+    <rect x="0" y="0" width="202" height="274" rx="18" fill="#FCFBF3" stroke="#A5BFAE" stroke-width="2"/>
+    <path d="M1 32H201M1 241H201" stroke="#D1DACB" stroke-width="2"/>
+    <path d="M82 109C64 63 101 45 145 46C146 89 119 116 90 111Z" fill="#286B4B"/>
+    <path d="M76 123C91 91 108 76 130 61" fill="none" stroke="#FCFBF3" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="37" y="139" width="127" height="9" rx="4.5" fill="#285442"/>
+    <rect x="37" y="158" width="97" height="6" rx="3" fill="#AAC2B0"/>
+    <rect x="37" y="173" width="116" height="6" rx="3" fill="#AAC2B0"/>
+    <g stroke="#385A47" stroke-width="3"><path d="M39 202V224M46 202V224M57 202V224M64 202V224M74 202V224M85 202V224M92 202V224M103 202V224M114 202V224M121 202V224M131 202V224M141 202V224M152 202V224M161 202V224"/></g>
+  </g>
+  <g fill="none" stroke="#367C55" stroke-width="4" stroke-linecap="round"><path d="M850 88V59H879M1095 59H1124V88M850 279V308H879M1095 308H1124V279"/></g>
+  <path d="M1123 226C1088 200 1100 158 1147 140C1167 183 1157 216 1123 226Z" fill="#75A884"/>
+  <path d="M1118 240C1125 214 1132 189 1143 160" fill="none" stroke="#426B4F" stroke-width="3" stroke-linecap="round"/>
+</svg>

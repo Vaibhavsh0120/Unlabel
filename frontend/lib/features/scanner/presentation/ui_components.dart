@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Decorative artwork fits inside a reserved box, including its motion inset.
-/// It never owns a gesture or accessibility node and pauses outside the viewport.
+/// It never owns a gesture or accessibility node and pauses while scrolling or
+/// outside the viewport.
 class CornerArtwork extends StatefulWidget {
   const CornerArtwork({
     required this.asset,
@@ -43,8 +44,10 @@ class _CornerArtworkState extends State<CornerArtwork>
     final position = Scrollable.maybeOf(context)?.position;
     if (position != _position) {
       _position?.removeListener(_updateMotion);
+      _position?.isScrollingNotifier.removeListener(_updateMotion);
       _position = position;
       _position?.addListener(_updateMotion);
+      _position?.isScrollingNotifier.addListener(_updateMotion);
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateMotion());
   }
@@ -63,21 +66,31 @@ class _CornerArtworkState extends State<CornerArtwork>
 
   void _updateMotion() {
     if (!mounted) return;
+    final enabled =
+        widget.animate &&
+        _foreground &&
+        TickerMode.valuesOf(context).enabled &&
+        !MediaQuery.disableAnimationsOf(context);
+    if (!enabled) {
+      _motion.stop();
+      _motion.value = 0;
+      return;
+    }
+    if (_position?.isScrollingNotifier.value ?? false) {
+      // Keep the current pose while dragging or coasting. The notifier resumes
+      // motion at idle; offset updates need no viewport work during scrolling.
+      _motion.stop();
+      return;
+    }
     final box = context.findRenderObject();
     var visible = false;
     if (box is RenderBox && box.hasSize && box.attached) {
       final rect = box.localToGlobal(Offset.zero) & box.size;
       visible = rect.overlaps(Offset.zero & MediaQuery.sizeOf(context));
     }
-    final enabled =
-        widget.animate &&
-        _foreground &&
-        visible &&
-        TickerMode.valuesOf(context).enabled &&
-        !MediaQuery.disableAnimationsOf(context);
-    if (enabled && !_motion.isAnimating) {
+    if (visible && !_motion.isAnimating) {
       _motion.repeat();
-    } else if (!enabled) {
+    } else if (!visible) {
       _motion.stop();
       _motion.value = 0;
     }
@@ -86,6 +99,7 @@ class _CornerArtworkState extends State<CornerArtwork>
   @override
   void dispose() {
     _position?.removeListener(_updateMotion);
+    _position?.isScrollingNotifier.removeListener(_updateMotion);
     WidgetsBinding.instance.removeObserver(this);
     _motion.dispose();
     super.dispose();
@@ -262,15 +276,25 @@ class BusyNotice extends StatelessWidget {
 }
 
 class SectionTitle extends StatelessWidget {
-  const SectionTitle(this.title, {this.trailing, this.compact = false, super.key});
+  const SectionTitle(
+    this.title, {
+    this.trailing,
+    this.compact = false,
+    this.topSpacing,
+    super.key,
+  });
 
   final String title;
   final Widget? trailing;
   final bool compact;
+  final double? topSpacing;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(top: compact ? 12 : 28, bottom: compact ? 8 : 16),
+    padding: EdgeInsets.only(
+      top: topSpacing ?? (compact ? 12 : 28),
+      bottom: compact ? 8 : 16,
+    ),
     child: Wrap(
       alignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,

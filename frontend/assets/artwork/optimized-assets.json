@@ -1,0 +1,968 @@
+{
+  "schema_version": "1",
+  "source_git_revision": "6fe7037a12b9d595c98a85c94f6b9e8b4fbfc01e",
+  "encoding": {
+    "format": "WebP",
+    "profiles": {
+      "decorative_delivery": {
+        "asset_count": 10,
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true,
+        "resize": "Per-asset aspect fit, no crop; exact alpha versus resized original."
+      },
+      "insights": {
+        "asset_count": 20,
+        "lossless": true,
+        "method": 6,
+        "exact": true,
+        "preserve_dimensions": true,
+        "decoded_rgba_equality_verified": true
+      }
+    }
+  },
+  "source_bytes": 15806186,
+  "bytes": 2875132,
+  "assets": [
+    {
+      "source": "frontend/assets/artwork/desktop-scan-hero.png",
+      "asset": "frontend/assets/artwork/desktop-scan-hero.webp",
+      "dimensions": [
+        1728,
+        576
+      ],
+      "source_bytes": 1689460,
+      "bytes": 68046,
+      "source_sha256": "497cf524a3dd0324d4a6f43f3e79e45e30c46ea89d80c636149228bf4fde15e7",
+      "sha256": "3cb1572c9650f210afb32a9bb7478c6c6b49e17a58f860d13e5d590816a9ddea",
+      "rgba_identical": false,
+      "source_dimensions": [
+        2172,
+        724
+      ],
+      "previous_lossless_webp_sha256": "18a40970ad9c381e4e6e2415688d69eb8250fc4a3355987340e8a2e246ff238e",
+      "previous_lossless_webp_bytes": 1103228,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 42.553,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1728,
+          576
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/added-sugar.png",
+      "asset": "frontend/assets/artwork/insights/added-sugar.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 126123,
+      "bytes": 86564,
+      "source_sha256": "e7e7181473b384e8283fa8e3e31f134779afeefdbc701a06128cad0ae9eef0a5",
+      "sha256": "a8efcc10c31fcdaec3a0237442e63d7c75af08c05734d2483b0b9b282238f9bb",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/additive-functions.png",
+      "asset": "frontend/assets/artwork/insights/additive-functions.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 183503,
+      "bytes": 133118,
+      "source_sha256": "2580e1bb86e957d502511851d2370c11e9095113a635a09de5e1b1d8340738f7",
+      "sha256": "4070e99324c6e6b006586e7d161c848c9a6717e63666c04d94c57b55d4f60389",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/allergen-statements.png",
+      "asset": "frontend/assets/artwork/insights/allergen-statements.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 199115,
+      "bytes": 139014,
+      "source_sha256": "5a0e57c5c58e308cec30d7a112e5ccbe53fc923b988bf7e1f4173b9f96de19a0",
+      "sha256": "fc8937d5690f0823b233c55758549d0c6aac161fdfa9b9690ef7add7417f9ca9",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/claim-check.png",
+      "asset": "frontend/assets/artwork/insights/claim-check.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 156531,
+      "bytes": 104382,
+      "source_sha256": "b1ea4ce923fe3ae0ba70be695dbc7d944b1d08b46a9a70fe81b796457a4aa17f",
+      "sha256": "0bbacee4fe404dbbfeaf0198b4c2e067727781c9ae80f10a5eacdc55d713b98f",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/everyday-swaps.png",
+      "asset": "frontend/assets/artwork/insights/everyday-swaps.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 169617,
+      "bytes": 120948,
+      "source_sha256": "e2bcdada67722d3054422f965ebce8cd5d3f25e49b1a45499b99e699c23e403c",
+      "sha256": "bc4256d64121dd324900fe3e85b72b5eda0c9471f1b4c96711f366839281271d",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/fibre-foods.png",
+      "asset": "frontend/assets/artwork/insights/fibre-foods.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 167429,
+      "bytes": 121284,
+      "source_sha256": "6355c2608a0e1c7a788e809a9283a3bb7a97698bf9e045c83761ebefb2bc2af9",
+      "sha256": "d032221494caf58c1f1814f07a22d23a86b6f6d43ac4f9a6e59a5f9ff023a0ca",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/fibre-labels.png",
+      "asset": "frontend/assets/artwork/insights/fibre-labels.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 197518,
+      "bytes": 140186,
+      "source_sha256": "ea3ab1e4b3ff030b982b8d489abd790c48ac166bad5598149aa3969407486354",
+      "sha256": "d324e1b57e867307d4732f4e51e6a3011cf16a6fbe5b236a4c21350cf74258f2",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/front-back-labels.png",
+      "asset": "frontend/assets/artwork/insights/front-back-labels.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 141566,
+      "bytes": 97616,
+      "source_sha256": "7568bbc1f6a15ee604ce1531e34334a115313ce77954697bbd8671a2394d5859",
+      "sha256": "819ac07a837db5aa130a7be513df728ad5aa4d9301a07ebc816997be7145f60e",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/ingredient-order.png",
+      "asset": "frontend/assets/artwork/insights/ingredient-order.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 124485,
+      "bytes": 86092,
+      "source_sha256": "f6969261f87db927061ed5e15a60daa96727bc035b354b5d92d855f04905133a",
+      "sha256": "8d9514877b520b8a15e1eba416174dc76dd1789dad29e9804a73daf7e5a9fc4b",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/no-added-sugar.png",
+      "asset": "frontend/assets/artwork/insights/no-added-sugar.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 127868,
+      "bytes": 92292,
+      "source_sha256": "b93b33c9d1ac4a038a0896d8252de728b0e096b4cbabd7763e19d995843f6d9d",
+      "sha256": "d1695de1372b83c905377febbd6cbd9fa15fdb5aa5f6f4d1c4df3536370c420f",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/protein-basics.png",
+      "asset": "frontend/assets/artwork/insights/protein-basics.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 137102,
+      "bytes": 100892,
+      "source_sha256": "e93079ed84dd2bcb319f94a3e7d5d549a736eace795d3a23325dae82c2aef975",
+      "sha256": "82747f97c7e1f6aa8f28562605c65cbda5d1cccf9ff3290484ff078f6395e706",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/protein-portions.png",
+      "asset": "frontend/assets/artwork/insights/protein-portions.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 141961,
+      "bytes": 101114,
+      "source_sha256": "b26561e64909725f71ac33d85d02f5ed1d47878fca45ee63d0502b6bc0182e87",
+      "sha256": "498313a39a95e17c439f27b1dcad055419d98b95ecd191e44877d5502bd7491f",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/same-amount.png",
+      "asset": "frontend/assets/artwork/insights/same-amount.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 132126,
+      "bytes": 97720,
+      "source_sha256": "9764dbf5ca35e83e5963ddec2c214177ee66b3455cb347ba4b2e5f335f25f862",
+      "sha256": "2ac0689b9acaf0a1a25b44030bb44433e130a00fb92c5099eb37d39fa5d57ff3",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/serving-size.png",
+      "asset": "frontend/assets/artwork/insights/serving-size.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 117172,
+      "bytes": 84950,
+      "source_sha256": "5d8f9a856eca1a88b15f73be56014d6f299451ae5b4b1b9aa36025a3139276e8",
+      "sha256": "bdd0951dd2b33a3d2b95a2c664e024fb0153c6b43ad63e88607289bada4507af",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/snack-portions.png",
+      "asset": "frontend/assets/artwork/insights/snack-portions.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 131619,
+      "bytes": 94938,
+      "source_sha256": "62f88e540ed1550331bce43ae9a17f6701743ed69387984f26fc7d4549cff1cf",
+      "sha256": "cc5b45e6de99c4f1f5e6240550704d28a2cfb9b862446d1656b759bab47a42f7",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/sodium-salt.png",
+      "asset": "frontend/assets/artwork/insights/sodium-salt.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 165050,
+      "bytes": 111644,
+      "source_sha256": "18bd0c2a4d0e8a487cbfabdb98b9702111b9020981cac0e1c2d3f36d68e87763",
+      "sha256": "00b89806e6b896bbc206329e2b2c26f64610b6969865ca2911e7f373c38caae9",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/sugar-names.png",
+      "asset": "frontend/assets/artwork/insights/sugar-names.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 186683,
+      "bytes": 142454,
+      "source_sha256": "383d1593504c11d11cdab7c9f630cdd8c8141dc10d0e3d4ea60e4559e92c5f5c",
+      "sha256": "0b396b56fda962b401655bdd8557d0b204f934baa739dce824c98db57e389f62",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/sugary-drinks.png",
+      "asset": "frontend/assets/artwork/insights/sugary-drinks.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 139852,
+      "bytes": 106784,
+      "source_sha256": "b5a70623747d67f8c5233423250ebf70a1596aa732ca77be535fd7875f9e1d65",
+      "sha256": "a2fd15f80c3346d47243db784598ada6f1511395f6acf981e1a9c5f57c58e311",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/total-sugar.png",
+      "asset": "frontend/assets/artwork/insights/total-sugar.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 203664,
+      "bytes": 143232,
+      "source_sha256": "eb9e6471a4079d5f535a0ed84707b24edaacadc0f7503bccdfe57dbb70814e22",
+      "sha256": "4231d6dd80008e9ee44feaf93653847b1e51e5dd117c66175a34ce633c7679ff",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/insights/whole-grains.png",
+      "asset": "frontend/assets/artwork/insights/whole-grains.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 225833,
+      "bytes": 168192,
+      "source_sha256": "aa69a4ee3a96333f80a838e9deabed839f9bf087c7d2bfc99bc571cc9d28d345",
+      "sha256": "b2b723eb01c8dbb1fcb3ba939b567b9487d217ac6c5e926b01e1f0e185edb6be",
+      "rgba_identical": true,
+      "encoding": {
+        "format": "WebP",
+        "lossless": true,
+        "method": 6,
+        "exact": true
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/profile-avatar.png",
+      "asset": "frontend/assets/artwork/profile-avatar.webp",
+      "dimensions": [
+        384,
+        384
+      ],
+      "source_bytes": 1457880,
+      "bytes": 21960,
+      "source_sha256": "48797712123dc0ad933d8d4e58291739f343b22abacfd52b1d42c9926449b9bd",
+      "sha256": "ee42c691b8ed2632952661aa42ce2ed381b77e60574bfac6773212eb8d8d1f2d",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "previous_lossless_webp_sha256": "30f29d16c98ff0912f23c93fa12c58f76df3a41975cb9c96f1507362c7d56f49",
+      "previous_lossless_webp_bytes": 844402,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 40.277,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          384,
+          384
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/profile-botanical.png",
+      "asset": "frontend/assets/artwork/profile-botanical.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 953930,
+      "bytes": 46138,
+      "source_sha256": "b2221f7daf6f63e55ddc53c98f73f6e484e1ba02d2c6c89077c8f8831fd38687",
+      "sha256": "145dcafdb5e5767c9dee92af16307595ff70f959d6d166ef31344db449c5c771",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "previous_lossless_webp_sha256": "710cc250b72c242d39d2e314cf3a0a7576b9a381fc3e2630427718aff43bc152",
+      "previous_lossless_webp_bytes": 587674,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 37.697,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          512,
+          512
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/results-botanical.png",
+      "asset": "frontend/assets/artwork/results-botanical.webp",
+      "dimensions": [
+        1440,
+        480
+      ],
+      "source_bytes": 536920,
+      "bytes": 57432,
+      "source_sha256": "50018a4e1dd7fbca11cdb302e2d7e9c6c420592d0060131fa6c4217a976a2751",
+      "sha256": "9051822d78386b9e3a0527774e1442026d2d0dd7d622a113fde76058fcee0d30",
+      "rgba_identical": false,
+      "source_dimensions": [
+        2172,
+        724
+      ],
+      "previous_lossless_webp_sha256": "ed6d9640e61327e513398083d0079c8d6e3aa5365a71493a7980d3600969291a",
+      "previous_lossless_webp_bytes": 322096,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 40.835,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1440,
+          480
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/scan-hero-dark.png",
+      "asset": "frontend/assets/artwork/scan-hero-dark.webp",
+      "dimensions": [
+        1280,
+        640
+      ],
+      "source_bytes": 2018186,
+      "bytes": 88652,
+      "source_sha256": "71211363e363b1025100384fd8716575ff1e2026759980ea8bd8a0fa0bd30431",
+      "sha256": "fb1cb95ce9016e6c2f081a1f87cfb057705fbf90dbea90ccdff0b984ef8e8e3d",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1774,
+        887
+      ],
+      "previous_lossless_webp_sha256": "f5aef73a7ac5a78d01656e49696e3e327f3c33b47727398c4001ab1f18f8adcd",
+      "previous_lossless_webp_bytes": 1311390,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 41.968,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1280,
+          640
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/scan-hero-light.png",
+      "asset": "frontend/assets/artwork/scan-hero-light.webp",
+      "dimensions": [
+        1280,
+        640
+      ],
+      "source_bytes": 2003773,
+      "bytes": 86562,
+      "source_sha256": "3ae23be9daf49118804374902c2ab6bc4bdadc13037c81f3f5a428317a86a352",
+      "sha256": "464a03f2e815f9addcb445b740ae7dae2d1f9619d88cc1137657b8079b895f58",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1774,
+        887
+      ],
+      "previous_lossless_webp_sha256": "b26df8e0e5bb5fbeee3f17b840e7082849e56a336f34265fceb54aa3ad01ae56",
+      "previous_lossless_webp_bytes": 1295968,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 41.243,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1280,
+          640
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/sidebar-mint-leaves.png",
+      "asset": "frontend/assets/artwork/sidebar-mint-leaves.webp",
+      "dimensions": [
+        512,
+        765
+      ],
+      "source_bytes": 454998,
+      "bytes": 33880,
+      "source_sha256": "3cbf0e2a79e542f14de6d6b79fec5e8435dbc9a75801fd5c5ca7268bf29f9b4b",
+      "sha256": "d9ac5ac658388f34d904d238a36c5702b35f6198fa73f6a0be649aa7bdb3478e",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1026,
+        1532
+      ],
+      "previous_lossless_webp_sha256": "0ecca3e6345355261bdd583f8d3a330e6128b7987884c65db712881a058a6bcc",
+      "previous_lossless_webp_bytes": 270836,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 41.585,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          512,
+          768
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/splash-botanical.png",
+      "asset": "frontend/assets/artwork/splash-botanical.webp",
+      "dimensions": [
+        768,
+        1365
+      ],
+      "source_bytes": 1305771,
+      "bytes": 32516,
+      "source_sha256": "b62382569a2eee2c5b77c872a4c10492141a0fbbc85a09f000faf6925385a41f",
+      "sha256": "2c3126855dbdd92ba95cbc25399fa493a13246aeac41318450df357ae90e63ea",
+      "rgba_identical": false,
+      "source_dimensions": [
+        941,
+        1672
+      ],
+      "previous_lossless_webp_sha256": "834d7bc7c90acd567d1d6a3339ac0745fe5f47f7335596239a1e0e03d6c98bba",
+      "previous_lossless_webp_bytes": 808480,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 45.774,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          768,
+          1365
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/sugar-cubes.png",
+      "asset": "frontend/assets/artwork/sugar-cubes.webp",
+      "dimensions": [
+        512,
+        256
+      ],
+      "source_bytes": 1009291,
+      "bytes": 31760,
+      "source_sha256": "6e4095b123f8059ef2e117bd0e8f6997e3632784a76bad2dcb46cc1f29aab6fa",
+      "sha256": "7c8f2eedba46d1872aec6d1bdff516a11c40342983521ab19c37b7b67add8c56",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1774,
+        887
+      ],
+      "previous_lossless_webp_sha256": "8ece7dfe347fbc2aab72ed54a610f0dfe38eb3dd3c2562332bc6c17d67bcf69a",
+      "previous_lossless_webp_bytes": 645658,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 38.439,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          512,
+          256
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    },
+    {
+      "source": "frontend/assets/artwork/welcome-scan-package.png",
+      "asset": "frontend/assets/artwork/welcome-scan-package.webp",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "source_bytes": 1201160,
+      "bytes": 134770,
+      "source_sha256": "aae2a399b29faf1b32581803fc2cf0bdb04aaec36edd1c01c3055f3e254c58a0",
+      "sha256": "9b6098d52a2d1929e2f1ac4ce5cbac1cea11c1e505848a26c2b59df3302638b2",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "previous_lossless_webp_sha256": "bdd2fdcddf7b756540a1471f17306914c8d1f02110c63f6490dfed96253f3e54",
+      "previous_lossless_webp_bytes": 735308,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 40.323,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1024,
+          1024
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      }
+    }
+  ],
+  "lossless_before_bytes": 14585068,
+  "delivery_review": {
+    "original_png_recovery": "source_git_revision plus each source path/source_sha256; original hashes retained.",
+    "comparison": "Ignored .local-tools/artwork-delivery-{light,dark}.png compare full silhouettes at display slots.",
+    "new_history_and_saved": "Separate empty-state-generation.json; unchanged lossless WebP."
+  },
+  "removed_unused_assets": [
+    {
+      "source": "frontend/assets/artwork/desktop-empty-scans.png",
+      "asset": "frontend/assets/artwork/desktop-empty-scans.webp",
+      "dimensions": [
+        768,
+        512
+      ],
+      "source_bytes": 2107491,
+      "bytes": 73236,
+      "source_sha256": "c170cde9874c42861a2b1a10856fe0e46fab1ac9b814b9b510d1ee3515f38498",
+      "sha256": "edfc36ad3175764211003ed36253fd97187178bdf0ff39568951bf0d0f4db517",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "previous_lossless_webp_sha256": "5253dabd3e84903c5f2903410b3e7685f5b3684bc34f7191583a78eb6e6c6bac",
+      "previous_lossless_webp_bytes": 1311838,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 37.132,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          768,
+          512
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      },
+      "reason": "No current runtime caller; removed at user request, original recoverable from source_git_revision."
+    },
+    {
+      "source": "frontend/assets/artwork/desktop-insight-banner.png",
+      "asset": "frontend/assets/artwork/desktop-insight-banner.webp",
+      "dimensions": [
+        1440,
+        480
+      ],
+      "source_bytes": 1837292,
+      "bytes": 250786,
+      "source_sha256": "7935cb0e93e2e43f873980c84a127d0f2a2915de547825d63b25285d33a9e6f5",
+      "sha256": "d97e055a50f92ccbcad7cbfac86282aeebc8b2c14b89f2378e415cf773ff3d7d",
+      "rgba_identical": false,
+      "source_dimensions": [
+        2172,
+        724
+      ],
+      "previous_lossless_webp_sha256": "3f2da7724132b9f393c27ef5294e41cddf9ac9e914edefe38a446f010d2e2236",
+      "previous_lossless_webp_bytes": 1257646,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 34.462,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          1440,
+          480
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      },
+      "reason": "No current runtime caller; removed at user request, original recoverable from source_git_revision."
+    },
+    {
+      "source": "frontend/assets/artwork/label-leaf.png",
+      "asset": "frontend/assets/artwork/label-leaf.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 1663324,
+      "bytes": 49928,
+      "source_sha256": "e48b859e3e591e9cbeea06da8271bfa6520d76c9014af46bd0ff06d5ead9f1f0",
+      "sha256": "fa9af485e2c58e7f6648b13059826f7bdd693a90055310c2b8510da2660dc476",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "previous_lossless_webp_sha256": "031b28acbb8bc899d534eb9e1f852fdc647bb02172cf144f3ef0d8014501c95b",
+      "previous_lossless_webp_bytes": 1045952,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 35.539,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          512,
+          512
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      },
+      "reason": "No current runtime caller; removed at user request, original recoverable from source_git_revision."
+    },
+    {
+      "source": "frontend/assets/artwork/botanical-corner.png",
+      "asset": "frontend/assets/artwork/botanical-corner.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "source_bytes": 1238071,
+      "bytes": 55316,
+      "source_sha256": "0167ee9683683f957e5c46aba33fed0e39072eb08c1b895d4b1ae4b96af88e93",
+      "sha256": "974b148eca6e010b940d479baa0044316495dd8f0a694c718e87506c50df87ec",
+      "rgba_identical": false,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "previous_lossless_webp_sha256": "086c2a7f98023d139a2e12096b1cb373d8b7371723ef9a06a4c3d829715161eb",
+      "previous_lossless_webp_bytes": 771176,
+      "alpha_identical_to_resized_source": true,
+      "visible_rgb_psnr_db": 35.469,
+      "psnr_reference": "RGB of resized original; source alpha >= 128; 3 channels; peak 255.",
+      "encoding": {
+        "format": "WebP",
+        "lossless": false,
+        "quality": 90,
+        "alpha_quality": 100,
+        "method": 6,
+        "exact": true
+      },
+      "resize": {
+        "bounds": [
+          512,
+          512
+        ],
+        "aspect_ratio_preserved": true,
+        "crop": false,
+        "resampling": "Pillow LANCZOS"
+      },
+      "reason": "Exact leafy branch removed everywhere at user request."
+    }
+  ]
+}

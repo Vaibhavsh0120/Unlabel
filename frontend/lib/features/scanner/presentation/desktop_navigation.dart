@@ -50,7 +50,7 @@ class DesktopNavigation extends StatelessWidget {
                   child: Opacity(
                     opacity: .7,
                     child: Image.asset(
-                      'assets/artwork/sidebar-mint-leaves.png',
+                      'assets/artwork/sidebar-mint-leaves.webp',
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -63,34 +63,38 @@ class DesktopNavigation extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(28, 18, 20, 28),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Flexible(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Unlabel',
-                                  style: theme.textTheme.headlineLarge
-                                      ?.copyWith(
-                                        fontSize: 36,
-                                        color: colors.primary,
-                                      ),
+                    child: BrandHomeButton(
+                      key: const Key('desktop-brand-home'),
+                      onPressed: () => onSelect(0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Unlabel',
+                                    style: theme.textTheme.headlineLarge
+                                        ?.copyWith(
+                                          fontSize: 36,
+                                          color: colors.primary,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 4),
-                            const BrandLeaf(size: 30),
-                          ],
-                        ),
-                        Text(
-                          'Know Beyond the Label',
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ],
+                              const SizedBox(width: 4),
+                              const BrandLeaf(size: 30),
+                            ],
+                          ),
+                          Text(
+                            'Know Beyond the Label',
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -313,7 +317,7 @@ class DesktopTopBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     ClipOval(
                       child: Image.asset(
-                        'assets/artwork/profile-avatar.png',
+                        'assets/artwork/profile-avatar.webp',
                         width: 44,
                         height: 44,
                         fit: BoxFit.cover,

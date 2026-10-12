@@ -1,7 +1,51 @@
+## Current optimized assets — 12 October 2026
+
+The 30 preceding illustrations still used by screens total 2,875,132 bytes,
+compared with 15,806,186 bytes for their original PNGs (81.81% smaller). Ten large
+decorations use WebP quality 90 and display-appropriate dimensions; the entire
+canvas is resized with its aspect ratio preserved and no crop. Their alpha
+channels exactly match the resized originals. All 20 Insight images retain
+lossless WebP, their original dimensions and every decoded RGBA pixel.
+
+The two distinct [History and Saved illustrations](empty-state-generation.json)
+are additional lossless WebP assets, 512×341 pixels and 141,320 bytes combined.
+Platform icons remain PNG. Four unused assets were removed after the user asked
+for a complete artwork-use audit: desktop-insight-bowl.png, desktop-insight-banner.webp,
+desktop-empty-scans.webp and label-leaf.webp. The prohibited botanical-corner
+branch was also removed everywhere. Historical bytes remain in Git.
+
+[Optimization manifest](optimized-assets.json) records original PNG paths/hashes,
+current WebP paths/hashes, byte counts, per-asset encoding and dimensions, and the
+source Git revision. Original PNGs remain recoverable from that revision.
+For the ten resized decorations, it also records preceding lossless WebP
+hashes and RGB PSNR against each resized original (34.462–45.774 dB, measured
+over pixels with source alpha at least 128). Exact alpha equality and before/after
+light/dark reviews complement that compression metric. The generation descriptions
+and original hashes below are historical provenance; they do not identify current
+WebP file bytes. No illustration was cropped or had its content replaced.
+
+To reproduce with Pillow, open the original at the manifest's source revision
+and convert to RGBA. For an Insight, save with `lossless=True, method=6,
+exact=True` and compare decoded RGBA bytes. For a delivery decoration, apply
+`thumbnail(bounds, Image.Resampling.LANCZOS)` using its recorded bounds, then save
+with `quality=90, alpha_quality=100, lossless=False, method=6, exact=True`.
+Compare dimensions and decoded alpha bytes, and review the image at its display
+size. The two new library illustrations have their own generation provenance.
+
+Sources has seven distinct new illustrations; its five introductory/source
+images are recorded in [Sources provenance](sources-generation.json), with two
+additional cards in [redesigned-state provenance](redesigned-state-generation.json).
+The latter also records fresh Recent scans and 404 illustrations. No decorative
+asset is shared between unrelated screens. The newly authored
+[Recent scans botanical SVG](recent-scans-botanical.svg) is exclusive to that card.
+The same product identity/avatar, app logo or article image stays consistent
+where that same entity appears in navigation, a preview or its reader.
+
 > Maintenance, 12 October 2026: unreferenced breakfast-leaf.png and
 > welcome-garden.png were removed from the current bundle. Their generation
 > provenance below records historical assets recoverable from older Git revisions.
-> desktop-insight-bowl.png remains because dated hosted hash receipts reference it.
+> Later unused-artwork cleanup also removed desktop-insight-bowl.png from the
+> current bundle. Dated receipts still identify its recoverable historical bytes.
 
 # Unlabel decorative artwork
 

@@ -35,7 +35,7 @@ PY
 flutter pub get --enforce-lockfile
 python3 ../scripts/generate_app_icons.py --check
 python3 ../scripts/vendor_web_ocr.py --check
-node --test test/local_ocr_web_test.cjs
+node --test test/*_web_test.cjs
 flutter analyze
 flutter test
 flutter build web --release \

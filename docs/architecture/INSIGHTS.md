@@ -76,7 +76,11 @@ The catalogue is a versioned, bundled Dart collection. To change an article,
 review its source, update its copy and date, preserve its stable ID, retain the
 existing bookmarks and run the content/controller/UI checks. New artwork must
 match its article, have a unique subject and keep a complete transparent
-silhouette. The [generation manifest](../../frontend/assets/artwork/insights/generation-manifest.json)
+silhouette. On 12 October the runtime images were converted to lossless WebP,
+preserving every decoded RGBA pixel and the original dimensions. Current hashes
+and recoverable PNG source identities are in the
+[optimization manifest](../../frontend/assets/artwork/optimized-assets.json).
+The historical [generation manifest](../../frontend/assets/artwork/insights/generation-manifest.json)
 records exact prompts, dimensions and SHA-256 hashes. No image-generation API,
 provider credential or billing dependency ships in the app.
 

@@ -123,7 +123,7 @@ void main() {
 
   for (final width in [1440.0, 1728.0]) {
     testWidgets(
-      'desktop compact artwork keeps copy and actions together at $width',
+      'desktop empty card gives illustration and actions space at $width',
       (tester) async {
         var scans = 0;
         int? destination;
@@ -140,15 +140,21 @@ void main() {
         final scan = find.byKey(const Key('desktop-empty-start-scan'));
         expect(desktop, findsOneWidget);
         expect(find.byKey(const Key('mobile-empty-scans')), findsNothing);
-        expect(tester.getSize(art), const Size(160, 106));
-        expect(tester.getSize(desktop).height, lessThanOrEqualTo(180));
-        expect(tester.getRect(content).left - tester.getRect(art).right, 20);
+        expect(tester.getSize(art).width, greaterThanOrEqualTo(220));
+        expect(tester.getSize(art).height, greaterThanOrEqualTo(176));
+        expect(tester.getSize(desktop).height, inInclusiveRange(208, 240));
+        expect(tester.getRect(content).left - tester.getRect(art).right, 32);
+        expect(tester.getRect(content).overlaps(tester.getRect(art)), isFalse);
+        expect(
+          find.byKey(const Key('desktop-empty-scans-botanical')),
+          findsOneWidget,
+        );
         final illustration = tester.widget<Image>(
-          find.descendant(of: desktop, matching: find.byType(Image)),
+          find.descendant(of: art, matching: find.byType(Image)),
         );
         expect(
           (illustration.image as AssetImage).assetName,
-          'assets/artwork/desktop-empty-scans.png',
+          'assets/artwork/recent-scans-empty.webp',
         );
         await tester.ensureVisible(scan);
         await tester.tap(scan);
@@ -157,6 +163,12 @@ void main() {
         await tester.tap(find.text('Browse saved products'));
         await tester.pump();
         expect(destination, 1);
+        await tester.ensureVisible(
+          find.widgetWithText(TextButton, 'See all').last,
+        );
+        await tester.tap(find.widgetWithText(TextButton, 'See all').last);
+        await tester.pump();
+        expect(destination, 2);
         expect(tester.takeException(), isNull);
       },
     );
@@ -168,6 +180,10 @@ void main() {
     var scans = 0;
     await _pumpHome(tester, desktop: true, scale: 2, onScan: () => scans++);
     final scan = find.byKey(const Key('desktop-empty-start-scan'));
+    expect(
+      tester.getSize(find.byKey(const Key('desktop-empty-scans'))).height,
+      greaterThan(208),
+    );
     await tester.ensureVisible(scan);
     await tester.tap(scan);
     await tester.pump();

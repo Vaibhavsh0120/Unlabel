@@ -5,9 +5,14 @@ Configured on 5 October 2026. Both existing projects stay connected to `Vaibhavs
 | Part | Project | Public production URL | Root |
 | --- | --- | --- | --- |
 | Website | `unlabel-frontend` | [unlabel-india.vercel.app](https://unlabel-india.vercel.app) | `frontend` |
-| Backend | `unlabel-backend` | [unlabel-api.vercel.app](https://unlabel-api.vercel.app) | `backend` |
+| Backend | `unlabel-backend` | [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs) | `backend` |
 
-The new `vercel.app` domains are verified free aliases, not purchased domains. Existing aliases remain attached, including `unlabel-frontend.vercel.app` and `unlabel-backend-pied.vercel.app`. Vercel Authentication protects preview deployments; production is public so ordinary browser/native requests do not require a Vercel account. AI remains disabled.
+The `vercel.app` domains are free aliases. Existing aliases remain attached,
+including `unlabel-frontend.vercel.app` and `unlabel-backend-pied.vercel.app`.
+Vercel Authentication protects preview deployments; production is public.
+Optional AI extraction follows the active server configuration and explicit
+transfer consent. Dated deployment/configuration notes below are historical;
+see [AI routing](../architecture/AI_ROUTING.md) for the current boundary.
 
 ## Website settings
 

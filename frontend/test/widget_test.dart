@@ -429,7 +429,8 @@ void main() {
       await tester.pumpAndSettle();
       await _tapVisible(tester, find.text('History').last);
       await tester.pumpAndSettle();
-      expect(find.text('Your history'), findsOneWidget);
+      expect(find.text('History'), findsOneWidget);
+      expect(find.text('Your history'), findsNothing);
       await tester.tap(find.text('Synthetic oats'));
       await tester.pumpAndSettle();
       expect(find.text('Dated catalogue facts'), findsOneWidget);

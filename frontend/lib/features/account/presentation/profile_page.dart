@@ -454,7 +454,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Opacity(
                       opacity: .38,
                       child: Image.asset(
-                        'assets/artwork/profile-botanical.png',
+                        'assets/artwork/profile-botanical.webp',
                         cacheWidth: 512,
                         fit: BoxFit.contain,
                       ),
@@ -500,7 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Opacity(
                     opacity: .5,
                     child: Image.asset(
-                      'assets/artwork/profile-botanical.png',
+                      'assets/artwork/profile-botanical.webp',
                       cacheWidth: 512,
                       fit: BoxFit.contain,
                     ),
@@ -516,7 +516,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       MediaQuery.textScalerOf(context).scale(14) > 21;
                   final avatar = ExcludeSemantics(
                     child: Image.asset(
-                      'assets/artwork/profile-avatar.png',
+                      'assets/artwork/profile-avatar.webp',
                       cacheWidth: 256,
                       width: largeText ? 72 : 88,
                       height: largeText ? 72 : 88,

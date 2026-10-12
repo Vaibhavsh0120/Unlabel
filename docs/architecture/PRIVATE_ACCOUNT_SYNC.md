@@ -109,8 +109,8 @@ guest/local reading or justify upgrading billing automatically.
 - [Failure schema](../../contracts/schemas/personal-sync-failure-v1.schema.json)
 
 The original SDK implementation decisions were checked against the official
-[Firebase Admin Python token verifier](https://github.com/firebase/firebase-admin-python/blob/main/_autodocs/api-reference/auth.md)
-and [Firestore Python transaction implementation](https://github.com/googleapis/python-firestore/blob/main/google/cloud/firestore_v1/transaction.py)
+[Firebase Admin Python token verifier](https://firebase.google.com/docs/reference/admin/python/firebase_admin.auth)
+and [Firestore Python transaction implementation](https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-firestore/google/cloud/firestore_v1/transaction.py)
 through Context7. The reviewed existing transaction helper supplies explicit
 three-second RPC deadlines and at most three contention attempts; failures never
 fall back to local server files. UI/client timeouts can be shorter than a

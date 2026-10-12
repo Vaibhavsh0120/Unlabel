@@ -14,10 +14,12 @@ class LibraryPage extends StatefulWidget {
     required this.onLookup,
     required this.onChanged,
     required this.refreshKey,
+    this.showTitle = true,
     super.key,
   });
 
   final bool saved;
+  final bool showTitle;
   final LocalStore store;
   final ValueChanged<ProductReport> onOpenReport;
   final VoidCallback onLookup;
@@ -154,11 +156,13 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) => PageBody(
     children: [
-      Text(
-        widget.saved ? 'Saved products' : 'Your history',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-      const SizedBox(height: 12),
+      if (widget.showTitle) ...[
+        Text(
+          widget.saved ? 'Saved products' : 'Your history',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 12),
+      ],
       const Text(
         'Stored on this device. These reports are snapshots of what you viewed.',
       ),
@@ -193,6 +197,9 @@ class _LibraryPageState extends State<LibraryPage> {
         )
       else if (_items.isEmpty)
         LibraryEmptyState(
+          asset: widget.saved
+              ? 'assets/artwork/saved-empty.webp'
+              : 'assets/artwork/history-empty.webp',
           title: widget.saved
               ? 'Keep a useful label close'
               : 'No labels viewed yet',
@@ -335,6 +342,7 @@ class StoredProductPhoto extends StatelessWidget {
 
 class LibraryEmptyState extends StatelessWidget {
   const LibraryEmptyState({
+    required this.asset,
     required this.title,
     required this.message,
     required this.action,
@@ -342,6 +350,7 @@ class LibraryEmptyState extends StatelessWidget {
   });
 
   final String title;
+  final String asset;
   final String message;
   final Widget action;
 
@@ -352,38 +361,80 @@ class LibraryEmptyState extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final stacked =
-              constraints.maxWidth < 560 ||
-              MediaQuery.textScalerOf(context).scale(14) > 21;
+          final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+          final mobile = constraints.maxWidth < 560;
+          final guidance = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 12),
+              Text(
+                message,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          );
+          if (mobile) {
+            final stacked = constraints.maxWidth < 320 || largeText;
+            return Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (stacked) ...[
+                    guidance,
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 208,
+                        child: CornerArtwork(
+                          asset: asset,
+                          height: 180,
+                          animate: false,
+                        ),
+                      ),
+                    ),
+                  ] else
+                    Row(
+                      children: [
+                        Expanded(child: guidance),
+                        const SizedBox(width: 16),
+                        SizedBox(
+                          width: 144,
+                          child: CornerArtwork(
+                            asset: asset,
+                            height: 180,
+                            animate: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 20),
+                  if (stacked)
+                    SizedBox(width: double.infinity, child: action)
+                  else
+                    action,
+                ],
+              ),
+            );
+          }
           final copy = Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: theme.textTheme.titleLarge),
-                const SizedBox(height: 12),
-                Text(
-                  message,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                action,
-              ],
+              children: [guidance, const SizedBox(height: 20), action],
             ),
           );
-          const art = CornerArtwork(
-            asset: 'assets/artwork/botanical-corner.png',
-            height: 180,
-            scale: 1.28,
-          );
-          return stacked
+          final art = CornerArtwork(asset: asset, height: 180);
+          return largeText
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     copy,
-                    const Align(
+                    Align(
                       alignment: Alignment.bottomRight,
                       child: FractionallySizedBox(widthFactor: .65, child: art),
                     ),
@@ -392,7 +443,7 @@ class LibraryEmptyState extends StatelessWidget {
               : Row(
                   children: [
                     Expanded(flex: 6, child: copy),
-                    const Expanded(flex: 4, child: art),
+                    Expanded(flex: 4, child: art),
                   ],
                 );
         },

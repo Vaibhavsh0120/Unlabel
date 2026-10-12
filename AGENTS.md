@@ -4,10 +4,13 @@
 
 - Work directly on main only; do not create a branch or worktree. Preserve teammate
   edits, licensed sources, historical tags and published assets. Update docs before push.
-- Checkpoint, 12 October 2026: frontend 0.7.0+11 and backend 0.12.0. The current task
-  is maintenance without new features or a version bump. Canonical versions are
+- The maintenance/UI repairs ship as a frontend patch after the user's later
+  release instruction; backend runtime stays unchanged. Canonical versions are
   frontend/pubspec.yaml and backend/pyproject.toml; scripts/workspace.json pins
   Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
+- Current UI/release proof belongs to docs/planning/FRONTEND_V0_7_1_REVIEW.md.
+  Keep the desktop shell stationary for History/Sources; readers have no whole-shell
+  desktop transition. New illustrations stay exclusive to their section.
 - Source identities are in docs/planning/CONTROLLED_RELEASES.md and
   contracts/versioning/releases.json. Frontend feature implementation 8b5f9064 and
   backend implementation 39e600e remain distinct from later maintenance/docs commits.

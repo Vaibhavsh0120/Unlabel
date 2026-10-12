@@ -1,11 +1,12 @@
 # Clone, restore, run
 
-Checkpoint **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
+Current versions: [frontend pubspec](../../frontend/pubspec.yaml) and
+[backend pyproject](../../backend/pyproject.toml).
 Setup restores pinned dependencies and verifies committed source bundles.
 Guests can use the public catalogue/local libraries with safe defaults; optional
 account sync and photo extraction require their configured server services.
-Versions come from pubspec.yaml and pyproject.toml. No feature/version update is
-part of [the current maintenance pass](MAINTENANCE_2026_10_12.md).
+Versions come from pubspec.yaml and pyproject.toml. The UI maintenance patch adds
+no new product features; see [the audit](MAINTENANCE_2026_10_12.md).
 
 ## Quick start
 

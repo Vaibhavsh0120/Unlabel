@@ -50,6 +50,121 @@ InsightController _controller({_MemoryPreferences? preferences}) =>
     _TestController(preferences: preferences ?? _MemoryPreferences());
 
 void main() {
+  for (final width in [1440.0, 1728.0]) {
+    testWidgets(
+      'desktop daily support cards share natural row height at $width',
+      (tester) async {
+        tester.view.physicalSize = Size(width, 1400);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final controller = _controller();
+        addTearDown(controller.dispose);
+        await tester.pumpWidget(
+          _app(
+            Scaffold(
+              body: Row(
+                children: [
+                  const SizedBox(width: 240),
+                  Expanded(
+                    child: InsightsPage(controller: controller, embedded: true),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final cards = controller.daily
+            .skip(1)
+            .map((article) => find.byKey(Key('insight-card-${article.id}')))
+            .toList();
+        final heights = cards
+            .map((card) => tester.getSize(card).height)
+            .toList();
+        expect(heights[1], closeTo(heights[0], .01));
+        expect(heights[2], closeTo(heights[0], .01));
+        final badges = controller.daily
+            .skip(1)
+            .map(
+              (article) =>
+                  tester.getRect(find.byKey(Key('insight-read-${article.id}'))),
+            )
+            .toList();
+        expect(badges[1].bottom, closeTo(badges[0].bottom, .01));
+        expect(badges[2].bottom, closeTo(badges[0].bottom, .01));
+        for (final article in controller.daily.skip(1)) {
+          final card = tester.getRect(
+            find.byKey(Key('insight-card-${article.id}')),
+          );
+          expect(
+            tester.getRect(find.text(article.summary)).bottom,
+            lessThan(card.bottom),
+          );
+          final badge = tester.getRect(
+            find.byKey(Key('insight-read-${article.id}')),
+          );
+          final image = tester.getRect(
+            find.byKey(Key('insight-art-${article.id}')),
+          );
+          final copy = tester.getRect(
+            find.byKey(Key('insight-copy-${article.id}')),
+          );
+          expect(card.bottom - badge.bottom, closeTo(12, .01));
+          expect(image.center.dy, closeTo(copy.center.dy, .01));
+          final contentCenter = (card.top + 12 + badge.top - 12) / 2;
+          expect(image.center.dy, closeTo(contentCenter, .01));
+          expect(
+            tester
+                .getSize(find.byKey(Key('insight-save-${article.id}')))
+                .height,
+            greaterThanOrEqualTo(44),
+          );
+        }
+        expect(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is Image &&
+                widget.image is AssetImage &&
+                (widget.image as AssetImage).assetName ==
+                    'assets/artwork/botanical-corner.webp',
+          ),
+          findsNothing,
+        );
+        // The additional space on a shorter card remains part of its action.
+        await tester.tapAt(
+          tester.getRect(cards.last).bottomCenter - const Offset(0, 16),
+        );
+        await tester.pumpAndSettle();
+        expect(
+          tester
+              .widget<InsightArticlePage>(find.byType(InsightArticlePage))
+              .article
+              .id,
+          controller.daily.last.id,
+        );
+        await tester.pageBack();
+        await tester.pumpAndSettle();
+        final article = controller.daily[1];
+        await tester.tap(find.byKey(Key('insight-save-${article.id}')));
+        await tester.pumpAndSettle();
+        expect(controller.isSaved(article.id), isTrue);
+        await tester.tap(cards.first.first);
+        await tester.pumpAndSettle();
+        expect(find.byType(InsightArticlePage), findsOneWidget);
+        expect(
+          tester
+              .widget<InsightArticlePage>(find.byType(InsightArticlePage))
+              .article
+              .id,
+          article.id,
+        );
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  }
+
   testWidgets('Insights offers a daily feed and topic navigation', (
     tester,
   ) async {

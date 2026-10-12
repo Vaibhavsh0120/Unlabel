@@ -49,7 +49,7 @@ class InsightArticle {
   final List<InsightSection> sections;
   final String takeaway;
   final List<InsightSource> sources;
-  String get asset => 'assets/artwork/insights/$id.png';
+  String get asset => 'assets/artwork/insights/$id.webp';
   String get reviewedOn => '9 October 2026';
 }
 

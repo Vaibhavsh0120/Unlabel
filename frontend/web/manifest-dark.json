@@ -3,7 +3,7 @@
   "short_name": "Unlabel",
   "start_url": ".",
   "display": "standalone",
-  "description": "Unlabel \u2014 read sourced food labels and keep reports on this device.",
+  "description": "Read ingredients, nutrition and source-linked food-label insights. Compare available product facts and keep scan reports on your device.",
   "orientation": "any",
   "prefer_related_applications": false,
   "icons": [

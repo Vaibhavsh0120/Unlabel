@@ -714,7 +714,7 @@ class _SugarReality extends StatelessWidget {
         final artwork = SizedBox(
           width: wide ? 150 : 100,
           child: CornerArtwork(
-            asset: 'assets/artwork/sugar-cubes.png',
+            asset: 'assets/artwork/sugar-cubes.webp',
             height: wide ? 120 : 88,
             animate: false,
           ),

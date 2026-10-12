@@ -12,8 +12,10 @@ import '../core/network/scanner_auth.dart';
 import '../core/network/unlabel_repository.dart';
 import '../core/storage/local_store.dart';
 import '../core/widgets/brand_mark.dart';
+import 'artwork_warmup.dart';
 import '../features/account/presentation/profile_page.dart';
 import '../features/scanner/presentation/compare_page.dart';
+import '../features/scanner/presentation/app_shell.dart';
 import '../features/scanner/presentation/home_page.dart';
 import '../features/scanner/presentation/desktop_navigation.dart';
 import '../features/scanner/presentation/insights_page.dart';
@@ -28,13 +30,16 @@ import '../features/scanner/presentation/product_search_page.dart';
 import '../features/scanner/presentation/product_results_layout.dart';
 import '../features/scanner/presentation/report_page.dart';
 import '../features/scanner/presentation/scan_landing_page.dart';
+import '../features/scanner/presentation/sources_page.dart';
 import '../features/scanner/presentation/startup_page.dart';
 import '../features/scanner/presentation/ui_components.dart';
 import '../features/scanner/presentation/welcome_page.dart';
 import 'build_info.dart';
 import 'firebase_options.dart';
+import 'not_found_page.dart';
 import 'unlabel_theme.dart';
 import 'web_appearance.dart';
+import 'web_route.dart';
 
 class UnlabelApp extends StatefulWidget {
   const UnlabelApp({
@@ -56,6 +61,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
   ThemeMode _themeMode = ThemeMode.light;
   int _appearanceRevision = 0;
   bool _loading = true, _welcome = true;
+  bool _missingPageRecovered = false;
   late final UnlabelRepository _repository;
   late final LocalStore _store;
   late final AccountController _account;
@@ -139,7 +145,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
         _themeMode = ThemeMode.values.byName(appearance);
         setWebAppearance(appearance);
       }
-      _welcome = welcome;
+      _welcome = welcome && !_missingPageRecovered;
       _loading = false;
     });
   }
@@ -199,25 +205,61 @@ class _UnlabelAppState extends State<UnlabelApp> {
     theme: UnlabelTheme.forBrightness(Brightness.light),
     darkTheme: UnlabelTheme.forBrightness(Brightness.dark),
     themeMode: _themeMode,
-    home: _loading
-        ? kIsWeb
-              ? const Scaffold()
-              : const StartupPage()
-        : _welcome
-        ? WelcomePage(
-            onContinue: () => unawaited(_continue()),
-            onSignIn: () => unawaited(_welcomeSignIn()),
-          )
-        : _ClientHome(
-            key: ValueKey(_identity ?? 'guest'),
-            repository: _repository,
-            store: _account.activeStore,
-            account: _account,
-            libraryRevision: _libraryRevision,
-            themeMode: _themeMode,
-            onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
-          ),
+    initialRoute: isMissingWebPage ? '/not-found' : null,
+    builder: (context, child) => ArtworkWarmup(
+      welcome: _welcome,
+      child: _RootPageScope(buildPage: _rootPage, child: child!),
+    ),
+    onGenerateInitialRoutes: (name) => [_pageRoute(RouteSettings(name: name))],
+    onGenerateRoute: _pageRoute,
   );
+
+  Route<void> _pageRoute(RouteSettings settings) {
+    // Recovery belongs to the route, not to the account-keyed client state.
+    // A fresh unknown route must still show its own missing-page screen.
+    var missing = settings.name != '/';
+    return MaterialPageRoute<void>(
+      settings: settings,
+      builder: (context) => _RootPageScope.of(context).buildPage(missing, () {
+        missing = false;
+        // Entering the app from recovery stays on Home on later rebuilds.
+        _missingPageRecovered = true;
+        if (_welcome) setState(() => _welcome = false);
+      }),
+    );
+  }
+
+  Widget _rootPage(bool missing, VoidCallback onRecovered) =>
+      _loading && !missing && !_missingPageRecovered
+      ? kIsWeb
+            ? const Scaffold()
+            : const StartupPage()
+      : _welcome && !missing
+      ? WelcomePage(
+          onContinue: () => unawaited(_continue()),
+          onSignIn: () => unawaited(_welcomeSignIn()),
+        )
+      : _ClientHome(
+          key: ValueKey(_identity ?? 'guest'),
+          repository: _repository,
+          store: _account.activeStore,
+          account: _account,
+          libraryRevision: _libraryRevision,
+          themeMode: _themeMode,
+          onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
+          showNotFound: missing,
+          onMissingPageRecovered: onRecovered,
+        );
+}
+
+/// Keeps routed shells current when appearance, restored state or identity changes.
+class _RootPageScope extends InheritedWidget {
+  const _RootPageScope({required this.buildPage, required super.child});
+  final Widget Function(bool missing, VoidCallback onRecovered) buildPage;
+  static _RootPageScope of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_RootPageScope>()!;
+  @override
+  bool updateShouldNotify(_RootPageScope oldWidget) => true;
 }
 
 class _ClientHome extends StatefulWidget {
@@ -228,6 +270,8 @@ class _ClientHome extends StatefulWidget {
     required this.libraryRevision,
     required this.themeMode,
     required this.onThemeModeChanged,
+    required this.onMissingPageRecovered,
+    this.showNotFound = false,
     super.key,
   });
   final UnlabelRepository repository;
@@ -236,12 +280,16 @@ class _ClientHome extends StatefulWidget {
   final int libraryRevision;
   final ThemeMode themeMode;
   final ValueChanged<ThemeMode> onThemeModeChanged;
+  final VoidCallback onMissingPageRecovered;
+  final bool showNotFound;
   @override
   State<_ClientHome> createState() => _ClientHomeState();
 }
 
 class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
-  int _tab = 0, _refreshKey = 0;
+  late int _tab = widget.showNotFound ? -1 : 0;
+  int _sourcesPreviousTab = 0;
+  int _refreshKey = 0;
   bool _searching = false;
   final _searchFocus = FocusNode();
   late final _insightController = InsightController(
@@ -253,7 +301,9 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
 
   void _fromResults(VoidCallback action) {
     if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    final shellRoute = ModalRoute.of(context);
+    Navigator.of(context)
+        .popUntil((route) => route == shellRoute || route.isFirst);
     action();
   }
 
@@ -271,6 +321,20 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     products: () => _fromResults(_search),
     profile: () => _fromResults(_profile),
     notifications: _notifications,
+  );
+
+  ShellNavigation get _shellNavigation => ShellNavigation(
+    selectedIndex: _tab,
+    onSelect: (index) => _fromResults(() {
+      _closeSearch();
+      _selectTab(index);
+    }),
+    onHistory: () => _fromResults(() => _library(2)),
+    onInsights: () => _fromResults(_insights),
+    onSources: () => _fromResults(_sources),
+    onSearch: () => _fromResults(_search),
+    onProfile: () => _fromResults(_profile),
+    onNotifications: _notifications,
   );
 
   @override
@@ -299,6 +363,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
   }
 
   void _search() {
+    _leaveMissingPage();
     setState(() => _searching = true);
     // The input is already attached, so focus stays in the initiating tap.
     // Mobile browsers may reject a soft keyboard opened after route animation.
@@ -307,8 +372,17 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
 
   void _selectTab(int value) {
     if (_tab == value) return;
+    _leaveMissingPage();
     unawaited(UiFeedback.selection());
     setState(() => _tab = value);
+  }
+
+  void _leaveMissingPage() {
+    if (_tab == -1) {
+      clearMissingWebPage();
+      widget.onMissingPageRecovered();
+      setState(() => _tab = 0);
+    }
   }
 
   @override
@@ -341,8 +415,9 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
   Future<void> _openReport(ProductReport report, {bool record = false}) async {
     if (!mounted) return;
     if (record) unawaited(_record(report));
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
+    await Navigator.of(context).push<void>(
+      ShellContentRoute<void>(
+        context: context,
         builder: (_) => ReportPage(
           navigation: _resultNavigation,
           report: report,
@@ -454,20 +529,31 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
   }
 
   void _library(int oldTab) {
+    _leaveMissingPage();
+    if (_searching) _closeSearch();
     if (oldTab == 1) {
       _selectTab(3);
       return;
     }
+    // History is a peer destination on desktop, just like Home and Saved.
+    // Replacing only the body keeps the existing header/sidebar stationary.
+    if (_desktopLayout) {
+      _selectTab(4);
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => Scaffold(
-          appBar: AppBar(title: const Text('History')),
+        builder: (_) => ShellPage(
+          title: 'History',
+          selectedIndex: 4,
+          navigation: _shellNavigation,
           body: LibraryPage(
             saved: false,
+            showTitle: false,
             store: widget.store,
             refreshKey: _refreshKey,
             onOpenReport: _openReport,
-            onLookup: () => _lookup(true),
+            onLookup: () => _fromResults(() => _lookup(true)),
             onChanged: _changed,
           ),
         ),
@@ -525,6 +611,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     ],
   );
   void _profile() {
+    _leaveMissingPage();
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -568,6 +655,18 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     _selectTab(5);
   }
 
+  void _sources() {
+    if (_tab != 6) _sourcesPreviousTab = _tab < 0 ? 0 : _tab;
+    if (_searching) _closeSearch();
+    _selectTab(6);
+  }
+
+  void _sourceBack() => _selectTab(_sourcesPreviousTab);
+
+  bool get _desktopLayout =>
+      MediaQuery.sizeOf(context).width >= 1200 &&
+      MediaQuery.textScalerOf(context).scale(14) <= 21;
+
   void _notifications() => showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
@@ -590,177 +689,215 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
     final desktop = MediaQuery.sizeOf(context).width >= 1200 && !largeText;
     return PopScope(
-      canPop: !_searching && _tab != 5,
+      canPop: !_searching && _tab < 4,
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop && _searching) {
           _closeSearch();
-        } else if (!didPop && _tab == 5) {
-          _selectTab(0);
+        } else if (!didPop && _tab >= 4) {
+          if (_tab == 6) {
+            _sourceBack();
+          } else {
+            _selectTab(0);
+          }
         }
       },
-      child: Stack(
-        children: [
-          Offstage(
-            offstage: _searching,
-            child: Row(
-              children: [
-                if (desktop)
-                  DesktopNavigation(
-                    selectedIndex: _tab,
-                    onSelect: _selectTab,
-                    onHistory: () => _library(2),
-                    onInsights: _insights,
-                  ),
-                Expanded(
-                  child: Scaffold(
-                    extendBody: true,
-                    appBar: desktop
-                        ? DesktopTopBar(
-                            onSearch: _search,
-                            onProfile: _profile,
-                            onNotifications: _notifications,
-                          )
-                        : _tab == 1
-                        ? null
-                        : AppBar(
-                            leading: _tab == 5
-                                ? BackButton(onPressed: () => _selectTab(0))
-                                : null,
-                            toolbarHeight: largeText ? 112 : 64,
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        'Unlabel',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.textTheme.headlineMedium
-                                            ?.copyWith(fontSize: 30),
+      child: AppShellScope(
+        navigation: _shellNavigation,
+        child: Stack(
+          children: [
+            Offstage(
+              offstage: _searching,
+              child: Row(
+                children: [
+                  if (desktop)
+                    DesktopNavigation(
+                      selectedIndex: _tab,
+                      onSelect: _selectTab,
+                      onHistory: () => _library(2),
+                      onInsights: _insights,
+                    ),
+                  Expanded(
+                    child: Scaffold(
+                      extendBody: true,
+                      appBar: desktop
+                          ? DesktopTopBar(
+                              onSearch: _search,
+                              onProfile: _profile,
+                              onNotifications: _notifications,
+                            )
+                          : _tab == 1
+                          ? null
+                          : AppBar(
+                              leading: _tab >= 4
+                                  ? BackButton(
+                                      onPressed: _tab == 6
+                                          ? _sourceBack
+                                          : () => _selectTab(0),
+                                    )
+                                  : null,
+                              toolbarHeight: largeText ? 112 : 64,
+                              title: _tab == 6
+                                  ? const Text('Our Sources')
+                                  : _tab == 5
+                                  ? const Text('Insights')
+                                  : _tab == 4
+                                  ? const Text('History')
+                                  : BrandHomeButton(
+                                      key: const Key('mobile-brand-home'),
+                                      onPressed: () => _selectTab(0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  'Unlabel',
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: theme
+                                                      .textTheme
+                                                      .headlineMedium
+                                                      ?.copyWith(fontSize: 30),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              if (!largeText)
+                                                const BrandLeaf(size: 30),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Know Beyond the Label',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: theme.textTheme.bodySmall,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(width: 6),
-                                    if (!largeText) const BrandLeaf(size: 30),
-                                  ],
+                              actions: [
+                                IconButton(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 48,
+                                    minHeight: 48,
+                                  ),
+                                  onPressed: () => _lookup(false),
+                                  tooltip: 'Search products',
+                                  icon: const FeatureIcon('magnifer'),
                                 ),
-                                Text(
-                                  'Know Beyond the Label',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                            actions: [
-                              IconButton(
-                                constraints: const BoxConstraints(
-                                  minWidth: 48,
-                                  minHeight: 48,
-                                ),
-                                onPressed: () => _lookup(false),
-                                tooltip: 'Search products',
-                                icon: const FeatureIcon('magnifer'),
-                              ),
-                              IconButton(
-                                constraints: const BoxConstraints(
-                                  minWidth: 48,
-                                  minHeight: 48,
-                                ),
-                                onPressed: _profile,
-                                tooltip: 'Profile',
-                                icon: CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor:
-                                      theme.colorScheme.primaryContainer,
-                                  child: FeatureIcon(
-                                    'user',
-                                    color: theme.colorScheme.primary,
+                                IconButton(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 48,
+                                    minHeight: 48,
+                                  ),
+                                  onPressed: _profile,
+                                  tooltip: 'Profile',
+                                  icon: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor:
+                                        theme.colorScheme.primaryContainer,
+                                    child: FeatureIcon(
+                                      'user',
+                                      color: theme.colorScheme.primary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                            ],
-                          ),
-                    body: switch (_tab) {
-                      0 => HomePage(
-                        store: widget.store,
-                        refreshKey: _refreshKey,
-                        onLookup: _lookup,
-                        onEnterLabel: () => _selectTab(1),
-                        onCompare: () => _selectTab(2),
-                        onOpenReport: _openReport,
-                        onLibrary: _library,
-                        desktop: desktop,
-                        insightController: _insightController,
-                        onInsights: _insights,
-                      ),
-                      1 => ScanLandingPage(
-                        reader: AutomaticLabelReader(widget.repository),
-                        onResult: _scanResult,
-                        onBack: () => _selectTab(0),
-                      ),
-                      2 => ComparePage(
-                        store: widget.store,
-                        repository: widget.repository,
-                        onOpenReport: _openReport,
-                        sessionReports: List.unmodifiable(_comparisonReports),
-                      ),
-                      5 => InsightsPage(
-                        controller: _insightController,
-                        embedded: true,
-                      ),
-                      _ => LibraryPage(
-                        saved: true,
-                        store: widget.store,
-                        refreshKey: _refreshKey,
-                        onOpenReport: _openReport,
-                        onLookup: () => _lookup(true),
-                        onChanged: _changed,
-                      ),
-                    },
-                    bottomNavigationBar:
-                        desktop ||
-                            _tab == 5 ||
-                            MediaQuery.viewInsetsOf(context).bottom > 0
-                        ? null
-                        : MobileNavigation(
-                            selectedIndex: _tab,
-                            onDestinationSelected: _selectTab,
-                          ),
+                                const SizedBox(width: 8),
+                              ],
+                            ),
+                      body: switch (_tab) {
+                        -1 => NotFoundPage(onHome: () => _selectTab(0)),
+                        0 => HomePage(
+                          store: widget.store,
+                          refreshKey: _refreshKey,
+                          onLookup: _lookup,
+                          onEnterLabel: () => _selectTab(1),
+                          onCompare: () => _selectTab(2),
+                          onOpenReport: _openReport,
+                          onLibrary: _library,
+                          desktop: desktop,
+                          insightController: _insightController,
+                          onInsights: _insights,
+                          onSources: _sources,
+                        ),
+                        1 => ScanLandingPage(
+                          reader: AutomaticLabelReader(widget.repository),
+                          onResult: _scanResult,
+                          onBack: () => _selectTab(0),
+                        ),
+                        2 => ComparePage(
+                          store: widget.store,
+                          repository: widget.repository,
+                          onOpenReport: _openReport,
+                          sessionReports: List.unmodifiable(_comparisonReports),
+                        ),
+                        4 => LibraryPage(
+                          saved: false,
+                          showTitle: desktop,
+                          store: widget.store,
+                          refreshKey: _refreshKey,
+                          onOpenReport: _openReport,
+                          onLookup: () => _lookup(true),
+                          onChanged: _changed,
+                        ),
+                        5 => InsightsPage(
+                          controller: _insightController,
+                          embedded: true,
+                        ),
+                        6 => SourcesPage(embedded: true, onBack: _sourceBack),
+                        _ => LibraryPage(
+                          saved: true,
+                          store: widget.store,
+                          refreshKey: _refreshKey,
+                          onOpenReport: _openReport,
+                          onLookup: () => _lookup(true),
+                          onChanged: _changed,
+                        ),
+                      },
+                      bottomNavigationBar:
+                          desktop ||
+                              _tab >= 4 ||
+                              MediaQuery.viewInsetsOf(context).bottom > 0
+                          ? null
+                          : MobileNavigation(
+                              selectedIndex: _tab,
+                              onDestinationSelected: _selectTab,
+                            ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Visibility(
-            visible: _searching,
-            maintainState: true,
-            maintainAnimation: true,
-            maintainSize: true,
-            maintainFocusability: true,
-            child: TickerMode(
-              enabled: _searching,
-              child: ScaffoldMessenger(
-                child: ProductSearchPage(
-                  resultNavigation: _resultNavigation,
-                  active: _searching,
-                  repository: widget.repository,
-                  focusNode: _searchFocus,
-                  autofocus: false,
-                  onClose: _closeSearch,
-                  onOpenReport: (report) => _openReport(report, record: true),
-                  onEnterLabel: () {
-                    _closeSearch();
-                    _selectTab(1);
-                  },
+            Visibility(
+              visible: _searching,
+              maintainState: true,
+              maintainAnimation: true,
+              maintainSize: true,
+              maintainFocusability: true,
+              child: TickerMode(
+                enabled: _searching,
+                child: ScaffoldMessenger(
+                  child: ProductSearchPage(
+                    resultNavigation: _resultNavigation,
+                    active: _searching,
+                    repository: widget.repository,
+                    focusNode: _searchFocus,
+                    autofocus: false,
+                    onClose: _closeSearch,
+                    onOpenReport: (report) => _openReport(report, record: true),
+                    onEnterLabel: () {
+                      _closeSearch();
+                      _selectTab(1);
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="370" viewBox="0 0 600 370" role="img" aria-labelledby="title desc">
+  <title id="title">Read the label. Know what's inside.</title>
+  <desc id="desc">Unlabel's forest-green typography on a mint background, with a decorative leaf. No product facts are depicted.</desc>
+  <rect width="600" height="370" rx="24" fill="#E9F3EC"/>
+  <path d="M410 370C420 286 516 244 600 258V370Z" fill="#D9EBDD"/>
+  <g fill="#163D31" font-family="Segoe UI,Arial,sans-serif" font-weight="700" letter-spacing="-2">
+    <text x="36" y="102" font-size="65">Read the label.</text>
+    <text x="36" y="179" font-size="61">Know what's</text>
+    <text x="36" y="251" font-size="61">inside.</text>
+  </g>
+  <g fill="#365B4A" font-family="Segoe UI,Arial,sans-serif" font-size="25">
+    <text x="39" y="300">Sourced facts. Clear explanations.</text>
+    <text x="39" y="334">Visible unknowns.</text>
+  </g>
+  <path d="M459 246C423 187 454 145 541 134C548 195 513 244 475 246Z" fill="#286B4B"/>
+  <path d="M452 267C470 217 494 182 522 154" fill="none" stroke="#E9F3EC" stroke-width="4" stroke-linecap="round"/>
+</svg>

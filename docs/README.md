@@ -1,8 +1,10 @@
 # Unlabel documentation
 
-Current checkpoint, **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
-This maintenance pass fixes setup/release metadata and stale documentation without
-adding features or changing versions. Source, native artifacts, hosted deployment
+Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
+and [backend pyproject](../backend/pyproject.toml). The latest frontend maintenance
+patch is reviewed in [its release evidence](planning/FRONTEND_V0_7_1_REVIEW.md).
+This maintenance pass fixes setup/release metadata and stale documentation; its
+later UI repairs ship in a frontend patch. Source, native artifacts, hosted deployment
 and physical-device checks have separate receipts.
 
 | Start here | Purpose |

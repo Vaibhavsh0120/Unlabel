@@ -8,7 +8,7 @@ separate. [Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md) ·
 [Backend review](../planning/BACKEND_V0_12_0_REVIEW.md).
 
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
-API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
+API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).
 Keep the project at **₹0 additional platform cost, no card and no billing upgrade**.
 A local laptop/LAN backend remains available for demonstrations.
 

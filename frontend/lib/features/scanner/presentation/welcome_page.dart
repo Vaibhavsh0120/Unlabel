@@ -19,7 +19,6 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: dark ? const Color(0xff101b17) : const Color(0xfffbfefd),
       body: Stack(
         children: [
-          const Positioned.fill(child: _WelcomeBotanicals()),
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -193,12 +192,11 @@ class _WelcomeHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Image.asset(
-    'assets/artwork/welcome-scan-package.png',
+    'assets/artwork/welcome-scan-package.webp',
     key: const Key('welcome-package-artwork'),
     width: size,
     height: size,
     fit: BoxFit.contain,
-    cacheWidth: size > 400 ? 1254 : 768,
     excludeFromSemantics: true,
   );
 }
@@ -386,66 +384,5 @@ class _WelcomeActions extends StatelessWidget {
         ),
       ),
     ],
-  );
-}
-
-class _WelcomeBotanicals extends StatelessWidget {
-  const _WelcomeBotanicals();
-
-  @override
-  Widget build(BuildContext context) => IgnorePointer(
-    child: ExcludeSemantics(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final desktop = constraints.maxWidth >= 900;
-          final size = desktop ? 320.0 : 180.0;
-          return Stack(
-            clipBehavior: Clip.hardEdge,
-            children: [
-              Positioned(
-                left: -size * .38,
-                bottom: -size * .37,
-                child: Transform.flip(
-                  flipX: true,
-                  child: Image.asset(
-                    'assets/artwork/botanical-corner.png',
-                    width: size,
-                    height: size,
-                    cacheWidth: 512,
-                    opacity: const AlwaysStoppedAnimation(.45),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: -size * .29,
-                bottom: -size * .41,
-                child: Image.asset(
-                  'assets/artwork/botanical-corner.png',
-                  width: size,
-                  height: size,
-                  cacheWidth: 512,
-                  opacity: const AlwaysStoppedAnimation(.45),
-                ),
-              ),
-              if (desktop)
-                Positioned(
-                  right: -size * .12,
-                  top: -size * .56,
-                  child: Transform.rotate(
-                    angle: math.pi,
-                    child: Image.asset(
-                      'assets/artwork/botanical-corner.png',
-                      width: size,
-                      height: size,
-                      cacheWidth: 512,
-                      opacity: const AlwaysStoppedAnimation(.4),
-                    ),
-                  ),
-                ),
-            ],
-          );
-        },
-      ),
-    ),
   );
 }

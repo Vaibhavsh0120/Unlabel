@@ -14,7 +14,7 @@ import 'package:unlabel/features/scanner/presentation/report_page.dart';
 import 'package:unlabel/features/scanner/presentation/ui_components.dart';
 
 const _artwork = CornerArtwork(
-  asset: 'assets/artwork/label-leaf.png',
+  asset: 'assets/artwork/history-empty.webp',
   height: 180,
 );
 
@@ -140,6 +140,86 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('artwork holds its pose while scrolling and resumes at idle', (
+    tester,
+  ) async {
+    final scroll = ScrollController();
+    addTearDown(scroll.dispose);
+    await tester.pumpWidget(
+      _artApp(
+        SingleChildScrollView(
+          controller: scroll,
+          child: const Column(children: [_artwork, SizedBox(height: 1800)]),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    final artworkTransform = find
+        .descendant(
+          of: find.byType(CornerArtwork),
+          matching: find.byType(Transform),
+        )
+        .first;
+    double pose() =>
+        tester.widget<Transform>(artworkTransform).transform.getTranslation().y;
+    final before = pose();
+    unawaited(
+      scroll.animateTo(
+        80,
+        duration: const Duration(seconds: 1),
+        curve: Curves.linear,
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(scroll.position.isScrollingNotifier.value, isTrue);
+    expect(scroll.offset, greaterThan(0));
+    expect(pose(), before);
+    await tester.pump(const Duration(milliseconds: 850));
+    await tester.pump();
+    expect(scroll.position.isScrollingNotifier.value, isFalse);
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(pose(), isNot(before));
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'scrolling to offscreen artwork keeps it idle after scroll ends',
+    (tester) async {
+      final scroll = ScrollController();
+      addTearDown(scroll.dispose);
+      await tester.pumpWidget(
+        _artApp(
+          SingleChildScrollView(
+            controller: scroll,
+            child: const Column(children: [_artwork, SizedBox(height: 1800)]),
+          ),
+        ),
+      );
+      await tester.pump();
+      unawaited(
+        scroll.animateTo(
+          1000,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.linear,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(scroll.position.isScrollingNotifier.value, isFalse);
+      expect(tester.binding.hasScheduledFrame, isFalse);
+      scroll.jumpTo(0);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(tester.binding.hasScheduledFrame, isTrue);
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('confirmed save feedback waits for durable success', (
     tester,

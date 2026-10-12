@@ -1,8 +1,9 @@
 # Controlled component releases
 
-Ledger checked **12 October 2026**. Current product versions remain frontend
-**0.7.0+11** and backend **0.12.0**. This maintenance pass publishes missing
-already-reviewed source releases; it does not create a new product version.
+The maintenance pass publishes missing reviewed source identities and preserves
+historical tags/assets. Current versions come from the component manifests.
+The later frontend patch is documented in [its review](FRONTEND_V0_7_1_REVIEW.md);
+its publication identities are recorded after verification.
 
 Historical source identities are recorded in [the machine ledger](../../contracts/versioning/releases.json).
 Legacy backend vVERSION tags stay preserved. New backend/frontend tags identify

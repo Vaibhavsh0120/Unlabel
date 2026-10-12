@@ -1,6 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// Keeps each visible wordmark a keyboard-accessible route back to Home.
+class BrandHomeButton extends StatefulWidget {
+  const BrandHomeButton({
+    required this.onPressed,
+    required this.child,
+    super.key,
+  });
+
+  final VoidCallback onPressed;
+  final Widget child;
+
+  @override
+  State<BrandHomeButton> createState() => _BrandHomeButtonState();
+}
+
+class _BrandHomeButtonState extends State<BrandHomeButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Unlabel Home',
+    button: true,
+    child: Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: widget.onPressed,
+        onHover: (hovered) => setState(() => _hovered = hovered),
+        borderRadius: BorderRadius.circular(12),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: AnimatedScale(
+            scale: _hovered ? 1.025 : 1,
+            duration: MediaQuery.disableAnimationsOf(context)
+                ? Duration.zero
+                : const Duration(milliseconds: 120),
+            alignment: Alignment.centerLeft,
+            child: ExcludeSemantics(child: widget.child),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 /// The authored filled leaf, independent of the outline feature-icon library.
 class BrandLeaf extends StatelessWidget {
   const BrandLeaf({this.size = 30, super.key});

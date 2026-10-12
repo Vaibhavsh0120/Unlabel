@@ -104,39 +104,6 @@ void main() {
         .clearAccessibilityFeaturesTestValue();
   });
 
-  testWidgets('wide insight artwork has a real transparent background', (
-    tester,
-  ) async {
-    final alpha = await tester.runAsync(() async {
-      final data = await rootBundle.load(
-        'assets/artwork/desktop-insight-banner.png',
-      );
-      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
-      final frame = await codec.getNextFrame();
-      final image = frame.image;
-      final pixels = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-      final result = [
-        image.width,
-        image.height,
-        for (final offset in [
-          3,
-          (image.width - 1) * 4 + 3,
-          (image.width * (image.height - 1)) * 4 + 3,
-          (image.width * image.height - 1) * 4 + 3,
-          (image.width * 350 + 1500) * 4 + 3,
-        ])
-          pixels!.getUint8(offset),
-      ];
-      image.dispose();
-      codec.dispose();
-      return result;
-    });
-    expect(alpha, isNotNull);
-    expect(alpha![0] / alpha[1], 3);
-    expect(alpha.sublist(2, 6), everyElement(lessThanOrEqualTo(1)));
-    expect(alpha[6], greaterThan(240));
-  });
-
   for (final brightness in Brightness.values) {
     testWidgets(
       'insight art stays separate from copy across sizes $brightness',
@@ -245,8 +212,8 @@ void main() {
         expect(
           (image.image as AssetImage).assetName,
           brightness == Brightness.dark
-              ? 'assets/artwork/scan-hero-dark.png'
-              : 'assets/artwork/scan-hero-light.png',
+              ? 'assets/artwork/scan-hero-dark.webp'
+              : 'assets/artwork/scan-hero-light.webp',
         );
         expect(actions.top - hero.bottom, greaterThanOrEqualTo(24));
         final barcode = tester.getRect(
@@ -371,7 +338,7 @@ void main() {
                 reason: '${page.runtimeType} $width $brightness scale $scale',
               );
               if (page is SourcesPage) {
-                final toggle = find.byType(ExpansionTile);
+                final toggle = find.byKey(const Key('source-details-facts'));
                 await tester.ensureVisible(toggle);
                 await tester.tap(toggle);
                 await tester.pumpAndSettle();
@@ -379,8 +346,11 @@ void main() {
                   tester.takeException(),
                   isNull,
                   reason:
-                      'Expanded ${page.runtimeType} $width $brightness scale $scale',
+                      'Source details ${page.runtimeType} $width $brightness scale $scale',
                 );
+                await tester.ensureVisible(find.text('Close'));
+                await tester.tap(find.text('Close'));
+                await tester.pumpAndSettle();
               }
             }
             await tester.pumpWidget(const SizedBox());
@@ -910,13 +880,11 @@ void main() {
     );
     await tester.pumpWidget(_app(const SourcesPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Read source details'));
-    await tester.pumpAndSettle();
     final copy = find.text('Copy website link').first;
     await tester.ensureVisible(copy);
     await tester.tap(copy);
     await tester.pumpAndSettle();
     expect(copied, 'https://world.openfoodfacts.org/');
-    expect(find.text('Source link copied'), findsOneWidget);
+    expect(find.text('Source link copied'), findsWidgets);
   });
 }

@@ -1,0 +1,167 @@
+{
+  "schema_version": "1",
+  "generated_at_utc": "2026-10-12T18:01:53.319384+00:00",
+  "intent": "Four freshly generated illustrations for the redesigned Recent scans, Sources and 404 sections. Decorative only; no product evidence or approval claims.",
+  "constraints": [
+    "new artwork for each requested redesigned section",
+    "no text or numerals",
+    "no product identity or health claims",
+    "complete silhouettes with transparent padding"
+  ],
+  "encoding": {
+    "format": "WebP",
+    "lossless": false,
+    "quality": 90,
+    "alpha_quality": 100,
+    "method": 6,
+    "exact": true,
+    "resize": "Entire canvas fits within each target maximum; aspect ratio preserved, no crop.",
+    "resampling": "Pillow LANCZOS",
+    "alpha_preserved": true
+  },
+  "review": "Current generated originals visually reviewed: distinct Recent scans mint pouch with leaves, source report cards with citation links and restrained shield, current-package pouch with scan brackets, and dedicated 404 folded map with a dotted path and magnifying glass. No letters, numerals, UI panels or branded product claims. Sources Facts has no foliage; its rejected branch candidate is retained only as ignored source evidence.",
+  "assets": [
+    {
+      "asset": "frontend/assets/artwork/recent-scans-empty.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-bc51b4ae-e537-4a46-91d3-ed7665168a32.png",
+      "source_copy": ".local-tools/fresh-art/recent-scans-empty.png",
+      "source_copy_tracked": false,
+      "source_sha256": "a85e3b2d6971fc851b412e790f88a1da470e5bb2a29760aec2e31f3a03b35c25",
+      "source_bytes": 1464191,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: fresh isolated transparent illustration for an Indian food-label app's Recent scans empty-state card. Generate a brand-new premium gently rounded 3D illustration: one large pale mint stand-up food pouch with a neat decorative black barcode on its front, framed by a small cluster of forest-green and light mint leaves at its base and sides. A very restrained soft translucent mint circle sits behind the pouch; three tiny green rays above suggest ready to scan and two small warm gold sparkles give life. Match a refined white, forest-green and mint app, soft studio lighting, tasteful clay/paper materials, crisp readable silhouette at small sizes. Centered subject, landscape composition, complete pouch and leaf silhouettes visible, generous clear transparent margin, no cropping. Truly transparent RGBA background outside the intentional pale circle and natural tiny shadow. NO text, NO letters, NO numerals beneath barcode, NO UI, NO card panel, NO buttons, NO brand, NO watermark, NO photographic background.",
+      "sha256": "a10211823870303c9bcbd85f6e1ac89fe66e6f86374b07d0c67169e31267fbc0",
+      "bytes": 47320,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.595314,
+      "resized_alpha_equality_verified": true
+    },
+    {
+      "asset": "frontend/assets/artwork/sources-facts.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-eefed4e6-dfd9-426c-825a-59301fb32452.png",
+      "source_copy": ".local-tools/fresh-art/sources-facts-report-card.png",
+      "source_copy_tracked": false,
+      "source_sha256": "16013014eb237882abb499e4fb9c1ae0cd1d863e8afa72d50ed50646f83868c4",
+      "source_bytes": 1423491,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: a new dedicated source-provenance illustration for the Facts with a source row of Unlabel, a food-label information app. Generate a brand-new premium softly rounded 3D illustration: a small neat stack of cream report cards with only restrained embossed horizontal lines, a forest-green linked citation ring with two subtly interlocking links beside the cards, and one small cream-and-mint shield with a simple forest-green check shape, subordinate to the report cards. The meaning is facts linked to a source, never food safety or official approval. Calm refined cream, white, forest-green and pale mint palette; matte paper and soft clay materials; gentle studio lighting and tiny transparent contact shadow. Compact landscape composition, centered complete silhouettes with generous clear transparent margin and all objects fully visible. Genuinely transparent RGBA background. Absolutely NO leaves, NO foliage, NO plants, NO botanical forms, NO fruits or food, NO text, NO letters, NO digits, NO logos, NO official seals, NO regulatory symbols, NO brands, NO health scores, NO UI panels, NO buttons, NO watermark.",
+      "sha256": "a0a72477fa29d6ea3fa3ad1b8793a26467d8789f2bd0d2b6c8bb18dd45544194",
+      "bytes": 21994,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.674985,
+      "resized_alpha_equality_verified": true,
+      "review": "Fresh report cards, linked citation ring and restrained shield; no foliage, text, numerals, branding or official symbols. Original and resized complete silhouettes visually reviewed."
+    },
+    {
+      "asset": "frontend/assets/artwork/sources-package.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-06b7753a-076d-46eb-af6a-7aa2b3753e02.png",
+      "source_copy": ".local-tools/fresh-art/sources-package.png",
+      "source_copy_tracked": false,
+      "source_sha256": "2560e576e2485e37e1b3756464982c44b28677cbb44c62413ac39ca9db3dafc7",
+      "source_bytes": 1365375,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: fresh isolated transparent illustration for Your current package row of a food-label app. Generate a brand-new premium gentle 3D illustration of a single compact cream and pale mint food pouch with a restrained peach seal at top. A large clean decorative black barcode sits on the front, surrounded by four slim forest-green scan-corner brackets slightly floating in front of the package. No digits or letters anywhere. Softly rounded clay/paper materials, refined cream/mint/forest palette, soft studio lighting, subtle grounding shadow. Slight three-quarter view, centered entire pouch and all scan brackets fully visible, landscape framing, generous transparent margin. Genuine transparent RGBA background, NO text, NO letters, NO numerals, NO logo, NO brand, NO buttons, NO UI, NO panel, NO watermark.",
+      "sha256": "d210ed17b0124397af571e4e9984535587ba2993f8f507bb6d1343cbb7189d36",
+      "bytes": 21328,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.586905,
+      "resized_alpha_equality_verified": true
+    },
+    {
+      "asset": "frontend/assets/artwork/not-found-art.webp",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-99e191d2-8e74-4d69-a52c-334278bb96f2.png",
+      "source_copy": ".local-tools/fresh-art/not-found-art.png",
+      "source_copy_tracked": false,
+      "source_sha256": "ff805a05e1385ba49974baaee86990e3661bf5db355fbd70e54318a52d981e30",
+      "source_bytes": 1417613,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: fresh dedicated transparent 404 page illustration for Unlabel, a food-label information app. Generate a brand-new premium gently rounded 3D illustration of a compact cream and pale mint folded label map, with a restrained dotted winding forest-green path that breaks before a small abstract endpoint. A small forest-green and cream magnifying glass rests beside the map, suggesting finding the right page. Refined white, cream, forest-green and mint palette; rounded paper/clay materials; soft studio lighting; tiny transparent contact shadow. Centered landscape composition, the entire folded map and magnifying glass visible with generous transparent margins, polished calm useful mood, legible at a compact app slot. Genuinely transparent RGBA background. NO leaves, NO plants, NO food, NO product branding, NO readable text, NO letters, NO digits, NO barcode, NO UI, NO buttons, NO panel, NO official seals, NO health or approval claims, NO watermark.",
+      "sha256": "289eb525fa8fe8a2636dabcaed938a03c29124659cea1e9a8ae849064465b376",
+      "bytes": 27912,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.559688,
+      "resized_alpha_equality_verified": true
+    }
+  ],
+  "rejected_candidates": [
+    {
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-17c9957f-591f-45eb-857c-0925da0dbd44.png",
+      "source_copy": ".local-tools/fresh-art/sources-facts-rejected-branch.png",
+      "source_copy_tracked": false,
+      "source_sha256": "f26c3af8e718e0af80f30c738e4549678429210f2f9a7f00e4421d593fb82554",
+      "source_bytes": 1772497,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: fresh isolated transparent illustration for the Facts with a source row of a food-label app. Generate a brand-new premium gentle 3D illustration of a compact elegant forest-green and mint branch with five rounded glossy leaves, paired with one small understated cream-and-forest shield bearing a simple check shape. This represents attaching sources to facts, not approval or certification. Refined forest, mint and cream palette, softly rounded clay/paper 3D materials, soft studio lighting and subtle grounding shadow. Centered complete subject, landscape composition with transparent margin. Real transparent RGBA background. NO text, NO letters, NO official seals, NO logos, NO regulatory symbols, NO words such as approved, NO white background, NO UI, NO panel, NO watermark.",
+      "sha256": "ce3903fb454cd78e9fd434297047e186bfcafa02f4335bd67debfb2b7e370eea",
+      "bytes": 30628,
+      "dimensions": [
+        512,
+        341
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "fully_transparent_corners": true,
+      "transparent_pixel_fraction": 0.657075,
+      "resized_alpha_equality_verified": true,
+      "proposed_asset": "frontend/assets/artwork/sources-facts.webp",
+      "status": "rejected",
+      "reason": "User requested no foliage in the Facts with a source illustration and a fresh report/source-provenance illustration instead.",
+      "runtime_asset_bundled": false
+    }
+  ],
+  "updated_at_utc": "2026-10-12T18:25:41.654044+00:00"
+}

@@ -351,7 +351,7 @@ class ResultsSummaryCard extends StatelessWidget {
               child: Opacity(
                 opacity: dark ? .12 : .20,
                 child: Image.asset(
-                  'assets/artwork/results-botanical.png',
+                  'assets/artwork/results-botanical.webp',
                   fit: BoxFit.cover,
                   alignment: Alignment.centerRight,
                   excludeFromSemantics: true,

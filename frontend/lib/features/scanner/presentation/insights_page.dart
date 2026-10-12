@@ -10,6 +10,7 @@ import '../../../core/widgets/brand_mark.dart';
 import '../domain/insight_catalogue.dart';
 import '../domain/insight_controller.dart';
 import 'sources_page.dart';
+import 'app_shell.dart';
 import 'ui_components.dart';
 
 /// Daily reading feed. The app shell shares its controller with Home.
@@ -62,9 +63,12 @@ class _InsightsPageState extends State<InsightsPage>
   }
 
   void _open(InsightArticle article) => Navigator.of(context).push<void>(
-    MaterialPageRoute(
-      builder: (_) =>
-          InsightArticlePage(article: article, controller: _controller),
+    ShellContentRoute<void>(
+      context: context,
+      builder: (_) => AppShellScope.wrap(
+        context,
+        InsightArticlePage(article: article, controller: _controller),
+      ),
     ),
   );
   @override
@@ -80,7 +84,13 @@ class _InsightsPageState extends State<InsightsPage>
           final main = Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _InsightsHeading(wide: wide),
+              _InsightsHeading(
+                wide: wide,
+                showTitle:
+                    !widget.embedded ||
+                    (MediaQuery.sizeOf(context).width >= 1200 &&
+                        MediaQuery.textScalerOf(context).scale(14) <= 21),
+              ),
               const SizedBox(height: 16),
               _TopicFilters(
                 selected: _controller.selectedTopic,
@@ -158,9 +168,20 @@ class _InsightsPageState extends State<InsightsPage>
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton.icon(
-                  onPressed: () => Navigator.of(context).push<void>(
-                    MaterialPageRoute(builder: (_) => const SourcesPage()),
-                  ),
+                  onPressed: () {
+                    final open = AppShellScope.maybeOf(context)?.onSources;
+                    if (open != null) {
+                      open();
+                    } else {
+                      Navigator.of(context).push<void>(
+                        ShellContentRoute<void>(
+                          context: context,
+                          builder: (_) =>
+                              AppShellScope.wrap(context, const SourcesPage()),
+                        ),
+                      );
+                    }
+                  },
                   icon: const FeatureIcon('shield', size: 20),
                   label: const Text('Where the facts come from'),
                 ),
@@ -250,53 +271,34 @@ class _InsightsPageState extends State<InsightsPage>
 }
 
 class _InsightsHeading extends StatelessWidget {
-  const _InsightsHeading({required this.wide});
+  const _InsightsHeading({required this.wide, required this.showTitle});
   final bool wide;
+  final bool showTitle;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (wide)
-          Positioned(
-            right: 4,
-            top: 0,
-            bottom: 0,
-            width: 180,
-            child: ExcludeSemantics(
-              child: Image.asset(
-                'assets/artwork/botanical-corner.png',
-                fit: BoxFit.contain,
-                opacity: const AlwaysStoppedAnimation(.7),
+        if (showTitle)
+          Semantics(
+            header: true,
+            child: Text(
+              'Insights',
+              style: theme.textTheme.headlineLarge?.copyWith(
+                fontSize: wide ? 48 : 34,
+                color: theme.colorScheme.brightness == Brightness.light
+                    ? const Color(0xff072c25)
+                    : theme.colorScheme.onSurface,
               ),
             ),
           ),
-        Padding(
-          padding: EdgeInsets.only(right: wide ? 180 : 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Semantics(
-                header: true,
-                child: Text(
-                  'Insights',
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    fontSize: wide ? 48 : 34,
-                    color: theme.colorScheme.brightness == Brightness.light
-                        ? const Color(0xff072c25)
-                        : theme.colorScheme.onSurface,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Simple guidance for healthier choices.',
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontSize: wide ? 20 : 16,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
+        if (showTitle) const SizedBox(height: 4),
+        Text(
+          'Simple guidance for healthier choices.',
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontSize: wide ? 20 : 16,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ],
@@ -597,6 +599,43 @@ class _InsightGrid extends StatelessWidget {
           : 2;
       const gap = 12.0;
       final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
+      if (columns == 3) {
+        return Column(
+          children: [
+            for (var start = 0; start < articles.length; start += columns) ...[
+              if (start > 0) const SizedBox(height: gap),
+              Table(
+                // LayoutBuilder inside each tile needs real width constraints.
+                // Measure natural heights first, then stretch this row to its
+                // tallest card without an intrinsic-size probe or fixed height.
+                defaultVerticalAlignment:
+                    TableCellVerticalAlignment.intrinsicHeight,
+                columnWidths: const {
+                  1: FixedColumnWidth(gap),
+                  3: FixedColumnWidth(gap),
+                },
+                children: [
+                  TableRow(
+                    children: [
+                      for (var column = 0; column < columns; column++) ...[
+                        if (column > 0) const SizedBox(width: gap),
+                        if (start + column < articles.length)
+                          _InsightTile(
+                            article: articles[start + column],
+                            controller: controller,
+                            onOpen: () => onOpen(articles[start + column]),
+                          )
+                        else
+                          const SizedBox.shrink(),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ],
+        );
+      }
       return Wrap(
         spacing: gap,
         runSpacing: gap,
@@ -638,106 +677,138 @@ class _InsightTile extends StatelessWidget {
     return Card(
       key: Key('insight-card-${article.id}'),
       clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          InkWell(
-            onTap: onOpen,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final stacked =
-                      constraints.maxWidth < 220 ||
-                      MediaQuery.textScalerOf(context).scale(14) > 21;
-                  final copy = Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 32),
-                        child: Text(
-                          article.topic.label.toUpperCase(),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            letterSpacing: 1.1,
-                            color: theme.colorScheme.primary,
+      child: LayoutBuilder(
+        builder: (context, tileConstraints) => Stack(
+          fit: tileConstraints.hasBoundedHeight
+              ? StackFit.expand
+              : StackFit.loose,
+          children: [
+            InkWell(
+              onTap: onOpen,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final stacked =
+                        constraints.maxWidth < 220 ||
+                        MediaQuery.textScalerOf(context).scale(14) > 21;
+                    final copy = Column(
+                      key: Key('insight-copy-${article.id}'),
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 32),
+                          child: Text(
+                            article.topic.label.toUpperCase(),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              letterSpacing: 1.1,
+                              color: theme.colorScheme.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        article.title,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontSize: savedRow ? 16 : 18,
-                          height: 1.2,
-                        ),
-                      ),
-                      if (!savedRow) ...[
                         const SizedBox(height: 8),
                         Text(
-                          article.summary,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                            height: 1.4,
+                          article.title,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontSize: savedRow ? 16 : 18,
+                            height: 1.2,
                           ),
                         ),
+                        if (!savedRow) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            article.summary,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                        if (savedRow) ...[
+                          const SizedBox(height: 8),
+                          _ReadBadge(article: article),
+                        ],
                       ],
-                      if (savedRow) ...[
-                        const SizedBox(height: 8),
-                        _ReadBadge(article: article),
-                      ],
-                    ],
-                  );
-                  final art = Container(
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer.withValues(
-                        alpha: .24,
-                      ),
-                      borderRadius: BorderRadius.circular(savedRow ? 16 : 28),
-                    ),
-                    child: _ArticleArt(
-                      article: article,
-                      height: savedRow
-                          ? 104
-                          : stacked
-                          ? 112
-                          : 130,
-                    ),
-                  );
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (stacked) ...[
-                        Center(child: art),
-                        const SizedBox(height: 8),
-                        copy,
-                      ] else
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: savedRow ? 80 : 94, child: art),
-                            const SizedBox(width: 8),
-                            Expanded(child: copy),
-                          ],
+                    );
+                    final art = Container(
+                      key: Key('insight-art-${article.id}'),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer.withValues(
+                          alpha: .24,
                         ),
-                      if (!savedRow) ...[
-                        const SizedBox(height: 12),
-                        _ReadBadge(article: article),
+                        borderRadius: BorderRadius.circular(savedRow ? 16 : 28),
+                      ),
+                      child: _ArticleArt(
+                        article: article,
+                        height: savedRow
+                            ? 104
+                            : stacked
+                            ? 112
+                            : 130,
+                      ),
+                    );
+                    final content = stacked
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(child: art),
+                              const SizedBox(height: 8),
+                              copy,
+                            ],
+                          )
+                        : Row(
+                            key: Key('insight-content-${article.id}'),
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: savedRow ? 80 : 94, child: art),
+                              const SizedBox(width: 8),
+                              Expanded(child: copy),
+                            ],
+                          );
+                    final badge = Align(
+                      key: Key('insight-read-${article.id}'),
+                      alignment: Alignment.centerLeft,
+                      child: _ReadBadge(article: article),
+                    );
+                    // Table measures natural content once with unbounded
+                    // height, then stretches each card to the tallest row.
+                    // Flex only during that bounded pass so the picture and
+                    // copy centre together above a badge pinned to the bottom.
+                    if (constraints.hasBoundedHeight && !stacked && !savedRow) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: Center(child: content)),
+                          const SizedBox(height: 12),
+                          badge,
+                        ],
+                      );
+                    }
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        content,
+                        if (!savedRow) ...[const SizedBox(height: 12), badge],
                       ],
-                    ],
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Positioned(
-            right: 0,
-            top: 0,
-            child: _Bookmark(
-              article: article,
-              controller: controller,
-              compact: true,
+            Positioned(
+              right: 0,
+              top: 0,
+              child: _Bookmark(
+                article: article,
+                controller: controller,
+                compact: true,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -769,8 +840,12 @@ class _SavedInsights extends StatelessWidget {
               TextButton(
                 key: const Key('insights-see-saved'),
                 onPressed: () => Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (_) => _SavedInsightsPage(controller: controller),
+                  ShellContentRoute<void>(
+                    context: context,
+                    builder: (_) => AppShellScope.wrap(
+                      context,
+                      _SavedInsightsPage(controller: controller),
+                    ),
                   ),
                 ),
                 child: const Text('See all'),
@@ -872,26 +947,10 @@ class _ReadingNote extends StatelessWidget {
           .withValues(alpha: .5),
       borderRadius: BorderRadius.circular(24),
     ),
-    child: Row(
-      children: [
-        const Expanded(
-          child: ExcludeSemantics(
-            child: Image(
-              image: AssetImage('assets/artwork/sidebar-mint-leaves.png'),
-              height: 100,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            'Small knowledge.\nBrighter tomorrows.',
-            style: Theme.of(context).textTheme.titleMedium
-                ?.copyWith(color: Theme.of(context).colorScheme.primary),
-          ),
-        ),
-      ],
+    child: Text(
+      'Small knowledge.\nBrighter tomorrows.',
+      style: Theme.of(context).textTheme.titleMedium
+          ?.copyWith(color: Theme.of(context).colorScheme.primary),
     ),
   );
 }
@@ -956,8 +1015,9 @@ class _SavedInsightsPage extends StatelessWidget {
   const _SavedInsightsPage({required this.controller});
   final InsightController controller;
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Saved insights')),
+  Widget build(BuildContext context) => ShellPage(
+    title: 'Saved insights',
+    selectedIndex: 5,
     body: ListenableBuilder(
       listenable: controller,
       builder: (context, _) => PageBody(
@@ -972,10 +1032,11 @@ class _SavedInsightsPage extends StatelessWidget {
             articles: controller.saved,
             controller: controller,
             onOpen: (article) => Navigator.of(context).push<void>(
-              MaterialPageRoute(
-                builder: (_) => InsightArticlePage(
-                  article: article,
-                  controller: controller,
+              ShellContentRoute<void>(
+                context: context,
+                builder: (_) => AppShellScope.wrap(
+                  context,
+                  InsightArticlePage(article: article, controller: controller),
                 ),
               ),
             ),
@@ -1017,18 +1078,17 @@ class InsightArticlePage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Insight'),
-      actions: [
-        ListenableBuilder(
-          listenable: controller,
-          builder: (context, _) =>
-              _Bookmark(article: article, controller: controller),
-        ),
-        const SizedBox(width: 8),
-      ],
-    ),
+  Widget build(BuildContext context) => ShellPage(
+    title: 'Insight',
+    selectedIndex: 5,
+    actions: [
+      ListenableBuilder(
+        listenable: controller,
+        builder: (context, _) =>
+            _Bookmark(article: article, controller: controller),
+      ),
+      const SizedBox(width: 8),
+    ],
     body: PageBody(
       maxWidth: 760,
       children: [

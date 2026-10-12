@@ -87,6 +87,7 @@ temp/
 # Local editors and OS files; shared editor settings can be added deliberately.
 .idea/
 .vscode/
+/.playwright-mcp/
 *.iml
 *.swp
 *.swo
