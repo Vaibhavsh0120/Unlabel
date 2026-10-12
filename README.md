@@ -112,6 +112,14 @@ through the manual workflow and require separate native/device validation.
 [Release guide](docs/planning/RELEASE_VERSIONING.md) ·
 [Deployment settings](docs/planning/VERCEL_SETUP.md).
 
+For iOS, add this URL in **LiveContainer → Sources → +**:
+
+[Unlabel LiveContainer source](https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json)
+
+The source becomes available after the verified native release publishes. It lists
+the unsigned iPhoneOS IPA; LiveContainer must already be installed and configured.
+Actual iPhone import and launch require a device check.
+
 ## Repository and team
 
 | Folder | Responsibility |
