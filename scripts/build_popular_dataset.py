@@ -239,7 +239,7 @@ def _date(value, *, nullable=False) -> str | None:
     if not isinstance(value, str) or len(value) > 64 or "T" not in value:
         raise ValueError("Research dates require an aware ISO timestamp")
     try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value)
         if parsed.utcoffset() is None or parsed > datetime.now(UTC) + timedelta(days=1):
             raise ValueError("Research date is unaware or in the future")
         return parsed.astimezone(UTC).isoformat().replace("+00:00", "Z")

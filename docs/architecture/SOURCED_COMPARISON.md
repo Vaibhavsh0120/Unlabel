@@ -1,5 +1,10 @@
 # Sourced nutrient comparison v1
 
+Current backend **v0.12.0** preserves this contract and frontend **v0.7.0+11**
+consumes exact selected source tables through its comparison view. The server
+integration was introduced in frontend v0.4.0+5. Research website observations
+and unverified extraction are not silently promoted to comparison sources.
+
 Backend v0.8.0 adds `POST /v1/reports/compare` as an independent read-only contract.
 It preserves `label-report-v1`, private account sync and earlier public response
 shapes. The implementation is in `backend/app/comparison/`; its exported schemas
@@ -107,6 +112,6 @@ The synthetic [request](../../contracts/examples/comparison-v1.request.synthetic
 and [response](../../contracts/examples/comparison-v1.response.synthetic.json)
 are integration examples, not real products or scans. The
 [release review](../planning/BACKEND_V0_8_0_REVIEW.md) records implementation,
-local validation and hosted/publication evidence as separate gates. The current
-frontend's existing comparison view does not automatically consume this new route;
-source-aware server integration has its own frontend release scope.
+local validation and hosted/publication evidence as separate gates. The frontend server integration is recorded separately in the
+[frontend v0.4.0 review](../planning/FRONTEND_V0_4_0_REVIEW.md); its exact source/table
+selection remains implemented in the current client.

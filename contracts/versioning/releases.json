@@ -1,0 +1,206 @@
+{
+  "schema_version": "1",
+  "kind": "historical_source_release_ledger",
+  "records": [
+    {
+      "component": "backend",
+      "version": "0.1.0",
+      "tag": "v0.1.0",
+      "source_sha": "d1889f0edabaa0b06717f052e6d41c7e4ce1697e",
+      "review": "docs/planning/BACKEND_V0_1_0_REVIEW.md",
+      "title": "Backend v0.1.0"
+    },
+    {
+      "component": "backend",
+      "version": "0.2.0",
+      "tag": "v0.2.0",
+      "source_sha": "26b65230861d15062e4a3aa5b494fbf284224858",
+      "review": "docs/planning/BACKEND_V0_2_0_REVIEW.md",
+      "title": "Backend v0.2.0"
+    },
+    {
+      "component": "backend",
+      "version": "0.2.1",
+      "tag": "v0.2.1",
+      "source_sha": "ef6fac2d3b83483149a592f25d54a3e6c9524ae6",
+      "review": "docs/planning/BACKEND_V0_2_1_REVIEW.md",
+      "title": "Backend v0.2.1"
+    },
+    {
+      "component": "backend",
+      "version": "0.2.2",
+      "tag": "v0.2.2",
+      "source_sha": "5583aca5f7e9c638f91b6c16c3fa694ad2dab67d",
+      "review": "docs/planning/BACKEND_V0_2_2_REVIEW.md",
+      "title": "Backend v0.2.2"
+    },
+    {
+      "component": "backend",
+      "version": "0.2.3",
+      "tag": "v0.2.3",
+      "source_sha": "56064d7fd13d585c949eb2d31a53eb3884a5d520",
+      "review": "docs/planning/BACKEND_V0_2_3_REVIEW.md",
+      "title": "Backend v0.2.3 \u2014 Rich India product facts"
+    },
+    {
+      "component": "backend",
+      "version": "0.3.0",
+      "tag": "v0.3.0",
+      "source_sha": "ba44cbd26cf3c5ee306449c28fbb0c40dea0ba2e",
+      "review": "docs/planning/BACKEND_V0_3_0_REVIEW.md",
+      "title": "Backend v0.3.0 \u2014 Reviewed confirmed-label claims"
+    },
+    {
+      "component": "backend",
+      "version": "0.4.0",
+      "tag": "v0.4.0",
+      "source_sha": "d793f628581f509481d6dc60a82afe59ca013439",
+      "review": "docs/planning/BACKEND_V0_4_0_REVIEW.md",
+      "title": "Backend v0.4.0 \u2014 Community Product Catalogue"
+    },
+    {
+      "component": "backend",
+      "version": "0.5.0",
+      "tag": "v0.5.0",
+      "source_sha": "0c067027c934226fc2cd6880a319128ea26d9ebf",
+      "review": "docs/planning/BACKEND_V0_5_0_REVIEW.md",
+      "title": "Backend v0.5.0 \u2014 Useful Label Report"
+    },
+    {
+      "component": "backend",
+      "version": "0.6.0",
+      "tag": "v0.6.0",
+      "source_sha": "c5fa883214b1448332f7c2465f8a063430279459",
+      "review": "docs/planning/BACKEND_V0_6_0_REVIEW.md",
+      "title": "Backend v0.6.0 \u2014 Product Discovery"
+    },
+    {
+      "component": "backend",
+      "version": "0.7.0",
+      "tag": "v0.7.0",
+      "source_sha": "9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0",
+      "review": "docs/planning/BACKEND_V0_7_0_REVIEW.md",
+      "title": "Backend v0.7.0 \u2014 Private Account Sync"
+    },
+    {
+      "component": "backend",
+      "version": "0.8.0",
+      "tag": "backend-v0.8.0",
+      "source_sha": "1a2fd25b3f781ac916ca6fc1179883f81d5f40a8",
+      "review": "docs/planning/BACKEND_V0_8_0_REVIEW.md",
+      "title": "Backend v0.8.0 \u2014 Sourced Nutrient Comparison"
+    },
+    {
+      "component": "backend",
+      "version": "0.9.0",
+      "tag": "backend-v0.9.0",
+      "source_sha": "5ed899e26941477f4b8c405da97ce5d297183e7d",
+      "review": "docs/planning/BACKEND_V0_9_0_REVIEW.md",
+      "title": "Backend v0.9.0 \u2014 Reviewed Ingredient Functions"
+    },
+    {
+      "component": "backend",
+      "version": "0.10.0",
+      "tag": "backend-v0.10.0",
+      "source_sha": "e04ba543bbda129fd031d44ec7c307c4e870f02d",
+      "review": "docs/planning/BACKEND_V0_10_0_REVIEW.md",
+      "title": "Backend v0.10.0 \u2014 Sourced Research Catalogue"
+    },
+    {
+      "component": "backend",
+      "version": "0.11.0",
+      "tag": "backend-v0.11.0",
+      "source_sha": "578a9afebae8f77fe98344233cdc9155e82bb37a",
+      "review": "docs/planning/BACKEND_V0_11_0_REVIEW.md",
+      "title": "Backend v0.11.0 \u2014 Optional Photo Extraction"
+    },
+    {
+      "component": "backend",
+      "version": "0.12.0",
+      "tag": "backend-v0.12.0",
+      "source_sha": "39e600e13cf38f57b34a1e1727dfa4a10d9f24e7",
+      "review": "docs/planning/BACKEND_V0_12_0_REVIEW.md",
+      "title": "Backend v0.12.0 \u2014 Private Proposals and Research Images"
+    },
+    {
+      "component": "frontend",
+      "version": "0.1.0",
+      "tag": "frontend-v0.1.0",
+      "source_sha": "1138c292296ae6c9309d73d430d267ec1a98fa80",
+      "review": "docs/planning/FRONTEND_V0_1_0_REVIEW.md",
+      "title": "Frontend v0.1.0 \u2014 Connected Label Reader"
+    },
+    {
+      "component": "frontend",
+      "version": "0.2.0",
+      "tag": "frontend-v0.2.0",
+      "source_sha": "5f3e92fe58f87aeed6a78f989b3f9289233ca2f2",
+      "review": "docs/planning/FRONTEND_V0_2_0_REVIEW.md",
+      "title": "Frontend v0.2.0 \u2014 Welcome and Private Accounts"
+    },
+    {
+      "component": "frontend",
+      "version": "0.3.0",
+      "tag": "frontend-v0.3.0",
+      "source_sha": "3f9a8172c284c74e25c0c83a270c1e8cabc26bdb",
+      "review": "docs/planning/FRONTEND_V0_3_0_REVIEW.md",
+      "title": "Frontend v0.3.0 \u2014 Visual Label Reader"
+    },
+    {
+      "component": "frontend",
+      "version": "0.4.0",
+      "tag": "frontend-v0.4.0",
+      "source_sha": "d8b2eb339b1ce05248bd2405ebcea650c846da52",
+      "review": "docs/planning/FRONTEND_V0_4_0_REVIEW.md",
+      "title": "Frontend v0.4.0 \u2014 Sourced Comparison and Ingredient Detail"
+    },
+    {
+      "component": "frontend",
+      "version": "0.5.0",
+      "tag": "frontend-v0.5.0",
+      "source_sha": "00ae175993aa1cf435c3ff9ec9c8ee05cef94005",
+      "review": "docs/planning/FRONTEND_V0_5_0_REVIEW.md",
+      "title": "Frontend v0.5.0 \u2014 Sourced Research Search"
+    },
+    {
+      "component": "frontend",
+      "version": "0.6.0",
+      "tag": "frontend-v0.6.0",
+      "source_sha": "6403517b11ea150cd43fdf37469911a5aaafa926",
+      "review": "docs/planning/FRONTEND_V0_6_0_REVIEW.md",
+      "title": "Frontend v0.6.0 \u2014 Automatic Captured Label Reading"
+    },
+    {
+      "component": "frontend",
+      "version": "0.6.1",
+      "tag": "frontend-v0.6.1",
+      "source_sha": "48b6f3e4632afb6565ac4261dc923f8b61e5cbdf",
+      "review": "docs/planning/FRONTEND_V0_6_1_REVIEW.md",
+      "title": "Frontend v0.6.1 \u2014 Home and Profile Refinement"
+    },
+    {
+      "component": "frontend",
+      "version": "0.6.2",
+      "tag": "frontend-v0.6.2",
+      "source_sha": "ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137",
+      "review": "docs/planning/FRONTEND_V0_6_2_REVIEW.md",
+      "title": "Frontend v0.6.2 \u2014 Selected Profile Summaries"
+    },
+    {
+      "component": "frontend",
+      "version": "0.6.3",
+      "tag": "frontend-v0.6.3",
+      "source_sha": "afccb9c1b89eb1579aa8d0e0e197d12c9d5e7e14",
+      "review": "docs/planning/FRONTEND_V0_6_3_REVIEW.md",
+      "title": "Frontend v0.6.3 \u2014 Transparent Insight Artwork"
+    },
+    {
+      "component": "frontend",
+      "version": "0.7.0",
+      "tag": "frontend-v0.7.0",
+      "source_sha": "8b5f9064d61c4003a2fd0ae180d0ece933070cfa",
+      "review": "docs/planning/FRONTEND_V0_7_0_REVIEW.md",
+      "title": "Frontend v0.7.0 \u2014 Daily Sourced Insights"
+    }
+  ]
+}

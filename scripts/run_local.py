@@ -18,7 +18,6 @@ from _workspace import (
     backend_python,
     config,
     flutter_executable,
-    frontend_version,
     public_origin,
 )
 
@@ -212,7 +211,6 @@ def main() -> int:
             wait_for_api(backend, backend_url)
             print(f"Backend ready: {backend_url}/docs", flush=True)
         if flutter is not None:
-            app_version, build_number = frontend_version()
             command = [
                 flutter,
                 "build",
@@ -220,8 +218,6 @@ def main() -> int:
                 "--debug",
                 "--no-pub",
                 f"--dart-define=BACKEND_BASE_URL={backend_url}",
-                f"--dart-define=APP_VERSION={app_version}",
-                f"--dart-define=BUILD_NUMBER={build_number}",
             ]
             build = spawn(command, ROOT / "frontend", dict(os.environ))
             processes.append(build)

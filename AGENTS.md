@@ -1,62 +1,35 @@
 # Unlabel workspace instructions
 
-- Frontend v0.7.0+11 is locally verified on main: complete reviewed
-  insights collection (20 articles, unique illustrations, stable daily four),
-  topic/all browsing, full source-linked reader and device-local bookmarks with
-  protected storage/recovery. Home and Insights share the daily controller;
-  desktop/mobile swipe, selectable dots and keyboard remain manual. Eight food
-  preferences and twelve allergen reminders have distinct corresponding symbols
-  in editors/summaries. Reference desktop shell/rail and phone feed apply.
-  See docs/architecture/INSIGHTS.md and docs/planning/FRONTEND_V0_7_0_REVIEW.md.
-  All 267 tests pass, analysis is clean and the production release web build
-  passes. Light/dark 390/1440/1728 renders are reviewed; the dot strip is 32 px.
-  Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
-  later docs-only closure preserves that identity. Hosted proof is pending.
-  Backend unchanged.
+## Active checkpoint and maintenance
 
-- Preceding frontend v0.6.3+10 correction: fresh transparent 3:1 insight artwork,
-  contain fit and padded complete silhouette on the card's own theme surface.
-  Preserve compact phone artwork, separate live copy, manual swipe and large-text
-  stacking. Local tests/build/render proof and independent push status belong to
-  docs/planning/FRONTEND_V0_6_3_REVIEW.md. 240 tests, clean analysis and release web
-  build pass. Manual release defaults/About fallback match 0.6.3+10. Hosted proof
-  remains pending; user requested stopping immediately after this push. Backend
-  v0.12.0 runtime is unchanged.
+- Work directly on main only; do not create a branch or worktree. Preserve teammate
+  edits, licensed sources, historical tags and published assets. Update docs before push.
+- Checkpoint, 12 October 2026: frontend 0.7.0+11 and backend 0.12.0. The current task
+  is maintenance without new features or a version bump. Canonical versions are
+  frontend/pubspec.yaml and backend/pyproject.toml; scripts/workspace.json pins
+  Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
+- Source identities are in docs/planning/CONTROLLED_RELEASES.md and
+  contracts/versioning/releases.json. Frontend feature implementation 8b5f9064 and
+  backend implementation 39e600e remain distinct from later maintenance/docs commits.
+  Local tests, pushed source, hosted proof, publication, native build and device
+  acceptance remain separate. Historical versioned reviews/receipts are dated evidence.
+- Follow docs/planning/MASTER_PLAN.md, FEATURE_TRACKER.md and the architecture
+  contracts. Maintenance findings/gates: docs/planning/MAINTENANCE_2026_10_12.md.
+- Preserve Home/Scan/Compare/Saved navbar order and Profile header shortcut.
+  Insights has twenty sourced articles, four unique stable daily picks shared with
+  Home, full reader/topic/all browsing and protected device-local bookmarks.
+  Swipe/dots/keyboard remain manual. Preference/allergen symbols remain distinct.
+- Retain 24,641 bulk records, 243 immutable research observations, search v3 and
+  120 separate sourced image descriptors. No source/SQLite migration or deletion.
+- Native frontend tags include build number; historical mobile/backend tags stay
+  intact. Only the dedicated ios-source/apps.json feed is mutable after verified
+  publication. Feed delivery does not establish physical LiveContainer execution.
+  scripts/validate_workspace.py is tracked. Source checks run in maintenance-ci;
+  manual-release builds native artifacts. Backend work does not rebuild APK/IPA.
 
-- Preceding frontend v0.6.2+9 is pushed at `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137` and READY as
-  `dpl_8bC1g9PYP64j1hsdvdZ69oFGKyJZ`, with 55 hosted checks, all 21 OCR hashes, all
-  13 artwork hashes, 237 passing tests, clean analysis and release build. Profile
-  summaries are selected-only: no chips when empty, first two plus `+N` otherwise.
-  Preserve complete separate editors and every device-only saved choice.
-  Review/receipt: docs/planning/FRONTEND_V0_6_2_REVIEW.md. Backend v0.12.0 runtime
-  is unchanged; its preceding 389-check identity remains below. Later docs-only
-  closure commits do not replace the frontend implementation SHA.
-
-- Preceding production checkpoint (8 October 2026): frontend v0.6.1+8 implementation
-  `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is pushed and READY at
-  `dpl_6yiUZas5iZqnZ21kzoxM9yfeWGy4`, with 55 hosted checks, all 21 OCR hashes,
-  232 local tests, clean analysis and a release web build. Separate expanded
-  Profile editors, compact recent scans, background sidebar leaves, smaller
-  insight artwork and the hold/direct-drag mobile pill are reviewed. Backend
-  v0.12.0 runtime is unchanged from `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7`;
-  same-source deployment `dpl_2ZYY8isvWLkWdBkbeW7c2wco4fkU` passed 389 hosted
-  checks. Retain 24,641 bulk records, 243 source observations, research search v3
-  and 120 separate image descriptors. Exact receipts/review are in
-  FRONTEND_V0_6_1_REVIEW.md. Later documentation-only closure commits preserve
-  the implementation identity. Physical camera/accuracy/3–5 second and hosted
-  authenticated AI/staging writes remain separate. Older checkpoints below are
-  historical; retain their identities. Work on main only; update docs before push.
-
-- Research database checkpoint: backend v0.10.0 is pushed and READY from `e04ba543bbda129fd031d44ec7c307c4e870f02d`, deployment `dpl_6e39XSRkf8bhmB4Ar3LQ9C8W2BN9`, with 389 hosted checks. Frontend v0.5.0+6 has 194 passing tests, clean analysis, a release web build and 390/1440/1728 research workflow review; its independent push/hosted checks are pending. See docs/planning/BACKEND_V0_10_0_REVIEW.md and FRONTEND_V0_5_0_REVIEW.md. data/catalogue/popular-india-v1 holds 243 immutable observations (49 manufacturer/125 retailer/69 OFF); a separate generated read-only SQLite supports search/details without fake GTINs. Website facts retain their own provenance, unknowns and conflicts; they cannot become confirmed-label claims/comparison/private sync. Original bulk OFF source stays unchanged.
-
-
-- Current checkpoint: backend v0.9.0 is pushed/READY from `5ed899e26941477f4b8c405da97ce5d297183e7d`, deployment `dpl_92aS6GAdUEeyonoy2XYuQogyxoz7`, 26 hosted checks. Frontend v0.4.0+5 is independently pushed/READY from `d8b2eb339b1ce05248bd2405ebcea650c846da52`, deployment `dpl_7rQF1tNZQoiu1nev3tjQ3H39Y68j`, 49 hosted checks and all 21 OCR hashes, with 181 local tests, comparison/evidence details and parallel camera/gallery recovery. Later docs-only commits preserve these implementation identities; native/device and separate source-release publication gates remain distinct. See docs/planning/FRONTEND_V0_4_0_REVIEW.md and BACKEND_V0_9_0_REVIEW.md. Prior published identities below remain historical.
-
-- Production backend v0.7.0 Private Account Sync and frontend v0.3.0+4 Visual Label Reader are independently published and hosted-verified. Frontend v0.3.0 implementation source is `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`, READY deployment `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, with 49 hosted checks and all 21 OCR hashes and source release [frontend-v0.3.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0). Hosted Welcome/Home/Search focus/results pass; see docs/research/FRONTEND_V0_3_0_PRODUCTION.json. Historical frontend v0.2.0+3 keeps source `5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`, READY deployment `dpl_C67D8NT38YmhRXr2AsRoibKswaZy` and [frontend-v0.2.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.2.0); earlier backend v0.6.0/frontend v0.1.0 releases remain preserved. Home/Scan/Compare/Saved occupy the bottom bar and Profile stays at the top right. Work directly on `main` only; do not create a worktree or another branch. Distinguish implementation SHAs from later documentation-only closure commits. Published backend v0.7.0 exports twenty API paths/twenty-one operations. Follow MASTER_PLAN.md, FEATURE_TRACKER.md and ACCOUNT_SYNC_SCREEN_PLAN.md; review/docs/push each component independently and do not rebuild APK/IPA for backend work.
-
+## Product, setup and evidence boundaries
 
 - Inspect current source/contracts and preserve teammate edits. Update docs before every push. Keep the project free with no billing/card requirement.
-- Published frontend v0.3.0+4 has botanical Welcome/Profile, private on-device OCR, Search focus/skeleton/public-cache behavior and app-only startup (website excluded). Keep the Scan Label layout and existing four-tab navbar design/order; only the requested gap/hold-drag refinements are included. Profile has no top-right gear or bottom guest action. Backend v0.8.0 sourced comparison is independently pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; source publication is not established by that receipt. Current backend v0.9.0 expands to six reviewed bilingual ingredient functions, and frontend v0.4.0+5 integrates sourced comparison and ingredient detail, each with independent review/test/push/hosted gates. Follow its review before release and keep photos/raw OCR/device dietary reminders out of sync. Notifications, comparison-history totals, automatic barcode camera detection, live highlights and native-device accuracy remain explicit future gates.
 - Restore with `python scripts/setup.py`; run with `python scripts/run_local.py`. `--scope backend` selects backend-only work. See docs/planning/LOCAL_DEVELOPMENT.md.
 - Never commit plaintext `.env`, private identities, real scans or credentials. Track authenticated `backend/.env.age` and its public recipient; refresh ciphertext with `python scripts/env.py encrypt` after changing local settings. Private key paste belongs in the hidden local terminal prompt.
 - Track reusable acquired source bundles, provenance, licenses and hashes. SQLite, SDKs, environments and builds are generated. Rich OFF facts accept direct packaging/manufacturer nutrition only; legacy aggregates stay unavailable. Images are validated official URL descriptors, never bundled bytes. Coverage is unverified. Replace snapshots manually every nine calendar months after validation. Vercel builds the tracked source into a verified read-only bundle; see docs/planning/BACKEND_V0_6_0_REVIEW.md for current discovery/release gates and BACKEND_V0_5_0_REVIEW.md for unchanged report proof and BACKEND_V0_4_0_REVIEW.md for unchanged cloud/storage proof, BACKEND_V0_3_0_REVIEW.md for unchanged claim-source proof and BACKEND_V0_2_3_REVIEW.md for the unchanged measured catalogue source. Earlier reviews remain historical evidence.

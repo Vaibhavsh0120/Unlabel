@@ -201,7 +201,9 @@ def main() -> int:
     parser.add_argument("--catalogue-only", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     try:
-        if sys.version_info < (3, 12):
+        # Setup is a bootstrap entry point and can be invoked before the user
+        # installs the supported interpreter; keep its actionable version gate.
+        if sys.version_info < (3, 12):  # noqa: UP036
             raise ValueError("Install Python 3.12+ to run setup.")
         if args.catalogue_only:
             prepare_catalogue(ROOT, replace=args.replace_catalogue)

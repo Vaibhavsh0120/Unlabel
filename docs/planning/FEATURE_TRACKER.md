@@ -1,103 +1,10 @@
-# Feature and integration tracker
+# Feature tracker
 
-Current implementation: **frontend v0.7.0+11**, twenty sourced insights with
-distinct illustrations, stable daily four, topic/all browsing, full articles and
-device-local bookmarks. Home shares the daily set; PC/mobile use manual swipe,
-dots and keyboard. All preference/allergen choices have distinct corresponding
-symbols. All 267 tests pass, analysis is clean and the production release web
-build passes. Renders at 390/1440/1728 are reviewed in both themes. The dot strip
-is compact (32 px). Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
-hosted verification remains pending. [Feature contract](../architecture/INSIGHTS.md) ·
-[Review](FRONTEND_V0_7_0_REVIEW.md).
-
-Preceding frontend correction: **v0.6.3+10** replaces the desktop insight tile
-with fresh transparent artwork, contain fit and inner padding on the card's own
-light/dark background. Compact phone art and enlarged-text stacking remain.
-240 tests pass, analysis/build are clean and manual release defaults match
-`0.6.3+10`. Hosted verification is pending; work stops after the requested push.
-[Review/deployment status](FRONTEND_V0_6_3_REVIEW.md).
-
-Published frontend correction: **v0.6.2+9** displays selected-only Profile summaries,
-first two labels and `+N`, preserving complete separate editors and saved data.
-237 Flutter tests pass, analysis/build are clean, and production is READY with
-55 hosted frontend checks. The backend runtime is unchanged.
-[Review/deployment status](FRONTEND_V0_6_2_REVIEW.md).
-
-Preceding published checkpoint, 8 October 2026: **frontend v0.6.1+8 / backend v0.12.0**
-are pushed on `main`, with READY production deployments and **55 frontend / 389
-backend hosted checks**, including all 21 OCR asset hashes. All 243 researched
-observations and their separate 120 image descriptors match the pinned sources.
-Automatic barcode/photo reading, the reference Home/results layout, private
-structured proposals and richer research search are deployed. Authenticated hosted
-AI generation, physical camera accuracy and the 3–5 second shopping target remain
-separate verification gates.
-[Frontend review](FRONTEND_V0_6_1_REVIEW.md) ·
-[Backend review](BACKEND_V0_12_0_REVIEW.md).
-
-The new **frontend v0.6.1+8** correction keeps sidebar leaves behind content,
-preserves navigation in shorter windows, replaces the tightly cropped insight
-image, compacts recent scans and adds separate expanded Profile editors. The
-mobile indicator follows hold/direct drag with release selection and cancellation.
-Its 232 passing tests, clean analysis, release build, local rendered review and
-independent deployment gate are recorded in
-[the correction review](FRONTEND_V0_6_1_REVIEW.md).
-
-The original 24,641 bulk records and all 243 research observations remain
-preserved. Real source-image descriptors cover 120 research observations; 123
-remain without a descriptor. This is dated acquisition coverage, not complete
-Indian retail coverage or current-pack image verification.
-
-Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
-bounded Gemini/OpenAI photo reading with exactly one globally active credential,
-sticky failure replacement and scanner authentication. **1,303 tests pass**, with
-five explicit provider/emulator skips. Keys are server-only; AI facts remain
-unverified and photos stay outside database/account sync. Deployment verification
-passes for 389 public/API checks; authenticated hosted generation is separate.
-[Backend review](BACKEND_V0_11_0_REVIEW.md) ·
-[Automatic scan plan](AUTOMATIC_SCAN_PLAN.md).
-
-The selected storage remains a verified read-only SQLite public catalogue plus
-Firestore mutable observations/accounts/AI selection. New sourced data is
-validated and rebuilt into SQLite; no existing dataset is deleted or migrated.
-
-Research database checkpoint (8 October 2026): backend **v0.10.0** implements
-three independent researched-product read APIs. The generated database contains
-**243 source observations**: **49 manufacturer, 125 retailer and 69 exact-code OFF**.
-Frontend **v0.5.0+6** adds mixed-source search and qualified product details.
-Local generation is verified; independent final checks, push and hosted proof are
-tracked in the [backend review](BACKEND_V0_10_0_REVIEW.md) and
-[frontend review](FRONTEND_V0_5_0_REVIEW.md). The
-[full website product list](../research/POPULAR_PRODUCTS_ADDED.md) records packs,
-ingredients, table availability and source links. Unknown identities, missing
-values and incompatible formulas stay qualified. Retail coverage is unmeasured.
-
-
-Verified checkpoint (8 October 2026): backend **v0.9.0** and frontend
-**v0.4.0+5** were independently reviewed, documented and pushed on `main`.
-Their exact implementation deployments are READY with **26 backend / 49 frontend
-hosted checks**, including all 21 OCR asset hashes. The local suites passed
-**1058 backend tests (five provider skips) / 181 Flutter tests**; static checks,
-release web build and synthetic browser workflows passed. Physical-device gates
-and separate GitHub source-release publication are not established by this proof.
-[Backend review](BACKEND_V0_9_0_REVIEW.md) ·
-[Frontend review](FRONTEND_V0_4_0_REVIEW.md).
-
-Checkpoint: **8 October 2026**. Backend v0.7.0 and frontend v0.2.0+3 are published
-and hosted-verified; their historical reviews/receipts remain unchanged. Frontend
-v0.3.0+4 now has reference Welcome/Profile, app-only startup, private local OCR,
-editable confirmation, immediate search focus, opaque headers and the requested
-navbar gap/drag behavior. Scan Label and navbar design/order remain preserved.
-Local checks: **168 Flutter tests**, clean analysis, web build, four OCR bridge
-tests and successful synthetic browser recognition. Frontend v0.3.0 is independently
-published from implementation `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`, READY
-deployment `dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8`, with 49 hosted checks and all 21 OCR hashes.
-Hosted Welcome, actual Search input focus/results, public report save and Profile
-counts work. [Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
-[Production receipt](../research/FRONTEND_V0_3_0_PRODUCTION.json).
-Later docs-only closure commits preserve that implementation identity.
-Backend v0.8.0 was pushed from `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` and hosted-verified with 25 checks at READY deployment `dpl_651iY8R8Dj6wNEdVC71Kw3ZW4oig`; its source-release publication is not established by that receipt.
-Current implementation slices are **backend v0.9.0 Reviewed Ingredient Functions** and **frontend v0.4.0+5 Sourced Comparison and Ingredient Detail**. Each receives independent tests, review, documentation, push and exact-source hosted checks. See [the implementation plan](FRONTEND_V0_4_0_BACKEND_V0_9_0_PLAN.md). [Next versions](FRONTEND_BACKEND_NEXT_VERSIONS.md) ·
-[Frontend review](FRONTEND_V0_3_0_REVIEW.md).
+Checkpoint **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
+Current behavior and remaining gates are listed below. This task fixes maintenance
+without a version bump or new features. [Audit](MAINTENANCE_2026_10_12.md) ·
+[Source release ledger](CONTROLLED_RELEASES.md) · [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
+Versioned reviews/hosted receipts keep their original source dates and test totals.
 
 The five original concept screens describe **20 feature groups**. The historical
 v0.6.0 backend baseline has **9 ready, 2 partial, 3 planned and 6 client-owned**
@@ -136,8 +43,8 @@ sample products and health verdicts are illustrative.
 
 | Component/version | Meaningful goal | Evidence / state |
 | --- | --- | --- |
-| Backend v0.12.0 local | Bounded private AI proposals, ingredient/claim research search and separate real-product image descriptors | Local review complete; 1319 full backend tests and targeted runner checks pass; hosted identity in release review |
-| Frontend v0.6.0+7 local | Barcode-first automatic reading, minimal-work photo results and reference Home/result layouts | Local review complete; 207 Flutter / 6 bridge tests, clean analysis, web build; hosted identity in release review |
+| Backend v0.12.0 | Bounded private AI proposals, ingredient/claim research search and separate real-product image descriptors | Pushed/READY; dated 1319 tests and 389 hosted checks in release review; current maintenance separate |
+| Frontend v0.6.0+7 | Barcode-first automatic reading, minimal-work photo results and reference Home/result layouts | Pushed/READY; dated 207 Flutter / 6 bridge tests, analysis/web build and hosted receipt in review |
 | Backend v0.11.0 | One globally active Gemini/OpenAI extraction credential | Source 578a9af pushed/READY; 389 read-only hosted checks; authenticated generation separate; 1,303 historical tests/five skips |
 | Frontend v0.5.0+6 | Sourced researched-product search/details | Source 00ae175 pushed/READY; 49 hosted checks and all 21 OCR hashes; 194 historical tests |
 | Backend v0.10.0 | Immutable 243-observation research catalogue | Source e04ba54 pushed/READY; 389 hosted checks in its dated receipt |
@@ -150,7 +57,7 @@ sample products and health verdicts are illustrative.
 | Backend v0.7.0 | Private Account Sync | Pushed and hosted-verified source 9d9a9b6; independently published; 931 passed/5 skips plus 18 hosted synthetic checks; [review](BACKEND_V0_7_0_REVIEW.md) |
 | Frontend v0.2.0+3 | Welcome, Home and Optional Login | Independently published; 135 tests and hosted production receipt |
 | Frontend v0.3.0+4 | Visual Label Reader and reference Welcome/Profile | Published exact implementation `3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; 168 tests, READY deployment, 49 hosted checks and all 21 OCR hashes; native gates separate |
-| Backend v0.8.0 | Sourced Nutrient Comparison | Pushed exact source `1a2fd25`; READY hosted deployment and 25 checks; source-release publication not established |
+| Backend v0.8.0 | Sourced Nutrient Comparison | Pushed exact source `1a2fd25`; READY hosted deployment and 25 checks; source release published during the 12 October maintenance |
 | Backend v0.9.0 | Reviewed Ingredient Functions | Six entries, strict source/alias validation and immutable evidence; independently pushed/READY, 1058 tests/five provider skips and 26 hosted checks |
 | Frontend v0.4.0+5 | Sourced Comparison and Ingredient Detail | Exact sources, selected tables, guarded responses and bilingual detail; independently pushed/READY, 181 tests and 49 hosted checks |
 

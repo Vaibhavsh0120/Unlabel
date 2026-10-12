@@ -1,7 +1,7 @@
 # Client configuration
 
-Only public configuration belongs in this app. BuildInfo reads APP_VERSION,
-BUILD_NUMBER, COMMIT_SHA and BACKEND_BASE_URL from Dart build defines. The current
+Only public configuration belongs in this app. BuildInfo reads Flutter appBuildName/appBuildNumber, derived from pubspec.yaml,
+and reads COMMIT_SHA/BACKEND_BASE_URL from public Dart build defines. The current
 defaults are frontend 0.4.0+5 and the stable production API,
 https://unlabel-api.vercel.app. Local-run and release scripts inject their actual
 metadata; the URL is an address, never a credential.

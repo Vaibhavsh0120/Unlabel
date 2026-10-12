@@ -182,7 +182,7 @@ def load_resume(path, targets):
                 continue
             if not isinstance(value, str) or len(value) > 64:
                 raise ValueError("Resume source date is invalid")
-            date = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            date = datetime.fromisoformat(value)
             if date.utcoffset() is None or date > datetime.now(UTC):
                 raise ValueError("Resume source date is invalid")
             dates[key] = value

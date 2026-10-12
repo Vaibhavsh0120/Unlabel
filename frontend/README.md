@@ -1,105 +1,12 @@
-# Flutter frontend
+# Unlabel frontend
 
-Current implementation: **v0.7.0+11**, twenty sourced insights with unique
-illustrations, stable daily four, full readers, topic browsing and device-local
-bookmarks. Both Home carousels support manual swipe, selectable dots and keyboard.
-The desktop Insights shell/rail and mobile feed follow the supplied references.
-Preference/allergen editors and summaries use distinct corresponding symbols.
-267 tests pass; analysis and the production web build are clean. Light/dark
-renders at 390/1440/1728 are reviewed. The dot strip is compact (32 px).
-Implementation 8b5f9064d61c4003a2fd0ae180d0ece933070cfa is pushed on main;
-hosted proof is pending.
-[Feature contract](../docs/architecture/INSIGHTS.md) ·
-[Review](../docs/planning/FRONTEND_V0_7_0_REVIEW.md).
-
-Preceding correction: **v0.6.3+10**, transparent desktop insight artwork with contain
-fit, theme-compatible background and separate live copy. The complete bowl stays
-visible; compact phone art remains.
-240 tests pass, analysis/build are clean. Manual release defaults and uninjected
-About metadata match `0.6.3+10`. Hosted verification is pending; the user requested
-that work stop immediately after pushing this correction.
-[Review/deployment status](../docs/planning/FRONTEND_V0_6_3_REVIEW.md).
-
-Preceding: **v0.6.2+9**, source `ed2b8ff6d6d1247b85b2445c0bbf6f4560e75137`,
-READY production with 55 hosted checks; 237 tests, clean analysis and release build.
-Profile shows only selected items: first two chips plus `+N`, or no chips when
-empty. Complete separate editors retain all saved choices.
-[Review and production proof](../docs/planning/FRONTEND_V0_6_2_REVIEW.md).
-
-Preceding: **v0.6.1+8**, source `48b6f3e4632afb6565ac4261dc923f8b61e5cbdf`,
-READY production with 55 hosted checks; 232 tests, clean analysis and release build.
-See [the v0.6.1 review](../docs/planning/FRONTEND_V0_6_1_REVIEW.md).
-The v0.6.0 evidence below is the preceding release.
-
-Published implementation: **v0.6.0+7 — Automatic Scan and Reference Layouts**.
-Desktop Home follows the supplied sidebar/banner/shortcuts/insight/recent-scans
-references; mobile retains the established four-tab order. Barcode photos are
-decoded before AI/OCR, known reports open directly, and front/back photos produce
-qualified results without the Enter package label form. Optional cloud reading
-requires transfer consent; unavailable cloud reading falls back locally.
-Actual post-capture regions are highlighted, and results use the supplied
-mobile/PC card hierarchy with factual availability rather than illustrative
-health scores. Its local review passed 207 Flutter tests, six OCR bridge tests, clean analysis
-and a release web build. The READY deployment passed 54 hosted checks and all
-21 OCR hashes. The v0.6.1+8 Home/Profile correction is recorded separately in
-[its review](../docs/planning/FRONTEND_V0_6_1_REVIEW.md).
-[Published review](../docs/planning/FRONTEND_V0_6_0_REVIEW.md) ·
-[Fresh artwork](assets/artwork/README.md).
-
-The preceding frontend v0.5.0+6 source
-`00ae175993aa1cf435c3ff9ec9c8ee05cef94005` is pushed, with observed READY deployment
-`dpl_AscVhThAEqDPsd3E1REiFbpMLbPB`, with 49 hosted checks and all 21 OCR asset hashes.
-[Production receipt](../docs/research/FRONTEND_V0_5_0_PRODUCTION.json).
-Earlier verification figures below describe their recorded versions only.
-
-Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
-separate generated read-only SQLite with **243 observations** (49 manufacturer,
-125 retailer and 69 OFF). It preserves dated sources, unknown identities and
-formula conflicts. Three additive GETs expose researched product search,
-`by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
-The exported API now has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
-the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
-files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
-adds mixed-source search and qualified ingredient/nutrition/source details.
-Local verification and hosted/push status: [backend review](../docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
-[frontend review](../docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
-[product list](../docs/research/POPULAR_PRODUCTS_ADDED.md).
-The user's next automatic-capture/results redesign is recorded in the
-[automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
-Earlier release statements below retain their historical scope.
-
-
-Historical implementation: **0.4.0+5 — Sourced Comparison and Ingredient Detail**.
-181 tests, analysis, release web build, synthetic browser workflows and
-390/1440/1728 light/dark checks pass. Android preview starts while lost-gallery
-recovery runs concurrently. Independently pushed source
-`d8b2eb339b1ce05248bd2405ebcea650c846da52` has READY deployment
-`dpl_7rQF1tNZQoiu1nev3tjQ3H39Y68j` with 49 hosted checks and all 21 OCR hashes.
-[Production proof](../docs/research/FRONTEND_V0_4_0_PRODUCTION.json).
-[Current review](../docs/planning/FRONTEND_V0_4_0_REVIEW.md).
-
-Historical frontend **0.3.0+4 — Visual Label Reader** is published from implementation source
-`3f9a8172c284c74e25c0c83a270c1e8cabc26bdb`; READY deployment
-`dpl_7oPH6ZU42BgvNURT7rWPFsPVu3c8` passed 49 hosted checks, including all 21 OCR
-asset hashes. Hosted Welcome enters Home and Search focuses the actual input,
-returning ten results from 57 matches.
-[Source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.3.0) ·
-[Production receipt](../docs/research/FRONTEND_V0_3_0_PRODUCTION.json) ·
-[Historical review](../docs/planning/FRONTEND_V0_3_0_REVIEW.md).
-Later documentation-only closure commits do not replace this implementation SHA.
-Published frontend **0.2.0+3** remains at implementation commit
-`5f3e92fe58f87aeed6a78f989b3f9289233ca2f2`, with its
-[production receipt](../docs/research/FRONTEND_V0_2_0_PRODUCTION.json).
-Backend **0.7.0 — Private Account Sync** is independently published;
-backend v0.8.0 comparison is pushed/hosted-verified. Current backend v0.9.0 is
-READY with 26 hosted checks and six reviewed bilingual function entries.
-Follow the [controlled releases](../docs/planning/CONTROLLED_RELEASES.md).
-
-One application in this folder targets Android, iOS and web. The
-[website](https://unlabel-india.vercel.app) and
-[API](https://unlabel-api.vercel.app) are separate Vercel projects.
-See [deployment settings](../docs/planning/VERCEL_SETUP.md).
+Checkpoint **12 October 2026**: **0.7.0+11**, pinned Flutter **3.47.4**.
+Current feature evidence: [Insights review](../docs/planning/FRONTEND_V0_7_0_REVIEW.md).
+Maintenance, release and native/device evidence are tracked independently in
+[the audit](../docs/planning/MAINTENANCE_2026_10_12.md) and
+[release guide](../docs/planning/RELEASE_VERSIONING.md).
+Edit pubspec.yaml for future product/build version changes; Flutter's build
+metadata supplies About and platform versions without duplicated Dart defaults.
 
 ## What works
 
@@ -214,7 +121,7 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the v0.6.3 correction review for the current local check and deployment status.
+See the v0.7.0 review for dated feature checks and the maintenance audit for current release/build evidence.
 
 ## Source ownership
 

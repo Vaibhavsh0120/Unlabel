@@ -1,5 +1,11 @@
 # Product Discovery v1
 
+Current backend **v0.12.0** and frontend **v0.7.0+11** preserve this bulk-snapshot
+search contract and integrate a separate 243-observation research search. The
+current repository caches bounded public search reads for 60 seconds and report/
+research details for five minutes, deduplicates in-flight reads and keeps them
+separate from private saved/history libraries. [Catalogue](CATALOGUE.md).
+
 Backend v0.6.0 adds `GET /v1/catalogue/search` using the same dated OFF snapshot.
 This finds identity candidates. It does not recognize a front photo or confirm
 the current package, variant/reformulation, nutrition or allergen safety.
@@ -37,7 +43,9 @@ search; existing exact barcode paths remain independent.
 Every candidate includes only identity fields, its exact OFF source ID and
 qualifiers. The existing Manifest carries snapshot/export date, source hash,
 licenses and attribution. A lone candidate still needs package identity checking.
-Community-only products are outside this search index in v0.6.0.
+Community-only products remain outside this bulk-snapshot index. The separate
+`/v1/researched/products/search` route searches qualified name/brand and ingredient/claim
+research fields; results retain original sources/unknowns and do not confirm a label.
 
 The Manifest schema and SQLite application/user versions stay compatible. Optional
 index absence disables search without breaking old exact identity/facts reads.

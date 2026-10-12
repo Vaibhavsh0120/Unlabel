@@ -1,11 +1,23 @@
 # Frontend/backend API plan
 
+Updated **12 October 2026** for backend **v0.12.0** and frontend
+**v0.7.0+11**. Current OpenAPI is
+`contracts/schemas/backend-v0.12.0.openapi.json`: **27 paths / 28 operations**.
+Historical exports remain immutable. Current frontend source is pushed with
+hosted proof pending; backend has its separate READY/read-only receipt.
+Authenticated hosted extraction/staging and physical-device accuracy are separate.
+[Contracts](../../contracts/README.md) ·
+[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md) ·
+[Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md).
+
+## Historical research checkpoint — backend v0.10.0
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,
 125 retailer and 69 OFF). It preserves dated sources, unknown identities and
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
-The exported API now has 24 paths/25 operations and 29 synthetic examples.
+The historical v0.10.0 export has 24 paths/25 operations and 29 synthetic examples.
 Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
@@ -13,24 +25,26 @@ adds mixed-source search and qualified ingredient/nutrition/source details.
 Local verification and hosted/push status: [backend review](../planning/BACKEND_V0_10_0_REVIEW.md) ·
 [frontend review](../planning/FRONTEND_V0_5_0_REVIEW.md) ·
 [product list](../research/POPULAR_PRODUCTS_ADDED.md).
-The user's next automatic-capture/results redesign is recorded in the
+The subsequent automatic-capture/results implementation is recorded in the
 [automatic scan plan](../planning/AUTOMATIC_SCAN_PLAN.md).
 Earlier release statements below retain their historical scope.
 
 
-Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
+## Historical comparison/glossary checkpoint — 8 October 2026
+
+Frontend v0.3.0+4 is independently published
 and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
 implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
 Its source-release publication is not established by that receipt.
-Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
+Work at that checkpoint was backend v0.9.0 Reviewed Ingredient Functions and frontend
 v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
-push and hosted evidence are recorded in the current component reviews.
+push and hosted evidence remain in the corresponding historical component reviews.
 Guests keep personal records local; optional password accounts use private
 UID-specific sync, separately from public package facts. Capture/local OCR
 are implemented; physical-device accuracy, live barcode decoding, highlights,
 notifications and personal suitability remain separate future gates.
 
-Current exports: `contracts/schemas/backend-v0.9.0.openapi.json`, 21 paths /
+Historical export: `contracts/schemas/backend-v0.9.0.openapi.json`, 21 paths /
 22 operations and 29 synthetic examples. Existing private sync and comparison
 paths stay compatible; glossary entry enums/counts expand to six. Historical
 versioned OpenAPI is preserved. [Contracts](../../contracts/README.md).
@@ -55,7 +69,14 @@ versioned OpenAPI is preserved. [Contracts](../../contracts/README.md).
 | `GET /v1/evidence/{source_id}` | Public metadata for three reviewed sources; unknown ID 404, unavailable knowledge 503, no PDF request |
 | `POST /v1/reports/check` | Useful report from corrected confirmed observation without mandatory barcode/auth; automatic storage has a separate outcome |
 | `GET /v1/products/{barcode}/report` | Read-only sourced historical report; no current-label claim assessment; partial source outage stays useful |
-| `GET /v1/ingredients/glossary` | Three reviewed English/Hindi name/function entries and source/hash artifact; unavailable glossary returns typed 503 |
+| `GET /v1/ingredients/glossary` | Six reviewed English/Hindi name/function entries and independent source/hash artifact; unavailable glossary returns typed 503 |
+| `POST /v1/reports/compare` | Read-only comparison of exact selected source tables on compatible bases; no universal healthier verdict |
+| `GET /v1/researched/products/search` | Bounded search across the independent 243-observation research catalogue |
+| `GET /v1/researched/products/by-barcode/{barcode}` | Exact known-barcode research observations, without fabricated identities |
+| `GET /v1/researched/products/{entry_id}` | Qualified source facts, original pack/date/unknowns and separately validated image descriptors |
+| `POST /v1/ai/extract` | Consented scanner-authenticated photo extraction, bounded unverified facts and independent private staging outcome |
+| `GET /v1/ai/active` | Machine-authenticated global credential selection/status; no scanner key access |
+| `POST /v1/ai/control/activate` | Machine-authenticated CAS selection of a configured server credential |
 
 Four additive v0.4.0 endpoints are mounted: POST `/v1/community/contributions`,
 owned GET `/v1/community/contributions/{submission_id}`, public exact GET
@@ -74,8 +95,8 @@ No generic packet imputation or current-label confirmation is invented.
 
 
 Metadata enables product lookup, nutrition lookup and nutrition normalization. Its `catalogue` value uses `CatalogueStatus`; catalogue lookup requires a validated configured index and hosted configuration also requires a verified build receipt. The [v0.4.0 review](../planning/BACKEND_V0_4_0_REVIEW.md) records published community/source/cloud/hosted gates; the [v0.2.3 review](../planning/BACKEND_V0_2_3_REVIEW.md) preserves catalogue history; [catalogue contracts and storage](CATALOGUE.md) explain source origin and manual refresh. All 422 responses use strict redacted ValidationFailure. `claim_checks` requires valid loaded knowledge, with `knowledge_version: claims-2026-10-06.1`; `knowledge_artifact` identifies a verified packaged receipt or is null for direct local canonical loading/unavailable knowledge. Released v0.5.0 enables `nutrition_analysis` and `label_reports` with `report_version: label-report-v1`; `ingredient_explanations` requires a valid loaded six-entry glossary. Glossary version/artifact and claim readiness remain independent. Backend comparison is enabled independently of catalogue/glossary/cloud readiness
-with `sourced-nutrient-comparison-v1`; frontend v0.4.0 consumes exact source/table
-references. AI stays disabled.
+with `sourced-nutrient-comparison-v1`; the client consumes exact source/table
+references. Optional AI readiness is independent and exposed only when `AI_ENABLED` and its required runtime/configuration are available. [AI admission/privacy](AI_ROUTING.md).
 
 `CatalogueStatus` reports `ready`, `not_configured` or `unavailable`, with nullable manifest/freshness/artifact and explicit field limits for the loaded store. Freshness is `within_refresh_window`, `refresh_due` or `source_date_in_future`; it uses nine calendar months from `exported_at`, not the build timestamp. Unconfigured/unavailable status returns 503 and claims no verified manifest. A ready but overdue catalogue remains readable with warnings. Existing `CatalogLookup` keys are unchanged; warnings remain within its 100-item bound. A 404 snapshot miss makes no upstream request. Catalogue status/identity/facts responses are `no-store`. The additive `catalogue_facts` capability is true only for a validated facts-enabled store. Older identity-only stores keep their old routes and return facts unavailable for a found identity.
 
@@ -94,13 +115,13 @@ community intake persists bounded public assertions and private staging/receipts
 images/raw OCR/profiles/history remain excluded. Exact-origin GET/POST CORS permits
 Authorization but is not authentication. Public writes accept verified anonymous or
 password scanner tokens; private account sync requires password authentication.
-Public observations save automatically without a Share flag. No AI is enabled.
+Public observations save automatically without a Share flag. Optional consented extraction uses the separate authenticated AI route and does not alter these confirmed/public admission rules.
 [Storage lifecycle](COMMUNITY_CATALOGUE.md).
 
 
 Use the [export/example index](../../contracts/README.md) for actual schema files and validated synthetic requests/responses. The facts route keeps `product` and `manifest` separate from `details`. Tags use availability plus values; nutrition distinguishes `direct_tables`, `missing`, `legacy_unsupported` and `invalid`. Only direct packaging/manufacturer tables are normalized; legacy aggregate nutrients remain unavailable. Dates and official selected-front image descriptors are optional. Image URL metadata includes language/revision/400-size and attribution/license; a descriptor does not guarantee present image availability. No photo bytes or arbitrary URL proxy is served.
 
-Raw text interpretation, capture geometry and universal health scoring remain outside this slice. Released v0.5.0 composes existing structured facts into a useful sourced report; [report contract](LABEL_REPORT.md). The independently released v0.3.0 claim/rule/evidence APIs remain intact; [historical accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
+Raw text interpretation and capture geometry remain outside the preserved confirmed normalization/claim slice; optional extraction handles bounded unverified fields separately. Universal health scoring remains outside the product. Released v0.5.0 composes existing structured facts into a useful sourced report; [report contract](LABEL_REPORT.md). The independently released v0.3.0 claim/rule/evidence APIs remain intact; [historical accepted plan](../superpowers/plans/2026-10-06-backend-v0.2.3-v0.3.0.md).
 
 `ClaimsRequest` extends confirmed normalization with 1–16 unique identified claims, `selected_table_id` and food category/form/preparation context. Numerical scope covers seven fibre/sugar/sodium claims for ordinary general food and matching table context. High/source protein, no added sugar and multigrain remain recognized but unreviewed. One applicable fibre alternative can support a criterion; a contradiction requires every applicable alternative known and failing. Missing/conflicting/unsupported or future-dated evidence yields insufficient information. Results include row/region/rule/source references, knowledge version and numerical-only scope. Statutory fibre energy alternatives use original rows and 4.2 kJ/kcal with version `fssai-schedule-i-note2-v1`; the returned normalization-v1 snapshot retains 4.184. Public structured POST routes share checked numeric tokens, the 32 KiB body limit and redacted validation. Private account sync has its own 512 KiB actual request-body cap and 384 KiB serialized data cap. Claim/rule/evidence reads use `no-store` and no external provider. [Detailed current criteria and synthetic integration pair](../../backend/README.md#reviewed-confirmed-label-claim-checks).
 
@@ -117,7 +138,7 @@ analysis, but automatic public candidate eligibility remains stricter.
 The current report retains original nutrition, source/row references, declarations,
 missing inputs and warnings. Total sugar uses approximate `sugar-cubes-4g-v1`
 with the original quantity/serving basis and preparation; zero stays zero and
-unknown/conflicting sugar gets no fabricated cube count. Three reviewed glossary
+unknown/conflicting sugar gets no fabricated cube count. Six reviewed glossary
 entries supply English/Hindi names and technological functions only. They do not
 establish health, allergy or Indian regulatory permission.
 
@@ -158,7 +179,7 @@ makes no automatic live OFF request. [OFF adapter](OPEN_FOOD_FACTS.md).
 | Condition | Actual report behavior |
 | --- | --- |
 | Invalid input or unsupported contract | Redacted 422 with stable field/error codes |
-| Actual body exceeds 32 KiB | 413 before parsing/provider work |
+| Public structured report/claim body exceeds 32 KiB | 413 before parsing/provider work; private sync and consented AI extraction have separate caps |
 | Partial label, unsupported rule or missing claim context | Useful HTTP 200 partial report with explicit missing inputs |
 | Missing/invalid anonymous token, quota or storage failure | Current report remains HTTP 200; typed independent storage outcome |
 | Missing/invalid glossary or claim knowledge | Suppress only the unavailable section; keep usable label facts |
@@ -172,17 +193,19 @@ All report/glossary responses use `no-store`. Anonymous tokens never authorize
 claim truth or regulatory trust. Quota admission bounds application operations;
 free-tier availability is finite. Never multiply keys to bypass provider quotas.
 
-## Remaining API scope
+## Current scope and remaining gates
 
-Bounded discovery is released in v0.6.0; compatible comparison remains subsequent screen/contract scope in the
-[master plan](../planning/MASTER_PLAN.md). Wider ingredient details need reviewed
-coverage before new endpoints. Current reports use the three implemented APIs;
-a duplicate generic analyze endpoint is unnecessary. Released v0.7.0 provides
-private profile/saved/history snapshots through `/v1/account/sync`, separate from
-public facts. There is no image-upload route. Per-frame and generic-chat endpoints
-are unnecessary. Manual correction, source views, local saved/history and report
-UI are integrated; locally validated frontend v0.2.0+3 adds camera/gallery capture
-beside manual entry and conservative client-side comparison. Automatic barcode
-reading, local OCR and Ingredient Insights remain frontend v0.3.0 work.
-Gemini/custom training are disabled; any later fallback requires a measured
-benchmark and no-card/privacy controls before acceptance.
+Captured barcode reading, local OCR, consented optional cloud extraction,
+source-linked ingredient detail and exact-source comparison are implemented.
+Ordinary report/product/account requests exclude photos; `/v1/ai/extract` is the
+explicitly consented exception. Photo/raw OCR content is never account sync or
+public package evidence. Machine extraction is not a generic chat/analysis route.
+
+Reports preserve independent storage outcomes; no duplicate generic analyze
+endpoint is needed. Private snapshots remain on `/v1/account/sync`. The latest
+Insights collection is bundled client content with local bookmarks, requiring no
+new backend route. Broader ingredients, continuous live decoding/highlights,
+notifications and personal suitability remain tracked in the
+[feature tracker](../planning/FEATURE_TRACKER.md). Native accuracy, response time,
+authenticated hosted generation/staging and current frontend hosted proof are
+separate validation gates. No custom training or Firebase billing is introduced.

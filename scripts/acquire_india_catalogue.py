@@ -8,6 +8,7 @@ import io
 import json
 import os
 import shutil
+import sys
 import tempfile
 import time
 import urllib.request
@@ -16,6 +17,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Protocol
 from urllib.parse import urlsplit
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+from app import __version__
 
 SOURCE = "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz"
 MAX_PROJECTION_BYTES = 100 * 1024**2
@@ -194,7 +198,7 @@ def acquire(directory):
         request = urllib.request.Request(
             SOURCE,
             headers={
-                "User-Agent": "Unlabel/0.12.0 (https://github.com/Vaibhavsh0120/Unlabel)",
+                "User-Agent": f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)",
                 "Accept-Encoding": "identity",
             },
         )

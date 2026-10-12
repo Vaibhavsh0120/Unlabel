@@ -1,10 +1,29 @@
 # Shared data and recoverable catalogue
 
-- fixtures/ocr: synthetic OCR text and region coordinates, including common errors.
-- fixtures/scans: synthetic confirmed-label inputs and front/back pairing cases.
-- fixtures/expected: reviewed expected rule results with source/rule versions.
-- private: ignored local-only package photographs and manual investigation data.
+The retained [catalogue/](catalogue/README.md) holds the compact public OFF India
+source, acquisition provenance, manifest and license texts. The preserved
+**24,641** supported codes contain bounded direct nutrition, availability-aware
+tags, dates and attributed image URL descriptors. The separate
+[popular-india-v1/](catalogue/popular-india-v1/README.md) holds **243** immutable
+manufacturer/retailer/OFF observations with their original source qualifications.
+Setup validates tracked hashes/counts and regenerates ignored SQLite/receipts.
+Image bytes, personal scans and inferred branded-packet values are not bundled.
 
-The [catalogue/](catalogue/README.md) directory contains the compact public OFF India source, manifest, acquisition provenance and license texts. The rich projection introduced in v0.2.3 and retained by v0.3.0 includes bounded direct nutrition inputs, canonical tags, dates and selected-image descriptors. Setup verifies it and regenerates SQLite. Image bytes, legacy nutrient aggregates, personal scans and legal verdicts are excluded. The current claim examples live in [contracts/](../contracts/README.md) and use synthetic confirmed rows with reviewed rule/source references. Future shared fixtures must record reuse rights and contain no personal information. Real user history belongs on the device.
+`private/` remains ignored local-only package photography/investigation input;
+it is not a production upload target or user-history store. Real guest reports
+stay device-local; optional signed-in libraries use separate bounded private
+sync, outside these source bundles. Photos/raw OCR are never account/database sync.
 
-Fixtures should cover missing fields, mixed nutrition bases, ambiguous additives, may-contain warnings, front/back mismatch, stale evidence and provider outages. They will support backend rules and frontend contract tests without requiring a paid service.
+The original `fixtures/ocr`, `fixtures/scans` and `fixtures/expected` directories
+were empty foundation scaffolding and have been removed. Actual owned synthetic
+fixtures/examples live in [contracts/examples/](../contracts/examples/),
+[backend tests](../backend/tests/) and [frontend tests](../frontend/test/).
+They cover missing values, original table bases, conflict/pairing, source age,
+provider failures and bounded/redacted inputs without retaining real personal
+scans. New fixtures need known reuse rights and explicit synthetic provenance.
+
+Historical v0.2.3 rich-source and later research acquisition measurements remain
+in their dated reviews. Catalogue coverage stays unverified; source-date refresh
+and current-package confirmation are different responsibilities.
+[Catalogue/rollback](../docs/architecture/CATALOGUE.md) ·
+[Evidence/privacy](../docs/SAFETY_PRIVACY.md).

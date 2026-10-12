@@ -1,5 +1,10 @@
 # Optional scanner account sync
 
+Current backend **v0.12.0** and frontend **v0.7.0+11** preserve the account
+contract introduced in backend v0.7.0/frontend v0.2.0. Device-wide dietary/allergen
+reminders, appearance, Welcome completion and Insight bookmarks are outside this
+snapshot and stay separate from scanner account namespaces.
+
 Backend v0.7.0 adds `personal-sync-v1`. Guest product lookup, manual label analysis,
 public product observations and local libraries keep working without a personal
 account. A scanner may sign in with Firebase email/password to sync a private
@@ -62,7 +67,7 @@ a current revision. The revision/idempotency metadata stays, so a stale device
 cannot recreate deleted entries automatically. Clearing only local data must not
 silently clear another device's cloud library. Local libraries must be scoped by
 account; signing out returns to guest data without exposing the previous user's
-private reports. Guest import requires an explicit choice after login.
+private reports. Guest records are never silently imported after login. Any future guest-import flow would require a separate explicit choice.
 
 ## Bounds and free-tier protection
 
@@ -103,7 +108,7 @@ guest/local reading or justify upgrading billing automatically.
 - [Response schema](../../contracts/schemas/personal-sync-snapshot-v1.schema.json)
 - [Failure schema](../../contracts/schemas/personal-sync-failure-v1.schema.json)
 
-Current SDK decisions were checked against the official
+The original SDK implementation decisions were checked against the official
 [Firebase Admin Python token verifier](https://github.com/firebase/firebase-admin-python/blob/main/_autodocs/api-reference/auth.md)
 and [Firestore Python transaction implementation](https://github.com/googleapis/python-firestore/blob/main/google/cloud/firestore_v1/transaction.py)
 through Context7. The reviewed existing transaction helper supplies explicit

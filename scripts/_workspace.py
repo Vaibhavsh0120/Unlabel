@@ -2,31 +2,23 @@
 
 import json
 import os
-import re
 import shutil
 import subprocess
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from version_metadata import frontend_version as read_frontend_version
+
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def frontend_version(root: Path = ROOT) -> tuple[str, str]:
+    """Compatibility helper; canonical parsing lives in version_metadata."""
+    return read_frontend_version(root)
 
 
 def config(root: Path = ROOT) -> dict:
     return json.loads((root / "scripts/workspace.json").read_text(encoding="utf-8"))
-
-
-def frontend_version(root: Path = ROOT) -> tuple[str, str]:
-    """Read canonical, non-secret client metadata for local runs."""
-    match = re.search(
-        r"^version:\s*(\d+\.\d+\.\d+)\+([1-9][0-9]*)\s*$",
-        (root / "frontend/pubspec.yaml").read_text(encoding="utf-8"),
-        re.MULTILINE,
-    )
-    if match is None:
-        raise ValueError(
-            "frontend/pubspec.yaml requires a version and positive build number."
-        )
-    return match.group(1), match.group(2)
 
 
 def backend_python(root: Path = ROOT) -> Path:

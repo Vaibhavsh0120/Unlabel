@@ -1,118 +1,17 @@
-# Unlabel backend: v0.12.0
+# Unlabel backend
 
-Latest hosted recheck: the unchanged backend at frontend v0.6.1 source
-`48b6f3e4632afb6565ac4261dc923f8b61e5cbdf` is READY at
-`dpl_2ZYY8isvWLkWdBkbeW7c2wco4fkU`, with all **389 checks** passing again.
-[Current receipt](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json).
-The preceding deployment identity below remains historical evidence.
+Checkpoint **12 October 2026**: **0.12.0**, Python **3.12+**, **27 API paths /
+28 operations**. Canonical version is project.version in pyproject.toml.
+The current contract retains bounded photo extraction/private proposals,
+243 sourced research observations, 120 separate image descriptors and the
+24,641-barcode public catalogue. Six ingredient-function entries remain partial.
 
-The private unverified AI fact staging, ingredient/declaration/claim search terms
-and separate researched-product image descriptors are pushed and deployed.
-The preceding production was READY at `dpl_7XRdiDVSWKH9pEnLv4Nik699tEtf`, from repository source
-`6403517b11ea150cd43fdf37469911a5aaafa926`; its backend code is unchanged from
-implementation commit `39e600e13cf38f57b34a1e1727dfa4a10d9f24e7`.
-All **389 hosted checks** passed, including source equality for all 243 research
-observations and 120 image descriptors. Authenticated AI generation and private
-staging writes are outside this read-only audit.
-[Review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) ·
-[Production receipt](../docs/research/BACKEND_V0_12_0_PRODUCTION.json).
-
-The preceding v0.11.0 source `578a9afebae8f77fe98344233cdc9155e82bb37a` is pushed,
-with READY deployment `dpl_GYRcK2j22N2gY24Hsxk5pi8UH8rA` and 389 read-only public/API
-checks. Authenticated hosted AI generation/failover remains unexercised.
-[Production receipt](../docs/research/BACKEND_V0_11_0_PRODUCTION.json).
-
-Automatic extraction checkpoint (8 October 2026): backend **v0.11.0** adds
-bounded Gemini/OpenAI photo reading with exactly one globally active credential,
-sticky failure replacement and scanner authentication. **1,303 tests pass**, with
-five explicit provider/emulator skips. Keys are server-only; AI facts remain
-unverified and photos stay outside database/account sync. Public hosted verification
-passes; authenticated hosted extraction remains separate. These tests describe v0.11.0, not later working-tree edits.
-[Backend review](../docs/planning/BACKEND_V0_11_0_REVIEW.md) ·
-[Automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
-
-The selected storage remains a verified read-only SQLite public catalogue plus
-Firestore mutable observations/accounts/AI selection and bounded private machine
-proposals. New sourced data is
-validated and rebuilt into SQLite; no existing dataset is deleted or migrated.
-
-Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
-separate generated read-only SQLite with **243 observations** (49 manufacturer,
-125 retailer and 69 OFF). It preserves dated sources, unknown identities and
-formula conflicts. Three additive GETs expose researched product search,
-`by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
-The exported API now has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
-the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
-files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
-adds mixed-source search and qualified ingredient/nutrition/source details.
-Local verification and hosted/push status: [backend review](../docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
-[frontend review](../docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
-[product list](../docs/research/POPULAR_PRODUCTS_ADDED.md).
-The user's next automatic-capture/results redesign is recorded in the
-[automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
-Earlier release statements below retain their historical scope.
-
-
-v0.9.0 expands the reviewed English/Hindi ingredient glossary to six entries,
-preserving the historical projection and adding strict own-source, alias, INS
-and content validation. Evidence models returned to callers are independent
-copies. Coverage remains partial and describes technological functions only.
-[Current review](../docs/planning/BACKEND_V0_9_0_REVIEW.md) ·
-[Reviewed ingredient sources](../docs/research/INGREDIENT_GLOSSARY_V0_9_0.md).
-
-Earlier v0.8.0 added the read-only `POST /v1/reports/compare` contract to the independently
-published v0.7.0 backend. The working source exports **21 paths / 22 operations**
-and **29 validated synthetic examples**. It compares a selected nutrition table
-from each of two confirmed labels or exact historical source references, retaining
-original rows, source dates, unknowns and disagreements. It provides signed
-nutrient differences, without a winner, health score or safety verdict.
-[v0.8.0 review](../docs/planning/BACKEND_V0_8_0_REVIEW.md) ·
-[Comparison contract](../docs/architecture/SOURCED_COMPARISON.md).
-
-Historical v0.8.0 local validation passed **975 tests with five emulator-only skips**; Ruff was clean
-and application Pyright reports zero errors/warnings. Subsequent body-limit wording,
-chunked-limit assertions and type narrowing passed the 25 affected comparison
-tests with clean Ruff/Pyright. Its exact implementation `1a2fd25` is pushed and
-hosted-verified with 25 checks; source-release publication is not established by
-the receipt. v0.9.0 receives its own current validation and deployment checks.
-Earlier deployment receipts below establish their recorded releases only.
-
-## Published v0.7.0 evidence
-
-v0.7.0 implementation source `9d9a9b64a735bd1ad6fdd606c82e0a34412dd6f0`
-is independently published and hosted on READY deployment
-`dpl_5TNPc4yuis3tdLJ114jacroGvbvh`, after the independently published
-v0.6.0 Product Discovery. **20 paths / 21 operations** preserve all public
-contracts and add optional password-authenticated private profile/saved/history
-sync. Guests keep personal records locally; public package observations remain
-automatic and separate.
-
-Fresh closure validation on 7 October passed **931 tests with five emulator-only
-skips** in 25.47 seconds, with clean Ruff and root-configured Pyright reporting
-zero errors/warnings. Separate local-API/live-Firebase checks and the
-[hosted production receipt](../docs/research/BACKEND_V0_7_0_PRODUCTION.json)
-each record **18 synthetic checks**. The hosted checks used two password identities
-and one anonymous identity to test ownership, anonymous rejection,
-CAS/retry/conflict, versioned clearing and no-store behavior. Test identities were
-deleted and private report snapshots cleared; empty revision-protection documents
-and bounded counters remain. Email/password Auth was enabled without adding
-billing. Local `.env` changes were encrypted into `.env.age`. Backend v0.7.0 is
-published at [the verified source tag](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/v0.7.0).
-Documentation closure commit `ec70568` also reached READY without API source changes. A later documentation-only
-closure commit does not replace the original implementation SHA; any new deployment
-needs its own exact-commit verification.
-[Published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) ·
-[Private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md).
-
-API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app) ·
-[Swagger](https://unlabel-api.vercel.app/docs). Firebase remains free with no
-card/linked billing. Frontend v0.2.0+3 is independently published; its source and
-hosted evidence are recorded in the
-[Frontend release review](../docs/planning/FRONTEND_V0_2_0_REVIEW.md).
-Frontend v0.3.0+4 screen, local OCR and performance work has its own release gates.
-Profile remains at the top right of the existing four-tab app shell. Backend-only
-work does not rebuild APK/IPA artifacts.
+The [0.12 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) and
+[dated production recheck](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json)
+record the preceding 389 read-only hosted checks. Authenticated extraction/write
+and physical-device evidence remain separate. Current maintenance does not add
+features or change the product version. See [maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
+and [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
 
 ## Run locally
 
@@ -447,7 +346,7 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current v0.9.0 review](../docs/planning/BACKEND_V0_9_0_REVIEW.md),
+See [current v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md),
 [published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
 [comparison contract](../docs/architecture/SOURCED_COMPARISON.md),
 [private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),

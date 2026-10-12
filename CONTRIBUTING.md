@@ -1,42 +1,28 @@
-# Working on Unlabel
+# Contributing
 
-Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
-and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
-implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
-Its source-release publication is not established by that receipt.
-Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
-v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
-push and hosted evidence are recorded in the current component reviews.
-Guests keep personal records local; optional password accounts use private
-UID-specific sync, separately from public package facts. Capture/local OCR
-are implemented; physical-device accuracy, live barcode decoding, highlights,
-notifications and personal suitability remain separate future gates.
+Read [AGENTS.md](AGENTS.md), current contracts and the working-tree diff first.
+Work directly on main in this workspace; preserve teammate edits and historical
+source/release evidence. Keep changes within the authorized scope and update
+affected docs before pushing. Do not bump versions for the current maintenance.
 
-Work directly on main, preserve teammate edits, review each component separately
-and update documentation before each authorized push. Keep ₹0/no-card and
-follow [controlled releases](docs/planning/CONTROLLED_RELEASES.md).
+Restore with `python scripts/setup.py`; run with `python scripts/run_local.py`.
+Use `--scope backend` or `frontend` when appropriate. See
+[local development](docs/planning/LOCAL_DEVELOPMENT.md) and
+[actual folder ownership](docs/architecture/FOLDER_STRUCTURE.md).
 
-## Team boundaries
+From frontend, run `flutter analyze`, `flutter test`, `flutter build web --release`
+and `node --test test/local_ocr_web_test.cjs`. From backend, use its .venv Python
+for `-m pytest -q`, `-m ruff check app tests` and `-m pip check`.
+From root, run `python scripts/validate_workspace.py`, icon/OCR checks and the
+release guard tests described in [scripts](scripts/README.md).
+Changes to API models require regenerated/synthetic-validated current contracts;
+preserve old versioned OpenAPI. Native builds use the manual workflow separately.
 
-- Android/iOS/web work belongs in the single Flutter frontend. Primary Open Food Facts product lookup and reviewed rule evaluation belong in backend. The MVP is online-first; limited offline saved results/preferences/glossary do not require a second rule engine in frontend/lib/core/analysis.
-- Reviewed ingredient/rule/source content belongs in knowledge. Shared contract definitions belong in contracts. Shared test fixtures belong in data/fixtures.
-- Agree on the API contract, missing-value behavior and evidence IDs before frontend/backend work starts in parallel.
-- Preserve others' changes; keep one shared contract owner. Split changes by feature or responsibility.
-- Update architecture and handoff documents when an accepted decision changes.
+Edit only pubspec.yaml or backend/pyproject.toml for a future component version;
+do not repeat version literals in runtime/workflow files. Document the new release
+without rewriting dated reviews. See [release/versioning](docs/planning/RELEASE_VERSIONING.md).
 
-## Data and secrets
-
-- Never commit plaintext API keys, private age identities, allergy profiles, scan history, runtime databases or unreviewed downloads. Tracked `backend/.env.age` is authenticated ciphertext; refresh it with `python scripts/env.py encrypt` after changing local settings. Public recipient data is safe to track.
-- Keep reviewed reusable acquired source bundles, hashes, provenance and licenses in Git. The India source lives in data/catalogue; setup regenerates SQLite. Retain attribution and unknown/coverage semantics.
-- backend/.env.example documents active public settings and reserved AI fields. Real values belong in the ignored backend/.env file; preserve existing values.
-- Do not put Gemini keys into the mobile app, its assets, build arguments or client-side environment files.
-- Fixtures must be synthetic or explicitly reusable, with source/rights recorded. Legal thresholds need a reviewed source, effective date and food-category applicability.
-- Never turn unknown or missing data into zero, a passed claim or an allergy-safe verdict.
-- Confirmed public product facts save/deduplicate automatically through the v0.4.0 API, with unverified extraction candidates staged separately and anonymous writes behind the scenes. No separate Share action. Preserve original observations; complement compatible fields only with per-field source/date and visible conflicts. Generic composition never fills packet gaps.
-- Firebase Unlabel has its first Standard database `unlabel` in Mumbai, free tier enabled and no linked billing. No paid fallback, Storage/Functions, TTL, backups or PITR. Photos/raw OCR/profiles/history stay private. [Storage boundaries](docs/architecture/COMMUNITY_CATALOGUE.md).
-
-## Future validation
-
-Implementation should test meaningful unit normalization, claim-rule applicability, allergens, evidence references, API shape and provider failures. Camera/OCR and overlay geometry require physical Android-device checks. Build success alone will not prove OCR accuracy or food safety.
-
-Track application lockfiles. Do not add fake backend code, source data or test placeholders that suggest the food-analysis features already run. Use the manual workflow for version-aligned demo artifacts; never describe unsigned iOS as directly installable.
+Never commit plaintext credentials, private identities or real scans. Keep
+public sourced package facts separate from personal sync/private machine proposals.
+Retain provenance, unknowns and conflicts; no invented health/allergy verdict.
+Use existing free/no-card services and explicit consent for optional photo transfer.

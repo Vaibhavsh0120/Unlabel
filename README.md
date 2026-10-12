@@ -30,6 +30,11 @@ white, forest-green and mint design, with light as the first-use default.
 [Insights review](docs/planning/FRONTEND_V0_7_0_REVIEW.md) ·
 [Feature tracker](docs/planning/FEATURE_TRACKER.md).
 
+Maintenance on 12 October fixes stale setup/docs, release metadata and native
+build workflows without changing versions. Versions now have one canonical file
+per component. [Audit and checks](docs/planning/MAINTENANCE_2026_10_12.md) ·
+[Source release ledger](docs/planning/CONTROLLED_RELEASES.md).
+
 ## Clone and run
 
 Install Git and Python 3.12+, then run from the project folder:
@@ -96,8 +101,8 @@ Shared preferences are convenience storage, not an encrypted backup.
 
 ## Validation and releases
 
-Frontend v0.7.0+11 passed **267 tests**, clean analysis and a production web build.
-Its source is pushed; hosted verification and native releases are pending.
+The maintenance frontend passed **268 tests**, clean analysis and a production web
+build. Native build/publication and physical-device evidence remain separate.
 Backend v0.12.0 is unchanged, with **389 hosted checks** recorded on 8 October.
 [Frontend review](docs/planning/FRONTEND_V0_7_0_REVIEW.md) ·
 [Backend review](docs/planning/BACKEND_V0_12_0_REVIEW.md).

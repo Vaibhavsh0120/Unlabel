@@ -1,4 +1,13 @@
-# Useful Label Report: backend v0.5.0
+# Useful Label Report
+
+Current backend **v0.12.0** preserves `label-report-v1` and its source/confirmation
+boundaries. Frontend **v0.7.0+11** integrates reports, six-entry ingredient detail,
+original-basis sugar cubes, sourced comparison and captured/OCR results. Photos
+stay session-local unless optional cloud transfer is consented; machine proposals
+use a different unverified contract. [Data flow](DATA_FLOW.md) ·
+[AI boundaries](AI_ROUTING.md).
+
+## Historical introduction — backend v0.5.0
 
 Production **v0.5.0** was independently reviewed, pushed, hosted-verified and
 published after the separate v0.4.0 release. [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json)
@@ -91,8 +100,7 @@ community intake automatically. There is no Share flag. `storage.status`
 distinguishes `saved` (with private receipt), `authentication_required`,
 `unavailable`, `rate_limited`, `conflict`, `needs_correction` and GET `read_only`.
 A missing token, disabled Firebase, quota or store error does not erase a useful
-report. The frontend can retry the same immutable observation through its bounded
-outbox; saving does not make historical data current or confer review trust.
+report. A caller can retry the same immutable observation without changing its submission identity; saving does not make historical data current or confer review trust.
 Photos/raw OCR/profiles/history remain excluded.
 
 Implausible or contradictory nutrient quantities also stop automatic saving with
@@ -100,18 +108,18 @@ Implausible or contradictory nutrient quantities also stop automatic saving with
 100 g of a nutrient per 100 g, added sugar exceeding total sugar, or saturated fat
 exceeding total fat. Correct those rows before retrying.
 
-## Integration and release gates
+## Integration and historical release gates
 
 Retain actual 32 KiB bodies, strict numeric tokens, redacted failures and no-store
 responses. Read `/v1/meta` versions and capabilities before integration; glossary
-readiness is separate from report and reviewed claim readiness. No Gemini,
+readiness is separate from report and reviewed claim readiness. In the historical v0.5.0 release, no Gemini,
 custom training, new provider, new secret, paid database/service or mobile build
 belongs to v0.5.0. Preserve the fifteen released v0.4.0 APIs and historical exports.
-The released eighteen-route OpenAPI and four added schemas are exported with five
+The historical eighteen-route OpenAPI and four added schemas are exported with five
 new report/glossary examples, bringing the validated synthetic set to 22.
 
 [Accepted design](../superpowers/specs/2026-10-07-useful-label-report-design.md)
 · [Implementation plan](../superpowers/plans/2026-10-07-backend-v0.5.0.md)
-· [Current review](../planning/BACKEND_V0_5_0_REVIEW.md)
+· [Historical review](../planning/BACKEND_V0_5_0_REVIEW.md)
 · [Release scope](../planning/BACKEND_V0_5_0_RELEASE.md)
 · [Current API guide](../../backend/README.md) · [Feature tracker](../planning/FEATURE_TRACKER.md)

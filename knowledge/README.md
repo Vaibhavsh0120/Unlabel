@@ -1,6 +1,19 @@
 # Reviewed claim knowledge
 
-Published production **v0.5.0** preserves and loads the reviewed claim subset **claims-2026-10-06.1** from two canonical JSON files. This is a small manually reviewed numerical rule/source projection. Released v0.5.0 adds a separate bounded three-entry English/Hindi ingredient name/function projection in `backend/app/reports/glossary-v1.json`; broader aliases, allergen rules and nutrition classifications remain future work. Its Codex metadata/functions do not establish health, allergy or Indian regulatory permission. Open Food Facts product facts and user-confirmed package rows retain separate origins.
+Current backend **v0.12.0** loads the unchanged **claims-2026-10-06.1**
+seven-claim projection from two canonical JSON files. The separate current
+English/Hindi ingredient-function glossary has **six entries** in
+[glossary-v2.json](../backend/app/reports/glossary-v2.json), version
+`ingredients-2026-10-08.1`, with its own SHA-256/byte/count artifact. It is outside
+the two-file FSSAI receipt. Function metadata does not establish health, allergy
+or Indian category permission. OFF/research facts and confirmed package rows
+retain separate origins. [Current report scope](../docs/architecture/LABEL_REPORT.md).
+
+Historical backend v0.5.0 introduced the three-entry
+[glossary-v1.json](../backend/app/reports/glossary-v1.json); v0.9.0 expanded to the
+six-entry projection now retained by v0.12.0. Both versions and their dated
+reviews remain preserved. No empty ingredient/allergen/translation scaffolding
+is required for those implemented files.
 
 | Canonical file | Current content |
 | --- | --- |
@@ -9,12 +22,8 @@ Published production **v0.5.0** preserves and loads the reviewed claim subset **
 
 The reviewed source date is **6 October 2026**; v0.3.0 was independently released on **7 October 2026**; released v0.4.0 and v0.5.0 retain its knowledge unchanged in Asia/Calcutta. Review dates are not publication or effective dates. A known future publication/effective date, future or non-current review, superseded source or unsuitable category suppresses the affected numerical assessment. Unknown dates stay null; they are never replaced with retrieval dates.
 
-Backend v0.9.0 preserves that historical projection and loads six entries from
-`backend/app/reports/glossary-v2.json`. The current glossary version is
-`ingredients-2026-10-08.1`, with an independent
-SHA-256/byte/count artifact. It is not part of the unchanged two-file FSSAI claim
-receipt. [Report/glossary scope](../docs/architecture/LABEL_REPORT.md) ·
-[Dated source check](../docs/research/INGREDIENT_GLOSSARY_V0_5_0.md).
+[Current six-entry source review](../docs/research/INGREDIENT_GLOSSARY_V0_9_0.md) ·
+[Historical three-entry source review](../docs/research/INGREDIENT_GLOSSARY_V0_5_0.md).
 
 ## Reviewed sources
 
@@ -24,7 +33,7 @@ receipt. [Report/glossary scope](../docs/architecture/LABEL_REPORT.md) ·
 | `fssai-ac-2018-general` | [2018 principal Gazette regulations](https://fssai.gov.in/docs/food-law/regulations/Gazette_Notification_Advertising_Claims_27_11_2018.pdf) | 1,178,339 | `58184c716ad254e2ec698e3c4d212dfaacea4bf43cc09dcd48daeb590e94d9f4` |
 | `fssai-ac-compendium-v4` | [Advertising and Claims compendium, Version IV](https://www.fssai.gov.in/upload/uploadfiles/files/Compendium_Advertising_Claims_Regulations_14_12_2022.pdf) | 787,091 | `4bfe17ba6fe59a3a8ffc7326ad723014b19d69b68cebffdc68717cdfff5cb191` |
 
-These hashes record the acquired source PDFs used for review; the PDFs are not committed or shipped in the function. The repository packages reviewed threshold facts and source metadata only. The Gazette is authoritative; the compendium is a reference cross-check. The [official amendment index](https://fssai.gov.in/food-law/regulations/amendments/advertising-claims) was reviewed for this version. [Fresh byte/hash verification](../docs/research/FSSAI_CLAIMS_V0_3_0_SOURCE_CHECK.json) matches all three registry records. Complete Legal Metrology or FSSAI certification is outside scope.
+These hashes record the acquired source PDFs used for review; the PDFs are not committed or shipped in the function. The repository packages reviewed threshold facts and source metadata only. The Gazette is authoritative; the compendium is a reference cross-check. The [official amendment index](https://fssai.gov.in/food-law/regulations/amendments/advertising-claims) was reviewed for this version. [Dated byte/hash verification](../docs/research/FSSAI_CLAIMS_V0_3_0_SOURCE_CHECK.json) matches all three registry records. Complete Legal Metrology or FSSAI certification is outside scope.
 
 Fibre criteria cite Schedule I **row 14, Gazette PDF page 13**; sugar cites **row 10, page 12**; sodium cites **row 13, page 13**. Energy alternatives cite **Schedule I Note 2, page 13** and use **4.2 kJ per kcal** from original selected confirmed rows. The existing normalization-v1 snapshot preserves its separate 4.184 conversion. The API exposes claim-specific conversion version `fssai-schedule-i-note2-v1`.
 
@@ -34,14 +43,12 @@ The engine checks `source_of_fibre`, `high_fibre`, `low_sugar`, `sugar_free`, `l
 
 `high_protein`, `source_of_protein`, `no_added_sugar` and `multigrain` are recognized but unreviewed, and always return `insufficient_information`. The engine does not derive manufacturing non-addition from total sugar, judge ingredient safety, score health or certify full legal compliance. [Current API/criteria](../backend/README.md).
 
-`backend/build_catalogue.py` validates and packages only the two approved JSON files under ignored `backend/app/claims/data/`, alongside a strict hash/length receipt. It copies no source PDF, scan, arbitrary file or credential and makes no network request. Its successful stdout contains both `catalogue` and `claims_knowledge` receipts. With `VERCEL=1`, startup requires a valid receipt even for an explicit knowledge-directory override. Missing/damaged knowledge disables claim/rule/evidence routes without disabling health, live OFF or catalogue routes. A verified receipt is summarized by `/v1/meta.knowledge_artifact`; direct local canonical-source loading has no artifact receipt. [Build/run guide](../docs/planning/LOCAL_DEVELOPMENT.md).
+`backend/build_catalogue.py` validates and packages only the two approved JSON files under ignored `backend/app/claims/data/`, alongside a strict hash/length receipt. It copies no source PDF, scan, arbitrary file or credential and makes no network request. Its successful stdout contains `catalogue`, `claims_knowledge` and the separate `research_catalogue` receipts. With `VERCEL=1`, startup requires a valid receipt even for an explicit knowledge-directory override. Missing/damaged knowledge disables claim/rule/evidence routes without disabling health, live OFF or catalogue routes. A verified receipt is summarized by `/v1/meta.knowledge_artifact`; direct local canonical-source loading has no artifact receipt. [Build/run guide](../docs/planning/LOCAL_DEVELOPMENT.md).
 
-| Folder | Remaining content |
-| --- | --- |
-| `sources/downloads` | Ignored local source files, only when needed and permitted |
-| `ingredients` | Reviewed names, INS/E-number aliases, purpose and uncertainty |
-| `rules/nutrition` | Educational classifications with reviewed applicability and provenance |
-| `rules/allergens` | Declared/may-contain aliases and conservative uncertainty rules |
-| `translations/en`, `translations/hi` | Reviewed glossary/result wording that preserves numbers and uncertainty |
+Broader ingredient aliases, educational nutrient classifications, allergen
+mappings and reviewed bilingual report templates remain future content. They
+are not implemented merely by a reserved directory. The retained
+`sources/downloads/` location is for ignored permitted local reference files;
+source PDFs are not shipped in the backend bundle.
 
 Use exact identifiers and reviewed rules first. A future small ingredient corpus can use structured lookup or SQLite full-text search; semantic/vector RAG is not required. Read the [evidence strategy](../docs/research/EVIDENCE_STRATEGY.md) before copying source content. Free-to-read does not automatically grant redistribution rights.

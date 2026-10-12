@@ -1,12 +1,16 @@
 # Shared API contracts
 
-Local backend v0.12.0 adds independent private storage outcomes to extraction
-responses and typed researched-product image descriptors. The new exported
-snapshot is `schemas/backend-v0.12.0.openapi.json`, retaining 27 paths/28
-operations. It does not replace the preserved v0.11.0 production contract.
-The current changes are uncommitted and have not been deployed; final schema and
-synthetic-example validation is recorded in the
-[local review](../docs/planning/BACKEND_V0_12_0_REVIEW.md).
+Checkpoint **12 October 2026**: backend **0.12.0**, **27 paths / 28 operations**,
+exported as schemas/backend-v0.12.0.openapi.json. Named schemas and synthetic
+examples are generated from current typed backend routes/models. The 0.12 source
+is pushed and deployed; its dated [review](../docs/planning/BACKEND_V0_12_0_REVIEW.md)
+records validation boundaries. Preserve historical versioned OpenAPI exports.
+
+Run `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` from
+root (Unix: backend/.venv/bin/python). Review generated diffs after a contract
+change. Current maintenance retains the wire contracts and product versions.
+
+The older release notes below describe their historical exports.
 
 Backend v0.11 adds six AI schemas for extraction requests, unverified label facts,
 extraction responses and machine-only status/activation. Its historical OpenAPI is
@@ -32,7 +36,7 @@ The user's next automatic-capture/results redesign is recorded in the
 Earlier release statements below retain their historical scope.
 
 
-Current backend **v0.9.0 Reviewed Ingredient Functions** exports schemas from
+Historical backend **v0.9.0 Reviewed Ingredient Functions** exports schemas from
 `app.main.create_app().openapi()` and named Pydantic models. **21 API paths /
 22 operations** add one read-only comparison POST while preserving earlier
 public/private contracts and bounded indexed discovery. The glossary expands
@@ -49,7 +53,7 @@ comparison models and consumes the existing read-only comparison contract.
 
 | File | Model or purpose |
 | --- | --- |
-| `schemas/backend-v0.9.0.openapi.json` | Current 21 paths/22 operations with six-entry reviewed ingredient functions. |
+| `schemas/backend-v0.9.0.openapi.json` | Historical 21 paths/22 operations with six-entry reviewed ingredient functions. |
 | `schemas/backend-v0.8.0.openapi.json` | Historical sourced comparison release; preserved earlier public/private contracts. |
 | `schemas/comparison-request-v1.schema.json` | Two discriminated current-confirmed/OFF-snapshot/public-community-revision inputs, exact references and selected tables. |
 | `schemas/comparison-response-v1.schema.json` | Original rows, source/date qualifications, compatible per-100 basis, eleven distinct nutrient cells and signed differences or unknown reasons. |

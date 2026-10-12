@@ -13,6 +13,7 @@ import math
 import os
 import re
 import shutil
+import sys
 import tempfile
 import time
 import urllib.request
@@ -24,6 +25,9 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Protocol
 from urllib.parse import urlsplit
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+from app import __version__
 
 SOURCE = "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz"
 REDIRECT = "https://openfoodfacts-ds.s3.eu-west-3.amazonaws.com/openfoodfacts-products.jsonl.gz"
@@ -442,7 +446,7 @@ def acquire(directory):
         request = urllib.request.Request(
             SOURCE,
             headers={
-                "User-Agent": "Unlabel/0.12.0 (https://github.com/Vaibhavsh0120/Unlabel)",
+                "User-Agent": f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)",
                 "Accept-Encoding": "identity",
             },
         )

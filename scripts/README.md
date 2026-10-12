@@ -1,32 +1,15 @@
-Current backend: [published v0.7.0 Private Account Sync](../docs/planning/BACKEND_V0_7_0_REVIEW.md).
-
-Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
-separate generated read-only SQLite with **243 observations** (49 manufacturer,
-125 retailer and 69 OFF). It preserves dated sources, unknown identities and
-formula conflicts. Three additive GETs expose researched product search,
-`by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
-The exported API now has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
-the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
-files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
-adds mixed-source search and qualified ingredient/nutrition/source details.
-Local verification and hosted/push status: [backend review](../docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
-[frontend review](../docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
-[product list](../docs/research/POPULAR_PRODUCTS_ADDED.md).
-The user's next automatic-capture/results redesign is recorded in the
-[automatic scan plan](../docs/planning/AUTOMATIC_SCAN_PLAN.md).
-Earlier release statements below retain their historical scope.
-
-Setup upgrades the same facts-enabled source index when discovery is missing; it
-preserves a different local snapshot. Export now writes 20 paths/21 operations and 27 synthetic
-examples, with a separate search schema. Existing receipts/progress/security remain.
-
 # Backend contracts, catalogue and knowledge tools
 
-Current backend v0.9.0 includes the tools below, preserving earlier independently published releases. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
+Backend v0.12.0 includes the tools below, preserving earlier independently published releases. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
 
 | Tool | Responsibility |
 | --- | --- |
+| `version_metadata.py` | Read frontend pubspec/backend pyproject and pinned Flutter metadata; JSON or GitHub outputs. No duplicated release defaults. |
+| `validate_workspace.py` | Validate tracked Python/JSON/TOML, Markdown links and redacted private-key boundaries; includes added/deleted source files. |
+| `prepare_android_ci.py` | CI-only SDK/NDK preparation and bounded Gradle settings from the pinned Flutter SDK. |
+| `package_ios.py` | Validate the built device app and package a symlink-preserving unsigned arm64 IPA. |
+| `mobile_release.py` | Guard immutable native tags, verify/upload artifacts and publish a draft only after complete checks; refresh the dedicated iOS feed. |
+| `ios_source.py` | Generate/merge AltStore-compatible source from actual verified IPA metadata/bytes, preserving version history. |
 | `setup.py` / `setup.ps1` | Restore env/dependencies, verified committed source to SQLite and pinned Flutter tooling. |
 | `_progress.py` | Internal dependency-free setup progress: measured catalogue byte bars, indeterminate work/elapsed time and plain stage/failure logs. Not a separate command. |
 | `run_local.py` / `run-local.ps1` | Run localhost API/web services with process-only settings and owned-process cleanup. |
@@ -38,7 +21,7 @@ Current backend v0.9.0 includes the tools below, preserving earlier independentl
 | `acquire_india_catalogue.py` | Stream the official global compressed OFF CSV through EOF into an India-tagged identity JSONL projection and acquisition metadata. It retains no global raw dump, nutrition aggregates or product images. |
 | `acquire_india_jsonl.py` | Stream the full official JSONL gzip through validated EOF into a bounded India projection, with direct nutrition input sets, tag/date availability and selected-front image metadata. No global dump, photo bytes, aggregate nutrient values or arbitrary image URLs are retained. |
 | `import_india_catalogue.py` | Validate local JSONL/gzip input and generate immutable identity plus optional bounded facts storage with matching keys/counts, dates, hashes and attribution. See [backend setup](../backend/README.md) for commands and optional catalogue configuration. |
-| `../backend/build_catalogue.py` | Networkless deployment build: verify the tracked catalogue and approved claim JSON, then generate/verify ignored `backend/app/catalogue/data/` SQLite/receipt and `backend/app/claims/data/` JSON/receipt. Successful stdout is one object with `catalogue` and `claims_knowledge` receipts. Run from `backend/` with its Python environment. |
+| `../backend/build_catalogue.py` | Networkless deployment build: verify the tracked public/research catalogues and approved claim JSON, then generate/verify ignored `backend/app/catalogue/data/` SQLite/receipt and `backend/app/claims/data/` JSON/receipt. Successful stdout is one object with `catalogue`, `claims_knowledge` and `research_catalogue` receipts. Run from `backend/` with its Python environment. |
 
 The earlier CSV projection remains an identity input; its aggregate nutrient columns do not become direct label evidence. The current JSONL projection uses the same strict direct-table parser as live nutrition while retaining separate export provenance. Only packaging/manufacturer inputs qualify; missing, invalid and legacy-unsupported nutrition remain explicit. Canonical tags have availability states; present empty community tags do not prove allergy safety. Selected-front URLs use validated OFF metadata, canonical image-path normalization and image attribution; exact identity keys preserve leading zeros. No image proxy/download is added.
 
@@ -58,10 +41,22 @@ Keep source-tagged read-only Open Food Facts snapshots separate from reviewed FS
 
 ## Current validation and exports
 
-The [v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md) records current
+From root, run `python scripts/validate_workspace.py` and
+`python scripts/version_metadata.py --component frontend` (or `backend`).
+The source validator reports only filenames/rule failures when sensitive material
+is detected. `python -m unittest discover -s scripts/tests -p 'test_*.py'` checks
+release/publication guards. Use `--target-version py312` for root Ruff checks so
+standard-library imports are classified with the supported Python minimum.
+
+Source generation accepts `--ipa PATH --download-url HTTPS_URL --date ISO_DATE
+--icon-url HTTPS_URL --output PATH`, with optional `--existing PATH`, through
+`python scripts/ios_source.py`. Normal publication runs this automatically after
+a verified mobile release; a draft does not change the hosted feed.
+
+The [v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) records dated
 release gates; preceding hosted evidence remains separate historical proof.
 
-From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its 21-path/22-operation v0.9.0 OpenAPI and 29 validated synthetic examples. Historical exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free two-bundle build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.6.0 passed 863 backend tests with five emulator-only skips, static/source-build/setup/Markdown review and 23 hosted checks before separate publication. v0.5.0 retains its earlier twenty-check evidence. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
+From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its 27-path/28-operation v0.12.0 OpenAPI and validated synthetic examples. Historical exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free three-receipt build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.6.0 passed 863 backend tests with five emulator-only skips, static/source-build/setup/Markdown review and 23 hosted checks before separate publication. v0.5.0 retains its earlier twenty-check evidence. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
 
 Optional static type checking is reproducible from root with `npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json --pythonpath backend/.venv/Scripts/python.exe` (Unix: `backend/.venv/bin/python`). The checked-in root configuration covers maintained backend and script Python in basic mode. This development check needs Node/npm but introduces no npm project dependency or runtime service; backend restore/run still uses the documented Python tools.
 

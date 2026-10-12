@@ -161,7 +161,6 @@ def test_modes_launch_only_owned_services(
     monkeypatch.setattr(runner, "config", lambda: {"backend_port": 8000, "web_port": 7357})
     monkeypatch.setattr(runner, "backend_python", lambda: python)
     monkeypatch.setattr(runner, "flutter_executable", lambda: Path("flutter"))
-    monkeypatch.setattr(runner, "frontend_version", lambda: ("0.2.0", "3"))
     monkeypatch.setattr(runner, "spawn", spawn)
     monkeypatch.setattr(runner, "stop_process", stopped.append)
     monkeypatch.setattr(runner, "wait_for_api", lambda *args: None)
@@ -175,6 +174,13 @@ def test_modes_launch_only_owned_services(
     assert (8000 in checked_ports) is backend_expected
     build = next(command for command in commands if "build" in command)
     assert "--debug" in build and "--no-pub" in build
+    assert next(call[1] for call in calls if "build" in call[0].command) == tmp_path / "frontend"
+    # Flutter reads this directory's pubspec and embeds the reserved version
+    # constants itself. A launcher must not inject a second, stale identity.
+    assert not any(
+        argument.startswith(("--build-name", "--build-number", "--dart-define=APP_VERSION", "--dart-define=BUILD_NUMBER"))
+        for argument in build
+    )
     url = (
         "http://127.0.0.1:7357"
         if proxy_mode == "production"
@@ -396,6 +402,16 @@ def test_rejected_body_cleanup_has_total_deadline(monkeypatch):
     instance.discard_rejected_body()
     assert instance.rfile.tell() == 65536
     assert 0 < timeouts[0] <= handler.REJECTED_BODY_TIMEOUT and timeouts[-1] == 15
+
+
+def test_rejected_body_timeout_never_rounds_above_configured_cap(monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    instance, timeouts = rejected_body_fixture(handler, [("Content-Length", "2")], b"{}")
+    # At this timestamp, float(instant + 0.2) - instant is slightly above 0.2.
+    monkeypatch.setattr(handler.time, "monotonic", lambda: 100_000_000.0)
+    instance.discard_rejected_body()
+    assert instance.rfile.tell() == 2
+    assert timeouts == [handler.REJECTED_BODY_TIMEOUT, 15]
 
 
 @pytest.mark.parametrize(

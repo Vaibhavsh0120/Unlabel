@@ -1,13 +1,20 @@
-# Optional AI experiments — no training started
+# Optional AI research — no custom training
 
-| Folder | Future use |
-| --- | --- |
-| datasets | Licensed, labelled synthetic/reusable extraction data; no user scans |
-| experiments | Optional small model experiments and recorded configurations |
-| evaluation | Held-out evaluation, error cases and evidence-integrity checks |
-| export | Model export metadata; large weights remain outside Git |
-| spaces | Optional Hugging Face demo configuration, only after eligibility review |
+Backend **v0.12.0** implements optional authenticated Gemini/OpenAI photo
+extraction through [app/ai](../backend/app/ai/), with one globally active
+server credential, explicit transfer consent, bounded unverified output and
+separate private staging outcomes. Frontend local barcode/OCR remains the first
+path and cloud failure falls back locally. [Current AI routing/privacy](../docs/architecture/AI_ROUTING.md).
 
-The first scanner does not need custom training: pretrained OCR + reviewed rules + a glossary handle the baseline. Any optional model assists extraction/wording and cannot replace deterministic nutrition rules or allergy uncertainty.
+This root directory holds research documentation, not the runtime provider code.
+The unused dataset/experiment/evaluation/export/Spaces scaffold was removed.
+No custom model, training dataset, Hugging Face deployment or paid compute was
+created. Synthetic evaluation and source fixtures live in backend/frontend tests
+and [contract examples](../contracts/examples/), with dated provider evidence
+under `docs/research/`.
 
-Read [AI training research](../docs/research/AI_TRAINING.md). Hosting a model is different from training one. No model, dataset, Hugging Face account, inference endpoint or paid compute has been created.
+Pretrained OCR, reviewed deterministic claims and the sourced glossary handle
+the baseline. Extraction cannot decide allergy safety, replace confirmation,
+override numerical criteria or create unsupported evidence. Any future custom
+training would require reviewed licensed inputs, independent evaluation and the
+existing no-card/privacy boundaries. [Training research](../docs/research/AI_TRAINING.md).

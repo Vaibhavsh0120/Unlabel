@@ -1,4 +1,12 @@
-# Community Product Catalogue: backend v0.4.0
+# Community Product Catalogue
+
+Current backend **v0.12.0** retains the structured observation/resolution contracts;
+frontend **v0.7.0+11** integrates qualified capture, separate acceptance and
+automatic confirmed intake. Machine extraction has its own private staging,
+without automatic public promotion. [Current data flow](DATA_FLOW.md) ·
+[AI boundaries](AI_ROUTING.md).
+
+## Historical introduction — backend v0.4.0
 
 **7 October 2026:** v0.4.0 was independently reviewed, pushed, hosted-verified and
 published as a source-only release at `d793f628581f509481d6dc60a82afe59ca013439`.
@@ -12,11 +20,12 @@ local, emulator, live Firebase and hosted evidence separately.
 ## Automatic observations
 
 The API accepts bounded structured package observations without a separate Share
-flag. The future client should save at completed capture, linked identity and
-committed correction boundaries, coalescing intermediate OCR changes. Anonymous
-Firebase authentication supplies write ownership without an interactive account.
-Client camera/OCR, background requests and a bounded local outbox still need
-frontend integration; report analysis must remain usable when saving fails.
+flag. The client integrates corrected confirmed intake after separate acceptance
+of qualified captured fields. Anonymous Firebase authentication supplies ownership
+without interactive login; password scanners use their existing session. Useful
+analysis remains available when authentication/quota/storage prevents saving.
+There is no persisted generic public outbox or automatic uncertain-write replay;
+immutable submission identity protects retries of the same submitted observation.
 
 Identity, exact barcode when known, ordered ingredient/declaration text, front
 claims and nutrient rows retain units, bases, preparation, completeness and date.
@@ -66,7 +75,7 @@ and private receipt details never enter public responses.
 
 ## Sources and resolved fields
 
-Four additive endpoints preserve the eleven existing APIs:
+These four contracts were introduced alongside the eleven historical v0.3.0 APIs; they remain compatible in the current 27-path/28-operation API:
 
 | Route | Behavior |
 | --- | --- |
@@ -90,8 +99,7 @@ Intake permits independently transcribed package sections and nutrition only.
 Provider-prefilled OFF data uses validated references to an existing exact
 snapshot for new records, retaining OFF attribution/license; identical immutable
 retries remain valid after snapshot rotation or temporary unavailability.
-Confirmation cannot relabel OFF data as CC0. Live OFF and the snapshot share one upstream origin. Manufacturer
-and USDA Branded integrations remain future work. Generic IFCT/INDB/USDA foods
+Confirmation cannot relabel OFF data as CC0. Live OFF and the snapshot share one upstream origin. The separate research catalogue now includes qualified manufacturer/retailer website observations; these are not automatic confirmed contributions. USDA Branded integration remains future work. Generic IFCT/INDB/USDA foods
 never supply missing branded-packet values. FSSAI supplies reviewed criteria,
 not product facts. Current-label claim checks still require the caller's explicit
 confirmed table and applicability context.

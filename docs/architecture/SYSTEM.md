@@ -1,138 +1,142 @@
 # System architecture
 
-Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
-and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
-implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
-Its source-release publication is not established by that receipt.
-Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
-v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
-push and hosted evidence are recorded in the current component reviews.
-Guests keep personal records local; optional password accounts use private
-UID-specific sync, separately from public package facts. Capture/local OCR
-are implemented; physical-device accuracy, live barcode decoding, highlights,
-notifications and personal suitability remain separate future gates.
+Updated **12 October 2026** against backend **v0.12.0** and frontend
+**v0.7.0+11**. The backend exports **27 paths / 28 operations**. Automatic
+captured-barcode reading, local OCR, optional consented cloud extraction,
+sourced comparison and private account sync are implemented. Insights contains
+twenty sourced articles, a shared date-stable daily four and local bookmarks.
 
-Current backend exports 21 paths / 22 operations and 29 validated synthetic
-examples. Comparison uses the read-only `/v1/reports/compare` route; glossary
-v0.9.0 adds six sourced functions. Private sync remains password-owned and
-separate. [Master plan](../planning/MASTER_PLAN.md).
+The latest frontend implementation is pushed; its hosted proof remains pending.
+Backend v0.12.0 has its separate READY receipt and 389 read-only hosted checks;
+authenticated hosted extraction/staging is outside that audit. See the
+[frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md),
+[backend review](../planning/BACKEND_V0_12_0_REVIEW.md) and
+[master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
 
-Unlabel explains packaged food labels through claim checks, ingredient highlighting, local personal suitability and plain English/Hindi explanations. The college project must work within **₹0 additional platform cost, no credit card and no billing upgrade**.
+One Flutter project in `frontend/` targets Android, iOS and web. Two Vercel
+projects serve the static Flutter website and shared FastAPI backend. Native apps
+call the same API; a laptop supplies an optional local demo backend. Keep the
+project at **₹0 additional platform cost, no credit card and no billing upgrade**.
 
-One Flutter project lives directly in `frontend/`, targeting Android, iOS and web. Its generated `web/` directory is a platform directory. Two configured Vercel projects serve the Flutter static website and the shared FastAPI backend. Native apps call that same API. An existing laptop provides an optional private local demo backend.
+Fresh lookup and deterministic analysis require the backend. OFF, the preserved
+bulk snapshot and the separate research catalogue supply qualified source facts.
+Python applies seven reviewed numerical claim criteria; a separate six-entry
+English/Hindi glossary explains technological functions. Dietary/allergen choices
+are local reminders. Broader ingredient coverage, suitability, notifications,
+continuous live decoding/highlights and physical-device accuracy remain gates.
+No custom model is trained and no second Dart regulatory evaluator is required.
 
-The MVP is online-first. Open Food Facts supplies most product data and available source-tagged computed insights; the Python backend applies reviewed FSSAI/ingredient criteria. OCR captures package claims and fills missing or conflicting fields. No custom model training or second Dart rule engine is required. Optional generative AI rewrites established explanations. See [deployment](DEPLOYMENT_PLAN.md) and [training research](../research/AI_TRAINING.md).
+## Implemented component boundaries
 
-## Component boundaries
-
-~~~mermaid
+```mermaid
 flowchart LR
   subgraph Client["Flutter — Android / iOS / web"]
-    OCR["Platform camera + OCR"] --> Review["Pair package sides + correct fields"]
-    Barcode["Barcode lookup"] --> Review
-    Results["Findings + evidence + templates"] --> Saved["Dated local saved reports"]
-    Results --> Personal["Local preferences / suitability / history"]
+    Capture["Capture + local OCR"] --> Review["Qualified machine fields + acceptance"]
+    Barcode["Captured barcode decode"] --> Review
+    Results["Sourced reports + evidence"] --> Saved["Dated local saved reports"]
+    Results --> Reminders["Local reminders + history"]
+    Insights["20 articles + daily four"] --> Bookmarks["Local Insight bookmarks"]
   end
-  subgraph Backend["FastAPI — disposable Vercel instances / local laptop"]
-    API["Contract + capability validation"] --> Parse["Normalize source-tagged facts"]
-    API --> OFF["Open Food Facts product lookup"]
-    OFF --> Review
-    Parse --> Rules["Reviewed FSSAI/ingredient rules"]
-    Rules --> Explain["Templates / optional protected AI"]
-    Evidence["Bundled read-only JSON knowledge"] --> Rules
-    API --> Community["Automatic public observations / private staging"]
-    Community --> Shared["Firestore Unlabel: qualified observations / review state"]
-    Shared --> Resolve["Compatible fields + per-field sources / conflicts"]
-    Resolve --> Review
+  subgraph Backend["FastAPI — Vercel / local laptop"]
+    API["Contract + capability validation"] --> Sources["OFF / immutable catalogues"]
+    Sources --> Review
+    API --> Parse["Normalize confirmed source rows"]
+    Parse --> Rules["Reviewed deterministic claims"]
+    Knowledge["Receipt-verified claim JSON"] --> Rules
+    Rules --> Report["Versioned sourced reports"]
+    API --> Community["Qualified public facts / private staging"]
+    Community --> Firestore["Free Firestore unlabel database"]
+    API --> AI["Authenticated AiGateway extraction"]
+    AI --> Private["Bounded private unverified proposals"]
+    AI --> Review
   end
-  Canonical["Canonical knowledge/ + contracts/"] --> Evidence
-  Barcode --> API
-  Review -->|"Confirmed public text + region IDs"| API
-  Explain -->|"Versioned findings + neutral facts"| Results
-  Explain -.->|"Public product facts only"| Gemini["Optional Gemini Free Tier"]
-~~~
+  Review -->|"Separately accepted structured public facts"| API
+  Report --> Results
+  Capture -.->|"Photos only after transfer consent"| AI
+  AI -.-> Provider["One globally active Gemini/OpenAI credential"]
+```
 
-The diagram includes implemented and planned boundaries. The two-file reviewed
-claim knowledge package, confirmed-label claim API, useful reports and three-entry
-ingredient glossary are released. Manual frontend paths and local camera/gallery
-capture are implemented; OCR, broader ingredient coverage, local suitability and
-optional AI remain planned. Released private account sync is separate from the
-public analysis pipeline shown here. Backend rule fixtures and provider/client
-contract fixtures verify missing values, applicability, provenance and compatible
-reports.
+Private account sync is separate from public observations and AI staging.
+Machine facts never become confirmed package observations automatically. AI
+extracts bounded fields; deterministic claims retain their own admission.
 
 | Boundary | Responsibility |
 | --- | --- |
-| Camera/OCR adapters | Platform permissions, frame lifecycle, image geometry and text-region IDs; no legal verdicts |
-| Scan state/repository | Front/back pairing, correction revisions, local save/delete and stale-response rejection |
-| `core/analysis` + knowledge loader | Report models/presentation, version/source status and optional small glossary; no fresh offline rule engine required |
-| Backend parsing/analysis | Main reviewed rule evaluation with field provenance, applicable criteria and unknowns |
-| Knowledge service | Exact ingredient aliases/INS identifiers, reviewed provisions and source metadata |
-| Local suitability matcher | Select relevant neutral reasons using preferences kept on the device/browser |
-| AI adapter | Optional wording only; immutable numbers, outcomes and allowed evidence IDs |
-| Open Food Facts product adapter | Selected read-only barcode provider; source-tagged enrichment; confirmed physical label remains the scan source |
-| Product enrichment | Implemented automatic save/dedup, private staging, qualified compatible submitter-confirmed candidates and conflict review |
-| Resolved view | Complement compatible known fields with source/date references; preserve original observations/conflicts and never impute generic packet values |
-| Private account sync | Optional password-owned display name/saved/history snapshots, revision conflicts and explicit client choices; separate from public observations |
+| `frontend/lib/core/capture` | Permissions, capture lifecycle, barcode checksum/identity, OCR, geometry and local fallback |
+| `core/models`, scanner presentation | Qualified extracted/source reports, acceptance, reader/detail views and source/version states |
+| `core/network` | Bounded requests, capability handshake, cancellation and short-lived public read caches |
+| `core/storage`, `core/accounts` | Dated local libraries, guest/UID isolation and explicit private-sync conflict choices |
+| Device profile preferences | Local dietary/allergen reminders with corresponding symbols; no suitability verdict |
+| `backend/app/catalogue`, `research_catalogue` | Independently verified read-only source stores and bounded search |
+| `backend/app/claims`, `reports` | Reviewed numerical criteria, useful reports and six sourced ingredient functions |
+| `backend/app/community` | Immutable observations, deduplication, qualified compatible facts and unresolved conflicts |
+| `backend/app/ai` | Consented scanner extraction, global credential selection, cooldowns, quotas and private proposals |
 
-Use modest modules and one backend API. Microservices, vector databases and
-training infrastructure are unnecessary for the baseline. Optional private account
-snapshots use the existing free Firestore database and separate ownership/storage
-boundaries from public package observations.
+## Evidence, source and privacy contracts
 
-Open Food Facts is the primary online product-data provider through `backend/app/providers/products/`. Basic product views can use its source-tagged record directly; checking the current package's marketing claims requires relevant claim/field confirmation. If OFF is unavailable but the backend is reachable, analyze available package fields; if the backend is unavailable, defer fresh analysis and offer saved results/draft capture. [Provider workflow](OPEN_FOOD_FACTS.md).
+`knowledge/` contains the canonical seven-claim criteria and three reviewed source
+records. The six-entry glossary lives separately in
+`backend/app/reports/glossary-v2.json`; its artifact is independent of the claim
+receipt. Source-tagged OFF/research facts do not certify today's physical package.
+Missing, conflicting or unsupported inputs remain `insufficient_information`.
+There is no health score, allergy-safety inference or complete legal verdict.
 
-## Shared rules and evidence
+Preserve original/corrected provenance, panel completeness and nutrient bases.
+Do not average incompatible tables or fill branded-packet gaps with generic-food
+composition. Captured photos stay local unless transfer is explicitly consented;
+photos, raw OCR and geometry stay outside database/account sync. Private machine
+staging retains only bounded literal structured facts, with separate storage
+outcomes. [AI privacy/admission](AI_ROUTING.md).
 
-`knowledge/` contains reviewed declarative criteria, aliases, source records and bilingual templates for the Python backend. An optional small ingredient glossary may be packaged as Flutter assets. Product facts come primarily from OFF; criteria come from reviewed FSSAI/other evidence. There is one backend rule evaluator in the MVP.
+Guests keep personal reports locally. Optional password accounts may sync bounded
+private display name/saved/history snapshots with explicit cloud/device conflict
+choices. Reminders, appearance, Welcome completion, photos/raw OCR and Insight
+bookmarks remain device-local. Public observations use separate anonymous or
+password scanner ownership. Moderator state never establishes safety or current
+package proof. [Private sync](PRIVATE_ACCOUNT_SYNC.md) ·
+[Community catalogue](COMMUNITY_CATALOGUE.md) · [Privacy](../SAFETY_PRIVACY.md).
 
-Unavailable rules, unreadable panels or unknown quantities return `insufficient_information`; absence is not safety/compliance proof. Fixtures verify rule IDs, applicability, units, outcomes and references. OFF-record assessments identify their input origin and cannot certify the current physical package or complete legal compliance. FSSAI supplies criteria, not a live verification service.
+## Build, runtime and offline boundaries
 
-The paired, user-confirmed package is the product source. Preserve original/corrected field provenance, panel completeness and nutrient bases. Images and coordinates stay local. Regulatory activation requires source/provision review, effective dates and recorded reuse rights.
+The network-free backend build validates tracked sources, generates ignored
+SQLite/receipts and packages two approved claim JSON files with their receipt.
+Hosted startup verifies artifacts before enabling their independent capabilities.
+Invalid catalogue/knowledge disables affected routes; health and unaffected
+sources remain available. Research catalogue and image descriptors retain their
+own provenance. Packaged files are immutable; instance caches and temporary
+storage cannot hold durable user data. [Catalogue build](CATALOGUE.md).
 
-Ingredient retrieval starts with names, aliases and INS/E-number IDs. Approved evidence paragraphs ground explanations without requiring vector RAG. Retrieval relevance never decides numeric rule applicability.
+`BACKEND_BASE_URL` is public configuration. Provider keys and the AI control
+secret stay server-only. `AI_ENABLED` gates the optional gateway. Extraction
+requires verified Firebase scanner tokens and consent; selection/activation uses
+the separate machine credential. CORS is not authentication. Firebase's Standard
+`unlabel` database stays on the free tier without linked billing or paid fallback.
 
-## Operating modes
-
-| Mode | Planned behavior |
+| Mode | Behavior / boundary |
 | --- | --- |
-| Backend reachable, Gemini disabled | OFF product data plus reviewed rule checks, evidence and English/Hindi templates |
-| Backend reachable, protected AI available | Same findings; optional validated generated wording |
-| Backend unreachable/offline | Saved dated results/snapshots and preferences; optional glossary/draft capture; fresh lookup/analysis waits |
-| Internet absent, local backend reachable | Analyze available confirmed fields with packaged backend criteria/templates; no uncached OFF/cloud lookup |
-| Website offline | Saved-content access only after initial load and explicit app/local-content caching is implemented and tested |
-| Fixture demo | Synthetic/pre-reviewed examples visibly identified as demo data |
+| Backend reachable, AI unavailable | Qualified product facts, reviewed reports and local OCR fallback |
+| Optional AI available | Consented extraction proposes unverified fields; deterministic confirmation stays separate |
+| Backend unreachable | Dated saved reports, local reminders, bundled Insights and supported local capture; fresh analysis waits |
+| Local backend reachable without internet | Confirmed fields can use packaged rules; uncached OFF/cloud reads remain unavailable |
+| Website offline | First-load, app caching and airplane-mode restart require separate verification |
 
-Native OCR requires bundled device models. Browser OCR needs its own supported adapter/assets; mobile ML Kit is not a web implementation. Flutter does not automatically provide a complete offline website. [Flutter web deployment](https://docs.flutter.dev/deployment/web), [web caching FAQ](https://docs.flutter.dev/platform-integration/web/faq).
+Android uses bundled ML Kit, iOS uses the capability-checked Vision bridge and
+browser OCR uses pinned same-origin Tesseract/Wasm/language assets. Source/widget
+checks do not prove native accuracy, response time, offline website restart or
+authenticated hosted AI behavior. [Deployment gates](DEPLOYMENT_PLAN.md).
 
-## Runtime, compatibility and privacy
+## Historical release context
 
-`GET /v1/meta` exposes contract/knowledge/rule versions and capabilities. Reports identify source origins, assessed criteria and versions. The client suppresses incompatible affected findings rather than merging conflicting results. Saved reports retain their original analysis/evidence dates; viewing them offline needs no handshake, but does not recompute or refresh rules.
+Frontend v0.3.0+4 was independently published/hosted-verified. Backend v0.8.0
+implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` was pushed and
+hosted-verified with 25 checks; that receipt alone did not establish source-release
+publication. The subsequent v0.9.0/v0.4.0 reviews retain their dated scope.
 
-The reviewed claim subset uses bundled read-only JSON. Build access to root `knowledge/` alone does not establish runtime inclusion: the implemented build validates exactly the claim-rule JSON and three-source registry, then packages them with a hash/length receipt under ignored `backend/app/claims/data/`. Hosted startup requires receipt verification even for an explicit override; invalid knowledge disables only claim/rule/evidence APIs. Metadata exposes the verified `knowledge_artifact` or null for direct canonical local loading. The current catalogue build validates the tracked OFF gzip and generates ignored SQLite plus a receipt under `backend/app/catalogue/data/`; hosted startup verifies that immutable artifact before enabling catalogue reads. `/tmp`, instance caches and counters are disposable; none supplies durable hosted storage or global quota protection. [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi), [Python runtime](https://vercel.com/docs/functions/runtimes/python).
-
-Client `BACKEND_BASE_URL` is public configuration, never a credential. Gemini keys stay in backend environment settings. `AI_PROVIDER=disabled` and an empty model are the baseline. Public AI stays disabled until verified individual access for an eligible adult beta and bounded requests exist. CORS and an embedded shared app token cannot provide authentication.
-
-Guests keep history/saved data locally. Optional password accounts may sync only
-a bounded private display name/saved/history snapshot. Dietary/health preferences,
-photos/raw OCR, appearance and Welcome completion remain on the phone/browser. v0.4.0 stores structured public observations automatically,
-with private provisional staging and keyed anonymous write ownership. Confirmed
-compatible exact candidates may be public with an explicit unreviewed label;
-known conflicts/identity mismatches await exact-hash operator review. Semantic
-deduplication avoids repeated revisions/review for identical rescans. Moderator
-state never proves safety or the caller's current packet.
-
-Firebase Unlabel has its free Standard `unlabel` database configured, with no
-linked billing, verified anonymous/email-password Auth and denied direct client access. No paid
-fallback is permitted. Source originals remain intact and incompatible nutrition
-revisions stay unselected. [Community catalogue](COMMUNITY_CATALOGUE.md)
-· [Privacy](../SAFETY_PRIVACY.md).
-
-
-Widget/source checks and the current workflow do not prove OCR quality, native device behavior or dietary suitability. Current backend hosted evidence is recorded separately; local saved reports retain their date. Validate each new capture/sync flow during its implementation.
-
-The independently released v0.2.3 slice provides the unchanged export-origin rich-facts catalogue: complete official JSONL stream -> bounded tracked India projection -> verified build-time SQLite/receipt. The separate facts route preserves direct nutrition sources, tag availability, optional record dates and official image attribution. Legacy aggregate nutrients remain unavailable as direct evidence; no image bytes are bundled. It does not replace the live OFF product/nutrition routes or fetch OFF on a snapshot miss. `/v1/catalogue` and metadata expose manifest, artifact summary, field limits and freshness based on the source export date. Manual replacement is every nine calendar months through reviewed source changes and a new immutable deployment, with previous-deployment rollback. Coverage remains unverified. [Implemented catalogue workflow](CATALOGUE.md).
-
-The v0.3.0 numerical claim scope applies to confirmed ordinary general foods with a matching selected table/form/preparation. Missing/conflicting evidence and unknown fibre alternatives remain insufficient. Claim-specific statutory energy uses original rows and 4.2 kJ/kcal; normalization-v1 retains 4.184. No health score, complete legal certification, provider call or scan persistence follows from claim evaluation. [Reviewed source scope](../../knowledge/README.md).
+The independently released v0.2.3 slice established the export-origin rich-facts
+catalogue and verified hosted SQLite/receipt. The preserved v0.3.0 claim subset
+uses original confirmed rows and statutory fibre energy conversion **4.2 kJ/kcal**;
+normalization-v1 retains **4.184**. Nine-calendar-month source replacement creates
+an immutable deployment with prior-source rollback. These historical identities
+and receipts remain in their release reviews; they do not replace current proof.

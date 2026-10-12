@@ -1,23 +1,32 @@
-# Open Food Facts integration plan
+# Open Food Facts integration
 
-Decision: **selected by the user on 5 October 2026**. Backend v0.6.0 retains live product lookup and separate direct-input nutrition lookup/normalization, plus independently released snapshot rich facts. Strict product/catalogue lookup v1 responses remain unchanged. India export acquisition/import feeds a networkless hosted build with verified SQLite/receipt and separate typed catalogue status/identity/facts lookup. The preserved v0.3.0 claim API checks confirmed rows; four additive v0.4.0 routes manage separate public observations/resolution; released v0.5.0 adds sourced current/historical reports and partial ingredient functions; health scoring and Flutter barcode capture remain planned. Community OFF data is not automatically current-package claim evidence.
+Updated **12 October 2026** for backend **v0.12.0** and frontend
+**v0.7.0+11**. OFF was selected on **5 October 2026** and remains the fixed-origin
+live product/nutrition provider alongside the preserved read-only bulk snapshot.
+The separate 243-observation research catalogue retains its own publisher facts.
+The backend API has 27 paths/28 operations; existing product/catalogue v1
+contracts remain compatible.
 
-Open Food Facts (OFF) does the primary online product-data heavy lifting: identity, ingredients, nutrition and available computed insights. Python applies the reviewed seven-claim numerical subset and three-entry ingredient-function glossary; broader criteria remain future work. Current OFF nutrition and user-confirmed label input have separate origin wrappers and are never silently combined. The future review flow preserves differences from the physical package. The MVP is online-first; a second Dart rule engine is not required.
+Python applies seven reviewed numerical claims and six sourced English/Hindi
+ingredient functions. Captured barcode decode and local OCR are implemented;
+continuous live decoding and native accuracy remain separate. Qualified source
+facts and current-label confirmation have distinct origins. There is no health
+score or second Dart regulatory evaluator. [Current backend review](../planning/BACKEND_V0_12_0_REVIEW.md).
 
-## Planned barcode-to-result workflow
+## Implemented barcode-to-result workflow
 
-1. The future Flutter scanner reads a barcode or accepts a manually entered code. Keep it as a string, preserving leading zeros. Retain both the captured code and any returned normalized code; verify identity before using a different code.
+1. The Flutter scanner decodes captured barcode photos before AI/OCR; an exact known report can open directly. The product lookup also accepts an entered code. Keep it as a string, preserving leading zeros. Retain both the captured code and any returned normalized code; verify identity before using a different code.
 2. When online lookup is requested, the client sends only the barcode and necessary public lookup options to `GET /v1/products/{barcode}`. Photos, OCR streams, allergy/diet preferences, history and user identifiers are excluded.
-3. `backend/app/providers/products/` validates bounded input and queries OFF with a fixed application User-Agent. Use one supported upstream API version and a small field selection; there is no per-frame query or search-as-you-type request.
+3. `backend/app/providers/products/` validates bounded input and queries OFF with a fixed application User-Agent. Use one supported upstream API version and a small field selection; there is no per-frame upstream query or upstream search-as-you-type request.
 4. The adapter validates the provider response and returns Unlabel's stable normalized product snapshot. Flutter does not depend on raw OFF schemas.
-5. The client can show a basic record-based product view without requiring OCR. Display identity, ingredients, declared allergen/trace information, nutrition and available computed insights with source labels. Missing fields stay unknown; OFF scores are not FSSAI verdicts or allergy-safety evidence.
+5. The client can show a basic record-based product view without requiring OCR. Identity, ingredients, literal declarations and nutrition retain source labels. Optional computed scores are exposed by the product adapter, while dedicated grade display remains a frontend gate. Missing fields stay unknown; OFF scores are not FSSAI verdicts or allergy-safety evidence.
 6. Capture current-package claims and missing/conflicting facts when needed. Differences require review; no silent replacement or merging. User confirmation preserves OFF provenance and separately records package confirmation.
 7. The backend evaluates available source-tagged inputs using reviewed criteria. Record-only findings are identified as such; OFF alone cannot establish that a front-label claim matches the current physical package. No result certifies complete legal compliance.
 8. An explicitly saved local snapshot keeps its source and date. If OFF fails but the backend is reachable, it can analyze sufficient confirmed package fields. If the backend is unavailable, retain drafts/saved results and defer fresh analysis.
 
 ## Provider and client contract
 
-The current [official API documentation](https://openfoodfacts.github.io/openfoodfacts-server/api/) recommends the v3 family for new integrations and identifies v3.6 as current. The adapter pins v3.6 and uses synthetic fixtures for its supported shape. Nutrition and tag schemas have changed; see the [provider changelog](https://openfoodfacts.github.io/openfoodfacts-server/api/ref-api-and-product-schema-change-log/) and [verified nutrition research](../research/OFF_NUTRITION_V3_6.md).
+The adapter pins **v3.6**, as reviewed for this integration, and uses synthetic fixtures for its supported shape. The [official API documentation](https://openfoodfacts.github.io/openfoodfacts-server/api/) is the reference for a separately reviewed provider migration. Nutrition and tag schemas have changed; see the [provider changelog](https://openfoodfacts.github.io/openfoodfacts-server/api/ref-api-and-product-schema-change-log/) and [verified nutrition research](../research/OFF_NUTRITION_V3_6.md).
 
 OFF's version is independent of Unlabel's `/v1` routes. Provider changes are absorbed by the backend adapter. If an update requires a breaking normalized contract, use Unlabel's existing API compatibility policy rather than assuming installed APKs/IPA builds update with the server.
 
@@ -47,11 +56,11 @@ Direct public feasibility reads on 5 October 2026 fetched schema-1004 nutrition 
 
 Public product reads do not require a provider API key or account authentication. The backend sends a bounded public application User-Agent identifying Unlabel rather than an individual. Live read feasibility has been checked; no OFF account/form/contribution flow was created. Recheck OFF's current API-use guidance as traffic and scope grow.
 
-The backend proxy gives future Android/iOS/web clients the same adapter behavior and User-Agent. Requests may share upstream outgoing-IP quotas. Current reads have an eight-second default total deadline, 512 KiB default decoded-response budget, six-connection client pool, redirects disabled and no automatic retry/cache. Client deduplication and shared traffic controls are later work. Recheck current limits rather than promising unlimited free reads.
+The backend proxy gives Android/iOS/web clients the same adapter behavior and User-Agent. Requests may share upstream outgoing-IP quotas. Current reads have an eight-second default total deadline, 512 KiB default decoded-response budget, six-connection client pool, redirects disabled and no automatic retry/cache. The client deduplicates in-flight public reads and maintains bounded short-lived search/report caches. Shared OFF traffic controls remain a separate concern. Recheck current limits rather than promising unlimited free reads.
 
 Do not use a writable Vercel SQLite database or instance-local counter as durable storage/global quota enforcement. A bounded in-memory cache is disposable. No cache is necessary for correctness, and a cold instance must still have a safe failure path.
 
-| Condition | Planned behavior |
+| Condition | Behavior / boundary |
 | --- | --- |
 | Product found | Show available source-tagged draft information; verify against the package |
 | Product/field missing | Continue label capture/correction; preserve unknown values |
@@ -61,13 +70,13 @@ Do not use a writable Vercel SQLite database or instance-local counter as durabl
 | Offline, previously saved snapshot | Show it with its date/source/staleness; do not present it as refreshed data |
 | Offline, uncached barcode | No new OFF lookup or fresh analysis; offer saved results/local preferences and optionally draft capture |
 
-A future bounded device/browser cache uses code, locale and adapter/schema version as its key. It remains separate from private scan history and the canonical regulatory corpus, with freshness rules and user deletion. Limited offline features are saved reports/snapshots, local preferences and an optional small glossary. Website caching requires its own implementation; saved results do not recompute rules.
+The repository has bounded in-memory public caches: searches retain entries for 60 seconds and report/research details for five minutes, with in-flight read deduplication. These are separate from local private scan history and do not form a persistent offline catalogue. Saved reports preserve source/date/version; local reminders and bundled Insights remain useful. Offline website restart needs its own caching/verification; saved results do not recompute rules.
 
 ## Attribution and ownership
 
 OFF's database uses ODbL, individual contents use the Database Contents License, and images use CC BY-SA. Show appropriate source/link/license attribution wherever OFF data is displayed or reused. Database reuse/export/combination must respect applicable ODbL attribution and share-alike obligations; storing records in separate folders does not itself remove those obligations. See [official license guidance](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorials/license-be-on-the-legal-side/).
 
-Keep OFF snapshots source-separated and read-only. Do not automatically upload user corrections, photos or new products. Contributions would require a separately designed, explicitly authorized write flow. The selected lookup does not require remote product images; do not add image downloads to this foundation. If images are used later, retain their attribution and applicable image rights.
+Keep OFF snapshots source-separated and read-only. Do not automatically upload user corrections, photos or new products. Contributions would require a separately designed, explicitly authorized write flow. Sourced product views may fetch validated attributed image URL descriptors separately; the backend never bundles or proxies image bytes. Missing descriptors use an honest fallback and do not change product facts.
 
 Ownership: backend teammate owns the provider adapter and schema/failure fixtures; Flutter teammate owns barcode capture, conflict review and dated local snapshots; the evidence owner reviews attribution/provenance and source distinctions. Acceptance covers found/missing/conflicting records, nutrition bases, leading-zero barcodes, schema changes, quota failure, offline behavior and stable old-client responses.
 
@@ -75,4 +84,4 @@ The product and narrow nutrition adapters have regression tests and bounded live
 
 Manual refresh is every nine calendar months from source export, changed by the user on 6 October. The backend builds the tracked source into an immutable hosted SQLite/receipt and exposes source age; actual hosted packaging/read verification belongs in its review. Existing live product/nutrition routes retain OFF API provenance and are never silently replaced by snapshot data. Catalogue misses make no upstream request. This backend-held database still needs client connectivity and does not prove phone offline capability.
 
-The reviewed v0.3.0 numerical claim API accepts a selected user-confirmed table and applicability context. It does not query OFF, inherit a provider score or silently convert a snapshot into confirmed package evidence. Its seven numerical rules and three source metadata records use a verified independent knowledge bundle. [Current claim API](../../backend/README.md#reviewed-confirmed-label-claim-checks) · [Current review](../planning/BACKEND_V0_3_0_REVIEW.md).
+The reviewed v0.3.0 numerical claim API accepts a selected user-confirmed table and applicability context. It does not query OFF, inherit a provider score or silently convert a snapshot into confirmed package evidence. Its seven numerical rules and three source metadata records use a verified independent knowledge bundle. [Current claim API](../../backend/README.md#reviewed-confirmed-label-claim-checks) · [Historical claim review](../planning/BACKEND_V0_3_0_REVIEW.md).

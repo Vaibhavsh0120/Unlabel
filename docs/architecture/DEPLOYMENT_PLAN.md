@@ -1,169 +1,145 @@
-# Website and shared API deployment plan
+# Website and shared API deployment
 
-Updated **8 October 2026**. Frontend v0.3.0+4 is independently published
-and hosted-verified; backend v0.8.0 is pushed and hosted-verified at exact
-implementation `1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` with 25 checks.
-Its source-release publication is not established by that receipt.
-Current work is backend v0.9.0 Reviewed Ingredient Functions and frontend
-v0.4.0+5 Sourced Comparison and Ingredient Detail. Independent review, tests,
-push and hosted evidence are recorded in the current component reviews.
-Guests keep personal records local; optional password accounts use private
-UID-specific sync, separately from public package facts. Capture/local OCR
-are implemented; physical-device accuracy, live barcode decoding, highlights,
-notifications and personal suitability remain separate future gates.
+Updated **12 October 2026** for frontend **v0.7.0+11** and backend **v0.12.0**.
+The backend exports **27 paths / 28 operations**. Latest frontend source is pushed
+with hosted proof pending. Backend's READY receipt passed 389 read-only checks;
+authenticated hosted extraction/private staging and native-device accuracy remain
+separate. [Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md).
 
-Firebase's first Standard database `unlabel` in Mumbai stays on its free tier
-without linked billing. Anonymous/email-password Auth and deny-all client rules
-are configured. Private sync has no paid fallback and remains separate from public
-facts. Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
+Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
-[Current version gates](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+Keep the project at **₹0 additional platform cost, no card and no billing upgrade**.
+A local laptop/LAN backend remains available for demonstrations.
 
 ## Project boundaries
 
-| Target | Repository root | Runtime / scope | Calls |
-| --- | --- | --- | --- |
-| Website Vercel project | `frontend/` | Compiled Flutter web static assets from `build/web/` | Shared FastAPI URL over HTTPS. |
-| Backend Vercel project | `backend/` | FastAPI on Python 3.12 | Current v0.9.0 OFF/normalization/claims/snapshot/community/report/glossary/discovery/private sync/comparison APIs; each deployment requires exact-source hosted checks. |
-| Firebase Unlabel | No linked billing; free tier | First Standard database `unlabel`, Mumbai | Configured anonymous/email-password Auth/rules/IAM; automatic public observations plus separately bounded private account snapshots; live synthetic checks passed, hosted v0.7.0 checks and publication completed. |
-| Android/iOS apps | `frontend/` | Flutter native builds | The same FastAPI URL over HTTPS. |
+| Target | Repository root / runtime | Responsibility |
+| --- | --- | --- |
+| Website Vercel project | `frontend/`; static `build/web/` | Flutter website and same-origin OCR assets; calls shared HTTPS API |
+| Backend Vercel project | `backend/`; FastAPI/Python | OFF, bulk/research catalogue, claims/reports/glossary, community, account sync, comparison and optional extraction |
+| Android/iOS apps | `frontend/`; Flutter platform builds | Native artifacts use the same shared HTTPS API |
+| Firebase Unlabel | Standard `unlabel` database in Mumbai | Public observations, separate private snapshots, global AI selection/quotas and private proposals; deny-all client rules |
 
-Vercel documents separate roots for monorepo projects: [monorepos](https://vercel.com/docs/monorepos).
-`frontend/web/` is Flutter's generated web platform folder, not a separate React/Vite application or Vercel project root.
-FastAPI is directly supported and becomes one Vercel Function; `app/main.py` is the implemented entrypoint.
-There is no need to split every route into a separate function or create an extra Node API.
+`frontend/web/` is the Flutter platform directory. The backend entrypoint is
+`app/main.py`; the single API remains shared across native/web clients.
+Vercel hosts the website/API while native packages are built separately.
+[Monorepo roots](https://vercel.com/docs/monorepos) ·
 [FastAPI support](https://vercel.com/docs/frameworks/backend/fastapi).
 
-The native apps are built through Flutter's platform tooling; Vercel hosts their API, not their installable packages.
-Use platform-specific OCR adapters in the same frontend: bundled Android ML Kit, capability-checked iOS Vision and pinned same-origin
-browser Tesseract.js/Wasm/language assets loaded lazily after capture/image import.
-Browser synthetic OCR works; native device accuracy remains unverified.
-Send confirmed label text and region IDs to the backend. Photos and bounding-box coordinates remain local. Every target uses the same `contracts/`.
-The product is online-first. Python owns reviewed rule evaluation; Flutter receives stable reports and source-tagged OFF product snapshots. Limited offline scope is saved dated results, local preferences and an optional glossary. No second Dart rule engine or cross-evaluator parity system is required for the MVP.
+## Build and source packaging
 
-## Flutter website build and hosting
+`frontend/tool/vercel-build.sh` uses the pinned workspace Flutter SDK, resolves the
+tracked lockfile and builds release web output with public backend/build metadata.
+The configured static root serves `build/web`. SDKs and build outputs stay ignored.
+A separate prebuilt deployment would require the complete Vercel Build Output API
+layout, including `.vercel/output/config.json` and static assets; the Flutter
+output alone is not that layout. [Web build](https://docs.flutter.dev/deployment/web) ·
+[Build Output API](https://vercel.com/docs/build-output-api/primitives).
 
-Flutter documents `flutter build web` as a release build that generates `build/web/` under the project root.
-[Flutter web deployment](https://docs.flutter.dev/deployment/web).
-Vercel's static build settings serve this output. `frontend/tool/vercel-build.sh` supplies and checks Flutter 3.47.4, resolves the tracked lockfile and builds release web assets with public backend URL/version/commit metadata.
-The chosen path and alternative are:
+Both hosted projects are connected to `main`. A Git push may start their automatic
+deployments; the manual native/component release workflow does not itself deploy
+Vercel. A successful build/release is separate from exact-source hosted proof.
+[Workflow guide](../../.github/workflows/README.md).
 
-- **Configured:** custom Vercel build using Other, a supplied pinned SDK and `build/web` output.
-- **Alternative:** prebuilt static deployment from an authorized GitHub/local job with the pinned SDK and Vercel Build Output API assets.
+The backend build hook runs `python build_catalogue.py` after dependency install.
+It makes no acquisition/provider request and decrypts no settings. Outside-root
+build access supplies tracked `data/catalogue/` and canonical `knowledge/`.
 
-For the prebuilt path, `build/web/` alone is not a Vercel prebuilt artifact: include `.vercel/output/config.json` and place assets under `.vercel/output/static/`.
-Keep generated SDKs and build outputs out of Git. Validate root hosting/base URL, browser refresh and asset paths before publishing.
-Keep hash routing initially or configure/test a navigation fallback for path routing; avoid treating missing assets as successful page loads.
-[Build settings](https://vercel.com/docs/builds/configure-a-build), [static output layout](https://vercel.com/docs/build-output-api/primitives).
-Both projects deploy automatically from Git pushes to `main`. The manual native artifact workflow does not deploy either Vercel project.
+| Generated package | Verification |
+| --- | --- |
+| `app/catalogue/data/` | Bulk SQLite/receipt from preserved source hashes, counts, manifest and database integrity |
+| `app/claims/data/` | Exactly two approved claim-rule/source JSON files and strict hash/length receipt |
+| `app/research_catalogue/data/` | Independent SQLite/receipt from immutable researched observations |
 
-## ₹0 and no-card boundary
+Current build stdout contains `catalogue`, `claims_knowledge` and
+`research_catalogue` receipts. These ignored build outputs are not maintained
+manually. Hosted startup verifies each artifact before enabling its capability;
+invalid knowledge cannot fall back to unverified canonical files. A failed build
+must not be promoted. An outside-root setting alone does not prove runtime
+packaging. [Catalogue/build/rollback](CATALOGUE.md) ·
+[Python bundling](https://vercel.com/docs/functions/runtimes/python).
 
-Select Hobby only for an eligible personal/non-commercial college demo; do not select Pro trials or upgrades.
-Hobby has finite resource allowances, limited collaboration features and may pause service when limits are exceeded.
-Use default Vercel domains; domain purchases, paid seats, add-ons and AI Gateway credits are not prerequisites.
-The user's existing account shows Hobby and both imports are connected. No signup/payment flow or billing upgrade was performed.
-If the actual account requires paid/card-backed access, retain the local demo instead of changing the cost constraint.
-[Hobby plan](https://vercel.com/docs/plans/hobby), [function pricing](https://vercel.com/docs/functions/usage-and-pricing).
+Changes to canonical knowledge, tracked data, contracts or packaging helpers must
+be included in relevant build/verification. Backend-only release work does not
+rebuild APK/IPA. Historical implementation SHAs remain distinct from later
+documentation/maintenance commits.
 
-The plan assumes one deployment owner with teammates collaborating in Git. Check repository import permissions separately.
-Current Hobby terms permit model training and describe account-setting opt-out; verify opt-out before personal inputs are processed.
-Keep request bodies, profiles, history, tokens and secrets out of application logs.
-[Vercel terms](https://vercel.com/legal/terms).
+## Immutable runtime and separate mutable storage
 
-## Bundle shared evidence during the build
+Packaged SQLite and knowledge are read-only deployment assets. Instances,
+temporary directories and in-memory counters cannot store durable personal data.
+Bulk source refresh occurs manually every nine calendar months from export, after
+validation; new source creates a new deployment with prior-source rollback.
 
-Canonical `knowledge/` and `contracts/` sit outside the backend project's root. Build access is not runtime availability.
-“Include source files outside of the Root Directory in the Build Step” is enabled. The v0.3.0 build now validates and packages the two approved reviewed claim JSON files with a hash/length receipt; actual hosted verification remains a separate release gate.
-[Outside-root build access](https://vercel.com/docs/monorepos/monorepo-faq).
+Firestore stores mutable data under independent public/private/machine admission.
+Anonymous/password scanner tokens establish public-observation ownership;
+password-owned private sync carries only bounded display name/saved/history
+snapshots. Explicit cloud/device choices resolve differences. AI proposals stay
+private and unverified, with separate storage outcomes. Photos/raw OCR,
+preferences, appearance, Welcome completion and Insight bookmarks stay outside
+private account sync. [Community](COMMUNITY_CATALOGUE.md) ·
+[Private sync](PRIVATE_ACCOUNT_SYNC.md) · [AI routing](AI_ROUTING.md).
 
-For the current product catalogue, `[tool.vercel.scripts]` in `backend/pyproject.toml` runs `python build_catalogue.py` after dependency installation. It reads tracked `data/catalogue/`, verifies compressed/decoded source hashes and counts, and generates SQLite plus `receipt.json` under ignored `backend/app/catalogue/data/`. No network acquisition or env decryption runs in this build. A project-level build override must not suppress the hook. Hosted `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true` require startup hash/manifest/integrity/count verification. The generated database and receipt are written separately inside the unpublished build; any failed build must not be promoted. [FastAPI build command](https://vercel.com/docs/frameworks/backend/fastapi#build-command).
+Firebase remains on its free Standard database with no linked billing or paid
+fallback. Do not add paid Storage/Functions, TTL, backups or PITR. Existing deny-all
+client rules and least-privilege backend machine credentials remain separate from
+scanner app identities. Setup restores local source/runtime; it never provisions
+a cloud account or payment plan.
 
-The current backend build validates canonical claim rules and source metadata, copies exactly two approved JSON files into ignored `backend/app/claims/data/` and verifies their strict receipt. The receipt records knowledge version, approved relative paths, byte lengths and hashes; `build_catalogue.py` emits one JSON object with catalogue and claim-knowledge receipts. Do not maintain generated copies manually. Hosted startup always requires the knowledge receipt, including explicit directory overrides, and rejects an invalid package without falling back to source.
-Verify the final Python function artifact contains that evidence and reads it from a known packaged path.
-Python bundling currently includes reachable project files by default; explicitly exclude development files and large source PDFs.
-An outside-root setting alone does not prove that the deployed API contains the evidence.
-[Python bundling and file paths](https://vercel.com/docs/functions/runtimes/python).
+## Optional extraction and public configuration
 
-Changes to `knowledge/`, `contracts/` or the evidence packaging script must rebuild the backend even when `backend/` is unchanged.
-Changes to shared client contracts must trigger relevant Flutter web/native checks. Validate one contract version before promotion.
+`BACKEND_BASE_URL` is public Dart build configuration. Exact website/local origins
+are allowlisted; native calls do not rely on browser CORS. CORS cannot establish
+identity or quotas. Provider keys and machine-control secrets stay server-only,
+with encrypted local recovery; never place them in Dart/assets/workflow artifacts.
 
-## Disposable runtime and separate durable public storage
+`AI_ENABLED` gates the optional Gemini/OpenAI gateway. `/v1/ai/extract` verifies
+Firebase scanner tokens and explicit photo-transfer consent, then uses one globally
+active configured credential with bounded attempts/cooldowns and Firestore quotas.
+Selection/activation endpoints require the separate machine credential. There is
+no reviewer/admin app role. Provider/data-use qualifications appear before
+transfer. `store:false` is not a provider zero-retention promise.
 
-Treat every hosted request as able to land in a fresh instance. Read evidence; do not update packaged files at runtime.
-Vercel Functions provide a read-only filesystem with temporary scratch space:
-[function runtimes](https://vercel.com/docs/functions/runtimes).
-Do not store scan history, mutable SQLite databases, user accounts, quota counters or permanent caches in that filesystem.
-The current backend keeps live OFF routes and a separate immutable SQLite identity/facts catalogue. Rich facts may include direct-table nutrition and attributed official image URL descriptors; no photos or world dump enter the function bundle. The catalogue build/runtime validate its receipt and source manifest; actual v0.2.3 production file/hash/read checks passed, with [dated build/HTTP evidence](../research/BACKEND_V0_2_3_PRODUCTION.json). The reviewed claim subset uses its own verified read-only two-file JSON bundle; its metadata receipt is separate from the catalogue artifact. A laptop can also use a regenerated local SQLite index. Nine-calendar-month source replacement creates a new Git/Vercel deployment; rollback restores the prior validated deployment and matching source/configuration. Never hot-swap packaged runtime files.
-Profiles, history and pending scans remain in browser/device storage and do not sync between clients in the initial scope.
+Authentication, extraction and private staging response waits are separately
+bounded. Unavailable/quota-limited cloud extraction falls back locally; deterministic
+checks retain their source/confirmation rules. There is no generated explanation
+route, generic chat endpoint, training dependency or key multiplication to bypass
+quotas. [Current AI settings/admission/privacy](AI_ROUTING.md).
 
-v0.4.0 automatically stores bounded structured public observations and private
-unverified staging; client background save still needs integration. Photos/raw
-OCR/profiles/history stay private. Firebase Unlabel/project `unlabel-india-catalogue`
-has first Standard database `unlabel` in Mumbai, free tier/no linked billing,
-anonymous Auth, deny-all client rules and dedicated backend credentials. Live
-synthetic persistence/review/cleanup and REST denial passed separately from
-hosted API deployment. Keep Spark/no card and no paid fallback. Preserve useful
-OFF resolution and independent normalization/claims on storage failure.
-[Product storage](COMMUNITY_CATALOGUE.md).
+## Local OCR and offline boundaries
 
-## Limited offline access and optional model hosting
+Android uses bundled ML Kit; iOS uses the existing capability-checked Vision
+bridge; browser OCR uses pinned same-origin Tesseract/Wasm/language files. Photos
+stay local unless optional transfer is consented. Geometry/raw OCR are excluded
+from database/account sync. Native camera accuracy and measured scan performance
+need physical-device evidence.
 
-The MVP is online-first. Open Food Facts supplies primary product data; Python applies reviewed criteria. Offline scope is saved dated reports/product snapshots, local preferences and an optional small glossary. Bundled OCR may capture drafts on supported devices, but fresh analysis waits for the backend. No duplicate Dart rule engine is required.
+Saved dated reports, local reminders and bundled Insights remain useful after
+loading. Fresh lookup/analysis needs the backend; a complete offline website needs
+explicit app/content caching and airplane-mode restart checks. Browser camera
+requires a secure context. Local storage/short-lived public read caches are not a
+promise of an offline catalogue. No custom model hosting or paid compute is
+required. [Data flow](DATA_FLOW.md).
 
-For the website, offline use needs an initial successful load and a deliberate caching service worker.
-Cache the app shell and chosen saved-content/glossary assets. Browser draft OCR would additionally need worker/Wasm/language assets; it is not required for the initial offline scope.
-Test airplane-mode restart, saved-content dates and cache upgrades; do not label saved results as fresh analysis.
-Flutter does not provide a managed caching service worker by default: [web FAQ](https://docs.flutter.dev/platform-integration/web/faq).
+## Verification and historical checkpoints
 
-Hugging Face may later supply an optional trained-model inference provider through this same backend, not a replacement frontend.
-Its new CPU/Docker compute Space creation requires a paid plan; free ZeroGPU Gradio hosting has account-age and quota conditions.
-Do not provision it, train a model or depend on it now. See [AI_TRAINING.md](../research/AI_TRAINING.md) for verified options.
+Validate current contracts, artifact receipts, source identity, HTTPS/CORS, failure
+isolation and guest/password namespace boundaries. Hosted proof must match its
+implementation commit; local tests/builds, GitHub source/native releases, READY
+status and native-device behavior are different evidence gates. Preserve original
+catalogue/research records and dated receipts during cleanup.
 
-Bound input text, requests, provider timeouts and returned output below actual platform limits.
-Use request/response analysis rather than a background process that must survive an invocation.
-Keep OCR and local model inference off the hosted backend; install neither OCR models nor Ollama in the function bundle.
-[Function limits](https://vercel.com/docs/functions/limitations).
+The earlier frontend v0.3.0+4 checkpoint was independently published/hosted-verified;
+backend v0.8.0 implementation
+`1a2fd25b3f781ac916ca6fc1179883f81d5f40a8` was pushed/hosted-verified with
+25 checks, without source-publication proof from that receipt alone. Subsequent
+v0.9.0/v0.4.0 checkpoints remain in their reviews. The v0.2.3 catalogue and v0.3.0
+claim-build evidence remain dated historical proof. [Vercel setup](../planning/VERCEL_SETUP.md) ·
+[Historical backend v0.1.0 review](../planning/BACKEND_V0_1_0_REVIEW.md) ·
+[Historical backend v0.2.3 production](../research/BACKEND_V0_2_3_PRODUCTION.json).
 
-## API URL and CORS configuration
-
-Flutter web and native builds will receive a public `BACKEND_BASE_URL` through Dart build configuration, such as `--dart-define`.
-These are addresses, not secrets. Preview and production clients need explicit matching API URLs and contract versions.
-The backend allowlist must include exact website origins and deliberate local development origins; avoid wildcard preview trust.
-Handle browser preflight requests and permit only required methods and headers. Native clients do not rely on browser CORS.
-If login is added, select token/cookie behavior deliberately; never combine credentialed requests with wildcard origins.
-CORS controls browser access and is not API authentication or a quota protection mechanism.
-[CORS guidance](https://vercel.com/kb/guide/how-to-enable-cors).
-
-Backend secrets include the optional Gemini key; never put it in Dart build settings, frontend environment files or public assets.
-Keep the provider disabled and `GEMINI_MODEL` blank until the real Free Tier project's availability is verified.
-
-## Optional AI access and abuse control
-
-Keep a publicly reachable deployment's Gemini route disabled by default; deterministic templates remain usable.
-For a later invited adult beta, require verified individual identity tokens and a backend invite allowlist before cloud-AI access.
-Configured Firebase anonymous authentication serves write ownership, but does not
-establish adult eligibility, invite membership or authorization for optional AI.
-Implement and verify those additional controls before enabling public AI.
-Do not distribute a shared API secret, Vercel automation bypass token or Gemini key inside website/native builds.
-Token signature, issuer, audience, expiry and invite membership must be checked server-side.
-
-Vercel Authentication can protect previews, but it uses browser login/cookies scoped to a deployment URL.
-Hobby access-request invitations are limited; this is not transparent authentication for both native apps and a separate web project.
-Do not rely on that protection alone for a cross-platform API or assume paid password protection is free.
-[Deployment authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication).
-
-Anonymous AI would need separately verified anti-abuse controls; a browser challenge alone does not authorize native requests.
-An in-memory limiter/cache is disposable and cannot enforce a durable global daily user budget across serverless instances.
-Gemini's actual project quota remains a provider limit; authorized users can still exhaust it. Bound calls and use template fallback.
-If adequate protection cannot fit ₹0/no-card, keep hosted Gemini disabled and demonstrate it through the private local backend.
-See [FREE_STACK.md](../research/FREE_STACK.md) for public-only provider inputs and deterministic failure behavior.
-
-## Validation and later feature gates
-
-Confirm account/plan eligibility, evidence artifact contents, HTTPS URLs, CORS/preflight and API contract compatibility.
-Exercise browser and native calls against the same backend; test missing/invalid identity before enabling hosted AI.
-Test provider failure, quota exhaustion, serverless restart and backend outage without relying on stored server state.
-Verify saved-content access offline and separately verify the website's cached app/content after an initial load. New backend analysis must clearly defer when connectivity is absent.
-Measure cold-start response time and bundle size; keep the laptop/LAN demonstration ready if hosted limits pause service.
-Project imports/configuration and the website build script are now part of v0.1.0 hosting setup. See [Vercel setup](../planning/VERCEL_SETUP.md) and [v0.1.0 historical review](../planning/BACKEND_V0_1_0_REVIEW.md) and [v0.2.0 review](../planning/BACKEND_V0_2_0_REVIEW.md) for version-specific evidence. The additional gates above apply when their planned features are implemented.
+Provider/account quotas and free hosting eligibility are finite. Platform terms
+must be verified before changing deployment/provider scope; the local demo is the
+fallback if a new requirement cannot fit the no-card constraint. No billing or
+paid integration is introduced by this maintenance pass.

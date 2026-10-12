@@ -1,3 +1,8 @@
+> Maintenance, 12 October 2026: unreferenced breakfast-leaf.png and
+> welcome-garden.png were removed from the current bundle. Their generation
+> provenance below records historical assets recoverable from older Git revisions.
+> desktop-insight-bowl.png remains because dated hosted hash receipts reference it.
+
 # Unlabel decorative artwork
 
 ## Fresh desktop Home, results and corrected sidebar — 8 October 2026

@@ -1,118 +1,101 @@
 # Folder structure and root responsibilities
 
-The root is the shared product repository. It coordinates the frontend, backend, knowledge, contracts, documentation and releases. It is not another application.
+Updated **12 October 2026** for frontend **v0.7.0+11** and backend **v0.12.0**.
+The root coordinates component source, knowledge, contracts, documentation and
+releases. Empty foundation scaffolding is removed; the map below describes
+retained source, with future capabilities recorded in plans instead of empty
+implementation directories.
 
-| Root folder | Use |
+| Root path | Responsibility |
 | --- | --- |
-| frontend | Single Flutter Android/iOS/web app; v0.3.0+4 published; v0.4.0+5 extends sourced comparison/ingredient detail |
-| backend | v0.9.0 current source; v0.8.0 comparison pushed/hosted-verified; private account sync preserved |
-| knowledge | Canonical reviewed ingredients, rules, sources and translations |
-| contracts | Shared API schemas/examples and compatibility policy |
-| data | Tracked public India source/provenance/licenses and synthetic fixtures; ignored private investigation data |
-| design | Selected white/forest/mint references, later dark brief and reserved shared tokens/assets |
-| ai | Optional dataset/experiment/evaluation/export/hosting research |
-| scripts | Setup/local launcher, encrypted env recovery, catalogue acquisition/import and contract/dependency maintenance |
-| docs | Architecture, planning, source research and decisions |
-| .github/workflows | Manual APK/unsigned IPA checks/build/release; separate source/web component releases |
+| `frontend/` | One Flutter Android/iOS/web client |
+| `backend/` | Shared FastAPI API, immutable catalogue builds and backend tests |
+| `knowledge/` | Canonical reviewed claim rules and source metadata; ignored permitted local reference downloads |
+| `contracts/` | Current exported schemas/synthetic examples, preserved historical OpenAPI and compatibility/release policy |
+| `data/` | Tracked public catalogue source/provenance/licenses; ignored private development inputs |
+| `design/` | Supplied interface references and their provenance |
+| `ai/` | Optional training research documentation; no trained model or dataset |
+| `scripts/` | Setup, local launch, encrypted settings, source acquisition/import, contracts and release maintenance |
+| `docs/` | Current architecture/plans, historical reviews and dated evidence |
+| `.github/workflows/` | Manual component checks/builds/releases; native artifacts separate from hosted deployment |
 
-Root README introduces readiness; CONTRIBUTING sets boundaries; .gitignore protects secrets/generated/private data; .editorconfig standardizes text conventions.
+Root README introduces current status; CONTRIBUTING sets boundaries and DESIGN
+records the Flutter reference adaptation. `.gitignore` protects generated,
+private and secret files. [Documentation index](../README.md).
 
-## Frontend
+## Frontend source
 
-| Path | Responsibility |
+| Path under `frontend/` | Actual responsibility |
 | --- | --- |
-| lib/main.dart | Flutter entry point |
-| lib/app | App composition, real Material 3 theme, persistent light-default appearance, web appearance bridge and public build/Firebase configuration |
-| lib/core/accounts | SDK password auth, strict private snapshot/CAS API, isolated UID-specific local store and safe sync controller |
-| lib/features/account/presentation | Optional sign-in/create/reset/Profile, sync state/conflict choices, sign out and clear controls |
-| lib/core/models | Implemented validated report/search/failure models and corrected label draft; capture geometry remains reserved |
-| lib/core/camera, ocr | Implemented native/browser capture, local OCR and geometry adapters; real-device accuracy separate |
-| lib/core/analysis, knowledge | Future report models/presentation, evidence/version status and optional local glossary |
-| lib/core/network, storage | Implemented bounded HTTP/metadata handshake, lazy anonymous auth and bounded local saved/history/appearance storage |
-| lib/core/localization, theme, widgets | Future bilingual copy, semantic light/dark roles and shared widgets |
-| lib/features/scanner | Implemented Home, lookup, manual corrected entry, report/ingredient detail and saved/history pages; capture/local OCR implemented |
-| lib/features/analysis | Future findings, evidence and charts |
-| lib/features/preferences | Future local dietary/allergy choices |
-| lib/features/ingredient_details | Future ingredient explanations and source details |
-| lib/features/history, comparison | Reserved feature modules; current saved/history lives in scanner/presentation; sourced comparison is implemented in scanner/presentation with independent version validation |
-| features/*/presentation | Views/view models |
-| features/*/data | Feature repositories/adapters |
-| android | Generated Android Gradle, manifest and resources |
-| ios | Generated Xcode project, orientations and resources |
-| web | Flutter web bootstrap, appearance.js and light/dark favicon/touch/manifest icons; not React |
-| assets/icons, artwork | Bundled licensed Solar feature icons and generated decorative artwork for Welcome/Home; no fake product records |
-| assets/brand | Authored light/dark app-icon masters, verification manifest and generated native/web resources |
-| assets/knowledge, l10n | Future derived bundles and reviewed bilingual content |
-| test/unit, test/widget | Current core_data_test.dart, label_entry_test.dart and widget_test.dart cover data/form/responsive behavior; nested folders remain reserved |
-| integration_test | Reserved real-device journeys |
-| config | Non-secret backend/environment policy |
+| `lib/main.dart`, `lib/app/` | App composition, appearance, theme, web bridge, public Firebase/build configuration |
+| `lib/core/accounts/` | Password auth, isolated UID local store, private snapshot API, CAS/retry/conflict handling |
+| `lib/core/capture/` | Camera/gallery lifecycle, captured barcode decode, native/browser OCR, local parsing, geometry and optional cloud fallback |
+| `lib/core/models/` | Validated label drafts, extracted facts, sourced reports/comparison, research records and typed failures |
+| `lib/core/network/` | Bounded requests, metadata handshake, scanner auth and short-lived public read caches |
+| `lib/core/storage/`, `interaction/`, `widgets/` | Local library/appearance storage, shared feedback, brand and search skeleton |
+| `lib/features/account/` | Device-local dietary/allergen choices and Profile/sign-in/private-sync presentation |
+| `lib/features/scanner/domain/` | Twenty reviewed Insight articles and shared daily/bookmark controller |
+| `lib/features/scanner/presentation/` | Home, scan, search, reports/research, comparison, ingredient/source detail, Saved/history, Insights and navigation |
+| `android/`, `ios/` | Maintained native projects, bridges, permissions, launch/icon resources and platform metadata |
+| `web/` | Web bootstrap/appearance/icons plus pinned same-origin OCR worker/Wasm/language assets and licenses |
+| `assets/icons/`, `assets/artwork/` | Licensed Solar icons, authored food symbols and decorative artwork; original provenance retained |
+| `assets/brand/` | App icon masters/manifest, fonts and license/source records |
+| `test/` | Core, lifecycle, extraction, network/storage and responsive widget tests; OCR bridge tests |
+| `tool/` | Synthetic preview/render helpers and Vercel release web build |
+| `config/` | Public backend/environment policy documentation |
 
-frontend/pubspec.yaml defines current app/dependency versions; pubspec.lock is tracked. build and .dart_tool are ignored.
+`pubspec.yaml` declares the app/dependencies; `pubspec.lock` is tracked. Generated
+SDKs, `.dart_tool`, builds and transient platform state stay ignored. Conditional
+`local_ocr_stub.dart` and `web_appearance_stub.dart` are portability adapters,
+not unused scaffolding. Comparison/history/ingredient detail are implemented in
+scanner presentation; no duplicate reserved feature module is required.
 
-## Backend
+## Backend source
 
-Tracked `backend/.env.age` holds encrypted recovery settings; plaintext and private identities stay outside Git. `scripts/setup.py` restores dependencies/env/catalogue; `run_local.py` runs local services and `env.py` handles age. PowerShell wrappers support direct Windows use. `workspace.json` stores shared toolchain/port defaults; `age-recipient.txt` is public. `data/catalogue/` holds the reusable public bundle; `design/references/` retains supplied concepts. [Clone guide](../planning/LOCAL_DEVELOPMENT.md).
-
-| Path | Responsibility / implementation status |
+| Path under `backend/` | Actual responsibility |
 | --- | --- |
-| app/main.py | App composition/lifespan, 21 current paths/22 operations; independent source activation and redacted failures; historical routes/components preserved |
-| app/accounts/, app/api/v1/accounts.py | Strict private profile/saved/history snapshots, password ownership, CAS retries/clear and separate free-tier admission |
-| app/reports/, app/api/v1/reports.py | Implemented current/historical report composition, independent storage outcomes, original-basis sugar cubes and bounded six-entry glossary |
-| app/api/v1/claims.py | Implemented confirmed claim checks, loaded rules and public evidence metadata |
-| app/claims | Strict claim models, numerical engine, bounded reviewed knowledge loader and receipt-verified bundle builder |
-| app/claims/data | Ignored generated two-file knowledge JSON/receipt; validated before hosted claim activation |
-| app/core | Validated environment/CORS settings and actual-byte request-body limit |
-| app/schemas/products.py | Unchanged strict product lookup v1 contract and OFF provenance |
-| app/schemas/nutrition.py, nutrition_products.py | Confirmed nutrient rows, basis/unit validation, snapshots and separate origin wrappers |
-| app/catalogue/models.py, status.py | Export-origin identity/manifest contracts and typed source-age/artifact status |
-| app/catalogue/importer.py, store.py | Bounded staged imports, optional discovery indexes and exact read-only barcode lookup |
-| app/catalogue/search.py | Bounded indexed Unicode exact-token/final-prefix discovery, candidate states and snapshot-bound cursors |
-| app/catalogue/bundle.py | Validate tracked bundle, generate/verify SQLite receipt and reject damaged deployment artifacts |
-| build_catalogue.py | Networkless Vercel/local build entrypoint for generated catalogue plus approved claim-knowledge bundle; stdout has both receipts |
-| app/catalogue/data | Ignored build-generated immutable SQLite/receipt; included in the hosted function after validation |
-| app/services/parsing/nutrition.py | Pure unit/basis normalization, missing values, conflicts and source-row references |
-| app/services/analysis | Reserved for broader analysis/report orchestration; current claim evaluator is app/claims/ |
-| app/services/knowledge | Reserved for broader ingredient/knowledge lookup; current evidence API uses app/claims/ |
-| app/services/personalization | Reserved neutral reason catalog; no private profile store |
-| app/providers/products | Fixed-origin OFF product read and narrow direct-input nutrition adapter |
-| app/providers/ai, app/prompts | Reserved optional constrained AI; no provider call enabled |
-| app/repositories, db | Reserved read-only bundle/derived-store abstraction |
-| tests/unit, integration | Product/provider/API and nutrition/bounds/contract regression tests |
-| storage/runtime | Ignored local stores/cache, never durable Vercel storage |
+| `app/main.py` | Composition/lifespan, **27 paths / 28 operations**, capability isolation and redacted failures |
+| `app/core/` | Validated settings/CORS, actual-byte request limits and numeric token validation |
+| `app/api/v1/` | Account, claim, community, report/glossary and comparison routes |
+| `app/accounts/` | Password-owned private snapshots, CAS mutations, quotas and explicit clear |
+| `app/ai/` | Scanner photo extraction, server-only credentials, global selection/cooldowns, quotas and private proposals |
+| `app/catalogue/` | Strict bulk-source identity/facts contracts, staged imports, read-only lookup/search and verified bundle |
+| `app/research_catalogue/` | Separate immutable research search/details, strict observation provenance and validated URL descriptors |
+| `app/claims/` | Seven numerical rules, source knowledge loader and receipt-verified two-file bundle |
+| `app/community/` | Observations, normalized hashes/dedup, auth, transactions and compatible-field resolution |
+| `app/comparison/` | Exact-source table selection, compatible nutrient comparisons and limitations |
+| `app/reports/` | Current/historical sourced reports, original-basis sugar cubes and six-entry glossary; v1 glossary retained historically |
+| `app/providers/products/`, `app/services/parsing/` | Fixed-origin OFF reads, direct nutrition adapter and pure unit/basis normalization |
+| `app/schemas/` | Strict product/nutrition/error contracts |
+| `build_catalogue.py` | Network-free bulk/research SQLite and approved claim-knowledge build; emits three receipts |
+| `tests/unit/`, `tests/integration/` | Provider/parser/source, API/contract, storage/auth, AI and process-boundary checks |
+| `storage/runtime/` | Ignored rebuildable local databases; no durable hosted user storage |
 
-backend/.env.example documents implemented settings; ignored backend/.env holds local values. pyproject.toml and requirements files declare the runnable service. backend/vercel.json, .python-version and .vercelignore configure hosted packaging. frontend/vercel.json and tool/vercel-build.sh supply the pinned release web build; Frontend v0.1.0+2 has separate source/web release gates; backend publication never rebuilds native assets.
+Builds generate ignored `app/catalogue/data/`, `app/claims/data/` and
+`app/research_catalogue/data/`. SQLite/receipts are not tracked source. Hosted
+startup verifies each artifact independently. `pyproject.toml`/requirements lock
+files declare the Python runtime/dependencies; Vercel packaging is component-local.
 
-## Knowledge and shared inputs
+## Shared source and local recovery
 
-| Path | Future content |
-| --- | --- |
-| knowledge/sources/registry | Publisher/URL/provision/version/effective date/review/reuse rights |
-| knowledge/sources/downloads | Ignored permitted local reference files |
-| knowledge/ingredients | Canonical names, aliases, purpose and evidence IDs |
-| knowledge/rules/claims, nutrition, allergens | Reviewed criteria, applicability and unknown behavior |
-| knowledge/translations/en, hi | Reviewed bilingual glossary/result templates |
-| data/fixtures/ocr, scans, expected | Synthetic regions/labels and reviewed backend-rule/contract outcomes |
-| data/private | Ignored local photos; not user-history storage |
-| contracts/schemas, examples | Current nineteen-route v0.6.0 OpenAPI, additive discovery schema and 24 validated synthetic examples; report/community/resolved/claim/catalogue/nutrition models and historical exports preserved |
-| contracts/versioning | Version/compatibility/release-manifest policy |
+`data/catalogue/` retains the original **24,641** supported OFF codes and the
+separate **243** immutable popular-product observations. No catalogue/research
+record is removed by scaffold cleanup. Images are attributed URL descriptors;
+generated decorative artwork is never product evidence. [Catalogue](CATALOGUE.md).
 
-Canonical rules are edited once and packaged for the backend. The online-first MVP does not require a Dart rule engine; limited offline content retains its source/date/version instead of making fresh verdicts.
+`knowledge/rules/claims/reviewed-v1.json` and
+`knowledge/sources/registry/fssai-claims-v1.json` are the only canonical claim
+inputs. Current ingredient functions live in the separate backend glossary.
+Historical contracts/review receipts and source/license records remain retained.
 
-## Design, AI and docs
+`backend/.env.age` and the public age recipient support encrypted recovery.
+Plaintext settings and private identities remain ignored. Restore with
+`python scripts/setup.py`; launch with `python scripts/run_local.py`. Setup
+rebuilds generated databases without another global export. The purposeful empty
+locations `data/private/`, `backend/storage/runtime/` and
+`knowledge/sources/downloads/` remain for ignored owned inputs/outputs.
+[Clone/run guide](../planning/LOCAL_DEVELOPMENT.md).
 
-design/tokens and assets reserve shared future roles/branding. ai/datasets, experiments, evaluation, export and spaces reserve optional AI research; no data/model/training exists. scripts/export_backend_contracts.py regenerates current backend contracts and synthetic examples without overwriting historical OpenAPI/product v1. The combined build now validates/packages the approved claim/evidence JSON; the current six-entry report glossary is implemented; broader glossary coverage remains planned. No regulation scraping runs per scan.
-
-docs/architecture covers system/data/API/deployment/folders; planning covers features/UI/roadmap/releases/handoff; research records source/provider/training options; decisions records accepted scope changes. [Documentation index](../README.md) links all files.
-
-Empty future folders use .gitkeep. Reserved folders are not implemented features. The connected manual Flutter client, FastAPI product/nutrition/report/discovery service, Vercel web build and manual mobile workflow execute; capture/local OCR and optional login/private sync are implemented; broader suitability
-and physical-device OCR acceptance remain subsequent scope. The seven-rule claim scope and three-source registry are populated; broader ingredient/allergen folders remain reserved; released v0.5.0 has a separate three-entry name/function glossary under `app/reports/`. No model is trained.
-
-`data/catalogue/` is the tracked reusable source/provenance/license bundle. Setup rebuilds ignored local SQLite in `backend/storage/runtime/india/`; explicit acquisition retains only a compact India projection. The separate `backend/build_catalogue.py` hook generates ignored SQLite/receipt in `backend/app/catalogue/data/` for hosted packaging without another export download. Generated artifacts are verified at startup and read only; manual source changes create a new immutable deployment rather than runtime writes. [Catalogue guide](CATALOGUE.md) and [v0.2.3 source/build/hosted gates](../planning/BACKEND_V0_2_3_REVIEW.md).
-
-Canonical `knowledge/rules/claims/reviewed-v1.json` and `knowledge/sources/registry/fssai-claims-v1.json` supply version `claims-2026-10-06.1`. The network-free build copies only these validated files and a receipt, never source PDFs. Current local/hosted gates are in the [v0.6.0 review](../planning/BACKEND_V0_6_0_REVIEW.md); unchanged cloud proof stays in v0.4.0 and report proof in v0.5.0; the claim knowledge remains unchanged.
-
-`backend/app/community/` contains strict observations, normalization/hashes,
-resolver, Firebase authentication and transactional storage. Its four HTTP routes
-are composed by `app/api/v1/community.py`. `firebase/`, root Firebase config/rules
-and `scripts/community_catalogue.py` support explicit no-billing operation; setup
-never provisions a cloud account. [Storage guide](COMMUNITY_CATALOGUE.md).
+The previous v0.3/v0.4 frontend and v0.9 backend maps were historical checkpoints.
+Their source/release identities remain in component reviews; removed empty
+foundation directories did not implement the capabilities described by those plans.

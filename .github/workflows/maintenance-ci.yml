@@ -1,0 +1,74 @@
+name: Repository checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  backend-and-repository:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.lock
+      - name: Restore locked development dependencies
+        run: |
+          python -m pip install -r backend/requirements-dev.lock
+          python -m pip check
+      - name: Validate maintained scripts, docs and canonical metadata
+        run: |
+          python scripts/validate_workspace.py
+          python scripts/version_metadata.py --component frontend --format json
+          python scripts/version_metadata.py --component backend --format json
+          python scripts/vendor_web_ocr.py --check
+          python scripts/generate_app_icons.py --check
+          python -m unittest discover -s scripts/tests -p 'test_*.py'
+          python -m ruff check --target-version py312 backend/app backend/tests backend/build_catalogue.py scripts
+      - name: Build verified read-only data from committed sources
+        working-directory: backend
+        run: python build_catalogue.py
+      - name: Run synthetic backend tests without provider credentials
+        working-directory: backend
+        run: python -m pytest -q
+
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Resolve the canonical Flutter toolchain
+        id: metadata
+        run: python3 scripts/version_metadata.py --component frontend --format github >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ steps.metadata.outputs.flutter_version }}
+          channel: stable
+          cache: true
+      - name: Analyze, test and compile the frontend
+        working-directory: frontend
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter analyze
+          flutter test
+          flutter build web --release --no-pub

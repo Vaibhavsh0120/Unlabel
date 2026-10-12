@@ -106,7 +106,9 @@ def web_handler(directory: Path, mode: str):
             deadline = time.monotonic() + REJECTED_BODY_TIMEOUT
             try:
                 while remaining:
-                    timeout = deadline - time.monotonic()
+                    # Adding/subtracting the monotonic timestamp can round a
+                    # fraction above the configured cap on long-running hosts.
+                    timeout = min(REJECTED_BODY_TIMEOUT, deadline - time.monotonic())
                     if timeout <= 0:
                         break
                     self.connection.settimeout(timeout)

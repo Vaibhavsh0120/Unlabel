@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "checkpoint_date_asia_calcutta": "2026-10-12",
+  "scope": "maintenance_without_feature_or_product_version_update",
+  "versions": {"frontend": "0.7.0+11", "backend": "0.12.0"},
+  "canonical_files": {"frontend": "frontend/pubspec.yaml", "backend": "backend/pyproject.toml"},
+  "local": {
+    "backend_full_suite": {"passed": 1343, "skipped": 5},
+    "later_ios_source_subset": {"passed": 13},
+    "flutter_tests": 268,
+    "browser_ocr_tests": 6,
+    "mobile_publication_tests": 10,
+    "flutter_analysis": "passed",
+    "web_release_build": "passed",
+    "ruff": "passed",
+    "pyright": {"errors": 0, "warnings": 0},
+    "actionlint_workflows": 2,
+    "synthetic_schema_examples": 30,
+    "source_build_receipts": ["catalogue", "claims_knowledge", "research_catalogue"],
+    "icons_verified": 42,
+    "ocr_assets_verified": 21,
+    "compiled_web_configured_secret_matches": 0,
+    "workspace": {"python": 147, "json": 154, "toml": 1, "markdown": 118, "local_links": 700, "errors": 0}
+  },
+  "cleanup": {"redundant_gitkeeps": 64, "empty_scaffold_directories": 45, "unreferenced_images": ["breakfast-leaf.png", "welcome-garden.png"], "orphan_runtime_modules_found": 0, "cupertino_dependency": "retained_after_compiled_font_evidence"},
+  "github": {"missing_reviewed_source_releases_published": 12, "original_published_tags_and_assets_preserved": true, "historical_mobile_override": "draft_preserved_and_labeled"},
+  "native_workflow": {"status": "awaiting_fresh_dispatch", "old_run_id": 38044207593, "old_ios": "success_capacity_notice_only", "old_android": "timed_out_during_assembleRelease", "full_archived_android_log": "unavailable", "single_definitive_root_cause": "not_established_from_available_log"},
+  "livecontainer": {"source_url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json", "publication": "pending_verified_native_release", "physical_device_runtime": "unverified"},
+  "hosted_backend_and_web": "separate_current_source_verification_gate"
+}

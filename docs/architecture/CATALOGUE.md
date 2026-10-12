@@ -1,11 +1,22 @@
 # Product catalogue: tracked source, verified SQLite
 
+Updated **12 October 2026** for backend **v0.12.0** and frontend
+**v0.7.0+11**. Both read-only catalogues are implemented: the preserved **24,641**
+supported OFF codes and **243** immutable researched-product observations.
+The current API has **27 paths / 28 operations**. Search/results consume these
+qualified sources; no record becomes confirmed-label evidence automatically.
+Backend read-only hosted proof and latest frontend hosted proof remain separate.
+[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md) ·
+[Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md).
+
+## Historical research checkpoint — backend v0.10.0
+
 Research database checkpoint (8 October 2026): backend **v0.10.0** adds a
 separate generated read-only SQLite with **243 observations** (49 manufacturer,
 125 retailer and 69 OFF). It preserves dated sources, unknown identities and
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
-The exported API now has 24 paths/25 operations and 29 synthetic examples.
+The historical v0.10.0 export has 24 paths/25 operations and 29 synthetic examples.
 Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
@@ -13,12 +24,14 @@ adds mixed-source search and qualified ingredient/nutrition/source details.
 Local verification and hosted/push status: [backend review](../planning/BACKEND_V0_10_0_REVIEW.md) ·
 [frontend review](../planning/FRONTEND_V0_5_0_REVIEW.md) ·
 [product list](../research/POPULAR_PRODUCTS_ADDED.md).
-The user's next automatic-capture/results redesign is recorded in the
+The subsequent automatic-capture/results implementation is recorded in the
 [automatic scan plan](../planning/AUTOMATIC_SCAN_PLAN.md).
 Earlier release statements below retain their historical scope.
 
 
-Updated **7 October 2026**. Production **v0.6.0 Product Discovery** is independently
+## Historical discovery checkpoint — 7 October 2026
+
+Production **v0.6.0 Product Discovery** is independently
 reviewed, pushed, hosted-verified and published after v0.5.0/v0.4.0. Nineteen APIs
 retain original lookup/normalization/claim/community/report boundaries and add
 bounded name/brand discovery. Flutter **0.1.0+2** implements manual lookup,
@@ -27,9 +40,9 @@ gates pending; camera/OCR and native device behavior remain separate. Firebase's
 first Standard database `unlabel` in Mumbai retains free tier/no linked billing,
 anonymous Auth and denied direct client access. Optional scanner login/private
 sync is accepted only for the next v0.7.0/v0.2.0 scope.
-[Current review](../planning/BACKEND_V0_6_0_REVIEW.md) ·
+[Historical review](../planning/BACKEND_V0_6_0_REVIEW.md) ·
 [23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
-[Next plan](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+[Subsequently implemented account plan](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app).
 
@@ -51,7 +64,7 @@ The full v0.2.3 JSONL stream reached validated EOF: **13,084,464,175 compressed 
 1. `scripts/acquire_india_jsonl.py` streams the fixed official full JSONL gzip through validated compressed length, gzip CRC/EOF and bounded strict objects. A range feasibility sample cannot replace full-source proof. Acquisition retains only the selected India fields and records original/source/projection measurements. It is an explicit maintenance operation outside requests and deployment builds.
 2. `scripts/import_india_catalogue.py` validates plain/gzip local input and stages SQLite. Exact duplicate supported codes fail. Optional facts are bounded and must match identity keys/counts. Integrity/count checks finish before replacing the single local database; failed import preserves the active file.
 3. `scripts/setup.py` verifies tracked source hashes/counts and rebuilds `backend/storage/runtime/india/catalogue.sqlite3` without another bulk download. `run_local.py` activates this local index through process settings with receipt checks off.
-4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]`. Outside-root build access supplies tracked `data/catalogue/`. The build downloads nothing, decrypts no env, verifies input, generates SQLite/receipt under ignored `app/catalogue/data/`, then checks integrity/hash/manifest/counts before succeeding. The same v0.3.0 hook separately validates/packages the approved claim-knowledge JSON and receipt under `app/claims/data/`; stdout has `catalogue` and `claims_knowledge` keys.
+4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]`. Outside-root build access supplies tracked `data/catalogue/`. The build downloads nothing, decrypts no env, verifies input, generates SQLite/receipt under ignored `app/catalogue/data/`, then checks integrity/hash/manifest/counts before succeeding. The hook also validates/packages the approved claim-knowledge JSON/receipt under `app/claims/data/` and generates the separate research SQLite/receipt under `app/research_catalogue/data/`. Current stdout has `catalogue`, `claims_knowledge` and `research_catalogue` keys.
 5. Hosted startup requires `CATALOGUE_REQUIRE_RECEIPT=true`, validates the full database once and opens a read-only store. Failure disables catalogue access while health/meta/live APIs remain usable. Each lookup reads identity, facts and manifest in one short transaction.
 
 The original global hash, compressed projection hash and decoded projection hash identify different artifacts. Receipt values verify the trusted Git/build bundle, not an independent OFF signature. Build UUIDs/index timestamps can change SQLite bytes between builds; source content/counts stay validated. Two generated files are replaced separately inside an unpublished build, so a failed build must not be promoted.
@@ -63,7 +76,11 @@ The original global hash, compressed projection hash and decoded projection hash
 | `GET /v1/catalogue` | Ready/unconfigured/unavailable status, manifest, source age, receipt artifact summary and loaded-store field limits. |
 | `GET /v1/catalogue/products/{barcode}` | Preserved identity `CatalogLookup` v1: 200 found, dated 404 absent, 503 inactive/unavailable. |
 | `GET /v1/catalogue/products/{barcode}/facts` | Separate `FactsLookup` v1: identity/manifest plus strict `details`; found older identity-only stores report facts unavailable. |
-| `GET /v1/meta` | `catalogue_lookup` and additive `catalogue_facts` capabilities; facts requires a validated facts-enabled store. |
+| `GET /v1/catalogue/search` | Snapshot-bound indexed name/brand discovery with explicit candidate/miss/refinement states. |
+| `GET /v1/researched/products/search` | Independent bounded search across immutable research observations. |
+| `GET /v1/researched/products/by-barcode/{barcode}` | Research observations for an exact known barcode. |
+| `GET /v1/researched/products/{entry_id}` | Qualified research facts, original sources/unknowns and separately validated image descriptors. |
+| `GET /v1/meta` | Independently validated bulk/research readiness and artifact summaries; facts require a validated facts-enabled store. |
 
 Codes match exactly and preserve leading-zero variants. Invalid barcode input returns 422. Status/identity/facts responses are `no-store`; metadata retains its existing cache header. Snapshot misses make no OFF request. Explicit live product/nutrition routes remain available when current community facts are wanted.
 
@@ -87,6 +104,6 @@ There is no scheduled refresh job. Git keeps old source versions and repository 
 
 ## Finite budgets and offline boundary
 
-The JSONL acquisition caps compressed transfer at 16 GiB, decoded stream at 160 GiB, source records at 16 MiB, projected records at 512 KiB, retained projection at 100 MiB and elapsed time at three hours. Older CSV acquisition retains its own smaller bounds. Bundle/source/SQLite limits remain 100 MiB; local immediate-work-directory defaults are 1 GiB. Check free disk separately for source and repository history. No image cache exists.
+The JSONL acquisition caps compressed transfer at 16 GiB, decoded stream at 160 GiB, source records at 16 MiB, projected records at 512 KiB, retained projection at 100 MiB and elapsed time at three hours. Older CSV acquisition retains its own smaller bounds. Bundle/source/SQLite limits remain 100 MiB; local immediate-work-directory defaults are 1 GiB. Check free disk separately for source and repository history. The backend bundles URL descriptors, without an image-byte cache.
 
-The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual v0.2.3 Vercel artifact size/read verification passed and is recorded separately from the local build. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter has no catalogue/cache integration yet; saved dated results, preferences and glossary are later limited offline features. The separate v0.3.0 confirmed-label claim subset does not consume snapshot facts automatically. Scores, comparison and AI remain disabled. [API contracts](../../contracts/README.md) · [20-group tracker](../planning/FEATURE_TRACKER.md).
+The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual v0.2.3 Vercel artifact size/read verification passed and is recorded separately from the local build. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter integrates bulk/research lookup and bounded short-lived public read caches, separate from private libraries. Saved dated reports, local reminders and bundled Insights can be read locally after app loading; offline website restart needs separate caching/verification. The preserved confirmed-label claim subset does not consume snapshot facts automatically. Exact-source comparison and optional consented AI extraction are implemented independently; neither establishes product safety. [API contracts](../../contracts/README.md) · [20-group tracker](../planning/FEATURE_TRACKER.md).
