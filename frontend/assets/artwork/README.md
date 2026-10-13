@@ -1,3 +1,12 @@
+## Authentication and profile artwork — 13 October 2026
+
+Six fresh illustrations serve the six authentication states. A new female avatar
+matches the existing male default, whose continued use the user explicitly
+requested. Gender is optional and user-selected. [Generation metadata](auth-generation.json)
+records source/output hashes, dimensions, bytes and exact alpha preservation.
+Each illustration stays exclusive to its authentication state across desktop and
+mobile. The default avatars follow the same user identity in Profile and headers.
+
 ## Current optimized assets — 12 October 2026
 
 The 30 preceding illustrations still used by screens total 2,875,132 bytes,

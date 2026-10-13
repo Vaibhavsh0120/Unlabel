@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/widgets/brand_mark.dart';
+
 /// Decorative artwork fits inside a reserved box, including its motion inset.
 /// It never owns a gesture or accessibility node and pauses while scrolling or
 /// outside the viewport.
@@ -154,16 +156,21 @@ class FeatureIcon extends StatelessWidget {
   final Color? color;
 
   @override
-  Widget build(BuildContext context) => SvgPicture.asset(
-    'assets/icons/$name-linear.svg',
-    width: size,
-    height: size,
-    colorFilter: ColorFilter.mode(
-      color ?? Theme.of(context).colorScheme.primary,
-      BlendMode.srcIn,
-    ),
-    excludeFromSemantics: true,
-  );
+  Widget build(BuildContext context) => name == 'leaf'
+      ? BrandLeaf(
+          size: size,
+          color: color ?? Theme.of(context).colorScheme.primary,
+        )
+      : SvgPicture.asset(
+          'assets/icons/$name-linear.svg',
+          width: size,
+          height: size,
+          colorFilter: ColorFilter.mode(
+            color ?? Theme.of(context).colorScheme.primary,
+            BlendMode.srcIn,
+          ),
+          excludeFromSemantics: true,
+        );
 }
 
 class PageBody extends StatelessWidget {

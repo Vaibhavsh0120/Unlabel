@@ -20,7 +20,10 @@ edit in workflow YAML. Both platforms use the selected source's canonical versio
 and build number. Product version is not an API
 major, schema or knowledge version. `/v1/meta` negotiates those independently.
 Allocate a new build number for a new distributable update; published artifacts
-are immutable. This maintenance task retains the existing versions.
+are immutable. The later authorized auth/profile scope bumps the canonical
+frontend version/build; verified Google backend compatibility has its own patch
+version. Final source/hosted/native identities remain pending in their current
+[frontend](FRONTEND_V0_8_0_REVIEW.md) and [backend](BACKEND_V0_12_1_REVIEW.md) reviews.
 
 Current-status docs are dated checkpoints. Write a future review/ledger entry
 for a new release; do not rewrite old reviews, receipts or source references.
@@ -60,8 +63,11 @@ The IPA contains `Payload/Runner.app` for iPhoneOS and preserves symlinks. It is
 unsigned. LiveContainer must already be installed/configured through a suitable
 sideload route; actual import/execution and native services require device tests.
 Publishing the feed does not establish App Store signing or physical accuracy.
-The Android APK uses a demo debug signing identity, so stable production updates
-still need an explicitly configured private release key.
+The Android demo APK now uses a stable private Actions keystore registered with
+Firebase, and publication verifies its certificate. Preserve that demo key for
+future updates. Older APKs signed by disposable runner keys may need uninstalling
+first; production signing remains a separate private-key setup.
+[Account/native OAuth setup](../architecture/ACCOUNT_PROFILE.md).
 
 ## Build and deployment boundaries
 

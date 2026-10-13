@@ -2,8 +2,8 @@
 
 Backend v0.11 adds optional Gemini and OpenAI photo extraction. All AI operations
 must enter `AiGateway`; callers cannot supply keys, provider URLs, model names or
-choose a provider per task. The app has only scanner users, with anonymous or
-password Firebase authentication. No reviewer/admin app role is introduced.
+choose a provider per task. The app has only scanner users, with anonymous,
+password or Google Firebase authentication. No reviewer/admin app role is introduced.
 
 Published v0.12.0 adds bounded private structured machine proposals and an
 independent response storage status. Its READY deployment passed 389 read-only
@@ -85,8 +85,9 @@ are disabled. Upstream envelopes are limited to256KiB, facts to128KiB and output
 to8,192tokens. Request/validation/provider errors do not echo photos, keys or
 provider response bodies. Quota counters use fixed documents: one global and256
 actor buckets, with default100requests/day globally and10/day per bucket. Bucket
-collisions share a conservative allowance. Existing Firestore deny-all client
-rules and backend-only credentials remain unchanged.
+collisions share a conservative allowance. AI configuration, quota and staging
+collections remain denied to direct clients and require backend credentials. The
+separate [profile-media owner exception](ACCOUNT_PROFILE.md) grants no AI access.
 
 ## Evidence and privacy
 

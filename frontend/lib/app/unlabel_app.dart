@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import '../core/accounts/account_auth.dart';
 import '../core/accounts/account_controller.dart';
 import '../core/accounts/account_sync_api.dart';
+import '../core/accounts/profile_media.dart';
 import '../core/interaction/ui_feedback.dart';
 import '../core/network/scanner_auth.dart';
 import '../core/network/unlabel_repository.dart';
@@ -14,6 +15,8 @@ import '../core/storage/local_store.dart';
 import '../core/widgets/brand_mark.dart';
 import 'artwork_warmup.dart';
 import '../features/account/presentation/profile_page.dart';
+import '../features/account/presentation/profile_avatar.dart';
+import '../features/account/presentation/auth_page.dart';
 import '../features/scanner/presentation/compare_page.dart';
 import '../features/scanner/presentation/app_shell.dart';
 import '../features/scanner/presentation/home_page.dart';
@@ -65,6 +68,8 @@ class _UnlabelAppState extends State<UnlabelApp> {
   late final UnlabelRepository _repository;
   late final LocalStore _store;
   late final AccountController _account;
+  late final ProfileMediaController _profileMedia;
+  String? _passwordResetCode;
   final _navigator = GlobalKey<NavigatorState>();
   final _messenger = GlobalKey<ScaffoldMessengerState>();
   String? _identity;
@@ -89,6 +94,16 @@ class _UnlabelAppState extends State<UnlabelApp> {
           preferences: _store.preferences,
         );
     _identity = _account.identity?.uid;
+    _passwordResetCode = passwordResetCodeFromUri(Uri.base);
+    if (_passwordResetCode != null) clearAuthActionUrl();
+    _profileMedia = ProfileMediaController(
+      auth: _account.auth,
+      preferences: _store.preferences,
+      repository: widget.accountController == null
+          ? _profileRepository()
+          : null,
+    );
+    unawaited(_profileMedia.start());
     _account.addListener(_accountChanged);
     unawaited(_account.start());
     unawaited(_restore());
@@ -98,9 +113,20 @@ class _UnlabelAppState extends State<UnlabelApp> {
     try {
       return FirebaseAccountAuth(
         options: UnlabelFirebaseOptions.currentPlatform,
+        googleServerClientId: UnlabelFirebaseOptions.googleServerClientId,
       );
     } on UnsupportedError {
       return UnavailableAccountAuth();
+    }
+  }
+
+  FirebaseProfileMediaRepository? _profileRepository() {
+    try {
+      return FirebaseProfileMediaRepository(
+        options: UnlabelFirebaseOptions.currentPlatform,
+      );
+    } on UnsupportedError {
+      return null;
     }
   }
 
@@ -165,7 +191,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
   Future<void> _welcomeSignIn() async {
     final context = _navigator.currentContext;
     if (context == null) return;
-    await ProfilePage.showSignIn(context, _account);
+    await ProfilePage.showSignIn(context, _account, fromProfile: false);
     if (mounted && _account.identity != null) await _continue();
   }
 
@@ -186,6 +212,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
 
   @override
   void dispose() {
+    _profileMedia.dispose();
     _account.removeListener(_accountChanged);
     if (widget.accountController == null) {
       _account.dispose();
@@ -205,10 +232,13 @@ class _UnlabelAppState extends State<UnlabelApp> {
     theme: UnlabelTheme.forBrightness(Brightness.light),
     darkTheme: UnlabelTheme.forBrightness(Brightness.dark),
     themeMode: _themeMode,
-    initialRoute: isMissingWebPage ? '/not-found' : null,
-    builder: (context, child) => ArtworkWarmup(
-      welcome: _welcome,
-      child: _RootPageScope(buildPage: _rootPage, child: child!),
+    initialRoute: _passwordResetCode != null ? '/' : isMissingWebPage ? '/not-found' : null,
+    builder: (context, child) => ProfileMediaScope(
+      controller: _profileMedia,
+      child: ArtworkWarmup(
+        welcome: _welcome,
+        child: _RootPageScope(buildPage: _rootPage, child: child!),
+      ),
     ),
     onGenerateInitialRoutes: (name) => [_pageRoute(RouteSettings(name: name))],
     onGenerateRoute: _pageRoute,
@@ -230,7 +260,17 @@ class _UnlabelAppState extends State<UnlabelApp> {
   }
 
   Widget _rootPage(bool missing, VoidCallback onRecovered) =>
-      _loading && !missing && !_missingPageRecovered
+      _passwordResetCode != null
+      ? AuthPage(
+          controller: _account,
+          fromProfile: false,
+          resetCode: _passwordResetCode,
+          onComplete: () {
+            setState(() => _passwordResetCode = null);
+            unawaited(_continue());
+          },
+        )
+      : _loading && !missing && !_missingPageRecovered
       ? kIsWeb
             ? const Scaffold()
             : const StartupPage()
@@ -795,15 +835,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                                   ),
                                   onPressed: _profile,
                                   tooltip: 'Profile',
-                                  icon: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor:
-                                        theme.colorScheme.primaryContainer,
-                                    child: FeatureIcon(
-                                      'user',
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                  ),
+                                  icon: const ExcludeSemantics(child: AccountAvatar(size: 40)),
                                 ),
                                 const SizedBox(width: 8),
                               ],

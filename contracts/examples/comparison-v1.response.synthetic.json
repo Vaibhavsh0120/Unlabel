@@ -1,7 +1,7 @@
 {
   "schema_version": "1",
   "comparison_version": "sourced-nutrient-comparison-v1",
-  "backend_version": "0.12.0",
+  "backend_version": "0.12.1",
   "generated_at": "2026-10-07T12:00:00Z",
   "client_request_id": "10000000-0000-4000-8000-000000000020",
   "comparison_session_id": "10000000-0000-4000-8000-000000000021",

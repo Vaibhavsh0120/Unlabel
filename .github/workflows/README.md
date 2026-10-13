@@ -6,7 +6,8 @@ tracked OCR/icons, Python lint and release guard tests; rebuilds the read-only
 backend bundles from committed public sources; runs synthetic backend tests; and
 analyzes/tests/compiles the Flutter web client. It uses standard Ubuntu runners,
 locked Python dependencies and the Flutter pin in `scripts/workspace.json`.
-Provider credentials, Firebase deployment and native signing are outside CI.
+Provider credentials and Firebase deployment remain outside maintenance CI.
+Only the manual native lane restores the private registered demo signing key.
 
 [manual-release.yml](manual-release.yml) runs only through **Run workflow**.
 Its inputs are `source_ref` (default `main`), `backend_url` (default
@@ -36,10 +37,13 @@ and SHA-256 checksums, then verifies uploaded names/sizes/states/digests before
 publishing. Existing native tags/releases/assets are immutable. Historical
 `mobile-vVERSION+BUILD` tags remain valid. Set `publish_release: false` for a draft;
 a draft never updates the iOS source. Source-only `frontend-vVERSION` and backend
-source releases remain separate. No component version is increased by this work.
+source releases remain separate. Version/build values always come from the
+selected source's canonical component manifest.
 
-The APK uses the generated Android demo debug key; upgrading older demos may
-require uninstalling them. The IPA is unsigned. LiveContainer can import it and
+The APK uses the stable registered demo debug certificate restored from the
+private `UNLABEL_ANDROID_DEMO_KEYSTORE` Actions secret. The job rejects a missing
+secret or unexpected certificate. Preserve the key for future demo updates; older
+APKs signed by disposable runner keys may require uninstalling them first. The IPA is unsigned. LiveContainer can import it and
 provide host signing; normal device installation requires separate signing.
 Actual iPhone launch, camera, authentication and LiveContainer compatibility
 remain device checks. The original capacity notice was informational: that iOS
@@ -56,7 +60,7 @@ Add this stable URL in **LiveContainer → Sources → +**:
 
 <https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json>
 
-The URL becomes available after the first verified source publication. Use only
+The URL is already published; new versions appear only after verified publication. Use only
 an [official LiveContainer build](https://github.com/LiveContainer/LiveContainer)
 and its supported signing setup. The format follows
 [AltStore's source documentation](https://faq.altstore.io/developers/make-a-source).

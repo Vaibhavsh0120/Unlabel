@@ -676,7 +676,7 @@ void main() {
         await tester.ensureVisible(find.text('Sign in'));
         await tester.tap(find.text('Sign in'));
         await tester.pumpAndSettle();
-        expect(find.text('Welcome back'), findsOneWidget);
+        expect(find.byKey(const ValueKey('auth-title')), findsOneWidget);
         await tester.ensureVisible(
           find.byKey(const ValueKey('account-submit')),
         );
@@ -685,6 +685,15 @@ void main() {
         expect(find.text('Enter a valid email address.'), findsOneWidget);
         expect(auth.signIns, 0);
         expect(tester.takeException(), isNull);
+        await tester.ensureVisible(find.byKey(const ValueKey('auth-options')));
+        await tester.tap(find.byKey(const ValueKey('auth-options')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Continue as guest'));
+        await tester.pumpAndSettle();
+        expect(find.text('Welcome back'), findsNothing);
+        expect(find.text('Sign in'), findsOneWidget);
+        expect(value.identity, isNull);
+        expect(api.fetches, 0);
         await tester.pumpWidget(const SizedBox());
         value.dispose();
         auth.dispose();
@@ -728,8 +737,8 @@ void main() {
       );
       expect(api.fetches, 0);
       expect(api.mutations, isEmpty);
-      await tester.ensureVisible(find.text('Allergens'));
-      await tester.tap(find.text('Allergens'));
+      await tester.ensureVisible(find.text('Allergens to remember'));
+      await tester.tap(find.text('Allergens to remember'));
       await tester.pumpAndSettle();
       expect(find.text('Allergen reminders'), findsOneWidget);
       await tester.tap(find.text('Milk'));
@@ -782,6 +791,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Use cloud library'), findsOneWidget);
       expect(find.text('Use this device library'), findsOneWidget);
+      await tester.ensureVisible(find.text('Use cloud library'));
       await tester.tap(find.text('Use cloud library'));
       await tester.pumpAndSettle();
       expect(find.text('Use the cloud library?'), findsOneWidget);
@@ -790,10 +800,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(value.localData!.displayName, 'Synthetic cloud name');
       expect(value.state, AccountSyncState.ready);
-      await tester.ensureVisible(find.text('Clear account data'));
-      await tester.tap(find.text('Clear account data'));
+      await tester.ensureVisible(find.text('Clear account library'));
+      await tester.tap(find.text('Clear account library'));
       await tester.pumpAndSettle();
-      expect(find.text('Clear account data?'), findsOneWidget);
+      expect(find.text('Clear account library?'), findsOneWidget);
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
       expect(value.localData!.displayName, 'Synthetic cloud name');
@@ -802,7 +812,7 @@ void main() {
   );
 
   testWidgets(
-    'account help exposes creation and password reset before failure',
+    'account exposes signup and password reset before a failed sign-in',
     (tester) async {
       final prefs = MemoryPreferences();
       final auth = FakeAuth();
@@ -817,28 +827,57 @@ void main() {
       );
       await tester.tap(find.text('Sign in'));
       await tester.pumpAndSettle();
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('auth-mode-switch')),
+      );
+      await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
+      await tester.pumpAndSettle();
+      expect(find.text('Create your account'), findsOneWidget);
+      expect(auth.signIns, 0);
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('auth-mode-switch')),
+      );
+      await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
+      await tester.pumpAndSettle();
       await tester.enterText(
-        find.widgetWithText(TextFormField, 'Email address'),
+        find.byKey(const ValueKey('auth-email')),
         'synthetic@example.invalid',
       );
-      await tester.tap(find.text('Account help'));
+      await tester.ensureVisible(find.byKey(const ValueKey('auth-options')));
+      await tester.tap(find.byKey(const ValueKey('auth-options')));
       await tester.pumpAndSettle();
-      expect(find.text('Reset password'), findsOneWidget);
-      expect(find.text('Create an account'), findsOneWidget);
-      await tester.tap(find.text('Reset password'));
+      await tester.tap(find.text('Forgot password?'));
+      await tester.pumpAndSettle();
+      expect(find.text('Forgot your password?'), findsOneWidget);
+      await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
+      await tester.tap(find.byKey(const ValueKey('account-submit')));
       await tester.pumpAndSettle();
       expect(auth.resets, 1);
       expect(auth.signIns, 0);
-      await tester.ensureVisible(find.text('Account help'));
-      await tester.tap(find.text('Account help'));
+      expect(find.text('Reset link sent!'), findsOneWidget);
+      expect(
+        find.textContaining('If this email has an account'),
+        findsOneWidget,
+      );
+      final back = find.widgetWithText(FilledButton, 'Back to sign in');
+      await tester.ensureVisible(back);
+      await tester.tap(back);
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Create an account'));
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('auth-mode-switch')),
+      );
+      await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
       await tester.pumpAndSettle();
       expect(find.text('Create your account'), findsOneWidget);
       await tester.enterText(
-        find.widgetWithText(TextFormField, 'Password'),
-        'synthetic-password',
+        find.byKey(const ValueKey('auth-name')),
+        'Synthetic scanner',
       );
+      await tester.enterText(
+        find.byKey(const ValueKey('auth-password')),
+        'synthetic-password42',
+      );
+      await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
       await tester.tap(find.byKey(const ValueKey('account-submit')));
       await tester.pumpAndSettle();
       expect(value.identity, isNotNull);

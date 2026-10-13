@@ -71,7 +71,9 @@ class _Harness {
   }
 
   Future<void> open(WidgetTester tester, {bool allergensOnly = false}) async {
-    final title = find.text(allergensOnly ? 'Allergens' : 'Preferences');
+    final title = find.text(
+      allergensOnly ? 'Allergens to remember' : 'Preferences',
+    );
     await tester.ensureVisible(title);
     await tester.tap(title);
     await tester.pumpAndSettle();
@@ -209,6 +211,7 @@ void main() {
     await harness.pump(tester);
     expect(find.text('No preferences selected'), findsOneWidget);
     expect(find.text('No allergens selected'), findsOneWidget);
+    expect(find.text('Allergens'), findsNothing);
     expect(find.byType(ActionChip), findsNothing);
     expect(find.byType(FilterChip), findsNothing);
     for (final label in ['Preferences', 'Allergens to remember']) {

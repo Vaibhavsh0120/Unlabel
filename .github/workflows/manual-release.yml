@@ -93,7 +93,7 @@ jobs:
         working-directory: frontend
         run: |
           flutter pub get --enforce-lockfile
-          node --test test/*_web_test.cjs
+          node --test test/*_web_test.cjs ../firebase/auth-bridge.test.cjs
           flutter analyze
           flutter test
 
@@ -138,6 +138,14 @@ jobs:
       - name: Prepare Android SDK and bounded CI Gradle settings
         timeout-minutes: 20
         run: python3 scripts/prepare_android_ci.py
+      - name: Restore registered stable demo signing certificate
+        env:
+          DEMO_KEYSTORE: ${{ secrets.UNLABEL_ANDROID_DEMO_KEYSTORE }}
+        run: |
+          test -n "$DEMO_KEYSTORE" || { echo 'Missing registered demo signing key.'; exit 1; }
+          mkdir -p "$HOME/.android"
+          printf '%s' "$DEMO_KEYSTORE" | base64 --decode > "$HOME/.android/debug.keystore"
+          chmod 600 "$HOME/.android/debug.keystore"
       - name: Build and verify demo APK
         timeout-minutes: 35
         working-directory: frontend
@@ -150,6 +158,7 @@ jobs:
           APKSIGNER="$ANDROID_HOME/build-tools/36.0.0/apksigner"
           "$APKSIGNER" verify --print-certs "$APK_PATH" > apk-signing.txt
           grep -q 'CN=Android Debug' apk-signing.txt || { echo 'Expected demo debug signing; review production signing before changing this lane.'; exit 1; }
+          grep -qi '3e7f9e3a26dc4ea80c858a4812bc59c72d5fd80a' apk-signing.txt || { echo 'APK signing certificate does not match the registered Google client.'; exit 1; }
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK_PATH" > apk-metadata.txt
           python3 - <<'PY'
           import os, pathlib, re

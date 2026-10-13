@@ -377,43 +377,27 @@ class LibraryEmptyState extends StatelessWidget {
             ],
           );
           if (mobile) {
-            final stacked = constraints.maxWidth < 320 || largeText;
+            final fullWidthAction = constraints.maxWidth < 320 || largeText;
             return Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (stacked) ...[
-                    guidance,
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        width: 208,
-                        child: CornerArtwork(
-                          asset: asset,
-                          height: 180,
-                          animate: false,
-                        ),
+                  guidance,
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 208,
+                      child: CornerArtwork(
+                        asset: asset,
+                        height: 180,
+                        animate: false,
                       ),
                     ),
-                  ] else
-                    Row(
-                      children: [
-                        Expanded(child: guidance),
-                        const SizedBox(width: 16),
-                        SizedBox(
-                          width: 144,
-                          child: CornerArtwork(
-                            asset: asset,
-                            height: 180,
-                            animate: false,
-                          ),
-                        ),
-                      ],
-                    ),
+                  ),
                   const SizedBox(height: 20),
-                  if (stacked)
+                  if (fullWidthAction)
                     SizedBox(width: double.infinity, child: action)
                   else
                     action,

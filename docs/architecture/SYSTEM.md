@@ -1,16 +1,16 @@
 # System architecture
 
-Updated **12 October 2026** against backend **v0.12.0** and frontend
-**v0.7.0+11**. The backend exports **27 paths / 28 operations**. Automatic
+Updated **13 October 2026** against the canonical
+[backend](../../backend/pyproject.toml) and [frontend](../../frontend/pubspec.yaml) versions. The backend exports **27 paths / 28 operations**. Automatic
 captured-barcode reading, local OCR, optional consented cloud extraction,
 sourced comparison and private account sync are implemented. Insights contains
 twenty sourced articles, a shared date-stable daily four and local bookmarks.
 
-The latest frontend implementation is pushed; its hosted proof remains pending.
-Backend v0.12.0 has its separate READY receipt and 389 read-only hosted checks;
-authenticated hosted extraction/staging is outside that audit. See the
-[frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md),
-[backend review](../planning/BACKEND_V0_12_0_REVIEW.md) and
+The latest auth/profile and Google-provider compatibility changes await final
+exact-source hosted/native verification. Earlier read-only backend checks do not
+prove authenticated extraction/staging. See the
+[frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md),
+[backend review](../planning/BACKEND_V0_12_1_REVIEW.md) and
 [master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
@@ -85,16 +85,18 @@ There is no health score, allergy-safety inference or complete legal verdict.
 
 Preserve original/corrected provenance, panel completeness and nutrient bases.
 Do not average incompatible tables or fill branded-packet gaps with generic-food
-composition. Captured photos stay local unless transfer is explicitly consented;
-photos, raw OCR and geometry stay outside database/account sync. Private machine
+composition. Captured package photos stay local unless transfer is explicitly consented;
+package photos, raw OCR and geometry stay outside database/account sync. Private machine
 staging retains only bounded literal structured facts, with separate storage
 outcomes. [AI privacy/admission](AI_ROUTING.md).
 
-Guests keep personal reports locally. Optional password accounts may sync bounded
+Guests keep personal reports locally. Optional Google/password accounts may sync bounded
 private display name/saved/history snapshots with explicit cloud/device conflict
-choices. Reminders, appearance, Welcome completion, photos/raw OCR and Insight
-bookmarks remain device-local. Public observations use separate anonymous or
-password scanner ownership. Moderator state never establishes safety or current
+choices. Reminders, appearance, Welcome completion, package photos/raw OCR and Insight
+bookmarks remain device-local. Profile thumbnails/gender use a separate strict
+owner-only document in the existing database; linking providers preserves UID and
+library. Public observations use separate anonymous/password/Google ownership.
+[Account/profile contract](ACCOUNT_PROFILE.md). Moderator state never establishes safety or current
 package proof. [Private sync](PRIVATE_ACCOUNT_SYNC.md) ·
 [Community catalogue](COMMUNITY_CATALOGUE.md) · [Privacy](../SAFETY_PRIVACY.md).
 

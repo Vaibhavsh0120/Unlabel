@@ -31,8 +31,8 @@ android {
 
     buildTypes {
         release {
-            // Demo artifacts use the runner's debug key. Production/update-safe
-            // distribution requires a stable release key kept outside Git.
+            // CI restores a private stable demo key registered with Firebase.
+            // Local builds use the developer's registered debug certificate.
             signingConfig = signingConfigs.getByName("debug")
         }
     }

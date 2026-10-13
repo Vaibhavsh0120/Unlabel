@@ -79,7 +79,7 @@ void main() {
     },
   );
 
-  testWidgets('every source chevron opens its explanation and can close', (
+  testWidgets('every source card opens its explanation and can close', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 900);
@@ -101,6 +101,54 @@ void main() {
       expect(tester.takeException(), isNull);
     }
   });
+
+  testWidgets(
+    'source windows center on desktop and keep long phone content scrollable',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.view.resetPhysicalSize);
+      for (final width in [320.0, 390.0, 1440.0]) {
+        for (final brightness in Brightness.values) {
+          for (final scale in [1.0, 2.0]) {
+            tester.view.physicalSize = Size(width, 720);
+            await tester.pumpWidget(_app(brightness: brightness, scale: scale));
+            await tester.pumpAndSettle();
+            final details = find.byKey(const Key('source-details-fssai'));
+            await tester.ensureVisible(details);
+            await tester.tap(details);
+            await tester.pumpAndSettle();
+            expect(find.text('Limits'), findsOneWidget);
+            final window = find.byKey(const Key('source-detail-window'));
+            if (width >= 720) {
+              expect(window, findsOneWidget);
+              expect(find.byType(BottomSheet), findsNothing);
+              final bounds = tester.getRect(window);
+              expect(bounds.center.dx, closeTo(width / 2, 1));
+              expect(bounds.center.dy, closeTo(360, 1));
+            } else {
+              expect(window, findsNothing);
+              expect(find.byType(BottomSheet), findsOneWidget);
+            }
+            final close = find.widgetWithText(FilledButton, 'Close');
+            expect(tester.getRect(close).bottom, lessThanOrEqualTo(720));
+            await tester.ensureVisible(
+              find.byKey(const Key('source-copy-fssai-sheet')),
+            );
+            await tester.pumpAndSettle();
+            expect(find.text('https://www.fssai.gov.in/'), findsWidgets);
+            await tester.tap(close);
+            await tester.pumpAndSettle();
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: '$width $brightness $scale',
+            );
+          }
+        }
+      }
+    },
+  );
 
   testWidgets('source detail copy reports success and clipboard failure', (
     tester,

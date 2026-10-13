@@ -634,8 +634,17 @@ class _InsightCarousel extends StatefulWidget {
   State<_InsightCarousel> createState() => _InsightCarouselState();
 }
 
-class _InsightCarouselState extends State<_InsightCarousel> {
+class _InsightCarouselState extends State<_InsightCarousel>
+    with WidgetsBindingObserver {
   final FocusNode _focusNode = FocusNode(debugLabel: 'Label tips');
+  static const _rotationInterval = Duration(seconds: 3);
+  Timer? _rotation;
+  ScrollPosition? _scrollPosition;
+  bool _motionAllowed = false;
+  bool _hovered = false;
+  bool _focused = false;
+  bool _pointerDown = false;
+  bool _paused = false;
   int _selected = 0;
   double _dragDistance = 0;
   int _slideDirection = 1;
@@ -646,7 +655,58 @@ class _InsightCarouselState extends State<_InsightCarousel> {
     super.initState();
     _dailyIdentity = _identity;
     widget.controller.addListener(_dailyChanged);
+    WidgetsBinding.instance.addObserver(this);
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _motionAllowed =
+        !MediaQuery.disableAnimationsOf(context) &&
+        !MediaQuery.accessibleNavigationOf(context) &&
+        TickerMode.valuesOf(context).enabled;
+    final position = Scrollable.maybeOf(context)?.position;
+    if (_scrollPosition != position) {
+      _scrollPosition?.isScrollingNotifier.removeListener(_scheduleRotation);
+      _scrollPosition = position;
+      position?.isScrollingNotifier.addListener(_scheduleRotation);
+    }
+    _scheduleRotation();
+  }
+
+  bool get _canRotate =>
+      mounted &&
+      _motionAllowed &&
+      !_paused &&
+      !_hovered &&
+      !_focused &&
+      !_pointerDown &&
+      !(_scrollPosition?.isScrollingNotifier.value ?? false) &&
+      (WidgetsBinding.instance.lifecycleState == null ||
+          WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed);
+
+  void _scheduleRotation() {
+    _rotation?.cancel();
+    if (!_canRotate) return;
+    _rotation = Timer(_rotationInterval, () {
+      if (!_canRotate) return;
+      final box = context.findRenderObject();
+      final viewport = Offset.zero & MediaQuery.sizeOf(context);
+      if (ModalRoute.of(context)?.isCurrent != false &&
+          box is RenderBox &&
+          box.attached &&
+          box.hasSize &&
+          (box.localToGlobal(Offset.zero) & box.size).overlaps(viewport)) {
+        _select(_selected + 1);
+      } else {
+        _scheduleRotation();
+      }
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      _scheduleRotation();
 
   String get _identity =>
       widget.controller.daily.map((article) => article.id).join('|');
@@ -657,6 +717,7 @@ class _InsightCarouselState extends State<_InsightCarousel> {
       _dailyIdentity = _identity;
       _selected = 0;
     });
+    _scheduleRotation();
   }
 
   @override
@@ -667,10 +728,12 @@ class _InsightCarouselState extends State<_InsightCarousel> {
       widget.controller.addListener(_dailyChanged);
       _dailyIdentity = _identity;
       _selected = 0;
+      _scheduleRotation();
     }
   }
 
   void _select(int index) {
+    _scheduleRotation();
     final tips = widget.controller.daily;
     final selected = (index + tips.length) % tips.length;
     if (selected == _selected) return;
@@ -680,19 +743,26 @@ class _InsightCarouselState extends State<_InsightCarousel> {
     });
   }
 
-  void _openTip(InsightArticle tip) => Navigator.of(context).push<void>(
-    ShellContentRoute<void>(
-      context: context,
-      builder: (_) => AppShellScope.wrap(
-        context,
-        InsightArticlePage(article: tip, controller: widget.controller),
+  Future<void> _openTip(InsightArticle tip) async {
+    _rotation?.cancel();
+    await Navigator.of(context).push<void>(
+      ShellContentRoute<void>(
+        context: context,
+        builder: (_) => AppShellScope.wrap(
+          context,
+          InsightArticlePage(article: tip, controller: widget.controller),
+        ),
       ),
-    ),
-  );
+    );
+    if (mounted) _scheduleRotation();
+  }
 
   @override
   void dispose() {
     widget.controller.removeListener(_dailyChanged);
+    WidgetsBinding.instance.removeObserver(this);
+    _scrollPosition?.isScrollingNotifier.removeListener(_scheduleRotation);
+    _rotation?.cancel();
     _focusNode.dispose();
     super.dispose();
   }
@@ -711,94 +781,121 @@ class _InsightCarouselState extends State<_InsightCarousel> {
       onTap: () => _openTip(tip),
       desktop: widget.desktop,
     );
-    return Focus(
-      key: const Key('insight-keyboard-focus'),
-      focusNode: _focusNode,
-      onKeyEvent: (_, event) {
-        if (event is! KeyDownEvent) return KeyEventResult.ignored;
-        if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-          _select(_selected + (rtl ? -1 : 1));
-          return KeyEventResult.handled;
-        }
-        if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-          _select(_selected + (rtl ? 1 : -1));
-          return KeyEventResult.handled;
-        }
-        return KeyEventResult.ignored;
+    return MouseRegion(
+      onEnter: (_) {
+        _hovered = true;
+        _scheduleRotation();
       },
-      child: Semantics(
-        key: const Key('insight-adjustable'),
-        container: true,
-        explicitChildNodes: true,
-        label: 'Label tips',
-        value: 'Tip ${_selected + 1} of ${tips.length}',
-        increasedValue:
-            'Tip ${(_selected + 1) % tips.length + 1} of ${tips.length}',
-        decreasedValue:
-            'Tip ${(_selected - 1 + tips.length) % tips.length + 1} of ${tips.length}',
-        onIncrease: () => _select(_selected + 1),
-        onDecrease: () => _select(_selected - 1),
-        child: Column(
-          key: const Key('home-insight-carousel'),
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            GestureDetector(
-              onHorizontalDragStart: (_) => _dragDistance = 0,
-              onHorizontalDragUpdate: (event) =>
-                  _dragDistance += event.delta.dx,
-              onHorizontalDragEnd: (event) {
-                final velocity = event.primaryVelocity ?? 0;
-                if (_dragDistance.abs() < 32 && velocity.abs() < 250) return;
-                final forward =
-                    (_dragDistance == 0 ? velocity : _dragDistance) < 0;
-                _select(_selected + (forward != rtl ? 1 : -1));
-              },
-              child: reduced
-                  ? card
-                  : AnimatedSize(
-                      duration: duration,
-                      alignment: Alignment.topCenter,
-                      child: AnimatedSwitcher(
-                        duration: duration,
-                        transitionBuilder: (child, animation) => FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position:
-                                Tween<Offset>(
-                                  begin: Offset(
-                                    _slideDirection * (rtl ? -.08 : .08),
-                                    0,
-                                  ),
-                                  end: Offset.zero,
-                                ).animate(
-                                  CurvedAnimation(
-                                    parent: animation,
-                                    curve: Curves.easeOut,
+      onExit: (_) {
+        _hovered = false;
+        _scheduleRotation();
+      },
+      child: Listener(
+        onPointerDown: (_) {
+          _pointerDown = true;
+          _scheduleRotation();
+        },
+        onPointerUp: (_) {
+          _pointerDown = false;
+          _scheduleRotation();
+        },
+        onPointerCancel: (_) {
+          _pointerDown = false;
+          _scheduleRotation();
+        },
+        child: Focus(
+          key: const Key('insight-keyboard-focus'),
+          focusNode: _focusNode,
+          onFocusChange: (focused) {
+            _focused = focused;
+            _scheduleRotation();
+          },
+          onKeyEvent: (_, event) {
+            if (event is! KeyDownEvent) return KeyEventResult.ignored;
+            if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+              _select(_selected + (rtl ? -1 : 1));
+              return KeyEventResult.handled;
+            }
+            if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              _select(_selected + (rtl ? 1 : -1));
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
+          },
+          child: Semantics(
+            key: const Key('insight-adjustable'),
+            container: true,
+            explicitChildNodes: true,
+            label: 'Label tips',
+            value: 'Tip ${_selected + 1} of ${tips.length}',
+            increasedValue:
+                'Tip ${(_selected + 1) % tips.length + 1} of ${tips.length}',
+            decreasedValue:
+                'Tip ${(_selected - 1 + tips.length) % tips.length + 1} of ${tips.length}',
+            onIncrease: () => _select(_selected + 1),
+            onDecrease: () => _select(_selected - 1),
+            child: Column(
+              key: const Key('home-insight-carousel'),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                GestureDetector(
+                  onHorizontalDragStart: (_) => _dragDistance = 0,
+                  onHorizontalDragUpdate: (event) =>
+                      _dragDistance += event.delta.dx,
+                  onHorizontalDragEnd: (event) {
+                    final velocity = event.primaryVelocity ?? 0;
+                    if (_dragDistance.abs() < 32 && velocity.abs() < 250) {
+                      return;
+                    }
+                    final forward =
+                        (_dragDistance == 0 ? velocity : _dragDistance) < 0;
+                    _select(_selected + (forward != rtl ? 1 : -1));
+                  },
+                  child: reduced
+                      ? card
+                      : AnimatedSize(
+                          duration: duration,
+                          alignment: Alignment.topCenter,
+                          child: AnimatedSwitcher(
+                            duration: duration,
+                            transitionBuilder: (child, animation) =>
+                                FadeTransition(
+                                  opacity: animation,
+                                  child: SlideTransition(
+                                    position:
+                                        Tween<Offset>(
+                                          begin: Offset(
+                                            _slideDirection *
+                                                (rtl ? -.08 : .08),
+                                            0,
+                                          ),
+                                          end: Offset.zero,
+                                        ).animate(
+                                          CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.easeOut,
+                                          ),
+                                        ),
+                                    child: child,
                                   ),
                                 ),
-                            child: child,
+                            child: card,
                           ),
                         ),
-                        child: card,
-                      ),
-                    ),
-            ),
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var index = 0; index < tips.length; index++)
-                  Semantics(
-                    key: Key('insight-page-$index'),
-                    selected: index == _selected,
-                    button: true,
-                    label: 'Show insight ${index + 1}: ${tips[index].title}',
-                    onTap: () => _select(index),
-                    child: ExcludeSemantics(
-                      child: SizedBox(
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_motionAllowed)
+                      SizedBox(
                         width: 48,
                         height: 28,
                         child: IconButton(
+                          key: const Key('insight-pause'),
+                          tooltip: _paused
+                              ? 'Resume insight rotation'
+                              : 'Pause insight rotation',
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints.tightFor(
                             width: 48,
@@ -807,24 +904,59 @@ class _InsightCarouselState extends State<_InsightCarousel> {
                           style: IconButton.styleFrom(
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          onPressed: () => _select(index),
-                          tooltip: 'Show insight ${index + 1}',
+                          onPressed: () {
+                            setState(() => _paused = !_paused);
+                            _scheduleRotation();
+                          },
                           icon: Icon(
-                            index == _selected
-                                ? Icons.circle
-                                : Icons.circle_outlined,
-                            size: index == _selected ? 8 : 6,
-                            color: index == _selected
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurfaceVariant,
+                            _paused
+                                ? Icons.play_arrow_rounded
+                                : Icons.pause_rounded,
+                            size: 16,
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    for (var index = 0; index < tips.length; index++)
+                      Semantics(
+                        key: Key('insight-page-$index'),
+                        selected: index == _selected,
+                        button: true,
+                        label:
+                            'Show insight ${index + 1}: ${tips[index].title}',
+                        onTap: () => _select(index),
+                        child: ExcludeSemantics(
+                          child: SizedBox(
+                            width: 48,
+                            height: 28,
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints.tightFor(
+                                width: 48,
+                                height: 28,
+                              ),
+                              style: IconButton.styleFrom(
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              onPressed: () => _select(index),
+                              tooltip: 'Show insight ${index + 1}',
+                              icon: Icon(
+                                index == _selected
+                                    ? Icons.circle
+                                    : Icons.circle_outlined,
+                                size: index == _selected ? 8 : 6,
+                                color: index == _selected
+                                    ? theme.colorScheme.primary
+                                    : theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -4,14 +4,20 @@ This patch improves image delivery and repairs navigation/layout without adding
 new product features. Backend remains 0.12.0. The frontend version/build is changed
 only in pubspec; runtime metadata and workflows derive it automatically.
 
-- Home: larger daily Insight artwork, tighter spacing below manual dots and a
+- Home: larger daily Insight artwork, tighter spacing below dots and a
   shorter Recent scans empty state with fresh artwork and working actions.
+  Daily tips rotate every three seconds with pause/resume and manual controls.
+  Rotation pauses on interaction, scrolling, background/covered routes and
+  reduced-motion or accessible-navigation settings.
 - Insights: equal natural card heights, centered image/copy and bottom-aligned
   reading time. Remove the unrelated heading/footer leaves; keep each sourced
   article's own illustration and existing bookmarks.
 - History, Saved, Sources and 404: distinct fresh illustrations and responsive
   layouts. Sources exposes six concise summaries; each card opens the full
   explanation and copyable link. Phone icons/art are larger, with no chevrons.
+  Phone History/Saved artwork sits centered between the description and action.
+  Source details use a centered desktop window or styled phone sheet, with
+  readable sections, a scrollable body and an always-reachable close action.
 - Desktop History/Sources switch inside the fixed shell; readers retain header/
   sidebar without whole-page transitions. Logos return Home and enlarge slightly
   on hover without a tooltip or layout shift. Phone navigation order is preserved.

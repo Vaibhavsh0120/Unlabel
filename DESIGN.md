@@ -1,7 +1,12 @@
 # Unlabel interface contract
 
-12 October maintenance keeps component versions unchanged and applies the latest
-user references. The desktop Recent scans empty state has a larger complete
+The outlined Solar leaf is prohibited. All leaf icons use the filled Unlabel
+brand vector from the wordmark through `BrandLeaf`; the retired outline asset is
+removed. Food preference and allergen symbols keep their distinct pictograms.
+
+13 October auth/profile scope includes the preceding maintenance and applies the
+latest user references. Current [source review](docs/planning/FRONTEND_V0_8_0_REVIEW.md)
+keeps final rendered/hosted/native acceptance separate from implementation. The desktop Recent scans empty state has a larger complete
 package illustration, a spacious live-copy/action row and quiet mint botanicals;
 the phone stays compact. Home's desktop daily Insight illustration is larger,
 and the three supporting Insights cards stretch to the tallest natural row
@@ -22,14 +27,32 @@ desktop shell; readers open without whole-shell motion. The 404 pre-app fallback
 shows loading, and its first Flutter frame already has the navigation shell.
 Logo hover enlarges slightly without a tooltip or layout shift. New section
 illustrations have separate purposes; unused artwork is removed from the bundle.
+Latest steering centers the History/Saved illustration between the description
+and lookup button at every phone width, preserving readable copy and art size.
+Home's daily tips now rotate every three seconds, overriding the earlier manual-only
+direction. Keep manual swipe/dots/keyboard and a pause control; pause on hover,
+focus, touch, scrolling, background, hidden routes and accessibility motion settings.
+Source details use a centered desktop window and a styled phone sheet, with a
+fixed close action, scrollable explanation, a separate limits panel and website link.
 
-9 October Insights references are implemented in frontend v0.7.0+11: one featured
+Auth must match the supplied six-state reference in desktop and phone layouts.
+Use Unlabel's actual filled BrandLeaf, the state-specific fresh artwork, exact
+heading/form/action hierarchy and live controls. Desktop has copy/art beside a
+white form panel; phone centers art above the form. Each auth screen fits a single
+viewport with no horizontal or vertical page scrolling. Profile-origin phone auth
+has an X at the top left. All actions remain visible and usable; final rendered
+comparison must establish reference acceptance. Google/email linking keeps one
+UID/library. The photo editor has explicit crop/save and separate source choices;
+optional gender never comes from name/photo inference. Unset/male uses the approved
+male default, female uses its own new default. [Profile/storage contract](docs/architecture/ACCOUNT_PROFILE.md).
+
+Historical 9 October Insights references were implemented in frontend v0.7.0+11: one featured
 daily article, three distinct illustrated cards, topic filters, full articles and
 device-local saved insights. Desktop retains the sidebar/top bar and a saved/
 quick-topic rail; phones place saved insights below the feed. Today's four picks
 are shared with Home and refresh by local calendar date. Both Home carousels use
-manual swipe, selectable dots and keyboard/screen-reader adjustment, without
-autoplay. Every article owns its artwork; no generic bowl repeats across facts.
+manual swipe, selectable dots and keyboard/screen-reader adjustment. The later
+three-second Home rotation requirement above supersedes that manual-only behavior. Every article owns its artwork; no generic bowl repeats across facts.
 All eight food preferences and twelve allergen reminders use different matching
 symbols in their editors and selected summaries. Large text stacks the layout.
 The [v0.7 review](docs/planning/FRONTEND_V0_7_0_REVIEW.md) records local checks and
@@ -96,8 +119,9 @@ botanical backgrounds beneath live copy; contain the package rather than crop it
 The bottom bar floats over scrolling content, has rounded corners and a shared
 green selection indicator that can be held and slid, committing on release.
 Today's Insight has a smaller heading gap and manually swiped label-reading
-tips with distinct decorative artwork. There is no autoplay, arrow or pause
-control; keyboard and accessibility adjustment also work. Navigation and
+tips with distinct decorative artwork. That historical no-autoplay direction is
+superseded by the current three-second rotation/pause requirement above; keyboard
+and accessibility adjustment remain available. Navigation and
 confirmed saves have supported-platform haptics. The later 7 October instruction
 authorized docs, push and publication at that historical checkpoint. The later
 8 October instruction authorizes pushing after completing review and docs.

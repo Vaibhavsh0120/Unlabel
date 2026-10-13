@@ -1,14 +1,14 @@
 # Frontend/backend API plan
 
-Updated **12 October 2026** for backend **v0.12.0** and frontend
-**v0.7.0+11**. Current OpenAPI is
-`contracts/schemas/backend-v0.12.0.openapi.json`: **27 paths / 28 operations**.
-Historical exports remain immutable. Current frontend source is pushed with
-hosted proof pending; backend has its separate READY/read-only receipt.
-Authenticated hosted extraction/staging and physical-device accuracy are separate.
-[Contracts](../../contracts/README.md) ·
-[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md) ·
-[Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md).
+Updated **13 October 2026** for the canonical [backend](../../backend/pyproject.toml)
+and [frontend](../../frontend/pubspec.yaml) versions. Current OpenAPI is
+[backend-v0.12.1.openapi.json](../../contracts/schemas/backend-v0.12.1.openapi.json):
+**27 paths / 28 operations**, with existing wire shapes preserved. Historical
+exports remain immutable. Current auth/profile and Google compatibility await
+final exact-source hosted/native verification. Authenticated extraction/staging
+and physical-device accuracy remain separate. [Contracts](../../contracts/README.md) ·
+[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md) ·
+[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md).
 
 ## Historical research checkpoint — backend v0.10.0
 
@@ -113,8 +113,10 @@ The actual body limit is 32 KiB before JSON parsing, including chunked transfers
 Normalization/claims persist no scan/profile and log no content. Separate
 community intake persists bounded public assertions and private staging/receipts;
 images/raw OCR/profiles/history remain excluded. Exact-origin GET/POST CORS permits
-Authorization but is not authentication. Public writes accept verified anonymous or
-password scanner tokens; private account sync requires password authentication.
+Authorization but is not authentication. Public writes accept verified anonymous,
+password or Google scanner tokens; private library sync requires password/Google
+authentication. The separate owner-only profile-media document grants no direct
+access to backend collections or additional API payload fields.
 Public observations save automatically without a Share flag. Optional consented extraction uses the separate authenticated AI route and does not alter these confirmed/public admission rules.
 [Storage lifecycle](COMMUNITY_CATALOGUE.md).
 

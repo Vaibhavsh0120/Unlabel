@@ -94,23 +94,13 @@ void main() {
                 expect(actionBounds.left, closeTo(headlineBounds.left, 1));
                 expect(
                   actionBounds.top,
-                  greaterThanOrEqualTo(messageBounds.bottom + 20),
+                  greaterThanOrEqualTo(imageBounds.bottom + 20),
                 );
-                if (width >= 390 && scale == 1) {
-                  expect(imageBounds.left, greaterThan(headlineBounds.right));
-                  final copyCenter =
-                      (headlineBounds.top + messageBounds.bottom) / 2;
-                  expect(imageBounds.center.dy, closeTo(copyCenter, 1));
-                } else {
-                  expect(
-                    imageBounds.center.dx,
-                    closeTo(cardBounds.center.dx, 1),
-                  );
-                  expect(
-                    imageBounds.top,
-                    greaterThanOrEqualTo(messageBounds.bottom + 12),
-                  );
-                }
+                expect(imageBounds.center.dx, closeTo(cardBounds.center.dx, 1));
+                expect(
+                  imageBounds.top,
+                  greaterThanOrEqualTo(messageBounds.bottom + 12),
+                );
               }
               await tester.ensureVisible(lookup);
               await tester.pumpAndSettle();

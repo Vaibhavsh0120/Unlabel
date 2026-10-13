@@ -1,11 +1,13 @@
 # Backend contracts, catalogue and knowledge tools
 
-Backend v0.12.0 includes the tools below, preserving earlier independently published releases. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
+Current component versions come from [backend pyproject](../backend/pyproject.toml)
+and [frontend pubspec](../frontend/pubspec.yaml); earlier independently published
+source releases remain preserved. Run them from the repository root with the backend Python environment; acquisition/import are explicit local operations, never work performed by an API request.
 
 | Tool | Responsibility |
 | --- | --- |
 | `version_metadata.py` | Read frontend pubspec/backend pyproject and pinned Flutter metadata; JSON or GitHub outputs. No duplicated release defaults. |
-| `validate_workspace.py` | Validate tracked Python/JSON/TOML, Markdown links and redacted private-key boundaries; includes added/deleted source files. |
+| `validate_workspace.py` | Validate source syntax, Markdown links, private-key boundaries, README version badges against canonical manifests and the current backend OpenAPI export; includes added/deleted source files. |
 | `prepare_android_ci.py` | CI-only SDK/NDK preparation and bounded Gradle settings from the pinned Flutter SDK. |
 | `package_ios.py` | Validate the built device app and package a symlink-preserving unsigned arm64 IPA. |
 | `mobile_release.py` | Guard immutable native tags, verify/upload artifacts and publish a draft only after complete checks; refresh the dedicated iOS feed. |
@@ -53,10 +55,11 @@ Source generation accepts `--ipa PATH --download-url HTTPS_URL --date ISO_DATE
 `python scripts/ios_source.py`. Normal publication runs this automatically after
 a verified mobile release; a draft does not change the hosted feed.
 
-The [v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) records dated
-release gates; preceding hosted evidence remains separate historical proof.
+The [current provider compatibility review](../docs/planning/BACKEND_V0_12_1_REVIEW.md)
+keeps final source/hosted gates pending; the
+[preceding v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) remains dated proof.
 
-From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its 27-path/28-operation v0.12.0 OpenAPI and validated synthetic examples. Historical exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free three-receipt build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.6.0 passed 863 backend tests with five emulator-only skips, static/source-build/setup/Markdown review and 23 hosted checks before separate publication. v0.5.0 retains its earlier twenty-check evidence. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
+From root, run `backend/.venv/Scripts/python.exe -m pytest backend/tests -q`, then `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` and review its 27-path/28-operation current-version OpenAPI and validated synthetic examples. Historical exports remain intact. From `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` to exercise the network-free three-receipt build. Both output directories are generated/ignored, while canonical JSON stays in Git. v0.6.0 passed 863 backend tests with five emulator-only skips, static/source-build/setup/Markdown review and 23 hosted checks before separate publication. v0.5.0 retains its earlier twenty-check evidence. Completed v0.4.0 test/static/emulator/live/hosted evidence remains in its [release review](../docs/planning/BACKEND_V0_4_0_REVIEW.md). Review all scripts and Markdown, update affected tests/contracts and remove demonstrably dead code before each push. No script performs an automatic source refresh, native rebuild, paid provisioning or live regulator verification.
 
 Optional static type checking is reproducible from root with `npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json --pythonpath backend/.venv/Scripts/python.exe` (Unix: `backend/.venv/bin/python`). The checked-in root configuration covers maintained backend and script Python in basic mode. This development check needs Node/npm but introduces no npm project dependency or runtime service; backend restore/run still uses the documented Python tools.
 

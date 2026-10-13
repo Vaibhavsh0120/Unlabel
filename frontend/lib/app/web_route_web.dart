@@ -14,6 +14,8 @@ external JSAny? get _historyState;
 
 bool get isMissingWebPage => _unlabelNotFound?.toDart ?? false;
 
+void clearAuthActionUrl() => _replaceState(_historyState, ''.toJS, '/#/'.toJS);
+
 void clearMissingWebPage() {
   _unlabelNotFound = false.toJS;
   _replaceState(_historyState, ''.toJS, '/#/'.toJS);

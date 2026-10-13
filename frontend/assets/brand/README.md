@@ -1,5 +1,9 @@
 # Unlabel app mark
 
+The unchanged Google G in `google-g.svg` comes from Google's official
+`https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg` and appears only
+on Google sign-in controls. It identifies that provider, not Unlabel branding.
+
 The app-only startup wordmark uses bundled Cormorant Garamond at regular weight.
 Its unmodified variable font, SIL Open Font License and pinned official Google
 Fonts source URLs/SHA-256 hashes are in `fonts/startup-font-source.json`. It does

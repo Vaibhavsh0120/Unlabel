@@ -1,6 +1,34 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function profileOwner(uid) {
+      return database == 'unlabel' && request.auth != null
+        && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+    function validProfileMedia() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['schema', 'gender', 'source', 'updated_at'])
+        && data.keys().hasOnly(['schema', 'gender', 'source', 'updated_at',
+                                'avatar_png', 'content_type'])
+        && data.schema == 1
+        && data.gender in ['unspecified', 'male', 'female']
+        && data.source in ['automatic', 'custom', 'google', 'defaultAvatar']
+        && data.updated_at == request.time
+        && ((data.source == 'custom'
+          && data.keys().hasAll(['avatar_png', 'content_type'])
+          && data.avatar_png is bytes
+          && data.avatar_png.size() >= 24
+          && data.avatar_png.size() <= 98304
+          && data.content_type == 'image/png')
+          || (data.source != 'custom'
+            && !data.keys().hasAny(['avatar_png', 'content_type'])));
+    }
+    match /profile_media/{uid} {
+      allow get, delete: if profileOwner(uid);
+      allow create, update: if profileOwner(uid) && validProfileMedia();
+      allow list: if false;
+    }
     match /{document=**} { allow read, write: if false; }
   }
 }

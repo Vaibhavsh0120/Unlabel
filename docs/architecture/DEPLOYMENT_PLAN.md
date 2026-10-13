@@ -1,11 +1,12 @@
 # Website and shared API deployment
 
-Updated **12 October 2026** for frontend **v0.7.0+11** and backend **v0.12.0**.
-The backend exports **27 paths / 28 operations**. Latest frontend source is pushed
-with hosted proof pending. Backend's READY receipt passed 389 read-only checks;
-authenticated hosted extraction/private staging and native-device accuracy remain
-separate. [Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md).
+Updated **13 October 2026** for the current [frontend](../../frontend/pubspec.yaml)
+and [backend](../../backend/pyproject.toml) sources. The backend retains
+**27 paths / 28 operations**. Final exact-source hosted/native verification for
+auth/profile and Google compatibility is pending; earlier read-only backend
+checks exclude authenticated extraction/private staging and device accuracy.
+[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md).
 
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).
@@ -19,7 +20,7 @@ A local laptop/LAN backend remains available for demonstrations.
 | Website Vercel project | `frontend/`; static `build/web/` | Flutter website and same-origin OCR assets; calls shared HTTPS API |
 | Backend Vercel project | `backend/`; FastAPI/Python | OFF, bulk/research catalogue, claims/reports/glossary, community, account sync, comparison and optional extraction |
 | Android/iOS apps | `frontend/`; Flutter platform builds | Native artifacts use the same shared HTTPS API |
-| Firebase Unlabel | Standard `unlabel` database in Mumbai | Public observations, separate private snapshots, global AI selection/quotas and private proposals; deny-all client rules |
+| Firebase Unlabel | Standard `unlabel` database in Mumbai | Backend-only facts/libraries/AI records; separate owner-only profile thumbnails/gender, Firebase Auth and a static email-action bridge |
 
 `frontend/web/` is the Flutter platform directory. The backend entrypoint is
 `app/main.py`; the single API remains shared across native/web clients.
@@ -73,18 +74,21 @@ Bulk source refresh occurs manually every nine calendar months from export, afte
 validation; new source creates a new deployment with prior-source rollback.
 
 Firestore stores mutable data under independent public/private/machine admission.
-Anonymous/password scanner tokens establish public-observation ownership;
-password-owned private sync carries only bounded display name/saved/history
+Anonymous/password/Google scanner tokens establish public-observation ownership;
+password/Google private sync carries only bounded display name/saved/history
 snapshots. Explicit cloud/device choices resolve differences. AI proposals stay
-private and unverified, with separate storage outcomes. Photos/raw OCR,
+private and unverified, with separate storage outcomes. Package photos/raw OCR,
 preferences, appearance, Welcome completion and Insight bookmarks stay outside
-private account sync. [Community](COMMUNITY_CATALOGUE.md) ·
+private library sync. Explicitly selected profile thumbnails and optional gender
+use the separate owner-only `profile_media/{uid}` document. [Community](COMMUNITY_CATALOGUE.md) ·
 [Private sync](PRIVATE_ACCOUNT_SYNC.md) · [AI routing](AI_ROUTING.md).
 
 Firebase remains on its free Standard database with no linked billing or paid
-fallback. Do not add paid Storage/Functions, TTL, backups or PITR. Existing deny-all
-client rules and least-privilege backend machine credentials remain separate from
-scanner app identities. Setup restores local source/runtime; it never provisions
+fallback. Do not add paid Storage/Functions, TTL, backups or PITR. Client rules
+deny every collection except a strict non-anonymous owner's profile-media
+document; list access is denied. Least-privilege backend credentials remain
+separate from scanner identities. [Auth/profile setup](ACCOUNT_PROFILE.md) records
+public OAuth configuration, stable demo signing and the email-action bridge. Setup restores local source/runtime; it never provisions
 a cloud account or payment plan.
 
 ## Optional extraction and public configuration
@@ -125,7 +129,7 @@ required. [Data flow](DATA_FLOW.md).
 ## Verification and historical checkpoints
 
 Validate current contracts, artifact receipts, source identity, HTTPS/CORS, failure
-isolation and guest/password namespace boundaries. Hosted proof must match its
+isolation and guest/password/Google namespace boundaries. Hosted proof must match its
 implementation commit; local tests/builds, GitHub source/native releases, READY
 status and native-device behavior are different evidence gates. Preserve original
 catalogue/research records and dated receipts during cleanup.

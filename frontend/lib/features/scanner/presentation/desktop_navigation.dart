@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/brand_mark.dart';
+import '../../account/presentation/profile_avatar.dart';
 import 'ui_components.dart';
 
 /// Expanded navigation keeps the mobile destination order and real callbacks.
@@ -315,15 +316,7 @@ class DesktopTopBar extends StatelessWidget implements PreferredSizeWidget {
                 button: true,
                 child: Row(
                   children: [
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/artwork/profile-avatar.webp',
-                        width: 44,
-                        height: 44,
-                        fit: BoxFit.cover,
-                        excludeFromSemantics: true,
-                      ),
-                    ),
+                    const ExcludeSemantics(child: AccountAvatar(size: 44)),
                     const SizedBox(width: 12),
                     const Icon(Icons.expand_more, size: 20),
                   ],

@@ -1,7 +1,7 @@
 # Unlabel backend
 
-Checkpoint **12 October 2026**: **0.12.0**, Python **3.12+**, **27 API paths /
-28 operations**. Canonical version is project.version in pyproject.toml.
+Checkpoint **13 October 2026**: Python **3.12+**, **27 API paths /
+28 operations**. Canonical version is project.version in [pyproject.toml](pyproject.toml).
 The current contract retains bounded photo extraction/private proposals,
 243 sourced research observations, 120 separate image descriptors and the
 24,641-barcode public catalogue. Six ingredient-function entries remain partial.
@@ -9,8 +9,11 @@ The current contract retains bounded photo extraction/private proposals,
 The [0.12 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) and
 [dated production recheck](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json)
 record the preceding 389 read-only hosted checks. Authenticated extraction/write
-and physical-device evidence remain separate. Current maintenance does not add
-features or change the product version. See [maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
+and physical-device evidence remain separate. The
+[current compatibility patch](../docs/planning/BACKEND_V0_12_1_REVIEW.md) accepts
+verified Google scanner/private-library sessions while retaining UID checks and
+wire contracts. Final exact-source hosted/source publication is pending. See
+[maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
 and [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
 
 ## Run locally
@@ -32,7 +35,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 
 | Endpoint | Behavior |
 | --- | --- |
-| `GET /v1/account/sync` | Verified password account owns its private snapshot; anonymous clients rejected; no caller UID |
+| `GET /v1/account/sync` | Verified password/Google account owns its private snapshot; anonymous clients rejected; no caller UID |
 | `POST /v1/account/sync` | Bounded profile/saved/history CAS replacement and UUID retries; conflicts explicit; versioned empty clearing |
 | `GET /v1/health` | Backend readiness/version; external provider connectivity explicitly not checked |
 | `GET /v1/meta` | Backend/API/schema/adapter/normalization versions; product lookup, nutrition lookup and normalization enabled |
@@ -83,7 +86,7 @@ Invoke-RestMethod http://127.0.0.1:8000/v1/products/3017620422003/nutrition
 | 502 | `incompatible_response` | Malformed/oversized data or mismatched product identity |
 | 422 | FastAPI validation error | Unsupported barcode input; no provider call |
 
-The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. This identity route exposes no raw provider internals or image fields; the separate snapshot facts route can expose a validated official image URL descriptor. Product/nutrition responses use `Cache-Control: no-store`; guest saved results stay on the client; optional password accounts use the separate private sync contract.
+The unchanged product response has name/brands/quantity text, ingredient text, source-tagged allergen/trace tags and optional OFF Nutri-Score grade/NOVA group. Missing strings/grades are null; absent tags do not prove allergen absence. Source metadata contains provider, URL, retrieval time, available modification/schema version, attribution and licenses. This identity route exposes no raw provider internals or image fields; the separate snapshot facts route can expose a validated official image URL descriptor. Product/nutrition responses use `Cache-Control: no-store`; guest saved results stay on the client; optional Google/password accounts use the separate private sync contract.
 
 ## Snapshot rich facts
 
@@ -191,9 +194,11 @@ averaging, first-arrival winner, generic composition imputation or current-packe
 confirmation is invented. OFF-only results remain useful during a community outage.
 
 Firebase **Unlabel**, project `unlabel-india-catalogue`, first Standard database
-**`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous and
-email/password Auth, deny-all direct client rules and dedicated backend access are
-configured. Public observations exclude photos, raw OCR, profiles and private
+**`unlabel`** in Mumbai has free-tier enabled and no linked billing. Anonymous,
+email/password and Google Auth are configured. Community/library/machine collections
+remain denied to direct clients and use dedicated backend access. The separate
+[owner-only profile-media exception](../docs/architecture/ACCOUNT_PROFILE.md) grants
+no access to backend records. Public observations exclude photos, raw OCR, profiles and private
 history. The separately released v0.7.0 private account contract accepts only
 bounded display name/saved/history snapshots; photos/raw OCR and health preferences
 remain excluded. Backend releases are checked, pushed, hosted-verified and
@@ -262,8 +267,8 @@ OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tab
 - `app/ai/`: scanner photo validation, one global provider selection, bounded adapters/admission and v0.12 private structured proposal staging.
 - `app/research_catalogue/`: immutable mixed-source observations, derived search v3, source-qualified details and separate validated product-image descriptors.
 - `app/reports/` and `app/api/v1/reports.py`: current/historical reports, independent automatic-save outcomes, original-basis approximate sugar cubes and bounded reviewed six-entry glossary.
-- `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
-- `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous auth, transactional Firestore and four routes.
+- `app/accounts/` and `app/api/v1/accounts.py`: strict private snapshots, verified password/Google ownership, CAS/idempotent mutations, separate free-tier admission and 512 KiB body/384 KiB data caps.
+- `app/community/` and `app/api/v1/community.py`: strict observations, normalization/hashes, typed sourced resolution, verified anonymous/password/Google auth, transactional Firestore and four routes.
 - `app/comparison/` and `app/api/v1/comparison.py`: selected-table source resolution, original-row exact arithmetic and independent read-only comparison contract.
 - `app/api/v1/claims.py`, `app/claims/`: strict confirmed-label API, exact rational numerical engine, bounded reviewed knowledge loader and receipt-verified packaging.
 - `app/catalogue/`: bounded identity/facts models, optional facts storage, offline importer, bundle verification, calendar-based freshness and read-only indexed lookup. The catalogue uses separate provenance from live API3.6 responses.
@@ -346,7 +351,8 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md),
+See [current compatibility review](../docs/planning/BACKEND_V0_12_1_REVIEW.md),
+[preceding v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md),
 [published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
 [comparison contract](../docs/architecture/SOURCED_COMPARISON.md),
 [private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),

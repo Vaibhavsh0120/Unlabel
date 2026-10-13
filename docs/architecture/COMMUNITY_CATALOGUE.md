@@ -1,8 +1,10 @@
 # Community Product Catalogue
 
-Current backend **v0.12.0** retains the structured observation/resolution contracts;
-frontend **v0.7.0+11** integrates qualified capture, separate acceptance and
-automatic confirmed intake. Machine extraction has its own private staging,
+The current backend retains the structured observation/resolution contracts;
+the frontend integrates qualified capture, separate acceptance and automatic
+confirmed intake. Versions come from the component manifests. The
+[Google compatibility patch](../planning/BACKEND_V0_12_1_REVIEW.md) changes only the
+verified provider allowlist. Machine extraction has its own private staging,
 without automatic public promotion. [Current data flow](DATA_FLOW.md) ·
 [AI boundaries](AI_ROUTING.md).
 
@@ -22,7 +24,7 @@ local, emulator, live Firebase and hosted evidence separately.
 The API accepts bounded structured package observations without a separate Share
 flag. The client integrates corrected confirmed intake after separate acceptance
 of qualified captured fields. Anonymous Firebase authentication supplies ownership
-without interactive login; password scanners use their existing session. Useful
+without interactive login; Google/password scanners use their existing session. Useful
 analysis remains available when authentication/quota/storage prevents saving.
 There is no persisted generic public outbox or automatic uncertain-write replay;
 immutable submission identity protects retries of the same submitted observation.
@@ -43,9 +45,10 @@ review. Confirmation and review never prove allergy safety or the current
 caller's packet. Unconfirmed extraction cannot become selected public facts.
 
 The app has only scanner/client identities. There are no admin or reviewer app
-accounts, role claims or dashboard. Guests use automatic anonymous scanner authentication; optional password
-scanner accounts use their existing SDK session for public writes. Separate private
-account sync derives ownership from verified password tokens and never exposes
+accounts, role claims or dashboard. Guests use automatic anonymous scanner
+authentication; optional Google/password accounts use their existing SDK session
+for public writes. Separate private account sync derives ownership from verified
+non-anonymous supported-provider tokens and never exposes
 personal libraries through public facts. [Private account architecture](PRIVATE_ACCOUNT_SYNC.md). The dedicated service account is a backend machine
 credential, not a person/user login. Existing exact-hash CLI operations are manual
 maintenance; ordinary compatible facts qualify without a central reviewer queue.
@@ -113,8 +116,10 @@ at least 32 characters. Credentials stay in ignored/encrypted local settings or
 hosted secrets; public web config is not an admin credential. No implicit ambient
 credentials or auth/storage emulator shortcuts are accepted in production runtime.
 
-Direct Firestore clients are denied, including authenticated users. Backend Admin
-access uses dedicated least-privilege credentials and verifies anonymous/password scanner tokens,
+Direct Firestore access to community and machine collections is denied, including
+authenticated users. The separate [profile-media owner exception](ACCOUNT_PROFILE.md)
+does not grant access to observations or library snapshots. Backend Admin access
+uses dedicated least-privilege credentials and verifies anonymous/password/Google scanner tokens,
 project/issuer/expiry and revocation. Sync SDK operations use worker threads;
 runtime resources close on shutdown. Intake has an actual 32 KiB body limit,
 strict raw JSON numbers and bounded redacted errors. Safe typed failures distinguish

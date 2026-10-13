@@ -1,10 +1,16 @@
 # Unlabel master plan
 
-Checkpoint **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
+Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Current scope: [auth/profile and UI](FRONTEND_V0_8_0_REVIEW.md) plus [Google backend compatibility](BACKEND_V0_12_1_REVIEW.md).
 This document records product intent and contracts. Current delivered capabilities
 and unavailable gates are in [the feature tracker](FEATURE_TRACKER.md); immutable
 source identities are in [the release ledger](CONTROLLED_RELEASES.md).
-The active task is [maintenance without new features/versions](MAINTENANCE_2026_10_12.md).
+The active task extends [maintenance](MAINTENANCE_2026_10_12.md) with the
+user-authorized auth/profile scope: reference six-state auth, same-UID Google/password
+linking, bounded private thumbnails and optional gender/default avatars. Unset
+gender uses the approved male default; no Google gender inference is permitted.
+The auth reference requires a filled BrandLeaf and one viewport without page
+scrolling. [Account/profile contract](../architecture/ACCOUNT_PROFILE.md). Final
+current-source hosted/native/reference acceptance remains pending.
 Dated release slices below retain their own evidence and scope.
 
 ## Product goal
@@ -205,7 +211,9 @@ insights instead of presenting them as an invented Unlabel score.
 Later comparison consumes two reports and compatible nutrient bases, shows
 missing values and explains individual differences. A universal winner or score
 needs a separately justified method. Saved products/history retain dated reports
-locally; profiles/preferences stay local. Frontend v0.7.0 bundles twenty reviewed
+locally for guests; optional signed-in libraries and private profile thumbnails
+use the separate account contracts. Dietary/allergen preferences remain device-local.
+Frontend v0.7.0 introduced twenty reviewed
 editorial insights with a shared daily controller, full readers, matching art
 and device bookmarks, without AI or a separate feed service.
 
@@ -215,7 +223,9 @@ Public package facts are saved automatically; there is no separate Share button
 or per-scan sharing opt-in. Explain once in the product that structured package
 facts improve Unlabel. Anonymous authentication can occur transparently for
 background saves. Analysis remains usable if saving/authentication/quota fails;
-retain a bounded local retry queue rather than blocking the report.
+preserve useful local reading instead of blocking the report. Public submissions
+have immutable retry identity, without a persisted generic public outbox or
+automatic uncertain-write replay.
 
 Automatically retain recognized field drafts at meaningful scan boundaries:
 a completed front/back capture, a linked identity or a committed correction.

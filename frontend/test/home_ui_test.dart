@@ -409,7 +409,7 @@ void main() {
   });
 
   testWidgets(
-    'tip carousel is manual, swipes through different pictures and opens the chosen tip',
+    'reduced-motion carousel stays manual, swipes through pictures and opens the chosen tip',
     (tester) async {
       tester.view.physicalSize = const Size(390, 1200);
       tester.view.devicePixelRatio = 1;
@@ -453,7 +453,7 @@ void main() {
   );
 
   testWidgets(
-    'tip carousel never advances automatically and supports keyboard selection',
+    'tip carousel rotates every three seconds, wraps, pauses in background and respects keyboard focus',
     (tester) async {
       tester.binding.platformDispatcher.accessibilityFeaturesTestValue =
           const FakeAccessibilityFeatures();
@@ -467,25 +467,93 @@ void main() {
         ),
       );
       await tester.pumpWidget(_app(Scaffold(body: _home())));
-      await tester.pump();
-      await tester.pump(const Duration(seconds: 30));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.ensureVisible(find.byKey(const Key('home-insight-card')));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text(_dailyInsights.first.title), findsOneWidget);
+      for (var index = 1; index <= 4; index++) {
+        await tester.pump(Duration(seconds: index == 1 ? 1 : 3));
+        await tester.pump(const Duration(milliseconds: 200));
+        expect(find.text(_dailyInsights[index % 4].title), findsOneWidget);
+      }
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await tester.pump(const Duration(seconds: 30));
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      await tester.pump(const Duration(seconds: 30));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text(_dailyInsights.first.title), findsOneWidget);
       final focus = tester
           .widget<Focus>(find.byKey(const Key('insight-keyboard-focus')))
           .focusNode!;
       focus.requestFocus();
       await tester.pump();
+      await tester.pump(const Duration(seconds: 30));
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text(_dailyInsights[1].title), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowLeft);
       await tester.pump(const Duration(milliseconds: 200));
       expect(find.text(_dailyInsights.first.title), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets(
+    'rotation pauses on hover and can be explicitly paused and resumed',
+    (tester) async {
+      tester.binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures();
+      tester.view.physicalSize = const Size(1440, 1200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(_app(Scaffold(body: _home(desktop: true))));
+      await tester.pumpAndSettle();
+      final card = find.byKey(const Key('home-insight-card'));
+      await tester.ensureVisible(card);
+      await tester.pumpAndSettle();
+      final mouse = await tester.createGesture(
+        kind: ui.PointerDeviceKind.mouse,
+      );
+      await mouse.addPointer(location: tester.getCenter(card));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 30));
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
+      await mouse.removePointer();
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.text(_dailyInsights[1].title), findsOneWidget);
+      await tester.tap(find.byKey(const Key('insight-pause')));
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pump();
+      expect(find.byTooltip('Resume insight rotation'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 30));
+      expect(find.text(_dailyInsights[1].title), findsOneWidget);
+      await tester.tap(find.byKey(const Key('insight-pause')));
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.text(_dailyInsights[2].title), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets(
+    'accessible navigation keeps tips manual without a rotation control',
+    (tester) async {
+      tester.binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(accessibleNavigation: true);
+      await tester.pumpWidget(_app(Scaffold(body: _home())));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.ensureVisible(find.byKey(const Key('home-insight-card')));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pump(const Duration(seconds: 30));
+      expect(find.text(_dailyInsights.first.title), findsOneWidget);
+      expect(find.byKey(const Key('insight-pause')), findsNothing);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );

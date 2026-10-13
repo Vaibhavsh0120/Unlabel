@@ -2,6 +2,11 @@
   "indexes": [],
   "fieldOverrides": [
     {
+      "collectionGroup": "profile_media",
+      "fieldPath": "avatar_png",
+      "indexes": []
+    },
+    {
       "collectionGroup": "community_revisions",
       "fieldPath": "payload_json",
       "indexes": []

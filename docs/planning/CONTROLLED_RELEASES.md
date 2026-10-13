@@ -2,8 +2,10 @@
 
 The maintenance pass publishes missing reviewed source identities and preserves
 historical tags/assets. Current versions come from the component manifests.
-The later frontend patch is documented in [its review](FRONTEND_V0_7_1_REVIEW.md);
-its publication identities are recorded after verification.
+The later auth/profile frontend release is documented in
+[its review](FRONTEND_V0_8_0_REVIEW.md), with the minimal
+[backend compatibility patch](BACKEND_V0_12_1_REVIEW.md) separate. Their publication
+identities are recorded after verification.
 
 Historical source identities are recorded in [the machine ledger](../../contracts/versioning/releases.json).
 Legacy backend vVERSION tags stay preserved. New backend/frontend tags identify

@@ -1,11 +1,12 @@
 # Data flow
 
-Updated **12 October 2026** against frontend **v0.7.0+11** and backend
-**v0.12.0**. The current API exports **27 paths / 28 operations**. Latest
-frontend hosted proof is pending; backend read-only hosted proof is separate
-from authenticated AI/staging and physical-device accuracy.
-[Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md).
+Updated **13 October 2026** against the canonical [frontend](../../frontend/pubspec.yaml)
+and [backend](../../backend/pyproject.toml) versions. The API retains
+**27 paths / 28 operations**. Current auth/profile and Google compatibility await
+final exact-source hosted/native checks; earlier read-only backend proof excludes
+authenticated AI/staging and physical-device accuracy.
+[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md).
 
 ## Capture, source lookup and qualified results
 
@@ -57,7 +58,7 @@ fibre energy uses original rows at **4.2 kJ/kcal**; normalization-v1 retains
 ## Automatic observations and resolution
 
 Confirmed public facts use separate automatic intake with lazy anonymous or
-existing password scanner authentication. The server keeps original rows/context,
+existing Google/password scanner authentication. The server keeps original rows/context,
 normalized full/factual hashes, immutable receipts and semantic deduplication.
 Provisional/barcode-less facts stay private staging with bounded seven-day expiry
 and write-time cleanup. Compatible exact front/back facts may become explicitly
@@ -81,9 +82,10 @@ machine-staging read or paid TTL service. [AI boundaries](AI_ROUTING.md).
 
 | Data | Location / retention boundary |
 | --- | --- |
-| Photos/live frames | Local temporary capture; optional external extraction only after consent; never account/database sync |
+| Package photos/live frames | Local temporary capture; optional external extraction only after consent; never account/database sync |
+| Profile thumbnail/gender | Separate owner-only `profile_media/{uid}` in existing named Firestore; explicit 192×192 PNG crop ≤96 KiB, original/EXIF excluded |
 | Machine fields/corrections | Local scan session; accepted public fields and private AI proposals have separate admission |
-| Dated saved/history reports | Guest local library or isolated verified-UID namespace; optional password-owned bounded private sync |
+| Dated saved/history reports | Guest local library or isolated verified-UID namespace; optional Google/password-owned bounded private sync |
 | Dietary/allergen reminders | Device-local, editable/deletable; never personal backend/AI input |
 | Appearance/Welcome completion | Device-local |
 | Insights | Twenty bundled articles/illustrations; date-stable daily four shared by Home/Insights |
@@ -94,7 +96,9 @@ Private sync carries only bounded display name/saved/history snapshots. Explicit
 cloud/device choices resolve differences; uncertain writes retain immutable UUID,
 payload and CAS revision. Browser eviction/private mode/site clearing can lose
 local data. `data/private/` is ignored development input, not a production upload
-target. [Private sync](PRIVATE_ACCOUNT_SYNC.md) · [Insights](INSIGHTS.md).
+target. Linked Google/password methods preserve UID/library; profile media never
+enters public observations or AI input. [Private sync](PRIVATE_ACCOUNT_SYNC.md) ·
+[Account/profile](ACCOUNT_PROFILE.md) · [Insights](INSIGHTS.md).
 
 ## Builds, failures and verification boundaries
 

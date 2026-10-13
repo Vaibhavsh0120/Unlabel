@@ -2,7 +2,9 @@
 // ignore_for_file: prefer_initializing_formals
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 
 import '../accounts/account_auth.dart';
 
@@ -19,7 +21,7 @@ class UnavailableScannerAuth implements ScannerAuth {
 
 /// The Firebase SDK owns credentials and token refresh. The app never writes
 /// tokens to its report/history preferences. Guests use anonymous credentials;
-/// signed-in scanner users retain their SDK-managed password session.
+/// signed-in scanner users retain their SDK-managed password or Google session.
 class SingleFlightScannerAuth implements ScannerAuth {
   SingleFlightScannerAuth({
     required Future<String?> Function() resolve,
@@ -41,16 +43,28 @@ class SingleFlightScannerAuth implements ScannerAuth {
 }
 
 class FirebaseScannerAuth extends SingleFlightScannerAuth {
-  FirebaseScannerAuth({required FirebaseOptions options, super.timeout})
-    : super(resolve: () => _sdkToken(options));
+  FirebaseScannerAuth({
+    required FirebaseOptions options,
+    @visibleForTesting
+    Future<FirebaseAuth> Function(FirebaseOptions)? resolveAuth,
+    super.timeout,
+  }) : super(
+         resolve: () =>
+             _sdkToken(options, resolveAuth ?? resolveAccountFirebaseAuth),
+       );
 
-  static Future<String?> _sdkToken(FirebaseOptions options) async {
-    final auth = await resolveAccountFirebaseAuth(options);
+  static Future<String?> _sdkToken(
+    FirebaseOptions options,
+    Future<FirebaseAuth> Function(FirebaseOptions) resolveAuth,
+  ) async {
+    final auth = await resolveAuth(options);
     var user = auth.currentUser;
     if (user != null &&
         !user.isAnonymous &&
         !user.providerData.any(
-          (provider) => provider.providerId == 'password',
+          (provider) =>
+              provider.providerId == 'password' ||
+              provider.providerId == 'google.com',
         )) {
       return null;
     }

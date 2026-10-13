@@ -1,14 +1,17 @@
 # Optional scanner account sync
 
-Current backend **v0.12.0** and frontend **v0.7.0+11** preserve the account
-contract introduced in backend v0.7.0/frontend v0.2.0. Device-wide dietary/allergen
+The current [frontend](../../frontend/pubspec.yaml) and
+[backend](../../backend/pyproject.toml) versions preserve `personal-sync-v1`, introduced in backend v0.7.0/frontend v0.2.0. The later
+[Google compatibility patch](../planning/BACKEND_V0_12_1_REVIEW.md) accepts verified
+Google sessions without changing snapshot ownership or schema. Device-wide dietary/allergen
 reminders, appearance, Welcome completion and Insight bookmarks are outside this
 snapshot and stay separate from scanner account namespaces.
 
 Backend v0.7.0 adds `personal-sync-v1`. Guest product lookup, manual label analysis,
 public product observations and local libraries keep working without a personal
-account. A scanner may sign in with Firebase email/password to sync a private
-profile, saved reports and history. There is one scanner role and no admin or
+account. A scanner may sign in with Firebase Google or email/password to sync
+a private display name, saved reports and history. Linked sign-in methods retain
+the same verified UID and library. There is one scanner role and no admin or
 reviewer login. Email/password credentials stay with Firebase Authentication;
 the API never accepts passwords or stores email in its profile document.
 
@@ -16,13 +19,16 @@ The `ACCOUNT_SYNC_ENABLED` flag defaults to false and requires the existing
 configured Firebase runtime. `/v1/meta` advertises readiness, version and limits.
 A ready flag means configuration loaded, not that a live provider was checked.
 Anonymous Firebase identities remain valid for automatic public observations,
-but cannot read or write personal snapshots. Password identities can do both.
+but cannot read or write personal snapshots. Password and Google identities can
+do both. Profile thumbnails/gender use a separate [owner-only document](ACCOUNT_PROFILE.md),
+not this library payload.
 
 ## API and client recovery
 
 `GET /v1/account/sync` requires a bearer ID token. There is no UID path/query
 parameter. The backend checks signature, project/audience/issuer, subject,
-expiry, disabled/revoked state and `sign_in_provider: password`, then derives a
+expiry, disabled/revoked state and a `password` or `google.com` sign-in provider,
+then derives a
 domain-separated HMAC document key from the verified UID. Private and public
 ownership hashes differ. Responses always use `Cache-Control: no-store`.
 The existing ownership secret must remain stable; rotating it requires a planned
@@ -93,10 +99,11 @@ scanner to sign in again. 503 means `account_sync_unavailable`; preserve local
 work. Provider details, credentials, submitted values and arbitrary extra-field
 names are excluded from errors. Query parameters and GET bodies are rejected.
 
-The existing named Standard database `unlabel` remains behind deny-all direct
-client rules and a backend machine credential. No new IAM role, client database
-write rule, Storage bucket, Cloud Function, TTL, backup, PITR or billing link is
-required. Keep Spark/no card. Exhausted quotas may stop sync; they do not gate
+Library collections in the existing named Standard database `unlabel` remain
+backend-only under deny-all direct client rules and a backend machine credential.
+The separate `profile_media/{uid}` owner-only exception cannot access these
+snapshots. No new database, IAM role, Storage bucket, Cloud Function, TTL, backup,
+PITR or billing link is required. Keep Spark/no card. Exhausted quotas may stop sync; they do not gate
 guest/local reading or justify upgrading billing automatically.
 
 ## Implementation references

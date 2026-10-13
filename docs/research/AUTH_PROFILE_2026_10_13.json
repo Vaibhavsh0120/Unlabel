@@ -1,0 +1,90 @@
+{
+  "schema_version": "1",
+  "checkpoint_date_asia_calcutta": "2026-10-13",
+  "scope": "linked_auth_private_profile_and_maintenance",
+  "versions": {
+    "frontend": "0.8.0+12",
+    "backend": "0.12.1"
+  },
+  "local": {
+    "flutter_tests": 417,
+    "flutter_analysis": "passed",
+    "web_release_build": "passed",
+    "backend_tests": {
+      "passed": 1371,
+      "skipped": 5
+    },
+    "ruff": "passed",
+    "node_bridge_tests": 21,
+    "native_publication_guard_tests": 10,
+    "actionlint_workflows": 2,
+    "platform_icons": 42,
+    "local_ocr_assets": 21,
+    "compiled_web_configured_secret_matches": 0,
+    "workspace": {
+      "python": 148,
+      "json": 162,
+      "toml": 1,
+      "markdown": 122,
+      "local_links": 820,
+      "errors": 0
+    }
+  },
+  "artwork": {
+    "raster_artifacts": 48,
+    "total_bytes": 3746996,
+    "errors": [],
+    "unique_section_artwork": true,
+    "insight_images": "each belongs to its article previews/readers",
+    "retired_additional_artifacts": [
+      "desktop-insight-bowl.png",
+      "desktop-insight-banner.webp",
+      "desktop-empty-scans.webp",
+      "label-leaf.webp",
+      "botanical-corner.webp"
+    ]
+  },
+  "firebase": {
+    "project": "unlabel-india-catalogue",
+    "database": "unlabel",
+    "billing": "Spark_no_linked_billing",
+    "google_enabled": true,
+    "password_enabled": true,
+    "anonymous_enabled": true,
+    "profile_rules": {
+      "project": "unlabel-india-catalogue",
+      "database": "unlabel",
+      "verified_at": "2026-10-12T20:39:11.606Z",
+      "release": "projects/unlabel-india-catalogue/releases/cloud.firestore/unlabel",
+      "ruleset": "projects/unlabel-india-catalogue/rulesets/c95a4887-fc67-4b8c-ba29-8c4ab03b4ae7",
+      "deployed_at": "2026-10-12T20:38:53.534631Z",
+      "normalized_rules_sha256": "ae1424751d39a252ea88368860ea3d11f204fbfe4df961f68426c7392d29a31f",
+      "deployed_matches_local": true,
+      "only_profile_media_owner_exception": true,
+      "emulator_boundary_tests_passed": 5
+    },
+    "profile_avatar_bytes_unindexed": true,
+    "stable_demo_signing_sha1": "3E:7F:9E:3A:26:DC:4E:A8:0C:85:8A:48:12:BC:59:C7:2D:5F:D8:0A",
+    "email_handler": "https://unlabel-india-catalogue.firebaseapp.com/__/auth/action",
+    "custom_bridge": "https://unlabel-india-catalogue.firebaseapp.com/account-action.html",
+    "custom_bridge_deployed": true,
+    "custom_callback_status": "provider_rejected_EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED_API_and_Console",
+    "real_google_consent": "unverified",
+    "real_reset_email_delivery": "unverified"
+  },
+  "auth_ui": {
+    "status": "further_refinement_deferred_at_user_request",
+    "single_viewport_widget_checks": "six states, 390/1440 normal, 360x740, 320x568, 740x360, large text and keyboard",
+    "final_pixel_reference_acceptance": "deferred",
+    "mobile_centered_leaf_wordmark_followup": "deferred",
+    "outlined_leaf_asset_removed": true,
+    "leaf_icons_use_actual_brand_vector": true
+  },
+  "publication": {
+    "source_sha": null,
+    "github": "pending_push",
+    "hosted": "pending_exact_source_verification",
+    "native": "pending_final_source_build",
+    "livecontainer_physical_launch": "unverified"
+  }
+}

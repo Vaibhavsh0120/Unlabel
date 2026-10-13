@@ -45,13 +45,14 @@ def claims():
     }
 
 
-def test_verification_requires_revocation_check_and_returns_only_uid(monkeypatch):
+@pytest.mark.parametrize("provider", ["anonymous", "password", "google.com"])
+def test_verification_requires_revocation_check_and_returns_only_uid(monkeypatch, provider):
     def verify(token, *, app, check_revoked, clock_skew_seconds):
         assert token == "opaque-token"
         assert app is not None
         assert check_revoked is True
         assert clock_skew_seconds == 0
-        return claims()
+        return claims() | {"firebase": {"sign_in_provider": provider}}
 
     runtime = runtime_with_verifier(monkeypatch, verify)
     assert runtime.verify_token("opaque-token") == "private-subject"
@@ -66,13 +67,14 @@ def test_verification_requires_revocation_check_and_returns_only_uid(monkeypatch
         {"uid": ""},
         {"exp": 1},
         {"exp": True},
-        {"firebase": {"sign_in_provider": "google.com"}},
+        {"firebase": {"sign_in_provider": "custom"}},
     ],
 )
-def test_claims_with_wrong_project_subject_or_expiry_are_invalid(monkeypatch, change):
+@pytest.mark.parametrize("provider", ["anonymous", "password", "google.com"])
+def test_claims_with_wrong_project_subject_or_expiry_are_invalid(monkeypatch, change, provider):
     from app.community.auth import AuthenticationInvalid
 
-    decoded = claims() | change
+    decoded = claims() | {"firebase": {"sign_in_provider": provider}} | change
     runtime = runtime_with_verifier(monkeypatch, lambda *args, **kwargs: decoded)
     with pytest.raises(AuthenticationInvalid):
         runtime.verify_token("opaque-token")
@@ -90,7 +92,8 @@ def test_bounded_token_input_is_rejected_before_verification(monkeypatch, value)
         runtime.verify_token(value)
 
 
-def test_password_scanner_can_contribute_and_sync_but_anonymous_cannot_sync(monkeypatch):
+@pytest.mark.parametrize("provider", ["password", "google.com"])
+def test_signed_in_scanner_can_contribute_and_sync_but_anonymous_cannot_sync(monkeypatch, provider):
     from app.community.auth import AuthenticationInvalid
 
     decoded = claims()
@@ -98,7 +101,7 @@ def test_password_scanner_can_contribute_and_sync_but_anonymous_cannot_sync(monk
     assert runtime.verify_token("opaque-token") == "private-subject"
     with pytest.raises(AuthenticationInvalid):
         runtime.verify_account_token("opaque-token")
-    decoded["firebase"]["sign_in_provider"] = "password"
+    decoded["firebase"]["sign_in_provider"] = provider
     assert runtime.verify_token("opaque-token") == "private-subject"
     assert runtime.verify_account_token("opaque-token") == "private-subject"
 
@@ -112,17 +115,38 @@ def test_password_scanner_can_contribute_and_sync_but_anonymous_cannot_sync(monk
         {"exp": 1},
         {"exp": True},
         {"firebase": {"sign_in_provider": "custom"}},
+        {"firebase": {"sign_in_provider": "anonymous"}},
     ],
 )
+@pytest.mark.parametrize("provider", ["password", "google.com"])
 def test_private_account_verification_preserves_project_subject_and_expiry_boundaries(
-    monkeypatch, change
+    monkeypatch, change, provider
 ):
     from app.community.auth import AuthenticationInvalid
 
-    decoded = claims() | {"firebase": {"sign_in_provider": "password"}} | change
+    decoded = claims() | {"firebase": {"sign_in_provider": provider}} | change
     runtime = runtime_with_verifier(monkeypatch, lambda *args, **kwargs: decoded)
     with pytest.raises(AuthenticationInvalid):
         runtime.verify_account_token("opaque-token")
+
+
+def test_google_profile_and_linked_provider_email_never_replace_uid_ownership(monkeypatch):
+    decoded = claims() | {
+        "email": "synthetic@example.invalid",
+        "name": "Synthetic Person",
+        "picture": "https://example.invalid/synthetic-avatar.png",
+        "firebase": {
+            "sign_in_provider": "google.com",
+            "identities": {
+                "google.com": ["synthetic-google-id"],
+                "email": ["synthetic@example.invalid"],
+            },
+        },
+    }
+    runtime = runtime_with_verifier(monkeypatch, lambda *args, **kwargs: decoded)
+    assert runtime.verify_account_token("opaque-token") == "private-subject"
+    decoded["firebase"]["sign_in_provider"] = "password"
+    assert runtime.verify_account_token("opaque-token") == "private-subject"
 
 
 def test_private_account_verification_is_revocation_aware(monkeypatch):

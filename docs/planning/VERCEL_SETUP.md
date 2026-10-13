@@ -12,7 +12,10 @@ including `unlabel-frontend.vercel.app` and `unlabel-backend-pied.vercel.app`.
 Vercel Authentication protects preview deployments; production is public.
 Optional AI extraction follows the active server configuration and explicit
 transfer consent. Dated deployment/configuration notes below are historical;
-see [AI routing](../architecture/AI_ROUTING.md) for the current boundary.
+see [AI routing](../architecture/AI_ROUTING.md) and
+[account/profile setup](../architecture/ACCOUNT_PROFILE.md) for current boundaries.
+The new auth/profile and Google compatibility sources await final exact-source
+hosted/native verification; earlier deployment receipts do not prove them.
 
 ## Website settings
 
@@ -26,7 +29,8 @@ see [AI routing](../architecture/AI_ROUTING.md) for the current boundary.
   tabs stay Home / Scan / Compare / Saved, with Profile at the top right. The app checks API
   major/schema/capabilities and shows build info.
 - Locked restoration, Flutter analysis/tests and web compilation run in the build.
-  Light is the first-use default; appearance and guest libraries stay local. Optional password accounts use bounded private backend sync.
+  Light is the first-use default; appearance and guest libraries stay local. Optional Google/password accounts use bounded private backend library sync;
+  separate owner-only profile thumbnails use the existing named Firestore database.
 - Light/dark web icons and manifests are bundled. Missing assets are genuine 404s;
   no blanket rewrite hides deployment errors. Native releases stay manual.
 
@@ -137,7 +141,7 @@ full release checks remain pending.
 [Review](BACKEND_V0_6_0_REVIEW.md) · [Connected plan](CONNECTED_RELEASE_PLAN.md).
 
 
-## Current private account release gate
+## Historical private account release gate — backend v0.7.0
 
 Implemented backend v0.7.0 adds password-authenticated GET/POST `/v1/account/sync`
 without changing public observation/report schemas. `ACCOUNT_SYNC_ENABLED`

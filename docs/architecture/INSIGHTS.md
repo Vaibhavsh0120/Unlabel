@@ -22,7 +22,10 @@ Home and Insights use the same controller and selection. Desktop and mobile
 Home both support manual swipes, four selectable dots, left/right keyboard
 navigation and screen-reader adjustment. Dots keep 48 px width with compact
 28 px height and a 4 px gap above, as requested after the rendered review. RTL direction,
-reduced motion and enlarged text are preserved. There is no automatic advance.
+reduced motion and enlarged text are preserved. Later user steering adds a
+three-second Home rotation with a pause/resume control. Hover, focus, touch,
+scrolling, background/covered routes, reduced motion and accessible navigation
+pause rotation; manual controls remain available.
 Every slide uses the corresponding article's artwork; different facts never
 share a generic image. A saved preview and reader may repeat the same article's
 image because they identify that same article.
@@ -89,5 +92,6 @@ twenty distinct corresponding symbols. Their saved summaries use the same
 mapping as the complete editors. The [icon provenance](../../frontend/assets/icons/README.md)
 distinguishes original food pictograms from the retained Solar controls.
 
-See the [release review](../planning/FRONTEND_V0_7_0_REVIEW.md) for exact local
-validation and the separate publication/hosted status.
+See the [original collection review](../planning/FRONTEND_V0_7_0_REVIEW.md)
+and [current UI/auth review](../planning/FRONTEND_V0_8_0_REVIEW.md) for their
+separate local, hosted and publication evidence.

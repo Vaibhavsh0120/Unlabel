@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
-/// Public app identifiers. Only anonymous scanner Auth is used; no Storage SDK.
+/// Public app identifiers. Auth and private profile media share Firebase; no Storage SDK.
 abstract final class UnlabelFirebaseOptions {
+  static const googleServerClientId =
+      '122855940292-nu1sadtls8cq8cfn20187nqehmmpe8ga.apps.googleusercontent.com';
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) return web;
     return switch (defaultTargetPlatform) {
@@ -33,5 +35,6 @@ abstract final class UnlabelFirebaseOptions {
     messagingSenderId: '122855940292',
     projectId: 'unlabel-india-catalogue',
     iosBundleId: 'in.unlabel.unlabel',
+    iosClientId: '122855940292-7ff2fjm47nj633n3o1gd2qkp11d70fec.apps.googleusercontent.com',
   );
 }

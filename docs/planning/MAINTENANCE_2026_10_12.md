@@ -2,8 +2,13 @@
 
 Scope: repair documentation, setup/release scripts, GitHub configuration and
 native builds. The initial repairs kept frontend 0.7.0+11 and backend 0.12.0.
-The later UI changes ship as frontend 0.7.1+12; backend remains unchanged. No feature work.
-Work on main, preserve source bundles and historical release identities.
+The intermediate UI patch targeted frontend 0.7.1+12. On 13 October the user
+expanded scope to auth, linked sign-in, profile media and optional gender, with
+version bumps to frontend 0.8.0+12/backend 0.12.1. The intermediate native run was
+cancelled before publication. Current [frontend](FRONTEND_V0_8_0_REVIEW.md) and
+[backend](BACKEND_V0_12_1_REVIEW.md) reviews supersede that release target; final
+exact-source hosted/native publication is pending. Work on main and preserve
+source bundles, historical identities and the dated evidence below.
 
 | Finding | Evidence | Action and verification |
 | --- | --- | --- |
@@ -64,7 +69,8 @@ Physical iPhone import/launch remains a separate acceptance gate.
 User follow-up adds README redesign, link/metadata repairs, a branded 404 inside
 the existing shell, clickable Home logos, persistent desktop shell for History
 and saved Insight readers, and faster image delivery. These repairs preserve
-product versions and existing data/flows.
+existing data/flows. Their original maintenance evidence below predates the
+later auth/profile scope and independent component bumps.
 
 - README uses authored desktop/phone SVG banners, platform-first links, a
   copyable working source URL, quick starts and linked detailed documentation.
@@ -91,7 +97,7 @@ product versions and existing data/flows.
   Desktop readers have no whole-shell transition. The 404 loading fallback ends
   at a first frame that already has navigation; early recovery survives delayed
   restore and account changes. Logo hover grows slightly without a tooltip.
-- Recent scans uses a 208 px natural minimum, manual-dot trailing spacing is
+- Recent scans uses a 208 px natural minimum, dot trailing spacing is
   removed, and supporting Insight cards center image/copy above bottom badges.
   Large text can grow all cards. Existing phone navigation and real actions remain.
 - Sources has a single desktop heading inside its illustrated intro, with no
@@ -99,6 +105,23 @@ product versions and existing data/flows.
   concise summaries. Each whole card opens the complete source explanation.
 - Web/app integration and final hosted checks are recorded in the receipt below;
   they are separate from the earlier immutable native artifact build.
+
+## Auth/profile follow-up — 13 October
+
+The current scope adds six reference auth states with exclusive fresh illustrations,
+Google/password linking under one verified UID, optional gender/default avatars and
+a bounded private thumbnail in the existing Firestore database. Unset gender uses
+the user-approved male avatar; Google gender is not requested or inferred. Label
+photos/raw OCR remain outside library/profile sync. The sole new direct-client
+access is strict owner-only `profile_media/{uid}`; public/library/AI collections
+remain denied. Sources and Profile detail windows, three-second Home rotation and
+phone History/Saved alignment are included. The filled brand leaf and no-scroll
+single-screen auth composition must pass rendered review before reference acceptance.
+
+[Account/profile contract](../architecture/ACCOUNT_PROFILE.md) records configuration,
+thumbnail bounds and signing/email-handler gates. Local checks, provider configuration,
+actual hosted behavior, native publication and physical-device acceptance remain
+separate. Final totals/identities belong to the maintenance receipt after verification.
 
 ## Vercel Git retrieval recovery
 

@@ -71,7 +71,17 @@ class AccountController extends ChangeNotifier {
       _identity?.uid == uid &&
       auth.identity?.uid == uid;
   void _authChanged() {
-    if (_disposed || auth.identity?.uid == _identity?.uid) return;
+    if (_disposed) return;
+    final next = auth.identity;
+    if (next?.uid == _identity?.uid) {
+      // Linking a provider or refreshing SDK profile metadata keeps the same
+      // private library, in-flight sync and explicit cloud/device choice.
+      if (next != null) {
+        _identity = next;
+        _publish();
+      }
+      return;
+    }
     _generation++;
     _timer?.cancel();
     api.cancelAll();
@@ -132,10 +142,20 @@ class AccountController extends ChangeNotifier {
 
   Future<void> signIn(String email, String password) =>
       _authenticate(() => auth.signIn(email, password));
-  Future<void> create(String email, String password) =>
-      _authenticate(() => auth.create(email, password));
+  Future<void> signInGoogle() => _authenticate(auth.signInGoogle);
+  Future<void> create(String email, String password, {String? displayName}) =>
+      _authenticate(
+        () => auth.createWithName(email, password, displayName: displayName),
+      );
+  Future<void> linkGoogle() => _authenticate(auth.linkGoogle);
+  Future<void> linkPassword(String email, String password) =>
+      _authenticate(() => auth.linkPassword(email, password));
   Future<void> resetPassword(String email) =>
       _authenticate(() => auth.resetPassword(email));
+  Future<String> verifyPasswordResetCode(String code) =>
+      auth.verifyPasswordResetCode(code);
+  Future<void> confirmPasswordReset(String code, String password) =>
+      _authenticate(() => auth.confirmPasswordReset(code, password));
   Future<void> signOut() async {
     _generation++;
     _timer?.cancel();

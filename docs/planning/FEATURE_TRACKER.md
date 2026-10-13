@@ -1,8 +1,7 @@
 # Feature tracker
 
-Checkpoint **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
-Current behavior and remaining gates are listed below. This task fixes maintenance
-without a version bump or new features. [Audit](MAINTENANCE_2026_10_12.md) ·
+Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Current scope: [auth/profile and UI](FRONTEND_V0_8_0_REVIEW.md) plus [Google backend compatibility](BACKEND_V0_12_1_REVIEW.md).
+Current behavior and remaining gates are listed below. The user later authorized auth/profile changes and independent version bumps. [Audit](MAINTENANCE_2026_10_12.md) ·
 [Source release ledger](CONTROLLED_RELEASES.md) · [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
 Versioned reviews/hosted receipts keep their original source dates and test totals.
 
@@ -33,16 +32,18 @@ sample products and health verdicts are illustrative.
 | F15 | OCR/live highlights / Scan | Bounded machine facts/normalized regions; confirmed rows use separate admission | Local v0.6 paints actual post-capture regions and decoder anchors, with View results action; continuous live highlights and real-device accuracy remain future |
 | F16 | Saved products / Home | Client-owned; private sync published in v0.7.0 | Published bounded bookmarks/reopening/removal; guests local, signed-in UID-specific private sync; hosted v0.3.0 public report save and Saved count verified |
 | F17 | History / Home | Client-owned guest local; optional private sync published | Published bounded dated history/clearing, guest/account isolation and optional private sync; hosted v0.3.0 Profile Scans count verified |
-| F18 | Profile/preferences / Home | Client-owned private choices | Optional password sign-in/create/reset, display name/private sync, explicit conflict choices and sign out implemented; guest mode fully usable; v0.3.0 reference Profile uses real controls/counts and explicitly unavailable notifications/comparison totals |
+| F18 | Profile/preferences / Home | Verified Google/password ownership; private library contract unchanged | Reference auth/reset, same-UID provider linking, private thumbnail editor and optional gender/default avatars implemented; guests retain local workflows. Final no-scroll desktop/phone auth rendering and hosted/native acceptance pending |
 | F19 | Responsive/light/dark / All | Client-owned | v0.6 adds reference sidebar/Home and responsive results; preceding reviews retain their scope. v0.7 Insights has reviewed 390/1440/1728 light/dark renders and 24 feed text/theme/width configurations without layout exceptions; native proof remains separate |
 | F20 | Attribution/age/version / All | Ready | Published metadata/source/date/evidence/build information and working source details; exact hosted v0.3.0 version/build/assets verified |
 | C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
-| C02 | Optional scanner account/private sync | v0.7.0 pushed and hosted-verified; 931 passed/5 skips and 18 hosted synthetic checks; independently published | v0.2.0 implemented: guests local, UID-specific private sync after optional login; 25 focused account tests pass; 135 tests, clean analyzer, hosted READY web deployment and source release published |
+| C02 | Optional scanner account/private sync | v0.12.1 adds verified Google compatibility; private snapshots remain backend-only | Google/password linking preserves UID/library, collisions cannot merge accounts; thumbnail/gender uses a separate owner-only document. Final current-source hosted/native gates pending; original v0.7.0/v0.2.0 receipts remain historical |
 
 ## Component releases
 
 | Component/version | Meaningful goal | Evidence / state |
 | --- | --- | --- |
+| Frontend v0.8.0+12 | Reference auth, linked sign-in, private profile media and UI repairs | [Current review](FRONTEND_V0_8_0_REVIEW.md); final hosted/native acceptance pending |
+| Backend v0.12.1 | Verified Google scanner/private-library provider compatibility | [Current review](BACKEND_V0_12_1_REVIEW.md); 70 focused checks/Ruff passed, final hosted/source gates pending |
 | Backend v0.12.0 | Bounded private AI proposals, ingredient/claim research search and separate real-product image descriptors | Pushed/READY; dated 1319 tests and 389 hosted checks in release review; current maintenance separate |
 | Frontend v0.6.0+7 | Barcode-first automatic reading, minimal-work photo results and reference Home/result layouts | Pushed/READY; dated 207 Flutter / 6 bridge tests, analysis/web build and hosted receipt in review |
 | Backend v0.11.0 | One globally active Gemini/OpenAI extraction credential | Source 578a9af pushed/READY; 389 read-only hosted checks; authenticated generation separate; 1,303 historical tests/five skips |
@@ -81,7 +82,10 @@ scanner authentication; there is no separate Share step. The later user request
 authorizes **optional login/profile/private sync** for v0.7.0/v0.2.0: guests keep
 the same useful features without personal cloud storage, and signed-in scanners
 may sync their own data. There is still one scanner role, with no admin/reviewer
-app account or dashboard. Photos/raw OCR are excluded from public observations.
+app account or dashboard. Package photos/raw OCR are excluded from public observations. The later auth
+scope permits one bounded private profile thumbnail and optional gender in the
+existing database, with no new role, paid service or Google gender inference.
+[Account/profile contract](../architecture/ACCOUNT_PROFILE.md).
 
 Related: [Master plan](MASTER_PLAN.md), [workflows](FEATURES.md),
 [Indian food coverage](../research/INDIAN_FOOD_COVERAGE.md),

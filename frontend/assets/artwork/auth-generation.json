@@ -1,0 +1,142 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-10-13",
+  "intent": "Six fresh authentication state illustrations and a female counterpart to the existing user-approved male avatar. Each state has exclusive decorative art; avatars represent the same profile identity across headers.",
+  "encoding": "Whole canvas fitted within recorded bounds, no crop; WebP quality90, exact alpha, Pillow LANCZOS.",
+  "review": "Original images visually reviewed before encoding. No readable product claims, words or scores; decorative barcode bars are not product evidence.",
+  "assets": [
+    {
+      "asset": "frontend/assets/artwork/auth-signin.webp",
+      "purpose": "signin authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-874008f0-3f04-42e4-813c-4bba308ced8b.png",
+      "source_sha256": "d8a1c4174968ba7801513b0766c674b8c667491a3d59966e55075d577b460dea",
+      "source_bytes": 2073494,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "0a5587bb3f5662edae1cc58cd53c6da7f8a98c1ae1863a8dc47e6de4b197a64c",
+      "bytes": 62768,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth-signup.webp",
+      "purpose": "signup authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-dbced897-f67a-4c57-b9de-3e00ae964c9e.png",
+      "source_sha256": "5875d95a22443e5e7be779a18b0935d213b993d9f0365be8656b4cebc68d3fa8",
+      "source_bytes": 2085705,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "ab0c6663d2b976ac0645d41af2577af39e060b0ba5dd10c674870311bd3b0b13",
+      "bytes": 79132,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth-forgot.webp",
+      "purpose": "forgot authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-d1abcadd-e097-4e37-91cf-d3190bd79669.png",
+      "source_sha256": "d212e31858aa4aa31c99f91c022f30498dc95e950503e27ad2b2e0c5699c4e24",
+      "source_bytes": 2042950,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "06360802203ecd0dc898685ec0ca3022991338151033ed8a2dd5a0200e4a35b6",
+      "bytes": 79410,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth-sent.webp",
+      "purpose": "sent authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-35028e5c-5216-4311-8b6f-4040b7ab5d31.png",
+      "source_sha256": "db61f4bfc8265b41ed7b67908c3ade1fdac7c5343e2c62c624999bc3878d1520",
+      "source_bytes": 1837465,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "7de527dbc6fdbd03fd5ed9db8f19b44dd5ca49854090ccfea664a578168438e7",
+      "bytes": 45780,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth-new-password.webp",
+      "purpose": "new-password authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-f5f3bdf9-2d46-47ce-a42c-7accf1de05e8.png",
+      "source_sha256": "e11f105a45278dd7ef25a1100bbcf8f1cbac895b5e0561c0e92994bec56f29b0",
+      "source_bytes": 1733100,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "9ad2a8d37b49a86cde244f4a9deb805f651bcf70848b12e720b38ee771829c18",
+      "bytes": 50670,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth-success.webp",
+      "purpose": "success authentication screen only",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-799bf4ae-6a60-48ea-b26e-1085f2619435.png",
+      "source_sha256": "c15d24daafbe5775b643b6d62250cb69770737734c36652214a4174c47f288ab",
+      "source_bytes": 1904775,
+      "source_dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "311f3bece184aefd213aebd9cafbef9b8743f303701d0195398233f2cf9048d1",
+      "bytes": 66398,
+      "dimensions": [
+        768,
+        512
+      ],
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/profile-avatar-female.webp",
+      "purpose": "Female default profile avatar, user-selected gender",
+      "generator": "image_gen.imagegen (built-in)",
+      "generated_artifact": "exec-1a8e0f61-47d6-4b37-9929-9921c91cd92c.png",
+      "source_sha256": "4edf8cc2b56ecff3d1de56dfa65b099df964a07c3fab448429306a5168f3888a",
+      "source_bytes": 1461619,
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "216d7e9aabb6884a34c6fde0ba3a5351cc12e7336dc070afb59d77a8145397f4",
+      "bytes": 27680,
+      "dimensions": [
+        384,
+        384
+      ],
+      "alpha_preserved": true
+    }
+  ]
+}

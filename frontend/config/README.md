@@ -1,9 +1,9 @@
 # Client configuration
 
 Only public configuration belongs in this app. BuildInfo reads Flutter appBuildName/appBuildNumber, derived from pubspec.yaml,
-and reads COMMIT_SHA/BACKEND_BASE_URL from public Dart build defines. The current
-defaults are frontend 0.4.0+5 and the stable production API,
-https://unlabel-api.vercel.app. Local-run and release scripts inject their actual
+and reads COMMIT_SHA/BACKEND_BASE_URL from public Dart build defines. The stable production API is
+https://unlabel-api.vercel.app; frontend version/build come from the selected
+source's canonical pubspec. Local-run and release scripts inject their actual
 metadata; the URL is an address, never a credential.
 
 The HTTP adapter accepts an HTTPS origin without credentials, query or fragment.
@@ -17,32 +17,38 @@ Public Firebase app identifiers live in lib/app/firebase_options.dart and
 firebase/client-config.json at the repository root. The Firebase SDK initializes
 through the shared account/scanner adapter to restore an existing SDK session or
 perform an explicit authentication action. Confirmed public submissions create
-anonymous scanner authentication for guests and retain an existing password
+anonymous scanner authentication for guests and retain an existing Google/password
 scanner session. The SDK owns token refresh; report/history preferences do not
 contain tokens. Read-only lookup, search and opening saved reports create no account.
-There is no admin/reviewer user role. Direct Firestore client access remains
-denied; structured submissions go through the bounded backend API.
+There is no admin/reviewer user role. Direct access to public/library/AI
+collections remains denied; structured submissions go through the bounded backend.
+The sole client exception is strict owner-only `profile_media/{uid}` in the
+existing named `unlabel` database for optional gender/avatar settings.
 
 The backend's service-account JSON, actor-secret and optional provider keys stay
 outside the client and outside plaintext Git files. Encrypted backend/.env.age is
-a backend recovery artifact, not a mobile/web asset. Gemini stays disabled;
-there is no model-training or cloud-AI dependency in the connected client.
+a backend recovery artifact, not a mobile/web asset. AI stays disabled in
+clean-clone defaults. Configured consented extraction is optional, with local OCR
+fallback and no custom training dependency.
 
-Published backend v0.7.0 and independently published frontend v0.2.0+3 implement optional
-password scanner login/private sync. Guest workflows retain local personal records.
+Optional Google/password scanner sign-in uses Firebase Auth. Adding a provider
+in Profile settings links to the same UID/library and never merges a collision. Guest workflows retain local personal records.
 Signed-in display name/saved/history uses a separate verified-UID local namespace
 and private backend snapshot; differing cloud/device data requires an explicit
-choice. Photos/raw OCR, dietary/health preferences, appearance and Welcome
-completion are excluded from private sync. The later v0.3.0 release also has
-independent hosted proof; v0.4.0 gets separate source/build/hosted checks. [Account/screen plan](../../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md)
-· [Frontend review](../../docs/planning/FRONTEND_V0_2_0_REVIEW.md).
+choice. Package photos/raw OCR, dietary/health reminders, appearance and Welcome
+completion are excluded from library sync. Profile thumbnails are a separate
+bounded private document; no Storage bucket or second database is used.
+[Account/profile contract](../../docs/architecture/ACCOUNT_PROFILE.md) ·
+[Current review](../../docs/planning/FRONTEND_V0_8_0_REVIEW.md).
 
 Local report/bookmark keys belong to the guest or selected signed-in UID namespace;
 appearance and Welcome completion remain device-local. Clearing history
 does not remove saved reports or Firebase SDK identity data; clearing saved
 reports does not remove history. Browser storage may be cleared or evicted and
-is not a backup. Locale selection, personal allergy preferences and fixture/demo
-selection remain future configuration, not implemented current settings.
+is not a backup. Dietary/allergen reminders are editable device-only choices
+and do not infer suitability. Locale and fixture/demo selection remain future
+configuration. Optional user-chosen gender controls the default avatar; unset uses
+the approved male art without recording or inferring gender.
 
 [Frontend guide](../README.md) ·
 [Local development](../../docs/planning/LOCAL_DEVELOPMENT.md) ·

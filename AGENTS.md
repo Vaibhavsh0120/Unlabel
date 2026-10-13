@@ -4,13 +4,18 @@
 
 - Work directly on main only; do not create a branch or worktree. Preserve teammate
   edits, licensed sources, historical tags and published assets. Update docs before push.
-- The maintenance/UI repairs ship as a frontend patch after the user's later
-  release instruction; backend runtime stays unchanged. Canonical versions are
+- The user's later scope adds responsive auth, linked Google/password providers,
+  private thumbnails and optional gender. Backend only gains verified Google
+  provider compatibility. Canonical versions are
   frontend/pubspec.yaml and backend/pyproject.toml; scripts/workspace.json pins
   Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
-- Current UI/release proof belongs to docs/planning/FRONTEND_V0_7_1_REVIEW.md.
+- Current UI/release proof belongs to docs/planning/FRONTEND_V0_8_0_REVIEW.md;
+  backend compatibility proof belongs to docs/planning/BACKEND_V0_12_1_REVIEW.md.
   Keep the desktop shell stationary for History/Sources; readers have no whole-shell
-  desktop transition. New illustrations stay exclusive to their section.
+  desktop transition. New illustrations stay exclusive to their section. Auth uses
+  the supplied exact desktop/phone composition and filled Unlabel BrandLeaf. Fit
+  each auth screen in one viewport without horizontal or vertical page scrolling;
+  verify actual renders before claiming reference acceptance.
 - Source identities are in docs/planning/CONTROLLED_RELEASES.md and
   contracts/versioning/releases.json. Frontend feature implementation 8b5f9064 and
   backend implementation 39e600e remain distinct from later maintenance/docs commits.
@@ -21,7 +26,9 @@
 - Preserve Home/Scan/Compare/Saved navbar order and Profile header shortcut.
   Insights has twenty sourced articles, four unique stable daily picks shared with
   Home, full reader/topic/all browsing and protected device-local bookmarks.
-  Swipe/dots/keyboard remain manual. Preference/allergen symbols remain distinct.
+  Home tips rotate every three seconds with pause and manual swipe/dots/keyboard;
+  interaction, background and accessibility settings pause rotation. Preference/
+  allergen symbols remain distinct.
 - Retain 24,641 bulk records, 243 immutable research observations, search v3 and
   120 separate sourced image descriptors. No source/SQLite migration or deletion.
 - Native frontend tags include build number; historical mobile/backend tags stay
@@ -37,10 +44,10 @@
 - Never commit plaintext `.env`, private identities, real scans or credentials. Track authenticated `backend/.env.age` and its public recipient; refresh ciphertext with `python scripts/env.py encrypt` after changing local settings. Private key paste belongs in the hidden local terminal prompt.
 - Track reusable acquired source bundles, provenance, licenses and hashes. SQLite, SDKs, environments and builds are generated. Rich OFF facts accept direct packaging/manufacturer nutrition only; legacy aggregates stay unavailable. Images are validated official URL descriptors, never bundled bytes. Coverage is unverified. Replace snapshots manually every nine calendar months after validation. Vercel builds the tracked source into a verified read-only bundle; see docs/planning/BACKEND_V0_6_0_REVIEW.md for current discovery/release gates and BACKEND_V0_5_0_REVIEW.md for unchanged report proof and BACKEND_V0_4_0_REVIEW.md for unchanged cloud/storage proof, BACKEND_V0_3_0_REVIEW.md for unchanged claim-source proof and BACKEND_V0_2_3_REVIEW.md for the unchanged measured catalogue source. Earlier reviews remain historical evidence.
 - Preserve original OFF/community/current-package observations and reviewed FSSAI evidence. A derived resolved view may complement compatible known product fields with per-field source/date references; retain disagreements and never average incompatible tables. Missing is unknown, not zero or an allergy-safe/compliance verdict; generic-food composition never fills branded-packet gaps.
-- Firebase Unlabel (`unlabel-india-catalogue`) has its first Standard database `unlabel` in Mumbai, free tier enabled and no linked billing. Anonymous and email/password Auth, deny-all client rules and least-privilege backend credentials are configured; live synthetic checks are separate from hosted API proof. Keep Spark/no card; prohibit paid Storage/Functions, TTL, backups and PITR. v0.4.0 saves/deduplicates structured public observations automatically without a Share flag; provisional observations remain private staging. Exact confirmed compatible candidates are public with qualified unreviewed evidence. Photos/raw OCR stay private. Guests keep history/saved data locally. v0.2.0 optional password sign-in selects a separate verified-UID local namespace and private profile/saved/history sync; cloud/device differences need an explicit choice. Appearance and Welcome completion stay device-local; photos/raw OCR/dietary health preferences are outside private sync. See docs/planning/BACKEND_V0_4_0_REVIEW.md and docs/architecture/COMMUNITY_CATALOGUE.md.
+- Firebase Unlabel (`unlabel-india-catalogue`) uses the existing Standard `unlabel` database in Mumbai, free tier with no linked billing. Anonymous, email/password and Google Auth are configured. Public observations, private libraries and machine collections stay backend-only. The sole direct-client exception is owner-only `profile_media/{uid}` for a strict private profile/gender document and a 192×192 PNG thumbnail of at most 96 KiB; anonymous users and collection listing are denied. Keep Spark/no card; prohibit paid Storage/Functions, TTL, backups and PITR. Public confirmed observations retain qualified unreviewed evidence; provisional observations remain private. Label photos/raw OCR/dietary reminders stay outside library sync. Guests retain local libraries. Signed-in libraries use a verified-UID namespace and explicit cloud/device conflict choices. See docs/architecture/ACCOUNT_PROFILE.md and docs/architecture/COMMUNITY_CATALOGUE.md.
 
 
-- There is one app identity role: the scanner/client user. Guests use automatic anonymous Firebase authentication for public facts; signed-in password scanners retain their SDK session. Implemented v0.7.0/v0.2.0 adds optional scanner login/profile/private sync; guests retain useful local workflows and never upload personal records before login. Keep private signed-in data separate from public package observations. Do not add reviewer/admin app accounts, role claims or dashboards. The existing service account is a backend machine credential, not a user login; exact-hash CLI conflict maintenance stays manual tooling. Compatible safe facts qualify automatically and conflicts remain unresolved.
+- There is one app identity role: the scanner/client user. Guests use automatic anonymous Firebase authentication for public facts. Password/Google scanners retain their SDK session; linking providers must retain the same UID/library and never merge a credential collision. Guests retain useful local workflows and never upload personal records before login. Optional gender is user-chosen: unset/male uses the approved male default, female uses its distinct new default, and Google gender is never inferred or requested. Private profile data never enters public observations. Do not add reviewer/admin app accounts, role claims or dashboards. The service account is a backend machine credential; exact-hash conflict maintenance stays manual. Compatible facts qualify automatically and conflicts remain unresolved.
 - Use local barcode lookup and conservative OCR first for known products. User authorized optional backend Gemini/OpenAI photo extraction on 8 October 2026, with explicit transfer consent, bounded unverified output, one global credential and sticky failure replacement. No custom model/training or Firebase billing is selected. Gemini synthetic evidence is separate from hosted/native accuracy. OpenAI uses the supplied operator account; no billing is enabled by our tools.
 - Exact-identity-compatible confirmed gap fills may appear as qualified submitter-confirmed/unreviewed facts after strict validation; identical rescans do not require repeated operator review. Conflicts/identity mismatches await review. Moderator review is an additional state, never safety/current-package proof. Preserve semantic deduplication, immutable receipts, provider-reference checks and transactional admission.
 

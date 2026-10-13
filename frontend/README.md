@@ -1,7 +1,9 @@
 # Unlabel frontend
 
-Checkpoint **12 October 2026**: **0.7.0+11**, pinned Flutter **3.47.4**.
-Current feature evidence: [Insights review](../docs/planning/FRONTEND_V0_7_0_REVIEW.md).
+Checkpoint **13 October 2026**: product/build version comes from
+[pubspec.yaml](pubspec.yaml); Flutter is pinned in [workspace.json](../scripts/workspace.json).
+Current [auth/profile and UI review](../docs/planning/FRONTEND_V0_8_0_REVIEW.md)
+keeps final rendered/reference, hosted and native acceptance pending.
 Maintenance, release and native/device evidence are tracked independently in
 [the audit](../docs/planning/MAINTENANCE_2026_10_12.md) and
 [release guide](../docs/planning/RELEASE_VERSIONING.md).
@@ -49,13 +51,23 @@ metadata supplies About and platform versions without duplicated Dart defaults.
   with confirmations; Help explains supported flows and opens About. Signed-in
   users can log out. Notifications are disabled with an explicit explanation that
   this version has no notification service.
-- Guests keep bounded history/bookmarks on the device. Optional password accounts
-  use a separate verified-UID namespace and explicit private sync choices.
+- Google/password sign-in, signup, reset and success use six fresh reference
+  illustrations. The filled brand leaf and single-screen desktop/phone composition
+  must pass final rendered review. Profile-origin phone auth has a top-left X.
+  Sign-in methods settings links Google/password under the same UID/library;
+  credential collisions never merge accounts.
+- Profile photo editing uses a gallery crop preview and explicit Save. A private
+  192×192 PNG thumbnail of at most 96 KiB and optional gender use the existing named
+  Firestore database. Unset/male uses the approved male default; female uses the new
+  female default. Google gender is never inferred or requested.
+- Guests keep bounded history/bookmarks on the device. Google/password accounts
+  use a separate verified-UID namespace and explicit private library sync choices.
   Confirmed public package facts save separately through scanner authentication.
   Report analysis remains useful when authentication or storage fails.
 
-Camera/gallery photos and raw OCR remain in the capture session and stay out of
-reports, public observations and private account sync. Android uses bundled ML Kit
+Package camera/gallery photos and raw OCR remain in the capture session and stay
+out of reports, public observations and private library sync. Explicitly selected
+profile thumbnails are a separate [owner-only contract](../docs/architecture/ACCOUNT_PROFILE.md). Android uses bundled ML Kit
 Latin/Devanagari recognition. iOS uses Vision where the selected language is
 supported, otherwise offers another clear photo or optional cloud reading. Browser OCR loads pinned same-origin
 Tesseract JavaScript/Wasm/language assets only on first use; it does not send the
@@ -97,7 +109,7 @@ flutter pub get
 flutter analyze
 flutter test
 flutter build web --release
-node --test test/local_ocr_web_test.cjs
+node --test test/*_web_test.cjs
 ~~~
 
 From the root, `python scripts/vendor_web_ocr.py --check` verifies the 21 tracked
@@ -121,7 +133,10 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the v0.7.0 review for dated feature checks and the maintenance audit for current release/build evidence.
+See the [current review](../docs/planning/FRONTEND_V0_8_0_REVIEW.md) and maintenance
+audit for current gates. The static email-action bridge is deployed, but Firebase
+rejects its custom callback setting; actual reset emails retain Firebase's reserved
+handler. Custom reset-email routing and real provider/device acceptance are separate.
 
 ## Source ownership
 
@@ -132,7 +147,8 @@ See the v0.7.0 review for dated feature checks and the maintenance audit for cur
 | lib/core/models | Validated report/search models and explicitly confirmed label draft |
 | lib/core/network | Bounded HTTP, capabilities, public read caches and scanner Auth |
 | lib/core/storage | Bounded local reports, bookmarks and appearance |
-| lib/features/account | Optional private sync Profile and device-only reminders |
+| lib/core/accounts | Firebase identity/provider linking, private media, password policy and bounded library sync |
+| lib/features/account | Reference auth, Profile/photo/settings windows and device-only reminders |
 | lib/features/scanner/presentation | Desktop/mobile Home, automatic Scan, qualified/confirmed/researched results, comparison and libraries |
 | assets/artwork, assets/brand | Decorative artwork, startup font, icon masters and provenance/license records |
 | assets/icons | Bundled Solar feature icons with attribution/license |

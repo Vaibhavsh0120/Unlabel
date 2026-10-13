@@ -1,10 +1,10 @@
 # Unlabel documentation
 
 Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
-and [backend pyproject](../backend/pyproject.toml). The latest frontend maintenance
-patch is reviewed in [its release evidence](planning/FRONTEND_V0_7_1_REVIEW.md).
-This maintenance pass fixes setup/release metadata and stale documentation; its
-later UI repairs ship in a frontend patch. Source, native artifacts, hosted deployment
+and [backend pyproject](../backend/pyproject.toml). The latest auth/profile and UI
+work is reviewed in [frontend evidence](planning/FRONTEND_V0_8_0_REVIEW.md), with
+[backend Google compatibility](planning/BACKEND_V0_12_1_REVIEW.md) separate.
+This pass also fixes setup/release metadata and stale documentation. Source, native artifacts, hosted deployment
 and physical-device checks have separate receipts.
 
 | Start here | Purpose |
@@ -24,13 +24,15 @@ and physical-device checks have separate receipts.
 | [Data flow](architecture/DATA_FLOW.md) · [Privacy](SAFETY_PRIVACY.md) | Sources, consent, retention and uncertainty |
 | [Catalogue](architecture/CATALOGUE.md) · [Discovery](architecture/PRODUCT_DISCOVERY.md) | Immutable packaged catalogue, indexed search and dated sources |
 | [Reports](architecture/LABEL_REPORT.md) · [Comparison](architecture/SOURCED_COMPARISON.md) | Sourced facts, compatible tables and unknowns |
-| [Community](architecture/COMMUNITY_CATALOGUE.md) · [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) | Separate public observations and optional account storage |
+| [Community](architecture/COMMUNITY_CATALOGUE.md) · [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) | Separate public observations and optional account libraries |
+| [Account and profile](architecture/ACCOUNT_PROFILE.md) | Linked sign-in, password reset, private avatars and optional gender |
 | [AI routing](architecture/AI_ROUTING.md) | Bounded optional photo extraction and private proposals |
 | [Insights](architecture/INSIGHTS.md) · [UI contract](../DESIGN.md) | Sourced educational articles and reference visual direction |
 | [Master plan](planning/MASTER_PLAN.md) · [Remaining work](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Product intent and pending acceptance |
 
-The latest feature evidence remains in [frontend 0.7 review](planning/FRONTEND_V0_7_0_REVIEW.md)
-and [backend 0.12 review](planning/BACKEND_V0_12_0_REVIEW.md). Older versioned reviews,
+The current reviews separate [frontend auth/profile](planning/FRONTEND_V0_8_0_REVIEW.md)
+from [backend provider compatibility](planning/BACKEND_V0_12_1_REVIEW.md). Final hosted/native
+acceptance remains pending until its exact-source receipt is recorded. Older versioned reviews,
 production JSON receipts, research notes, accepted specs and plans remain dated
 historical evidence. Their versions and test totals describe their own source
 revisions; they are not instructions to revert current code or repeat old work.

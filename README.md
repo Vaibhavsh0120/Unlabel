@@ -14,7 +14,7 @@
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
-[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version from pubspec](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2FVaibhavsh0120%2FUnlabel%2Fmain%2Ffrontend%2Fpubspec.yaml&query=%24.version&label=frontend&color=155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Funlabel-api.vercel.app%2Fv1%2Fmeta&query=%24.backend_version&label=backend&color=155b4b)](backend/pyproject.toml)
+[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.8.0%2B12-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.12.1-155b4b)](backend/pyproject.toml)
 
 </div>
 
@@ -47,17 +47,17 @@ Import and launch on an actual iPhone remain unverified.
 
 ### Latest update
 
-The current app adds the complete Insights collection, source-linked readers,
-topic browsing, local bookmarks and manual desktop/mobile navigation.
-[Frontend review](docs/planning/FRONTEND_V0_7_0_REVIEW.md).
+The frontend update adds responsive authentication, Google and email
+sign-in for one account, private profile thumbnails and optional gender/default avatars.
+It also improves Sources, navigation, 404 recovery, empty states, illustration
+delivery and the three-second Home insight carousel.
+Further auth UI refinements are deferred to a later bugfix update.
+[Frontend evidence](docs/planning/FRONTEND_V0_8_0_REVIEW.md) ·
+[Backend Google compatibility](docs/planning/BACKEND_V0_12_1_REVIEW.md).
 
-The **12 October maintenance** fixes setup and release tooling, stale docs,
-Android build timing and GitHub release labels. Android and iOS builds pass;
-the hosted LiveContainer source is published. The later UI repairs ship as a
-frontend patch; backend runtime stays unchanged.
-The website also gains clearer Sources cards, responsive 404 recovery, consistent
-page navigation, refreshed empty states and faster illustration delivery.
-[Maintenance audit and checks](docs/planning/MAINTENANCE_2026_10_12.md).
+Setup, Android build timing, release labels and the hosted LiveContainer source
+were repaired in the [maintenance pass](docs/planning/MAINTENANCE_2026_10_12.md).
+Final source, hosted and native publication identities are recorded separately.
 
 ## Run locally
 
@@ -115,8 +115,11 @@ Generic food-composition tables never fill a branded packet's unknown values.
 - Photos and raw text remain private; optional server extraction requires consent.
   AI output stays unverified until accepted, with bounded private staging separate
   from public catalogue admission.
-- Guests retain useful local workflows. Optional password sign-in selects a
-  separate account namespace; account/device differences require an explicit choice.
+- Guests retain useful local workflows. Google or email/password sign-in selects
+  a separate account namespace; linking both keeps the same library. Account/device
+  differences require an explicit choice. Optional profile thumbnails and gender
+  settings stay private in the existing Firebase database.
+  [Account and profile details](docs/architecture/ACCOUNT_PROFILE.md).
 - Appearance, Welcome completion, dietary reminders and article bookmarks stay
   on the device. Shared preferences are convenience storage, not an encrypted backup.
 - Previously loaded, dated reports remain readable locally. New lookups and
@@ -139,7 +142,7 @@ Generic food-composition tables never fill a branded packet's unknown values.
 | **Understand the project** | [Documentation index](docs/README.md) · [Feature tracker](docs/planning/FEATURE_TRACKER.md) · [Architecture](docs/architecture/SYSTEM.md) |
 | **Develop and contribute** | [Contributing](CONTRIBUTING.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md) · [Scripts](scripts/README.md) · [UI contract](DESIGN.md) |
 | **Build and publish** | [Release/versioning](docs/planning/RELEASE_VERSIONING.md) · [Source release ledger](docs/planning/CONTROLLED_RELEASES.md) · [Vercel setup](docs/planning/VERCEL_SETUP.md) |
-| **Check the evidence** | [Maintenance receipt](docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](docs/planning/FRONTEND_V0_7_0_REVIEW.md) · [Backend review](docs/planning/BACKEND_V0_12_0_REVIEW.md) |
+| **Check the evidence** | [Maintenance receipt](docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](docs/planning/FRONTEND_V0_8_0_REVIEW.md) · [Backend review](docs/planning/BACKEND_V0_12_1_REVIEW.md) |
 
 <details>
 <summary><strong>Repository map</strong></summary>

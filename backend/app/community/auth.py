@@ -75,7 +75,9 @@ class CommunityRuntime:
             or expiry <= time.time()
             or not isinstance(decoded.get("firebase"), dict)
             or decoded["firebase"].get("sign_in_provider")
-            not in ({"password"} if account else {"anonymous", "password"})
+            not in (
+                {"password", "google.com"} if account else {"anonymous", "password", "google.com"}
+            )
         ):
             raise AuthenticationInvalid()
         return subject

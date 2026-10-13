@@ -39,9 +39,9 @@ const _sources = [
     title: 'FSSAI guidance',
     icon: 'shield',
     artwork: 'assets/artwork/sources-guidance.webp',
-    body: 'The Food Safety and Standards Authority of India publishes food rules. Unlabel uses reviewed evidence for the specific claims it supports; this is not official product approval.',
+    body: 'The Food Safety and Standards Authority of India publishes food rules.',
     url: 'https://www.fssai.gov.in/',
-    detail: 'Reviewed guidance supports specific explanations. Unlabel does not represent FSSAI or give an official compliance or product-approval verdict.',
+    detail: 'Unlabel explains reviewed claims, without representing FSSAI or certifying product approval or compliance.',
   ),
   _SourceInfo(
     id: 'codex',
@@ -304,57 +304,148 @@ class _SourceArtwork extends StatelessWidget {
   );
 }
 
-Future<void> _showSourceDetails(BuildContext context, _SourceInfo source) =>
-    showModalBottomSheet<void>(
+Future<void> _showSourceDetails(BuildContext context, _SourceInfo source) {
+  final reduced = MediaQuery.disableAnimationsOf(context);
+  if (MediaQuery.sizeOf(context).width >= 720) {
+    return showDialog<void>(
       context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      showDragHandle: true,
-      constraints: const BoxConstraints(maxWidth: 640),
-      sheetAnimationStyle: MediaQuery.disableAnimationsOf(context)
-          ? AnimationStyle.noAnimation
-          : null,
-      builder: (context) => SafeArea(
-        top: false,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(context).height * .8,
+      animationStyle: reduced ? AnimationStyle.noAnimation : null,
+      builder: (context) => Dialog(
+        key: const Key('source-detail-window'),
+        clipBehavior: Clip.antiAlias,
+        insetPadding: const EdgeInsets.all(24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28),
+          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+        ),
+        child: SizedBox(width: 640, child: _SourceDetailsBody(source)),
+      ),
+    );
+  }
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    showDragHandle: false,
+    clipBehavior: Clip.antiAlias,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+    ),
+    constraints: const BoxConstraints(maxWidth: 640),
+    sheetAnimationStyle: reduced ? AnimationStyle.noAnimation : null,
+    builder: (context) =>
+        SafeArea(top: false, child: _SourceDetailsBody(source)),
+  );
+}
+
+class _SourceDetailsBody extends StatelessWidget {
+  const _SourceDetailsBody(this.source);
+  final _SourceInfo source;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final bodyStyle = theme.textTheme.bodyLarge?.copyWith(height: 1.5);
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * .85,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: scheme.primaryContainer.withValues(alpha: .24),
+            padding: const EdgeInsets.fromLTRB(24, 20, 12, 20),
+            child: Row(
+              children: [
+                _SourceIcon(source.icon, compact: true),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(source.title, style: theme.textTheme.titleLarge),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  tooltip: 'Close source details',
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close_rounded),
+                ),
+              ],
+            ),
           ),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          Flexible(
+            child: SingleChildScrollView(
+              key: const Key('source-detail-scroll'),
+              primary: false,
+              padding: const EdgeInsets.all(24),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    source.title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(source.body),
-                  const SizedBox(height: 16),
-                  Text(source.detail),
-                  if (source.url != null) ...[
-                    const SizedBox(height: 16),
-                    SelectableText(source.url!),
-                    _CopySourceLink(url: source.url!, id: '${source.id}-sheet'),
-                  ],
-                  const SizedBox(height: 16),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
+                  Text(source.body, style: bodyStyle),
+                  const SizedBox(height: 24),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest.withValues(
+                        alpha: .5,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            'Limits',
+                          style: theme.textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          source.detail,
+                          style: bodyStyle?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  if (source.url != null) ...[
+                    const SizedBox(height: 24),
+                    Text('Website', style: theme.textTheme.titleSmall),
+                    const SizedBox(height: 8),
+                    SelectableText(
+                      source.url!,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: scheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _CopySourceLink(url: source.url!, id: '${source.id}-sheet'),
+                  ],
                 ],
               ),
             ),
           ),
-        ),
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                width: 132,
+                child: FilledButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Close'),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
 
 class _CopySourceLink extends StatefulWidget {
   const _CopySourceLink({required this.url, required this.id});

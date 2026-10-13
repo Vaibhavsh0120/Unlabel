@@ -8,7 +8,9 @@ import subprocess
 import sys
 import tomllib
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import quote, unquote
+
+from version_metadata import backend_version, frontend_version
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".py", ".json", ".md", ".yml", ".yaml", ".toml", ".txt", ".ps1", ".sh"}
@@ -82,7 +84,16 @@ def main() -> int:
     parser.parse_args()
     try:
         result = validate(ROOT, source_files(ROOT))
-    except (OSError, UnicodeError, subprocess.CalledProcessError):
+        version, build = frontend_version(ROOT)
+        backend = backend_version(ROOT)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        for component, value in {"frontend": f"{version}+{build}", "backend": backend}.items():
+            badge = f"https://img.shields.io/badge/{component}-{quote(value, safe='')}-155b4b"
+            if badge not in readme:
+                result["errors"].append(f"README.md: {component} badge differs from canonical version")
+        if not (ROOT / f"contracts/schemas/backend-v{backend}.openapi.json").is_file():
+            result["errors"].append("contracts/schemas: current backend OpenAPI export is missing")
+    except (OSError, UnicodeError, ValueError, KeyError, subprocess.CalledProcessError):
         print("Unable to enumerate workspace source files.", file=sys.stderr)
         return 1
     print(json.dumps(result, indent=2))

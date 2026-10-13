@@ -1,12 +1,11 @@
 # Safety, evidence and privacy boundaries
 
-Current source: frontend **v0.7.0+11** and backend **v0.12.0**. Automatic
-captured-barcode/OCR reading and optional consented cloud extraction are
-implemented, with bounded private structured proposals. Latest frontend source
-is pushed with hosted proof pending; backend read-only hosted proof excludes
-authenticated generation/staging. Physical-device accuracy remains separate.
-[Frontend review](planning/FRONTEND_V0_7_0_REVIEW.md) ·
-[Backend review](planning/BACKEND_V0_12_0_REVIEW.md).
+Current source versions come from [frontend pubspec](../frontend/pubspec.yaml)
+and [backend pyproject](../backend/pyproject.toml). The new auth/profile scope and
+Google-provider compatibility have separate [frontend](planning/FRONTEND_V0_8_0_REVIEW.md)
+and [backend](planning/BACKEND_V0_12_1_REVIEW.md) reviews. Final exact-source hosted/native
+verification is pending. Earlier read-only backend checks exclude authenticated
+extraction/staging; physical-device accuracy remains separate.
 
 Confirmed current-label and historical source facts retain distinct evidence.
 Analysis needs no account; automatic storage failures change only their separate
@@ -14,19 +13,26 @@ outcome. Six reviewed glossary entries describe technological functions, not
 health/allergy/Indian-permission verdicts. Sugar cubes approximate **4 g each**
 on the original table basis. No universal safety score is implemented.
 
-Guests keep personal records locally. Optional password accounts use isolated
-UID-specific libraries and bounded private display-name/saved/history sync.
+Guests keep personal records locally. Optional Google/password accounts use
+isolated UID-specific libraries and bounded private display-name/saved/history sync.
+Linking another sign-in method preserves that UID; collisions never merge libraries.
 Cloud/device differences require explicit choices; CAS revisions and immutable
 mutation IDs preserve safe retries/deletion. Sign-out returns to guest data.
-Photos, raw OCR, geometry, dietary/allergen reminders, appearance, Welcome
-completion and Insight bookmarks remain outside private sync. Insight bookmarks
+Package photos, raw OCR, geometry, dietary/allergen reminders, appearance, Welcome
+completion and Insight bookmarks remain outside library sync. A separately selected
+profile photo saves only its cropped thumbnail privately; original photos/EXIF are
+not retained. Optional gender controls a default avatar and is never inferred from
+Google or a photo. Unset gender uses the approved male avatar without recording a
+gender choice. [Account/profile storage](architecture/ACCOUNT_PROFILE.md). Insight bookmarks
 are device-wide educational data, outside scanner identity namespaces.
 [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) ·
 [Insights](architecture/INSIGHTS.md).
 
 The configured Standard Firestore `unlabel` database stays on the free tier
-without linked billing, with anonymous/password Auth and deny-all direct client
-rules. Public package facts, private user snapshots and machine proposals have
+without linked billing, with anonymous/password/Google Auth. Direct access is
+denied to public facts, private libraries and machine collections. The sole client
+exception is strict owner-only `profile_media/{uid}`; anonymous users, other owners,
+collection listing and other databases are denied. These stores have
 independent admission. Earlier v0.4/v0.5/v0.7 backend and v0.1/v0.2/v0.3 frontend
 release evidence remains in its dated reviews; it does not establish current
 hosted or native behavior. [Master plan](planning/MASTER_PLAN.md).
@@ -58,19 +64,20 @@ AI cannot invent missing quantities, decide allergy safety, alter findings or ad
 | Frames/photos/geometry | Temporary device/browser capture session; no durable photo store | With explicit consent, bounded PNG/JPEG photos go to backend and its globally active Gemini/OpenAI provider for reading; geometry is returned to the current session |
 | Raw OCR/corrections | Raw OCR stays in the local capture session; only structured corrected facts enter saved reports | Bounded confirmed/provisional structured public fields to HTTPS backend |
 | Diet/allergy reminders | Local device/browser, editable/deletable; no suitability verdict | None to backend/AI providers |
-| Scan history/reports | Guests device/browser-local; password account uses its isolated local namespace and bounded private snapshot | Optional login enables private caller-owned CAS sync; counts 50 saved/100 history, data 384 KiB; no silent trimming |
-| Account display name | Local account namespace and private snapshot after login | Bounded visible display name only; no email/UID/password/token fields in payload |
+| Scan history/reports | Guests device/browser-local; Google/password account uses its isolated local namespace and bounded private snapshot | Optional login enables private caller-owned CAS sync; counts 50 saved/100 history, data 384 KiB; no silent trimming |
+| Account display name | Firebase Auth SDK profile plus bounded account-library display name | Google supplies SDK name/photo; the library payload contains no email/UID/password/token fields |
+| Profile avatar and optional gender | Owner-only `profile_media/{uid}` in named `unlabel` Firestore; guests keep only gender/default selection locally | Explicit gallery crop saves a 192×192 PNG of at most 96 KiB, source choice and optional gender; no original/EXIF, public observation or AI transfer |
 | Appearance/Welcome completion and Insight bookmarks | Device/browser-local | Never part of private cloud snapshot |
 | Public product observations | Configured Firebase Unlabel; automatic save/dedup of corrected confirmed facts, original revisions and dates | Product identity, paired back facts/declarations/claims only; no separate Share step, images/raw OCR/profile/location |
 | Unverified AI structured proposals | Backend-only private Firestore staging; 256 buckets × eight items × 32 KiB facts, opportunistic seven-day expiry and oldest-item eviction | Literal extracted identity/claims/ingredient/declaration/nutrient fields only, with hashed ownership; no photos, raw OCR, region text/geometry, prompts or provider envelopes |
 | Provisional extraction candidates | Staged unverified structured public candidates | Not promoted as confirmed facts or regulatory findings; no raw private OCR dump |
-| Write ownership | Private keyed hash of verified anonymous/password scanner subject | Backend write/receipt boundaries; never public or a raw UID/token |
+| Write ownership | Private keyed hash of verified anonymous/password/Google scanner subject | Backend write/receipt boundaries; never public or a raw UID/token |
 | Public evidence | Canonical reviewed files and receipt-verified read-only knowledge | Deterministic criteria are not transferred through an explanation-provider route |
 | Credentials | Ignored local backend environment/host secret settings | Relevant provider over HTTPS only |
 | Open Food Facts lookup/snapshot | Source-tagged public product data; optional dated local cache | Barcode and required public lookup options only to OFF through the backend; no photo/profile/history upload |
 | Logs | Minimal errors/metrics, redacted bodies/tokens | No telemetry prerequisite |
 
-Deleting a guest saved report removes its local copy. Signed-in saved/history/display-name changes sync a bounded private snapshot; clearing account data sends a versioned empty snapshot, and failed deletion stays pending locally. Guest copies and public observations remain separate. Captured photo retention is not implemented. Clearing local appearance/preferences removes device selections. Website local storage is implemented, and may be cleared/evicted by the browser; complete offline app caching/restart remains a separate verification gate. No serverless filesystem is durable scan storage.
+Deleting a guest saved report removes its local copy. Signed-in saved/history/display-name changes sync a bounded private snapshot; Clear account library sends a versioned empty library snapshot, and failed deletion stays pending locally. This action retains the Firebase sign-in profile, avatar and gender; photo options remove a custom thumbnail separately. Guest copies and public observations remain separate. Captured photo retention is not implemented. Clearing local appearance/preferences removes device selections. Website local storage is implemented, and may be cleared/evicted by the browser; complete offline app caching/restart remains a separate verification gate. No serverless filesystem is durable scan storage.
 
 Open Food Facts reads never automatically publish user corrections or photos. Its records may differ from the actual package; preserve source, age and conflicts, and never use missing fields or community tags as allergy-safety or Indian compliance proof. Local snapshots and exported/combined datasets retain applicable attribution/license obligations. [Provider boundaries](architecture/OPEN_FOOD_FACTS.md).
 
@@ -112,9 +119,12 @@ Before hosted use, verify Vercel's applicable data-use terms/account opt-out and
 
 Treat OCR, source excerpts and community data as untrusted data, including embedded instructions. Bound text/response sizes and validate fixed schemas. Machine extraction proposes qualified fields; it cannot overwrite deterministic outcomes or supply missing evidence. No generated explanation route is implemented.
 
-Public writes accept verified Firebase anonymous or password scanner tokens; private account sync requires password authentication and derives ownership from the verified subject. Payload-supplied identity cannot choose an owner. Manual confirmed-entry requests remain compatible with frontend v0.1.0; optional account sync was independently published for v0.2.0. Direct Firestore access is denied even to authenticated clients;
-privileged SDK access requires dedicated private IAM credentials and server
-validation. Review is never client-assigned. Transactional admission cannot
+Public writes accept verified Firebase anonymous, password or Google scanner
+tokens. Private library sync requires password or Google authentication and derives
+ownership from the verified subject; payload identity cannot choose an owner.
+Backend-only collections require dedicated private IAM credentials and server
+validation. The separate profile-media exception verifies the non-anonymous
+owner UID and strict schema in Firestore rules. Review is never client-assigned. Transactional admission cannot
 guarantee provider availability. Keep Spark/no linked billing and no paid fallback.
 Local source/emulator and live Firebase checks are distinct from hosted API proof.
 
@@ -122,7 +132,7 @@ Local source/emulator and live Firebase checks are distinct from hosted API proo
 AI remains disabled in clean-clone defaults. The supplied operator keys enable
 bounded optional photo extraction; one shared Firestore selection applies to all
 tasks and users, with sticky manual/failure replacement. Synthetic evidence is
-separate from real-package or device accuracy. Optional password login is implemented without an admin/reviewer role or
+separate from real-package or device accuracy. Optional Google/password login is implemented without an admin/reviewer role or
 dashboard. The app has one scanner/client role; public facts and useful analysis
 remain available to guests through automatic anonymous write authentication. CORS restricts browser access and is not authentication. Neither a shared
 APK/web secret nor a deployment-automation bypass token belongs in clients.

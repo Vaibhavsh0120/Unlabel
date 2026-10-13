@@ -1,8 +1,11 @@
 # Team handoff
 
-Checkpoint **12 October 2026**: frontend **0.7.0+11**, backend **0.12.0**.
-Work directly on main and preserve existing edits. The active maintenance scope
-and evidence gates are in [the audit](MAINTENANCE_2026_10_12.md).
+Checkpoint **13 October 2026**: canonical versions are in
+[frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml).
+Work directly on main and preserve existing edits. Current auth/profile, provider
+compatibility and pending hosted/native gates are in the
+[frontend review](FRONTEND_V0_8_0_REVIEW.md), [backend review](BACKEND_V0_12_1_REVIEW.md)
+and [maintenance audit](MAINTENANCE_2026_10_12.md).
 
 ## Restore and validate
 
@@ -19,11 +22,14 @@ the public catalogue/guest workflow; hidden-key restoration enables existing
 configured services. See [local development](LOCAL_DEVELOPMENT.md).
 
 Frontend checks run from frontend: `flutter analyze`, `flutter test`,
-`flutter build web --release`, and `node --test test/local_ocr_web_test.cjs`.
+`flutter build web --release`, and `node --test test/*_web_test.cjs`.
 Backend checks run from backend with its .venv Python: `-m pytest -q`,
 `-m ruff check app tests`, and `-m pip check`. Script/workspace checks are
 documented in [scripts](../../scripts/README.md). Native compilation uses the
-[manual workflow](../../.github/workflows/README.md).
+[manual workflow](../../.github/workflows/README.md). From root,
+`node --test firebase/auth-bridge.test.cjs` checks the fixed-origin email bridge.
+[Account/profile setup](../architecture/ACCOUNT_PROFILE.md) records OAuth/signing,
+owner-only media and the pending provider callback setting.
 
 ## Ownership
 
