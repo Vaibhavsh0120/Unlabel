@@ -143,9 +143,12 @@ jobs:
           DEMO_KEYSTORE: ${{ secrets.UNLABEL_ANDROID_DEMO_KEYSTORE }}
         run: |
           test -n "$DEMO_KEYSTORE" || { echo 'Missing registered demo signing key.'; exit 1; }
-          mkdir -p "$HOME/.android"
-          printf '%s' "$DEMO_KEYSTORE" | base64 --decode > "$HOME/.android/debug.keystore"
-          chmod 600 "$HOME/.android/debug.keystore"
+          DEMO_KEY_PATH="$RUNNER_TEMP/unlabel-registered-demo.keystore"
+          printf '%s' "$DEMO_KEYSTORE" | base64 --decode > "$DEMO_KEY_PATH"
+          chmod 600 "$DEMO_KEY_PATH"
+          keytool -list -v -keystore "$DEMO_KEY_PATH" -storepass android -alias androiddebugkey > "$RUNNER_TEMP/demo-certificate.txt"
+          grep -qi '3E:7F:9E:3A:26:DC:4E:A8:0C:85:8A:48:12:BC:59:C7:2D:5F:D8:0A' "$RUNNER_TEMP/demo-certificate.txt" || { echo 'Restored demo key does not match the registered Google client.'; exit 1; }
+          printf 'UNLABEL_DEMO_KEYSTORE=%s\n' "$DEMO_KEY_PATH" >> "$GITHUB_ENV"
       - name: Build and verify demo APK
         timeout-minutes: 35
         working-directory: frontend

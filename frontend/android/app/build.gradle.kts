@@ -29,11 +29,26 @@ android {
         versionName = flutter.versionName
     }
 
+    val demoKeystore = providers.environmentVariable("UNLABEL_DEMO_KEYSTORE").orNull
+    if (providers.environmentVariable("GITHUB_ACTIONS").orNull == "true") {
+        require(!demoKeystore.isNullOrBlank()) { "CI requires the registered demo keystore." }
+    }
+    if (!demoKeystore.isNullOrBlank()) {
+        signingConfigs.create("registeredDemo") {
+            storeFile = file(demoKeystore)
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             // CI restores a private stable demo key registered with Firebase.
             // Local builds use the developer's registered debug certificate.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(
+                if (demoKeystore.isNullOrBlank()) "debug" else "registeredDemo"
+            )
         }
     }
 }
