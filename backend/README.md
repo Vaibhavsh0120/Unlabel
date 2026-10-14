@@ -1,6 +1,6 @@
 # Unlabel backend
 
-Checkpoint **13 October 2026**: Python **3.12+**, **27 API paths /
+Checkpoint **14 October 2026**: Python **3.12+**, **27 API paths /
 29 operations**. Canonical version is project.version in [pyproject.toml](pyproject.toml).
 The current contract retains bounded photo extraction/private proposals,
 243 sourced research observations, 120 separate image descriptors and the
@@ -13,7 +13,8 @@ and physical-device evidence remain separate. The
 [current deletion release](../docs/planning/BACKEND_V0_13_0_REVIEW.md) adds
 recent-auth owner-only account cleanup and permanent deletion markers. Verified
 Google scanner/private-library compatibility and existing snapshot schemas remain.
-Final exact-source hosted/source publication is pending. See
+Source `bd06bfb` passed CI and deployed; 13 hosted checks and the backend source
+release are recorded in the current review. See
 [maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
 and [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
 

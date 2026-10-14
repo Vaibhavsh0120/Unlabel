@@ -36,7 +36,7 @@ sample products and health verdicts are illustrative.
 | F19 | Responsive/light/dark / All | Client-owned | v0.6 adds reference sidebar/Home and responsive results; preceding reviews retain their scope. v0.7 Insights has reviewed 390/1440/1728 light/dark renders and 24 feed text/theme/width configurations without layout exceptions; native proof remains separate |
 | F20 | Attribution/age/version / All | Ready | Published metadata/source/date/evidence/build information and working source details; exact hosted v0.3.0 version/build/assets verified |
 | C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
-| C02 | Optional scanner account/private sync | v0.13.0 adds owner-only deletion; private snapshots remain backend-only | Google/password linking preserves UID/library, collisions cannot merge accounts; thumbnail/gender uses a separate owner-only document. Final current-source hosted/native gates pending; original v0.7.0/v0.2.0 receipts remain historical |
+| C02 | Optional scanner account/private sync | v0.13.0 adds owner-only deletion; private snapshots remain backend-only | Google/password linking preserves UID/library, collisions cannot merge accounts; thumbnail/gender uses a separate owner-only document. Current source passed CI and hosted contract checks; native/device evidence stays in the release ledger; original v0.7.0/v0.2.0 receipts remain historical |
 
 ## Component releases
 

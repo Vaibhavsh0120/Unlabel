@@ -1,9 +1,10 @@
 # Unlabel frontend
 
-Checkpoint **13 October 2026**: product/build version comes from
+Checkpoint **14 October 2026**: product/build version comes from
 [pubspec.yaml](pubspec.yaml); Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
 Current [auth/provider update](../docs/planning/FRONTEND_V0_9_0_REVIEW.md) is
-authorized for completion and push from main. Native publication remains separate. The
+pushed in `bd06bfb`, passed repository CI and deployed to the web. Native/device
+evidence is recorded separately in the release review. The
 [preceding source scope](../docs/planning/FRONTEND_V0_8_0_REVIEW.md) stays separate.
 Maintenance, release and native/device evidence are tracked independently in
 [the audit](../docs/planning/MAINTENANCE_2026_10_12.md) and

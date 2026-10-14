@@ -51,13 +51,23 @@ The iOS source feed has its own prerelease and never represents a backend releas
 [Release workflow and versions](RELEASE_VERSIONING.md) ·
 [Maintenance scope](MAINTENANCE_2026_10_12.md).
 
-## Current source scope - 13 October 2026
+## Current release - 14 October 2026
 
-Verified remote main `3e67f13` contains frontend 0.8.0+12 and backend 0.12.1.
-The authorized next source update uses frontend **0.9.0+13** and backend
-**0.13.0**, for account controls/reference auth and the additive deletion endpoint.
-The earlier unshipped 0.8.1 working note is superseded; no 0.8.1 release is created.
-[Frontend evidence](FRONTEND_V0_9_0_REVIEW.md) and
-[backend evidence](BACKEND_V0_13_0_REVIEW.md) record local checks and separate
-hosted/native gates. New source commit identities will be recorded after commit;
-no native artifacts, tags, or feed publication are implied by a source push.
+Source commit `bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084` was pushed to main with
+frontend **0.9.0+13** and backend **0.13.0**. Repository CI passed for that commit.
+Both Vercel Git deployments completed; thirteen [hosted checks](../research/RELEASE_2026_10_14_PRODUCTION.json)
+verified the public versions, current OpenAPI, private API rejection, preserved
+catalogue counts and exact two-file claim-knowledge receipt. Firebase profile
+rules and the fallback reset bridge were deployed separately.
+
+The [backend source release](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.13.0)
+targets that implementation commit. The frontend version increase automatically
+started [native release CI](https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38512047557).
+All native jobs passed and [frontend 0.9.0+13](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.9.0%2B13)
+was published with exactly APK, IPA and apps.json attachments. Public downloads
+matched their SHA-256 digests and sizes; the IPA declares iPhoneOS, version 0.9.0,
+build 13 and minimum iOS 15.0. The stable ios-source/apps.json URL now points to
+that IPA and retains 0.8.0+12 and 0.7.0+11. The [native receipt](../research/FRONTEND_V0_9_0_NATIVE.json)
+records these checks separately from hosted checks.
+Physical device, LiveContainer launch, real provider consent and inbox reset
+acceptance remain separate. The superseded 0.8.1 development note is not a release.

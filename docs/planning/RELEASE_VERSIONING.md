@@ -9,28 +9,25 @@ that identity. See [release ledger](CONTROLLED_RELEASES.md).
 
 | Component | Edit for a future version change | Consumers |
 | --- | --- | --- |
-| Frontend | `frontend/pubspec.yaml`: `version: SemVer+BUILD` | Flutter platform versioning, Dart build metadata, local/Vercel and manual native builds |
+| Frontend | `frontend/pubspec.yaml`: `version: SemVer+BUILD` | Flutter platform versioning, Dart build metadata, local/Vercel and automatic native builds |
 | Backend | `backend/pyproject.toml`: project.version | Backend runtime/API and setup/acquisition metadata |
 | Toolchain | `scripts/config/workspace.json` | Pinned Flutter used by setup and workflow metadata |
 
 Use `python scripts/release/version_metadata.py --component frontend --format json`
-or `--component backend` to inspect canonical values. Manual native builds read
+or `--component backend` to inspect canonical values. Native builds read
 the selected source's pubspec; there are no repeated version/build defaults to
 edit in workflow YAML. Both platforms use the selected source's canonical version
 and build number. Product version is not an API
 major, schema or knowledge version. `/v1/meta` negotiates those independently.
 Allocate a new build number for a new distributable update; published artifacts
-are immutable. The later authorized auth/profile scope bumps the canonical
-frontend version/build; verified Google backend compatibility has its own patch
-version. Final source/hosted/native identities remain pending in their current
-[preceding frontend](FRONTEND_V0_8_0_REVIEW.md) and [backend](BACKEND_V0_12_1_REVIEW.md) reviews.
-The 13 October scope supersedes the unshipped 0.8.1 patch. Verified GitHub main
-`3e67f13` contains frontend 0.8.0+12/backend 0.12.1. The next versions are
-**frontend 0.9.0+13** and **backend 0.13.0**: provider management/account deletion
-and an additive DELETE endpoint are features. The native build increases from
-12 to 13. Existing snapshot schemas and API major remain unchanged. The user
-authorized completion, push, native release and the stable feed update. [Frontend scope](FRONTEND_V0_9_0_REVIEW.md) ·
-[Backend scope](BACKEND_V0_13_0_REVIEW.md).
+are immutable. The 14 October release uses **frontend 0.9.0+13** and **backend
+0.13.0**, replacing frontend 0.8.0+12/backend 0.12.1. Provider management/account
+deletion and the additive DELETE endpoint justify minor versions. Native build
+13 follows 12; snapshot schemas and API major remain unchanged. Source commit
+`bd06bfb` passed repository CI and deployed to web/API. Publication and hosted
+receipts are in the [release ledger](CONTROLLED_RELEASES.md), [frontend review](FRONTEND_V0_9_0_REVIEW.md)
+and [backend review](BACKEND_V0_13_0_REVIEW.md). The superseded 0.8.1 working note
+was never a release.
 
 Current-status docs are dated checkpoints. Write a future review/ledger entry
 for a new release; do not rewrite old reviews, receipts or source references.

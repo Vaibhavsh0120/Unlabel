@@ -1,0 +1,54 @@
+{
+  "checked_at_utc": "2026-10-14T04:42:29.461514+00:00",
+  "source_sha": "bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084",
+  "backend_origin": "https://unlabel-api.vercel.app",
+  "frontend_origin": "https://unlabel-india.vercel.app",
+  "checks_passed": [
+    "Backend health identifies 0.13.0",
+    "Account deletion is advertised",
+    "Private sync supports Google and password",
+    "24,641 bulk products retained",
+    "243 research observations retained",
+    "Six sourced glossary entries retained",
+    "Both hosted claim-knowledge files match tracked bytes",
+    "Hosted OpenAPI matches current export",
+    "Unauthenticated GET is rejected without caching",
+    "Unauthenticated DELETE is rejected without caching",
+    "Hosted frontend can preflight account deletion",
+    "Hosted web identifies 0.9.0+13",
+    "Hosted Firebase fallback bridge matches source"
+  ],
+  "backend_version": "0.13.0",
+  "frontend_version": {
+    "app_name": "unlabel",
+    "version": "0.9.0",
+    "build_number": "13",
+    "package_name": "unlabel"
+  },
+  "boundaries": [
+    "No real account authenticated or deleted",
+    "Provider connectivity and email delivery not established",
+    "Physical Android/iPhone/LiveContainer acceptance remains separate"
+  ],
+  "knowledge_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "deployments": {
+    "frontend": "dpl_BPBuDnwU1e8iTjz29EiqNTZrTLEo",
+    "backend": "dpl_CXjqjPgTUtiE5ubHRQmWLxfeUa59"
+  },
+  "repository_checks": "https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38512047538"
+}

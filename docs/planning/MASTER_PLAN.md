@@ -10,8 +10,8 @@ same-UID Google/password linking, private thumbnails and optional gender/default
 gender uses the approved male default; no Google gender inference is permitted.
 The latest auth references require a fixed outer viewport, equal non-scrolling
 desktop cards and a whole mobile card moving over fixed artwork. Portrait iPad
-fills the width; landscape uses the desktop composition. [Account/profile contract](../architecture/ACCOUNT_PROFILE.md). Final
-current-source hosted/native acceptance remains pending. On 13 October the user
+fills the width; landscape uses the desktop composition. [Account/profile contract](../architecture/ACCOUNT_PROFILE.md). Source `bd06bfb` passed repository CI and deployed; hosted/native evidence is
+recorded in the release ledger, with physical-device acceptance separate. On 13 October the user
 authorized completion and push on main, superseding the earlier local hold.
 Login/signup use layered mascot/sprout/themed-garden illustrations and responsive
 forms; sign-in methods add provider management and explicit account deletion.

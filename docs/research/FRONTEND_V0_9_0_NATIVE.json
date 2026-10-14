@@ -1,0 +1,38 @@
+{
+  "checked_at_utc": "2026-10-14T16:06:07.935876+00:00",
+  "source_sha": "bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084",
+  "release": "https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.9.0%2B13",
+  "workflow": "https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38512047557",
+  "assets": [
+    {
+      "name": "apps.json",
+      "bytes": 1704,
+      "sha256": "807546f9b8c370dac8ea719a24a563e862ab5c0a42620c3b3cd48410f1e825ac",
+      "url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/frontend-v0.9.0%2B13/apps.json"
+    },
+    {
+      "name": "unlabel-0.9.0+13-android-demo.apk",
+      "bytes": 110473872,
+      "sha256": "4829f31e185513409ea3f08353b0fcd73460d75570b50e64451207ab2cbc86b8",
+      "url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/frontend-v0.9.0%2B13/unlabel-0.9.0%2B13-android-demo.apk"
+    },
+    {
+      "name": "unlabel-0.9.0+13-ios-unsigned.ipa",
+      "bytes": 25224158,
+      "sha256": "faf5372f00df2c8530cd74c08826eee6fd39263ac34f11c41871632011d79efa",
+      "url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/frontend-v0.9.0%2B13/unlabel-0.9.0%2B13-ios-unsigned.ipa"
+    }
+  ],
+  "stable_feed_url": "https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json",
+  "feed_version": "0.9.0+13",
+  "retained_feed_versions": [
+    "0.9.0+13",
+    "0.8.0+12",
+    "0.7.0+11"
+  ],
+  "ios_platform": [
+    "iPhoneOS"
+  ],
+  "ios_minimum_version": "15.0",
+  "device_execution": "not_verified"
+}

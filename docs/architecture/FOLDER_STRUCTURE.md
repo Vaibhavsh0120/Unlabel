@@ -17,11 +17,18 @@ implementation directories.
 | `ai/` | Optional training research documentation; no trained model or dataset |
 | `scripts/` | Setup, local launch, encrypted settings, source acquisition/import, contracts and release maintenance |
 | `docs/` | Current architecture/plans, historical reviews and dated evidence |
-| `.github/workflows/` | Manual component checks/builds/releases; native artifacts separate from hosted deployment |
+| `.github/workflows/` | Push/PR checks and automatic frontend version releases; native artifacts separate from hosted deployment |
 
 Root README introduces current status; CONTRIBUTING sets boundaries and DESIGN
 records the Flutter reference adaptation. `.gitignore` protects generated,
 private and secret files. [Documentation index](../README.md).
+
+The `scripts/` root keeps setup, run and encrypted-environment entry points.
+One level below, `dev/` contains local-run helpers, `release/` contains validation
+and publication, `data/` contains catalogue tools, `ai/` contains operator provider
+setup, and `config/` contains public configuration. `tests/` holds script tests;
+`tools/` documents ignored downloaded executables such as Caddy. Generated logs,
+local TLS keys and other temporary output stay under ignored `output/`.
 
 ## Frontend source
 

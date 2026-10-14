@@ -49,11 +49,16 @@ five optional community transaction tests also passed separately on the local
 Firestore emulator. The current OpenAPI export matches the running application schema. The single warning is upstream Starlette/httpx deprecation,
 not an application test failure. Existing contract and workspace checks passed.
 
-The user authorized completion and push from main. Record source/deployment
-identities and any hosted checks separately. This review does not invent a tag,
-published source release, native rebuild or real-account deletion result.
-Destructive live-account testing is not required to establish local regression
-coverage and must never target a real user account as a visual fixture.
+Source `bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084` was pushed and passed
+[repository CI](https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38512047538).
+Production deployment `dpl_CXjqjPgTUtiE5ubHRQmWLxfeUa59` completed from that SHA.
+The [hosted receipt](../research/RELEASE_2026_10_14_PRODUCTION.json) includes
+version 0.13.0, matching OpenAPI, Google/password capability metadata, no-store
+unauthenticated DELETE rejection and frontend DELETE preflight. It also verifies
+unchanged catalogue counts and both claim-knowledge source hashes.
+[Backend v0.13.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.13.0)
+was published from the same source. No real account was deleted during verification;
+provider consent and physical-device acceptance remain separate.
 
 [Private sync contract](../architecture/PRIVATE_ACCOUNT_SYNC.md) ·
 [Account/profile contract](../architecture/ACCOUNT_PROFILE.md) ·

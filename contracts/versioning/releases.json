@@ -201,6 +201,22 @@
       "source_sha": "8b5f9064d61c4003a2fd0ae180d0ece933070cfa",
       "review": "docs/planning/FRONTEND_V0_7_0_REVIEW.md",
       "title": "Frontend v0.7.0 \u2014 Daily Sourced Insights"
+    },
+    {
+      "component": "backend",
+      "version": "0.13.0",
+      "tag": "backend-v0.13.0",
+      "source_sha": "bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084",
+      "review": "docs/planning/BACKEND_V0_13_0_REVIEW.md",
+      "title": "Backend v0.13.0 - Owner account deletion"
+    },
+    {
+      "component": "frontend",
+      "version": "0.9.0",
+      "tag": "frontend-v0.9.0+13",
+      "source_sha": "bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084",
+      "review": "docs/planning/FRONTEND_V0_9_0_REVIEW.md",
+      "title": "Frontend v0.9.0+13 - Authentication and account controls"
     }
   ]
 }

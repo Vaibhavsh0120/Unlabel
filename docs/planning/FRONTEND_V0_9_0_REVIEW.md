@@ -96,8 +96,19 @@ Local verification on **14 October 2026**:
 The developer-only [account preview](../../frontend/tool/account_visual_preview.dart)
 uses synthetic memory-only identity/preferences with disabled network mutations.
 Browser layouts and local tests do not establish real provider consent, inbox
-reset delivery, or physical LiveContainer/device acceptance. Source push, hosted
-checks and native publication are recorded separately after completion.
+reset delivery, or physical LiveContainer/device acceptance.
+
+Source `bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084` passed repository CI and
+deployed to Vercel on 14 October. Thirteen [hosted checks](../research/RELEASE_2026_10_14_PRODUCTION.json)
+passed. The automatic [native release workflow](https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38512047557)
+published frontend-v0.9.0+13 with APK, unsigned device IPA and apps.json only.
+Public artifact bytes matched GitHub hashes/sizes; the [native receipt](../research/FRONTEND_V0_9_0_NATIVE.json)
+also verifies the IPA version/platform and stable feed, retaining prior versions.
+Physical execution remains unverified.
+
+Subsequent user feedback identifies a short-viewport Safari auth header regression
+and requests a new scanner/account update. Those repairs are separate from this
+published artifact and must not be described as included in 0.9.0+13.
 
 [Account/profile contract](../architecture/ACCOUNT_PROFILE.md) ·
 [Versioning](RELEASE_VERSIONING.md) · [Release ledger](CONTROLLED_RELEASES.md).
