@@ -39,22 +39,33 @@ function browser(href) {
   return {window, document, replacements, history, status};
 }
 
-test('reset goes only to the fixed frontend with its code in the exact fragment', () => {
+test('reset stays in Firebase and uses the fixed sign-in Continue return', () => {
   const destination = new URL(destinationFor(action({
     oobCode: 'opaque+code%2F',
     apiKey: 'synthetic-public-api-key',
     continueUrl: 'https://attacker.invalid/',
     redirect: 'https://attacker.invalid/',
   })));
-  assert.equal(destination.origin, frontendOrigin);
-  assert.equal(destination.pathname, '/');
-  assert.equal(destination.search, '');
-  const fragment = new URL(destination.hash.slice(1), frontendOrigin);
-  assert.equal(fragment.pathname, '/account-reset');
-  assert.deepEqual([...fragment.searchParams], [
+  assert.equal(destination.origin, authOrigin);
+  assert.equal(destination.pathname, '/__/auth/action');
+  assert.equal(destination.hash, '');
+  assert.deepEqual([...destination.searchParams], [
     ['mode', 'resetPassword'],
     ['oobCode', 'opaque+code%2F'],
+    ['apiKey', 'synthetic-public-api-key'],
+    ['continueUrl', `${frontendOrigin}/#/account-signin`],
   ]);
+});
+
+test('reset never accepts a supplied Continue destination or returns its code to the app', () => {
+  for (const continueUrl of ['', 'https://attacker.invalid/', `${frontendOrigin}/known-return`, `${authOrigin}/known-return`]) {
+    const destination = new URL(destinationFor(action({continueUrl})));
+    const target = new URL(destination.searchParams.get('continueUrl'));
+    assert.equal(target.href, `${frontendOrigin}/#/account-signin`);
+    assert.equal(target.search, '');
+    assert.equal(target.href.includes('oobCode'), false);
+    assert.equal(target.href.includes('synthetic-code'), false);
+  }
 });
 
 test('all other recognized actions retain the reserved Firebase handler', () => {
@@ -98,6 +109,8 @@ test('origin, callback path and duplicate security parameters fail closed', () =
     `${action()}&mode=verifyEmail`,
     `${action()}&oobCode=another-code`,
     `${action({apiKey: 'synthetic'})}&apiKey=another-key`,
+    `${action({lang: 'en'})}&lang=hi`,
+    `${action({continueUrl: frontendOrigin})}&continueUrl=${authOrigin}`,
   ]) assert.equal(destinationFor(url), null);
 });
 
@@ -117,7 +130,10 @@ test('browser navigation replaces the history entry without persisting the code'
   run(state.window, state.document);
   assert.deepEqual(state.history, [[null, '', '/account-action.html']]);
   assert.equal(state.replacements.length, 1);
-  assert.equal(new URL(state.replacements[0]).search, '');
+  const destination = new URL(state.replacements[0]);
+  assert.equal(destination.origin, authOrigin);
+  assert.equal(destination.pathname, '/__/auth/action');
+  assert.equal(destination.searchParams.get('continueUrl'), `${frontendOrigin}/#/account-signin`);
 });
 
 test('failure text never includes the input URL, code or HTML', () => {

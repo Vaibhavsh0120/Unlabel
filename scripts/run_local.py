@@ -1,4 +1,4 @@
-"""Choose Local or Production preview; Ctrl+C stops only owned child processes."""
+"""Choose PC-local, HTTPS local-network or production-API Flutter preview."""
 
 import argparse
 import json
@@ -12,8 +12,14 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from _preview_server import PRODUCTION_ORIGIN, serve_web
-from _workspace import (
+from dev._local_network import (
+    caddy_executable,
+    lan_address,
+    prepare_https,
+    wait_for_https,
+)
+from dev._preview_server import PRODUCTION_ORIGIN, serve_web
+from dev._workspace import (
     ROOT,
     backend_python,
     config,
@@ -100,19 +106,26 @@ def wait_for_api(process: subprocess.Popen, url: str) -> None:
 def choose_mode() -> str:
     if not sys.stdin.isatty():
         raise ValueError(
-            "Select --mode local or --mode production for a noninteractive run."
+            "Select --mode local, --mode lan or --mode production for a noninteractive run."
         )
     print(
-        "1. Local: frontend and local backend\n2. Production: frontend and hosted API",
+        "1. Local: Flutter and backend on this PC\n"
+        "2. Production API: local Flutter and hosted backend\n"
+        "3. Local network: local Flutter and backend over HTTPS on Wi-Fi",
         flush=True,
     )
     while True:
-        choice = input("Choose 1 or 2: ").strip().lower()
+        choice = input("Choose 1, 2 or 3: ").strip().lower()
         if choice in {"1", "local"}:
             return "local"
         if choice in {"2", "production"}:
             return "production"
-        print("Choose Local (1) or Production (2); there is no default.", flush=True)
+        if choice in {"3", "lan"}:
+            return "lan"
+        print(
+            "Choose Local (1), Production API (2) or Local network (3); there is no default.",
+            flush=True,
+        )
 
 
 def wait_for_web(process: subprocess.Popen, url: str) -> None:
@@ -133,7 +146,9 @@ def wait_for_web(process: subprocess.Popen, url: str) -> None:
 def main() -> int:
     defaults = config()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["local", "production"])
+    parser.add_argument("--mode", choices=["local", "lan", "production"])
+    parser.add_argument("--lan-ip", help="Wi-Fi/Ethernet IPv4 override for --mode lan")
+    parser.add_argument("--https-port", type=port, default=8443)
     parser.add_argument("--scope", choices=["all", "backend", "frontend"])
     parser.add_argument("--serve-web", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--backend-port", type=port, default=defaults["backend_port"])
@@ -151,7 +166,7 @@ def main() -> int:
         if args.mode and args.scope:
             raise ValueError("Use --mode or the legacy --scope selection, not both.")
         mode = args.mode or ("local" if args.scope else choose_mode())
-        scope = args.scope or ("all" if mode == "local" else "frontend")
+        scope = args.scope or ("frontend" if mode == "production" else "all")
         if args.backend_port == args.web_port and scope == "all":
             raise ValueError("Backend and frontend ports must differ.")
         if args.backend_url and scope != "frontend":
@@ -160,10 +175,21 @@ def main() -> int:
             mode = "production"
         elif mode == "production" and args.backend_url:
             raise ValueError("Production mode uses only the fixed hosted Unlabel API.")
-        web_url = f"http://127.0.0.1:{args.web_port}"
+        if args.lan_ip and mode != "lan":
+            raise ValueError("--lan-ip applies only to --mode lan.")
+        network = mode == "lan"
+        address = lan_address(args.lan_ip) if network else "127.0.0.1"
+        caddy = caddy_executable(ROOT) if network else None
+        if network and args.https_port in {args.backend_port, args.web_port}:
+            raise ValueError("HTTPS, backend and web ports must differ.")
+        web_url = (
+            f"https://{address}:{args.https_port}"
+            if network
+            else f"http://127.0.0.1:{args.web_port}"
+        )
         backend_url = public_origin(
             web_url
-            if mode == "production"
+            if mode in {"production", "lan"}
             else args.backend_url or f"http://127.0.0.1:{args.backend_port}"
         )
         flutter = flutter_executable() if scope in {"all", "frontend"} else None
@@ -179,7 +205,7 @@ def main() -> int:
         if scope in {"all", "backend"}:
             check_port_available(args.backend_port)
         if scope in {"all", "frontend"}:
-            check_port_available(args.web_port)
+            check_port_available(args.https_port if network else args.web_port)
         if scope in {"all", "backend"}:
             python = backend_python()
             if not python.is_file() or not (ROOT / "backend/.env").is_file():
@@ -191,6 +217,7 @@ def main() -> int:
                 [
                     f"http://127.0.0.1:{args.web_port}",
                     f"http://localhost:{args.web_port}",
+                    web_url,
                 ]
             )
             if (ROOT / "backend/storage/runtime/india/catalogue.sqlite3").is_file():
@@ -208,7 +235,7 @@ def main() -> int:
             ]
             backend = spawn(command, ROOT / "backend", environment)
             processes.append(backend)
-            wait_for_api(backend, backend_url)
+            wait_for_api(backend, f"http://127.0.0.1:{args.backend_port}")
             print(f"Backend ready: {backend_url}/docs", flush=True)
         if flutter is not None:
             command = [
@@ -226,21 +253,40 @@ def main() -> int:
             if build.returncode != 0:
                 raise ValueError("Flutter preview build failed.")
             processes.remove(build)
-            preview = spawn(
-                [
-                    sys.executable,
-                    ROOT / "scripts/run_local.py",
-                    "--serve-web",
-                    "--mode",
-                    mode,
-                    "--web-port",
-                    str(args.web_port),
-                ],
-                ROOT,
-                dict(os.environ),
-            )
-            processes.append(preview)
-            wait_for_web(preview, web_url)
+            if network:
+                assert caddy is not None
+                caddy_config, caddy_environment, certificate = prepare_https(
+                    ROOT, address, args.https_port, args.backend_port
+                )
+                preview = spawn(
+                    [caddy, "run", "--config", caddy_config, "--adapter", "caddyfile"],
+                    ROOT,
+                    caddy_environment,
+                )
+                processes.append(preview)
+                wait_for_https(preview, web_url, certificate)
+                print(
+                    f"Development CA: {certificate}\n"
+                    "Trust this public root.crt on each testing device; never share CA keys.\n"
+                    "Use the same Wi-Fi. See scripts/tools/README.md for certificate/firewall setup.",
+                    flush=True,
+                )
+            else:
+                preview = spawn(
+                    [
+                        sys.executable,
+                        ROOT / "scripts/run_local.py",
+                        "--serve-web",
+                        "--mode",
+                        mode,
+                        "--web-port",
+                        str(args.web_port),
+                    ],
+                    ROOT,
+                    dict(os.environ),
+                )
+                processes.append(preview)
+                wait_for_web(preview, web_url)
             print(f"Frontend ready: {web_url} (open the browser manually).", flush=True)
         print(
             "Press Ctrl+C to stop owned process trees. Local .env is unchanged.",

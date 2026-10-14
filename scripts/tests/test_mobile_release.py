@@ -8,11 +8,13 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "release"))
 
+from frontend_release_gate import version_changed
 from mobile_release import (
     GitHub,
     JsonObject,
+    public_assets,
     refresh_source,
     response_list,
     response_object,
@@ -24,6 +26,32 @@ from prepare_android_ci import android_versions
 
 
 class ReleaseGuardTests(unittest.TestCase):
+    def test_dependency_or_copy_edits_do_not_trigger_mobile_release(self):
+        old = "name: unlabel\nversion: 0.8.0+12\ndependencies: {}\n"
+        self.assertFalse(version_changed(old, ("0.8.0", "12")))
+        self.assertTrue(version_changed(old, ("0.9.0", "13")))
+        self.assertTrue(version_changed(old, ("0.8.0", "13")))
+        for current in [("0.9.0", "12"), ("0.7.0", "13"), ("0.8.0", "11")]:
+            with self.assertRaises(ValueError):
+                version_changed(old, current)
+
+    def test_public_release_excludes_build_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in [
+                "app.apk",
+                "app.ipa",
+                "apps.json",
+                "build-manifest.json",
+                "SHA256SUMS.txt",
+                "ios-toolchain.json",
+            ]:
+                (root / name).write_text("synthetic")
+            self.assertEqual(
+                set(public_assets(root, ["app.apk", "app.ipa"])),
+                {"app.apk", "app.ipa", "apps.json"},
+            )
+
     def test_api_response_shapes_are_required_before_mutating_releases(self):
         self.assertEqual(response_object({"id": 1}), {"id": 1})
         self.assertEqual(response_list([{"id": 1}]), [{"id": 1}])

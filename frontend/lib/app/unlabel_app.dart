@@ -49,12 +49,16 @@ class UnlabelApp extends StatefulWidget {
     this.repository,
     this.store,
     this.accountController,
+    this.initialUri,
     this.showWelcome = true,
     super.key,
   });
   final UnlabelRepository? repository;
   final LocalStore? store;
   final AccountController? accountController;
+
+  /// Composition can provide an entry URI; browser startup defaults to Uri.base.
+  final Uri? initialUri;
   final bool showWelcome;
   @override
   State<UnlabelApp> createState() => _UnlabelAppState();
@@ -63,13 +67,14 @@ class UnlabelApp extends StatefulWidget {
 class _UnlabelAppState extends State<UnlabelApp> {
   ThemeMode _themeMode = ThemeMode.light;
   int _appearanceRevision = 0;
-  bool _loading = true, _welcome = true;
+  bool _loading = true, _welcome = true, _welcomeDismissed = false;
   bool _missingPageRecovered = false;
   late final UnlabelRepository _repository;
   late final LocalStore _store;
   late final AccountController _account;
   late final ProfileMediaController _profileMedia;
-  String? _passwordResetCode;
+  bool _showSignInReturn = false;
+  bool _accountRestored = false;
   final _navigator = GlobalKey<NavigatorState>();
   final _messenger = GlobalKey<ScaffoldMessengerState>();
   String? _identity;
@@ -94,8 +99,11 @@ class _UnlabelAppState extends State<UnlabelApp> {
           preferences: _store.preferences,
         );
     _identity = _account.identity?.uid;
-    _passwordResetCode = passwordResetCodeFromUri(Uri.base);
-    if (_passwordResetCode != null) clearAuthActionUrl();
+    _showSignInReturn = isAccountSignInReturnUri(
+      widget.initialUri ?? Uri.base,
+      rawUrl: widget.initialUri == null ? currentWebEntryUrl : null,
+    );
+    if (_showSignInReturn) clearAuthActionUrl();
     _profileMedia = ProfileMediaController(
       auth: _account.auth,
       preferences: _store.preferences,
@@ -105,8 +113,16 @@ class _UnlabelAppState extends State<UnlabelApp> {
     );
     unawaited(_profileMedia.start());
     _account.addListener(_accountChanged);
-    unawaited(_account.start());
+    unawaited(_restoreAccount());
     unawaited(_restore());
+  }
+
+  Future<void> _restoreAccount() async {
+    try {
+      await _account.start();
+    } finally {
+      if (mounted) setState(() => _accountRestored = true);
+    }
   }
 
   AccountAuth _accountAuth() {
@@ -171,12 +187,14 @@ class _UnlabelAppState extends State<UnlabelApp> {
         _themeMode = ThemeMode.values.byName(appearance);
         setWebAppearance(appearance);
       }
-      _welcome = welcome && !_missingPageRecovered;
+      _welcome = welcome && !_missingPageRecovered && !_welcomeDismissed;
       _loading = false;
     });
   }
 
   Future<void> _continue() async {
+    // A delayed initial read must not restore Welcome after a root auth exit.
+    _welcomeDismissed = true;
     try {
       await _store.completeWelcome();
       unawaited(UiFeedback.confirmed());
@@ -232,7 +250,11 @@ class _UnlabelAppState extends State<UnlabelApp> {
     theme: UnlabelTheme.forBrightness(Brightness.light),
     darkTheme: UnlabelTheme.forBrightness(Brightness.dark),
     themeMode: _themeMode,
-    initialRoute: _passwordResetCode != null ? '/' : isMissingWebPage ? '/not-found' : null,
+    initialRoute: _showSignInReturn
+        ? '/'
+        : isMissingWebPage
+        ? '/not-found'
+        : null,
     builder: (context, child) => ProfileMediaScope(
       controller: _profileMedia,
       child: ArtworkWarmup(
@@ -259,37 +281,69 @@ class _UnlabelAppState extends State<UnlabelApp> {
     );
   }
 
-  Widget _rootPage(bool missing, VoidCallback onRecovered) =>
-      _passwordResetCode != null
-      ? AuthPage(
-          controller: _account,
-          fromProfile: false,
-          resetCode: _passwordResetCode,
-          onComplete: () {
-            setState(() => _passwordResetCode = null);
-            unawaited(_continue());
-          },
-        )
-      : _loading && !missing && !_missingPageRecovered
-      ? kIsWeb
-            ? const Scaffold()
-            : const StartupPage()
-      : _welcome && !missing
-      ? WelcomePage(
-          onContinue: () => unawaited(_continue()),
-          onSignIn: () => unawaited(_welcomeSignIn()),
-        )
-      : _ClientHome(
-          key: ValueKey(_identity ?? 'guest'),
-          repository: _repository,
-          store: _account.activeStore,
-          account: _account,
-          libraryRevision: _libraryRevision,
-          themeMode: _themeMode,
-          onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
-          showNotFound: missing,
-          onMissingPageRecovered: onRecovered,
+  void _finishSignInReturn() {
+    setState(() {
+      _showSignInReturn = false;
+      _welcome = false;
+    });
+    unawaited(_continue());
+  }
+
+  Widget _rootPage(bool missing, VoidCallback onRecovered) {
+    if (_showSignInReturn) {
+      // The Firebase return carries no reset outcome and cannot choose a UID.
+      // Finish SDK session restoration before deciding which account UI to show.
+      if (!_accountRestored) {
+        return kIsWeb ? const Scaffold() : const StartupPage();
+      }
+      if (_account.identity != null) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Profile'),
+            leading: IconButton(
+              key: const ValueKey('account-return-home'),
+              tooltip: 'Back to Unlabel',
+              onPressed: _finishSignInReturn,
+              icon: const Icon(Icons.arrow_back),
+            ),
+          ),
+          body: ProfilePage(
+            controller: _account,
+            onContinue: _finishSignInReturn,
+            embedded: true,
+            showHeader: false,
+            themeMode: _themeMode,
+            onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
+          ),
         );
+      }
+      return AuthPage(
+        controller: _account,
+        fromProfile: false,
+        onComplete: _finishSignInReturn,
+      );
+    }
+    return _loading && !missing && !_missingPageRecovered
+        ? kIsWeb
+              ? const Scaffold()
+              : const StartupPage()
+        : _welcome && !missing
+        ? WelcomePage(
+            onContinue: () => unawaited(_continue()),
+            onSignIn: () => unawaited(_welcomeSignIn()),
+          )
+        : _ClientHome(
+            key: ValueKey(_identity ?? 'guest'),
+            repository: _repository,
+            store: _account.activeStore,
+            account: _account,
+            libraryRevision: _libraryRevision,
+            themeMode: _themeMode,
+            onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
+            showNotFound: missing,
+            onMissingPageRecovered: onRecovered,
+          );
+  }
 }
 
 /// Keeps routed shells current when appearance, restored state or identity changes.
@@ -835,7 +889,9 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                                   ),
                                   onPressed: _profile,
                                   tooltip: 'Profile',
-                                  icon: const ExcludeSemantics(child: AccountAvatar(size: 40)),
+                                  icon: const ExcludeSemantics(
+                                    child: AccountAvatar(size: 40),
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                               ],

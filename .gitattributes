@@ -21,3 +21,4 @@ frontend/web/ocr/** -text
 frontend/web/ocr/provenance.json text eol=lf
 frontend/web/ocr/licenses/* -whitespace
 frontend/assets/brand/fonts/CormorantGaramond-OFL.txt -text -whitespace
+frontend/assets/brand/fonts/Quicksand-OFL.txt -text -whitespace

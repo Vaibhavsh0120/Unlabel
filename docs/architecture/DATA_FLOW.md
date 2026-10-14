@@ -5,8 +5,8 @@ and [backend](../../backend/pyproject.toml) versions. The API retains
 **27 paths / 28 operations**. Current auth/profile and Google compatibility await
 final exact-source hosted/native checks; earlier read-only backend proof excludes
 authenticated AI/staging and physical-device accuracy.
-[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md).
+[Frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_13_0_REVIEW.md).
 
 ## Capture, source lookup and qualified results
 

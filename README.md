@@ -14,7 +14,7 @@
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
-[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.8.0%2B12-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.12.1-155b4b)](backend/pyproject.toml)
+[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.9.0%2B13-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.13.0-155b4b)](backend/pyproject.toml)
 
 </div>
 
@@ -47,13 +47,17 @@ Import and launch on an actual iPhone remain unverified.
 
 ### Latest update
 
-The frontend update adds responsive authentication, Google and email
-sign-in for one account, private profile thumbnails and optional gender/default avatars.
-It also improves Sources, navigation, 404 recovery, empty states, illustration
-delivery and the three-second Home insight carousel.
-Further auth UI refinements are deferred to a later bugfix update.
-[Frontend evidence](docs/planning/FRONTEND_V0_8_0_REVIEW.md) ·
-[Backend Google compatibility](docs/planning/BACKEND_V0_12_1_REVIEW.md).
+The current update brings the supplied desktop/phone login and signup composition
+to light and dark mode, with layered animated artwork, fixed desktop cards and a
+mobile card that moves over stationary artwork. Both iPad orientations and enlarged
+text have responsive layouts. Sign-in methods manage linked Google/password access while keeping
+one account and at least one method. Private thumbnails, optional gender/default
+avatars and confirmed account deletion have separate owner-only data boundaries.
+Firebase's supported hosted page completes password resets and returns to Unlabel
+sign-in. Sources, navigation, 404 recovery, empty states and the three-second Home
+insight carousel retain their preceding improvements.
+[Frontend scope and checks](docs/planning/FRONTEND_V0_9_0_REVIEW.md) ·
+[Backend deletion and checks](docs/planning/BACKEND_V0_13_0_REVIEW.md).
 
 Setup, Android build timing, release labels and the hosted LiveContainer source
 were repaired in the [maintenance pass](docs/planning/MAINTENANCE_2026_10_12.md).
@@ -85,6 +89,9 @@ python3 scripts/run_local.py
 Setup restores dependencies, pinned Flutter tooling and verified product data.
 Choose a key file, hidden key paste or safe example settings when prompted.
 Never commit plaintext `.env` files or credentials.
+
+Run `python scripts/run_local.py` for Local, Production API, or HTTPS Local network.
+Caddy and certificate instructions: [local network tools](scripts/tools/README.md).
 
 | Local service | Address |
 | --- | --- |
@@ -142,7 +149,7 @@ Generic food-composition tables never fill a branded packet's unknown values.
 | **Understand the project** | [Documentation index](docs/README.md) · [Feature tracker](docs/planning/FEATURE_TRACKER.md) · [Architecture](docs/architecture/SYSTEM.md) |
 | **Develop and contribute** | [Contributing](CONTRIBUTING.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md) · [Scripts](scripts/README.md) · [UI contract](DESIGN.md) |
 | **Build and publish** | [Release/versioning](docs/planning/RELEASE_VERSIONING.md) · [Source release ledger](docs/planning/CONTROLLED_RELEASES.md) · [Vercel setup](docs/planning/VERCEL_SETUP.md) |
-| **Check the evidence** | [Maintenance receipt](docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](docs/planning/FRONTEND_V0_8_0_REVIEW.md) · [Backend review](docs/planning/BACKEND_V0_12_1_REVIEW.md) |
+| **Check the evidence** | [Maintenance receipt](docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](docs/planning/FRONTEND_V0_9_0_REVIEW.md) · [Backend review](docs/planning/BACKEND_V0_13_0_REVIEW.md) |
 
 <details>
 <summary><strong>Repository map</strong></summary>

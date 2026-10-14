@@ -11,21 +11,35 @@ import unittest
 import urllib.error
 import urllib.request
 import uuid
+from urllib.parse import urlsplit
 
 
 class ProfileMediaRulesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         host = os.environ.get("FIRESTORE_EMULATOR_HOST", "127.0.0.1:8187")
-        if not host.startswith(("127.0.0.1:", "localhost:")):
+        parsed = urlsplit("http://" + host)
+        if (
+            parsed.hostname not in {"127.0.0.1", "localhost"}
+            or parsed.port is None
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.path
+            or parsed.query
+            or parsed.fragment
+        ):
             raise RuntimeError("Rules tests require a local emulator")
         cls.origin = f"http://{host}"
         cls.project = "demo-unlabel-profile"
         cls.uid = f"synthetic-{uuid.uuid4().hex}"
 
-    def request(self, path, *, uid=None, provider="password", body=None, method=None):
+    def request(self, path, *, uid=None, provider="password", body=None, method=None, admin=False):
         headers = {"Content-Type": "application/json"}
-        if uid is not None:
+        if admin:
+            # The emulator UI uses this local-only fake administrative token.
+            # setUpClass restricts every request to the loopback demo project.
+            headers["Authorization"] = "Bearer owner"
+        elif uid is not None:
             def encoded(value):
                 return base64.urlsafe_b64encode(json.dumps(value).encode()).decode().rstrip("=")
 
@@ -65,6 +79,32 @@ class ProfileMediaRulesTest(unittest.TestCase):
         self.assertEqual(self.commit()[0], 200)
         self.assertEqual(self.request("/v1/" + self.document(), uid=self.uid)[0], 200)
         self.assertEqual(self.request("/v1/" + self.document(), uid=self.uid, method="DELETE")[0], 200)
+
+    def test_deletion_marker_blocks_old_owner_and_remains_machine_only(self):
+        # Keep this deleted identity isolated from the other emulator tests.
+        self.uid = f"synthetic-deleted-{uuid.uuid4().hex}"
+        self.assertEqual(self.commit()[0], 200)
+        marker = self.document(collection="profile_deletions")
+        self.assertEqual(self.request("/v1/" + marker, admin=True, method="PATCH", body={
+            "fields": {"schema": {"integerValue": "1"}}
+        })[0], 200)
+        self.assertEqual(self.request("/v1/" + self.document(), uid=self.uid)[0], 403)
+        self.assertEqual(self.commit()[0], 403)
+        self.assertEqual(self.request("/v1/" + self.document(), uid=self.uid, method="DELETE")[0], 403)
+        self.assertEqual(self.request("/v1/" + marker, uid=self.uid)[0], 403)
+        self.assertEqual(self.request("/v1/" + marker, uid=self.uid, method="DELETE")[0], 403)
+        self.assertEqual(self.commit(collection="profile_deletions")[0], 403)
+        self.assertEqual(self.request(
+            f"/v1/projects/{self.project}/databases/unlabel/documents/profile_deletions",
+            uid=self.uid,
+        )[0], 403)
+        self.assertEqual(self.request(
+            f"/v1/projects/{self.project}/databases/unlabel/documents:commit",
+            admin=True, body={"writes": [{"delete": self.document()}]},
+        )[0], 200)
+        self.assertEqual(self.commit()[0], 403)  # A late create cannot resurrect media.
+        self.uid = f"synthetic-other-{uuid.uuid4().hex}"
+        self.assertEqual(self.commit()[0], 200)
 
     def test_other_users_and_anonymous_cannot_read_write(self):
         self.assertEqual(self.commit()[0], 200)

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-SCRIPT = ROOT / "scripts/version_metadata.py"
+SCRIPT = ROOT / "scripts/release/version_metadata.py"
 
 
 def module():
@@ -22,10 +22,10 @@ def module():
 def manifests(tmp_path):
     (tmp_path / "frontend").mkdir()
     (tmp_path / "backend").mkdir()
-    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts/config").mkdir(parents=True)
     (tmp_path / "frontend/pubspec.yaml").write_text("name: unlabel\nversion: 1.2.3+42\n")
     (tmp_path / "backend/pyproject.toml").write_text('[project]\nversion = "4.5.6"\n')
-    (tmp_path / "scripts/workspace.json").write_text('{"flutter_version": "3.47.4"}')
+    (tmp_path / "scripts/config/workspace.json").write_text('{"flutter_version": "3.47.4"}')
     return tmp_path
 
 

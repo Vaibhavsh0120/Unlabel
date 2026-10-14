@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[3]
 @pytest.fixture
 def progress_module(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / "scripts"))
-    return importlib.import_module("_progress")
+    return importlib.import_module("dev._progress")
 
 
 class Terminal(io.StringIO):

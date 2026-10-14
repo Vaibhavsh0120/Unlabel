@@ -7,7 +7,18 @@ Guests can use the public catalogue/local libraries with safe defaults; optional
 account sync and photo extraction require their configured server services.
 The later authorized scope adds Google/password linking and private profile
 media; see [account/profile setup](../architecture/ACCOUNT_PROFILE.md) and
-[the maintenance audit](MAINTENANCE_2026_10_12.md).
+[the maintenance audit](MAINTENANCE_2026_10_12.md). The
+[current auth/provider update](FRONTEND_V0_9_0_REVIEW.md) is authorized for push
+from main; the [backend cleanup contract](BACKEND_V0_13_0_REVIEW.md) has separate checks.
+Reset email requests use Firebase's hosted handler with a fixed web sign-in return;
+no custom action URL or alternate email service is needed.
+
+Developer account screenshots can use `flutter run -d chrome -t
+tool/account_visual_preview.dart` from frontend. Query parameters
+`?screen=signin`, `?screen=signup` or `?screen=profile`, plus `&dark=true` and
+`&scale=2`, select real pages with synthetic memory-only identity/preferences.
+The fixture makes no Firebase/API connection and cannot mutate a real account;
+production `main.dart` never imports it.
 
 ## Quick start
 
@@ -58,7 +69,7 @@ separate in the [review](BACKEND_V0_4_0_REVIEW.md).
 
 ## Restore encrypted settings
 
-`backend/.env.age` is tracked ciphertext for the public recipient in `scripts/age-recipient.txt`. Plaintext, decrypted staging files and private identities stay outside Git. Vercel excludes `.env*`; production settings are managed separately.
+`backend/.env.age` is tracked ciphertext for the public recipient in `scripts/config/age-recipient.txt`. Plaintext, decrypted staging files and private identities stay outside Git. Vercel excludes `.env*`; production settings are managed separately.
 
 If `.env` is absent, setup offers **key file**, **hidden private-key paste**, or **safe example**. `-Identity PATH`, `--identity PATH` or `AGE_IDENTITY_FILE` supplies a key path without prompting. Existing `.env` is checked first and kept unchanged. Hidden paste accepts one native `AGE-SECRET-KEY-1...` line and passes it directly to age stdin: no saved identity file, command argument or echoed key. Terminals unable to hide input are refused. Share authorized key access separately from GitHub.
 
@@ -75,6 +86,26 @@ python scripts/env.py decrypt --paste-key
 Explicit decryption refuses existing plaintext unless `--force` is supplied. It publishes only after successful decryption; failures preserve existing files. Your `agel`/`ageu` functions also work from `backend/` with this recipient; the repository helper stages output instead of redirecting directly over `.env`. Paste private keys only into the local hidden terminal prompt. Example defaults support today's OFF APIs without decrypted secrets.
 
 ## Run and exit
+
+The interactive menu provides **Local** (Flutter/local API on this PC),
+**Production API** (local Flutter/hosted API), and **Local network** (local
+Flutter/local API through Caddy HTTPS for Wi-Fi devices). Explicit commands:
+
+~~~powershell
+./scripts/run-local.ps1 -Mode local
+./scripts/run-local.ps1 -Mode production
+./scripts/run-local.ps1 -Mode lan
+# Optional network adapter/HTTPS port overrides:
+./scripts/run-local.ps1 -Mode lan -LanIp 192.168.1.20 -HttpsPort 8443
+~~~
+
+Python uses `--mode local`, `--mode production`, or `--mode lan`. Caddy lives in
+ignored `scripts/tools/caddy/`; generated config and development CA keys stay in
+ignored `output/local-network/`. Only the public root.crt is copied to trusted
+owned devices. See [network HTTPS and certificate setup](../../scripts/tools/README.md).
+The launcher does not terminate unrelated port owners, edit .env, install trust
+roots, open firewall rules, or run a local backend in Production API mode.
+
 
 Open **http://127.0.0.1:7357** for the app and **http://127.0.0.1:8000/docs** for the API. The runner checks occupied ports, waits for backend readiness, uses the restored catalogue with `CATALOGUE_REQUIRE_RECEIPT=false` for that local index, and supplies exact local CORS origins through process-only overrides. It passes `BACKEND_BASE_URL` to Flutter without rewriting `.env`; the app checks capabilities before requests and uses local version/build metadata. Press **Ctrl+C** to stop owned services. A failed service stops the others.
 
@@ -93,7 +124,7 @@ Source, docs, native project files, lockfiles, public data/provenance/licenses, 
 This establishes **local recovery**. The current backend also has a separate networkless hosted build: from `backend/`, run `.venv/Scripts/python.exe build_catalogue.py` (Unix: `.venv/bin/python build_catalogue.py`) to generate ignored `app/catalogue/data/catalogue.sqlite3`/`receipt.json` and the approved two-file claim knowledge/receipt under `app/claims/data/`. Successful stdout is one JSON object with `catalogue`, `claims_knowledge` and `research_catalogue` keys. Use `CATALOGUE_DIRECTORY=app/catalogue/data` and `CATALOGUE_REQUIRE_RECEIPT=true` when exercising that packaged path; the local runner deliberately uses the setup-generated index instead. [Historical recovery verification](RECOVERABLE_WORKSPACE_REVIEW.md) · [Current provider compatibility](BACKEND_V0_12_1_REVIEW.md); the
 [preceding build/hosted review](BACKEND_V0_12_0_REVIEW.md) remains dated evidence.
 
-After deliberately updating backend dependencies, run `backend/.venv/Scripts/python.exe scripts/lock_backend.py` from root (use `backend/.venv/bin/python` on Unix), review the lock and run the backend suite before committing it. Runtime requirements remain declared separately.
+After deliberately updating backend dependencies, run `backend/.venv/Scripts/python.exe scripts/dev/lock_backend.py` from root (use `backend/.venv/bin/python` on Unix), review the lock and run the backend suite before committing it. Runtime requirements remain declared separately.
 
 For a valid identity-only index from the same JSONL source, setup preserves the store by default; run `python scripts/setup.py --scope backend --replace-catalogue` to migrate it to the current facts-enabled catalogue. A matching facts store without discovery tables is upgraded automatically; an intact current search-enabled store is reused. A different valid snapshot remains preserved. Actual v0.6.0 backend setup rebuilt the same source into a 76,111,872-byte index with visible progress and no new source download.
 

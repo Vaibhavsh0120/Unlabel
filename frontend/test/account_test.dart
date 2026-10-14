@@ -658,8 +658,10 @@ void main() {
           MaterialApp(
             theme: UnlabelTheme.forBrightness(brightness),
             builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context)
-                  .copyWith(textScaler: const TextScaler.linear(2)),
+              data: MediaQuery.of(context).copyWith(
+                textScaler: const TextScaler.linear(2),
+                disableAnimations: true,
+              ),
               child: child!,
             ),
             home: ProfilePage(
@@ -685,10 +687,8 @@ void main() {
         expect(find.text('Enter a valid email address.'), findsOneWidget);
         expect(auth.signIns, 0);
         expect(tester.takeException(), isNull);
-        await tester.ensureVisible(find.byKey(const ValueKey('auth-options')));
-        await tester.tap(find.byKey(const ValueKey('auth-options')));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('Continue as guest'));
+        await tester.ensureVisible(find.byKey(const ValueKey('auth-guest')));
+        await tester.tap(find.byKey(const ValueKey('auth-guest')));
         await tester.pumpAndSettle();
         expect(find.text('Welcome back'), findsNothing);
         expect(find.text('Sign in'), findsOneWidget);
@@ -814,6 +814,10 @@ void main() {
   testWidgets(
     'account exposes signup and password reset before a failed sign-in',
     (tester) async {
+      tester.view.physicalSize = const Size(800, 600);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       final prefs = MemoryPreferences();
       final auth = FakeAuth();
       final value = await controller(prefs, auth, FakeSync());
@@ -822,6 +826,10 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.light),
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(disableAnimations: true),
+            child: child!,
+          ),
           home: ProfilePage(controller: value, onContinue: () {}),
         ),
       );
@@ -843,10 +851,8 @@ void main() {
         find.byKey(const ValueKey('auth-email')),
         'synthetic@example.invalid',
       );
-      await tester.ensureVisible(find.byKey(const ValueKey('auth-options')));
-      await tester.tap(find.byKey(const ValueKey('auth-options')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Forgot password?'));
+      await tester.ensureVisible(find.byKey(const ValueKey('auth-forgot')));
+      await tester.tap(find.byKey(const ValueKey('auth-forgot')));
       await tester.pumpAndSettle();
       expect(find.text('Forgot your password?'), findsOneWidget);
       await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
@@ -869,14 +875,16 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
       await tester.pumpAndSettle();
       expect(find.text('Create your account'), findsOneWidget);
-      await tester.enterText(
-        find.byKey(const ValueKey('auth-name')),
-        'Synthetic scanner',
-      );
-      await tester.enterText(
-        find.byKey(const ValueKey('auth-password')),
-        'synthetic-password42',
-      );
+      for (final entry in {
+        'auth-name': 'Synthetic Scanner',
+        'auth-email': 'synthetic@example.invalid',
+        'auth-password': 'synthetic-password42',
+        'auth-confirm-password': 'synthetic-password42',
+      }.entries) {
+        final field = find.byKey(ValueKey(entry.key));
+        await tester.ensureVisible(field);
+        await tester.enterText(field, entry.value);
+      }
       await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
       await tester.tap(find.byKey(const ValueKey('account-submit')));
       await tester.pumpAndSettle();
@@ -900,8 +908,10 @@ void main() {
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.dark),
           builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(2)),
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(2),
+              disableAnimations: true,
+            ),
             child: child!,
           ),
           home: ProfilePage(
@@ -914,11 +924,17 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      await tester.ensureVisible(find.text('Edit profile'));
-      await tester.tap(find.text('Edit profile'));
+      await tester.ensureVisible(find.byKey(const ValueKey('profile-edit')));
+      await tester.tap(find.byKey(const ValueKey('profile-edit')));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), 'Synthetic name');
-      await tester.tap(find.text('Save name'));
+      await tester.enterText(
+        find.byKey(const ValueKey('edit-profile-name')),
+        'Synthetic name',
+      );
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('edit-profile-save')),
+      );
+      await tester.tap(find.byKey(const ValueKey('edit-profile-save')));
       await tester.pumpAndSettle();
       expect(value.localData!.displayName, 'Synthetic name');
       expect(tester.takeException(), isNull);

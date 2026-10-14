@@ -44,12 +44,13 @@ def forbidden(_):
     pytest.fail("Personal sync must not call live product providers")
 
 
-def make_client(runtime=None, enabled=True):
+def make_client(runtime=None, enabled=True, cors_origins=None):
     config = Settings(
         _env_file=None,
         community_enabled=runtime is not None,
         community_actor_secret=SecretStr("x" * 32),
         account_sync_enabled=enabled,
+        cors_origins=cors_origins or [],
     )
     return TestClient(
         create_app(config, httpx.MockTransport(forbidden), cast(CommunityRuntimeProtocol, runtime))

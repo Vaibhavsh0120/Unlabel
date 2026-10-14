@@ -8,7 +8,7 @@ from pathlib import Path
 import httpx
 import pytest
 
-SCRIPTS = Path(__file__).resolve().parents[3] / "scripts"
+SCRIPTS = Path(__file__).resolve().parents[3] / "scripts/data"
 sys.path.insert(0, str(SCRIPTS))
 spec = importlib.util.spec_from_file_location(
     "popular_acquisition", SCRIPTS / "acquire_popular_products.py"

@@ -16,7 +16,11 @@ abstract interface class AccountSyncTransport {
   void close();
 }
 
-class AccountSyncApi implements AccountSyncTransport {
+abstract interface class AccountDeletionTransport {
+  Future<void> deletePrivateAccount(String token);
+}
+
+class AccountSyncApi implements AccountSyncTransport, AccountDeletionTransport {
   AccountSyncApi({
     required String baseUrl,
     http.Client? client,
@@ -73,6 +77,17 @@ class AccountSyncApi implements AccountSyncTransport {
         body: mutation.toJson(),
       ),
     );
+  }
+
+  @override
+  Future<void> deletePrivateAccount(String token) async {
+    final result = await _request('DELETE', '/v1/account/sync', token: token);
+    if (result.length != 1 || result['status'] != 'deleted') {
+      throw const AppFailure(
+        'invalid_response',
+        'Account cleanup was not confirmed. Your account has not been deleted.',
+      );
+    }
   }
 
   Future<JsonMap> _request(

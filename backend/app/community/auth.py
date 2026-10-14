@@ -39,7 +39,10 @@ class CommunityRuntime:
     def verify_account_token(self, token: str) -> str:
         return self._verify_token(token, account=True)
 
-    def _verify_token(self, token: str, *, account: bool) -> str:
+    def verify_recent_account_token(self, token: str) -> str:
+        return self._verify_token(token, account=True, recent=True)
+
+    def _verify_token(self, token: str, *, account: bool, recent: bool = False) -> str:
         from firebase_admin import auth
 
         if (
@@ -80,6 +83,15 @@ class CommunityRuntime:
             )
         ):
             raise AuthenticationInvalid()
+        if recent:
+            authenticated_at = decoded.get("auth_time")
+            if (
+                isinstance(authenticated_at, bool)
+                or not isinstance(authenticated_at, (int, float))
+                or not math.isfinite(authenticated_at)
+                or not 0 <= time.time() - authenticated_at <= 300
+            ):
+                raise AuthenticationInvalid()
         return subject
 
     def close(self) -> None:

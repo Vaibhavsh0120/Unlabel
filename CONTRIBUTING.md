@@ -13,7 +13,7 @@ Use `--scope backend` or `frontend` when appropriate. See
 From frontend, run `flutter analyze`, `flutter test`, `flutter build web --release`
 and `node --test test/local_ocr_web_test.cjs`. From backend, use its .venv Python
 for `-m pytest -q`, `-m ruff check app tests` and `-m pip check`.
-From root, run `python scripts/validate_workspace.py`, icon/OCR checks and the
+From root, run `python scripts/release/validate_workspace.py`, icon/OCR checks and the
 release guard tests described in [scripts](scripts/README.md).
 Changes to API models require regenerated/synthetic-validated current contracts;
 preserve old versioned OpenAPI. Native builds use the manual workflow separately.

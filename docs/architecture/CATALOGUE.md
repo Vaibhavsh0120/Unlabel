@@ -17,7 +17,7 @@ separate generated read-only SQLite with **243 observations** (49 manufacturer,
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
 The historical v0.10.0 export has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
+Source normalization does not import the runtime; `scripts/data/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.
@@ -61,8 +61,8 @@ The full v0.2.3 JSONL stream reached validated EOF: **13,084,464,175 compressed 
 
 ## Acquire, restore and build
 
-1. `scripts/acquire_india_jsonl.py` streams the fixed official full JSONL gzip through validated compressed length, gzip CRC/EOF and bounded strict objects. A range feasibility sample cannot replace full-source proof. Acquisition retains only the selected India fields and records original/source/projection measurements. It is an explicit maintenance operation outside requests and deployment builds.
-2. `scripts/import_india_catalogue.py` validates plain/gzip local input and stages SQLite. Exact duplicate supported codes fail. Optional facts are bounded and must match identity keys/counts. Integrity/count checks finish before replacing the single local database; failed import preserves the active file.
+1. `scripts/data/acquire_india_jsonl.py` streams the fixed official full JSONL gzip through validated compressed length, gzip CRC/EOF and bounded strict objects. A range feasibility sample cannot replace full-source proof. Acquisition retains only the selected India fields and records original/source/projection measurements. It is an explicit maintenance operation outside requests and deployment builds.
+2. `scripts/data/import_india_catalogue.py` validates plain/gzip local input and stages SQLite. Exact duplicate supported codes fail. Optional facts are bounded and must match identity keys/counts. Integrity/count checks finish before replacing the single local database; failed import preserves the active file.
 3. `scripts/setup.py` verifies tracked source hashes/counts and rebuilds `backend/storage/runtime/india/catalogue.sqlite3` without another bulk download. `run_local.py` activates this local index through process settings with receipt checks off.
 4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]`. Outside-root build access supplies tracked `data/catalogue/`. The build downloads nothing, decrypts no env, verifies input, generates SQLite/receipt under ignored `app/catalogue/data/`, then checks integrity/hash/manifest/counts before succeeding. The hook also validates/packages the approved claim-knowledge JSON/receipt under `app/claims/data/` and generates the separate research SQLite/receipt under `app/research_catalogue/data/`. Current stdout has `catalogue`, `claims_knowledge` and `research_catalogue` keys.
 5. Hosted startup requires `CATALOGUE_REQUIRE_RECEIPT=true`, validates the full database once and opens a read-only store. Failure disables catalogue access while health/meta/live APIs remain usable. Each lookup reads identity, facts and manifest in one short transaction.

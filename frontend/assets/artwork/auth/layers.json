@@ -1,0 +1,64 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-10-13",
+  "accuracy": "Generated reconstructions of user references, not extracted exact originals. Text and controls remain live Flutter widgets.",
+  "encoding": "Original generated RGBA PNG bytes; no resampling or crop.",
+  "assets": [
+    {
+      "asset": "frontend/assets/artwork/auth/mascot.png",
+      "generated_artifact": "exec-c04fb3b1-9535-4e1a-928f-5b1c98b3d482.png",
+      "generator": "image_gen.imagegen (built-in)",
+      "prompt_intent": "Cream clay mascot holding green snack packet, separate from sprout and animated eyes.",
+      "sha256": "da68a4c62bbfb16b216d57277d5a00037b2af7caacf27b1453bfdc4730743cb8",
+      "bytes": 1133801,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "png_color_type": 6,
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth/sprout.png",
+      "generated_artifact": "exec-d1629ecb-b500-41b0-8ed0-9a9f5f5e904c.png",
+      "generator": "image_gen.imagegen (built-in)",
+      "prompt_intent": "Two soft green clay leaves on a sprout for independent swaying.",
+      "sha256": "23ea71ab208f8d3d14fcc93c43a1cbdb993e94b8b9ff99e61ec1ef3040c2badd",
+      "bytes": 754232,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "png_color_type": 6,
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth/garden.png",
+      "generated_artifact": "exec-20e7cb62-fc45-43f7-b72d-3bf96deff8f5.png",
+      "generator": "image_gen.imagegen (built-in)",
+      "prompt_intent": "Transparent clay garden with tomato on left, carton and banana on right, empty central stage.",
+      "sha256": "d173224e3651d0b9e248284416047b289d8224c5d68d6e2efe5fef644ca45f6c",
+      "bytes": 1211359,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "png_color_type": 6,
+      "alpha_preserved": true
+    },
+    {
+      "asset": "frontend/assets/artwork/auth/garden-dark.png",
+      "generated_artifact": "exec-a37c7cac-fe39-448c-bc53-9ef34906299d.png",
+      "generator": "image_gen.imagegen (built-in)",
+      "prompt_intent": "Edit the garden preserving its objects and transparent sky; charcoal tabletop, moss platform, emerald foliage and subdued warm highlights.",
+      "sha256": "7424706b4ae4f74e6d1a7bb63dcd1a8ea5a597fe24264b28af16beb7265f3ef2",
+      "bytes": 1306631,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "png_color_type": 6,
+      "alpha_preserved": true
+    }
+  ]
+}

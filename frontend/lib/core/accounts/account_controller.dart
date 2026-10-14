@@ -41,6 +41,7 @@ class AccountController extends ChangeNotifier {
   Future<void>? _syncing;
   bool _disposed = false;
   bool _started = false;
+  String? _deletionPendingUid;
 
   Future<void> start() async {
     if (_started) return;
@@ -89,6 +90,7 @@ class AccountController extends ChangeNotifier {
     _syncing = null;
     _remote = null;
     _choiceLocalRevision = null;
+    _deletionPendingUid = null;
     localData = null;
     _identity = auth.identity;
     if (_identity == null) {
@@ -108,6 +110,7 @@ class AccountController extends ChangeNotifier {
   void _localChanged() {
     if (_disposed || _store == null) return;
     unawaited(_readLocal());
+    if (_deletionPendingUid == _identity?.uid) return;
     if (state == AccountSyncState.needsChoice) return;
     _timer?.cancel();
     _timer = Timer(debounce, () => unawaited(refreshSync()));
@@ -150,12 +153,81 @@ class AccountController extends ChangeNotifier {
   Future<void> linkGoogle() => _authenticate(auth.linkGoogle);
   Future<void> linkPassword(String email, String password) =>
       _authenticate(() => auth.linkPassword(email, password));
+  Future<void> unlinkGoogle({required String password}) =>
+      _authenticate(() => auth.unlinkGoogle(password: password));
+  Future<void> unlinkPassword() => _authenticate(auth.unlinkPassword);
+  Future<void> changeGoogleAccount({required String password}) =>
+      _authenticate(() => auth.changeGoogleAccount(password: password));
+  Future<void> changeEmail(String email, String currentPassword) =>
+      _authenticate(() => auth.changeEmail(email, currentPassword));
+  Future<void> changePassword(String currentPassword, String newPassword) =>
+      _authenticate(() => auth.changePassword(currentPassword, newPassword));
+  Future<void> deleteAccount({String? password}) async {
+    final store = _store;
+    final uid = _identity?.uid;
+    final deletion = api;
+    if (store == null || uid == null) {
+      throw const AppFailure(
+        'account_changed',
+        'Sign in before deleting an account.',
+      );
+    }
+    if (deletion is! AccountDeletionTransport) {
+      throw const AppFailure(
+        'account_delete_unavailable',
+        'Account deletion could not connect. Please try again later.',
+      );
+    }
+    final deleteTransport = deletion as AccountDeletionTransport;
+    if (authBusy) {
+      throw const AppFailure(
+        'account_busy',
+        'Wait for the current account action to finish.',
+      );
+    }
+    _generation++;
+    _timer?.cancel();
+    api.cancelAll();
+    store.onChanged = null;
+    _syncing = null;
+    try {
+      await _authenticate(
+        () => auth.deleteAccount(
+          password: password,
+          deletePrivateData: (owner, token) async {
+            if (owner != uid || auth.identity?.uid != uid) {
+              throw const AppFailure(
+                'account_changed',
+                'Your account changed. No other account was deleted.',
+              );
+            }
+            // A timed-out response can still have admitted cloud deletion.
+            // Keep this owner read-only until deletion is retried or the SDK
+            // session changes, rather than recreating the private library.
+            _deletionPendingUid = uid;
+            store.markDeletionPending();
+            _remote = null;
+            _choiceLocalRevision = null;
+            await deleteTransport.deletePrivateAccount(token);
+          },
+          deleteLocalData: store.deleteNamespace,
+        ),
+      );
+    } on AppFailure catch (error) {
+      if (identical(store, _store) && _identity?.uid == uid) _fail(error);
+      rethrow;
+    } finally {
+      if (identical(store, _store) && _identity?.uid == uid) {
+        // A failed deletion retains local data. Do not automatically re-upload
+        // it into a private account that is already marked for deletion.
+        _syncing = null;
+        store.onChanged = _localChanged;
+      }
+    }
+  }
+
   Future<void> resetPassword(String email) =>
       _authenticate(() => auth.resetPassword(email));
-  Future<String> verifyPasswordResetCode(String code) =>
-      auth.verifyPasswordResetCode(code);
-  Future<void> confirmPasswordReset(String code, String password) =>
-      _authenticate(() => auth.confirmPasswordReset(code, password));
   Future<void> signOut() async {
     _generation++;
     _timer?.cancel();
@@ -174,6 +246,14 @@ class AccountController extends ChangeNotifier {
 
   Future<void> refreshSync() {
     if (_store == null || _identity == null) return Future.value();
+    if (_deletionPendingUid == _identity?.uid) {
+      return Future.error(
+        const AppFailure(
+          'account_delete_incomplete',
+          'Account deletion is unfinished. Retry deleting the account before changing its private library.',
+        ),
+      );
+    }
     final existing = _syncing;
     if (existing != null) return existing;
     late final Future<void> operation;
@@ -182,6 +262,15 @@ class AccountController extends ChangeNotifier {
     });
     _syncing = operation;
     return operation;
+  }
+
+  void _requireLibraryWritable() {
+    if (_deletionPendingUid == _identity?.uid && _identity != null) {
+      throw const AppFailure(
+        'account_delete_incomplete',
+        'Account deletion is unfinished. Retry deleting the account before changing its private library.',
+      );
+    }
   }
 
   Future<void> _refresh() async {
@@ -331,6 +420,7 @@ class AccountController extends ChangeNotifier {
   }
 
   Future<void> useCloud() async {
+    _requireLibraryWritable();
     final store = _store;
     final cloud = _remote;
     final expected = _choiceLocalRevision;
@@ -342,6 +432,7 @@ class AccountController extends ChangeNotifier {
   }
 
   Future<void> useDevice() async {
+    _requireLibraryWritable();
     final store = _store;
     final cloud = _remote;
     final expected = _choiceLocalRevision;
@@ -354,6 +445,7 @@ class AccountController extends ChangeNotifier {
   }
 
   Future<void> updateDisplayName(String value) async {
+    _requireLibraryWritable();
     final store = _store;
     if (store == null) return;
     await store.setDisplayName(value);
@@ -361,6 +453,7 @@ class AccountController extends ChangeNotifier {
   }
 
   Future<void> copyGuestLibrary() async {
+    _requireLibraryWritable();
     final store = _store;
     if (store == null) return;
     if (state != AccountSyncState.ready) {
@@ -398,6 +491,7 @@ class AccountController extends ChangeNotifier {
   }
 
   Future<void> clearAccountLibrary() async {
+    _requireLibraryWritable();
     final store = _store;
     if (store == null) return;
     if (state == AccountSyncState.needsChoice ||

@@ -5,11 +5,15 @@ manual dispatch. It checks maintained scripts/Markdown/JSON, canonical metadata,
 tracked OCR/icons, Python lint and release guard tests; rebuilds the read-only
 backend bundles from committed public sources; runs synthetic backend tests; and
 analyzes/tests/compiles the Flutter web client. It uses standard Ubuntu runners,
-locked Python dependencies and the Flutter pin in `scripts/workspace.json`.
+locked Python dependencies and the Flutter pin in `scripts/config/workspace.json`.
 Provider credentials and Firebase deployment remain outside maintenance CI.
-Only the manual native lane restores the private registered demo signing key.
+Only the native release lane restores the private registered demo signing key.
 
-[manual-release.yml](manual-release.yml) runs only through **Run workflow**.
+[frontend-release.yml](frontend-release.yml) automatically runs on main pushes that
+change `frontend/pubspec.yaml`. Its version gate skips dependency-only edits and
+requires an increased build number without lowering SemVer. The pushed SHA is
+built and published automatically; no repeated manual dispatch is needed.
+**Run workflow** remains available for deliberate retries/drafts.
 Its inputs are `source_ref` (default `main`), `backend_url` (default
 `https://unlabel-api.vercel.app`) and `publish_release` (default `true`).
 `frontend/pubspec.yaml` supplies the version and build number; the same metadata
@@ -32,9 +36,10 @@ unsigned status, then packages the IPA preserving symlinks. Intel host hardware
 still cross-compiles an arm64 iPhone app; this is not a simulator package.
 
 Both mobile builds must pass. Publication creates a **draft prerelease** tagged
-`frontend-vVERSION+BUILD`, attaches APK/IPA, toolchain/package metadata, manifest
-and SHA-256 checksums, then verifies uploaded names/sizes/states/digests before
-publishing. Existing native tags/releases/assets are immutable. Historical
+`frontend-vVERSION+BUILD`, attaches only APK, IPA and an apps.json snapshot, then verifies uploaded names/sizes/states/digests before
+publishing. Toolchain/package metadata, manifest and SHA-256 checksums stay in the
+90-day frontend-release-evidence CI artifact. GitHub adds its own source archives.
+Existing native tags/releases/assets are immutable. Historical
 `mobile-vVERSION+BUILD` tags remain valid. Set `publish_release: false` for a draft;
 a draft never updates the iOS source. Source-only `frontend-vVERSION` and backend
 source releases remain separate. Version/build values always come from the
@@ -49,9 +54,9 @@ Actual iPhone launch, camera, authentication and LiveContainer compatibility
 remain device checks. The original capacity notice was informational: that iOS
 job succeeded, while Android timed out before the release job could run.
 
-After a verified native release is published, `scripts/ios_source.py` generates
+After a verified native release is published, `scripts/release/ios_source.py` generates
 the AltStore-style listing from the actual IPA (bundle ID, version/build, minimum
-iOS, size/hash and permissions). `scripts/mobile_release.py` updates only the
+iOS, size/hash and permissions). `scripts/release/mobile_release.py` updates only the
 explicitly mutable `apps.json` asset in the dedicated `ios-source` prerelease,
 after uploading/verifying its replacement. It retains published native assets and
 version history. The source release is never marked GitHub's latest product release.

@@ -106,7 +106,7 @@ def encrypt_env(root: Path, recipient: str | None = None) -> Path:
     _regular_file(plaintext, "backend/.env")
     _regular_file(target, "backend/.env.age", optional=True)
     if recipient is None:
-        recipient_file = Path(root).resolve() / "scripts" / "age-recipient.txt"
+        recipient_file = Path(root).resolve() / "scripts/config/age-recipient.txt"
         _regular_file(recipient_file, "public recipient file")
         try:
             recipient = recipient_file.read_text(encoding="ascii").strip()

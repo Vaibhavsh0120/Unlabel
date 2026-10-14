@@ -2,13 +2,13 @@
 
 Updated **13 October 2026** for the canonical [backend](../../backend/pyproject.toml)
 and [frontend](../../frontend/pubspec.yaml) versions. Current OpenAPI is
-[backend-v0.12.1.openapi.json](../../contracts/schemas/backend-v0.12.1.openapi.json):
-**27 paths / 28 operations**, with existing wire shapes preserved. Historical
-exports remain immutable. Current auth/profile and Google compatibility await
+[backend-v0.13.0.openapi.json](../../contracts/schemas/backend-v0.13.0.openapi.json):
+**27 paths / 29 operations**, adding recent-auth `DELETE /v1/account/sync` while
+preserving existing wire shapes. Historical exports remain immutable. Current auth/provider and deletion work await
 final exact-source hosted/native verification. Authenticated extraction/staging
 and physical-device accuracy remain separate. [Contracts](../../contracts/README.md) ·
-[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md) ·
-[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md).
+[Backend review](../planning/BACKEND_V0_13_0_REVIEW.md) ·
+[Frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md).
 
 ## Historical research checkpoint — backend v0.10.0
 
@@ -18,7 +18,7 @@ separate generated read-only SQLite with **243 observations** (49 manufacturer,
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
 The historical v0.10.0 export has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
+Source normalization does not import the runtime; `scripts/data/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.

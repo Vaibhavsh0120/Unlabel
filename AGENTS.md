@@ -4,18 +4,38 @@
 
 - Work directly on main only; do not create a branch or worktree. Preserve teammate
   edits, licensed sources, historical tags and published assets. Update docs before push.
-- The user's later scope adds responsive auth, linked Google/password providers,
-  private thumbnails and optional gender. Backend only gains verified Google
-  provider compatibility. Canonical versions are
-  frontend/pubspec.yaml and backend/pyproject.toml; scripts/workspace.json pins
+  The user authorized completion and push on 13 October, superseding the local
+  auth-repair hold. Current source scope is frontend 0.9.0+13/backend 0.13.0;
+  pushing main triggers the existing web/API Git deployments. The later user scope
+  also authorizes native APK/IPA publication and refreshing the stable iOS feed.
+  Frontend version/build increases now trigger native release automatically.
+  The earlier 0.8.0+12/backend 0.12.1 source checkpoint remains separate.
+- The user's later scope adds reference desktop/mobile auth in both themes,
+  linked Google/password management, private thumbnails, optional gender and
+  account deletion. Backend adds recent-auth owner deletion, permanent admission
+  markers and private-media cleanup alongside verified Google compatibility.
+  Canonical versions are
+  frontend/pubspec.yaml and backend/pyproject.toml; scripts/config/workspace.json pins
   Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
-- Current UI/release proof belongs to docs/planning/FRONTEND_V0_8_0_REVIEW.md;
-  backend compatibility proof belongs to docs/planning/BACKEND_V0_12_1_REVIEW.md.
+- Current proof belongs to docs/planning/FRONTEND_V0_9_0_REVIEW.md;
+  the preceding source scope stays in docs/planning/FRONTEND_V0_8_0_REVIEW.md;
+  backend deletion proof belongs to docs/planning/BACKEND_V0_13_0_REVIEW.md.
+  The unshipped 0.8.1 working review is superseded development history.
   Keep the desktop shell stationary for History/Sources; readers have no whole-shell
   desktop transition. New illustrations stay exclusive to their section. Auth uses
-  the supplied exact desktop/phone composition and filled Unlabel BrandLeaf. Fit
-  each auth screen in one viewport without horizontal or vertical page scrolling;
-  verify actual renders before claiming reference acceptance.
+  the latest supplied light/dark desktop/phone references and live wordmark/forms.
+  Keep the outer page fixed. Desktop login/signup cards are equal width, 15% narrower
+  than the preceding pass, centered in the right section, and never scroll. Mobile
+  and portrait iPad use an edge-to-edge card that moves as one piece over fixed art;
+  no nested card scrolling or scrollbar. Keyboard opening lifts it; closing restores
+  the prior position. Large text must wrap without artwork overlap. Validate both
+  iPad orientations and actual renders before claiming reference acceptance.
+  Keep four states: sign-in, signup, forgot password and neutral link-sent.
+  Firebase /__/auth/action owns reset validation, new password and success;
+  handleCodeInApp:false returns to the fixed Unlabel #/account-signin URL.
+  Do not require the rejected custom action URL or invent in-app reset success.
+  Layered mascot/sprout/themed garden assets are illustrative, never product evidence.
+  Profile-origin login/signup show a left arrow; Welcome-origin screens do not.
 - Source identities are in docs/planning/CONTROLLED_RELEASES.md and
   contracts/versioning/releases.json. Frontend feature implementation 8b5f9064 and
   backend implementation 39e600e remain distinct from later maintenance/docs commits.
@@ -34,8 +54,8 @@
 - Native frontend tags include build number; historical mobile/backend tags stay
   intact. Only the dedicated ios-source/apps.json feed is mutable after verified
   publication. Feed delivery does not establish physical LiveContainer execution.
-  scripts/validate_workspace.py is tracked. Source checks run in maintenance-ci;
-  manual-release builds native artifacts. Backend work does not rebuild APK/IPA.
+  scripts/release/validate_workspace.py is tracked. Source checks run in maintenance-ci;
+  frontend-release builds native artifacts. Backend work does not rebuild APK/IPA.
 
 ## Product, setup and evidence boundaries
 

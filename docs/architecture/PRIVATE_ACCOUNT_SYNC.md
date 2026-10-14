@@ -7,6 +7,20 @@ Google sessions without changing snapshot ownership or schema. Device-wide dieta
 reminders, appearance, Welcome completion and Insight bookmarks are outside this
 snapshot and stay separate from scanner account namespaces.
 
+The [current deletion feature](../planning/BACKEND_V0_13_0_REVIEW.md) adds
+bodyless `DELETE /v1/account/sync`. It requires the verified owner and fresh
+authentication within 300 seconds, removes the private snapshot and thumbnail,
+and writes private deletion markers to prevent late sync/media resurrection.
+Completed retries perform no writes; a never-admitted UID consumes one of the
+existing 512 lifetime admission slots, while existing snapshots remain deletable
+at quota limits. A capacity or cleanup failure is not a completed deletion.
+The app pauses sync and makes the affected namespace read-only until explicit
+retry completes. Firebase Auth removal follows confirmed private/local cleanup.
+Device-wide preferences and public sourced observations remain distinct;
+deletion is not permission to erase immutable public provenance. Updated
+Firestore rules must be deployed separately before live thumbnail-marker
+enforcement is established.
+
 Backend v0.7.0 adds `personal-sync-v1`. Guest product lookup, manual label analysis,
 public product observations and local libraries keep working without a personal
 account. A scanner may sign in with Firebase Google or email/password to sync

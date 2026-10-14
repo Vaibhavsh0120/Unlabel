@@ -30,12 +30,14 @@ class AccountAvatar extends StatelessWidget {
     this.media,
     this.identity,
     this.displayName,
+    this.preview,
     this.size = 48,
   });
 
   final ProfileMediaController? media;
   final AccountIdentity? identity;
   final String? displayName;
+  final ProfileMedia? preview;
   final double size;
 
   @override
@@ -49,9 +51,11 @@ class AccountAvatar extends StatelessWidget {
   }
 
   Widget _content(BuildContext context, ProfileMediaController? controller) {
-    final value = controller?.value;
+    final value = preview ?? controller?.value;
     final owner = controller?.identity ?? identity;
-    final safePhoto = safeGooglePhotoUrl(owner?.photoUrl);
+    final safePhoto = owner?.hasGoogle == true
+        ? safeGooglePhotoUrl(owner?.photoUrl)
+        : null;
     final source = value?.source ?? ProfileAvatarSource.automatic;
     final custom = value?.avatarPng;
     Widget fallback() {
@@ -91,7 +95,11 @@ class AccountAvatar extends StatelessWidget {
       image: true,
       child: SizedBox.square(
         dimension: size,
-        child: ClipOval(child: child),
+        child: ClipRRect(
+          key: const ValueKey('profile-avatar-square'),
+          borderRadius: BorderRadius.circular(math.min(12, size * .12)),
+          child: child,
+        ),
       ),
     );
   }
@@ -145,11 +153,34 @@ class ProfilePhotoEditor extends StatefulWidget {
     required this.media,
     this.identity,
     this.pickPhoto,
+    this.cropOnly = false,
+    this.startWithGallery = false,
   });
 
   final ProfileMediaController media;
   final AccountIdentity? identity;
   final Future<Uint8List?> Function()? pickPhoto;
+  final bool cropOnly, startWithGallery;
+
+  static Future<Uint8List?> crop(
+    BuildContext context, {
+    required ProfileMediaController media,
+    AccountIdentity? identity,
+    Future<Uint8List?> Function()? pickPhoto,
+  }) => showDialog<Uint8List>(
+    context: context,
+    barrierDismissible: false,
+    animationStyle: MediaQuery.disableAnimationsOf(context)
+        ? AnimationStyle.noAnimation
+        : null,
+    builder: (_) => ProfilePhotoEditor(
+      media: media,
+      identity: identity,
+      pickPhoto: pickPhoto,
+      cropOnly: true,
+      startWithGallery: true,
+    ),
+  );
 
   static Future<void> show(
     BuildContext context, {
@@ -180,6 +211,11 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
   void initState() {
     super.initState();
     widget.media.addListener(_mediaChanged);
+    if (widget.startWithGallery) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_pick());
+      });
+    }
   }
 
   void _mediaChanged() {
@@ -241,6 +277,27 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
   Future<void> _save() async {
     final image = _image;
     if (image == null) return;
+    if (widget.cropOnly) {
+      setState(() {
+        _working = true;
+        _error = null;
+      });
+      try {
+        final png = await encodeAvatarCrop(image, center: _center, zoom: _zoom);
+        if (mounted && widget.media.ownerUid == _owner) {
+          Navigator.pop(context, png);
+        }
+      } catch (_) {
+        if (mounted) {
+          setState(
+            () => _error = 'The photo could not be cropped. Try another image.',
+          );
+        }
+      } finally {
+        if (mounted) setState(() => _working = false);
+      }
+      return;
+    }
     await _perform(() async {
       final png = await encodeAvatarCrop(image, center: _center, zoom: _zoom);
       if (!mounted || widget.media.ownerUid != _owner) return;
@@ -274,7 +331,9 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
     final colors = Theme.of(context).colorScheme;
     final busy = _working || widget.media.busy;
     final owner = widget.media.identity ?? widget.identity;
-    final googlePhoto = safeGooglePhotoUrl(owner?.photoUrl);
+    final googlePhoto = owner?.hasGoogle == true
+        ? safeGooglePhotoUrl(owner?.photoUrl)
+        : null;
     return PopScope(
       canPop: !_working,
       child: Dialog(
@@ -306,7 +365,9 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Profile photo',
+                          widget.cropOnly
+                              ? 'Crop profile photo'
+                              : 'Profile photo',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
@@ -371,7 +432,8 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
                                           _zoom,
                                         );
                                       }),
-                                child: ClipOval(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
                                   child: CustomPaint(
                                     size: Size.square(edge),
                                     painter: _AvatarCropPainter(
@@ -486,52 +548,55 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
                         else
                           const Text('Sign in to save a custom profile photo.'),
                         const SizedBox(height: 12),
-                        PopupMenuButton<ProfileAvatarSource>(
-                          tooltip: 'Photo options',
-                          enabled: !busy,
-                          onSelected: (source) => _perform(switch (source) {
-                            ProfileAvatarSource.google =>
-                              widget.media.useGooglePhoto,
-                            ProfileAvatarSource.defaultAvatar =>
-                              widget.media.useDefaultAvatar,
-                            _ => widget.media.removeCustomPhoto,
-                          }),
-                          itemBuilder: (_) => [
-                            const PopupMenuItem(
-                              value: ProfileAvatarSource.defaultAvatar,
-                              child: Text('Use default avatar'),
-                            ),
-                            if (googlePhoto != null)
+                        if (!widget.cropOnly)
+                          PopupMenuButton<ProfileAvatarSource>(
+                            tooltip: 'Photo options',
+                            enabled: !busy,
+                            onSelected: (source) => _perform(switch (source) {
+                              ProfileAvatarSource.google =>
+                                widget.media.useGooglePhoto,
+                              ProfileAvatarSource.defaultAvatar =>
+                                widget.media.useDefaultAvatar,
+                              _ => widget.media.removeCustomPhoto,
+                            }),
+                            itemBuilder: (_) => [
                               const PopupMenuItem(
-                                value: ProfileAvatarSource.google,
-                                child: Text('Use Google photo'),
+                                value: ProfileAvatarSource.defaultAvatar,
+                                child: Text('Use default avatar'),
                               ),
-                            if (widget.media.value.avatarPng != null)
-                              const PopupMenuItem(
-                                value: ProfileAvatarSource.automatic,
-                                child: Text('Remove custom photo'),
+                              if (googlePhoto != null)
+                                const PopupMenuItem(
+                                  value: ProfileAvatarSource.google,
+                                  child: Text('Use Google photo'),
+                                ),
+                              if (widget.media.value.avatarPng != null)
+                                const PopupMenuItem(
+                                  value: ProfileAvatarSource.automatic,
+                                  child: Text('Remove custom photo'),
+                                ),
+                            ],
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
                               ),
-                          ],
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(child: Text('Photo options')),
-                                SizedBox(width: 8),
-                                Icon(Icons.expand_more, size: 20),
-                              ],
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(child: Text('Photo options')),
+                                  SizedBox(width: 8),
+                                  Icon(Icons.expand_more, size: 20),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                       ],
                       const SizedBox(height: 12),
                       Text(
                         owner == null
                             ? 'Your gender choice controls the default avatar.'
+                            : widget.cropOnly
+                            ? 'Confirm this square crop, then save your profile.'
                             : 'Only the cropped thumbnail is saved privately to your account.',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodySmall,
@@ -576,7 +641,9 @@ class _ProfilePhotoEditorState extends State<ProfilePhotoEditor> {
                                 ),
                               )
                             : const Icon(Icons.check, size: 20),
-                        label: const Text('Save photo'),
+                        label: Text(
+                          widget.cropOnly ? 'Use this crop' : 'Save photo',
+                        ),
                       ),
                   ],
                 ),

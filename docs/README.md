@@ -2,7 +2,9 @@
 
 Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
 and [backend pyproject](../backend/pyproject.toml). The latest auth/profile and UI
-work is reviewed in [frontend evidence](planning/FRONTEND_V0_8_0_REVIEW.md), with
+work is recorded in the [frontend update](planning/FRONTEND_V0_9_0_REVIEW.md) and
+[backend deletion release](planning/BACKEND_V0_13_0_REVIEW.md), with
+the [preceding frontend source scope](planning/FRONTEND_V0_8_0_REVIEW.md) and
 [backend Google compatibility](planning/BACKEND_V0_12_1_REVIEW.md) separate.
 This pass also fixes setup/release metadata and stale documentation. Source, native artifacts, hosted deployment
 and physical-device checks have separate receipts.
@@ -30,9 +32,10 @@ and physical-device checks have separate receipts.
 | [Insights](architecture/INSIGHTS.md) · [UI contract](../DESIGN.md) | Sourced educational articles and reference visual direction |
 | [Master plan](planning/MASTER_PLAN.md) · [Remaining work](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Product intent and pending acceptance |
 
-The current reviews separate [frontend auth/profile](planning/FRONTEND_V0_8_0_REVIEW.md)
-from [backend provider compatibility](planning/BACKEND_V0_12_1_REVIEW.md). Final hosted/native
-acceptance remains pending until its exact-source receipt is recorded. Older versioned reviews,
+The user authorized completion and push from main on 13 October. Current source,
+Git-triggered deployment and native publication remain separate evidence. The
+[preceding backend provider review](planning/BACKEND_V0_12_1_REVIEW.md) and earlier source
+reviews retain their own hosted/native evidence. Older versioned reviews,
 production JSON receipts, research notes, accepted specs and plans remain dated
 historical evidence. Their versions and test totals describe their own source
 revisions; they are not instructions to revert current code or repeat old work.

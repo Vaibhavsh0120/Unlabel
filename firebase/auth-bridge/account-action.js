@@ -1,17 +1,19 @@
 /* This bridge never verifies a code, reads account data or sends email. Firebase
- * verifies actions; only password-reset UI moves to the fixed Unlabel frontend.
+ * verifies and completes every action in its reserved hosted handler.
  */
 (function () {
   'use strict';
 
   const authOrigin = 'https://unlabel-india-catalogue.firebaseapp.com';
   const frontendOrigin = 'https://unlabel-india.vercel.app';
+  const signInReturn = `${frontendOrigin}/#/account-signin`;
   const continueOrigins = new Set([
     frontendOrigin,
     authOrigin,
     'https://unlabel-india-catalogue.web.app',
   ]);
   const firebaseModes = new Set([
+    'resetPassword',
     'verifyEmail',
     'recoverEmail',
     'verifyAndChangeEmail',
@@ -52,13 +54,6 @@
     const mode = query.get('mode');
     const code = query.get('oobCode');
     if (!opaqueCode(code)) return null;
-    if (mode === 'resetPassword') {
-      const destination = new URL(frontendOrigin);
-      const reset = new URLSearchParams({mode, oobCode: code});
-      // Fragments never enter the Vercel request URL or its access logs.
-      destination.hash = `/account-reset?${reset.toString()}`;
-      return destination.href;
-    }
     if (!firebaseModes.has(mode)) return null;
     const destination = new URL('/__/auth/action', authOrigin);
     destination.searchParams.set('mode', mode);
@@ -71,7 +66,8 @@
     if (lang && /^[A-Za-z0-9-]{1,35}$/.test(lang)) {
       destination.searchParams.set('lang', lang);
     }
-    const continueUrl = safeContinueUrl(query.get('continueUrl'));
+    const continueUrl = mode === 'resetPassword'
+      ? signInReturn : safeContinueUrl(query.get('continueUrl'));
     if (continueUrl) destination.searchParams.set('continueUrl', continueUrl);
     return destination.href;
   }

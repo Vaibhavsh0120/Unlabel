@@ -53,10 +53,10 @@ Extra keys use bounded `AI_FALLBACK_CREDENTIALS_JSON` entries with `id`, `provid
 The hidden-prompt helper saves one key and refreshes encrypted settings:
 
 ~~~powershell
-backend/.venv/Scripts/python.exe scripts/configure_ai.py openai
+backend/.venv/Scripts/python.exe scripts/ai/configure_ai.py openai
 backend/.venv/Scripts/python.exe scripts/env.py encrypt
-backend/.venv/Scripts/python.exe scripts/ai_provider.py --project unlabel-india-catalogue status
-backend/.venv/Scripts/python.exe scripts/ai_provider.py --project unlabel-india-catalogue activate openai-primary --expected-revision 1
+backend/.venv/Scripts/python.exe scripts/ai/ai_provider.py --project unlabel-india-catalogue status
+backend/.venv/Scripts/python.exe scripts/ai/ai_provider.py --project unlabel-india-catalogue activate openai-primary --expected-revision 1
 ~~~
 
 Use the actual returned revision. `AI_INITIAL_CREDENTIAL_ID` only initializes an

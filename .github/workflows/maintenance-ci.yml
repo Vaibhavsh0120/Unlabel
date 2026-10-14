@@ -36,11 +36,11 @@ jobs:
           python -m pip check
       - name: Validate maintained scripts, docs and canonical metadata
         run: |
-          python scripts/validate_workspace.py
-          python scripts/version_metadata.py --component frontend --format json
-          python scripts/version_metadata.py --component backend --format json
-          python scripts/vendor_web_ocr.py --check
-          python scripts/generate_app_icons.py --check
+          python scripts/release/validate_workspace.py
+          python scripts/release/version_metadata.py --component frontend --format json
+          python scripts/release/version_metadata.py --component backend --format json
+          python scripts/release/vendor_web_ocr.py --check
+          python scripts/release/generate_app_icons.py --check
           python -m unittest discover -s scripts/tests -p 'test_*.py'
           python -m ruff check --target-version py312 backend/app backend/tests backend/build_catalogue.py scripts
       - name: Build verified read-only data from committed sources
@@ -59,7 +59,7 @@ jobs:
           persist-credentials: false
       - name: Resolve the canonical Flutter toolchain
         id: metadata
-        run: python3 scripts/version_metadata.py --component frontend --format github >> "$GITHUB_OUTPUT"
+        run: python3 scripts/release/version_metadata.py --component frontend --format github >> "$GITHUB_OUTPUT"
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ steps.metadata.outputs.flutter_version }}

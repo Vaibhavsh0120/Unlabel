@@ -2,10 +2,10 @@
 
 The maintenance pass publishes missing reviewed source identities and preserves
 historical tags/assets. Current versions come from the component manifests.
-The later auth/profile frontend release is documented in
-[its review](FRONTEND_V0_8_0_REVIEW.md), with the minimal
-[backend compatibility patch](BACKEND_V0_12_1_REVIEW.md) separate. Their publication
-identities are recorded after verification.
+Current authorized source work is documented in the
+[frontend account-controls review](FRONTEND_V0_9_0_REVIEW.md) and
+[backend deletion review](BACKEND_V0_13_0_REVIEW.md). Prior auth/profile and
+Google compatibility checkpoints retain their own source identities.
 
 Historical source identities are recorded in [the machine ledger](../../contracts/versioning/releases.json).
 Legacy backend vVERSION tags stay preserved. New backend/frontend tags identify
@@ -50,3 +50,14 @@ The iOS source feed has its own prerelease and never represents a backend releas
 
 [Release workflow and versions](RELEASE_VERSIONING.md) ·
 [Maintenance scope](MAINTENANCE_2026_10_12.md).
+
+## Current source scope - 13 October 2026
+
+Verified remote main `3e67f13` contains frontend 0.8.0+12 and backend 0.12.1.
+The authorized next source update uses frontend **0.9.0+13** and backend
+**0.13.0**, for account controls/reference auth and the additive deletion endpoint.
+The earlier unshipped 0.8.1 working note is superseded; no 0.8.1 release is created.
+[Frontend evidence](FRONTEND_V0_9_0_REVIEW.md) and
+[backend evidence](BACKEND_V0_13_0_REVIEW.md) record local checks and separate
+hosted/native gates. New source commit identities will be recorded after commit;
+no native artifacts, tags, or feed publication are implied by a source push.

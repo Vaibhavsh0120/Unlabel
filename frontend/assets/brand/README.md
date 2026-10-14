@@ -16,7 +16,7 @@ SVGs and 1024px PNG masters live here, separately from the attributed Solar
 feature icons. Light is the app's first-use default. Platform masks supply the
 outer rounded shape; the source artwork is a full square.
 
-`python scripts/generate_app_icons.py --check` verifies all 42 committed assets
+`python scripts/release/generate_app_icons.py --check` verifies all 42 committed assets
 and font/license source files, their hashes and PNG dimensions without external
 dependencies. To regenerate deliberately, install Pillow and fontTools in an
 authoring environment and run the script without `--check`.

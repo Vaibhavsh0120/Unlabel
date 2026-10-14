@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/accounts/account_controller.dart';
 import '../../../core/accounts/profile_media.dart';
@@ -49,6 +51,7 @@ class ProfilePage extends StatefulWidget {
     this.onThemeModeChanged,
     this.showHeader = true,
     this.embedded = false,
+    this.pickProfilePhoto,
     super.key,
   });
   final AccountController controller;
@@ -57,6 +60,7 @@ class ProfilePage extends StatefulWidget {
   final ThemeMode? themeMode;
   final ValueChanged<ThemeMode>? onThemeModeChanged;
   final bool embedded, showHeader;
+  final Future<Uint8List?> Function()? pickProfilePhoto;
 
   static Future<void> showSignIn(
     BuildContext context,
@@ -228,20 +232,15 @@ class _ProfilePageState extends State<ProfilePage> {
       ) ??
       false;
 
-  Future<void> _name() async {
-    final value = await showDialog<String>(
-      context: context,
-      builder: (_) => _NameDialog(
-        initialName:
-            controller.localData?.displayName ??
-            controller.identity?.displayName ??
-            '',
-      ),
-    );
-    if (value != null && mounted) {
-      await _run(context, () => controller.updateDisplayName(value));
-    }
-  }
+  Future<void> _editProfile() => showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => _EditProfileDialog(
+      controller: controller,
+      media: ProfileMediaScope.maybeOf(context),
+      pickPhoto: widget.pickProfilePhoto,
+    ),
+  );
 
   Future<void> _gender(ProfileMediaController media) async {
     final selected = await showDialog<ProfileGender>(
@@ -485,7 +484,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ? const Color(0xff1d332b)
       : const Color(0xffe8faf2);
 
-  Widget _card(Widget child, {bool botanical = false, double padding = 16}) {
+  Widget _card(Widget child, {double padding = 16}) {
     final theme = Theme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -496,43 +495,8 @@ class _ProfilePageState extends State<ProfilePage> {
         border: Border.all(
           color: theme.colorScheme.outlineVariant.withValues(alpha: .5),
         ),
-        boxShadow: theme.brightness == Brightness.dark
-            ? const []
-            : const [
-                BoxShadow(
-                  color: Color(0x080e6950),
-                  blurRadius: 18,
-                  offset: Offset(0, 6),
-                ),
-              ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            if (botanical)
-              Positioned(
-                right: -20,
-                bottom: -20,
-                width: 140,
-                height: 150,
-                child: IgnorePointer(
-                  child: ExcludeSemantics(
-                    child: Opacity(
-                      opacity: .38,
-                      child: Image.asset(
-                        'assets/artwork/profile-botanical.webp',
-                        cacheWidth: 512,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            Padding(padding: EdgeInsets.all(padding), child: child),
-          ],
-        ),
-      ),
+      child: Padding(padding: EdgeInsets.all(padding), child: child),
     );
   }
 
@@ -549,6 +513,7 @@ class _ProfilePageState extends State<ProfilePage> {
               : 'Your Unlabel account')
         : 'Your guest profile';
     return DecoratedBox(
+      key: const ValueKey('profile-identity-card'),
       decoration: BoxDecoration(
         color: _mint,
         borderRadius: BorderRadius.circular(20),
@@ -556,113 +521,77 @@ class _ProfilePageState extends State<ProfilePage> {
           color: theme.colorScheme.outlineVariant.withValues(alpha: .45),
         ),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -38,
-              bottom: -32,
-              width: 165,
-              height: 200,
-              child: IgnorePointer(
-                child: ExcludeSemantics(
-                  child: Opacity(
-                    opacity: .5,
-                    child: Image.asset(
-                      'assets/artwork/profile-botanical.webp',
-                      cacheWidth: 512,
-                      fit: BoxFit.contain,
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
+            final avatar = AccountAvatar(
+              identity: controller.identity,
+              displayName: displayName,
+              size: largeText ? 72 : 88,
+            );
+            final edit = IconButton(
+              key: const ValueKey('profile-edit'),
+              tooltip: 'Edit profile',
+              onPressed: controller.authBusy ? null : _editProfile,
+              icon: const Icon(Icons.edit_outlined),
+            );
+            final details = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: LayoutBuilder(
-                builder: (context, box) {
-                  final largeText =
-                      MediaQuery.textScalerOf(context).scale(14) > 21;
-                  final media = ProfileMediaScope.maybeOf(context);
-                  final avatar = IconButton(
-                    tooltip: 'Change profile picture',
-                    onPressed: media == null || media.loading || media.busy
+                const SizedBox(height: 3),
+                Text(
+                  signedIn
+                      ? controller.identity!.email ?? 'Signed in'
+                      : 'Saved on this device',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                if (!signedIn) ...[
+                  const SizedBox(height: 10),
+                  FilledButton.tonalIcon(
+                    onPressed: controller.authBusy
                         ? null
-                        : () => ProfilePhotoEditor.show(
-                            context,
-                            media: media,
-                            identity: controller.identity,
-                          ),
-                    padding: EdgeInsets.zero,
-                    icon: AccountAvatar(
-                      identity: controller.identity,
-                      displayName: displayName,
-                      size: largeText ? 72 : 88,
-                    ),
-                  );
-                  final details = Column(
+                        : () => ProfilePage.showSignIn(context, controller),
+                    icon: const Icon(Icons.login_rounded, size: 19),
+                    label: const Text('Sign in'),
+                  ),
+                ],
+              ],
+            );
+            if (largeText && box.maxWidth < 460) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        signedIn
-                            ? controller.identity!.email ?? 'Signed in'
-                            : 'Saved on this device',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        softWrap: true,
-                      ),
-                      const SizedBox(height: 10),
-                      FilledButton.tonalIcon(
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size(48, 42),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          backgroundColor: theme.colorScheme.primaryContainer,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: controller.authBusy
-                            ? null
-                            : signedIn
-                            ? _name
-                            : () => ProfilePage.showSignIn(context, controller),
-                        icon: Icon(
-                          signedIn ? Icons.edit_outlined : Icons.login_rounded,
-                          size: 19,
-                        ),
-                        label: Text(signedIn ? 'Edit profile' : 'Sign in'),
-                      ),
-                    ],
-                  );
-                  if (largeText && box.maxWidth < 460) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [avatar, const SizedBox(height: 12), details],
-                    );
-                  }
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      avatar,
-                      const SizedBox(width: 14),
-                      Expanded(child: details),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
+                    children: [avatar, const Spacer(), edit],
+                  ),
+                  const SizedBox(height: 12),
+                  details,
+                ],
+              );
+            }
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                avatar,
+                const SizedBox(width: 14),
+                Expanded(child: details),
+                const SizedBox(width: 8),
+                edit,
+              ],
+            );
+          },
         ),
       ),
     );
@@ -821,57 +750,92 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _preferenceCard() => _card(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _sectionHeading(
-          'Preferences',
-          Icons.tune_rounded,
-          onTap: _preferencesBusy ? null : () => _choosePreferences(),
+  Widget _preferenceCard() {
+    final media = ProfileMediaScope.maybeOf(context);
+    return KeyedSubtree(
+      key: const ValueKey('profile-preferences-card'),
+      child: _card(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sectionHeading(
+              'Preferences',
+              Icons.tune_rounded,
+              onTap: _preferencesBusy ? null : () => _choosePreferences(),
+            ),
+            Text(
+              _preferences.selectedPreferenceLabels.isEmpty
+                  ? 'No preferences selected'
+                  : '${_preferences.selectedPreferenceLabels.length} selected',
+              key: const ValueKey('profile-preferences-summary-count'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            if (_preferences.selectedPreferenceLabels.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              _selectionSummary(_preferences.selectedPreferenceLabels),
+            ],
+            const SizedBox(height: 20),
+            _sectionHeading(
+              'Allergens to remember',
+              Icons.warning_amber_rounded,
+              onTap: _preferencesBusy
+                  ? null
+                  : () => _choosePreferences(allergensOnly: true),
+            ),
+            Text(
+              _preferences.allergens.isEmpty
+                  ? 'No allergens selected'
+                  : '${_preferences.allergens.length} selected',
+              key: const ValueKey('profile-allergens-summary-count'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            if (_preferences.allergens.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              _selectionSummary([
+                for (final allergen
+                    in DeviceProfilePreferences.allergenLabels.entries)
+                  if (_preferences.allergens.contains(allergen.key))
+                    '${allergen.value} reminder',
+              ], allergensOnly: true),
+            ],
+            if (media != null) ...[
+              const SizedBox(height: 20),
+              _sectionHeading(
+                'Gender',
+                Icons.person_outline_rounded,
+                onTap: media.loading || media.busy || media.error != null
+                    ? null
+                    : () => _gender(media),
+              ),
+              Text(
+                media.value.gender.label,
+                key: const ValueKey('profile-gender-summary'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              if (media.error != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  media.error!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                TextButton(
+                  onPressed: media.refresh,
+                  child: const Text('Retry profile settings'),
+                ),
+              ],
+            ],
+            if (_preferenceError != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                _preferenceError!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ],
         ),
-        Text(
-          _preferences.selectedPreferenceLabels.isEmpty
-              ? 'No preferences selected'
-              : '${_preferences.selectedPreferenceLabels.length} selected',
-          key: const ValueKey('profile-preferences-summary-count'),
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        if (_preferences.selectedPreferenceLabels.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          _selectionSummary(_preferences.selectedPreferenceLabels),
-        ],
-        const SizedBox(height: 20),
-        _sectionHeading(
-          'Allergens to remember',
-          Icons.warning_amber_rounded,
-          onTap: _preferencesBusy
-              ? null
-              : () => _choosePreferences(allergensOnly: true),
-        ),
-        Text(
-          _preferences.allergens.isEmpty
-              ? 'No allergens selected'
-              : '${_preferences.allergens.length} selected',
-          key: const ValueKey('profile-allergens-summary-count'),
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        if (_preferences.allergens.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          _selectionSummary([
-            for (final allergen
-                in DeviceProfilePreferences.allergenLabels.entries)
-              if (_preferences.allergens.contains(allergen.key))
-                '${allergen.value} reminder',
-          ], allergensOnly: true),
-        ],
-        if (_preferenceError != null) ...[
-          const SizedBox(height: 8),
-          Text(_preferenceError!, style: Theme.of(context).textTheme.bodySmall),
-        ],
-      ],
-    ),
-  );
+      ),
+    );
+  }
 
   Widget _selectionSummary(List<String> labels, {bool allergensOnly = false}) {
     final group = allergensOnly ? 'allergens' : 'preferences';
@@ -989,120 +953,82 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _settingsCard() {
-    final media = ProfileMediaScope.maybeOf(context);
     final dark =
         widget.themeMode == ThemeMode.dark ||
         (widget.themeMode != ThemeMode.light &&
             Theme.of(context).brightness == Brightness.dark);
     final signedIn = controller.identity != null;
-    return _card(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _sectionHeading('Settings', Icons.settings_outlined),
-          if (media != null) ...[
+    return KeyedSubtree(
+      key: const ValueKey('profile-settings-card'),
+      child: _card(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sectionHeading('Settings', Icons.settings_outlined),
             _setting(
-              'Profile picture',
-              Icons.account_circle_outlined,
-              subtitle: 'Google, upload or default avatar',
-              onTap: media.loading || media.busy
+              'Sign-in methods',
+              Icons.manage_accounts_outlined,
+              subtitle: signedIn
+                  ? 'Manage Google and email sign-in'
+                  : 'Sign in to connect your account',
+              onTap: controller.authBusy
                   ? null
-                  : () => ProfilePhotoEditor.show(
-                      context,
-                      media: media,
-                      identity: controller.identity,
-                    ),
+                  : signedIn
+                  ? _signInMethods
+                  : () => ProfilePage.showSignIn(context, controller),
             ),
             _setting(
-              'Gender',
-              Icons.person_outline_rounded,
-              subtitle: media.value.gender.label,
-              onTap: media.loading || media.busy ? null : () => _gender(media),
+              'Notifications',
+              Icons.notifications_none_outlined,
+              subtitle: 'Not available yet',
+              onTap: () => _information(
+                'Notifications',
+                'Push notifications and reminders are not supported in this version.',
+              ),
+              trailing: Semantics(
+                label: 'Notifications unavailable in this version',
+                child: const Switch(value: false, onChanged: null),
+              ),
             ),
-            if (media.error != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      media.error!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
+            _setting(
+              'Dark mode',
+              Icons.dark_mode_outlined,
+              onTap: widget.onThemeModeChanged != null
+                  ? () => widget.onThemeModeChanged!(
+                      dark ? ThemeMode.light : ThemeMode.dark,
+                    )
+                  : widget.onAppearance,
+              trailing: Switch(
+                value: dark,
+                onChanged: widget.onThemeModeChanged == null
+                    ? null
+                    : (value) => widget.onThemeModeChanged!(
+                        value ? ThemeMode.dark : ThemeMode.light,
                       ),
-                    ),
-                    TextButton(
-                      onPressed: media.refresh,
-                      child: const Text('Retry profile settings'),
-                    ),
-                  ],
-                ),
+              ),
+            ),
+            _setting('Privacy', Icons.shield_outlined, onTap: _privacy),
+            _setting(
+              'Help',
+              Icons.help_outline_rounded,
+              onTap: () => _information(
+                'Help',
+                'Scan a package label, confirm the text, and read its report. Saved keeps your selected reports. Compare uses each package’s stated nutrition basis. Unknown facts are left unknown.',
+                showAbout: true,
+              ),
+            ),
+            if (signedIn)
+              _setting(
+                'Log out',
+                Icons.logout_rounded,
+                danger: true,
+                divider: false,
+                onTap: controller.authBusy ? null : _logout,
+                trailing: const SizedBox(width: 22),
               ),
           ],
-          _setting(
-            'Sign-in methods',
-            Icons.manage_accounts_outlined,
-            subtitle: signedIn
-                ? 'Manage Google and email sign-in'
-                : 'Sign in to connect your account',
-            onTap: controller.authBusy
-                ? null
-                : signedIn
-                ? _signInMethods
-                : () => ProfilePage.showSignIn(context, controller),
-          ),
-          _setting(
-            'Notifications',
-            Icons.notifications_none_outlined,
-            subtitle: 'Not available yet',
-            onTap: () => _information(
-              'Notifications',
-              'Push notifications and reminders are not supported in this version.',
-            ),
-            trailing: Semantics(
-              label: 'Notifications unavailable in this version',
-              child: const Switch(value: false, onChanged: null),
-            ),
-          ),
-          _setting(
-            'Dark mode',
-            Icons.dark_mode_outlined,
-            onTap: widget.onThemeModeChanged != null
-                ? () => widget.onThemeModeChanged!(
-                    dark ? ThemeMode.light : ThemeMode.dark,
-                  )
-                : widget.onAppearance,
-            trailing: Switch(
-              value: dark,
-              onChanged: widget.onThemeModeChanged == null
-                  ? null
-                  : (value) => widget.onThemeModeChanged!(
-                      value ? ThemeMode.dark : ThemeMode.light,
-                    ),
-            ),
-          ),
-          _setting('Privacy', Icons.shield_outlined, onTap: _privacy),
-          _setting(
-            'Help',
-            Icons.help_outline_rounded,
-            onTap: () => _information(
-              'Help',
-              'Scan a package label, confirm the text, and read its report. Saved keeps your selected reports. Compare uses each package’s stated nutrition basis. Unknown facts are left unknown.',
-              showAbout: true,
-            ),
-          ),
-          if (signedIn)
-            _setting(
-              'Log out',
-              Icons.logout_rounded,
-              danger: true,
-              divider: false,
-              onTap: controller.authBusy ? null : _logout,
-              trailing: const SizedBox(width: 22),
-            ),
-        ],
+        ),
       ),
-      botanical: true,
     );
   }
 
@@ -1605,13 +1531,207 @@ class _SignInMethodsDialog extends StatefulWidget {
 
 class _SignInMethodsDialogState extends State<_SignInMethodsDialog> {
   String? _error;
-  Future<void> _google() async {
+
+  Future<void> _run(Future<void> Function() action) async {
     setState(() => _error = null);
     try {
-      await widget.controller.linkGoogle();
+      await action();
     } on AppFailure catch (error) {
       if (mounted) setState(() => _error = error.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _error = 'This sign-in change could not finish. Try again.',
+        );
+      }
     }
+  }
+
+  Future<void> _confirm({
+    required String title,
+    required String body,
+    required String label,
+    required Future<void> Function(String? password) action,
+    bool password = false,
+    bool danger = false,
+  }) => showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => _AccountActionDialog(
+      controller: widget.controller,
+      title: title,
+      body: body,
+      actionLabel: label,
+      action: action,
+      requiresPassword: password,
+      danger: danger,
+    ),
+  );
+
+  Widget _providerCard({
+    required Widget icon,
+    required String title,
+    required String? detail,
+    required bool connected,
+    required bool busy,
+    required ValueChanged<bool>? onChanged,
+    required List<Widget> actions,
+    required bool compact,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: EdgeInsets.all(compact ? 12 : 18),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: scheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: compact ? 38 : 46,
+                height: compact ? 38 : 46,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: scheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: icon,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 6,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: compact ? 13 : 15,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        if (connected)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffdff8e9),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              title == 'Google' ? 'Connected' : 'Enabled',
+                              style: const TextStyle(
+                                color: Color(0xff087846),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    if (detail != null)
+                      Text(
+                        detail,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: scheme.onSurfaceVariant,
+                          fontSize: compact ? 10 : 12,
+                        ),
+                      ),
+                    Text(
+                      connected
+                          ? 'Used to sign in to your account.'
+                          : 'Add this sign-in method to your account.',
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: compact ? 10 : 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Semantics(
+                label: '$title sign-in',
+                child: Switch.adaptive(
+                  value: connected,
+                  onChanged: busy ? null : onChanged,
+                ),
+              ),
+            ],
+          ),
+          if (actions.isNotEmpty) ...[
+            SizedBox(height: compact ? 8 : 14),
+            Theme(
+              data: Theme.of(context).copyWith(
+                outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: scheme.onSurface,
+                    minimumSize: const Size(0, 44),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    textStyle: TextStyle(fontSize: compact ? 11 : 12),
+                    side: BorderSide(color: scheme.outlineVariant),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+              child: MediaQuery.textScalerOf(context).scale(12) > 18
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (var i = 0; i < actions.length; i++) ...[
+                          if (i > 0) const SizedBox(height: 8),
+                          actions[i],
+                        ],
+                      ],
+                    )
+                  : compact
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            for (
+                              var i = 0;
+                              i < actions.length.clamp(0, 2);
+                              i++
+                            ) ...[
+                              if (i > 0) const SizedBox(width: 8),
+                              Expanded(child: actions[i]),
+                            ],
+                          ],
+                        ),
+                        if (actions.length > 2) ...[
+                          const SizedBox(height: 8),
+                          actions.last,
+                        ],
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        for (var i = 0; i < actions.length; i++) ...[
+                          if (i > 0)
+                            i == 2 ? const Spacer() : const SizedBox(width: 10),
+                          Flexible(child: actions[i]),
+                        ],
+                      ],
+                    ),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   @override
@@ -1620,83 +1740,562 @@ class _SignInMethodsDialogState extends State<_SignInMethodsDialog> {
     builder: (context, _) {
       final identity = widget.controller.identity;
       final busy = widget.controller.authBusy;
-      return PopScope(
-        canPop: !busy,
-        child: _ProfileWindow(
-          title: 'Sign-in methods',
-          canDismiss: !busy,
-          icon: Icons.manage_accounts_outlined,
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Use either method to open the same Unlabel account.'),
-              const SizedBox(height: 20),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.account_circle_outlined),
-                title: const Text('Google'),
-                subtitle: Text(
-                  identity?.hasGoogle == true
-                      ? 'Connected'
-                      : 'Connect your Google account',
-                ),
-              ),
-              if (identity?.hasGoogle != true)
-                OutlinedButton(
-                  onPressed: busy || identity == null ? null : _google,
-                  child: const Text('Connect Google'),
-                ),
-              const SizedBox(height: 12),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.mail_outline_rounded),
-                title: const Text('Email and password'),
-                subtitle: Text(
-                  identity?.hasPassword == true
-                      ? 'Connected'
-                      : 'Add a password for ${identity?.email ?? 'your email'}',
-                ),
-              ),
-              if (identity?.hasPassword != true)
-                OutlinedButton(
-                  onPressed: busy || identity == null
-                      ? null
-                      : () => showDialog<void>(
-                          context: context,
-                          builder: (_) => _LinkPasswordDialog(
-                            controller: widget.controller,
-                          ),
-                        ),
-                  child: const Text('Add email and password'),
-                ),
-              if (busy) ...[
-                const SizedBox(height: 16),
-                const LinearProgressIndicator(),
-              ],
-              if (_error != null) ...[
-                const SizedBox(height: 16),
-                Semantics(
-                  liveRegion: true,
-                  child: Text(
-                    _error!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
+      final google = identity?.hasGoogle == true;
+      final password = identity?.hasPassword == true;
+      final size = MediaQuery.sizeOf(context);
+      final compact = size.width < 600;
+      final width = compact ? size.width : (size.width - 48).clamp(0.0, 860.0);
+      final body = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Sign-in methods',
+            style: TextStyle(
+              fontSize: compact ? 23 : 28,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Manage how you access your unlabel account. You can enable multiple sign-in methods and at least one method must be enabled.',
+            style: TextStyle(
+              fontSize: compact ? 11 : 13,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              height: 1.3,
+            ),
+          ),
+          SizedBox(height: compact ? 13 : 22),
+          _providerCard(
+            icon: SvgPicture.asset(
+              'assets/brand/google-g.svg',
+              width: 26,
+              height: 26,
+              excludeFromSemantics: true,
+            ),
+            title: 'Google',
+            detail: google ? identity?.googleEmail ?? identity?.email : null,
+            connected: google,
+            busy: busy || identity == null || (google && !password),
+            onChanged: (enabled) {
+              if (enabled) {
+                _run(widget.controller.linkGoogle);
+              } else if (password) {
+                _confirm(
+                  title: 'Disconnect Google?',
+                  body: 'Your email and password will still open this account. Your private library stays with the same account.',
+                  label: 'Disconnect',
+                  password: true,
+                  danger: true,
+                  action: (value) =>
+                      widget.controller.unlinkGoogle(password: value!),
+                );
+              }
+            },
+            actions: google
+                ? [
+                    OutlinedButton(
+                      onPressed: busy || !password
+                          ? null
+                          : () => _confirm(
+                              title: 'Disconnect Google?',
+                              body: 'Your email and password will still open this account.',
+                              label: 'Disconnect',
+                              password: true,
+                              danger: true,
+                              action: (value) => widget.controller.unlinkGoogle(
+                                password: value!,
+                              ),
+                            ),
+                      child: const Text('Disconnect'),
                     ),
+                    OutlinedButton.icon(
+                      onPressed: busy || !password
+                          ? null
+                          : () => _confirm(
+                              title: 'Switch Google account?',
+                              body: 'Confirm your password, then choose a different Google account. Your current password remains available if linking does not finish.',
+                              label: 'Switch account',
+                              password: true,
+                              action: (value) => widget.controller
+                                  .changeGoogleAccount(password: value!),
+                            ),
+                      icon: SvgPicture.asset(
+                        'assets/brand/google-g.svg',
+                        width: 17,
+                        height: 17,
+                        excludeFromSemantics: true,
+                      ),
+                      label: const Text('Switch account'),
+                    ),
+                  ]
+                : [
+                    OutlinedButton.icon(
+                      onPressed: busy || identity == null
+                          ? null
+                          : () => _run(widget.controller.linkGoogle),
+                      icon: SvgPicture.asset(
+                        'assets/brand/google-g.svg',
+                        width: 17,
+                        height: 17,
+                        excludeFromSemantics: true,
+                      ),
+                      label: const Text('Connect Google'),
+                    ),
+                  ],
+            compact: compact,
+          ),
+          SizedBox(height: compact ? 10 : 14),
+          _providerCard(
+            icon: const Icon(Icons.mail_outline, size: 25),
+            title: 'Email & Password',
+            detail: identity?.email,
+            connected: password,
+            busy: busy || identity == null || (password && !google),
+            onChanged: (enabled) {
+              if (enabled) {
+                showDialog<void>(
+                  context: context,
+                  builder: (_) =>
+                      _LinkPasswordDialog(controller: widget.controller),
+                );
+              } else if (google) {
+                _confirm(
+                  title: 'Remove email and password?',
+                  body: 'You can still sign in with the Google account connected here.',
+                  label: 'Remove',
+                  danger: true,
+                  action: (_) => widget.controller.unlinkPassword(),
+                );
+              }
+            },
+            actions: password
+                ? [
+                    OutlinedButton.icon(
+                      onPressed: busy ? null : () => _changeEmail(),
+                      icon: const Icon(Icons.mail_outline, size: 16),
+                      label: const Text('Change email'),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: busy ? null : () => _changePassword(),
+                      icon: const Icon(Icons.lock_outline, size: 16),
+                      label: const Text('Change password'),
+                    ),
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.error,
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .errorContainer,
+                        side: BorderSide.none,
+                      ),
+                      onPressed: busy || !google
+                          ? null
+                          : () => _confirm(
+                              title: 'Remove email and password?',
+                              body: 'You can still sign in with your connected Google account.',
+                              label: 'Remove',
+                              danger: true,
+                              action: (_) => widget.controller.unlinkPassword(),
+                            ),
+                      icon: const Icon(Icons.delete_outline, size: 16),
+                      label: const Text('Remove'),
+                    ),
+                  ]
+                : [
+                    OutlinedButton(
+                      onPressed: busy || identity == null
+                          ? null
+                          : () => showDialog<void>(
+                              context: context,
+                              builder: (_) => _LinkPasswordDialog(
+                                controller: widget.controller,
+                              ),
+                            ),
+                      child: const Text('Add email and password'),
+                    ),
+                  ],
+            compact: compact,
+          ),
+          SizedBox(height: compact ? 10 : 14),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xffedf8fd),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.shield_outlined, color: Color(0xff3979ee), size: 20),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'At least one sign-in method must be enabled\nYou can use both Google and email/password, or just one of them.',
+                    style: TextStyle(fontSize: 11, height: 1.3),
                   ),
                 ),
               ],
-            ],
-          ),
-          actions: [
-            FilledButton(
-              onPressed: busy ? null : () => Navigator.pop(context),
-              child: const Text('Done'),
             ),
-          ],
+          ),
+          SizedBox(height: compact ? 10 : 14),
+          Material(
+            color: const Color(0xffffedf0),
+            borderRadius: BorderRadius.circular(11),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(11),
+              onTap: busy || identity == null
+                  ? null
+                  : () => showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) =>
+                          _DeleteAccountDialog(controller: widget.controller),
+                    ),
+              child: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.delete_outline,
+                      color: Color(0xffdf303c),
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Delete account',
+                            style: TextStyle(
+                              color: Color(0xffbe2431),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            'Permanently delete your account and private library.',
+                            style: TextStyle(
+                              color: Color(0xffb15c63),
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      color: Color(0xffbe2431),
+                      size: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (busy) const LinearProgressIndicator(),
+          if (_error != null)
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                _error!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+        ],
+      );
+      return PopScope(
+        canPop: !busy,
+        child: Dialog(
+          key: const ValueKey('profile-sign-in-methods'),
+          insetPadding: EdgeInsets.all(compact ? 0 : 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(compact ? 0 : 22),
+          ),
+          child: SizedBox(
+            width: width,
+            height: compact
+                ? size.height
+                : (size.height - 48).clamp(0.0, 760.0),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(compact ? 16 : 30),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        TextButton.icon(
+                          onPressed: busy ? null : () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back, size: 17),
+                          label: Text(compact ? 'Back' : 'Profile'),
+                        ),
+                        if (compact) ...[
+                          const Expanded(
+                            child: Center(
+                              child: Text(
+                                'Account',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ] else ...[
+                          const Spacer(),
+                          IconButton(
+                            tooltip: 'Notifications',
+                            onPressed: busy
+                                ? null
+                                : () => showDialog<void>(
+                                    context: context,
+                                    builder: (dialogContext) => AlertDialog(
+                                      title: const Text('Notifications'),
+                                      content: const Text(
+                                        'Push notifications and reminders are not supported in this version.',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(dialogContext),
+                                          child: const Text('Close'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            icon: const Icon(
+                              Icons.notifications_none,
+                              size: 21,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          AccountAvatar(identity: identity, size: 34),
+                        ],
+                      ],
+                    ),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          width: width - (compact ? 32 : 60),
+                          child: body,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       );
     },
+  );
+
+  Future<void> _changeEmail() => showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) =>
+        _ChangeCredentialDialog(controller: widget.controller, email: true),
+  );
+
+  Future<void> _changePassword() => showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) =>
+        _ChangeCredentialDialog(controller: widget.controller, email: false),
+  );
+}
+
+class _ChangeCredentialDialog extends StatefulWidget {
+  const _ChangeCredentialDialog({
+    required this.controller,
+    required this.email,
+  });
+  final AccountController controller;
+  final bool email;
+
+  @override
+  State<_ChangeCredentialDialog> createState() =>
+      _ChangeCredentialDialogState();
+}
+
+class _ChangeCredentialDialogState extends State<_ChangeCredentialDialog> {
+  final _form = GlobalKey<FormState>();
+  final _current = TextEditingController();
+  final _newValue = TextEditingController();
+  final _confirm = TextEditingController();
+  bool _busy = false, _done = false, _show = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _current.clear();
+    _newValue.clear();
+    _confirm.clear();
+    _current.dispose();
+    _newValue.dispose();
+    _confirm.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    if (_busy || !(_form.currentState?.validate() ?? false)) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    try {
+      if (widget.email) {
+        await widget.controller.changeEmail(
+          _newValue.text.trim(),
+          _current.text,
+        );
+      } else {
+        await widget.controller.changePassword(_current.text, _newValue.text);
+      }
+      if (mounted) setState(() => _done = true);
+    } on AppFailure catch (error) {
+      if (mounted) setState(() => _error = error.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(() => _error = 'This change could not finish. Try again.');
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => PopScope(
+    canPop: !_busy,
+    child: _ProfileWindow(
+      title: widget.email ? 'Change email' : 'Change password',
+      icon: widget.email ? Icons.mail_outline : Icons.lock_outline,
+      canDismiss: !_busy,
+      content: _done
+          ? Text(
+              widget.email
+                  ? 'Check your new email for a verification link. Your current email remains active until you verify it.'
+                  : 'Your password has been changed. Both connected sign-in methods remain available.',
+            )
+          : Form(
+              key: _form,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Current email',
+                      hintText: widget.controller.identity?.email,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    key: const ValueKey('credential-current-password'),
+                    controller: _current,
+                    enabled: !_busy,
+                    obscureText: !_show,
+                    autofillHints: const [AutofillHints.password],
+                    decoration: InputDecoration(
+                      labelText: 'Current password',
+                      suffixIcon: IconButton(
+                        tooltip: _show ? 'Hide password' : 'Show password',
+                        onPressed: () => setState(() => _show = !_show),
+                        icon: Icon(
+                          _show
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
+                    ),
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Enter your current password.'
+                        : null,
+                  ),
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    key: const ValueKey('credential-new-value'),
+                    controller: _newValue,
+                    enabled: !_busy,
+                    obscureText: !widget.email && !_show,
+                    keyboardType: widget.email
+                        ? TextInputType.emailAddress
+                        : TextInputType.text,
+                    autofillHints: widget.email
+                        ? const [AutofillHints.email]
+                        : const [AutofillHints.newPassword],
+                    decoration: InputDecoration(
+                      labelText: widget.email ? 'New email' : 'New password',
+                    ),
+                    validator: (value) => widget.email
+                        ? (RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                                  .hasMatch(value?.trim() ?? '')
+                              ? null
+                              : 'Enter a valid email address.')
+                        : validateNewPassword(value ?? ''),
+                  ),
+                  if (!widget.email) ...[
+                    const SizedBox(height: 14),
+                    TextFormField(
+                      key: const ValueKey('credential-confirm-password'),
+                      controller: _confirm,
+                      enabled: !_busy,
+                      obscureText: !_show,
+                      autofillHints: const [AutofillHints.newPassword],
+                      decoration: const InputDecoration(
+                        labelText: 'Confirm new password',
+                      ),
+                      validator: (value) => value == _newValue.text
+                          ? null
+                          : 'Passwords do not match.',
+                    ),
+                  ],
+                  if (_error != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          _error!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (_busy)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: LinearProgressIndicator(),
+                    ),
+                ],
+              ),
+            ),
+      actions: [
+        if (!_done)
+          TextButton(
+            onPressed: _busy ? null : () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        FilledButton(
+          onPressed: _busy
+              ? null
+              : _done
+              ? () => Navigator.pop(context)
+              : _save,
+          child: Text(
+            _done
+                ? 'Done'
+                : widget.email
+                ? 'Send verification'
+                : 'Change password',
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -1831,45 +2430,465 @@ class _LinkPasswordDialogState extends State<_LinkPasswordDialog> {
   );
 }
 
-class _NameDialog extends StatefulWidget {
-  const _NameDialog({required this.initialName});
-  final String initialName;
+class _EditProfileDialog extends StatefulWidget {
+  const _EditProfileDialog({
+    required this.controller,
+    this.media,
+    this.pickPhoto,
+  });
+  final AccountController controller;
+  final ProfileMediaController? media;
+  final Future<Uint8List?> Function()? pickPhoto;
   @override
-  State<_NameDialog> createState() => _NameDialogState();
+  State<_EditProfileDialog> createState() => _EditProfileDialogState();
 }
 
-class _NameDialogState extends State<_NameDialog> {
-  late final _field = TextEditingController(text: widget.initialName);
+class _EditProfileDialogState extends State<_EditProfileDialog> {
+  late final _owner = widget.controller.identity?.uid;
+  late final _name = TextEditingController(
+    text:
+        widget.controller.localData?.displayName ??
+        widget.controller.identity?.displayName ??
+        '',
+  );
+  late ProfileMedia _draft = widget.media?.value ?? ProfileMedia();
+  bool _working = false, _photoChanged = false;
+  String? _error;
+  bool get _signedIn => _owner != null;
+  bool get _busy => _working || widget.controller.authBusy;
+  bool get _photoReady =>
+      widget.media != null &&
+      !widget.media!.loading &&
+      !widget.media!.busy &&
+      widget.media!.error == null;
+  bool get _hasGoogle => widget.controller.identity?.hasGoogle == true;
+  bool get _hasGooglePhoto =>
+      _hasGoogle &&
+      safeGooglePhotoUrl(widget.controller.identity?.photoUrl) != null;
+
   @override
-  void dispose() {
-    _field.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_changed);
+    widget.media?.addListener(_changed);
+  }
+
+  void _changed() {
+    if (!mounted) return;
+    if (widget.controller.identity?.uid != _owner) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final route = ModalRoute.of(context);
+        if (route?.isActive == true) Navigator.of(context).removeRoute(route!);
+      });
+    } else {
+      setState(() {});
+    }
   }
 
   @override
-  Widget build(BuildContext context) => _ProfileWindow(
-    title: 'Your display name',
-    icon: Icons.person_outline_rounded,
-    content: TextField(
-      controller: _field,
-      maxLength: 80,
-      textCapitalization: TextCapitalization.words,
-      decoration: const InputDecoration(
-        labelText: 'Display name',
-        hintText: 'What should we call you?',
+  void dispose() {
+    widget.controller.removeListener(_changed);
+    widget.media?.removeListener(_changed);
+    _name.dispose();
+    _draft = ProfileMedia();
+    super.dispose();
+  }
+
+  void _select(ProfileAvatarSource source) {
+    setState(() {
+      _draft = ProfileMedia(gender: _draft.gender, source: source);
+      _photoChanged = true;
+      _error = null;
+    });
+  }
+
+  Future<void> _custom() async {
+    final media = widget.media;
+    if (media == null || !_signedIn || !_photoReady) return;
+    final bytes = await ProfilePhotoEditor.crop(
+      context,
+      media: media,
+      identity: widget.controller.identity,
+      pickPhoto: widget.pickPhoto,
+    );
+    if (!mounted ||
+        widget.controller.identity?.uid != _owner ||
+        bytes == null) {
+      return;
+    }
+    setState(() {
+      _draft = ProfileMedia(
+        gender: _draft.gender,
+        source: ProfileAvatarSource.custom,
+        avatarPng: bytes,
+      );
+      _photoChanged = true;
+      _error = null;
+    });
+  }
+
+  Future<void> _save() async {
+    if (_busy) return;
+    setState(() {
+      _working = true;
+      _error = null;
+    });
+    try {
+      if (widget.controller.identity?.uid != _owner) return;
+      if (_photoChanged &&
+          _draft.source == ProfileAvatarSource.google &&
+          !_hasGooglePhoto) {
+        throw const AppFailure(
+          'google_photo_unavailable',
+          'Google no longer has an available profile photo. Choose default or custom.',
+        );
+      }
+      final name = _name.text.trim();
+      if (_signedIn && name != widget.controller.localData?.displayName) {
+        await widget.controller.updateDisplayName(name);
+      }
+      if (!mounted || widget.controller.identity?.uid != _owner) return;
+      final media = widget.media;
+      if (_photoChanged && media != null) {
+        switch (_draft.source) {
+          case ProfileAvatarSource.defaultAvatar:
+            await media.useDefaultAvatar();
+          case ProfileAvatarSource.google:
+            await media.useGooglePhoto();
+          case ProfileAvatarSource.custom:
+            await media.saveCustomPhoto(_draft.avatarPng!);
+          case ProfileAvatarSource.automatic:
+            await media.removeCustomPhoto();
+        }
+      }
+      if (mounted) Navigator.pop(context);
+    } on AppFailure catch (failure) {
+      if (mounted) setState(() => _error = failure.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _error =
+              'Your profile could not finish saving. Please try again.',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _working = false);
+    }
+  }
+
+  Widget _photoChoice(
+    String label,
+    ProfileAvatarSource source,
+    IconData icon,
+    VoidCallback? action,
+  ) {
+    final effective = _draft.source == ProfileAvatarSource.automatic
+        ? (_hasGooglePhoto
+              ? ProfileAvatarSource.google
+              : ProfileAvatarSource.defaultAvatar)
+        : _draft.source;
+    return ChoiceChip(
+      label: Text(label),
+      avatar: Icon(icon, size: 18),
+      selected: effective == source,
+      onSelected: action == null || _busy ? null : (_) => action(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => PopScope(
+    canPop: !_busy,
+    child: _ProfileWindow(
+      title: 'Edit profile',
+      icon: Icons.edit_outlined,
+      canDismiss: !_busy,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.media != null) ...[
+            Center(
+              child: AccountAvatar(
+                media: widget.media,
+                identity: widget.controller.identity,
+                displayName: _name.text,
+                preview: _draft,
+                size: 128,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _photoChoice(
+                  'Default',
+                  ProfileAvatarSource.defaultAvatar,
+                  Icons.person_outline,
+                  _photoReady
+                      ? () => _select(ProfileAvatarSource.defaultAvatar)
+                      : null,
+                ),
+                if (_hasGoogle)
+                  _photoChoice(
+                    'Google',
+                    ProfileAvatarSource.google,
+                    Icons.account_circle_outlined,
+                    _photoReady && _hasGooglePhoto
+                        ? () => _select(ProfileAvatarSource.google)
+                        : null,
+                  ),
+                _photoChoice(
+                  'Custom',
+                  ProfileAvatarSource.custom,
+                  Icons.photo_library_outlined,
+                  _signedIn && _photoReady ? _custom : null,
+                ),
+              ],
+            ),
+            if (widget.media!.loading)
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: LinearProgressIndicator(),
+              ),
+            if (widget.media!.error != null) ...[
+              Text(widget.media!.error!),
+              TextButton(
+                onPressed: _busy ? null : widget.media!.refresh,
+                child: const Text('Retry photo settings'),
+              ),
+            ],
+            const SizedBox(height: 20),
+          ],
+          TextField(
+            key: const ValueKey('edit-profile-name'),
+            controller: _name,
+            enabled: _signedIn && !_busy,
+            maxLength: 80,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(
+              labelText: 'Display name',
+              hintText: 'What should we call you?',
+            ),
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => _save(),
+          ),
+          if (!_signedIn)
+            const Text('Sign in to change your name or save a custom photo.'),
+          if (_photoChanged)
+            const Text(
+              'Your photo selection is saved when you choose Save profile.',
+            ),
+          if (_error != null) ...[
+            const SizedBox(height: 12),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                _error!,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ],
+        ],
       ),
-      textInputAction: TextInputAction.done,
-      onSubmitted: (value) => Navigator.pop(context, value),
+      actions: [
+        TextButton(
+          onPressed: _busy ? null : () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          key: const ValueKey('edit-profile-save'),
+          onPressed: _busy || (_photoChanged && !_photoReady) ? null : _save,
+          child: Text(_working ? 'Saving profile…' : 'Save profile'),
+        ),
+      ],
     ),
-    actions: [
-      TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Cancel'),
-      ),
-      FilledButton(
-        onPressed: () => Navigator.pop(context, _field.text),
-        child: const Text('Save name'),
-      ),
-    ],
+  );
+}
+
+class _AccountActionDialog extends StatefulWidget {
+  const _AccountActionDialog({
+    required this.controller,
+    required this.title,
+    required this.body,
+    required this.actionLabel,
+    required this.action,
+    this.requiresPassword = false,
+    this.deleteConfirmation = false,
+    this.danger = false,
+  });
+  final AccountController controller;
+  final String title, body, actionLabel;
+  final Future<void> Function(String? password) action;
+  final bool requiresPassword, deleteConfirmation, danger;
+  @override
+  State<_AccountActionDialog> createState() => _AccountActionDialogState();
+}
+
+class _AccountActionDialogState extends State<_AccountActionDialog> {
+  final _form = GlobalKey<FormState>();
+  final _password = TextEditingController();
+  final _confirmation = TextEditingController();
+  bool _working = false, _obscure = true;
+  String? _error;
+  @override
+  void dispose() {
+    _password.clear();
+    _password.dispose();
+    _confirmation.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    if (_working ||
+        widget.controller.authBusy ||
+        !_form.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _working = true;
+      _error = null;
+    });
+    try {
+      await widget.action(widget.requiresPassword ? _password.text : null);
+      if (mounted) Navigator.pop(context);
+    } on AppFailure catch (failure) {
+      if (mounted) setState(() => _error = failure.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _error =
+              'That account change could not finish. Please try again.',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _working = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: widget.controller,
+    builder: (context, _) {
+      final busy = _working || widget.controller.authBusy;
+      return PopScope(
+        canPop: !busy,
+        child: _ProfileWindow(
+          title: widget.title,
+          icon: widget.danger
+              ? Icons.warning_amber_rounded
+              : Icons.manage_accounts_outlined,
+          canDismiss: !busy,
+          content: Form(
+            key: _form,
+            child: AutofillGroup(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(widget.body),
+                  if (widget.deleteConfirmation) ...[
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      key: const ValueKey('account-delete-confirmation'),
+                      controller: _confirmation,
+                      enabled: !busy,
+                      autocorrect: false,
+                      decoration: const InputDecoration(
+                        labelText: 'Type DELETE to confirm',
+                      ),
+                      validator: (value) =>
+                          value == 'DELETE' ? null : 'Type DELETE to confirm.',
+                    ),
+                  ],
+                  if (widget.requiresPassword) ...[
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      key: const ValueKey('account-current-password'),
+                      controller: _password,
+                      enabled: !busy,
+                      obscureText: _obscure,
+                      autofillHints: const [AutofillHints.password],
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        labelText: 'Current password',
+                        suffixIcon: IconButton(
+                          tooltip: _obscure ? 'Show password' : 'Hide password',
+                          onPressed: busy
+                              ? null
+                              : () => setState(() => _obscure = !_obscure),
+                          icon: Icon(
+                            _obscure
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                        ),
+                      ),
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Enter your current password.'
+                          : null,
+                      onFieldSubmitted: (_) => _save(),
+                    ),
+                  ],
+                  if (busy)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: LinearProgressIndicator(),
+                    ),
+                  if (_error != null) ...[
+                    const SizedBox(height: 16),
+                    Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        _error!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: busy ? null : () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              key: const ValueKey('account-action-confirm'),
+              onPressed: busy ? null : _save,
+              style: widget.danger
+                  ? FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      foregroundColor: Theme.of(context).colorScheme.onError,
+                    )
+                  : null,
+              child: Text(widget.actionLabel),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+class _DeleteAccountDialog extends StatelessWidget {
+  const _DeleteAccountDialog({required this.controller});
+  final AccountController controller;
+  @override
+  Widget build(BuildContext context) => _AccountActionDialog(
+    controller: controller,
+    title: 'Delete your account?',
+    actionLabel: 'Delete account',
+    body: 'Delete this Unlabel account, its private profile settings, saved products and history. Public label facts and your separate guest library remain. This cannot be undone. Confirm your current sign-in to continue.',
+    requiresPassword: controller.identity?.hasPassword == true,
+    deleteConfirmation: true,
+    danger: true,
+    action: (password) => controller.deleteAccount(password: password),
   );
 }

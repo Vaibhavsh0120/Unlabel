@@ -4,8 +4,10 @@ Checkpoint **13 October 2026**: canonical versions are in
 [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml).
 Work directly on main and preserve existing edits. Current auth/profile, provider
 compatibility and pending hosted/native gates are in the
-[frontend review](FRONTEND_V0_8_0_REVIEW.md), [backend review](BACKEND_V0_12_1_REVIEW.md)
-and [maintenance audit](MAINTENANCE_2026_10_12.md).
+[frontend update](FRONTEND_V0_9_0_REVIEW.md), [backend deletion review](BACKEND_V0_13_0_REVIEW.md)
+and [maintenance audit](MAINTENANCE_2026_10_12.md). The user authorized completion
+and push from main, superseding the prior local hold. Native release/artifact
+publication and physical-device acceptance remain separate.
 
 ## Restore and validate
 
@@ -29,7 +31,8 @@ documented in [scripts](../../scripts/README.md). Native compilation uses the
 [manual workflow](../../.github/workflows/README.md). From root,
 `node --test firebase/auth-bridge.test.cjs` checks the fixed-origin email bridge.
 [Account/profile setup](../architecture/ACCOUNT_PROFILE.md) records OAuth/signing,
-owner-only media and the pending provider callback setting.
+owner-only media and the supported hosted-reset/Continue return. A custom
+email-template callback is not required; real email delivery remains unverified.
 
 ## Ownership
 

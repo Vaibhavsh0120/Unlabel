@@ -666,7 +666,7 @@ def test_cli_import_prints_only_manifest_and_artifact_size(tmp_path):
     write_rows(source, [india_product()])
     directory = tmp_path / "catalogue"
     directory.mkdir()
-    script = Path(__file__).resolve().parents[3] / "scripts" / "import_india_catalogue.py"
+    script = Path(__file__).resolve().parents[3] / "scripts/data/import_india_catalogue.py"
     result = subprocess.run(
         [
             sys.executable,

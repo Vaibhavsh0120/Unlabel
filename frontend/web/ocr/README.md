@@ -19,10 +19,10 @@ dependency-specific terms. No billing, API key or card is required.
 From repository root, verify files without network access:
 
 ```powershell
-backend/.venv/Scripts/python.exe scripts/vendor_web_ocr.py --check
+backend/.venv/Scripts/python.exe scripts/release/vendor_web_ocr.py --check
 ```
 
-`scripts/vendor_web_ocr.py` without `--check` deliberately reacquires exactly
+`scripts/release/vendor_web_ocr.py` without `--check` deliberately reacquires exactly
 the pinned sources, verifies npm integrity and writes deterministic model gzip.
 There is no runtime or scheduled source refresh. Review hashes/licenses and
 browser recognition/cancellation/network evidence after any manual replacement.

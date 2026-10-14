@@ -11,7 +11,7 @@ import pytest
 
 from app import __version__
 
-SCRIPT = Path(__file__).resolve().parents[3] / "scripts/acquire_india_catalogue.py"
+SCRIPT = Path(__file__).resolve().parents[3] / "scripts/data/acquire_india_catalogue.py"
 
 
 def module():

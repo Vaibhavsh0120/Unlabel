@@ -74,12 +74,49 @@ class AccountStore extends LocalStore {
   final String key;
   void Function()? onChanged;
   Future<void> _tail = Future.value();
+  bool _deleted = false;
+  bool _deletionPending = false;
+
+  /// An admitted cloud deletion may finish even if its response is lost. Keep
+  /// this retained namespace readable, but prevent any replacement or upload.
+  void markDeletionPending() => _deletionPending = true;
+
+  void _requireWritable() {
+    if (_deletionPending) {
+      throw const AppFailure(
+        'account_delete_incomplete',
+        'Account deletion is unfinished. Retry deleting the account before changing its private library.',
+      );
+    }
+  }
 
   Future<T> _serial<T>(Future<T> Function() operation) {
-    final next = _tail.then((_) => operation());
+    final next = _tail.then((_) {
+      if (_deleted) {
+        throw const AppFailure(
+          'account_deleted',
+          'This account was deleted. Its device library is no longer available.',
+        );
+      }
+      return operation();
+    });
     _tail = next.then<void>((_) {}, onError: (Object _, StackTrace _) {});
     return next;
   }
+
+  /// Removes only this verified UID's namespace after confirmed Auth deletion.
+  /// Serial admission stops an old retained store from recreating that cache.
+  Future<void> deleteNamespace() => _serial(() async {
+    _deleted = true;
+    try {
+      await _preferences.remove(key);
+    } catch (_) {
+      throw const AppFailure(
+        'account_local_cleanup',
+        'Your account was deleted, but this device could not clear its cached account library. Clear the app or site storage to remove that copy.',
+      );
+    }
+  });
 
   Future<AccountCache> _read() async {
     try {
@@ -102,6 +139,7 @@ class AccountStore extends LocalStore {
   }
 
   Future<void> _write(AccountCache cache) async {
+    _requireWritable();
     final text = jsonEncode(cache.toJson());
     if (utf8.encode(text).length > LocalStore.maxNamespaceBytes) {
       throw const AppFailure(

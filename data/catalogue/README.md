@@ -6,7 +6,7 @@ separate generated read-only SQLite with **243 observations** (49 manufacturer,
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
 The exported API now has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
+Source normalization does not import the runtime; `scripts/data/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.
@@ -49,7 +49,7 @@ Setup verifies tracked hashes/counts and regenerates the local index. The networ
 
 Replace the source manually every **nine calendar months** from its actual export time; rebuilding does not reset age:
 
-1. Acquire the complete official JSONL into a new owned directory using `scripts/acquire_india_jsonl.py`. Validate transfer length, gzip EOF/CRC, bounded objects and source hashes without retaining the world dump.
+1. Acquire the complete official JSONL into a new owned directory using `scripts/data/acquire_india_jsonl.py`. Validate transfer length, gzip EOF/CRC, bounded objects and source hashes without retaining the world dump.
 2. Measure India/indexed/unsupported/duplicate counts, field availability, direct versus legacy nutrition, source date, sizes and dated live-count differences.
 3. Package with gzip `mtime=0`, empty filename and compression level 9. Replace the accepted gzip, `bundle.json`, `acquisition.json`, notices and review evidence together.
 4. Run setup/import, actual hosted-build checks and meaningful tests. Local import replaces one validated staged SQLite; hosted SQLite/receipt use separate writes inside an unpublished build. Reject failed builds.

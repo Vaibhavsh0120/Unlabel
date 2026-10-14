@@ -12,6 +12,11 @@ external void _replaceState(JSAny? data, JSString title, JSString url);
 @JS('history.state')
 external JSAny? get _historyState;
 
+@JS('location.href')
+external JSString get _locationHref;
+
+String get currentWebEntryUrl => _locationHref.toDart;
+
 bool get isMissingWebPage => _unlabelNotFound?.toDart ?? false;
 
 void clearAuthActionUrl() => _replaceState(_historyState, ''.toJS, '/#/'.toJS);

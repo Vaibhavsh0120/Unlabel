@@ -14,6 +14,9 @@ class AccountIdentity {
     this.email,
     this.displayName,
     this.photoUrl,
+    this.googleEmail,
+    this.googleDisplayName,
+    this.googlePhotoUrl,
     this.providers = const {},
   });
   final String uid;
@@ -21,6 +24,9 @@ class AccountIdentity {
   final String? email;
   final String? displayName;
   final String? photoUrl;
+  final String? googleEmail;
+  final String? googleDisplayName;
+  final String? googlePhotoUrl;
   final Set<String> providers;
 
   bool get hasGoogle => providers.contains('google.com');
@@ -41,10 +47,22 @@ abstract class AccountAuth extends ChangeNotifier {
   Future<void> linkGoogle() async => throw _unsupported;
   Future<void> linkPassword(String email, String password) async =>
       throw _unsupported;
-  Future<String> verifyPasswordResetCode(String code) async =>
+  Future<void> unlinkGoogle({required String password}) async =>
       throw _unsupported;
-  Future<void> confirmPasswordReset(String code, String password) async =>
+  Future<void> unlinkPassword() async => throw _unsupported;
+  Future<void> changeGoogleAccount({required String password}) async =>
       throw _unsupported;
+  Future<void> changeEmail(String email, String currentPassword) async =>
+      throw _unsupported;
+  Future<void> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async => throw _unsupported;
+  Future<void> deleteAccount({
+    String? password,
+    required Future<void> Function(String uid, String token) deletePrivateData,
+    required Future<void> Function() deleteLocalData,
+  }) async => throw _unsupported;
   Future<void> resetPassword(String email);
   Future<void> signOut();
   Future<String> token(String expectedUid);
@@ -191,8 +209,17 @@ class FirebaseAccountAuth extends AccountAuth {
         : AccountIdentity(
             uid: user.uid,
             email: user.email,
-            displayName: user.displayName ?? googleProfile?.displayName,
-            photoUrl: googleProfile?.photoURL ?? user.photoURL,
+            displayName: googleProfile?.displayName ?? user.displayName,
+            // Firebase can retain an old top-level photo after unlinking. A
+            // removed Google provider must not keep supplying that old image.
+            photoUrl: googleProfile == null
+                ? null
+                : googleProfile.photoURL ?? user.photoURL,
+            googleEmail: googleProfile?.email,
+            googleDisplayName: googleProfile?.displayName,
+            googlePhotoUrl:
+                googleProfile?.photoURL ??
+                (googleProfile == null ? null : user.photoURL),
             providers: Set.unmodifiable(
               user.providerData.map((provider) => provider.providerId),
             ),
@@ -357,6 +384,195 @@ class FirebaseAccountAuth extends AccountAuth {
         _publishIdentity(auth.currentUser);
       });
 
+  bool _hasProvider(User user, String provider) =>
+      user.providerData.any((value) => value.providerId == provider);
+
+  Future<User> _freshUser(FirebaseAuth auth) async {
+    final user = _requireSignedIn(auth);
+    await user.reload();
+    _requireOwner(auth, user.uid);
+    final refreshed = auth.currentUser!;
+    _publishIdentity(refreshed);
+    return refreshed;
+  }
+
+  Future<void> _reauthenticate(
+    FirebaseAuth auth,
+    User user, {
+    String? password,
+    bool useGoogle = false,
+  }) async {
+    final UserCredential result;
+    if (!useGoogle && _hasProvider(user, 'password')) {
+      if (password == null || password.isEmpty || user.email == null) {
+        throw const AppFailure(
+          'password_required',
+          'Enter your current account password to confirm this change.',
+        );
+      }
+      result = await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: user.email!, password: password),
+      );
+    } else if (_hasProvider(user, 'google.com')) {
+      if (kIsWeb) {
+        result = await user.reauthenticateWithPopup(_googleProvider());
+      } else {
+        final credential = await _googleCredential();
+        _requireOwner(auth, user.uid);
+        result = await user.reauthenticateWithCredential(credential);
+      }
+    } else {
+      throw const AppFailure(
+        'account_changed',
+        'Your sign-in methods changed. Reopen Profile and try again.',
+      );
+    }
+    _requireLinkedOwner(auth, user.uid, result);
+  }
+
+  void _requireBackup(User user, String removing) {
+    if (!_hasProvider(user, removing)) {
+      throw const AppFailure(
+        'provider_not_linked',
+        'This sign-in method is already disconnected.',
+      );
+    }
+    final backup = removing == 'google.com' ? 'password' : 'google.com';
+    if (!_hasProvider(user, backup)) {
+      throw const AppFailure(
+        'last_sign_in_method',
+        'Keep at least one sign-in method. Connect another method before disconnecting this one.',
+      );
+    }
+  }
+
+  @override
+  Future<void> unlinkGoogle({required String password}) => _run((auth) async {
+    final user = await _freshUser(auth);
+    _requireBackup(user, 'google.com');
+    await _reauthenticate(auth, user, password: password);
+    _requireOwner(auth, user.uid);
+    final result = await user.unlink('google.com');
+    _requireOwner(auth, user.uid);
+    if (result.uid != user.uid) throw _accountChanged;
+    _publishIdentity(auth.currentUser);
+  });
+
+  @override
+  Future<void> unlinkPassword() => _run((auth) async {
+    final user = await _freshUser(auth);
+    _requireBackup(user, 'password');
+    // Prove access to the method that will remain before removing a password.
+    await _reauthenticate(auth, user, useGoogle: true);
+    _requireOwner(auth, user.uid);
+    final result = await user.unlink('password');
+    _requireOwner(auth, user.uid);
+    if (result.uid != user.uid) throw _accountChanged;
+    _publishIdentity(auth.currentUser);
+  });
+
+  @override
+  Future<void> changeGoogleAccount({required String password}) => _run((
+    auth,
+  ) async {
+    final user = await _freshUser(auth);
+    _requireBackup(user, 'google.com');
+    await _reauthenticate(auth, user, password: password);
+    _requireOwner(auth, user.uid);
+    await user.unlink('google.com');
+    _requireOwner(auth, user.uid);
+    _publishIdentity(auth.currentUser);
+    // Firebase permits only one account for a given provider. The verified
+    // password remains available if choosing/linking replacement Google fails.
+    try {
+      final UserCredential result;
+      if (kIsWeb) {
+        result = await user.linkWithPopup(_googleProvider());
+      } else {
+        final credential = await _googleCredential();
+        _requireOwner(auth, user.uid);
+        result = await user.linkWithCredential(credential);
+      }
+      _requireLinkedOwner(auth, user.uid, result);
+      _publishIdentity(auth.currentUser);
+    } catch (error) {
+      _publishIdentity(auth.currentUser);
+      if (error is AppFailure && error.kind == 'account_changed') rethrow;
+      if (error is FirebaseAuthException &&
+          const [
+            'credential-already-in-use',
+            'email-already-in-use',
+            'account-exists-with-different-credential',
+          ].contains(error.code)) {
+        throw const AppFailure(
+          'google_change_incomplete',
+          'That Google account belongs to another Unlabel account. Your password still works. Connect a different Google account; no libraries were merged.',
+        );
+      }
+      throw const AppFailure(
+        'google_change_incomplete',
+        'Google was disconnected, but reconnecting did not finish. Your password still works. Use Connect Google to try again.',
+      );
+    }
+  });
+
+  @override
+  Future<void> changeEmail(String email, String currentPassword) =>
+      _run((auth) async {
+        final user = await _freshUser(auth);
+        if (!_hasProvider(user, 'password')) throw _passwordNotLinked;
+        await _reauthenticate(auth, user, password: currentPassword);
+        _requireOwner(auth, user.uid);
+        await user.verifyBeforeUpdateEmail(email.trim());
+        _requireOwner(auth, user.uid);
+        _publishIdentity(auth.currentUser);
+      });
+
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword) =>
+      _run((auth) async {
+        final user = await _freshUser(auth);
+        if (!_hasProvider(user, 'password')) throw _passwordNotLinked;
+        await _reauthenticate(auth, user, password: currentPassword);
+        _requireOwner(auth, user.uid);
+        await user.updatePassword(newPassword);
+        _requireOwner(auth, user.uid);
+        _publishIdentity(auth.currentUser);
+      });
+
+  @override
+  Future<void> deleteAccount({
+    String? password,
+    required Future<void> Function(String uid, String token) deletePrivateData,
+    required Future<void> Function() deleteLocalData,
+  }) => _run((auth) async {
+    final user = await _freshUser(auth);
+    await _reauthenticate(auth, user, password: password);
+    _requireOwner(auth, user.uid);
+    final token = await user.getIdToken(true);
+    _requireOwner(auth, user.uid);
+    if (token == null || token.isEmpty) throw _accountChanged;
+    await deletePrivateData(user.uid, token);
+    _requireOwner(auth, user.uid);
+    try {
+      await user.delete();
+    } catch (_) {
+      throw const AppFailure(
+        'account_delete_incomplete',
+        'Private cloud data was cleared, but deleting your sign-in did not finish. Confirm your identity and retry deleting the account.',
+      );
+    }
+    // This hook remains inside the underlying SDK operation even if the form's
+    // timeout has elapsed, so confirmed late deletion still purges this owner.
+    await deleteLocalData();
+    _publishIdentity(auth.currentUser);
+    if (!kIsWeb) {
+      try {
+        await _googleSignOut();
+      } catch (_) {}
+    }
+  });
+
   GoogleAuthProvider _googleProvider() =>
       GoogleAuthProvider()..setCustomParameters({'prompt': 'select_account'});
 
@@ -400,35 +616,29 @@ class FirebaseAccountAuth extends AccountAuth {
     'provider_linked',
     'This sign-in method is already connected to your account.',
   );
+  static const _passwordNotLinked = AppFailure(
+    'provider_not_linked',
+    'Email and password is no longer connected. Reopen Profile to refresh your sign-in methods.',
+  );
 
   @override
   Future<void> resetPassword(String email) => _run((auth) async {
     try {
-      await auth.sendPasswordResetEmail(email: email.trim());
+      await auth.sendPasswordResetEmail(
+        email: email.trim(),
+        actionCodeSettings: ActionCodeSettings(
+          handleCodeInApp: false,
+          // Firebase's hosted action widget owns code verification and the
+          // password form. Its Continue action returns to this fixed sign-in
+          // route, without carrying an email address or a one-time code.
+          url: 'https://unlabel-india.vercel.app/#/account-signin',
+        ),
+      );
     } on FirebaseAuthException catch (error) {
       // A neutral success message avoids revealing whether an email is registered.
       if (error.code != 'user-not-found') rethrow;
     }
   });
-
-  @override
-  Future<String> verifyPasswordResetCode(String code) => _run((auth) async {
-    _checkResetCode(code);
-    return auth.verifyPasswordResetCode(code);
-  });
-
-  @override
-  Future<void> confirmPasswordReset(String code, String password) =>
-      _run((auth) async {
-        _checkResetCode(code);
-        await auth.confirmPasswordReset(code: code, newPassword: password);
-      });
-
-  void _checkResetCode(String code) {
-    if (code.isEmpty || code.length > 2048) {
-      throw _authFailure('invalid-action-code');
-    }
-  }
 
   @override
   Future<void> signOut() => _run((auth) async {
@@ -502,7 +712,15 @@ AppFailure _authFailure(String code) => switch (code) {
   ),
   'requires-recent-login' => const AppFailure(
     'reauthentication_required',
-    'Sign out and sign in again before adding this sign-in method. Your account library will stay available.',
+    'Confirm your identity again before making this account change.',
+  ),
+  'user-mismatch' => const AppFailure(
+    'reauthentication_mismatch',
+    'Choose the Google account already connected to this Unlabel account.',
+  ),
+  'no-such-provider' => const AppFailure(
+    'provider_not_linked',
+    'This sign-in method is already disconnected. Reopen Profile to refresh it.',
   ),
   'popup-closed-by-user' || 'cancelled-popup-request' => const AppFailure(
     'account_cancelled',
@@ -511,10 +729,6 @@ AppFailure _authFailure(String code) => switch (code) {
   'popup-blocked' => const AppFailure(
     'popup_blocked',
     'Allow the Google sign-in pop-up in your browser, then try again.',
-  ),
-  'invalid-action-code' || 'expired-action-code' => const AppFailure(
-    'invalid_reset_code',
-    'This reset link has expired or has already been used. Request a new reset link.',
   ),
   'invalid-credential' ||
   'wrong-password' ||

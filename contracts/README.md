@@ -1,15 +1,15 @@
 # Shared API contracts
 
-Checkpoint **13 October 2026**: backend **0.12.1**, **27 paths / 28 operations**,
-exported as [backend-v0.12.1.openapi.json](schemas/backend-v0.12.1.openapi.json).
-Named schemas and synthetic examples come from current typed routes/models.
-Verified Google-provider compatibility changes no request/response shape; final
-source/hosted verification is pending in the
-[current review](../docs/planning/BACKEND_V0_12_1_REVIEW.md). Preserve historical exports.
+Checkpoint **13 October 2026**: backend **0.13.0**, **27 paths / 29 operations**,
+exported as [backend-v0.13.0.openapi.json](schemas/backend-v0.13.0.openapi.json).
+The additive bodyless `DELETE /v1/account/sync` requires fresh verified-owner
+credentials and confirms private-data cleanup. Snapshot request/response schemas
+remain unchanged. [Current deletion review](../docs/planning/BACKEND_V0_13_0_REVIEW.md).
+Preserve historical exports and examples.
 
-Run `backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py` from
+Run `backend/.venv/Scripts/python.exe scripts/release/export_backend_contracts.py` from
 root (Unix: backend/.venv/bin/python). Review generated diffs after a contract
-change. The authorized component version bumps retain existing wire contracts.
+change. The current component bump adds deletion while retaining existing wire contracts.
 
 The older release notes below describe their historical exports.
 
@@ -25,7 +25,7 @@ separate generated read-only SQLite with **243 observations** (49 manufacturer,
 formula conflicts. Three additive GETs expose researched product search,
 `by-barcode/{barcode}` and `{entry_id}` under `/v1/researched/products`.
 The exported API now has 24 paths/25 operations and 29 synthetic examples.
-Source normalization does not import the runtime; `scripts/build_research_catalogue.py`,
+Source normalization does not import the runtime; `scripts/data/build_research_catalogue.py`,
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.
@@ -121,7 +121,7 @@ Claims use `assessment_basis: user_confirmed_label` and `scope: numeric_criterio
 Regenerate from root with the backend environment:
 
 ~~~powershell
-backend/.venv/Scripts/python.exe scripts/export_backend_contracts.py
+backend/.venv/Scripts/python.exe scripts/release/export_backend_contracts.py
 ~~~
 
 On macOS/Linux use `backend/.venv/bin/python`. The exporter validates synthetic models and preserves historical exports. JSON Schema alone cannot encode every strict numeric, unique-ID, source/image-identity or semantic unit/basis rule enforced by the backend. Shared fixtures and regression tests verify those boundaries. No real private scans/profiles, credentials or raw provider internals belong in contracts.

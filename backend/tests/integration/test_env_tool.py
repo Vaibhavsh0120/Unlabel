@@ -19,8 +19,8 @@ def module():
 @pytest.fixture
 def repository(tmp_path):
     (tmp_path / "backend").mkdir()
-    (tmp_path / "scripts").mkdir()
-    (tmp_path / "scripts/age-recipient.txt").write_text(RECIPIENT + "\n")
+    (tmp_path / "scripts/config").mkdir(parents=True)
+    (tmp_path / "scripts/config/age-recipient.txt").write_text(RECIPIENT + "\n")
     return tmp_path
 
 

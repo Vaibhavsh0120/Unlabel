@@ -2,8 +2,8 @@
 
 Current source versions come from [frontend pubspec](../frontend/pubspec.yaml)
 and [backend pyproject](../backend/pyproject.toml). The new auth/profile scope and
-Google-provider compatibility have separate [frontend](planning/FRONTEND_V0_8_0_REVIEW.md)
-and [backend](planning/BACKEND_V0_12_1_REVIEW.md) reviews. Final exact-source hosted/native
+private account deletion have separate [frontend](planning/FRONTEND_V0_9_0_REVIEW.md)
+and [backend](planning/BACKEND_V0_13_0_REVIEW.md) reviews. Final exact-source hosted/native
 verification is pending. Earlier read-only backend checks exclude authenticated
 extraction/staging; physical-device accuracy remains separate.
 

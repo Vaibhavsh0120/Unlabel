@@ -14,8 +14,11 @@ Optional AI extraction follows the active server configuration and explicit
 transfer consent. Dated deployment/configuration notes below are historical;
 see [AI routing](../architecture/AI_ROUTING.md) and
 [account/profile setup](../architecture/ACCOUNT_PROFILE.md) for current boundaries.
-The new auth/profile and Google compatibility sources await final exact-source
-hosted/native verification; earlier deployment receipts do not prove them.
+The [frontend auth/provider update](FRONTEND_V0_9_0_REVIEW.md) and
+[backend account deletion](BACKEND_V0_13_0_REVIEW.md) are authorized for completion
+and push from main, triggering the existing Git deployments. Firebase-hosted
+password reset keeps the fixed web sign-in return. Earlier deployment receipts
+do not prove these new source changes; record their exact SHA/hosted checks.
 
 ## Website settings
 

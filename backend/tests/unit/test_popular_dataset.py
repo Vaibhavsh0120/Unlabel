@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-SCRIPT = Path(__file__).resolve().parents[3] / "scripts/build_popular_dataset.py"
+SCRIPT = Path(__file__).resolve().parents[3] / "scripts/data/build_popular_dataset.py"
 
 
 def implementation():

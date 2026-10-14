@@ -1,7 +1,7 @@
 # Unlabel backend
 
 Checkpoint **13 October 2026**: Python **3.12+**, **27 API paths /
-28 operations**. Canonical version is project.version in [pyproject.toml](pyproject.toml).
+29 operations**. Canonical version is project.version in [pyproject.toml](pyproject.toml).
 The current contract retains bounded photo extraction/private proposals,
 243 sourced research observations, 120 separate image descriptors and the
 24,641-barcode public catalogue. Six ingredient-function entries remain partial.
@@ -10,9 +10,10 @@ The [0.12 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) and
 [dated production recheck](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json)
 record the preceding 389 read-only hosted checks. Authenticated extraction/write
 and physical-device evidence remain separate. The
-[current compatibility patch](../docs/planning/BACKEND_V0_12_1_REVIEW.md) accepts
-verified Google scanner/private-library sessions while retaining UID checks and
-wire contracts. Final exact-source hosted/source publication is pending. See
+[current deletion release](../docs/planning/BACKEND_V0_13_0_REVIEW.md) adds
+recent-auth owner-only account cleanup and permanent deletion markers. Verified
+Google scanner/private-library compatibility and existing snapshot schemas remain.
+Final exact-source hosted/source publication is pending. See
 [maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
 and [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
 
@@ -37,6 +38,7 @@ On macOS/Linux use `.venv/bin/python` instead. Use runtime-only `requirements.tx
 | --- | --- |
 | `GET /v1/account/sync` | Verified password/Google account owns its private snapshot; anonymous clients rejected; no caller UID |
 | `POST /v1/account/sync` | Bounded profile/saved/history CAS replacement and UUID retries; conflicts explicit; versioned empty clearing |
+| `DELETE /v1/account/sync` | Recent verified owner authentication; private library/media cleanup and permanent markers prevent stale recreation; idempotent retries |
 | `GET /v1/health` | Backend readiness/version; external provider connectivity explicitly not checked |
 | `GET /v1/meta` | Backend/API/schema/adapter/normalization versions; product lookup, nutrition lookup and normalization enabled |
 | `GET /v1/products/{barcode}` | Fixed OFF v3.6 product read; stable typed source-tagged response |
@@ -322,7 +324,7 @@ From repository root, acquire into a new existing owned directory:
 
 ~~~powershell
 New-Item -ItemType Directory -Force backend/storage/runtime/new-source
-backend/.venv/Scripts/python.exe scripts/acquire_india_jsonl.py --directory backend/storage/runtime/new-source
+backend/.venv/Scripts/python.exe scripts/data/acquire_india_jsonl.py --directory backend/storage/runtime/new-source
 ~~~
 
 Validate complete transfer/gzip EOF, compressed/decoded hashes, source date, exact India/counts, field rates, representative sparse/rich records and size budgets. Record unresolved export/live-count differences. Update the tracked gzip, `bundle.json`, `acquisition.json`, license notices and current evidence together; do not retain the world dump or image bytes. Setup regenerates the local SQLite; the hosted build generates its own immutable SQLite/receipt without network acquisition. Plain/gzip JSONL imports also remain supported for explicit local inputs and samples; supply the actual source URL/format and use `coverage: sample` for samples.

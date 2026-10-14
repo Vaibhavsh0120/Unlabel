@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def module(name, monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / "scripts"))
-    spec = importlib.util.spec_from_file_location(f"runner_{name}", ROOT / f"scripts/{name}.py")
+    spec = importlib.util.spec_from_file_location(f"runner_{name}", ROOT / (f"scripts/dev/{name}.py" if name.startswith("_") else f"scripts/{name}.py"))
     assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
@@ -128,6 +128,7 @@ def test_selection_has_no_silent_default(monkeypatch, capsys):
             "production",
         ),
         (["--mode", "local"], True, "local"),
+        (["--mode", "lan", "--lan-ip", "192.168.1.20"], True, "lan"),
         (["--scope", "frontend", "--backend-url", "http://127.0.0.1:8123"], False, "local"),
     ],
 )
@@ -161,10 +162,12 @@ def test_modes_launch_only_owned_services(
     monkeypatch.setattr(runner, "config", lambda: {"backend_port": 8000, "web_port": 7357})
     monkeypatch.setattr(runner, "backend_python", lambda: python)
     monkeypatch.setattr(runner, "flutter_executable", lambda: Path("flutter"))
+    monkeypatch.setattr(runner, "caddy_executable", lambda _: Path("caddy"))
     monkeypatch.setattr(runner, "spawn", spawn)
     monkeypatch.setattr(runner, "stop_process", stopped.append)
     monkeypatch.setattr(runner, "wait_for_api", lambda *args: None)
     monkeypatch.setattr(runner, "wait_for_web", lambda *args: None)
+    monkeypatch.setattr(runner, "wait_for_https", lambda *args: None)
     monkeypatch.setattr(runner, "check_port_available", checked_ports.append)
     monkeypatch.setattr(runner.time, "sleep", interrupt)
     monkeypatch.setattr(sys, "argv", ["run_local.py", *argv])
@@ -182,12 +185,22 @@ def test_modes_launch_only_owned_services(
         for argument in build
     )
     url = (
-        "http://127.0.0.1:7357"
-        if proxy_mode == "production"
+        "https://192.168.1.20:8443" if proxy_mode == "lan" else "http://127.0.0.1:7357"
+        if proxy_mode in {"production", "lan"}
         else ("http://127.0.0.1:8000" if backend_expected else "http://127.0.0.1:8123")
     )
     assert f"--dart-define=BACKEND_BASE_URL={url}" in build
-    assert commands[-1][-3:] == [proxy_mode, "--web-port", "7357"]
+    if proxy_mode == "lan":
+        assert commands[-1][0] == "caddy" and "run" in commands[-1]
+        config = (tmp_path / "output/local-network/Caddyfile").read_text()
+        assert "https://192.168.1.20:8443" in config
+        assert "reverse_proxy 127.0.0.1:8000" in config
+        assert "skip_install_trust" in config
+    else:
+        assert commands[-1][-3:] == [proxy_mode, "--web-port", "7357"]
+    if backend_expected:
+        backend = next(command for command in commands if "uvicorn" in command)
+        assert backend[backend.index("--host") + 1] == "127.0.0.1"
     assert stopped == list(reversed([call[0] for call in calls if "build" not in call[0].command]))
     assert (tmp_path / "backend/.env").read_bytes() == b"existing settings remain private"
 
@@ -209,7 +222,9 @@ def test_proxy_covers_exact_current_operations(monkeypatch):
             assert handler.allowed_route(method.upper(), concrete), (method, path)
     assert not handler.allowed_route("POST", "/v1/account/admin")
     assert not handler.allowed_route("GET", "/v1/products/123")
-    assert not handler.allowed_route("DELETE", "/v1/account/sync")
+    assert handler.allowed_route("DELETE", "/v1/account/sync")
+    assert not handler.allowed_route("DELETE", "/v1/account/admin")
+    assert not handler.allowed_route("DELETE", "/v1/products/12345678")
     assert not handler.allowed_route("GET", "/v1/researched/products/" + "a" * 63)
     assert not handler.allowed_route("GET", "/v1/researched/products/" + "g" * 64)
     assert not handler.allowed_route("POST", "/v1/researched/products/search")
@@ -270,6 +285,51 @@ def test_proxy_forwards_only_bearer_to_fixed_https_target(tmp_path, monkeypatch,
         "fixture" not in output.out + output.err
         and "synthetic.token" not in output.out + output.err
     )
+
+
+def test_proxy_forwards_bodyless_owner_delete_and_allows_local_preflight(tmp_path, monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    calls = upstream(monkeypatch, handler, UpstreamResponse(payload=b'{"status":"deleted"}'))
+    with preview(handler, tmp_path) as port:
+        origin = f"http://127.0.0.1:{port}"
+        status, headers, body = request(port, "OPTIONS", "/v1/account/sync", headers={
+            "Origin": origin,
+            "Access-Control-Request-Method": "DELETE",
+            "Access-Control-Request-Headers": "Authorization",
+        })
+        assert status == 204 and body == b""
+        assert "DELETE" in headers["Access-Control-Allow-Methods"]
+        assert headers["Access-Control-Allow-Origin"] == origin
+        assert calls == []
+        status, headers, body = request(port, "DELETE", "/v1/account/sync", headers={
+            "Authorization": "Bearer synthetic.token", "Origin": origin,
+            "Cookie": "private=fixture",
+        })
+    assert status == 200 and json.loads(body) == {"status": "deleted"}
+    assert headers["Cache-Control"] == "no-store"
+    assert headers["Access-Control-Allow-Origin"] == origin
+    assert calls[0] == ("connect", "unlabel-api.vercel.app", 15)
+    assert calls[1] == ("DELETE", "/v1/account/sync", None, {
+        "Accept": "application/json", "Accept-Encoding": "identity",
+        "Authorization": "Bearer synthetic.token",
+    })
+    assert calls[-1] == ("closed",)
+
+
+def test_proxy_rejects_delete_payloads_and_other_routes_before_upstream(tmp_path, monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    calls = upstream(monkeypatch, handler)
+    with preview(handler, tmp_path) as port:
+        status, headers, body = request(port, "DELETE", "/v1/account/sync", body=b"{}")
+        assert status == 400
+        assert json.loads(body) == {"error": "preview_delete_body_not_allowed"}
+        assert headers["Cache-Control"] == "no-store"
+        assert request(port, "DELETE", "/v1/products/12345678")[0] == 404
+        assert request(port, "OPTIONS", "/v1/products/12345678", headers={
+            "Origin": f"http://127.0.0.1:{port}",
+            "Access-Control-Request-Method": "DELETE",
+        })[0] == 403
+    assert calls == []
 
 
 @pytest.mark.parametrize(

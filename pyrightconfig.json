@@ -1,7 +1,7 @@
 {
   "include": ["backend/app", "backend/build_catalogue.py", "backend/tests", "scripts"],
   "exclude": ["backend/app/catalogue/data", "backend/app/claims/data"],
-  "extraPaths": ["backend", "scripts"],
+  "extraPaths": ["backend", "scripts", "scripts/release"],
   "pythonVersion": "3.12",
   "typeCheckingMode": "basic",
   "venvPath": "backend",

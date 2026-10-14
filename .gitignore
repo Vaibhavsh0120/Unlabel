@@ -98,3 +98,9 @@ Desktop.ini
 
 # Intentionally keep future application dependency lockfiles tracked.
 # The Flutter starter's pubspec.lock is tracked for reproducible builds.
+
+# Local verification captures, build reports and downloaded preview tooling.
+/output/
+/scripts/caddy_windows_amd64.exe
+/scripts/tools/caddy/*
+!/scripts/tools/caddy/.gitkeep

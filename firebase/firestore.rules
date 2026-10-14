@@ -4,7 +4,8 @@ service cloud.firestore {
     function profileOwner(uid) {
       return database == 'unlabel' && request.auth != null
         && request.auth.uid == uid
-        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+        && request.auth.token.firebase.sign_in_provider != 'anonymous'
+        && !exists(/databases/$(database)/documents/profile_deletions/$(uid));
     }
     function validProfileMedia() {
       let data = request.resource.data;

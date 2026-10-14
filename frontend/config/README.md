@@ -39,7 +39,12 @@ choice. Package photos/raw OCR, dietary/health reminders, appearance and Welcome
 completion are excluded from library sync. Profile thumbnails are a separate
 bounded private document; no Storage bucket or second database is used.
 [Account/profile contract](../../docs/architecture/ACCOUNT_PROFILE.md) ·
-[Current review](../../docs/planning/FRONTEND_V0_8_0_REVIEW.md).
+[Current local repair](../../docs/planning/FRONTEND_V0_8_1_REVIEW.md).
+Reset requests retain Firebase's hosted action handler and an SDK-supplied fixed
+`https://unlabel-india.vercel.app/#/account-signin` return; the app never needs a
+custom action URL or receives the reset code. The 13 October source completion
+and push authorization supersedes the earlier local hold; inbox/provider and
+hosted/native verification remain separate.
 
 Local report/bookmark keys belong to the guest or selected signed-in UID namespace;
 appearance and Welcome completion remain device-local. Clearing history

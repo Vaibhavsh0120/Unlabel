@@ -369,7 +369,7 @@ def _verified_source(
 ) -> tuple[dict[str, Any], bytes, list[tuple[str, ResearchObservation]]]:
     # Acquisition validation is a build-only dependency; runtime never imports
     # scripts, opens source gzip, acquires internet data or loads credentials.
-    script = Path(__file__).resolve().parents[3] / "scripts/build_popular_dataset.py"
+    script = Path(__file__).resolve().parents[3] / "scripts/data/build_popular_dataset.py"
     specification = importlib.util.spec_from_file_location("_unlabel_popular_build", script)
     if specification is None or specification.loader is None:
         raise ValueError("Research source verifier is unavailable during build")

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[3]
 @pytest.fixture
 def tool():
     spec = importlib.util.spec_from_file_location(
-        "community_tool", ROOT / "scripts/community_catalogue.py"
+        "community_tool", ROOT / "scripts/data/community_catalogue.py"
     )
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)

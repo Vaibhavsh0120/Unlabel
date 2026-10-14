@@ -1,16 +1,20 @@
 # Unlabel master plan
 
-Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Current scope: [auth/profile and UI](FRONTEND_V0_8_0_REVIEW.md) plus [Google backend compatibility](BACKEND_V0_12_1_REVIEW.md).
+Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Current scope: [reference auth and account controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md); preceding source reviews retain their dated evidence.
 This document records product intent and contracts. Current delivered capabilities
 and unavailable gates are in [the feature tracker](FEATURE_TRACKER.md); immutable
 source identities are in [the release ledger](CONTROLLED_RELEASES.md).
 The active task extends [maintenance](MAINTENANCE_2026_10_12.md) with the
-user-authorized auth/profile scope: reference six-state auth, same-UID Google/password
-linking, bounded private thumbnails and optional gender/default avatars. Unset
+user-authorized auth/profile scope: four app auth states, Firebase-hosted reset,
+same-UID Google/password linking, private thumbnails and optional gender/default avatars. Unset
 gender uses the approved male default; no Google gender inference is permitted.
-The auth reference requires a filled BrandLeaf and one viewport without page
-scrolling. [Account/profile contract](../architecture/ACCOUNT_PROFILE.md). Final
-current-source hosted/native/reference acceptance remains pending.
+The latest auth references require a fixed outer viewport, equal non-scrolling
+desktop cards and a whole mobile card moving over fixed artwork. Portrait iPad
+fills the width; landscape uses the desktop composition. [Account/profile contract](../architecture/ACCOUNT_PROFILE.md). Final
+current-source hosted/native acceptance remains pending. On 13 October the user
+authorized completion and push on main, superseding the earlier local hold.
+Login/signup use layered mascot/sprout/themed-garden illustrations and responsive
+forms; sign-in methods add provider management and explicit account deletion.
 Dated release slices below retain their own evidence and scope.
 
 ## Product goal

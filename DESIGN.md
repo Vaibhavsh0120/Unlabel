@@ -5,8 +5,10 @@ brand vector from the wordmark through `BrandLeaf`; the retired outline asset is
 removed. Food preference and allergen symbols keep their distinct pictograms.
 
 13 October auth/profile scope includes the preceding maintenance and applies the
-latest user references. Current [source review](docs/planning/FRONTEND_V0_8_0_REVIEW.md)
-keeps final rendered/hosted/native acceptance separate from implementation. The desktop Recent scans empty state has a larger complete
+latest user references. The current [frontend review](docs/planning/FRONTEND_V0_9_0_REVIEW.md)
+and [backend review](docs/planning/BACKEND_V0_13_0_REVIEW.md) record the authorized
+completion/push scope; the
+[preceding source review](docs/planning/FRONTEND_V0_8_0_REVIEW.md) keeps its own evidence. The desktop Recent scans empty state has a larger complete
 package illustration, a spacious live-copy/action row and quiet mint botanicals;
 the phone stays compact. Home's desktop daily Insight illustration is larger,
 and the three supporting Insights cards stretch to the tallest natural row
@@ -35,15 +37,33 @@ focus, touch, scrolling, background, hidden routes and accessibility motion sett
 Source details use a centered desktop window and a styled phone sheet, with a
 fixed close action, scrollable explanation, a separate limits panel and website link.
 
-Auth must match the supplied six-state reference in desktop and phone layouts.
-Use Unlabel's actual filled BrandLeaf, the state-specific fresh artwork, exact
-heading/form/action hierarchy and live controls. Desktop has copy/art beside a
-white form panel; phone centers art above the form. Each auth screen fits a single
-viewport with no horizontal or vertical page scrolling. Profile-origin phone auth
-has an X at the top left. All actions remain visible and usable; final rendered
-comparison must establish reference acceptance. Google/email linking keeps one
+The app retains sign-in, signup, forgot-password and neutral link-sent states.
+The latest user references use Nunito headings, Quicksand body copy, a cream/forest
+light theme and charcoal/bright-green dark theme. All forms and badge labels are
+live Flutter widgets. Desktop login/signup have equal-width rounded cards centered
+in the right section, narrowed by the requested 15%; neither the page nor desktop
+card scrolls. Both hero headlines share one type scale; signup's first phrase is
+one line. Artwork scales to available height and decorative cards retain a gap.
+On phones and portrait iPads, artwork and card fill the viewport width. The entire
+card moves as one piece over stationary artwork, with no nested scrolling inside
+the card and no scrollbar. Swiping back down reveals the artwork. The keyboard
+lifts the card and closing it restores its prior position. Enlarged text uses a
+compact header with wrapping controls. Landscape iPad uses the desktop layout
+when height allows; rotation preserves field controllers and focus.
+The generated mascot, sprout and light/dark gardens are separate animated layers;
+these are reference reconstructions, not exact extracted originals. Reduced motion,
+background lifecycle and hidden routes stop decorative loops. Celebration follows
+actual controller success. Artwork badges never describe product evidence.
+Signup has one full-name field and no redundant email-option button. Profile-origin
+login/signup show a back arrow; Welcome-origin screens do not. Firebase's supported
+hosted action page owns reset validation, new-password entry and success, with the
+fixed Unlabel sign-in return. See [current review](docs/planning/FRONTEND_V0_9_0_REVIEW.md)
+for rendered and test evidence, separate from native/device acceptance.
+Google/email linking keeps one
 UID/library. The photo editor has explicit crop/save and separate source choices;
-optional gender never comes from name/photo inference. Unset/male uses the approved
+optional gender never comes from name/photo inference. Sign-in methods use the
+supplied two-provider card composition, last-method protection, explicit changes
+and account deletion confirmation. Unset/male uses the approved
 male default, female uses its own new default. [Profile/storage contract](docs/architecture/ACCOUNT_PROFILE.md).
 
 Historical 9 October Insights references were implemented in frontend v0.7.0+11: one featured

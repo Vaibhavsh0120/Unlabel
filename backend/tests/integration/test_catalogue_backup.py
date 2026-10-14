@@ -7,7 +7,7 @@ import pytest
 
 
 def implementation():
-    path = Path(__file__).resolve().parents[3] / "scripts/backup_catalogue.py"
+    path = Path(__file__).resolve().parents[3] / "scripts/data/backup_catalogue.py"
     spec = importlib.util.spec_from_file_location("catalogue_backup", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)

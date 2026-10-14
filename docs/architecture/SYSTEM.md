@@ -9,8 +9,8 @@ twenty sourced articles, a shared date-stable daily four and local bookmarks.
 The latest auth/profile and Google-provider compatibility changes await final
 exact-source hosted/native verification. Earlier read-only backend checks do not
 prove authenticated extraction/staging. See the
-[frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md),
-[backend review](../planning/BACKEND_V0_12_1_REVIEW.md) and
+[frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md),
+[backend review](../planning/BACKEND_V0_13_0_REVIEW.md) and
 [master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
@@ -18,7 +18,7 @@ prove authenticated extraction/staging. See the
 One Flutter project in `frontend/` targets Android, iOS and web. Two Vercel
 projects serve the static Flutter website and shared FastAPI backend. Native apps
 call the same API; a laptop supplies an optional local demo backend. Keep the
-project at **₹0 additional platform cost, no credit card and no billing upgrade**.
+project at **â‚¹0 additional platform cost, no credit card and no billing upgrade**.
 
 Fresh lookup and deterministic analysis require the backend. OFF, the preserved
 bulk snapshot and the separate research catalogue supply qualified source facts.

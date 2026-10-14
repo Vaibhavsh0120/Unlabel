@@ -13,7 +13,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-SCRIPT = Path(__file__).resolve().parents[3] / "scripts/build_popular_dataset.py"
+SCRIPT = Path(__file__).resolve().parents[3] / "scripts/data/build_popular_dataset.py"
 
 
 def api():

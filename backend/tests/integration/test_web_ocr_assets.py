@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[3]
 @pytest.fixture
 def vendor():
     spec = importlib.util.spec_from_file_location(
-        "web_ocr_vendor", ROOT / "scripts/vendor_web_ocr.py"
+        "web_ocr_vendor", ROOT / "scripts/release/vendor_web_ocr.py"
     )
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)

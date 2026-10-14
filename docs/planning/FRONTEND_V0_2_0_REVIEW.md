@@ -30,7 +30,7 @@ remains independently published; no backend application change is in this releas
 - `flutter analyze`: no issues.
 - `flutter test`: **135 passed**.
 - `flutter build web --release`: passed, including Wasm dry run.
-- `python scripts/generate_app_icons.py --check`: **42 assets verified** across
+- `python scripts/release/generate_app_icons.py --check`: **42 assets verified** across
   authored masters, iOS, Android and web. Physical launcher appearance remains separate.
 - Scan tests cover 320×568, 390×844, 844×390 and 320×844 at 2× text; no scrolling
   or overflow and all controls remain reachable. Report/Compare tests cover

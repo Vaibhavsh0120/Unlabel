@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def module(name, monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / "scripts"))
-    spec = importlib.util.spec_from_file_location(f"workspace_{name}", ROOT / f"scripts/{name}.py")
+    spec = importlib.util.spec_from_file_location(f"workspace_{name}", ROOT / (f"scripts/dev/{name}.py" if name.startswith("_") else f"scripts/{name}.py"))
     assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
@@ -24,9 +24,9 @@ def module(name, monkeypatch):
 @pytest.fixture
 def clone(tmp_path):
     (tmp_path / "backend").mkdir()
-    (tmp_path / "scripts").mkdir()
-    (tmp_path / "scripts/workspace.json").write_bytes(
-        (ROOT / "scripts/workspace.json").read_bytes()
+    (tmp_path / "scripts/config").mkdir(parents=True)
+    (tmp_path / "scripts/config/workspace.json").write_bytes(
+        (ROOT / "scripts/config/workspace.json").read_bytes()
     )
     (tmp_path / "backend/.env.example").write_text("GEMINI_API_KEY=\n")
     (tmp_path / "backend/.env.age").write_bytes(b"synthetic ciphertext")

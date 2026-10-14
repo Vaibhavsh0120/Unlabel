@@ -11,9 +11,9 @@ that identity. See [release ledger](CONTROLLED_RELEASES.md).
 | --- | --- | --- |
 | Frontend | `frontend/pubspec.yaml`: `version: SemVer+BUILD` | Flutter platform versioning, Dart build metadata, local/Vercel and manual native builds |
 | Backend | `backend/pyproject.toml`: project.version | Backend runtime/API and setup/acquisition metadata |
-| Toolchain | `scripts/workspace.json` | Pinned Flutter used by setup and workflow metadata |
+| Toolchain | `scripts/config/workspace.json` | Pinned Flutter used by setup and workflow metadata |
 
-Use `python scripts/version_metadata.py --component frontend --format json`
+Use `python scripts/release/version_metadata.py --component frontend --format json`
 or `--component backend` to inspect canonical values. Manual native builds read
 the selected source's pubspec; there are no repeated version/build defaults to
 edit in workflow YAML. Both platforms use the selected source's canonical version
@@ -23,7 +23,14 @@ Allocate a new build number for a new distributable update; published artifacts
 are immutable. The later authorized auth/profile scope bumps the canonical
 frontend version/build; verified Google backend compatibility has its own patch
 version. Final source/hosted/native identities remain pending in their current
-[frontend](FRONTEND_V0_8_0_REVIEW.md) and [backend](BACKEND_V0_12_1_REVIEW.md) reviews.
+[preceding frontend](FRONTEND_V0_8_0_REVIEW.md) and [backend](BACKEND_V0_12_1_REVIEW.md) reviews.
+The 13 October scope supersedes the unshipped 0.8.1 patch. Verified GitHub main
+`3e67f13` contains frontend 0.8.0+12/backend 0.12.1. The next versions are
+**frontend 0.9.0+13** and **backend 0.13.0**: provider management/account deletion
+and an additive DELETE endpoint are features. The native build increases from
+12 to 13. Existing snapshot schemas and API major remain unchanged. The user
+authorized completion, push, native release and the stable feed update. [Frontend scope](FRONTEND_V0_9_0_REVIEW.md) ·
+[Backend scope](BACKEND_V0_13_0_REVIEW.md).
 
 Current-status docs are dated checkpoints. Write a future review/ledger entry
 for a new release; do not rewrite old reviews, receipts or source references.
@@ -36,12 +43,15 @@ New source tags use `backend-vVERSION` and `frontend-vVERSION`. Earlier backend
 remain historical. Release titles identify backend, frontend source or frontend
 mobile artifacts explicitly. Source releases do not prove native installation.
 
-[Manual workflow](../../.github/workflows/manual-release.yml) builds a demo APK
+[Release workflow](../../.github/workflows/frontend-release.yml) detects canonical
+version/build increases on main and automatically builds a demo APK
 on Linux and an unsigned iPhoneOS IPA on a standard Intel macOS runner. It
 resolves one source SHA, checks lockfiles/icons/OCR/tests, prepares/cache-checks
 toolchains and verifies artifact structure, versions and hashes. It creates a
 draft, verifies uploaded assets, then publishes when `publish_release` is true.
-An incomplete upload remains a draft. Existing release assets are not overwritten.
+Only APK, IPA and an apps.json snapshot are attached; build reports remain in CI
+artifacts. The universal ios-source/apps.json subscription URL never changes.
+Manual dispatch is retained for retries/drafts. An incomplete upload remains a draft. Existing release assets are not overwritten.
 
 The manifest records source/workflow SHA, canonical and effective versions,
 toolchains, endpoint, signing mode, tests and per-asset SHA-256. Secret keys,

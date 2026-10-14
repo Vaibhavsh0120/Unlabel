@@ -53,7 +53,9 @@ class RequestBodyLimit:
             if not message.get("more_body", False):
                 break
         consumed = False
-        if personal and (scope.get("query_string") or (scope["method"] == "GET" and body)):
+        if personal and (
+            scope.get("query_string") or (scope["method"] in {"GET", "DELETE"} and body)
+        ):
             await JSONResponse(
                 {
                     "detail": [

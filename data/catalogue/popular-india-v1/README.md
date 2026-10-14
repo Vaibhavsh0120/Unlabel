@@ -21,13 +21,13 @@ The generated read-only database is 1,413,120 bytes. Dataset SHA-256:
 | `off-api-observations.json` | Original exact-code acquisition/checkpoint evidence and rate-limit failures. |
 | [Website sources](../../../docs/research/popular-products-2026-10-08/) | Actually inspected manufacturer/retailer inputs with conflicts, exclusions and unknowns. |
 
-Build the source explicitly with `scripts/build_popular_dataset.py --web-input ...`
+Build the source explicitly with `scripts/data/build_popular_dataset.py --web-input ...`
 and optional `--off-input ...`; verify it using:
 
 ~~~powershell
-./backend/.venv/Scripts/python.exe scripts/build_popular_dataset.py --verify data/catalogue/popular-india-v1
-./backend/.venv/Scripts/python.exe scripts/build_research_catalogue.py
-./backend/.venv/Scripts/python.exe scripts/build_research_catalogue.py --verify backend/app/research_catalogue/data
+./backend/.venv/Scripts/python.exe scripts/data/build_popular_dataset.py --verify data/catalogue/popular-india-v1
+./backend/.venv/Scripts/python.exe scripts/data/build_research_catalogue.py
+./backend/.venv/Scripts/python.exe scripts/data/build_research_catalogue.py --verify backend/app/research_catalogue/data
 ~~~
 
 The source builder's `runtime_promotion: none` means normalization itself does not

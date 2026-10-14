@@ -201,6 +201,57 @@ Future<Uint8List> _thumbnail() async {
 }
 
 void main() {
+  for (final providers in [
+    {'password'},
+    {'google.com'},
+  ]) {
+    testWidgets('the only remaining provider cannot be disabled: $providers', (
+      tester,
+    ) async {
+      final fixture = await _Fixture.create(providers: providers);
+      addTearDown(fixture.dispose);
+      await _open(tester, fixture);
+      await _tap(tester, find.text('Sign-in methods'));
+      final switches = tester.widgetList<Switch>(find.byType(Switch)).toList();
+        expect(switches.where((item) => item.value), isNotEmpty);
+        expect(switches.where((item) => item.value).every((item) => item.onChanged == null), isTrue);
+        expect(switches.where((item) => !item.value).any((item) => item.onChanged != null), isTrue);
+      expect(fixture.account.identity!.providers, providers);
+      expect(tester.takeException(), isNull);
+    });
+  }
+  for (final size in [
+    const Size(320, 700),
+    const Size(390, 844),
+    const Size(1440, 900),
+  ]) {
+    testWidgets('linked methods fit reference viewport $size', (tester) async {
+      final fixture = await _Fixture.create(
+        providers: {'password', 'google.com'},
+      );
+      addTearDown(fixture.dispose);
+      await _open(tester, fixture, size: size);
+      await _tap(tester, find.text('Sign-in methods'));
+      expect(find.text('Connected'), findsOneWidget);
+      expect(find.text('Enabled'), findsOneWidget);
+      final removal = find.widgetWithText(OutlinedButton, 'Remove');
+      expect(tester.widget<OutlinedButton>(removal).onPressed, isNotNull);
+      for (final label in [
+        'Disconnect',
+        'Switch account',
+        'Change email',
+        'Change password',
+        'Remove',
+      ]) {
+        final rect = tester.getRect(find.text(label));
+        expect(rect.left, greaterThanOrEqualTo(0));
+        expect(rect.right, lessThanOrEqualTo(size.width));
+        expect(rect.top, greaterThanOrEqualTo(0));
+        expect(rect.bottom, lessThanOrEqualTo(size.height));
+      }
+      expect(tester.takeException(), isNull);
+    });
+  }
   testWidgets(
     'gender stays optional and changing it preserves a custom photo',
     (tester) async {
@@ -255,7 +306,7 @@ void main() {
       final originalStore = fixture.account.accountStore;
       final fetches = fixture.sync.fetches;
       await _tap(tester, find.text('Sign-in methods'));
-      expect(find.text('Connected'), findsOneWidget);
+      expect(find.text('Enabled'), findsOneWidget);
       expect(find.text('Add email and password'), findsNothing);
       fixture.auth.pending = Completer<void>();
       final connect = find.text('Connect Google');
@@ -266,31 +317,20 @@ void main() {
       expect(fixture.account.authBusy, isTrue);
       expect(
         tester
-            .widget<IconButton>(
-              find.byWidgetPredicate(
-                (widget) =>
-                    widget is IconButton &&
-                    widget.tooltip == 'Close Sign-in methods',
-              ),
-            )
-            .onPressed,
-        isNull,
-      );
-      expect(
-        tester
-            .widget<FilledButton>(find.widgetWithText(FilledButton, 'Done'))
+            .widget<TextButton>(find.widgetWithText(TextButton, 'Back'))
             .onPressed,
         isNull,
       );
       await tester.binding.handlePopRoute();
       await tester.pump();
       expect(
-        find.byKey(const ValueKey('profile-detail-window')),
+        find.byKey(const ValueKey('profile-sign-in-methods')),
         findsOneWidget,
       );
       fixture.auth.pending!.complete();
       await tester.pumpAndSettle();
-      expect(find.text('Connected'), findsNWidgets(2));
+      expect(find.text('Connected'), findsOneWidget);
+      expect(find.text('Enabled'), findsOneWidget);
       expect(find.text('Connect Google'), findsNothing);
       expect(fixture.account.identity!.uid, 'synthetic-owner');
       expect(fixture.account.identity!.providers, {'password', 'google.com'});
@@ -350,7 +390,8 @@ void main() {
       fixture.auth.pending!.complete();
       await tester.pumpAndSettle();
       expect(find.text('Add a password'), findsNothing);
-      expect(find.text('Connected'), findsNWidgets(2));
+      expect(find.text('Connected'), findsOneWidget);
+      expect(find.text('Enabled'), findsOneWidget);
       expect(fixture.auth.linkedEmail, 'synthetic@example.invalid');
       expect(fixture.auth.linkedPassword, 'UniqueField42');
       expect(fixture.account.identity!.uid, 'synthetic-owner');
@@ -400,12 +441,12 @@ void main() {
         );
         for (final window in [
           ('Gender', 'Cancel'),
-          ('Sign-in methods', 'Done'),
-          ('Profile picture', 'Cancel'),
+          ('Sign-in methods', 'Back'),
           ('Notifications', 'Close'),
           ('Privacy', 'Close'),
           ('Help', 'Close'),
         ]) {
+          expect(find.text(window.$1), findsOneWidget, reason: window.$1);
           await _tap(tester, find.text(window.$1));
           expect(find.byType(Dialog), findsOneWidget);
           final footer = find.ancestor(

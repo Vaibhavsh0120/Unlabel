@@ -1,11 +1,17 @@
 ## Authentication and profile artwork — 13 October 2026
 
-Six fresh illustrations serve the six authentication states. A new female avatar
-matches the existing male default, whose continued use the user explicitly
-requested. Gender is optional and user-selected. [Generation metadata](auth-generation.json)
-records source/output hashes, dimensions, bytes and exact alpha preservation.
-Each illustration stays exclusive to its authentication state across desktop and
-mobile. The default avatars follow the same user identity in Profile and headers.
+Login/signup use independently animated mascot, sprout and garden layers. The
+light and dark gardens preserve the transparent sky and have matching geometry.
+[Layer provenance](auth/layers.json) records generated artifact IDs, prompt intent,
+exact PNG hashes, dimensions and alpha format. These are generated reconstructions
+of the supplied references, not exact extracted originals. All words, controls,
+blinking eyes and floating badges remain live Flutter widgets or painters.
+The unused earlier sign-in/signup and shared-panel assets are removed from the
+runtime bundle; tracked originals remain in Git history. Forgot-password and
+neutral link-sent retain their dedicated artwork. Firebase owns reset completion.
+[Earlier generation metadata](auth-generation.json) retains the active reset and
+female-avatar records. Optional user-selected gender still chooses the approved
+male or female avatar; Google gender is never inferred.
 
 ## Current optimized assets — 12 October 2026
 

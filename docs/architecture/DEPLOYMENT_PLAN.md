@@ -5,7 +5,7 @@ and [backend](../../backend/pyproject.toml) sources. The backend retains
 **27 paths / 28 operations**. Final exact-source hosted/native verification for
 auth/profile and Google compatibility is pending; earlier read-only backend
 checks exclude authenticated extraction/private staging and device accuracy.
-[Frontend review](../planning/FRONTEND_V0_8_0_REVIEW.md) ·
+[Frontend review](../planning/FRONTEND_V0_8_1_REVIEW.md) ·
 [Backend review](../planning/BACKEND_V0_12_1_REVIEW.md).
 
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
@@ -88,7 +88,10 @@ fallback. Do not add paid Storage/Functions, TTL, backups or PITR. Client rules
 deny every collection except a strict non-anonymous owner's profile-media
 document; list access is denied. Least-privilege backend credentials remain
 separate from scanner identities. [Auth/profile setup](ACCOUNT_PROFILE.md) records
-public OAuth configuration, stable demo signing and the email-action bridge. Setup restores local source/runtime; it never provisions
+public OAuth configuration, stable demo signing and Firebase's supported hosted
+reset/Continue return. The current auth/provider and account-deletion source is
+authorized for completion/push; exact-source hosted evidence remains separate.
+Setup restores local source/runtime; it never provisions
 a cloud account or payment plan.
 
 ## Optional extraction and public configuration

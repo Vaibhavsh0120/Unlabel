@@ -169,7 +169,7 @@ def create_app(
     application.add_middleware(
         CORSMiddleware,
         allow_origins=config.cors_origins,
-        allow_methods=["GET", "POST"],
+        allow_methods=["GET", "POST", "DELETE"],
         allow_headers=["Accept", "Content-Type", "Authorization"],
         allow_credentials=False,
     )
@@ -297,7 +297,7 @@ def create_app(
                 "max_snapshot_bytes": MAX_SNAPSHOT_BYTES,
                 "max_saved": 50,
                 "max_history": 100,
-                "authentication": "password",
+                "authentication": "password_or_google",
             },
             "capabilities": {
                 "ai_extraction": request.app.state.ai_gateway is not None,
@@ -319,6 +319,7 @@ def create_app(
                 "community_contributions": community_ready,
                 "community_lookup": community_ready,
                 "account_sync": config.account_sync_enabled and community_ready,
+                "account_deletion": config.account_sync_enabled and community_ready,
                 "resolved_product_lookup": community_ready
                 or (catalogue["status"] == "ready" and request.app.state.catalogue.supports_facts),
             },

@@ -1,9 +1,10 @@
 # Unlabel frontend
 
 Checkpoint **13 October 2026**: product/build version comes from
-[pubspec.yaml](pubspec.yaml); Flutter is pinned in [workspace.json](../scripts/workspace.json).
-Current [auth/profile and UI review](../docs/planning/FRONTEND_V0_8_0_REVIEW.md)
-keeps final rendered/reference, hosted and native acceptance pending.
+[pubspec.yaml](pubspec.yaml); Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
+Current [auth/provider update](../docs/planning/FRONTEND_V0_9_0_REVIEW.md) is
+authorized for completion and push from main. Native publication remains separate. The
+[preceding source scope](../docs/planning/FRONTEND_V0_8_0_REVIEW.md) stays separate.
 Maintenance, release and native/device evidence are tracked independently in
 [the audit](../docs/planning/MAINTENANCE_2026_10_12.md) and
 [release guide](../docs/planning/RELEASE_VERSIONING.md).
@@ -51,11 +52,19 @@ metadata supplies About and platform versions without duplicated Dart defaults.
   with confirmations; Help explains supported flows and opens About. Signed-in
   users can log out. Notifications are disabled with an explicit explanation that
   this version has no notification service.
-- Google/password sign-in, signup, reset and success use six fresh reference
-  illustrations. The filled brand leaf and single-screen desktop/phone composition
-  must pass final rendered review. Profile-origin phone auth has a top-left X.
-  Sign-in methods settings links Google/password under the same UID/library;
-  credential collisions never merge accounts.
+- App auth has sign-in, signup, forgot-password and neutral link-sent states.
+  Equal-width desktop cards are centered in the right section without scrolling.
+  Phone/portrait-iPad cards fill the width and move as one unit over stationary art;
+  there is no inner scroll area or visible scrollbar. Keyboard opening lifts the
+  card, closing restores its position, and enlarged text wraps under a compact header.
+  Login/signup use separate animated mascot, sprout and themed garden layers.
+  Signup includes full name and confirmation, without an extra email-option button.
+  Profile-origin screens retain their back arrow; Welcome-origin screens do not.
+  Firebase's hosted page completes password reset and returns to fixed app sign-in.
+  Sign-in methods settings links, disconnects and switches Google/password under
+  the same UID/library, protects the last method and confirms sensitive changes.
+  Credential collisions never merge accounts. Account deletion requires recent
+  authentication, private cloud cleanup, Firebase deletion and owner-local cleanup.
 - Profile photo editing uses a gallery crop preview and explicit Save. A private
   192×192 PNG thumbnail of at most 96 KiB and optional gender use the existing named
   Firestore database. Unset/male uses the approved male default; female uses the new
@@ -112,9 +121,9 @@ flutter build web --release
 node --test test/*_web_test.cjs
 ~~~
 
-From the root, `python scripts/vendor_web_ocr.py --check` verifies the 21 tracked
+From the root, `python scripts/release/vendor_web_ocr.py --check` verifies the 21 tracked
 browser OCR assets offline; reacquisition is an explicit maintenance action.
-`python scripts/generate_app_icons.py --check` verifies the 42 existing icon assets.
+`python scripts/release/generate_app_icons.py --check` verifies the 42 existing icon assets.
 Artwork and the startup font retain source/license records under their asset folders.
 
 Historical v0.4.0 evidence: **181 Flutter tests passed**, clean analysis and web build,
@@ -133,10 +142,11 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the [current review](../docs/planning/FRONTEND_V0_8_0_REVIEW.md) and maintenance
-audit for current gates. The static email-action bridge is deployed, but Firebase
-rejects its custom callback setting; actual reset emails retain Firebase's reserved
-handler. Custom reset-email routing and real provider/device acceptance are separate.
+See the [local repair review](../docs/planning/FRONTEND_V0_8_1_REVIEW.md) for current
+gates. Reset email requests use SDK ActionCodeSettings with handleCodeInApp:false
+and a fixed authorized Unlabel sign-in return. The rejected custom action URL is
+not required. Real email delivery and provider/device acceptance remain separate
+from local tests or a synthetic generated-link check; this bugfix is not pushed.
 
 ## Source ownership
 

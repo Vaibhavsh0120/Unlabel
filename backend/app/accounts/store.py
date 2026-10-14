@@ -43,9 +43,14 @@ class SyncConflict(StoreConflict):
         self.revision = revision
 
 
+class SyncDeleted(StoreUnavailable):
+    """A deletion marker prevents stale sessions from restoring private data."""
+
+
 class PersonalStore(Protocol):
     def read(self, owner: str) -> SyncSnapshot: ...
     def replace(self, owner: str, body: SyncRequest) -> SyncSnapshot: ...
+    def delete(self, owner: str, uid: str) -> None: ...
 
 
 def owner_hash(uid: str, secret: str) -> str:
@@ -72,6 +77,8 @@ class FirestorePersonalStore:
     def _load(record: Any, owner: str) -> tuple[SyncSnapshot, dict | None]:
         if record is None:
             return SyncSnapshot(), None
+        if record == {"schema_version": "1", "deleted": True}:
+            raise SyncDeleted()
         try:
             if not isinstance(record, dict) or set(record) != _KEYS:
                 raise ValueError()
@@ -120,6 +127,44 @@ class FirestorePersonalStore:
             raise
         except Exception:
             raise StoreUnavailable() from None
+
+    def delete(self, owner: str, uid: str) -> None:
+        reference = self._ref(owner)
+        if (
+            not isinstance(uid, str)
+            or not 1 <= len(uid) <= 128
+            or "/" in uid
+            or any(ord(character) < 32 for character in uid)
+        ):
+            raise StoreUnavailable()
+        marker = self._transactions._ref("profile_deletions", uid)
+        media = self._transactions._ref("profile_media", uid)
+        actor = self._transactions._ref("unlabel_private_limits", "owner-" + owner)
+        admission = self._transactions._ref("unlabel_private_limits", "accounts")
+
+        def apply(transaction):
+            # Read the same record as replace(), so an admitted old POST either
+            # finishes first or retries against the permanent deletion marker.
+            records = self._transactions._batch([reference, marker, admission], transaction)
+            if (
+                records[reference.path] == {"schema_version": "1", "deleted": True}
+                and records[marker.path] == {"schema": 1}
+            ):
+                return  # A completed deletion retry consumes no document writes.
+            if records[reference.path] is None:
+                # Even a never-synced UID needs permanent markers to reject late
+                # uploads. Count that first admission toward the same bounded
+                # lifetime capacity; already-admitted data can always be purged.
+                count = self._counter(records[admission.path], MAX_ACCOUNTS)
+                if count >= MAX_ACCOUNTS:
+                    raise StoreQuotaExceeded()
+                transaction.set(admission, {"count": count + 1})
+            transaction.set(reference, {"schema_version": "1", "deleted": True})
+            transaction.set(marker, {"schema": 1})
+            transaction.delete(media)
+            transaction.delete(actor)
+
+        self._transactions._run(apply)
 
     def replace(self, owner: str, body: SyncRequest) -> SyncSnapshot:
         reference = self._ref(owner)
