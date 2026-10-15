@@ -153,6 +153,7 @@ class FirebaseAccountAuth extends AccountAuth {
   Future<Object?>? _operation;
   static const operationTimeout = Duration(seconds: 15);
   bool _disposed = false;
+  bool _ready = false;
   @override
   AccountIdentity? get identity => _identity;
 
@@ -192,6 +193,7 @@ class FirebaseAccountAuth extends AccountAuth {
         },
       );
       await first.future;
+      _ready = !_disposed;
     } catch (_) {
       _starting = null;
       rethrow;
@@ -229,7 +231,9 @@ class FirebaseAccountAuth extends AccountAuth {
 
   Future<T> _run<T>(Future<T> Function(FirebaseAuth) operation) async {
     try {
-      await start();
+      // A restored SDK is already ready. Do not insert an async hop between a
+      // browser tap and opening Google's popup (Safari tracks user activation).
+      if (!_ready) await start();
       if (_disposed) throw _accountChanged;
       if (_operation != null) {
         throw const AppFailure(

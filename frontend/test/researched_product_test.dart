@@ -9,7 +9,7 @@ import 'package:http/testing.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/features/scanner/presentation/product_search_page.dart';
-import 'package:unlabel/features/scanner/presentation/researched_product_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 
 String _id(String letter) => List.filled(64, letter).join();
 JsonMap _source({String provider = 'retailer'}) => {
@@ -313,7 +313,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: UnlabelTheme.forBrightness(Brightness.light),
-        home: ResearchedProductPage(
+        home: ProductInfoPage.research(
           product: ResearchedProduct.fromJson(_detail()),
         ),
       ),
@@ -494,7 +494,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.light),
-          home: ResearchedProductPage(
+          home: ProductInfoPage.research(
             product: ResearchedProduct.fromJson(response),
           ),
         ),
@@ -572,7 +572,7 @@ void main() {
       expect(find.text('Some sources could not be loaded'), findsOneWidget);
       await tester.tap(find.text('Fast chocolate'));
       await tester.pumpAndSettle();
-      expect(find.text('Product information'), findsOneWidget);
+      expect(find.text('Product info'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
@@ -695,7 +695,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             theme: UnlabelTheme.forBrightness(Brightness.light),
-            home: ResearchedProductPage(
+            home: ProductInfoPage.research(
               product: ResearchedProduct.fromJson(_detail()),
             ),
           ),

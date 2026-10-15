@@ -81,48 +81,66 @@ BarcodeDetection? _decode(_BarcodePixels pixels) {
       BarcodeFormat.upcE,
     ],
   );
-  for (var rotated = 0; rotated < 2; rotated++) {
-    final width = rotated == 0 ? pixels.width : pixels.height;
-    final height = rotated == 0 ? pixels.height : pixels.width;
-    var bytes = luminance;
-    if (rotated == 1) {
-      bytes = Uint8List(luminance.length);
-      for (var y = 0; y < pixels.height; y++) {
-        for (var x = 0; x < pixels.width; x++) {
-          bytes[x * pixels.height + pixels.height - 1 - y] =
-              luminance[y * pixels.width + x];
-        }
-      }
-    }
-    try {
-      final result = MultiFormatReader().decode(
-        BinaryBitmap(
-          HybridBinarizer(RGBLuminanceSource.orig(width, height, bytes)),
-        ),
-        hints,
-      );
-      final code = result.barcodeFormat == BarcodeFormat.upcE
-          ? _expandUpce(result.text)
-          : result.text;
-      if (!validProductBarcode(code)) continue;
-      final points = <ui.Offset>[];
-      for (final point in result.resultPoints ?? <ResultPoint?>[]) {
-        if (point == null) continue;
-        final x = rotated == 0 ? point.x : point.y;
-        final y = rotated == 0 ? point.y : pixels.height - 1 - point.x;
-        points.add(
-          ui.Offset(
-            (x / pixels.width).clamp(0, 1),
-            (y / pixels.height).clamp(0, 1),
-          ),
+  Uint8List? perpendicular;
+  // Keep the inexpensive center scans first, then inspect more rows and the
+  // opposite print polarity. Input is capped at 1400 px and these six attempts
+  // are finite; no camera loop or network decoder is started here.
+  for (var pass = 0; pass < 3; pass++) {
+    for (var rotated = 0; rotated < 2; rotated++) {
+      final width = rotated == 0 ? pixels.width : pixels.height;
+      final height = rotated == 0 ? pixels.height : pixels.width;
+      var bytes = luminance;
+      if (rotated == 1) {
+        perpendicular ??= _rotateClockwise(
+          luminance,
+          pixels.width,
+          pixels.height,
         );
+        bytes = perpendicular;
       }
-      return BarcodeDetection(code, points);
-    } on ReaderException {
-      // Try the perpendicular scan direction without camera restarts/model loads.
+      final source = RGBLuminanceSource.orig(width, height, bytes);
+      try {
+        final result = MultiFormatReader().decode(
+          BinaryBitmap(
+            // Invert luminance itself: the decoder's alsoInverted matrix hint
+            // does not change getBlackRow(), which EAN/UPC readers consume.
+            HybridBinarizer(pass == 2 ? source.invert() : source),
+          ),
+          pass == 0 ? hints : hints.copyWith(tryHarder: true),
+        );
+        final code = result.barcodeFormat == BarcodeFormat.upcE
+            ? _expandUpce(result.text)
+            : result.text;
+        if (!validProductBarcode(code)) continue;
+        final points = <ui.Offset>[];
+        for (final point in result.resultPoints ?? <ResultPoint?>[]) {
+          if (point == null) continue;
+          final x = rotated == 0 ? point.x : point.y;
+          final y = rotated == 0 ? point.y : pixels.height - 1 - point.x;
+          points.add(
+            ui.Offset(
+              (x / pixels.width).clamp(0, 1),
+              (y / pixels.height).clamp(0, 1),
+            ),
+          );
+        }
+        return BarcodeDetection(code, points);
+      } on ReaderException {
+        // Try the next bounded direction/row-coverage/polarity combination.
+      }
     }
   }
   return null;
+}
+
+Uint8List _rotateClockwise(Uint8List luminance, int width, int height) {
+  final bytes = Uint8List(luminance.length);
+  for (var y = 0; y < height; y++) {
+    for (var x = 0; x < width; x++) {
+      bytes[x * height + height - 1 - y] = luminance[y * width + x];
+    }
+  }
+  return bytes;
 }
 
 String _expandUpce(String code) {

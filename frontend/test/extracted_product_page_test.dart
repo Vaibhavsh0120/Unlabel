@@ -5,67 +5,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
-import 'package:unlabel/features/scanner/presentation/extracted_product_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 
 class _Repository extends UnlabelRepository {
   _Repository() : super(baseUrl: 'https://example.invalid');
-  final submissions = <String>[];
+  int submissions = 0;
   @override
   Future<ProductReport> checkLabel(LabelDraft draft) async {
-    submissions.add(draft.submissionId);
-    if (submissions.length == 1) {
-      throw const AppFailure('connection', 'Synthetic uncertain write');
-    }
-    return ProductReport.fromJson(
-      jsonDecode(
-        File('../contracts/examples/label-report-v1.current.synthetic.json')
-            .readAsStringSync(),
-      ) as JsonMap,
-    );
+    submissions++;
+    throw StateError('A machine reading must never submit a confirmed draft.');
   }
+
+  @override
+  Future<LiveProductLookup> liveProduct(String barcode) async =>
+      const LiveProductLookup('disabled');
+  @override
+  Future<MachineProductLookup> machineProduct(String barcode) async =>
+      const MachineProductLookup([], []);
 }
 
 void main() {
   testWidgets(
-    'facts need one explicit check; uncertain save retries reuse the submission',
+    'automatic shared receipt is qualified without a confirmation action or write',
     (tester) async {
       final repository = _Repository();
       addTearDown(repository.close);
-      var accepted = 0;
       final label = ExtractedLabel.fromJson(
         jsonDecode(
           File('../contracts/examples/ai-extraction-v1.synthetic.json')
               .readAsStringSync(),
         ) as JsonMap,
+        contribution: {
+          'schema_version': 'machine-label-contribution-v1',
+          'evidence': 'machine_extracted_unverified',
+          'status': 'shared_unverified',
+          'observation_id': 'a' * 64,
+          'barcode': '8901764051258',
+          'conflict_fields': ['ingredients'],
+          'reason': null,
+        },
       );
       await tester.pumpWidget(
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.light),
-          home: ExtractedProductPage(
-            label: label,
-            repository: repository,
-            hasBothSides: true,
-            onAccepted: (_) async {
-              accepted++;
-            },
-          ),
+          home: ProductInfoPage.extracted(label: label, repository: repository),
         ),
       );
       await tester.pumpAndSettle();
-      expect(repository.submissions, isEmpty);
-      final button = find.text('These facts match my package');
-      await tester.ensureVisible(button);
-      await tester.tap(button);
-      await tester.pumpAndSettle();
-      expect(repository.submissions, hasLength(1));
-      expect(find.text('Synthetic uncertain write'), findsOneWidget);
-      expect(accepted, 0);
-      await tester.ensureVisible(button);
-      await tester.tap(button);
-      await tester.pumpAndSettle();
-      expect(repository.submissions, hasLength(2));
-      expect(repository.submissions.toSet(), hasLength(1));
-      expect(accepted, 1);
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.text('Product info'), findsOneWidget);
+      expect(find.text('Product reading added automatically'), findsOneWidget);
+      expect(
+        find.textContaining('disagree with other sources'),
+        findsOneWidget,
+      );
+      expect(find.text('These facts match my package'), findsNothing);
+      expect(repository.submissions, 0);
       expect(tester.takeException(), isNull);
     },
   );

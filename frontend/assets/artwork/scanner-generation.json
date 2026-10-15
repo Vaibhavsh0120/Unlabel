@@ -1,0 +1,17 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-10-15",
+  "purpose": "Decorative scanner garden inspired by the supplied mobile scanner reference; no product, nutrition, health or official endorsement evidence.",
+  "assets": [
+    {
+      "asset": "frontend/assets/artwork/scanner-garden-v1.png",
+      "generator": "image_gen.imagegen (built-in)",
+      "design_brief": "Transparent botanical garden border with an Unlabel sprout mascot peeking from the lower left, leaves and grocery props at the edges, and a quiet open center for the live camera preview and controls.",
+      "dimensions": [1536, 1024],
+      "bytes": 1442755,
+      "sha256": "6b04b3a060bec25551f001fecf40e94628211673889c4c5188cd2f526f220f58",
+      "alpha_preserved": true,
+      "usage": "One continuous mobile scanner backdrop under the camera preview, Front/Back/Barcode selector and capture actions. Text and controls are live Flutter widgets."
+    }
+  ]
+}

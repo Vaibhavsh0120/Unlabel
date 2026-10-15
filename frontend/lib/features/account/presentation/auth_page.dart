@@ -469,10 +469,12 @@ class _AuthPageState extends State<AuthPage>
     final keyboard = MediaQuery.viewInsetsOf(context).bottom;
     final fullHeight = bounds.maxHeight + keyboard;
     final textScale = MediaQuery.textScalerOf(context).scale(14) / 14;
-    final compact = textScale > 1.15 || fullHeight < 650;
+    // Browser chrome changes the available height without changing the design.
+    // Keep the artwork at its width-based size while the whole card travels.
+    final compact = textScale > 1.15;
     final heroHeight = compact || !_accountForm
         ? math.min(76.0, fullHeight * .18)
-        : math.min((_creating ? 317 : 351) * s, fullHeight * .39);
+        : (_creating ? 317 : 351) * s;
     _followKeyboard(keyboard > 0, heroHeight);
     return Center(
       child: SizedBox(
@@ -883,6 +885,7 @@ class _AuthPageState extends State<AuthPage>
         key: ValueKey(keyName),
         controller: controller,
         focusNode: focus,
+        onTapOutside: (_) => focus.unfocus(),
         enabled: !_locked,
         style: p.body(font).copyWith(color: p.ink),
         decoration: InputDecoration(
@@ -1295,8 +1298,8 @@ class _AuthPageState extends State<AuthPage>
         constraints: const BoxConstraints(maxWidth: 440),
         child: Text(
           privacy
-              ? 'Guest history and saved products stay on this device. Signing in opens a separate private account library. You choose which library to keep if cloud and device copies differ. Google sign-in supplies your name and profile photo. Photos you scan and raw text are not part of private library sync.'
-              : 'Unlabel explains sourced food-label facts and shows missing information as unknown. It does not certify product compliance or replace professional health advice. You can use scanning, saved products and history as a guest; an account is optional.',
+              ? 'Guest history and saved products stay on this device. Signing in opens a separate private account library. You choose which library to keep if cloud and device copies differ. Google sign-in supplies your name and profile photo. Photos you scan and raw text are not part of private library sync. When you enable AI photo reading, compatible package facts may be shared automatically as unverified machine observations with their provider and date. Original catalogue sources are preserved, and disagreements stay unresolved. Package photos are not stored by our backend; AI provider retention terms apply.'
+              : 'Unlabel explains sourced food-label facts and shows missing information as unknown. It does not certify product compliance or replace professional health advice. You can use scanning, saved products and history as a guest; an account is optional. Enabling AI photo reading also allows compatible package facts to be shared automatically as unverified machine observations. Original sources and disagreements remain visible. Do not photograph personal information.',
         ),
       ),
       actions: [

@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/models/product_report.dart';
 import 'package:unlabel/core/storage/local_store.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/product_results_layout.dart';
 
 class _MemoryPreferences implements PreferencesAdapter {
@@ -32,7 +32,7 @@ ProductReport _report({bool historical = false}) => ProductReport.fromJson(
 
 Widget _app(ProductReport report, Brightness brightness) => MaterialApp(
   theme: UnlabelTheme.forBrightness(brightness),
-  home: ReportPage(
+  home: ProductInfoPage.report(
     report: report,
     store: LocalStore(preferences: _MemoryPreferences()),
     onChanged: () {},
@@ -40,21 +40,30 @@ Widget _app(ProductReport report, Brightness brightness) => MaterialApp(
 );
 
 void main() {
-  testWidgets('desktop results navigation invokes each app destination', (tester) async {
+  testWidgets('desktop results navigation invokes each app destination', (
+    tester,
+  ) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1440, 900);
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final visits = <String>[];
     final nav = ResultsNavigation(
-      home: () => visits.add('home'), scan: () => visits.add('scan'),
-      history: () => visits.add('history'), learn: () => visits.add('learn'),
-      products: () => visits.add('products'), profile: () => visits.add('profile'),
+      home: () => visits.add('home'),
+      scan: () => visits.add('scan'),
+      history: () => visits.add('history'),
+      learn: () => visits.add('learn'),
+      products: () => visits.add('products'),
+      profile: () => visits.add('profile'),
       notifications: () => visits.add('notifications'),
     );
-    await tester.pumpWidget(MaterialApp(home: Scaffold(
-      appBar: ResultsAppBar(title: 'Scan Results', navigation: nav),
-    )));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          appBar: ResultsAppBar(title: 'Scan Results', navigation: nav),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     for (final title in ['Unlabel', 'Scan', 'History', 'Learn', 'Products']) {
       await tester.tap(find.text(title));
@@ -62,8 +71,16 @@ void main() {
     await tester.tap(find.text('Search product, ingredient or claim…'));
     await tester.tap(find.byTooltip('Profile'));
     await tester.tap(find.byTooltip('Notifications'));
-    expect(visits, ['home', 'scan', 'history', 'learn', 'products', 'products',
-      'profile', 'notifications']);
+    expect(visits, [
+      'home',
+      'scan',
+      'history',
+      'learn',
+      'products',
+      'products',
+      'profile',
+      'notifications',
+    ]);
     expect(tester.takeException(), isNull);
   });
   testWidgets(
@@ -72,7 +89,7 @@ void main() {
       final report = _report();
       await tester.pumpWidget(_app(report, Brightness.light));
       await tester.pumpAndSettle();
-      expect(find.text('Scan Results'), findsOneWidget);
+      expect(find.text('Product info'), findsOneWidget);
       expect(find.text(report.name), findsOneWidget);
       expect(find.byKey(const Key('report-product-card')), findsOneWidget);
       expect(find.byKey(const Key('report-evidence-summary')), findsOneWidget);

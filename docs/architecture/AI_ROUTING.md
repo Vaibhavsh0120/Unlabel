@@ -11,6 +11,30 @@ hosted checks; authenticated extraction/staging is outside that audit. See the
 [release review](../planning/BACKEND_V0_12_0_REVIEW.md). Historical v0.11 extraction
 does not persist output; v0.12 behavior must not be inferred for that deployment.
 
+## Current automatic contributions
+
+Backend 0.14 adds an explicit `machine-unverified-v1` contribution policy to
+photo extraction. Frontend consent v2 explains both the provider transfer and
+automatic sharing; it supersedes the old private-staging-only consent. There is
+no per-reading confirmation action and no fabricated human-confirmation flag.
+Compatible back-label facts enter separate immutable public machine observations,
+with provider/model/date, source identity references and unresolved conflicts.
+Original catalogue and confirmed community sources remain unchanged. Unknown
+identity or size cannot silently attach ingredients to a different product.
+
+`GET /v1/ai/observations/{barcode}` reads up to eight machine observations for the
+exact barcode, recomputing disagreements against current known sources. The
+separate machine stream is bounded to 4,000 lifetime observations; semantic
+rescans deduplicate. Private staging and public machine observations have
+independent statuses. Raw photos, OCR, region geometry and account identities
+never enter that public stream. See the [current backend review](../planning/BACKEND_V0_14_0_REVIEW.md).
+
+NutriGraph is independent of AI extraction and permanently stored data. Its
+optional authenticated live lookup uses a server-only key, documented UPC-12,
+a fixed HTTPS host, bounded no-store responses and at most 24-hour memory cache.
+It remains disabled without configuration. The vendor's account-wide free quota
+must apply across serverless processes. [Product Info source boundaries](PRODUCT_INFO.md).
+
 ## Selection and replacement
 
 `unlabel_service_configuration/ai-active` in the existing free `unlabel` Firestore
@@ -72,6 +96,7 @@ from Git; `backend/.env.age` is the authenticated recoverable ciphertext.
 | `GET /v1/ai/active` | Machine bearer secret; nonsecret slot/provider/model/revision/status |
 | `POST /v1/ai/control/activate` | Same machine secret; configured slot ID plus expected revision; stale requests return409 |
 | `POST /v1/ai/extract` | Verified scanner token and explicit photo-transfer consent; qualified machine facts |
+| `GET /v1/ai/observations/{barcode}` | Bounded public machine-unverified readings, without photos or user identities |
 
 The app uses public `/v1/meta` capability flags, which do not read Firestore or call
 AI. The machine secret is `AI_CONTROL_SECRET`, never embedded in a client. The
@@ -107,9 +132,9 @@ without refreshing their original timestamp. Entries older than seven days are
 pruned on a later bucket write, and the oldest items are evicted at the item bound.
 No scheduled deletion, paid TTL, durable user library or public read endpoint is
 promised. A staging wait may expire while its idempotent private write finishes;
-it cannot publish facts. Separate human acceptance uses the existing strictly
-validated confirmed-observation path and does not turn unverified geometry or
-bounded nutrient qualifiers into exact public values.
+it cannot publish facts. The historical human-acceptance path remains a distinct confirmed-input API.
+Current frontend extraction does not call it or convert machine output into
+confirmed values; automatic sharing uses the separate policy above.
 
 Provider handling differs: Google's free-tier data-use terms must be shown before
 transfer. OpenAI requests use `store:false`; that is not a promise of provider

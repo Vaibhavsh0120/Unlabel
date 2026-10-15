@@ -387,15 +387,15 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.byKey(const Key('scan-primary')));
-      await tester.tap(find.byKey(const Key('scan-primary')));
+      await tester.ensureVisible(find.byKey(const Key('scan-gallery')));
+      await tester.tap(find.byKey(const Key('scan-gallery')));
       await tester.pumpAndSettle();
       expect(photos, 1);
-      await tester.ensureVisible(find.byKey(const Key('scan-mode-2')));
-      await tester.tap(find.byKey(const Key('scan-mode-2')));
+      await tester.ensureVisible(find.byKey(const Key('scan-mode-0')));
+      await tester.tap(find.byKey(const Key('scan-mode-0')));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.byKey(const Key('scan-primary')));
-      await tester.tap(find.byKey(const Key('scan-primary')));
+      await tester.ensureVisible(find.byKey(const Key('scan-gallery')));
+      await tester.tap(find.byKey(const Key('scan-gallery')));
       await tester.pumpAndSettle();
       expect(photos, 2);
       expect(tester.takeException(), isNull);

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:unlabel/core/capture/local_label_parser.dart';
 import 'package:unlabel/core/capture/live_camera.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
+import 'package:unlabel/features/scanner/presentation/scan_processing_overlay.dart';
 
 final _photo = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGP4DwQACfsD/fteaysAAAAASUVORK5CYII=',
@@ -19,12 +21,24 @@ final _photo = base64Decode(
 class _Camera extends LiveCamera {
   int starts = 0, captures = 0;
   bool active = false, available = true;
+  bool torchSupported = false;
+  String? controlError;
   @override
   bool get ready => active;
   @override
   bool get busy => false;
   @override
-  String? get error => available ? null : 'Camera permission is needed.';
+  String? get error =>
+      controlError ?? (available ? null : 'Camera permission is needed.');
+  @override
+  bool get canToggleTorch => torchSupported && controlError == null;
+  @override
+  Future<void> toggleTorch() async {
+    controlError =
+        'Flash is unavailable on this camera. Use brighter lighting.';
+    notifyListeners();
+  }
+
   @override
   Future<void> start() async {
     starts++;
@@ -43,6 +57,9 @@ class _Camera extends LiveCamera {
     captures++;
     return _photo;
   }
+
+  @override
+  Future<Uint8List> captureFramed(Size viewport) => capture();
 
   @override
   Widget buildPreview() =>
@@ -109,6 +126,112 @@ Future<void> _finishRead(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('mobile shutter exposes one named accessible capture action', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final semantics = tester.ensureSemantics();
+    final camera = _Camera();
+    await _show(tester, camera, _Reader());
+    final data = tester
+        .getSemantics(find.byKey(const Key('scan-primary')))
+        .getSemanticsData();
+    expect(data.label, 'Click Photo');
+    expect(data.hasAction(ui.SemanticsAction.tap), isTrue);
+    final garden = find.byWidgetPredicate(
+      (widget) =>
+          widget is Image &&
+          widget.image is AssetImage &&
+          (widget.image as AssetImage).assetName ==
+              'assets/artwork/scanner-garden-v1.png',
+    );
+    expect(garden, findsOneWidget);
+    expect(
+      tester.getRect(garden).bottom,
+      greaterThanOrEqualTo(
+        tester.getRect(find.byKey(const Key('scan-gallery'))).bottom,
+      ),
+    );
+    await tester.tap(find.byKey(const Key('scan-primary')));
+    await _finishRead(tester);
+    expect(camera.captures, 1);
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+    semantics.dispose();
+  });
+
+  testWidgets('unavailable camera has one working gallery action', (
+    tester,
+  ) async {
+    final camera = _Camera()..available = false;
+    var selections = 0;
+    await _show(
+      tester,
+      camera,
+      _Reader(),
+      pickPhoto: () async {
+        selections++;
+        return null;
+      },
+    );
+    expect(find.text('Choose Photo'), findsOneWidget);
+    expect(
+      tester
+          .widget<FilledButton>(find.byKey(const Key('scan-primary')))
+          .onPressed,
+      isNull,
+    );
+    await tester.tap(find.byKey(const Key('scan-gallery')));
+    await tester.pumpAndSettle();
+    expect(selections, 1);
+    await tester.pumpWidget(const SizedBox());
+    camera.dispose();
+  });
+  testWidgets(
+    'failed flash shows a persistent error while capture stays usable',
+    (tester) async {
+      final camera = _Camera()..torchSupported = true;
+      await _show(tester, camera, _Reader());
+      await tester.tap(find.byTooltip('Turn flash on'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Flash is unavailable'), findsOneWidget);
+      expect(camera.ready, isTrue);
+      expect(
+        tester
+            .widget<IconButton>(
+              find.widgetWithIcon(IconButton, Icons.flash_off_rounded),
+            )
+            .onPressed,
+        isNull,
+      );
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+    },
+  );
+  testWidgets(
+    'processing retains status without motion when reduced motion is enabled',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(disableAnimations: true),
+            child: const SizedBox(
+              width: 320,
+              height: 480,
+              child: ScanProcessingOverlay(barcode: true, active: true),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Reading barcode…'), findsOneWidget);
+      expect(tester.binding.transientCallbackCount, 0);
+      expect(tester.takeException(), isNull);
+    },
+  );
   testWidgets('camera starts immediately; background and disposal stop it', (
     tester,
   ) async {
@@ -140,6 +263,8 @@ void main() {
         front = photo;
       },
     );
+    await tester.tap(find.byKey(const Key('scan-mode-0')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('scan-primary')));
     await _finishRead(tester);
     expect(camera.captures, 1);
@@ -168,37 +293,40 @@ void main() {
       reader,
       pickPhoto: () async => photos++ == 0 ? null : _photo,
     );
-    await tester.tap(find.text('Use Gallery'));
+    await tester.tap(find.byKey(const Key('scan-gallery')));
     await tester.pumpAndSettle();
     expect(camera.ready, isTrue);
-    await tester.tap(find.text('Use Gallery'));
+    await tester.tap(find.byKey(const Key('scan-gallery')));
     await _finishRead(tester);
     expect(reader.reads, hasLength(1));
     expect(find.text('View results'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     camera.dispose();
   });
-  testWidgets('unknown barcode requests front/back photos without typing', (
-    tester,
-  ) async {
-    final camera = _Camera(),
-        reader = _Reader()
-          ..operation = () async =>
-              const AutomaticScanResult(barcode: '8901764051258');
-    await _show(tester, camera, reader);
-    await tester.tap(find.text('Barcode'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('scan-primary')));
-    await _finishRead(tester);
-    expect(reader.reads.single.keys, [2]);
-    expect(
-      find.textContaining('Photograph the front and back'),
-      findsOneWidget,
-    );
-    expect(find.byType(TextField), findsNothing);
-    await tester.pumpWidget(const SizedBox());
-    camera.dispose();
-  });
+  testWidgets(
+    'default barcode opens one product page even when catalogue misses',
+    (tester) async {
+      final camera = _Camera(),
+          reader = _Reader()
+            ..operation = () async =>
+                const AutomaticScanResult(barcode: '8901764051258');
+      AutomaticScanResult? opened;
+      await _show(
+        tester,
+        camera,
+        reader,
+        onResult: (result, _) async => opened = result,
+      );
+      await tester.tap(find.byKey(const Key('scan-primary')));
+      await _finishRead(tester);
+      expect(reader.reads.single.keys, [2]);
+      expect(opened?.barcode, '8901764051258');
+      expect(opened?.report, isNull);
+      expect(find.byType(TextField), findsNothing);
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+    },
+  );
   testWidgets('stop discards a late extraction and permits a new photo', (
     tester,
   ) async {
@@ -285,13 +413,16 @@ void main() {
       tester.platformDispatcher.textScaleFactorTestValue = sample.$2;
       final camera = _Camera()..available = false;
       await _show(tester, camera, _Reader());
-      expect(find.byType(Scrollable), findsNothing);
+      if (sample.$2 == 1 && sample.$1.width < 650) {
+        expect(find.byType(Scrollable), findsNothing);
+      }
       expect(
         tester.getSize(find.byKey(const Key('scan-preview'))).height,
         greaterThan(120),
       );
+      await tester.ensureVisible(find.byKey(const Key('scan-gallery')));
       expect(
-        tester.getRect(find.text('Use Gallery')).bottom,
+        tester.getRect(find.byKey(const Key('scan-gallery'))).bottom,
         lessThan(sample.$1.height),
       );
       expect(tester.takeException(), isNull);

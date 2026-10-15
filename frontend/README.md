@@ -1,16 +1,11 @@
 # Unlabel frontend
 
-Checkpoint **14 October 2026**: product/build version comes from
-[pubspec.yaml](pubspec.yaml); Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
-Current [auth/provider update](../docs/planning/FRONTEND_V0_9_0_REVIEW.md) is
-pushed in `bd06bfb`, passed repository CI and deployed to the web. Native/device
-evidence is recorded separately in the release review. The
-[preceding source scope](../docs/planning/FRONTEND_V0_8_0_REVIEW.md) stays separate.
-Maintenance, release and native/device evidence are tracked independently in
-[the audit](../docs/planning/MAINTENANCE_2026_10_12.md) and
-[release guide](../docs/planning/RELEASE_VERSIONING.md).
-Edit pubspec.yaml for future product/build version changes; Flutter's build
-metadata supplies About and platform versions without duplicated Dart defaults.
+Current source is **0.10.0+14**. Version comes from [pubspec.yaml](pubspec.yaml);
+Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
+The [scanner/Product Info review](../docs/planning/FRONTEND_V0_10_0_REVIEW.md)
+records this update's checks and remaining device gates. The published
+[0.9.0 auth release](../docs/planning/FRONTEND_V0_9_0_REVIEW.md) is historical.
+[Release guide](../docs/planning/RELEASE_VERSIONING.md).
 
 ## What works
 
@@ -36,8 +31,10 @@ metadata supplies About and platform versions without duplicated Dart defaults.
   strict unverified identity, claims, ingredient/declaration text, explicitly
   based nutrient tables and actual detected regions. Declined or unavailable
   cloud reading uses conservative local OCR. Missing values remain unknown.
-  Optional acceptance of matching front/back facts creates a distinct confirmed
-  observation; AI output never sets confirmation flags itself.
+  Compatible back-label facts can be added automatically as unverified machine
+  observations after cloud consent v2; AI output never sets human-confirmation
+  flags. Source conflicts remain visible. ProductInfoPage is the single result
+  destination; optional live facts never enter saved reports.
 - Sourced current and dated historical reports retain original nutrition bases,
   approximate 4 g sugar cubes, reviewed claim states and six English/Hindi
   ingredient-function entries with source URL/date details. Exact-source server

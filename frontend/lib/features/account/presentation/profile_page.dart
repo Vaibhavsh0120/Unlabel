@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/accounts/account_controller.dart';
 import '../../../core/accounts/profile_media.dart';
@@ -12,6 +11,7 @@ import '../../scanner/presentation/ui_components.dart';
 import '../data/device_profile_preferences.dart';
 import 'auth_page.dart';
 import 'profile_avatar.dart';
+import 'sign_in_methods_view.dart';
 
 // Choice symbols match the same meaning in editors and selected summaries.
 // Food pictograms are project-authored companions to the Solar line controls.
@@ -353,7 +353,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    'Guest history stays on this device. Signed-in history, saved reports and your display name sync privately. Your selected profile thumbnail and gender are private account settings. Label photos, raw label text and personal reminders stay outside account sync.',
+                    'Guest history stays on this device. Signed-in history, saved reports and your display name sync privately. Your selected profile thumbnail and gender are private account settings. Label photos, raw label text and personal reminders stay outside account sync. When you enable AI photo reading, compatible package facts may be shared automatically as unverified machine observations with their provider and date. Original catalogue sources are preserved, and disagreements stay unresolved. Package photos are not stored by our backend; AI provider retention terms apply.',
                   ),
                   const SizedBox(height: 20),
                   if (signedIn) ...[
@@ -503,14 +503,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _identity() {
     final theme = Theme.of(context);
     final signedIn = controller.identity != null;
-    final libraryName = controller.localData?.displayName?.trim();
-    final displayName = libraryName?.isNotEmpty == true
-        ? libraryName
-        : controller.identity?.displayName?.trim();
-    final name = signedIn
-        ? ((displayName?.isNotEmpty ?? false)
-              ? displayName!
-              : 'Your Unlabel account')
+    final displayName = controller.displayName?.trim();
+    final name = displayName?.isNotEmpty == true
+        ? displayName!
+        : signedIn
+        ? 'Your Unlabel account'
         : 'Your guest profile';
     return DecoratedBox(
       key: const ValueKey('profile-identity-card'),
@@ -1568,525 +1565,62 @@ class _SignInMethodsDialogState extends State<_SignInMethodsDialog> {
     ),
   );
 
-  Widget _providerCard({
-    required Widget icon,
-    required String title,
-    required String? detail,
-    required bool connected,
-    required bool busy,
-    required ValueChanged<bool>? onChanged,
-    required List<Widget> actions,
-    required bool compact,
-  }) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: EdgeInsets.all(compact ? 12 : 18),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: compact ? 38 : 46,
-                height: compact ? 38 : 46,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: scheme.surfaceContainerLow,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: icon,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 6,
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: compact ? 13 : 15,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        if (connected)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffdff8e9),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              title == 'Google' ? 'Connected' : 'Enabled',
-                              style: const TextStyle(
-                                color: Color(0xff087846),
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    if (detail != null)
-                      Text(
-                        detail,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: compact ? 10 : 12,
-                        ),
-                      ),
-                    Text(
-                      connected
-                          ? 'Used to sign in to your account.'
-                          : 'Add this sign-in method to your account.',
-                      style: TextStyle(
-                        color: scheme.onSurfaceVariant,
-                        fontSize: compact ? 10 : 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Semantics(
-                label: '$title sign-in',
-                child: Switch.adaptive(
-                  value: connected,
-                  onChanged: busy ? null : onChanged,
-                ),
-              ),
-            ],
-          ),
-          if (actions.isNotEmpty) ...[
-            SizedBox(height: compact ? 8 : 14),
-            Theme(
-              data: Theme.of(context).copyWith(
-                outlinedButtonTheme: OutlinedButtonThemeData(
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: scheme.onSurface,
-                    minimumSize: const Size(0, 44),
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                    textStyle: TextStyle(fontSize: compact ? 11 : 12),
-                    side: BorderSide(color: scheme.outlineVariant),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              child: MediaQuery.textScalerOf(context).scale(12) > 18
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        for (var i = 0; i < actions.length; i++) ...[
-                          if (i > 0) const SizedBox(height: 8),
-                          actions[i],
-                        ],
-                      ],
-                    )
-                  : compact
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            for (
-                              var i = 0;
-                              i < actions.length.clamp(0, 2);
-                              i++
-                            ) ...[
-                              if (i > 0) const SizedBox(width: 8),
-                              Expanded(child: actions[i]),
-                            ],
-                          ],
-                        ),
-                        if (actions.length > 2) ...[
-                          const SizedBox(height: 8),
-                          actions.last,
-                        ],
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        for (var i = 0; i < actions.length; i++) ...[
-                          if (i > 0)
-                            i == 2 ? const Spacer() : const SizedBox(width: 10),
-                          Flexible(child: actions[i]),
-                        ],
-                      ],
-                    ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: widget.controller,
     builder: (context, _) {
       final identity = widget.controller.identity;
-      final busy = widget.controller.authBusy;
-      final google = identity?.hasGoogle == true;
-      final password = identity?.hasPassword == true;
-      final size = MediaQuery.sizeOf(context);
-      final compact = size.width < 600;
-      final width = compact ? size.width : (size.width - 48).clamp(0.0, 860.0);
-      final body = Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Sign-in methods',
-            style: TextStyle(
-              fontSize: compact ? 23 : 28,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Manage how you access your unlabel account. You can enable multiple sign-in methods and at least one method must be enabled.',
-            style: TextStyle(
-              fontSize: compact ? 11 : 13,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              height: 1.3,
-            ),
-          ),
-          SizedBox(height: compact ? 13 : 22),
-          _providerCard(
-            icon: SvgPicture.asset(
-              'assets/brand/google-g.svg',
-              width: 26,
-              height: 26,
-              excludeFromSemantics: true,
-            ),
-            title: 'Google',
-            detail: google ? identity?.googleEmail ?? identity?.email : null,
-            connected: google,
-            busy: busy || identity == null || (google && !password),
-            onChanged: (enabled) {
-              if (enabled) {
-                _run(widget.controller.linkGoogle);
-              } else if (password) {
-                _confirm(
-                  title: 'Disconnect Google?',
-                  body: 'Your email and password will still open this account. Your private library stays with the same account.',
-                  label: 'Disconnect',
-                  password: true,
-                  danger: true,
-                  action: (value) =>
-                      widget.controller.unlinkGoogle(password: value!),
-                );
-              }
-            },
-            actions: google
-                ? [
-                    OutlinedButton(
-                      onPressed: busy || !password
-                          ? null
-                          : () => _confirm(
-                              title: 'Disconnect Google?',
-                              body: 'Your email and password will still open this account.',
-                              label: 'Disconnect',
-                              password: true,
-                              danger: true,
-                              action: (value) => widget.controller.unlinkGoogle(
-                                password: value!,
-                              ),
-                            ),
-                      child: const Text('Disconnect'),
-                    ),
-                    OutlinedButton.icon(
-                      onPressed: busy || !password
-                          ? null
-                          : () => _confirm(
-                              title: 'Switch Google account?',
-                              body: 'Confirm your password, then choose a different Google account. Your current password remains available if linking does not finish.',
-                              label: 'Switch account',
-                              password: true,
-                              action: (value) => widget.controller
-                                  .changeGoogleAccount(password: value!),
-                            ),
-                      icon: SvgPicture.asset(
-                        'assets/brand/google-g.svg',
-                        width: 17,
-                        height: 17,
-                        excludeFromSemantics: true,
-                      ),
-                      label: const Text('Switch account'),
-                    ),
-                  ]
-                : [
-                    OutlinedButton.icon(
-                      onPressed: busy || identity == null
-                          ? null
-                          : () => _run(widget.controller.linkGoogle),
-                      icon: SvgPicture.asset(
-                        'assets/brand/google-g.svg',
-                        width: 17,
-                        height: 17,
-                        excludeFromSemantics: true,
-                      ),
-                      label: const Text('Connect Google'),
-                    ),
-                  ],
-            compact: compact,
-          ),
-          SizedBox(height: compact ? 10 : 14),
-          _providerCard(
-            icon: const Icon(Icons.mail_outline, size: 25),
-            title: 'Email & Password',
-            detail: identity?.email,
-            connected: password,
-            busy: busy || identity == null || (password && !google),
-            onChanged: (enabled) {
-              if (enabled) {
-                showDialog<void>(
-                  context: context,
-                  builder: (_) =>
-                      _LinkPasswordDialog(controller: widget.controller),
-                );
-              } else if (google) {
-                _confirm(
-                  title: 'Remove email and password?',
-                  body: 'You can still sign in with the Google account connected here.',
-                  label: 'Remove',
-                  danger: true,
-                  action: (_) => widget.controller.unlinkPassword(),
-                );
-              }
-            },
-            actions: password
-                ? [
-                    OutlinedButton.icon(
-                      onPressed: busy ? null : () => _changeEmail(),
-                      icon: const Icon(Icons.mail_outline, size: 16),
-                      label: const Text('Change email'),
-                    ),
-                    OutlinedButton.icon(
-                      onPressed: busy ? null : () => _changePassword(),
-                      icon: const Icon(Icons.lock_outline, size: 16),
-                      label: const Text('Change password'),
-                    ),
-                    OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.error,
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .errorContainer,
-                        side: BorderSide.none,
-                      ),
-                      onPressed: busy || !google
-                          ? null
-                          : () => _confirm(
-                              title: 'Remove email and password?',
-                              body: 'You can still sign in with your connected Google account.',
-                              label: 'Remove',
-                              danger: true,
-                              action: (_) => widget.controller.unlinkPassword(),
-                            ),
-                      icon: const Icon(Icons.delete_outline, size: 16),
-                      label: const Text('Remove'),
-                    ),
-                  ]
-                : [
-                    OutlinedButton(
-                      onPressed: busy || identity == null
-                          ? null
-                          : () => showDialog<void>(
-                              context: context,
-                              builder: (_) => _LinkPasswordDialog(
-                                controller: widget.controller,
-                              ),
-                            ),
-                      child: const Text('Add email and password'),
-                    ),
-                  ],
-            compact: compact,
-          ),
-          SizedBox(height: compact ? 10 : 14),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xffedf8fd),
-              borderRadius: BorderRadius.circular(11),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.shield_outlined, color: Color(0xff3979ee), size: 20),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'At least one sign-in method must be enabled\nYou can use both Google and email/password, or just one of them.',
-                    style: TextStyle(fontSize: 11, height: 1.3),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: compact ? 10 : 14),
-          Material(
-            color: const Color(0xffffedf0),
-            borderRadius: BorderRadius.circular(11),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(11),
-              onTap: busy || identity == null
-                  ? null
-                  : () => showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) =>
-                          _DeleteAccountDialog(controller: widget.controller),
-                    ),
-              child: const Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.delete_outline,
-                      color: Color(0xffdf303c),
-                      size: 20,
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Delete account',
-                            style: TextStyle(
-                              color: Color(0xffbe2431),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            'Permanently delete your account and private library.',
-                            style: TextStyle(
-                              color: Color(0xffb15c63),
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.chevron_right,
-                      color: Color(0xffbe2431),
-                      size: 18,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          if (busy) const LinearProgressIndicator(),
-          if (_error != null)
-            Semantics(
-              liveRegion: true,
-              child: Text(
-                _error!,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
-        ],
-      );
-      return PopScope(
-        canPop: !busy,
-        child: Dialog(
-          key: const ValueKey('profile-sign-in-methods'),
-          insetPadding: EdgeInsets.all(compact ? 0 : 24),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(compact ? 0 : 22),
-          ),
-          child: SizedBox(
-            width: width,
-            height: compact
-                ? size.height
-                : (size.height - 48).clamp(0.0, 760.0),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(compact ? 16 : 30),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        TextButton.icon(
-                          onPressed: busy ? null : () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back, size: 17),
-                          label: Text(compact ? 'Back' : 'Profile'),
-                        ),
-                        if (compact) ...[
-                          const Expanded(
-                            child: Center(
-                              child: Text(
-                                'Account',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ] else ...[
-                          const Spacer(),
-                          IconButton(
-                            tooltip: 'Notifications',
-                            onPressed: busy
-                                ? null
-                                : () => showDialog<void>(
-                                    context: context,
-                                    builder: (dialogContext) => AlertDialog(
-                                      title: const Text('Notifications'),
-                                      content: const Text(
-                                        'Push notifications and reminders are not supported in this version.',
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(dialogContext),
-                                          child: const Text('Close'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                            icon: const Icon(
-                              Icons.notifications_none,
-                              size: 21,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          AccountAvatar(identity: identity, size: 34),
-                        ],
-                      ],
-                    ),
-                    Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.topCenter,
-                        child: SizedBox(
-                          width: width - (compact ? 32 : 60),
-                          child: body,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+      return SignInMethodsView(
+        identity: identity,
+        busy: widget.controller.authBusy,
+        error: _error,
+        onClose: () => Navigator.pop(context),
+        onGoogle: () {
+          if (identity?.hasGoogle != true) {
+            _run(widget.controller.linkGoogle);
+          } else if (identity?.hasPassword == true) {
+            _confirm(
+              title: 'Disconnect Google?',
+              body: 'Your email and password will still open this account. Your private library stays with the same account.',
+              label: 'Disconnect',
+              password: true,
+              danger: true,
+              action: (value) =>
+                  widget.controller.unlinkGoogle(password: value!),
+            );
+          }
+        },
+        onPassword: () {
+          if (identity?.hasPassword != true) {
+            showDialog<void>(
+              context: context,
+              builder: (_) =>
+                  _LinkPasswordDialog(controller: widget.controller),
+            );
+          } else if (identity?.hasGoogle == true) {
+            _confirm(
+              title: 'Remove email and password?',
+              body: 'You can still sign in with the Google account connected here.',
+              label: 'Remove',
+              danger: true,
+              action: (_) => widget.controller.unlinkPassword(),
+            );
+          }
+        },
+        onChangeEmail: _changeEmail,
+        onChangePassword: _changePassword,
+        onSwitchGoogle: () => _confirm(
+          title: 'Switch Google account?',
+          body: 'Confirm your password, then choose a different Google account. Your current password remains available if linking does not finish.',
+          label: 'Switch account',
+          password: true,
+          action: (value) =>
+              widget.controller.changeGoogleAccount(password: value!),
+        ),
+        onDelete: () => showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => _DeleteAccountDialog(controller: widget.controller),
         ),
       );
     },
@@ -2446,10 +1980,7 @@ class _EditProfileDialog extends StatefulWidget {
 class _EditProfileDialogState extends State<_EditProfileDialog> {
   late final _owner = widget.controller.identity?.uid;
   late final _name = TextEditingController(
-    text:
-        widget.controller.localData?.displayName ??
-        widget.controller.identity?.displayName ??
-        '',
+    text: widget.controller.displayName ?? '',
   );
   late ProfileMedia _draft = widget.media?.value ?? ProfileMedia();
   bool _working = false, _photoChanged = false;
@@ -2545,7 +2076,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
         );
       }
       final name = _name.text.trim();
-      if (_signedIn && name != widget.controller.localData?.displayName) {
+      if (name != widget.controller.displayName) {
         await widget.controller.updateDisplayName(name);
       }
       if (!mounted || widget.controller.identity?.uid != _owner) return;
@@ -2665,7 +2196,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
           TextField(
             key: const ValueKey('edit-profile-name'),
             controller: _name,
-            enabled: _signedIn && !_busy,
+            enabled: !_busy,
             maxLength: 80,
             textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
@@ -2676,7 +2207,9 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
             onSubmitted: (_) => _save(),
           ),
           if (!_signedIn)
-            const Text('Sign in to change your name or save a custom photo.'),
+            const Text(
+              'Your name stays on this device. Sign in to save a custom photo.',
+            ),
           if (_photoChanged)
             const Text(
               'Your photo selection is saved when you choose Save profile.',

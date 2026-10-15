@@ -5,7 +5,7 @@
 - Work directly on main only; do not create a branch or worktree. Preserve teammate
   edits, licensed sources, historical tags and published assets. Update docs before push.
   The user authorized completion and push on 13 October, superseding the local
-  auth-repair hold. Current source scope is frontend 0.9.0+13/backend 0.13.0;
+  auth-repair hold. Current source scope is frontend 0.10.0+14/backend 0.14.0;
   pushing main triggers the existing web/API Git deployments. The later user scope
   also authorizes native APK/IPA publication and refreshing the stable iOS feed.
   Frontend version/build increases now trigger native release automatically.
@@ -17,7 +17,9 @@
   Canonical versions are
   frontend/pubspec.yaml and backend/pyproject.toml; scripts/config/workspace.json pins
   Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
-- Current proof belongs to docs/planning/FRONTEND_V0_9_0_REVIEW.md;
+- Current proof belongs to docs/planning/FRONTEND_V0_10_0_REVIEW.md and
+  docs/planning/BACKEND_V0_14_0_REVIEW.md. Prior auth proof belongs to
+  docs/planning/FRONTEND_V0_9_0_REVIEW.md;
   the preceding source scope stays in docs/planning/FRONTEND_V0_8_0_REVIEW.md;
   backend deletion proof belongs to docs/planning/BACKEND_V0_13_0_REVIEW.md.
   The unshipped 0.8.1 working review is superseded development history.
@@ -56,6 +58,14 @@
   publication. Feed delivery does not establish physical LiveContainer execution.
   scripts/release/validate_workspace.py is tracked. Source checks run in maintenance-ci;
   frontend-release builds native artifacts. Backend work does not rebuild APK/IPA.
+
+- Current scanner defaults to Barcode, preserves camera aspect ratio and crops captures
+  to the preview. ProductInfoPage is the single product destination; its visual redesign
+  is deferred. Guest names stay device-local. Front claims compare against sourced
+  catalogue data without fabricating human confirmation. Back-label facts can join a
+  separate immutable machine-unverified stream after exact identity checks; originals
+  and conflicts remain. NutriGraph is optional, disabled pending a trial key, session-only
+  with at most 24-hour retention, and never enriches the permanent catalogue.
 
 ## Product, setup and evidence boundaries
 

@@ -46,6 +46,9 @@ class Settings(BaseSettings):
     gemini_model: str = Field(default="gemini-3.5-flash-lite", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     openai_model: str = Field(default="gpt-4.1-mini", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     ai_fallback_credentials_json: SecretStr | None = Field(default=None, repr=False)
+    nutrigraph_enabled: bool = False
+    nutrigraph_api_key: SecretStr | None = Field(default=None, repr=False)
+    nutrigraph_monthly_request_limit: int = Field(default=1000, ge=1, le=1000)
 
     def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
         # Preserve BaseSettings' supported dotenv override in its typed signature.
@@ -110,6 +113,17 @@ class Settings(BaseSettings):
     def bounded_ai_credentials(cls, value: SecretStr | None) -> SecretStr | None:
         if value is not None and len(value.get_secret_value().encode()) > 8192:
             raise ValueError("AI replacement configuration exceeds its bound")
+        return value
+
+    @field_validator("nutrigraph_api_key")
+    @classmethod
+    def bounded_nutrigraph_key(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is not None:
+            key = value.get_secret_value()
+            if not key:
+                return None
+            if not 8 <= len(key) <= 512 or any(ord(c) < 33 or ord(c) > 126 for c in key):
+                raise ValueError("Invalid live product credential")
         return value
 
     @field_validator("ai_control_secret")

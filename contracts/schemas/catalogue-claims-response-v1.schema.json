@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "CatalogueClaimAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "claim": {
+          "anyOf": [
+            {
+              "enum": [
+                "source_of_fibre",
+                "high_fibre",
+                "low_sugar",
+                "sugar_free",
+                "low_sodium",
+                "very_low_sodium",
+                "sodium_free",
+                "high_protein",
+                "source_of_protein",
+                "no_added_sugar",
+                "multigrain"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Claim"
+        },
+        "status": {
+          "const": "insufficient_information",
+          "default": "insufficient_information",
+          "title": "Status",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "comparisons": {
+          "items": {
+            "$ref": "#/$defs/CatalogueCriterion"
+          },
+          "maxItems": 96,
+          "title": "Comparisons",
+          "type": "array"
+        },
+        "rule_source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Rule Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "claim",
+        "reasons"
+      ],
+      "title": "CatalogueClaimAssessment",
+      "type": "object"
+    },
+    "CatalogueCriterion": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "table_id": {
+          "title": "Table Id",
+          "type": "string"
+        },
+        "criterion_id": {
+          "title": "Criterion Id",
+          "type": "string"
+        },
+        "basis": {
+          "title": "Basis",
+          "type": "string"
+        },
+        "nutrient": {
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "operator": {
+          "enum": [
+            "gte",
+            "lte"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "threshold": {
+          "title": "Threshold",
+          "type": "number"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "table_id",
+        "criterion_id",
+        "basis",
+        "nutrient",
+        "operator",
+        "threshold",
+        "unit",
+        "value",
+        "outcome"
+      ],
+      "title": "CatalogueCriterion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "catalogue-claim-check-v1",
+      "default": "catalogue-claim-check-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "unavailable",
+        "not_found"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "barcode": {
+      "title": "Barcode",
+      "type": "string"
+    },
+    "assessment_basis": {
+      "const": "catalogue_historical",
+      "default": "catalogue_historical",
+      "title": "Assessment Basis",
+      "type": "string"
+    },
+    "knowledge_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Knowledge Version"
+    },
+    "source_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Source Ids",
+      "type": "array"
+    },
+    "assessments": {
+      "items": {
+        "$ref": "#/$defs/CatalogueClaimAssessment"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Assessments",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "barcode",
+    "knowledge_version",
+    "assessments"
+  ],
+  "title": "CatalogueClaimsResponse",
+  "type": "object"
+}

@@ -25,13 +25,11 @@ import '../features/scanner/presentation/insights_page.dart';
 import '../features/scanner/domain/insight_controller.dart';
 import '../features/scanner/domain/insight_catalogue.dart';
 import '../core/capture/automatic_label_reader.dart';
-import '../features/scanner/presentation/extracted_product_page.dart';
-import '../features/scanner/presentation/researched_product_page.dart';
+import '../features/scanner/presentation/product_info_page.dart';
 import '../features/scanner/presentation/library_page.dart';
 import '../features/scanner/presentation/mobile_navigation.dart';
 import '../features/scanner/presentation/product_search_page.dart';
 import '../features/scanner/presentation/product_results_layout.dart';
-import '../features/scanner/presentation/report_page.dart';
 import '../features/scanner/presentation/scan_landing_page.dart';
 import '../features/scanner/presentation/sources_page.dart';
 import '../features/scanner/presentation/startup_page.dart';
@@ -506,13 +504,19 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _openReport(ProductReport report, {bool record = false}) async {
+  Future<void> _openReport(
+    ProductReport report, {
+    bool record = false,
+    List<String> frontClaims = const [],
+  }) async {
     if (!mounted) return;
     if (record) unawaited(_record(report));
     await Navigator.of(context).push<void>(
       ShellContentRoute<void>(
         context: context,
-        builder: (_) => ReportPage(
+        builder: (_) => ProductInfoPage.report(
+          frontClaims: frontClaims,
+          repository: widget.repository,
           navigation: _resultNavigation,
           report: report,
           store: widget.store,
@@ -542,7 +546,8 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       if (!mounted) return;
       return Navigator.of(context).push<void>(
         MaterialPageRoute(
-          builder: (_) => ResearchedProductPage(
+          builder: (_) => ProductInfoPage.research(
+            repository: widget.repository,
             product: product,
             navigation: _resultNavigation,
           ),
@@ -552,34 +557,31 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     if (result.label != null) {
       return Navigator.of(context).push<void>(
         MaterialPageRoute(
-          builder: (_) => ExtractedProductPage(
+          builder: (_) => ProductInfoPage.extracted(
             navigation: _resultNavigation,
             label: result.label!,
             photo: front,
             localFallback: result.localFallback,
             repository: widget.repository,
             barcode: result.barcode,
-            hasBothSides:
-                result.capturedSlots.contains(0) &&
-                result.capturedSlots.contains(1),
             candidates: result.candidates,
-            onAccepted: (report) async {
-              await widget.store.save(report);
-              await _record(report);
-              if (!mounted) return;
-              _changed();
-              await Navigator.of(context).pushReplacement<void, void>(
-                MaterialPageRoute(
-                  builder: (_) => ReportPage(
-                    navigation: _resultNavigation,
-                    report: report,
-                    store: widget.store,
-                    onChanged: _changed,
-                    sessionPhoto: front,
-                  ),
-                ),
-              );
-            },
+            catalogueCandidates: result.catalogueCandidates,
+            onOpenReport: (report) => _openReport(
+              report,
+              record: true,
+              frontClaims: result.label!.frontClaims,
+            ),
+          ),
+        ),
+      );
+    }
+    if (result.candidates.isEmpty && result.barcode != null) {
+      return Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (_) => ProductInfoPage.barcode(
+            barcode: result.barcode!,
+            repository: widget.repository,
+            navigation: _resultNavigation,
           ),
         ),
       );
@@ -613,7 +615,8 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       if (!mounted) return;
       await Navigator.of(context).push<void>(
         MaterialPageRoute(
-          builder: (_) => ResearchedProductPage(
+          builder: (_) => ProductInfoPage.research(
+            repository: widget.repository,
             product: product,
             navigation: _resultNavigation,
           ),
@@ -819,8 +822,6 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                               onProfile: _profile,
                               onNotifications: _notifications,
                             )
-                          : _tab == 1
-                          ? null
                           : AppBar(
                               leading: _tab >= 4
                                   ? BackButton(

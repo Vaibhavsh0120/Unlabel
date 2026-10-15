@@ -1,8 +1,15 @@
 # Feature tracker
 
-Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Current scope: [reference auth and provider controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md), authorized for completion and push. Earlier reviews retain their own dated evidence.
-Current behavior and remaining gates are listed below. The user later authorized auth/profile changes and independent version bumps. [Audit](MAINTENANCE_2026_10_12.md) ·
-[Source release ledger](CONTROLLED_RELEASES.md) · [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
+Current update: **frontend 0.10.0+14 / backend 0.14.0**, covering the scanner,
+unified Product Info, Safari auth, guest names, automatic unverified readings
+and optional live product lookup. Local validation passed; publication
+and hosted/device acceptance remain separate.
+[Frontend review](FRONTEND_V0_10_0_REVIEW.md) Â· [Backend review](BACKEND_V0_14_0_REVIEW.md).
+
+
+Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Previous scope: [reference auth and provider controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md), authorized for completion and push. Earlier reviews retain their own dated evidence.
+Current behavior and remaining gates are listed below. [Audit](MAINTENANCE_2026_10_12.md) Â·
+[Source release ledger](CONTROLLED_RELEASES.md) Â· [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
 Versioned reviews/hosted receipts keep their original source dates and test totals.
 
 The five original concept screens describe **20 feature groups**. The historical
@@ -15,34 +22,36 @@ sample products and health verdicts are illustrative.
 
 | ID | Feature / screen | Backend current | Frontend current / remaining |
 | --- | --- | --- | --- |
-| F01 | Barcode identity / Home, Scan | Ready: live and exact snapshot routes | Local v0.6 decodes captured barcode/checksum before AI/OCR; known reports open directly. Continuous feed/device accuracy remain separate gates |
+| F01 | Barcode identity / Home, Scan | Ready: live and exact snapshot routes | Captured ZXing decoding has bounded off-center/rotation/inversion retries and checksum validation; known barcodes open directly. Continuous feed/device accuracy remain separate gates |
 | F02 | Search / Home | Ready: released v0.6.0 bounded indexed discovery | Name/brand search, paging and explicit selection published; v0.3.0 immediate mounted input focus, public cache/queue/skeleton and real hosted results verified |
 | F03 | Photos / Results, Compare | Ready: official attributed URL descriptors; local v0.12 adds 120/243 separate research descriptors | Actual sourced image or session front photo; missing images have an honest fallback. Fresh decorative artwork cannot impersonate a scanned product |
-| F04 | Nutrition and normalization / Results | Ready; local v0.12 retains qualified machine proposals privately | Local v0.6 automatically reads explicitly based tables, preserves unknowns/bounds and blocks ambiguous public rows; physical accuracy and final verification remain separate |
-| F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0–100 health score |
+| F04 | Nutrition and normalization / Results | Ready; v0.14 adds separate automatic unverified observations after exact identity checks | Local v0.6 automatically reads explicitly based tables, preserves unknowns/bounds and blocks ambiguous public rows; physical accuracy and final verification remain separate |
+| F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0â€“100 health score |
 | F06 | Unified report/reasons / Results | Ready: released v0.5.0 | Current/historical sourced reports and reference analysis published; hosted v0.3.0 public report opened/saved without stale SnackBar failure |
-| F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Local v0.6 reads front claim text automatically; only separately accepted sufficient inputs enter scoped deterministic assessments. Broader claims remain insufficient |
+| F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Front claim text compares with the selected catalogue SKU using sourced numeric tables. Missing category/form context remains insufficient; no human confirmation is fabricated |
 | F08 | Ingredient explanations / Ingredients | Partial: v0.9.0 expands to six reviewed English/Hindi name/function entries | v0.4.0 adds matched-ingredient detail with bilingual functions and evidence; broader ingredient coverage remains partial |
-| F09 | Allergens/traces / Scan, Ingredients | Ready: source availability and declarations | Local v0.6 reads literal declarations with unknown/partial states and optional acceptance; sourced display retains its provenance. No absence/safety inference |
+| F09 | Allergens/traces / Scan, Ingredients | Ready: source availability and declarations | Literal photo declarations keep machine-unverified provenance and conflicts. Original sourced declarations remain distinct; missing information never implies allergy safety |
 | F10 | Personal suitability / Results | Planned | Device-local dietary/allergen reminders implemented; suitability/filtering remains future and does not infer allergy safety |
 | F11 | Comparison / Compare | v0.8.0 sourced endpoint pushed and hosted-verified; v0.9.0 preserves the route | v0.4.0 integrates exact-source table selection and server comparison into existing paired cards; no universal healthier verdict |
 | F12 | Sugar visualization / Results | Ready: released v0.5.0 | Approximate 4 g/cube total-sugar view with original basis implemented; added sugar stays distinct |
 | F13 | Reviewed insights / Home | Implemented locally in v0.7.0 | 20 sourced articles and unique artwork, stable daily four shared with Home, full topic/all browsing, source-linked readers, local bookmarks and recovery; hosted verification pending; no product-safety verdict |
-| F14 | Front/back and gallery / Scan | Optional authenticated photo reading implemented in v0.11; local v0.12 stages only private structured proposals | Local v0.6 automatically reads front/back/barcode capture/gallery photos with transfer consent and local fallback; no mandatory typing. Measured physical-device accuracy remains open |
-| F15 | OCR/live highlights / Scan | Bounded machine facts/normalized regions; confirmed rows use separate admission | Local v0.6 paints actual post-capture regions and decoder anchors, with View results action; continuous live highlights and real-device accuracy remain future |
+| F14 | Front/back and gallery / Scan | Authenticated photo reading and bounded private staging; v0.14 adds a separate immutable machine observation stream | Reference Front/Back/Barcode scanner defaults to Barcode, preserves preview aspect and crops captures to the visible box. Processing animation, pack-size selection and transfer consent included; physical accuracy remains open |
+| F15 | OCR/live highlights / Scan | Bounded machine facts/normalized regions; confirmed rows use separate admission | Captured-photo processing sweep and actual detected regions/decoder anchors; continuous live recognition and real-device accuracy remain future |
 | F16 | Saved products / Home | Client-owned; private sync published in v0.7.0 | Published bounded bookmarks/reopening/removal; guests local, signed-in UID-specific private sync; hosted v0.3.0 public report save and Saved count verified |
 | F17 | History / Home | Client-owned guest local; optional private sync published | Published bounded dated history/clearing, guest/account isolation and optional private sync; hosted v0.3.0 Profile Scans count verified |
 | F18 | Profile/preferences / Home | Verified Google/password ownership; private library contract unchanged | Four app auth states, same-UID provider linking, private thumbnails and optional gender/default avatars; Firebase's supported hosted page completes reset and returns to fixed app sign-in. Reference login/signup use animated layers, fixed desktop cards and a moving mobile card; provider management and explicit private account deletion are included. Verification belongs to the current review |
 | F19 | Responsive/light/dark / All | Client-owned | v0.6 adds reference sidebar/Home and responsive results; preceding reviews retain their scope. v0.7 Insights has reviewed 390/1440/1728 light/dark renders and 24 feed text/theme/width configurations without layout exceptions; native proof remains separate |
 | F20 | Attribution/age/version / All | Ready | Published metadata/source/date/evidence/build information and working source details; exact hosted v0.3.0 version/build/assets verified |
-| C01 | Shared Indian package facts | Ready: released v0.4.0 | Automatic confirmed structured intake through lazy anonymous auth implemented; useful analysis survives save failure |
+| C01 | Shared Indian package facts | Ready: released v0.4.0 | Confirmed input API remains separate. Exact identity-compatible back-label readings can be added automatically as machine-unverified facts, preserving originals and conflicts |
 | C02 | Optional scanner account/private sync | v0.13.0 adds owner-only deletion; private snapshots remain backend-only | Google/password linking preserves UID/library, collisions cannot merge accounts; thumbnail/gender uses a separate owner-only document. Current source passed CI and hosted contract checks; native/device evidence stays in the release ledger; original v0.7.0/v0.2.0 receipts remain historical |
 
 ## Component releases
 
 | Component/version | Meaningful goal | Evidence / state |
 | --- | --- | --- |
-| Frontend v0.9.0+13 | Responsive reference auth, themed shared artwork, provider management and account deletion | [Current review](FRONTEND_V0_9_0_REVIEW.md); source push authorized, hosted/native gates separate |
+| Frontend v0.10.0+14 | Reference scanner/sign-in methods, Safari keyboard fix, guest names, one Product Info page and temporary live sources | [Current review](FRONTEND_V0_10_0_REVIEW.md); final release gates recorded there |
+| Backend v0.14.0 | Automatic unverified observations, catalogue numeric claim comparisons and optional live NutriGraph lookup | [Current review](BACKEND_V0_14_0_REVIEW.md); provider disabled pending key |
+| Frontend v0.9.0+13 | Responsive reference auth, themed shared artwork, provider management and account deletion | [Dated review](FRONTEND_V0_9_0_REVIEW.md); published with separate hosted/native receipts |
 | Backend v0.13.0 | Fresh-auth private account cleanup and idempotent deletion | [Current review](BACKEND_V0_13_0_REVIEW.md); additive DELETE contract |
 | Frontend v0.8.0+12 | Reference auth, linked sign-in, private profile media and UI repairs | [Preceding source review](FRONTEND_V0_8_0_REVIEW.md); its hosted/native gates remain separate |
 | Backend v0.12.1 | Verified Google scanner/private-library provider compatibility | [Current review](BACKEND_V0_12_1_REVIEW.md); 70 focused checks/Ruff passed, final hosted/source gates pending |

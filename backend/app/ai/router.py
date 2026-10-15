@@ -5,13 +5,21 @@ import hmac
 from datetime import UTC, datetime
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Header, Request
+from fastapi import APIRouter, Header, Path, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.concurrency import run_in_threadpool
 
+from app.ai.admission import automatic_contribution, known_baseline
 from app.ai.gateway import AiGateway
 from app.ai.models import ExtractedLabel, ExtractionRequest
+from app.ai.observations import (
+    MachineContribution,
+    MachineObservationLookup,
+    comparison_values,
+    compatible_identity,
+    conflict_fields,
+)
 from app.ai.providers import ProviderFailure
 from app.ai.staging import StagingResult
 from app.ai.store import AiSelectionConflict
@@ -59,6 +67,7 @@ class ExtractionResponse(BaseModel):
     extraction: ExtractedLabel
     ai: ProviderSelection
     storage: StagingResult
+    contribution: MachineContribution
 
 
 def failure(status: int, code: str, *, retry_after: int | None = None) -> JSONResponse:
@@ -165,7 +174,7 @@ def build_router(config: Settings) -> APIRouter:
                 subject = await run_in_threadpool(runtime.verify_token, parts[1])
             owner = actor_hash(subject, secret.get_secret_value())
             # Leave time for a sanitized response before the 60-second host limit.
-            async with asyncio.timeout(48):
+            async with asyncio.timeout(42):
                 result, selection = await selected.extract(owner, body)
             value = selected.by_id[selection.credential_id]
             try:
@@ -177,11 +186,20 @@ def build_router(config: Settings) -> APIRouter:
                 # A staging outage does not destroy a useful reading or select
                 # another AI key; its explicit status lets the scanner retry.
                 storage = StagingResult(status="not_stored", reason="unavailable")
+            try:
+                async with asyncio.timeout(4):
+                    contribution = await run_in_threadpool(
+                        automatic_contribution, request.app.state, selected.store, body, result,
+                        provider=value.provider, model=value.model, revision=selection.revision,
+                    )
+            except (StoreUnavailable, TimeoutError):
+                contribution = MachineContribution(status="not_shared", reason="unavailable")
             return JSONResponse({
                 "status": "extracted", "extraction": result.model_dump(mode="json"),
                 "ai": {"scope": "global", "provider": value.provider,
                        "model": value.model, "revision": selection.revision},
                 "storage": storage.model_dump(mode="json"),
+                "contribution": contribution.model_dump(mode="json"),
             }, headers={"Cache-Control": "no-store"})
         except AuthenticationInvalid:
             return failure(401, "scanner_authentication_required")
@@ -196,5 +214,26 @@ def build_router(config: Settings) -> APIRouter:
                 429 if error.kind == "quota" else 502 if error.kind == "invalid_response" else 503,
                 "ai_" + error.kind, retry_after=error.cooldown_seconds,
             )
+
+    @router.get("/v1/ai/observations/{barcode}", response_model=MachineObservationLookup)
+    def observations(request: Request, barcode: Annotated[str, Path(pattern=r"^(?:[0-9]{8}|[0-9]{12,14})$")]):
+        selected = gateway(request)
+        if selected is None:
+            return failure(503, "ai_not_configured")
+        try:
+            result = selected.store.machine_observations(barcode)
+            if result.observations:
+                baseline = known_baseline(request.app.state, barcode)
+                conflicts = set(result.conflict_fields)
+                conflicts.update(conflict_fields(baseline.values + [comparison_values(item.facts) for item in result.observations]))
+                if not baseline.identities or any(
+                    not compatible_identity(item.facts.identity.model_dump(), known)
+                    for item in result.observations for known in baseline.identities
+                ):
+                    conflicts.add("identity")
+                result = result.model_copy(update={"conflict_fields": sorted(conflicts)[:128]})
+            return JSONResponse(result.model_dump(mode="json"), headers={"Cache-Control": "no-store"})
+        except (StoreUnavailable, OSError, ValueError):
+            return failure(503, "machine_observations_unavailable")
 
     return router

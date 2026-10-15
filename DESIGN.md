@@ -146,18 +146,34 @@ confirmed saves have supported-platform haptics. The later 7 October instruction
 authorized docs, push and publication at that historical checkpoint. The later
 8 October instruction authorizes pushing after completing review and docs.
 
-Scan uses a centered compact title with back/gallery controls and a fixed,
-non-scrolling viewport. Its camera area takes the remaining height above three
-modes and capture/review/gallery actions. Opening Scan requests camera access;
+Scan follows the supplied October desktop and mobile references. Desktop keeps
+a large camera preview beside the mode selector and capture actions; phone and
+portrait iPad stack the large preview above those controls and retain the app
+navbar. Mobile Scan also retains the shared Unlabel home/search/Profile header
+used by the other app screens; its Scan Label title remains task-specific.
+Barcode is the initial mode; the other modes are Front and Back. A
+centered phone title, pale garden artwork and the shared forest/mint controls
+preserve the selected visual direction. One continuous garden illustration sits
+behind the preview, mode selector and capture controls, including the mascot;
+the illustration is not repeated below the camera. Normal phone layouts fit a fixed
+viewport; short windows and enlarged text permit content scrolling so every
+action remains reachable. Opening Scan requests camera access;
 the rear feed is preferred, audio is disabled, and leaving/backgrounding stops
 the session. Captures remain in session memory. Missing camera or denied access
 retains retry and gallery. Local v0.6 reads barcode/front/back captures
 automatically, with optional backend transfer consent and conservative local
 fallback; it removes the Enter package label route. Known barcode reports open
-directly; unknown products request the missing/clearer photo. Actual normalized
+directly; a decoded unknown barcode opens the same Product info destination with
+available live/source readings or a clear next photo action. Actual normalized
 regions and barcode anchors are highlighted after capture, and the action becomes
-View results when useful facts are ready. Unverified reading and optional one-tap
-fact acceptance are distinct; there is no mandatory typing. v0.4.0 starts preview without awaiting
+View results when useful facts are ready. The captured image stays visible under
+a moving scan line and a Reading label/barcode status while processing. Reduced
+motion keeps the status and a stationary line; Stop reading cancels the run.
+Preview uses a centered aspect-preserving crop; captures use that same visible
+region. Capture review contains the resulting photo without stretching it.
+Machine output remains explicitly unverified; compatible back-label facts use
+the separately documented automatic contribution policy with no per-record
+confirmation dialog. There is no mandatory typing. v0.4.0 starts preview without awaiting
 interrupted Android gallery recovery and protects newer actions from late photos.
 Product search replaces the header with a long input and updates actual results
 while typing. Product names and images open sourced reports. Reports/comparison
@@ -190,3 +206,11 @@ Review: source rules and text comprehension through Better Design, Flutter
 overflow/text/semantics tests, and rendered web views at 390/1440/1728 in light
 and dark modes. Flutter canvas has no DOM card geometry: record that limitation
 if DOM inspection can measure only the host surface; do not invent measurements.
+
+Scanner illustration provenance: `frontend/assets/artwork/scanner-garden-v1.png`
+is a generated 1536×1024 transparent garden/mascot border, made with the built-in
+image generation tool for the user's supplied scanner references. It is decorative
+Unlabel artwork and provides no product, nutrition or health evidence. Its SHA-256
+is `6b04b3a060bec25551f001fecf40e94628211673889c4c5188cd2f526f220f58`.
+Live headings, mode labels, camera framing and controls remain Flutter widgets;
+no labels or interactive controls are baked into the artwork.

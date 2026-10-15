@@ -112,8 +112,17 @@ class ExtractedRegion {
 }
 
 class ExtractedLabel {
-  ExtractedLabel._(this.json, this.regions, this.storageStatus);
-  factory ExtractedLabel.fromJson(JsonMap raw, {String? storageStatus}) {
+  ExtractedLabel._(
+    this.json,
+    this.regions,
+    this.storageStatus,
+    this.contribution,
+  );
+  factory ExtractedLabel.fromJson(
+    JsonMap raw, {
+    String? storageStatus,
+    JsonMap? contribution,
+  }) {
     _check(
       storageStatus == null ||
           const ['private_unverified', 'not_stored'].contains(storageStatus),
@@ -232,11 +241,13 @@ class ExtractedLabel {
       _freeze(raw) as JsonMap,
       List.unmodifiable(boxes),
       storageStatus,
+      contribution == null ? null : MachineContribution.fromJson(contribution),
     );
   }
   final JsonMap json;
   final List<ExtractedRegion> regions;
   final String? storageStatus;
+  final MachineContribution? contribution;
   JsonMap get identity => json['identity'] as JsonMap;
   String? get ingredients => json['ingredients'] as String?;
   String? get contains => json['contains'] as String?;
@@ -251,6 +262,45 @@ class ExtractedLabel {
       nutritionTables.isNotEmpty ||
       identity['name'] != null ||
       frontClaims.isNotEmpty;
+}
+
+/// A server receipt, never a user-confirmed label or a writable report.
+class MachineContribution {
+  MachineContribution._(this.shared, this.barcode, this.conflicts, this.reason);
+  factory MachineContribution.fromJson(JsonMap raw) {
+    _check(
+      raw['schema_version'] == 'machine-label-contribution-v1' &&
+          raw['evidence'] == 'machine_extracted_unverified' &&
+          const ['shared_unverified', 'not_shared'].contains(raw['status']),
+    );
+    final barcode = raw['barcode'];
+    final conflicts = raw['conflict_fields'];
+    _check(
+      barcode == null || barcode is String && validProductBarcode(barcode),
+    );
+    _check(
+      conflicts is List &&
+          conflicts.length <= 128 &&
+          conflicts.every((v) => _text(v, 256)),
+    );
+    _check(raw['reason'] == null || _text(raw['reason'], 64));
+    if (raw['status'] == 'shared_unverified') {
+      _check(
+        barcode != null &&
+            raw['observation_id'] is String &&
+            RegExp(r'^[0-9a-f]{64}$').hasMatch(raw['observation_id']),
+      );
+    }
+    return MachineContribution._(
+      raw['status'] == 'shared_unverified',
+      barcode,
+      List<String>.unmodifiable((conflicts as List).cast<String>()),
+      raw['reason'],
+    );
+  }
+  final bool shared;
+  final String? barcode, reason;
+  final List<String> conflicts;
 }
 
 bool validProductBarcode(String value) {

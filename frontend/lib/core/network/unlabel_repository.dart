@@ -10,6 +10,7 @@ import '../models/product_report.dart';
 import '../models/sourced_comparison.dart';
 import '../models/researched_product.dart';
 import '../models/extracted_label.dart';
+import '../models/product_supplements.dart';
 import 'scanner_auth.dart';
 
 export '../models/app_failure.dart';
@@ -18,6 +19,7 @@ export '../models/product_report.dart';
 export '../models/sourced_comparison.dart';
 export '../models/researched_product.dart';
 export '../models/extracted_label.dart';
+export '../models/product_supplements.dart';
 
 class UnlabelRepository {
   UnlabelRepository({
@@ -168,6 +170,31 @@ class UnlabelRepository {
     );
   }
 
+  Future<CatalogueClaimCheck> catalogueClaims(
+    String barcode,
+    List<String> claims,
+  ) async {
+    if (!validProductBarcode(barcode) ||
+        claims.isEmpty ||
+        claims.length > 16 ||
+        claims.any((text) => text.trim().isEmpty || text.length > 256)) {
+      throw const AppFailure(
+        'invalid_input',
+        'Choose a product and readable front claims first.',
+      );
+    }
+    return CatalogueClaimCheck.fromJson(
+      await _request(
+        'POST',
+        '/v1/claims/catalogue-check',
+        readOnly: true,
+        body: {'barcode': barcode, 'claims': claims},
+      ),
+      barcode,
+      claims,
+    );
+  }
+
   Future<ProductReport> loadReport(String barcode) async {
     final code = barcode.trim();
     if (!RegExp(r'^(?:[0-9]{8}|[0-9]{12,14})$').hasMatch(code)) {
@@ -237,6 +264,10 @@ class UnlabelRepository {
       requestTimeout: const Duration(seconds: 60),
       body: {
         'privacy_consent': true,
+        if ((_metadata?['capabilities']
+                as JsonMap?)?['ai_machine_observations'] ==
+            true)
+          'catalogue_contribution': 'machine-unverified-v1',
         'images': [
           for (final entry in photos.entries)
             {
@@ -261,9 +292,18 @@ class UnlabelRepository {
         'The photo could not be read reliably. Try again.',
       );
     }
+    if (result['contribution'] != null && result['contribution'] is! JsonMap) {
+      throw const AppFailure(
+        'invalid_response',
+        'The label contribution status could not be read reliably.',
+      );
+    }
     return ExtractedLabel.fromJson(
       result['extraction'] as JsonMap,
       storageStatus: storage == null ? null : (storage as JsonMap)['status'],
+      contribution: result['contribution'] is JsonMap
+          ? result['contribution'] as JsonMap
+          : null,
     );
   }
 
@@ -388,6 +428,60 @@ class UnlabelRepository {
       await _request('POST', '/v1/reports/check', body: payload, token: token),
       confirmedComparisonObservation: payload['observation'] as JsonMap,
     );
+  }
+
+  /// Read-only supplements never enter persisted report/cache/library objects.
+  Future<LiveProductLookup> liveProduct(String barcode) async {
+    if (!validProductBarcode(barcode)) {
+      return const LiveProductLookup('unsupported_barcode');
+    }
+    final metadata = await _serviceMetadata();
+    if ((metadata['capabilities'] as JsonMap)['live_nutrigraph'] != true) {
+      return const LiveProductLookup('disabled');
+    }
+    final token = await _auth.token().timeout(authTimeout);
+    if (token == null || token.isEmpty) {
+      throw const AppFailure(
+        'authentication',
+        'Live product lookup is unavailable. Try again.',
+      );
+    }
+    try {
+      return LiveProductLookup.fromJson(
+        await _request(
+          'GET',
+          '/v1/live-products/nutrigraph/$barcode',
+          token: token,
+        ),
+        barcode,
+        _clock().toUtc(),
+      );
+    } on AppFailure catch (error) {
+      if (error.kind == 'not_found') {
+        return const LiveProductLookup('not_found');
+      }
+      rethrow;
+    }
+  }
+
+  Future<MachineProductLookup> machineProduct(String barcode) async {
+    if (!validProductBarcode(barcode)) {
+      return const MachineProductLookup([], []);
+    }
+    final metadata = await _serviceMetadata();
+    if ((metadata['capabilities'] as JsonMap)['ai_machine_observations'] !=
+        true) {
+      return const MachineProductLookup([], []);
+    }
+    try {
+      return MachineProductLookup.fromJson(
+        await _request('GET', '/v1/ai/observations/$barcode'),
+        barcode,
+      );
+    } on AppFailure catch (error) {
+      if (error.kind == 'not_found') return const MachineProductLookup([], []);
+      rethrow;
+    }
   }
 
   Future<SourcedComparison> compare(

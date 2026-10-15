@@ -14,7 +14,7 @@
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
-[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.9.0%2B13-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.13.0-155b4b)](backend/pyproject.toml)
+[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.10.0%2B14-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.14.0-155b4b)](backend/pyproject.toml)
 
 </div>
 
@@ -47,21 +47,23 @@ Import and launch on an actual iPhone remain unverified.
 
 ### Latest update
 
-The current update brings the supplied desktop/phone login and signup composition
-to light and dark mode, with layered animated artwork, fixed desktop cards and a
-mobile card that moves over stationary artwork. Both iPad orientations and enlarged
-text have responsive layouts. Sign-in methods manage linked Google/password access while keeping
-one account and at least one method. Private thumbnails, optional gender/default
-avatars and confirmed account deletion have separate owner-only data boundaries.
-Firebase's supported hosted page completes password resets and returns to Unlabel
-sign-in. Sources, navigation, 404 recovery, empty states and the three-second Home
-insight carousel retain their preceding improvements.
-[Frontend scope and checks](docs/planning/FRONTEND_V0_9_0_REVIEW.md) ·
-[Backend deletion and checks](docs/planning/BACKEND_V0_13_0_REVIEW.md).
+The scanner now starts in Barcode mode, with a larger camera view, matching
+capture crop, Front/Back photo reading and an animated processing indicator.
+Search, scans, history and saved items open one Product Info page; its visual
+redesign is planned separately. Front/back scans retain package-size choices.
+Compatible AI label readings can contribute automatically as explicitly
+unverified observations without replacing original sources. Optional live
+NutriGraph lookup stays separate from saved reports and remains disabled until
+a trial key is configured.
 
-Setup, Android build timing, release labels and the hosted LiveContainer source
-were repaired in the [maintenance pass](docs/planning/MAINTENANCE_2026_10_12.md).
-Final source, hosted and native publication identities are recorded separately.
+Safari auth keeps its artwork when browser controls resize the viewport, tapping
+outside a field dismisses the keyboard, guests can keep a display name on their
+device, and sign-in methods follow the supplied phone/desktop layout.
+[Frontend scope and checks](docs/planning/FRONTEND_V0_10_0_REVIEW.md) ·
+[Backend scope and checks](docs/planning/BACKEND_V0_14_0_REVIEW.md).
+
+Publication, hosted checks and native/device evidence are recorded separately in
+[the release ledger](docs/planning/CONTROLLED_RELEASES.md).
 
 ## Run locally
 

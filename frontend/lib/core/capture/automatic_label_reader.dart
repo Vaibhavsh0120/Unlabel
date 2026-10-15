@@ -15,6 +15,7 @@ class AutomaticScanResult {
     this.report,
     this.label,
     this.candidates = const [],
+    this.catalogueCandidates = const [],
     this.localFallback = false,
     this.barcodePoints = const [],
     this.barcodeSlot,
@@ -24,12 +25,17 @@ class AutomaticScanResult {
   final ProductReport? report;
   final ExtractedLabel? label;
   final List<ResearchedCandidate> candidates;
+  final List<SearchCandidate> catalogueCandidates;
   final bool localFallback;
   final List<Offset> barcodePoints;
   final int? barcodeSlot;
   final List<int> capturedSlots;
   bool get useful =>
-      report != null || candidates.isNotEmpty || label?.hasFacts == true;
+      barcode != null ||
+      report != null ||
+      candidates.isNotEmpty ||
+      catalogueCandidates.isNotEmpty ||
+      label?.hasFacts == true;
 }
 
 class AutomaticLabelReader {
@@ -94,7 +100,9 @@ class AutomaticLabelReader {
         break;
       }
     }
-    if (detected != null) {
+    // Front/back capture explicitly requests a fresh label reading, even when
+    // a barcode happens to be visible in that photo.
+    if (detected != null && photos.keys.every((slot) => slot == 2)) {
       try {
         final report = await repository.loadReport(detected);
         current();
@@ -163,6 +171,7 @@ class AutomaticLabelReader {
     // A model-read identity never silently establishes a current catalogue SKU.
     // Optional candidates are displayed for the scanner's visual selection.
     var candidates = <ResearchedCandidate>[];
+    var catalogueCandidates = <SearchCandidate>[];
     final name = label.identity['name'] as String?;
     if (name != null && name.trim().length >= 2) {
       try {
@@ -174,11 +183,21 @@ class AutomaticLabelReader {
       } on AppFailure catch (failure) {
         if (failure.kind == 'cancelled') rethrow;
       }
+      try {
+        final text = name.trim();
+        catalogueCandidates = (await repository.search(
+          text.substring(0, text.length.clamp(0, 128)),
+        )).candidates;
+        current();
+      } on AppFailure catch (failure) {
+        if (failure.kind == 'cancelled') rethrow;
+      }
     }
     return AutomaticScanResult(
       barcode: detected,
       label: label,
       candidates: candidates,
+      catalogueCandidates: catalogueCandidates,
       localFallback: localFallback,
       barcodePoints: detection?.points ?? const [],
       barcodeSlot: barcodeSlot,

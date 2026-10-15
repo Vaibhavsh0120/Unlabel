@@ -28,6 +28,11 @@ class AccountController extends ChangeNotifier {
   AccountStore? _store;
   AccountIdentity? _identity;
   AccountIdentity? get identity => _identity;
+  static const _guestNameKey = 'unlabel.guest.display-name.v1';
+  String? _guestDisplayName;
+  String? get displayName => _identity == null
+      ? _guestDisplayName
+      : localData?.displayName ?? _identity?.displayName;
   LocalStore get activeStore => _store ?? guestStore;
   AccountStore? get accountStore => _store;
   AccountSyncState state = AccountSyncState.guest;
@@ -47,6 +52,17 @@ class AccountController extends ChangeNotifier {
     if (_started) return;
     _started = true;
     auth.addListener(_authChanged);
+    try {
+      final storedName = await _preferences.read(_guestNameKey);
+      if (storedName != null && _validDisplayName(storedName)) {
+        _guestDisplayName = storedName.trim().isEmpty
+            ? null
+            : storedName.trim();
+      }
+      _publish();
+    } catch (_) {
+      // A device preference failure must not prevent SDK session restoration.
+    }
     try {
       await auth.start();
       _authChanged();
@@ -447,10 +463,36 @@ class AccountController extends ChangeNotifier {
   Future<void> updateDisplayName(String value) async {
     _requireLibraryWritable();
     final store = _store;
-    if (store == null) return;
+    if (store == null) {
+      final name = value.trim();
+      if (!_validDisplayName(name)) {
+        throw const AppFailure(
+          'invalid_input',
+          'Use a display name up to 80 characters without line breaks.',
+        );
+      }
+      try {
+        if (name.isEmpty) {
+          await _preferences.remove(_guestNameKey);
+        } else {
+          await _preferences.write(_guestNameKey, name);
+        }
+        _guestDisplayName = name.isEmpty ? null : name;
+        _publish();
+      } catch (_) {
+        throw const AppFailure(
+          'local_storage',
+          'Your name could not be saved on this device. Please try again.',
+        );
+      }
+      return;
+    }
     await store.setDisplayName(value);
     await _readLocal();
   }
+
+  static bool _validDisplayName(String name) =>
+      name.runes.length <= 80 && !RegExp(r'[\x00-\x1f\x7f]').hasMatch(name);
 
   Future<void> copyGuestLibrary() async {
     _requireLibraryWritable();

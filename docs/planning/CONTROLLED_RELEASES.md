@@ -3,8 +3,8 @@
 The maintenance pass publishes missing reviewed source identities and preserves
 historical tags/assets. Current versions come from the component manifests.
 Current authorized source work is documented in the
-[frontend account-controls review](FRONTEND_V0_9_0_REVIEW.md) and
-[backend deletion review](BACKEND_V0_13_0_REVIEW.md). Prior auth/profile and
+[frontend scanner review](FRONTEND_V0_10_0_REVIEW.md) and
+[backend observations review](BACKEND_V0_14_0_REVIEW.md). Prior auth/profile and
 Google compatibility checkpoints retain their own source identities.
 
 Historical source identities are recorded in [the machine ledger](../../contracts/versioning/releases.json).
@@ -51,7 +51,7 @@ The iOS source feed has its own prerelease and never represents a backend releas
 [Release workflow and versions](RELEASE_VERSIONING.md) ·
 [Maintenance scope](MAINTENANCE_2026_10_12.md).
 
-## Current release - 14 October 2026
+## Previous release - 14 October 2026
 
 Source commit `bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084` was pushed to main with
 frontend **0.9.0+13** and backend **0.13.0**. Repository CI passed for that commit.

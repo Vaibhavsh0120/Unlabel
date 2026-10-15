@@ -321,6 +321,25 @@ class _DeletionSync extends _Sync implements AccountDeletionTransport {
 }
 
 void main() {
+  test(
+    'restored auth starts Google provider in the same tap callback',
+    () async {
+      final firebase = _Firebase();
+      var started = false;
+      final auth = _auth(
+        firebase,
+        credential: () async {
+          started = true;
+          return GoogleAuthProvider.credential(idToken: 'synthetic-id-token');
+        },
+      );
+      addTearDown(auth.dispose);
+      await auth.start();
+      final pending = auth.signInGoogle();
+      expect(started, isTrue);
+      await pending;
+    },
+  );
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(

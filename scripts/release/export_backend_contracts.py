@@ -21,6 +21,7 @@ catalogue_facts = import_module("app.catalogue.facts")
 catalogue_search = import_module("app.catalogue.search")
 errors = import_module("app.schemas.errors")
 claims = import_module("app.claims.models")
+catalogue_claims = import_module("app.claims.catalogue")
 claim_knowledge = import_module("app.claims.knowledge")
 assess_claims = import_module("app.claims.engine").assess_claims
 community = import_module("app.community.models")
@@ -33,6 +34,8 @@ comparison = import_module("app.comparison.models")
 research = import_module("app.research_catalogue.models")
 ai = import_module("app.ai.models")
 ai_router = import_module("app.ai.router")
+machine_observations = import_module("app.ai.observations")
+live_products = import_module("app.live_products.models")
 compare = import_module("app.comparison.service").compare
 
 
@@ -60,6 +63,8 @@ def main():
         "catalogue-search-v1.schema.json": catalogue_search.SearchResult,
         "validation-failure-v1.schema.json": errors.ValidationFailure,
         "claims-check-request-v1.schema.json": claims.ClaimsRequest,
+        "catalogue-claims-request-v1.schema.json": catalogue_claims.CatalogueClaimsRequest,
+        "catalogue-claims-response-v1.schema.json": catalogue_claims.CatalogueClaimsResponse,
         "claims-check-response-v1.schema.json": claims.ClaimsResponse,
         "claims-rules-v1.schema.json": claims.ClaimsRulesResponse,
         "claims-unavailable-v1.schema.json": claims.ClaimsUnavailable,
@@ -87,6 +92,9 @@ def main():
         "ai-active-v1.schema.json": ai_router.ActiveResponse,
         "ai-activate-request-v1.schema.json": ai_router.ActivateRequest,
         "ai-activate-response-v1.schema.json": ai_router.ActivationResponse,
+        "machine-label-contribution-v1.schema.json": machine_observations.MachineContribution,
+        "machine-label-lookup-v1.schema.json": machine_observations.MachineObservationLookup,
+        "live-product-lookup-v1.schema.json": live_products.LiveLookup,
     }.items():
         write("schemas", filename, model.model_json_schema())
 

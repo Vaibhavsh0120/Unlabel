@@ -14,6 +14,12 @@ from typing import Any, Protocol
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.ai.models import ExtractedLabel
+from app.ai.observations import (
+    MachineContribution,
+    MachineObservationLookup,
+    lookup_observations,
+    share_observation,
+)
 from app.ai.staging import StagingResult, stage_machine_facts
 from app.community.store import FirestoreContributionStore, StoreQuotaExceeded, StoreUnavailable
 
@@ -59,6 +65,8 @@ class AiSelectionStore(Protocol):
     ) -> ActiveSelection: ...
     def admit(self, actor: str, *, daily_limit: int, actor_limit: int) -> None: ...
     def stage(self, actor: str, label: ExtractedLabel) -> StagingResult: ...
+    def share_machine_observation(self, **kwargs) -> MachineContribution: ...
+    def machine_observations(self, barcode: str) -> MachineObservationLookup: ...
 
 
 class FirestoreAiSelectionStore:
@@ -68,6 +76,12 @@ class FirestoreAiSelectionStore:
 
     def stage(self, actor: str, label: ExtractedLabel) -> StagingResult:
         return stage_machine_facts(self._transactions, actor, label, now=self._now())
+
+    def share_machine_observation(self, **kwargs) -> MachineContribution:
+        return share_observation(self._transactions, **kwargs, now=self._now())
+
+    def machine_observations(self, barcode: str) -> MachineObservationLookup:
+        return lookup_observations(self._transactions, barcode)
 
     @property
     def _reference(self):

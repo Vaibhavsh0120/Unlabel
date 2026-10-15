@@ -1,0 +1,98 @@
+{
+  "checked_at_utc": "2026-10-15T16:37:46.072778+00:00",
+  "fixture": "frontend/tool/visual_preview.dart",
+  "scope": "Synthetic camera/account fixtures; actual Flutter UI with production navigation components. Not real camera/provider/device proof.",
+  "viewports": [
+    "390x844 light/dark",
+    "768x1024",
+    "1024x768",
+    "1440x900",
+    "1728x1000",
+    "320x844 at 2x text"
+  ],
+  "states": [
+    "Barcode initial",
+    "continuous garden behind preview and controls",
+    "shared mobile header",
+    "processing captured photo",
+    "sign-in methods",
+    "large-text gallery reachability"
+  ],
+  "spacing": {
+    "status": "completed",
+    "widths": [
+      390,
+      1440,
+      1728
+    ],
+    "visible_findings": 0,
+    "exclusions": "Only two nonvisual offscreen Flutter accessibility announcement nodes. Canvas geometry reviewed through widget tests/screenshots."
+  },
+  "captures": [
+    {
+      "file": "output/playwright/scanner-desktop-dark.png",
+      "bytes": 142980,
+      "sha256": "2684c885609ca9f0ecc49378fd18e66665654a97df50d90170d146c3135410d8"
+    },
+    {
+      "file": "output/playwright/scanner-desktop-light.png",
+      "bytes": 142253,
+      "sha256": "3ba8c7acdfa5fc6030b8f34241d1e37fca6ca313ad9e22ae50f623e1d51b4e6c"
+    },
+    {
+      "file": "output/playwright/scanner-desktop-wide.png",
+      "bytes": 153189,
+      "sha256": "693e029b80a0af9051fbf07859eb18758fb1e4ca76ca98af09c22f5479613dcd"
+    },
+    {
+      "file": "output/playwright/scanner-ipad-landscape.png",
+      "bytes": 96594,
+      "sha256": "3f34c9dd69a852ad6f914e7f62a8422d1dd8d0231c4a481d278d63e68a4d58fa"
+    },
+    {
+      "file": "output/playwright/scanner-ipad-portrait.png",
+      "bytes": 255386,
+      "sha256": "634b07ab4cd327ad677a8a8d77cf8a03be59d6408ed4bf3296c35b0851911577"
+    },
+    {
+      "file": "output/playwright/scanner-iphone-dark.png",
+      "bytes": 123141,
+      "sha256": "12885fb4909f709f1433b07af27e499d6c0fc8b77ec30364b37a22427f716d91"
+    },
+    {
+      "file": "output/playwright/scanner-iphone-light.png",
+      "bytes": 123742,
+      "sha256": "df7c6d3f700c3575bd430196100c087466738ff8dc82da7288442fbdc1bc38de"
+    },
+    {
+      "file": "output/playwright/scanner-large-gallery-reachable.png",
+      "bytes": 104439,
+      "sha256": "8abdb1fba82d282e745eddb3ab875621298817811d7d987970680e8ab8a03c09"
+    },
+    {
+      "file": "output/playwright/scanner-methods-desktop.png",
+      "bytes": 80475,
+      "sha256": "cad7e85c7e2696a84fcff04ee4296fc5acd7404a8d8798af61a487b3a6e3f553"
+    },
+    {
+      "file": "output/playwright/scanner-methods-ipad.png",
+      "bytes": 75145,
+      "sha256": "c2efe9ada1519fabaa38e0f1eb4439c93f93120e5aae72cc604d630f35153cb5"
+    },
+    {
+      "file": "output/playwright/scanner-methods-phone.png",
+      "bytes": 67914,
+      "sha256": "5dee2948ce20e6a9d00525aad4f840a55fb99983dcfe081bec5fdd48a6ff8065"
+    },
+    {
+      "file": "output/playwright/scanner-phone-large.png",
+      "bytes": 91782,
+      "sha256": "e182a0217d272b37c78e10a60088a5dedcb43e2cf3e8089acd3e3695a4e78be7"
+    },
+    {
+      "file": "output/playwright/scanner-processing-phone.png",
+      "bytes": 118969,
+      "sha256": "cef33b75bbfcfad6fbfc7645a943f40a4d68e545b1a6fdc80d17f27c1b05c3b0"
+    }
+  ]
+}

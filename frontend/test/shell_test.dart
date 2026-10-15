@@ -16,7 +16,7 @@ import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
 import 'package:unlabel/features/scanner/presentation/insights_page.dart';
 import 'package:unlabel/features/scanner/presentation/library_page.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/sources_page.dart';
 
 class _Preferences implements PreferencesAdapter {
@@ -262,13 +262,13 @@ void main() {
       await tester.pumpAndSettle();
       await _tap(tester, find.text('History-only oats'));
       final reportRoute =
-          ModalRoute.of(tester.element(find.byType(ReportPage)))!
+          ModalRoute.of(tester.element(find.byType(ProductInfoPage)))!
               as PageRoute<void>;
       expect(reportRoute.transitionDuration, Duration.zero);
       expect(reportRoute.reverseTransitionDuration, Duration.zero);
       await tester.tap(find.widgetWithText(TextButton, 'History'));
       await tester.pump();
-      expect(find.byType(ReportPage), findsNothing);
+      expect(find.byType(ProductInfoPage), findsNothing);
       expect(tester.element(sidebar), same(sidebarElement));
       expect(tester.getRect(header), headerBounds);
       await tester.tap(find.byKey(const Key('desktop-nav-3')));
@@ -833,6 +833,48 @@ void main() {
       expect(find.byTooltip('Profile'), findsOneWidget);
     },
   );
+
+  testWidgets('mobile Scan retains the shared app header and working actions', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final guest = LocalStore(preferences: _Preferences());
+    final repository = _Repository();
+    addTearDown(repository.close);
+    await tester.pumpWidget(
+      UnlabelApp(
+        repository: repository,
+        store: guest,
+        accountController: _controller(_Auth(), _Sync(), guest),
+        showWelcome: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    final homeHeader = tester.widget<AppBar>(find.byType(AppBar).first);
+    await _tap(tester, find.byKey(const Key('mobile-nav-1')));
+    expect(find.text('Scan Label'), findsOneWidget);
+    expect(find.byKey(const Key('mobile-brand-home')), findsOneWidget);
+    expect(
+      tester.widget<AppBar>(find.byType(AppBar).first).toolbarHeight,
+      homeHeader.toolbarHeight,
+    );
+    expect(find.byTooltip('Search products'), findsOneWidget);
+    expect(find.byTooltip('Profile'), findsOneWidget);
+    await _tap(tester, find.byTooltip('Search products'));
+    expect(find.byKey(const Key('product-search-input')), findsOneWidget);
+    await _tap(tester, find.byTooltip('Close search'));
+    expect(find.text('Scan Label'), findsOneWidget);
+    await _tap(tester, find.byTooltip('Profile'));
+    expect(find.text('Sign in'), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await _tap(tester, find.byKey(const Key('mobile-brand-home')));
+    expect(find.text('Scan your\nfood label'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('input keyboard hides floating navigation until dismissed', (
     tester,

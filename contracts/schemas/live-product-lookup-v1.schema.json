@@ -1,0 +1,174 @@
+{
+  "$defs": {
+    "LiveField": {
+      "additionalProperties": false,
+      "properties": {
+        "section": {
+          "enum": [
+            "ingredients",
+            "allergens",
+            "nutrition"
+          ],
+          "title": "Section",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "sources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "section",
+        "label",
+        "value"
+      ],
+      "title": "LiveField",
+      "type": "object"
+    },
+    "LiveProduct": {
+      "additionalProperties": false,
+      "properties": {
+        "barcode": {
+          "title": "Barcode",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brand"
+        },
+        "evidence": {
+          "const": "external_provider_unverified",
+          "default": "external_provider_unverified",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "fields": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LiveField"
+          },
+          "title": "Fields",
+          "type": "array"
+        },
+        "sources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "attribution": {
+          "const": "Data by NutriGraphAPI",
+          "default": "Data by NutriGraphAPI",
+          "title": "Attribution",
+          "type": "string"
+        },
+        "attribution_url": {
+          "const": "https://nutrigraphapi.com",
+          "default": "https://nutrigraphapi.com",
+          "title": "Attribution Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "barcode",
+        "retrieved_at",
+        "expires_at"
+      ],
+      "title": "LiveProduct",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "found",
+        "disabled",
+        "unsupported_barcode",
+        "not_found",
+        "rate_limited",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "requested_barcode": {
+      "title": "Requested Barcode",
+      "type": "string"
+    },
+    "product": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LiveProduct"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "retry_after": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Retry After"
+    }
+  },
+  "required": [
+    "status",
+    "requested_barcode"
+  ],
+  "title": "LiveLookup",
+  "type": "object"
+}

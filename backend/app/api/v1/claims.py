@@ -1,9 +1,14 @@
 from typing import Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi import Path as PathParameter
 from fastapi.responses import JSONResponse
 
+from app.claims.catalogue import (
+    CatalogueClaimsRequest,
+    CatalogueClaimsResponse,
+    assess_catalogue_claims,
+)
 from app.claims.engine import assess_claims
 from app.claims.knowledge import UNSUPPORTED_CLAIMS, KnowledgeStore
 from app.claims.models import (
@@ -18,6 +23,11 @@ from app.claims.models import (
 def build_router(*, store: KnowledgeStore | None = None) -> APIRouter:
     """Mount independent claims routes; invalid knowledge disables these routes only."""
     router = APIRouter(tags=["Claim checks"])
+
+    @router.post("/v1/claims/catalogue-check", response_model=CatalogueClaimsResponse)
+    def catalogue_claims(request: Request, body: CatalogueClaimsRequest):
+        result = assess_catalogue_claims(request.app.state, body, store)
+        return JSONResponse(result.model_dump(mode="json"), headers={"Cache-Control": "no-store"})
 
     @router.post(
         "/v1/claims/check",

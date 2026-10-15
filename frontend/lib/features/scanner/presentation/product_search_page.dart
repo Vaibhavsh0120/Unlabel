@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/network/unlabel_repository.dart';
 import 'report_presentation.dart';
-import 'researched_product_page.dart';
+import 'product_info_page.dart';
 import 'ui_components.dart';
 import 'product_results_layout.dart';
 import '../../../core/widgets/search_skeleton.dart';
@@ -337,7 +337,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       if (!mounted || request != _request) return;
       await Navigator.of(context).push<void>(
         MaterialPageRoute(
-          builder: (_) => ResearchedProductPage(
+          builder: (_) => ProductInfoPage.research(
+            repository: widget.repository,
             product: product,
             navigation: widget.resultNavigation,
           ),

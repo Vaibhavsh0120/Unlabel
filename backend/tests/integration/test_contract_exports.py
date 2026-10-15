@@ -6,6 +6,7 @@ from app.ai.models import ExtractedLabel, ExtractionRequest
 from app.ai.router import ActivateRequest, ActivationResponse, ActiveResponse, ExtractionResponse
 from app.catalogue.facts import FactsLookup
 from app.catalogue.models import CatalogLookup
+from app.claims.catalogue import CatalogueClaimsRequest, CatalogueClaimsResponse
 from app.claims.models import (
     ClaimsRequest,
     ClaimsResponse,
@@ -74,13 +75,17 @@ def test_all_examples_validate_for_teammate_consumers():
 
 def test_current_openapi_and_all_current_schemas_match_runtime():
     from app import __version__
+    from app.ai.observations import MachineContribution, MachineObservationLookup
     from app.core.config import Settings
+    from app.live_products.models import LiveLookup
     from app.main import create_app
 
     saved = json.loads((CONTRACTS / f"schemas/backend-v{__version__}.openapi.json").read_text())
     assert saved == create_app(Settings(_env_file=None)).openapi()
     for filename, model in {
         "claims-check-request-v1.schema.json": ClaimsRequest,
+        "catalogue-claims-request-v1.schema.json": CatalogueClaimsRequest,
+        "catalogue-claims-response-v1.schema.json": CatalogueClaimsResponse,
         "claims-check-response-v1.schema.json": ClaimsResponse,
         "claims-rules-v1.schema.json": ClaimsRulesResponse,
         "claims-unavailable-v1.schema.json": ClaimsUnavailable,
@@ -108,6 +113,9 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "ai-active-v1.schema.json": ActiveResponse,
         "ai-activate-request-v1.schema.json": ActivateRequest,
         "ai-activate-response-v1.schema.json": ActivationResponse,
+        "machine-label-contribution-v1.schema.json": MachineContribution,
+        "machine-label-lookup-v1.schema.json": MachineObservationLookup,
+        "live-product-lookup-v1.schema.json": LiveLookup,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

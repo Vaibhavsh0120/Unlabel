@@ -1,22 +1,19 @@
 # Unlabel backend
 
-Checkpoint **14 October 2026**: Python **3.12+**, **27 API paths /
-29 operations**. Canonical version is project.version in [pyproject.toml](pyproject.toml).
-The current contract retains bounded photo extraction/private proposals,
-243 sourced research observations, 120 separate image descriptors and the
-24,641-barcode public catalogue. Six ingredient-function entries remain partial.
+Checkpoint **15 October 2026**: Python **3.12+**. Canonical version is
+project.version in [pyproject.toml](pyproject.toml); current routes are exported in
+[OpenAPI](../contracts/schemas/backend-v0.14.0.openapi.json).
 
-The [0.12 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md) and
-[dated production recheck](../docs/research/BACKEND_V0_12_0_FRONTEND061_PRODUCTION.json)
-record the preceding 389 read-only hosted checks. Authenticated extraction/write
-and physical-device evidence remain separate. The
-[current deletion release](../docs/planning/BACKEND_V0_13_0_REVIEW.md) adds
-recent-auth owner-only account cleanup and permanent deletion markers. Verified
-Google scanner/private-library compatibility and existing snapshot schemas remain.
-Source `bd06bfb` passed CI and deployed; 13 hosted checks and the backend source
-release are recorded in the current review. See
-[maintenance](../docs/planning/MAINTENANCE_2026_10_12.md)
-and [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
+The [0.14 review](../docs/planning/BACKEND_V0_14_0_REVIEW.md) adds automatic,
+immutable machine-unverified package observations, sourced catalogue claim
+comparison and optional session-only NutriGraph lookup. Original catalogue facts,
+243 research observations, 120 image descriptors and 24,641 barcodes remain.
+NutriGraph stays disabled until a server-side trial key is configured; its facts
+never enter the permanent catalogue or private libraries.
+
+[Account deletion](../docs/planning/BACKEND_V0_13_0_REVIEW.md) and prior hosted
+receipts retain their dated scope. Current validation, publication and physical
+acceptance are separate in the [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
 
 ## Run locally
 
@@ -112,7 +109,7 @@ The lookup wrapper identifies `assessment_basis: open_food_facts_community_data`
 The POST request requires:
 
 - `schema_version: "1"`, UUID `client_request_id`/`capture_session_id`, strict integer `input_revision`, and real boolean `confirmed: true`.
-- `completeness: complete` or `partial`, plus 1–64 nutrient rows with unique bounded ASCII `row_id` values and bounded `table_id` values.
+- `completeness: complete` or `partial`, plus 1â€“64 nutrient rows with unique bounded ASCII `row_id` values and bounded `table_id` values.
 - Each row's `nutrient`, finite nonnegative numeric `value` or null, `unit`, `basis`, and `preparation: as_sold` or `as_prepared`.
 - A quantity basis has positive amount and `g`/`mL` unit. A serving has both amount/unit or both null. Unknown serving size stays per serving.
 
@@ -128,7 +125,7 @@ Use the validated [synthetic request](../contracts/examples/nutrition-normalize-
 
 Check `/v1/meta.capabilities.claim_checks` before submitting to `/v1/claims/check`. A valid loaded knowledge store reports `knowledge_version: claims-2026-10-06.1`; invalid or missing knowledge disables only claim/rule/evidence access. A verified package also exposes the two-file hash/length receipt in `knowledge_artifact`; direct local canonical-source loading has a null artifact. Health, live OFF reads and catalogue operations retain their independent readiness.
 
-`ClaimsRequest` extends the strict confirmed normalization request. Supply 1–16 unique identified claims (`claim_id`, recognized `claim`, required nullable `region_id`), `selected_table_id` and `context` with food category, solid/liquid form and preparation. The selected table must exist and match the confirmed context for an applicable assessment. UUID request/session IDs, correction revision, `confirmed: true`, completeness and 1–64 nutrient rows remain required. Photos, raw OCR, personal profiles and arbitrary claim text are excluded. Normalization, claim checks and community intake use the same **32 KiB** actual body, strict numeric-token and redacted-422 handling.
+`ClaimsRequest` extends the strict confirmed normalization request. Supply 1â€“16 unique identified claims (`claim_id`, recognized `claim`, required nullable `region_id`), `selected_table_id` and `context` with food category, solid/liquid form and preparation. The selected table must exist and match the confirmed context for an applicable assessment. UUID request/session IDs, correction revision, `confirmed: true`, completeness and 1â€“64 nutrient rows remain required. Photos, raw OCR, personal profiles and arbitrary claim text are excluded. Normalization, claim checks and community intake use the same **32 KiB** actual body, strict numeric-token and redacted-422 handling.
 
 | Reviewed claim | Selected numerical criterion |
 | --- | --- |
@@ -250,8 +247,8 @@ and [glossary](../contracts/examples/ingredient-glossary-v1.synthetic.json).
 Settings load the ignored `.env` at this backend root; environment variables override the file. Do not overwrite a teammate's existing file. `.env.example` contains safe defaults. Current settings:
 
 - `OFF_USER_AGENT`: public application identity, never a user token.
-- `OFF_TIMEOUT_SECONDS`: total lookup deadline (default 8; bounded 1–15 seconds).
-- `OFF_MAX_RESPONSE_BYTES`: decoded response budget (default 512 KiB; bounded 1 KiB–1 MiB).
+- `OFF_TIMEOUT_SECONDS`: total lookup deadline (default 8; bounded 1â€“15 seconds).
+- `OFF_MAX_RESPONSE_BYTES`: decoded response budget (default 512 KiB; bounded 1 KiBâ€“1 MiB).
 - `CORS_ORIGINS`: JSON array of exact HTTP(S) website origins, default `[]`; no wildcard or credentialed CORS.
 - `CATALOGUE_DIRECTORY`: read-only index directory, relative to backend or absolute; empty disables catalogue. Local generated index is `storage/runtime/india`; hosted build output is `app/catalogue/data`.
 - `CATALOGUE_REQUIRE_RECEIPT`: `false` for an explicitly configured local runtime index; `true` for hosted bundles. Startup verifies the SQLite hash/size, receipt and manifest before enabling catalogue access. Invalid/missing files disable the catalogue while health/live APIs remain available.
@@ -259,7 +256,7 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `COMMUNITY_PROJECT_ID`: exact Firebase project; configured project is `unlabel-india-catalogue`.
 - `COMMUNITY_DATABASE_ID`: literal `unlabel`.
 - `COMMUNITY_SERVICE_ACCOUNT_JSON`: backend-only `SecretStr`, bounded to 32 KiB; no ambient credential fallback.
-- `COMMUNITY_ACTOR_SECRET`: backend-only `SecretStr`, 32–1024 characters; keyed ownership hashes, never public.
+- `COMMUNITY_ACTOR_SECRET`: backend-only `SecretStr`, 32â€“1024 characters; keyed ownership hashes, never public.
 - `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source/bundle directory, relative to backend or absolute. Local default uses `app/claims/data` when it exists, otherwise canonical root `knowledge/`. An existing invalid packaged bundle never falls back to source. With `VERCEL=1`, the default selects the packaged path and every selected directory requires a verified knowledge receipt, including an explicit override; no source fallback is permitted.
 
 OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Optional Gemini/OpenAI photo reading now uses server-only settings, scanner authentication, explicit consent and shared bounded admission. See [AI routing](../docs/architecture/AI_ROUTING.md) for keys and global selection. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication.

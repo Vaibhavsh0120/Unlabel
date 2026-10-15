@@ -2,9 +2,11 @@
 // Fixture JSON/PNG are copied into the separate preview output by the local
 // review script. They are owned synthetic/public catalogue observations.
 import 'dart:convert';
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:http/http.dart' as http;
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/capture/automatic_label_reader.dart';
@@ -12,13 +14,18 @@ import 'package:unlabel/core/capture/live_camera.dart';
 import 'package:unlabel/core/capture/barcode_reader.dart';
 import 'package:unlabel/core/capture/vision_photo.dart';
 import 'package:unlabel/core/capture/local_ocr.dart';
+import 'package:unlabel/core/accounts/account_auth.dart';
+import 'package:unlabel/core/widgets/brand_mark.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
-import 'package:unlabel/features/scanner/presentation/extracted_product_page.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
-import 'package:unlabel/features/scanner/presentation/researched_product_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
+import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
+import 'package:unlabel/features/scanner/presentation/mobile_navigation.dart';
 import 'package:unlabel/features/scanner/presentation/product_results_layout.dart';
+import 'package:unlabel/features/account/presentation/sign_in_methods_view.dart';
+import 'package:unlabel/features/account/presentation/profile_avatar.dart';
+import 'package:unlabel/features/scanner/presentation/ui_components.dart';
 import 'package:zxing_lib/oned.dart';
 import 'package:zxing_lib/zxing.dart';
 
@@ -103,19 +110,28 @@ class _Camera extends LiveCamera {
   @override
   Future<Uint8List> capture() async => photo;
   @override
-  Widget buildPreview() => Image.memory(photo, fit: BoxFit.contain);
+  Future<Uint8List> captureFramed(Size viewport) async => photo;
+  @override
+  Widget buildPreview() => Image.memory(photo, fit: BoxFit.cover);
 }
 
 class _Reader extends AutomaticLabelReader {
-  _Reader(this.label)
+  _Reader(this.label, {this.pending = false})
     : super(UnlabelRepository(baseUrl: 'https://example.invalid'));
   final ExtractedLabel label;
+  final bool pending;
   @override
   Future<AutomaticScanResult> read(
     Map<int, Uint8List> photos, {
     required Future<bool> Function() allowCloud,
-  }) async =>
-      AutomaticScanResult(label: label, capturedSlots: photos.keys.toList());
+  }) async {
+    if (pending) await Completer<void>().future;
+    return AutomaticScanResult(
+      label: label,
+      capturedSlots: photos.keys.toList(),
+    );
+  }
+
   @override
   void dispose() {
     repository.close();
@@ -125,6 +141,7 @@ class _Reader extends AutomaticLabelReader {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SemanticsBinding.instance.ensureSemantics();
   final base = Uri.base.replace(query: '', fragment: '');
   Future<JsonMap> json(String name) async =>
       jsonDecode((await http.get(base.resolve('fixtures/$name.json'))).body)
@@ -135,15 +152,24 @@ Future<void> main() async {
   final photo = (await http.get(base.resolve('fixtures/label.png'))).bodyBytes;
   final dark = Uri.base.queryParameters['theme'] == 'dark';
   final screen = Uri.base.queryParameters['screen'] ?? 'report';
+  final scale = double.tryParse(Uri.base.queryParameters['scale'] ?? '') ?? 1;
   if (screen == 'diagnostics') {
     runApp(
-      MaterialApp(home: Scaffold(body: FutureBuilder<JsonMap>(
-        future: diagnostics(photo),
-        builder: (_, snapshot) => SelectableText(jsonEncode(
-          snapshot.hasError ? {'error_type': snapshot.error.runtimeType.toString()} :
-          snapshot.data ?? {'status': 'Reading owned synthetic fixture'},
-        )),
-      ))),
+      MaterialApp(
+        home: Scaffold(
+          body: FutureBuilder<JsonMap>(
+            future: diagnostics(photo),
+            builder: (_, snapshot) => SelectableText(
+              jsonEncode(
+                snapshot.hasError
+                    ? {'error_type': snapshot.error.runtimeType.toString()}
+                    : snapshot.data ??
+                          {'status': 'Reading owned synthetic fixture'},
+              ),
+            ),
+          ),
+        ),
+      ),
     );
     return;
   }
@@ -157,32 +183,157 @@ Future<void> main() async {
     notifications: () {},
   );
   final store = LocalStore(preferences: _Preferences());
-  Widget extracted() =>
-      ExtractedProductPage(label: label, photo: photo, navigation: navigation);
+  Widget extracted() => ProductInfoPage.extracted(
+    label: label,
+    photo: photo,
+    navigation: navigation,
+  );
   runApp(
     MaterialApp(
       title: 'Unlabel local synthetic visual review',
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(scale)),
+        child: child!,
+      ),
       theme: UnlabelTheme.forBrightness(
         dark ? Brightness.dark : Brightness.light,
       ),
       home: switch (screen) {
+        'methods' => Scaffold(
+          body: SignInMethodsView(
+            identity: const AccountIdentity(
+              uid: 'synthetic-visual-review-only',
+              email: 'test@example.invalid',
+              googleEmail: 'test@example.invalid',
+              providers: {'google.com', 'password'},
+            ),
+            busy: false,
+            onClose: () {},
+            onGoogle: () {},
+            onPassword: () {},
+            onDelete: () {},
+            onChangeEmail: () {},
+            onChangePassword: () {},
+            onSwitchGoogle: () {},
+          ),
+        ),
         'extracted' => extracted(),
-        'research' => ResearchedProductPage(
+        'research' => ProductInfoPage.research(
           product: product,
           navigation: navigation,
         ),
-        'scan' => Builder(
-          builder: (context) => ScanLandingPage(
-            camera: _Camera(photo),
-            reader: _Reader(label),
-            pickPhoto: () async => photo,
-            onResult: (_, _) async =>
-                Navigator.of(context)
-                    .push<void>(MaterialPageRoute(builder: (_) => extracted())),
-          ),
+        'scan' || 'scan-shell' => Builder(
+          builder: (context) {
+            final page = ScanLandingPage(
+              camera: _Camera(photo),
+              reader: _Reader(
+                label,
+                pending: Uri.base.queryParameters['processing'] == 'true',
+              ),
+              pickPhoto: () async => photo,
+              onResult: (_, _) async => Navigator.of(context)
+                  .push<void>(MaterialPageRoute(builder: (_) => extracted())),
+            );
+            if (screen != 'scan-shell') return page;
+            final desktop =
+                MediaQuery.sizeOf(context).width >= 1200 && scale <= 1.5;
+            // Real navigation components and production breakpoints; callbacks
+            // are inert in this synthetic fixture, not a navigation E2E claim.
+            return Row(
+              children: [
+                if (desktop)
+                  DesktopNavigation(
+                    selectedIndex: 1,
+                    onSelect: (_) {},
+                    onHistory: () {},
+                    onInsights: () {},
+                  ),
+                Expanded(
+                  child: Scaffold(
+                    extendBody: true,
+                    appBar: desktop
+                        ? DesktopTopBar(
+                            onSearch: () {},
+                            onProfile: () {},
+                            onNotifications: () {},
+                          )
+                        : AppBar(
+                            toolbarHeight: scale > 1.5 ? 112 : 64,
+                            title: BrandHomeButton(
+                              onPressed: () {},
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          'Unlabel',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium
+                                              ?.copyWith(fontSize: 30),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      if (scale <= 1.5)
+                                        const BrandLeaf(size: 30),
+                                    ],
+                                  ),
+                                  Text(
+                                    'Know Beyond the Label',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              IconButton(
+                                constraints: const BoxConstraints(
+                                  minWidth: 48,
+                                  minHeight: 48,
+                                ),
+                                onPressed: () {},
+                                tooltip: 'Search products',
+                                icon: const FeatureIcon('magnifer'),
+                              ),
+                              IconButton(
+                                constraints: const BoxConstraints(
+                                  minWidth: 48,
+                                  minHeight: 48,
+                                ),
+                                onPressed: () {},
+                                tooltip: 'Profile',
+                                icon: const ExcludeSemantics(
+                                  child: AccountAvatar(size: 40),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
+                          ),
+                    body: page,
+                    bottomNavigationBar: desktop
+                        ? null
+                        : MobileNavigation(
+                            selectedIndex: 1,
+                            onDestinationSelected: (_) {},
+                          ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
-        _ => ReportPage(
+        _ => ProductInfoPage.report(
           report: report,
           store: store,
           onChanged: () {},

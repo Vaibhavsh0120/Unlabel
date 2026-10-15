@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'camera_framing.dart';
+
 /// The small platform boundary keeps camera lifecycle tests off real hardware.
 abstract interface class LiveCameraPlatform {
   bool get isSupported;
@@ -23,6 +25,10 @@ abstract interface class LiveCameraSession {
   Future<XFile> takePicture();
   Widget buildPreview();
   Future<void> dispose();
+}
+
+abstract interface class LiveCameraControls {
+  Future<void> setTorch(bool enabled);
 }
 
 class LiveCameraException implements Exception {
@@ -56,11 +62,20 @@ class LiveCamera extends ChangeNotifier {
   bool _ready = false;
   String? _error;
   int _revision = 0;
+  List<CameraDescription> _cameras = const [];
+  CameraDescription? _selected;
+  String? _preferredName;
+  bool _torchOn = false, _torchUnavailable = false;
 
   bool get busy => _busy;
   bool get ready => !_disposed && _wanted && _ready;
   String? get error => _error;
-  double get aspectRatio => ready ? _session!.aspectRatio : 1;
+  double get aspectRatio =>
+      ready && _session != null ? _session!.aspectRatio : 1;
+  bool get canSwitchCamera => ready && !_busy && _cameras.length > 1;
+  bool get canToggleTorch =>
+      ready && !_busy && !_torchUnavailable && _session is LiveCameraControls;
+  bool get torchOn => _torchOn;
 
   Future<void> start() {
     if (_disposed || ready) return Future<void>.value();
@@ -89,10 +104,16 @@ class LiveCamera extends ChangeNotifier {
             'No camera was found. Connect a camera and retry, or choose a photo.',
           );
         }
+        _cameras = List.unmodifiable(cameras);
         final description = cameras.firstWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.back,
-          orElse: () => cameras.first,
+          (camera) => camera.name == _preferredName,
+          orElse: () => cameras.firstWhere(
+            (camera) => camera.lensDirection == CameraLensDirection.back,
+            orElse: () => cameras.first,
+          ),
         );
+        _selected = description;
+        _torchUnavailable = false;
         final session = _platform.createSession(
           description,
           enableAudio: false,
@@ -154,6 +175,68 @@ class LiveCamera extends ChangeNotifier {
 
   Future<XFile> captureFile() => _capture<XFile>((file) async => file);
 
+  Future<Uint8List> captureFramed(Size viewport) async {
+    final ratio = aspectRatio;
+    final revision = _revision;
+    // camera_web mirrors both the preview and JPEG for a non-rear lens. Native
+    // stills are upright/unmirrored; only their live preview needs unmirroring.
+    final unmirror =
+        kIsWeb &&
+        _selected != null &&
+        _selected!.lensDirection != CameraLensDirection.back;
+    final bytes = await capture();
+    if (_revision != revision || !ready || aspectRatio != ratio) {
+      throw _cancelled;
+    }
+    final framed = await cropCameraPhoto(
+      bytes,
+      viewport,
+      previewAspectRatio: ratio,
+      unmirror: unmirror,
+    );
+    if (_revision != revision || !ready || aspectRatio != ratio) {
+      throw _cancelled;
+    }
+    return framed;
+  }
+
+  Future<void> switchCamera() async {
+    if (!canSwitchCamera) return;
+    final index = _cameras.indexWhere((item) => item.name == _selected?.name);
+    _preferredName = _cameras[(index + 1) % _cameras.length].name;
+    final stopping = stop();
+    final revision = _revision;
+    await stopping;
+    if (!_disposed && revision == _revision) await start();
+  }
+
+  Future<void> toggleTorch() async {
+    if (!canToggleTorch) return;
+    final revision = _revision;
+    final enabled = !_torchOn;
+    _busy = true;
+    _error = null;
+    _notify();
+    await _serialize<void>(() async {
+      try {
+        if (!_current(revision)) return;
+        await (_session! as LiveCameraControls).setTorch(enabled);
+        if (_current(revision)) _torchOn = enabled;
+      } catch (_) {
+        if (_current(revision)) {
+          _torchUnavailable = true;
+          _error =
+              'Flash is unavailable on this camera. Use brighter lighting.';
+        }
+      } finally {
+        if (_current(revision)) {
+          _busy = false;
+          _notify();
+        }
+      }
+    });
+  }
+
   Future<T> _capture<T>(Future<T> Function(XFile file) read) {
     if (!ready || _busy) {
       return Future<T>.error(
@@ -193,13 +276,33 @@ class LiveCamera extends ChangeNotifier {
     'Camera capture was cancelled.',
   );
 
-  Widget buildPreview() =>
-      ready ? _session!.buildPreview() : const SizedBox.shrink();
+  Widget buildPreview() {
+    if (!ready) return const SizedBox.shrink();
+    var preview = _session!.buildPreview();
+    if (_selected!.lensDirection != CameraLensDirection.back) {
+      // Food-label text should read normally on either lens, as in the capture.
+      preview = Transform.scale(scaleX: -1, child: preview);
+    }
+    return ClipRect(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: aspectRatio * 1000,
+          height: 1000,
+          child: preview,
+        ),
+      ),
+    );
+  }
 
   bool _current(int revision) => !_disposed && _wanted && revision == _revision;
 
   void _sessionChanged() {
-    if (!ready || !_session!.hasError) return;
+    if (!ready) return;
+    if (!_session!.hasError) {
+      _notify(); // Orientation/preview dimensions can change while mounted.
+      return;
+    }
     _revision++;
     _ready = false;
     _busy = false;
@@ -217,6 +320,7 @@ class LiveCamera extends ChangeNotifier {
   Future<void> _release() async {
     final session = _session;
     _session = null;
+    _torchOn = false;
     if (session == null) return;
     session.changes.removeListener(_sessionChanged);
     try {
@@ -300,7 +404,8 @@ class PluginLiveCameraPlatform implements LiveCameraPlatform {
 Future<List<CameraDescription>> availableCamerasFromPlugin() =>
     availableCameras();
 
-class _PluginLiveCameraSession implements LiveCameraSession {
+class _PluginLiveCameraSession
+    implements LiveCameraSession, LiveCameraControls {
   _PluginLiveCameraSession(this.controller);
 
   final CameraController controller;
@@ -310,13 +415,29 @@ class _PluginLiveCameraSession implements LiveCameraSession {
   @override
   bool get hasError => controller.value.hasError;
   @override
-  double get aspectRatio => controller.value.aspectRatio;
+  double get aspectRatio {
+    final value = controller.value;
+    if (kIsWeb) return value.aspectRatio;
+    final orientation =
+        value.previewPauseOrientation ??
+        value.lockedCaptureOrientation ??
+        value.deviceOrientation;
+    return orientation == DeviceOrientation.landscapeLeft ||
+            orientation == DeviceOrientation.landscapeRight
+        ? value.aspectRatio
+        : 1 / value.aspectRatio;
+  }
+
   @override
   Future<void> initialize() => controller.initialize();
   @override
   Future<XFile> takePicture() => controller.takePicture();
   @override
-  Widget buildPreview() => CameraPreview(controller);
+  Widget buildPreview() =>
+      kIsWeb ? controller.buildPreview() : CameraPreview(controller);
+  @override
+  Future<void> setTorch(bool enabled) =>
+      controller.setFlashMode(enabled ? FlashMode.torch : FlashMode.off);
   @override
   Future<void> dispose() => controller.dispose();
 }

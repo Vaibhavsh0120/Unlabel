@@ -1,0 +1,27 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "barcode": {
+      "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+      "title": "Barcode",
+      "type": "string"
+    },
+    "claims": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Claims",
+      "type": "array"
+    }
+  },
+  "required": [
+    "barcode",
+    "claims"
+  ],
+  "title": "CatalogueClaimsRequest",
+  "type": "object"
+}

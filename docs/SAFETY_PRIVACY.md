@@ -1,11 +1,17 @@
 # Safety, evidence and privacy boundaries
 
 Current source versions come from [frontend pubspec](../frontend/pubspec.yaml)
-and [backend pyproject](../backend/pyproject.toml). The new auth/profile scope and
-private account deletion have separate [frontend](planning/FRONTEND_V0_9_0_REVIEW.md)
-and [backend](planning/BACKEND_V0_13_0_REVIEW.md) reviews. Final exact-source hosted/native
-verification is pending. Earlier read-only backend checks exclude authenticated
-extraction/staging; physical-device accuracy remains separate.
+and [backend pyproject](../backend/pyproject.toml). The scanner and automatic
+machine-observation update has separate [frontend](planning/FRONTEND_V0_10_0_REVIEW.md)
+and [backend](planning/BACKEND_V0_14_0_REVIEW.md) reviews. Source, hosted behavior,
+native publication and physical-device accuracy retain separate evidence.
+
+After cloud consent v2, exact-identity-compatible AI back-label facts may be
+shared automatically as unverified observations. No per-reading confirmation is
+required; this never establishes human confirmation, current-package safety or
+permission to replace original evidence. Provider/date and conflicts remain
+visible. NutriGraph facts are optional live display only, expire within 24 hours,
+and do not enter permanent catalogue, reports or account sync.
 
 Confirmed current-label and historical source facts retain distinct evidence.
 Analysis needs no account; automatic storage failures change only their separate
@@ -55,7 +61,7 @@ Each finding references confirmed input fields, rule version and reviewed source
 
 Reviewed definitions under `knowledge/` drive the Python evaluator; no second Dart rule engine is required. Rule activation requires applicability/effective-date review and recorded reuse rights. Changed evidence makes affected saved reports dated until reanalysis. OFF supplies community facts/computed insights, not official FSSAI verification; record-only findings and package-confirmed findings must remain distinct.
 
-AI cannot invent missing quantities, decide allergy safety, alter findings or add unsupported citations. A learned extraction candidate is subject to user correction and deterministic validation, not an authoritative verdict.
+AI cannot invent missing quantities, decide allergy safety, alter findings or add unsupported citations. A learned extraction candidate remains unverified and must pass deterministic identity and field validation before automatic sharing; it is never an authoritative verdict.
 
 ## Data location and transfers
 

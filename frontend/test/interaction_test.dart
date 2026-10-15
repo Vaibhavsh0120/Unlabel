@@ -10,7 +10,7 @@ import 'package:unlabel/core/interaction/ui_feedback.dart';
 import 'package:unlabel/core/models/app_failure.dart';
 import 'package:unlabel/core/models/product_report.dart';
 import 'package:unlabel/core/storage/local_store.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/ui_components.dart';
 
 const _artwork = CornerArtwork(
@@ -245,7 +245,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: UnlabelTheme.forBrightness(Brightness.light),
-        home: ReportPage(report: report, store: store, onChanged: () {}),
+        home: ProductInfoPage.report(
+          report: report,
+          store: store,
+          onChanged: () {},
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -281,7 +285,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: UnlabelTheme.forBrightness(Brightness.light),
-        home: ReportPage(report: _report(), store: store, onChanged: () {}),
+        home: ProductInfoPage.report(
+          report: _report(),
+          store: store,
+          onChanged: () {},
+        ),
       ),
     );
     await tester.pumpAndSettle();

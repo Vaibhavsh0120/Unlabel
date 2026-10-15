@@ -51,6 +51,19 @@
       "const": true,
       "title": "Privacy Consent",
       "type": "boolean"
+    },
+    "catalogue_contribution": {
+      "anyOf": [
+        {
+          "const": "machine-unverified-v1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Catalogue Contribution"
     }
   },
   "required": [

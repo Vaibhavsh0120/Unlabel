@@ -10,7 +10,7 @@ import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/compare_page.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 
 JsonMap _fixture(String name) =>
     jsonDecode(File('../contracts/examples/$name').readAsStringSync())

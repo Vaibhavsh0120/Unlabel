@@ -12,7 +12,7 @@ import 'package:unlabel/core/accounts/account_data.dart';
 import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
-import 'package:unlabel/features/scanner/presentation/report_page.dart';
+import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 
 class MemoryPreferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -337,7 +337,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: UnlabelTheme.forBrightness(Brightness.light),
-        home: ReportPage(report: _report(), store: store, onChanged: () {}),
+        home: ProductInfoPage.report(
+          report: _report(),
+          store: store,
+          onChanged: () {},
+        ),
       ),
     );
     await tester.pump();
@@ -366,7 +370,11 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.light),
-          home: ReportPage(report: _report(), store: store, onChanged: () {}),
+          home: ProductInfoPage.report(
+            report: _report(),
+            store: store,
+            onChanged: () {},
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -404,7 +412,11 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: UnlabelTheme.forBrightness(Brightness.light),
-          home: ReportPage(report: _report(), store: store, onChanged: () {}),
+          home: ProductInfoPage.report(
+            report: _report(),
+            store: store,
+            onChanged: () {},
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -525,7 +537,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: UnlabelTheme.forBrightness(Brightness.dark),
-        home: ReportPage(
+        home: ProductInfoPage.report(
           report: _report(),
           store: LocalStore(preferences: MemoryPreferences()),
           onChanged: () {},

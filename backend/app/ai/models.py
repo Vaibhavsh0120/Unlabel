@@ -217,6 +217,9 @@ class ExtractionImage(AiModel):
 class ExtractionRequest(AiModel):
     images: list[ExtractionImage] = Field(min_length=1, max_length=3, repr=False)
     privacy_consent: Annotated[Literal[True], BeforeValidator(require_confirmation)]
+    # Versioned terms acknowledgement from the app, not confirmation of facts.
+    # Older clients retain their explicitly private extraction behavior.
+    catalogue_contribution: Literal["machine-unverified-v1"] | None = None
 
     @model_validator(mode="after")
     def unique_photos(self) -> Self:

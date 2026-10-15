@@ -78,6 +78,56 @@ class _NoBarcode extends BarcodeReader {
   Future<BarcodeDetection?> read(Uint8List bytes) async => null;
 }
 
+class _CloudRepository extends _Repository {
+  final queries = <String>[];
+  @override
+  Future<ExtractedLabel> extractPhotos(
+    Map<int, Uint8List> photos, {
+    Future<void>? abortTrigger,
+  }) async {
+    cloudCalls++;
+    return ExtractedLabel.fromJson(
+      jsonDecode(
+        File('../contracts/examples/ai-extraction-v1.synthetic.json')
+            .readAsStringSync(),
+      ) as JsonMap,
+    );
+  }
+
+  @override
+  Future<ResearchSearchPage> searchResearch(
+    String query, {
+    String? cursor,
+  }) async {
+    queries.add('research:$query');
+    return ResearchSearchPage.empty();
+  }
+
+  @override
+  Future<SearchPage> search(String query, {String? cursor}) async {
+    queries.add('catalogue:$query');
+    return SearchPage.fromJson({
+      'schema_version': '1',
+      'search_version': 'catalogue-search-v1',
+      'status': 'ready',
+      'normalized_query': query,
+      'warnings': <String>[],
+      'candidates': [
+        for (final size in ['300 g', '500 g'])
+          {
+            'identity': {
+              'barcode': '8901764051258',
+              'name': 'Synthetic oats',
+              'brands': 'Synthetic brand',
+              'quantity_text': size,
+            },
+            'source_id': 'synthetic',
+          },
+      ],
+    });
+  }
+}
+
 class _PendingRepository extends _Repository {
   final started = Completer<void>();
   final reading = Completer<ExtractedLabel>();
@@ -96,6 +146,28 @@ class _PendingRepository extends _Repository {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('front/back reading does not stop at a known barcode and retains package-size choices', () async {
+    final repository = _CloudRepository();
+    final reader = AutomaticLabelReader(repository);
+    addTearDown(reader.dispose);
+    addTearDown(repository.close);
+    final result = await reader.read({
+      0: await barcodePhoto(),
+      1: await barcodePhoto(),
+    }, allowCloud: () async => true);
+    expect(repository.cloudCalls, 1);
+    expect(repository.lookups, 0);
+    expect(result.report, isNull);
+    expect(result.label?.ingredients, 'Oats, milk');
+    expect(repository.queries, [
+      'research:Synthetic oats',
+      'catalogue:Synthetic oats',
+    ]);
+    expect(result.catalogueCandidates.map((item) => item.quantity), [
+      '300 g',
+      '500 g',
+    ]);
+  });
   test('EAN photo and perpendicular photo decode valid identity and actual anchors', () async {
     final reader = BarcodeReader();
     addTearDown(reader.dispose);
@@ -132,7 +204,10 @@ void main() {
     repository.missing = true;
     final unknown = await reader.read({2: photo}, allowCloud: consent);
     expect(unknown.barcode, '8901764051258');
-    expect(unknown.useful, isFalse);
+    expect(
+      unknown.useful,
+      isTrue,
+    ); // A barcode can still open optional live sources.
     expect(repository.cloudCalls, 0);
     expect(consentCalls, 0);
   });

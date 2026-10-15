@@ -1,23 +1,17 @@
 # Current components and remaining work
 
-Checkpoint: **13 October 2026**. Canonical versions are in
-[frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml).
-The frontend retains automatic reading, sourced reports/comparison, libraries and
-twenty daily Insights, adding reference auth, linked Google/password methods,
-private thumbnail editing, optional gender/default avatars and confirmed account
-deletion. Backend adds recent-auth owner cleanup and permanent retry/admission
-markers; existing public/library/AI payload contracts stay intact.
-
-The user authorized these features and component bumps after the initial
-maintenance and later authorized completion/push from main, superseding the hold.
-Firebase's hosted handler completes reset with a fixed app sign-in return; the
-app keeps four auth states. Login/signup share themed artwork and the supplied
-desktop/phone composition. Local checks and final hosted/native acceptance stay
-separate. [Audit](MAINTENANCE_2026_10_12.md) · [Release ledger](CONTROLLED_RELEASES.md) ·
-[Frontend review](FRONTEND_V0_9_0_REVIEW.md) · [Backend review](BACKEND_V0_13_0_REVIEW.md).
+Current working release: **frontend 0.10.0+14 / backend 0.14.0**, dated
+15 October 2026. The scanner/reference account update adds camera framing,
+Barcode-first capture, AI front/back matches, automatic unverified observations,
+optional live NutriGraph lookup and one ProductInfoPage. Its visual redesign is
+explicitly reserved for the next update.
+[Frontend review](FRONTEND_V0_10_0_REVIEW.md) · [Backend review](BACKEND_V0_14_0_REVIEW.md) ·
+[Release ledger](CONTROLLED_RELEASES.md).
 
 | Remaining gate | Owner/evidence needed |
 | --- | --- |
+| NutriGraph activation/coverage | User sent trial email; key and India/EAN-13 response pending. Keep disabled until configured |
+| Product Info visual redesign | User explicitly deferred to the next update; one shared destination is implemented now |
 | Physical barcode/OCR accuracy and shopping latency | Android/iPhone tests with dated package samples and measured results |
 | LiveContainer import and execution | Actual iPhone/LiveContainer test of the published device IPA |
 | Production Android signing | Stable private demo key is registered/restored/verified; production release signing remains separate |

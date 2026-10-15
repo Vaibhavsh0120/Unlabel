@@ -137,6 +137,70 @@ Future<AccountController> controller(
 }
 
 void main() {
+  test(
+    'guest name persists locally and never enters an account library',
+    () async {
+      final prefs = MemoryPreferences(), auth = FakeAuth(), api = FakeSync();
+      final first = await controller(prefs, auth, api);
+      await first.updateDisplayName('  Local reader  ');
+      expect(first.displayName, 'Local reader');
+      expect(first.localData, isNull);
+      expect(api.fetches, 0);
+      expect(api.mutations, isEmpty);
+      first.dispose();
+      final restored = await controller(prefs, auth, api);
+      addTearDown(restored.dispose);
+      addTearDown(auth.dispose);
+      expect(restored.displayName, 'Local reader');
+      auth.setUser('account-a');
+      await restored.refreshSync();
+      expect(restored.displayName, isNull);
+      expect(restored.localData!.displayName, isNull);
+      auth.setUser(null);
+      expect(restored.displayName, 'Local reader');
+      await expectLater(
+        restored.updateDisplayName('bad\nname'),
+        throwsA(failure('invalid_input')),
+      );
+      expect(restored.displayName, 'Local reader');
+      prefs.fail = true;
+      await expectLater(
+        restored.updateDisplayName('Unsaved'),
+        throwsA(failure('local_storage')),
+      );
+      expect(restored.displayName, 'Local reader');
+      prefs.fail = false;
+      await restored.updateDisplayName('');
+      expect(restored.displayName, isNull);
+    },
+  );
+
+  testWidgets('guest profile allows a device-only display name', (
+    tester,
+  ) async {
+    final prefs = MemoryPreferences(), auth = FakeAuth(), api = FakeSync();
+    final value = await controller(prefs, auth, api);
+    addTearDown(value.dispose);
+    addTearDown(auth.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ProfilePage(controller: value, onContinue: () {}, onAbout: () {}),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('profile-edit')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('edit-profile-name')),
+      'Local reader',
+    );
+    await tester.tap(find.byKey(const ValueKey('edit-profile-save')));
+    await tester.pumpAndSettle();
+    expect(find.text('Local reader'), findsOneWidget);
+    expect(api.mutations, isEmpty);
+    expect(api.fetches, 0);
+  });
+
   group('strict personal contract', () {
     test('parses the real backend sync snapshot export', () {
       final raw = jsonDecode(
@@ -840,7 +904,7 @@ void main() {
       );
       await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
       await tester.pumpAndSettle();
-      expect(find.text('Create your account'), findsOneWidget);
+      expect(find.byKey(const ValueKey('auth-name')), findsOneWidget);
       expect(auth.signIns, 0);
       await tester.ensureVisible(
         find.byKey(const ValueKey('auth-mode-switch')),
@@ -874,7 +938,7 @@ void main() {
       );
       await tester.tap(find.byKey(const ValueKey('auth-mode-switch')));
       await tester.pumpAndSettle();
-      expect(find.text('Create your account'), findsOneWidget);
+      expect(find.byKey(const ValueKey('auth-name')), findsOneWidget);
       for (final entry in {
         'auth-name': 'Synthetic Scanner',
         'auth-email': 'synthetic@example.invalid',

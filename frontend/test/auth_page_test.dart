@@ -365,6 +365,53 @@ void main() {
     },
   );
 
+  for (final create in [false, true]) {
+    testWidgets('Safari browser chrome keeps the full auth artwork $create', (
+      tester,
+    ) async {
+      final controller = _Controller();
+      addTearDown(controller.dispose);
+      await _open(
+        tester,
+        controller,
+        size: const Size(390, 664),
+        create: create,
+      );
+      final header = find.byKey(const ValueKey('auth-fixed-header'));
+      final before = tester.getSize(header);
+      tester.view.physicalSize = const Size(390, 640);
+      await tester.pumpAndSettle();
+      expect(tester.getSize(header), before);
+      expect(before.height, greaterThan(280));
+      expect(tester.widget<AuthScene>(find.byType(AuthScene)).showCopy, isTrue);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  testWidgets('touching blank card space dismisses the keyboard', (
+    tester,
+  ) async {
+    final controller = _Controller();
+    addTearDown(controller.dispose);
+    await _open(tester, controller);
+    await _fill(tester, 'auth-email', 'reader@example.invalid');
+    expect(_input(tester, 'auth-email').focusNode!.hasFocus, isTrue);
+    final card = find.byKey(const ValueKey('auth-form-card'));
+    await tester.tapAt(
+      Offset(12, tester.getCenter(find.byKey(const ValueKey('auth-email'))).dy),
+    );
+    await tester.pumpAndSettle();
+    expect(_input(tester, 'auth-email').focusNode!.hasFocus, isFalse);
+    expect(tester.testTextInput.isVisible, isFalse);
+    await _tap(tester, find.byKey(const ValueKey('auth-password')));
+    expect(_input(tester, 'auth-password').focusNode!.hasFocus, isTrue);
+    expect(tester.testTextInput.isVisible, isTrue);
+    expect(
+      find.descendant(of: card, matching: find.byType(SingleChildScrollView)),
+      findsNothing,
+    );
+  });
+
   testWidgets(
     'keyboard lifts the whole card and closing restores its position',
     (tester) async {

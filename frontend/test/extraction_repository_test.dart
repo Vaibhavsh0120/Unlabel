@@ -22,7 +22,7 @@ final _meta = {
   'api_major': 1,
   'contract_schema': '1',
   'report_version': 'label-report-v1',
-  'capabilities': {'ai_extraction': true},
+  'capabilities': {'ai_extraction': true, 'ai_machine_observations': true},
 };
 
 Matcher _failure(String kind) =>
@@ -92,7 +92,15 @@ void main() {
         'Bearer synthetic-scanner-token',
       );
       final body = jsonDecode(request.body) as JsonMap;
-      expect(body.keys, unorderedEquals(['privacy_consent', 'images']));
+      expect(
+        body.keys,
+        unorderedEquals([
+          'privacy_consent',
+          'catalogue_contribution',
+          'images',
+        ]),
+      );
+      expect(body['catalogue_contribution'], 'machine-unverified-v1');
       expect(body['privacy_consent'], isTrue);
       expect((body['images'] as List).map((v) => v['slot']), ['front', 'back']);
       expect(base64Decode(body['images'][0]['data_base64']), _photo);

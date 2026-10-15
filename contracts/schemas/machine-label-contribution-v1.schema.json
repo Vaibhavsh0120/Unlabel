@@ -1,0 +1,93 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "machine-label-contribution-v1",
+      "default": "machine-label-contribution-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "evidence": {
+      "const": "machine_extracted_unverified",
+      "default": "machine_extracted_unverified",
+      "title": "Evidence",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "shared_unverified",
+        "not_shared"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "observation_id": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Observation Id"
+    },
+    "barcode": {
+      "anyOf": [
+        {
+          "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Barcode"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "enum": [
+            "not_requested",
+            "back_photo_required",
+            "no_back_facts",
+            "identity_unmatched",
+            "identity_conflict",
+            "unavailable",
+            "too_large",
+            "capacity"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    },
+    "deduplicated": {
+      "default": false,
+      "title": "Deduplicated",
+      "type": "boolean"
+    },
+    "conflict_fields": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Conflict Fields",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "MachineContribution",
+  "type": "object"
+}

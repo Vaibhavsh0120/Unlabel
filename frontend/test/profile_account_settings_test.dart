@@ -212,10 +212,18 @@ void main() {
       addTearDown(fixture.dispose);
       await _open(tester, fixture);
       await _tap(tester, find.text('Sign-in methods'));
-      final switches = tester.widgetList<Switch>(find.byType(Switch)).toList();
-        expect(switches.where((item) => item.value), isNotEmpty);
-        expect(switches.where((item) => item.value).every((item) => item.onChanged == null), isTrue);
-        expect(switches.where((item) => !item.value).any((item) => item.onChanged != null), isTrue);
+      final passwordSwitch = tester.widget<Switch>(
+        find.byKey(const ValueKey('sign-in-password-toggle')),
+      );
+      expect(passwordSwitch.value, providers.contains('password'));
+      expect(passwordSwitch.onChanged == null, providers.contains('password'));
+      final google = tester.widget<TextButton>(
+        find.widgetWithText(
+          TextButton,
+          providers.contains('google.com') ? 'Disconnect' : 'Connect Google',
+        ),
+      );
+      expect(google.onPressed == null, providers.contains('google.com'));
       expect(fixture.account.identity!.providers, providers);
       expect(tester.takeException(), isNull);
     });
@@ -233,22 +241,46 @@ void main() {
       await _open(tester, fixture, size: size);
       await _tap(tester, find.text('Sign-in methods'));
       expect(find.text('Connected'), findsOneWidget);
-      expect(find.text('Enabled'), findsOneWidget);
-      final removal = find.widgetWithText(OutlinedButton, 'Remove');
-      expect(tester.widget<OutlinedButton>(removal).onPressed, isNotNull);
+      expect(
+        tester
+            .widget<Switch>(
+              find.byKey(const ValueKey('sign-in-password-toggle')),
+            )
+            .value,
+        isTrue,
+      );
+      expect(
+        tester
+            .widget<Switch>(
+              find.byKey(const ValueKey('sign-in-password-toggle')),
+            )
+            .onChanged,
+        isNotNull,
+      );
+      expect(
+        tester.getTopLeft(find.text('Email & password')).dy,
+        lessThan(tester.getTopLeft(find.text('Google account')).dy),
+      );
       for (final label in [
         'Disconnect',
-        'Switch account',
-        'Change email',
-        'Change password',
-        'Remove',
+        'Both methods can be active at once',
+        'Keep your account secure',
+        'Delete account',
       ]) {
+        await tester.ensureVisible(find.text(label));
         final rect = tester.getRect(find.text(label));
         expect(rect.left, greaterThanOrEqualTo(0));
         expect(rect.right, lessThanOrEqualTo(size.width));
         expect(rect.top, greaterThanOrEqualTo(0));
         expect(rect.bottom, lessThanOrEqualTo(size.height));
       }
+      await _tap(tester, find.byTooltip('Email and password options'));
+      expect(find.text('Change email'), findsOneWidget);
+      expect(find.text('Change password'), findsOneWidget);
+      await tester.tapAt(const Offset(4, 4));
+      await tester.pumpAndSettle();
+      await _tap(tester, find.byTooltip('Google account options'));
+      expect(find.text('Switch account'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
@@ -306,7 +338,14 @@ void main() {
       final originalStore = fixture.account.accountStore;
       final fetches = fixture.sync.fetches;
       await _tap(tester, find.text('Sign-in methods'));
-      expect(find.text('Enabled'), findsOneWidget);
+      expect(
+        tester
+            .widget<Switch>(
+              find.byKey(const ValueKey('sign-in-password-toggle')),
+            )
+            .value,
+        isTrue,
+      );
       expect(find.text('Add email and password'), findsNothing);
       fixture.auth.pending = Completer<void>();
       final connect = find.text('Connect Google');
@@ -330,7 +369,14 @@ void main() {
       fixture.auth.pending!.complete();
       await tester.pumpAndSettle();
       expect(find.text('Connected'), findsOneWidget);
-      expect(find.text('Enabled'), findsOneWidget);
+      expect(
+        tester
+            .widget<Switch>(
+              find.byKey(const ValueKey('sign-in-password-toggle')),
+            )
+            .value,
+        isTrue,
+      );
       expect(find.text('Connect Google'), findsNothing);
       expect(fixture.account.identity!.uid, 'synthetic-owner');
       expect(fixture.account.identity!.providers, {'password', 'google.com'});
@@ -391,7 +437,14 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Add a password'), findsNothing);
       expect(find.text('Connected'), findsOneWidget);
-      expect(find.text('Enabled'), findsOneWidget);
+      expect(
+        tester
+            .widget<Switch>(
+              find.byKey(const ValueKey('sign-in-password-toggle')),
+            )
+            .value,
+        isTrue,
+      );
       expect(fixture.auth.linkedEmail, 'synthetic@example.invalid');
       expect(fixture.auth.linkedPassword, 'UniqueField42');
       expect(fixture.account.identity!.uid, 'synthetic-owner');

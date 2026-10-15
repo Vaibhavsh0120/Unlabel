@@ -12,6 +12,7 @@ import '../../../core/models/extracted_label.dart';
 import '../../../core/models/app_failure.dart';
 import '../../../core/interaction/ui_feedback.dart';
 import 'ui_components.dart';
+import 'scan_processing_overlay.dart';
 
 class ScanLandingPage extends StatefulWidget {
   const ScanLandingPage({
@@ -40,7 +41,8 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   late final _reader = widget.reader;
   AutomaticScanResult? _result;
   bool _reading = false;
-  int _mode = 0;
+  int _mode = 2;
+  Size _previewSize = Size.zero;
   int _photoRevision = 0;
   bool _working = false, _routeOpen = false, _foreground = true;
   String? _photoError;
@@ -143,23 +145,31 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   }
 
   Future<void> _capture() async {
-    if (_working || !_camera.ready) return;
-    _photoRevision++;
+    if (_working || _reading || !_camera.ready || _previewSize.isEmpty) return;
+    final revision = ++_photoRevision;
+    final mode = _mode;
+    final viewport = _previewSize;
     setState(() {
       _working = true;
       _photoError = null;
     });
     try {
-      final bytes = await _camera.capture();
-      if (!mounted) return;
+      final bytes = await _camera.captureFramed(viewport);
+      if (!mounted || revision != _photoRevision || mode != _mode) return;
+      if (viewport != _previewSize) {
+        setState(
+          () => _photoError = 'The camera view changed. Take the photo again.',
+        );
+        return;
+      }
       if (bytes.length > LiveCamera.maxCaptureBytes) {
         throw StateError('large_photo');
       }
-      setState(() => _photos[_mode] = bytes);
+      setState(() => _photos[mode] = bytes);
       unawaited(_analyze());
       unawaited(UiFeedback.confirmed());
     } catch (_) {
-      if (mounted) {
+      if (mounted && revision == _photoRevision) {
         setState(
           () => _photoError =
               'Could not capture this photo. Try again or use Gallery.',
@@ -174,8 +184,9 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   }
 
   Future<void> _gallery() async {
-    if (_working) return;
-    _photoRevision++;
+    if (_working || _reading) return;
+    final revision = ++_photoRevision;
+    final mode = _mode;
     setState(() {
       _working = true;
       _photoError = null;
@@ -186,11 +197,16 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       final bytes = widget.pickPhoto != null
           ? await widget.pickPhoto!()
           : await _pickPhoto();
-      if (!mounted || bytes == null) return;
+      if (!mounted ||
+          revision != _photoRevision ||
+          mode != _mode ||
+          bytes == null) {
+        return;
+      }
       if (bytes.isEmpty || bytes.length > LiveCamera.maxCaptureBytes) {
         throw StateError('large_photo');
       }
-      setState(() => _photos[_mode] = bytes);
+      setState(() => _photos[mode] = bytes);
       unawaited(_analyze());
       unawaited(UiFeedback.selection());
     } catch (_) {
@@ -210,7 +226,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<bool> _allowCloud({bool force = false}) async {
     final preferences = await SharedPreferences.getInstance();
-    final previous = preferences.getBool('unlabel.photo-reading-consent.v1');
+    final previous = preferences.getBool('unlabel.photo-reading-consent.v2');
     if (previous != null && !force) return previous;
     if (!mounted) return false;
     final allowed = await showDialog<bool>(
@@ -218,7 +234,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       builder: (context) => AlertDialog(
         title: const Text('Automatic photo reading'),
         content: const Text(
-          'Send package photos to our backend and its Gemini or OpenAI service for automatic reading. Our backend does not save photos. Extracted product facts stay in private, temporary staging until checked. Google may use free-tier inputs to improve its services; provider retention terms apply. Only photograph the package. You can also read on this device.',
+          'Send package photos to our backend and its Gemini or OpenAI service for automatic reading. Our backend does not save photos. Compatible product facts from back labels are added automatically to the shared catalogue as unverified machine readings. Original sources and disagreements are retained; no personal profile data is shared. Google may use free-tier inputs to improve its services; provider retention terms apply. Only photograph the package. You can also read on this device.',
         ),
         actions: [
           TextButton(
@@ -233,7 +249,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       ),
     );
     if (allowed != null) {
-      await preferences.setBool('unlabel.photo-reading-consent.v1', allowed);
+      await preferences.setBool('unlabel.photo-reading-consent.v2', allowed);
     }
     return allowed ?? false;
   }
@@ -261,13 +277,13 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       setState(() {
         _result = result;
         if (!result.useful) {
-          _photoError = result.barcode != null
-              ? 'This barcode needs more information. Photograph the front and back of the package.'
-              : 'No readable product information yet. Try a closer, clearer photo.';
+          _photoError = 'No readable product information yet. Try a closer, clearer photo.';
         }
       });
       if (_mode == 2 &&
-          (result.report != null || result.candidates.isNotEmpty)) {
+          (result.barcode != null ||
+              result.report != null ||
+              result.candidates.isNotEmpty)) {
         _routeOpen = true;
         try {
           await widget.onResult(result, _photos[0]);
@@ -345,74 +361,183 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     super.dispose();
   }
 
+  bool get _blocked => _working || _reading || _routeOpen;
+
+  String get _instruction => switch (_mode) {
+    0 => 'Photograph the name and claims on the front.',
+    1 => 'Keep ingredients and nutrition facts in view.',
+    _ => 'Point your camera at a product barcode.',
+  };
+
+  String get _primaryLabel => _reading
+      ? 'Reading photo…'
+      : _working
+      ? 'Working…'
+      : _result?.useful == true
+      ? 'View results'
+      : _photos[_mode] != null
+      ? 'Read photo again'
+      : 'Click Photo';
+
+  VoidCallback? get _primaryAction => _blocked
+      ? null
+      : _result?.useful == true
+      ? () => _route(() => widget.onResult(_result!, _photos[0]))
+      : _photos[_mode] != null
+      ? _analyze
+      : _camera.ready
+      ? _capture
+      : null;
+
+  Future<void> _cameraControl(Future<void> Function() action) async {
+    if (_blocked) return;
+    setState(() => _photoError = null);
+    try {
+      await action();
+      if (mounted && _camera.error != null) {
+        setState(() => _photoError = _camera.error);
+      }
+    } on LiveCameraException catch (error) {
+      if (mounted) setState(() => _photoError = error.message);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _photoError = 'This camera control is unavailable. You can still take or choose a photo.',
+        );
+      }
+    }
+  }
+
+  Future<void> _readingSettings() async {
+    try {
+      await _allowCloud(force: true);
+    } catch (_) {
+      if (mounted) {
+        setState(
+          () => _photoError =
+              'Photo reading settings could not be saved. Try again.',
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final large = MediaQuery.textScalerOf(context).scale(14) > 21;
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        toolbarHeight: large ? 88 : 60,
-        centerTitle: true,
-        title: const Text('Scan Label'),
-        leading: IconButton(
-          tooltip: 'Back to Home',
-          onPressed: widget.onBack ?? () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_rounded),
-        ),
-        actions: [
-          IconButton(
-            tooltip: 'Photo reading settings',
-            onPressed: _working || _reading
-                ? null
-                : () async {
-                    try {
-                      await _allowCloud(force: true);
-                    } catch (_) {
-                      if (mounted) {
-                        setState(
-                          () => _photoError = 'Photo reading settings could not be saved. Try again.',
-                        );
-                      }
-                    }
-                  },
-            icon: const Icon(Icons.tune_rounded),
-          ),
-          IconButton(
-            tooltip: 'Choose label photo',
-            onPressed: _working || _reading ? null : _gallery,
-            icon: const FeatureIcon('gallery'),
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+      backgroundColor: scheme.surface,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final landscape =
-                constraints.maxWidth > 650 && constraints.maxHeight < 600;
-            final controls = _controls(
-              large: large,
-              compact: constraints.maxHeight < 600 || large,
-            );
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
-              child: landscape
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(flex: 3, child: _preview()),
-                        const SizedBox(width: 20),
-                        Expanded(flex: 2, child: Center(child: controls)),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(child: _preview()),
-                        const SizedBox(height: 12),
-                        controls,
-                      ],
+            final desktop =
+                constraints.maxWidth >= 800 ||
+                (constraints.maxWidth >= 650 && constraints.maxHeight < 500);
+            return Stack(
+              children: [
+                const Positioned.fill(
+                  child: IgnorePointer(
+                    child: CustomPaint(painter: _ScanBackdropPainter()),
+                  ),
+                ),
+                if (!desktop)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: IgnorePointer(
+                      child: ExcludeSemantics(
+                        child: Image.asset(
+                          'assets/artwork/scanner-garden-v1.png',
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
                     ),
+                  ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    desktop ? 24 : 0,
+                    desktop ? 16 : 0,
+                    desktop ? 24 : 0,
+                    12,
+                  ),
+                  child: desktop
+                      ? DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: scheme.surfaceContainerLowest.withValues(
+                              alpha: .9,
+                            ),
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                              constraints.maxHeight < 500 ? 16 : 28,
+                            ),
+                            child: Column(
+                              children: [
+                                _header(
+                                  desktop: true,
+                                  compact: constraints.maxHeight < 500,
+                                ),
+                                const SizedBox(height: 20),
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(flex: 7, child: _preview()),
+                                      const SizedBox(width: 28),
+                                      Expanded(
+                                        flex: 5,
+                                        child: Center(
+                                          child: SingleChildScrollView(
+                                            child: _controls(
+                                              desktop: true,
+                                              large: large,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : large || constraints.maxHeight < 460
+                      ? SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              _header(desktop: false),
+                              SizedBox(height: 300, child: _mobilePreview()),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  20,
+                                  16,
+                                  20,
+                                  8,
+                                ),
+                                child: _controls(desktop: false, large: large),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            _header(
+                              desktop: false,
+                              compact: constraints.maxHeight < 620,
+                            ),
+                            Expanded(child: _mobilePreview()),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                              child: _controls(desktop: false, large: false),
+                            ),
+                          ],
+                        ),
+                ),
+              ],
             );
           },
         ),
@@ -420,7 +545,68 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     );
   }
 
-  Widget _controls({required bool large, required bool compact}) {
+  Widget _header({required bool desktop, bool compact = false}) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: desktop ? 0 : 6,
+        vertical: compact ? 4 : 12,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!desktop)
+            IconButton(
+              tooltip: 'Back to Home',
+              onPressed: widget.onBack ?? () => Navigator.maybePop(context),
+              icon: const Icon(Icons.arrow_back_rounded),
+            ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: desktop
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Scan Label',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w800,
+                    fontSize: desktop && !compact ? 38 : 26,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  _instruction,
+                  textAlign: desktop ? TextAlign.start : TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: desktop ? 16 : 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: 'Photo reading settings',
+            onPressed: _blocked ? null : _readingSettings,
+            icon: const Icon(Icons.tune_rounded, size: 21),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _mobilePreview() => LayoutBuilder(
+    builder: (context, constraints) => Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: (constraints.maxWidth * .09).clamp(24, 72),
+      ),
+      child: _preview(),
+    ),
+  );
+
+  Widget _controls({required bool desktop, required bool large}) {
     final theme = Theme.of(context);
     final hasPhoto = _photos[_mode] != null;
     return Column(
@@ -432,101 +618,119 @@ class _ScanLandingPageState extends State<ScanLandingPage>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: _modeCard(
-                  0,
-                  'Capture Front',
-                  'Name & claims',
-                  'document-text',
-                  large,
-                  compact,
-                ),
+                child: _modeCard(0, 'Front', 'document-text', desktop, large),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _modeCard(
-                  1,
-                  'Capture Back',
-                  'Nutrition & ingredients',
-                  'document-text',
-                  large,
-                  compact,
-                ),
+                child: _modeCard(1, 'Back', 'document-text', desktop, large),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _modeCard(
-                  2,
-                  'Barcode',
-                  'Product code',
-                  'barcode',
-                  large,
-                  compact,
-                ),
+                child: _modeCard(2, 'Barcode', 'barcode', desktop, large),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: desktop ? 28 : 12),
         if (_photoError != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(_photoError!, style: theme.textTheme.bodySmall),
-          ),
-        if (!compact)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              border: Border.all(color: theme.colorScheme.outlineVariant),
-              borderRadius: BorderRadius.circular(20),
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Semantics(
+              liveRegion: true,
+              child: Text(_photoError!, style: theme.textTheme.bodySmall),
             ),
-            child: Row(
-              children: [
-                const FeatureIcon('lightbulb', size: 24),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Capture ingredients and nutrition facts clearly.',
-                    style: theme.textTheme.bodySmall,
+          ),
+        if (desktop || hasPhoto || !_camera.ready)
+          FilledButton.icon(
+            key: const Key('scan-primary'),
+            onPressed: _primaryAction,
+            style: FilledButton.styleFrom(
+              minimumSize: Size.fromHeight(desktop ? 64 : 52),
+              backgroundColor: const Color(0xff007a61),
+              foregroundColor: Colors.white,
+            ),
+            icon: Icon(
+              hasPhoto ? Icons.fact_check_outlined : Icons.camera_alt_outlined,
+            ),
+            label: Text(_primaryLabel, textAlign: TextAlign.center),
+          )
+        else
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _torchButton(),
+              Tooltip(
+                message: 'Click Photo',
+                excludeFromSemantics: true,
+                child: SizedBox.square(
+                  dimension: 68,
+                  child: OutlinedButton(
+                    key: const Key('scan-primary'),
+                    onPressed: _primaryAction,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.all(4),
+                      shape: const CircleBorder(),
+                      side: const BorderSide(
+                        color: Color(0xff009b79),
+                        width: 2,
+                      ),
+                    ),
+                    child: Semantics(
+                      label: 'Click Photo',
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xff007a61),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ],
+              ),
+              _switchCameraButton(),
+            ],
+          ),
+        if (desktop) ...[
+          const SizedBox(height: 20),
+          const Row(
+            children: [
+              Expanded(child: Divider()),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text('or'),
+              ),
+              Expanded(child: Divider()),
+            ],
+          ),
+          const SizedBox(height: 20),
+        ],
+        if (!_reading)
+          OutlinedButton.icon(
+            key: const Key('scan-gallery'),
+            onPressed: _blocked ? null : _gallery,
+            style: OutlinedButton.styleFrom(
+              minimumSize: Size.fromHeight(desktop ? 60 : 44),
+              side: desktop
+                  ? BorderSide(
+                      color: theme.colorScheme.primary.withValues(alpha: .3),
+                    )
+                  : BorderSide.none,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
+            icon: const FeatureIcon('gallery', size: 22),
+            label: const Text('Choose Photo'),
           ),
-        if (!compact) const SizedBox(height: 12),
-        FilledButton.icon(
-          key: const Key('scan-primary'),
-          onPressed: _working || _reading
-              ? null
-              : _result?.useful == true
-              ? () => _route(() => widget.onResult(_result!, _photos[0]))
-              : hasPhoto
-              ? _analyze
-              : _camera.ready
-              ? _capture
-              : _gallery,
-          icon: FeatureIcon(
-            hasPhoto ? 'stars' : 'scanner',
-            color: theme.colorScheme.onPrimary,
-            size: 22,
+        if (desktop && !hasPhoto) ...[
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _torchButton(),
+              const SizedBox(width: 16),
+              _switchCameraButton(),
+            ],
           ),
-          label: Text(
-            _reading
-                ? 'Reading your package…'
-                : _working
-                ? 'Working…'
-                : _result?.useful == true
-                ? 'View results'
-                : hasPhoto
-                ? 'Read photo again'
-                : _camera.ready
-                ? 'Take Photo'
-                : 'Choose Photo',
-          ),
-        ),
-        TextButton(
-          onPressed: _working || _reading ? null : _gallery,
-          child: const Text('Use Gallery'),
-        ),
+        ],
         if (_reading)
           TextButton(
             onPressed: _stopReading,
@@ -536,105 +740,137 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     );
   }
 
+  Widget _torchButton() => IconButton.filledTonal(
+    tooltip: _camera.torchOn ? 'Turn flash off' : 'Turn flash on',
+    onPressed: _blocked || !_camera.canToggleTorch
+        ? null
+        : () => _cameraControl(_camera.toggleTorch),
+    icon: Icon(
+      _camera.torchOn ? Icons.flash_on_rounded : Icons.flash_off_rounded,
+    ),
+  );
+
+  Widget _switchCameraButton() => IconButton.filledTonal(
+    tooltip: 'Switch camera',
+    onPressed: _blocked || !_camera.canSwitchCamera
+        ? null
+        : () => _cameraControl(_camera.switchCamera),
+    icon: const Icon(Icons.flip_camera_ios_outlined),
+  );
+
   Widget _preview() {
     final theme = Theme.of(context);
     final photo = _photos[_mode];
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(28),
-      child: Container(
-        key: const Key('scan-preview'),
-        color: const Color(0xff17211e),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            if (photo != null)
-              Image.memory(
-                photo,
-                fit: BoxFit.contain,
-                semanticLabel: _mode == 0
-                    ? 'Captured front label'
-                    : 'Captured back label',
-                errorBuilder: (_, _, _) =>
-                    const Center(child: Text('Photo unavailable')),
-              )
-            else if (_camera.ready)
-              _camera.buildPreview()
-            else
-              _cameraStatus(),
-            if (_camera.ready && photo == null)
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: CustomPaint(
-                      painter: _ScanFramePainter(const Color(0xff70efba)),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        _previewSize = constraints.biggest;
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(28),
+          child: Container(
+            key: const Key('scan-preview'),
+            color: const Color(0xff17211e),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                if (photo != null)
+                  Image.memory(
+                    photo,
+                    fit: BoxFit.contain,
+                    semanticLabel: switch (_mode) {
+                      0 => 'Captured front label',
+                      1 => 'Captured back label',
+                      _ => 'Captured barcode',
+                    },
+                    errorBuilder: (_, _, _) =>
+                        const Center(child: Text('Photo unavailable')),
+                  )
+                else if (_camera.ready)
+                  _camera.buildPreview()
+                else
+                  _cameraStatus(),
+                if (_reading && photo != null)
+                  Positioned.fill(
+                    child: ScanProcessingOverlay(
+                      barcode: _mode == 2,
+                      active: _foreground,
                     ),
                   ),
-                ),
-              ),
-            if (photo != null)
-              if (_sizes[_mode] != null && _result != null)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: CustomPaint(
-                      painter: LabelHighlightsPainter(
-                        (_result!.label?.regions ?? <ExtractedRegion>[])
-                            .where(
-                              (r) =>
-                                  r.slot ==
-                                  const ['front', 'back', 'barcode'][_mode],
-                            )
-                            .toList(),
-                        _sizes[_mode]!,
-                        barcodePoints: _result!.barcodeSlot == _mode
-                            ? _result!.barcodePoints
-                            : const [],
+                if (_camera.ready && photo == null)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: CustomPaint(
+                          painter: _ScanFramePainter(const Color(0xff70efba)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-            if (photo != null)
-              Positioned(
-                right: 12,
-                bottom: 12,
-                child: FilledButton.tonalIcon(
-                  onPressed: _reading
-                      ? null
-                      : () {
-                          _photoRevision++;
-                          _reader.cancel();
-                          setState(() {
-                            _photos.remove(_mode);
-                            _sizes.remove(_mode);
-                            _result = null;
-                          });
-                          unawaited(_syncCamera());
-                        },
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retake'),
-                ),
-              ),
-            if (_camera.ready && photo == null)
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: Text(
-                  _mode == 2
-                      ? 'Photograph the barcode for an instant lookup'
-                      : _mode == 0
-                      ? 'Keep the front label in the frame'
-                      : 'Keep nutrition and ingredients in the frame',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: Colors.white,
-                    backgroundColor: const Color(0x99000000),
+                if (photo != null)
+                  if (_sizes[_mode] != null && _result != null)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: CustomPaint(
+                          painter: LabelHighlightsPainter(
+                            (_result!.label?.regions ?? <ExtractedRegion>[])
+                                .where(
+                                  (r) =>
+                                      r.slot ==
+                                      const ['front', 'back', 'barcode'][_mode],
+                                )
+                                .toList(),
+                            _sizes[_mode]!,
+                            barcodePoints: _result!.barcodeSlot == _mode
+                                ? _result!.barcodePoints
+                                : const [],
+                          ),
+                        ),
+                      ),
+                    ),
+                if (photo != null)
+                  Positioned(
+                    right: 12,
+                    bottom: 12,
+                    child: FilledButton.tonalIcon(
+                      onPressed: _reading
+                          ? null
+                          : () {
+                              _photoRevision++;
+                              _reader.cancel();
+                              setState(() {
+                                _photos.remove(_mode);
+                                _sizes.remove(_mode);
+                                _result = null;
+                              });
+                              unawaited(_syncCamera());
+                            },
+                      icon: const Icon(Icons.refresh_rounded),
+                      label: const Text('Retake'),
+                    ),
                   ),
-                ),
-              ),
-          ],
-        ),
-      ),
+                if (_camera.ready && photo == null)
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    child: Text(
+                      _mode == 2
+                          ? 'Photograph the barcode for an instant lookup'
+                          : _mode == 0
+                          ? 'Keep the front label in the frame'
+                          : 'Keep nutrition and ingredients in the frame',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: Colors.white,
+                        backgroundColor: const Color(0x99000000),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -713,58 +949,67 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   Widget _modeCard(
     int index,
     String title,
-    String subtitle,
     String icon,
+    bool desktop,
     bool large,
-    bool compact,
   ) {
     final theme = Theme.of(context);
     final selected = _mode == index;
+    final hasPhoto = _photos[index] != null;
+    final stack = desktop || large;
+    final label = Text(
+      title,
+      textAlign: TextAlign.center,
+      style: theme.textTheme.labelLarge?.copyWith(fontSize: desktop ? 16 : 12),
+    );
+    final symbol = FeatureIcon(icon, size: desktop ? 28 : 18);
     return Semantics(
       selected: selected,
-      child: Card(
+      child: Material(
+        color: selected
+            ? theme.colorScheme.primaryContainer
+            : theme.colorScheme.surfaceContainerLowest,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(desktop ? 22 : 24),
           side: BorderSide(
             color: selected
                 ? theme.colorScheme.primary
                 : theme.colorScheme.outlineVariant,
-            width: selected ? 1.5 : 1,
           ),
         ),
-        color: selected ? theme.colorScheme.primaryContainer : null,
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           key: Key('scan-mode-$index'),
-          onTap: () => _selectMode(index),
+          onTap: _blocked ? null : () => _selectMode(index),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 6,
-              vertical: compact ? 8 : 12,
+              vertical: desktop ? 20 : 13,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FeatureIcon(icon, size: compact ? 22 : 26),
-                const SizedBox(height: 6),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleSmall?.copyWith(fontSize: 12),
-                ),
-                if (!large && !compact) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
+            child: stack
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      symbol,
+                      const SizedBox(height: 6),
+                      label,
+                      if (hasPhoto)
+                        const Icon(Icons.check_circle_rounded, size: 16),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      symbol,
+                      const SizedBox(width: 5),
+                      Flexible(child: label),
+                      if (hasPhoto)
+                        const Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(Icons.check_circle_rounded, size: 12),
+                        ),
+                    ],
                   ),
-                ],
-                if (_photos[index] != null)
-                  const Icon(Icons.check_circle_rounded, size: 18),
-              ],
-            ),
           ),
         ),
       ),
@@ -935,4 +1180,32 @@ class _ScanFramePainter extends CustomPainter {
   @override
   bool shouldRepaint(_ScanFramePainter oldDelegate) =>
       color != oldDelegate.color;
+}
+
+class _ScanBackdropPainter extends CustomPainter {
+  const _ScanBackdropPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final wave = Path()
+      ..moveTo(0, size.height * .9)
+      ..quadraticBezierTo(
+        size.width * .3,
+        size.height * .74,
+        size.width * .58,
+        size.height * .94,
+      )
+      ..quadraticBezierTo(
+        size.width * .8,
+        size.height * .81,
+        size.width,
+        size.height * .9,
+      )
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+    canvas.drawPath(wave, Paint()..color = const Color(0x1264c6a2));
+  }
+
+  @override
+  bool shouldRepaint(_ScanBackdropPainter oldDelegate) => false;
 }

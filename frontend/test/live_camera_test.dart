@@ -17,7 +17,7 @@ const _rear = CameraDescription(
   sensorOrientation: 90,
 );
 
-class _Session implements LiveCameraSession {
+class _Session implements LiveCameraSession, LiveCameraControls {
   final notifier = ChangeNotifier();
   Completer<void>? initialization;
   Completer<XFile>? photograph;
@@ -28,6 +28,14 @@ class _Session implements LiveCameraSession {
   int captureCount = 0;
   int disposeCount = 0;
   bool failed = false;
+  final torchChanges = <bool>[];
+  bool torchUnsupported = false;
+
+  @override
+  Future<void> setTorch(bool enabled) async {
+    if (torchUnsupported) throw CameraException('unsupported', 'detail');
+    torchChanges.add(enabled);
+  }
 
   @override
   Listenable get changes => notifier;
@@ -99,6 +107,44 @@ Future<void> _flush() => Future<void>.delayed(Duration.zero);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  test(
+    'switching releases the old lens and remembers the chosen lens',
+    () async {
+      final rear = _Session(), front = _Session(), resumed = _Session();
+      final platform = _Platform([rear, front, resumed]);
+      final camera = LiveCamera(platform: platform);
+      await camera.start();
+      expect(camera.canSwitchCamera, isTrue);
+      await camera.switchCamera();
+      expect(rear.disposeCount, 1);
+      expect(platform.selected, [_rear, _front]);
+      await camera.stop();
+      await camera.start();
+      expect(platform.selected.last, _front);
+      await camera.stop();
+      camera.dispose();
+    },
+  );
+
+  test('torch toggles and unsupported hardware leaves camera usable', () async {
+    final session = _Session();
+    final camera = LiveCamera(platform: _Platform([session]));
+    await camera.start();
+    expect(camera.canToggleTorch, isTrue);
+    await camera.toggleTorch();
+    expect(camera.torchOn, isTrue);
+    await camera.toggleTorch();
+    expect(session.torchChanges, [true, false]);
+    session.torchUnsupported = true;
+    await camera.toggleTorch();
+    expect(camera.canToggleTorch, isFalse);
+    expect(camera.ready, isTrue);
+    expect(camera.error, contains('Flash is unavailable'));
+    await camera.stop();
+    expect(camera.torchOn, isFalse);
+    camera.dispose();
+  });
 
   test(
     'rear camera is preferred, audio disabled and repeated start coalesced',

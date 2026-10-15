@@ -1,0 +1,485 @@
+{
+  "$defs": {
+    "ExtractedBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "quantity",
+            "serving"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Amount"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "enum": [
+                "g",
+                "mL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "printed_text": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Printed Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "amount",
+        "unit",
+        "printed_text"
+      ],
+      "title": "ExtractedBasis",
+      "type": "object"
+    },
+    "ExtractedIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Brand"
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Variant"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quantity"
+        },
+        "barcode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Barcode"
+        }
+      },
+      "required": [
+        "name",
+        "brand",
+        "variant",
+        "quantity",
+        "barcode"
+      ],
+      "title": "ExtractedIdentity",
+      "type": "object"
+    },
+    "ExtractedNutrient": {
+      "additionalProperties": false,
+      "properties": {
+        "nutrient": {
+          "enum": [
+            "energy",
+            "fat",
+            "saturated_fat",
+            "carbohydrates",
+            "carbohydrates_total",
+            "sugars",
+            "added_sugars",
+            "fibre",
+            "protein",
+            "sodium",
+            "salt"
+          ],
+          "title": "Nutrient",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "g",
+            "mg",
+            "ug",
+            "kcal",
+            "kJ"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "qualifier": {
+          "enum": [
+            "exact",
+            "less_than",
+            "less_than_or_equal",
+            "approximate",
+            "unknown"
+          ],
+          "title": "Qualifier",
+          "type": "string"
+        },
+        "printed_text": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Printed Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "nutrient",
+        "value",
+        "unit",
+        "qualifier",
+        "printed_text"
+      ],
+      "title": "ExtractedNutrient",
+      "type": "object"
+    },
+    "ExtractedNutritionTable": {
+      "additionalProperties": false,
+      "properties": {
+        "table_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Table Id",
+          "type": "string"
+        },
+        "basis": {
+          "$ref": "#/$defs/ExtractedBasis"
+        },
+        "preparation": {
+          "enum": [
+            "as_sold",
+            "as_prepared",
+            "unknown"
+          ],
+          "title": "Preparation",
+          "type": "string"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/ExtractedNutrient"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "table_id",
+        "basis",
+        "preparation",
+        "rows"
+      ],
+      "title": "ExtractedNutritionTable",
+      "type": "object"
+    },
+    "MachineFacts": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/ExtractedIdentity"
+        },
+        "ingredients": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ingredients"
+        },
+        "contains": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contains"
+        },
+        "may_contain": {
+          "anyOf": [
+            {
+              "maxLength": 16000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "May Contain"
+        },
+        "front_claims": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Front Claims",
+          "type": "array"
+        },
+        "nutrition_tables": {
+          "items": {
+            "$ref": "#/$defs/ExtractedNutritionTable"
+          },
+          "maxItems": 3,
+          "title": "Nutrition Tables",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identity",
+        "ingredients",
+        "contains",
+        "may_contain",
+        "front_claims",
+        "nutrition_tables"
+      ],
+      "title": "MachineFacts",
+      "type": "object"
+    },
+    "MachineObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "machine-label-observation-v1",
+          "default": "machine-label-observation-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "observation_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "evidence": {
+          "const": "machine_extracted_unverified",
+          "default": "machine_extracted_unverified",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "contribution_policy": {
+          "const": "machine-unverified-v1",
+          "default": "machine-unverified-v1",
+          "title": "Contribution Policy",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "gemini",
+            "openai"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "provider_revision": {
+          "maximum": 9007199254740991,
+          "minimum": 1,
+          "title": "Provider Revision",
+          "type": "integer"
+        },
+        "barcode": {
+          "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+          "title": "Barcode",
+          "type": "string"
+        },
+        "identity_source_ids": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Identity Source Ids",
+          "type": "array"
+        },
+        "facts": {
+          "$ref": "#/$defs/MachineFacts"
+        },
+        "conflict_fields": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Conflict Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "observation_id",
+        "content_sha256",
+        "observed_at",
+        "provider",
+        "model",
+        "provider_revision",
+        "barcode",
+        "identity_source_ids",
+        "facts"
+      ],
+      "title": "MachineObservation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "machine-label-lookup-v1",
+      "default": "machine-label-lookup-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "found",
+        "not_found"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "barcode": {
+      "pattern": "^(?:[0-9]{8}|[0-9]{12,14})$",
+      "title": "Barcode",
+      "type": "string"
+    },
+    "evidence": {
+      "const": "machine_extracted_unverified",
+      "default": "machine_extracted_unverified",
+      "title": "Evidence",
+      "type": "string"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/MachineObservation"
+      },
+      "maxItems": 8,
+      "title": "Observations",
+      "type": "array"
+    },
+    "conflict_fields": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Conflict Fields",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "barcode"
+  ],
+  "title": "MachineObservationLookup",
+  "type": "object"
+}
