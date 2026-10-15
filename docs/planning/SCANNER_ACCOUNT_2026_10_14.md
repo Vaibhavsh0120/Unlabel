@@ -77,7 +77,7 @@ current sections, source distinctions and actions while connecting new data.
 - Safari regression tests failed before the layout change and passed afterward.
   All 58 auth widget tests pass, including keyboard dismissal/restoration, large
   text, whole-card movement, desktop cards and both iPad orientations.
-- Current source passes 495 Flutter tests including shared-header/art regressions,
+- Current source passes 497 Flutter tests including shared-header/art regressions,
   1,481 backend tests, clean analysis and a production web build.
   Current release reviews record the final rerun and publication evidence.
 - Physical iPhone Safari, camera accuracy and provider consent remain separate

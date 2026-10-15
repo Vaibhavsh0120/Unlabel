@@ -13,6 +13,7 @@ import 'package:unlabel/core/capture/live_camera.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
 import 'package:unlabel/features/scanner/presentation/scan_processing_overlay.dart';
+import 'package:unlabel/features/scanner/presentation/mobile_navigation.dart';
 
 final _photo = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGP4DwQACfsD/fteaysAAAAASUVORK5CYII=',
@@ -126,6 +127,50 @@ Future<void> _finishRead(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets(
+    'scanner task header keeps only its title and frees preview space',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final camera = _Camera();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: UnlabelTheme.forBrightness(Brightness.light),
+          home: Scaffold(
+            extendBody: true,
+            appBar: AppBar(toolbarHeight: 64, title: const Text('Unlabel')),
+            body: ScanLandingPage(
+              camera: camera,
+              reader: _Reader(),
+              pickPhoto: () async => null,
+              onResult: (_, _) async {},
+            ),
+            bottomNavigationBar: MobileNavigation(
+              selectedIndex: 1,
+              onDestinationSelected: (_) {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Scan Label'), findsOneWidget);
+      expect(find.byTooltip('Back to Home'), findsNothing);
+      expect(find.byTooltip('Photo reading settings'), findsNothing);
+      expect(
+        find.text('Point your camera at a product barcode.'),
+        findsNothing,
+      );
+      expect(
+        tester.getSize(find.byKey(const Key('scan-preview'))).height,
+      greaterThan(844 / 2),
+      );
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+    },
+  );
+
   testWidgets('mobile shutter exposes one named accessible capture action', (
     tester,
   ) async {

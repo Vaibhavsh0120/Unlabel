@@ -18,14 +18,12 @@ class ScanLandingPage extends StatefulWidget {
   const ScanLandingPage({
     required this.reader,
     required this.onResult,
-    this.onBack,
     this.camera,
     this.pickPhoto,
     super.key,
   });
   final AutomaticLabelReader reader;
   final Future<void> Function(AutomaticScanResult, Uint8List?) onResult;
-  final VoidCallback? onBack;
   final LiveCamera? camera;
   final Future<Uint8List?> Function()? pickPhoto;
 
@@ -224,10 +222,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     }
   }
 
-  Future<bool> _allowCloud({bool force = false}) async {
+  Future<bool> _allowCloud() async {
     final preferences = await SharedPreferences.getInstance();
     final previous = preferences.getBool('unlabel.photo-reading-consent.v2');
-    if (previous != null && !force) return previous;
+    if (previous != null) return previous;
     if (!mounted) return false;
     final allowed = await showDialog<bool>(
       context: context,
@@ -363,12 +361,6 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   bool get _blocked => _working || _reading || _routeOpen;
 
-  String get _instruction => switch (_mode) {
-    0 => 'Photograph the name and claims on the front.',
-    1 => 'Keep ingredients and nutrition facts in view.',
-    _ => 'Point your camera at a product barcode.',
-  };
-
   String get _primaryLabel => _reading
       ? 'Reading photo…'
       : _working
@@ -403,19 +395,6 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       if (mounted) {
         setState(
           () => _photoError = 'This camera control is unavailable. You can still take or choose a photo.',
-        );
-      }
-    }
-  }
-
-  Future<void> _readingSettings() async {
-    try {
-      await _allowCloud(force: true);
-    } catch (_) {
-      if (mounted) {
-        setState(
-          () => _photoError =
-              'Photo reading settings could not be saved. Try again.',
         );
       }
     }
@@ -479,7 +458,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                                   desktop: true,
                                   compact: constraints.maxHeight < 500,
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 12),
                                 Expanded(
                                   child: Row(
                                     crossAxisAlignment:
@@ -550,49 +529,18 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: desktop ? 0 : 6,
-        vertical: compact ? 4 : 12,
+        vertical: compact ? 4 : 6,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!desktop)
-            IconButton(
-              tooltip: 'Back to Home',
-              onPressed: widget.onBack ?? () => Navigator.maybePop(context),
-              icon: const Icon(Icons.arrow_back_rounded),
-            ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: desktop
-                  ? CrossAxisAlignment.start
-                  : CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Scan Label',
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontFamily: 'Nunito',
-                    fontWeight: FontWeight.w800,
-                    fontSize: desktop && !compact ? 38 : 26,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  _instruction,
-                  textAlign: desktop ? TextAlign.start : TextAlign.center,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: desktop ? 16 : 12,
-                  ),
-                ),
-              ],
-            ),
+      child: Align(
+        alignment: desktop ? Alignment.centerLeft : Alignment.center,
+        child: Text(
+          'Scan Label',
+          style: theme.textTheme.headlineMedium?.copyWith(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w800,
+            fontSize: desktop && !compact ? 38 : 26,
           ),
-          IconButton(
-            tooltip: 'Photo reading settings',
-            onPressed: _blocked ? null : _readingSettings,
-            icon: const Icon(Icons.tune_rounded, size: 21),
-          ),
-        ],
+        ),
       ),
     );
   }

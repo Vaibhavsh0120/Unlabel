@@ -915,7 +915,6 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                         1 => ScanLandingPage(
                           reader: AutomaticLabelReader(widget.repository),
                           onResult: _scanResult,
-                          onBack: () => _selectTab(0),
                         ),
                         2 => ComparePage(
                           store: widget.store,

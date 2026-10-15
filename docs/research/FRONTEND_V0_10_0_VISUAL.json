@@ -16,7 +16,8 @@
     "shared mobile header",
     "processing captured photo",
     "sign-in methods",
-    "large-text gallery reachability"
+    "large-text gallery reachability",
+    "Title-only Scan Label header; duplicate icons and instruction removed"
   ],
   "spacing": {
     "status": "completed",
@@ -94,5 +95,9 @@
       "bytes": 118969,
       "sha256": "cef33b75bbfcfad6fbfc7645a943f40a4d68e545b1a6fdc80d17f27c1b05c3b0"
     }
-  ]
+  ],
+  "control_geometry": {
+    "mobile_preview_height_at_390x844": 440,
+    "evidence": "Flutter shell widget geometry with shared AppBar and floating navigation"
+  }
 }

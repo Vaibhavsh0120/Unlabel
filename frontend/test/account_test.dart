@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/accounts/account_auth.dart';
 import 'package:unlabel/core/accounts/account_controller.dart';
@@ -871,6 +872,41 @@ void main() {
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
       expect(value.localData!.displayName, 'Synthetic cloud name');
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'Privacy can reset photo reading consent without clearing other preferences',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'unlabel.photo-reading-consent.v2': true,
+        'synthetic-unrelated': 'keep',
+      });
+      final auth = FakeAuth();
+      final value = await controller(MemoryPreferences(), auth, FakeSync());
+      addTearDown(value.dispose);
+      addTearDown(auth.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ProfilePage(controller: value, onContinue: () {}),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Privacy'));
+      await tester.tap(find.text('Privacy'));
+      await tester.pumpAndSettle();
+      final reset = find.text('Reset photo reading choice');
+      await tester.ensureVisible(reset);
+      await tester.tap(reset);
+      await tester.pumpAndSettle();
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getBool('unlabel.photo-reading-consent.v2'), isNull);
+      expect(preferences.getString('synthetic-unrelated'), 'keep');
+      expect(
+        find.text('Your next label photo will ask how you want it read.'),
+        findsOneWidget,
+      );
       expect(tester.takeException(), isNull);
     },
   );

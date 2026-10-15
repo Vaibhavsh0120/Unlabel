@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/accounts/account_controller.dart';
 import '../../../core/accounts/profile_media.dart';
@@ -354,6 +355,30 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   const Text(
                     'Guest history stays on this device. Signed-in history, saved reports and your display name sync privately. Your selected profile thumbnail and gender are private account settings. Label photos, raw label text and personal reminders stay outside account sync. When you enable AI photo reading, compatible package facts may be shared automatically as unverified machine observations with their provider and date. Original catalogue sources are preserved, and disagreements stay unresolved. Package photos are not stored by our backend; AI provider retention terms apply.',
+                  ),
+                  const SizedBox(height: 20),
+                  OutlinedButton(
+                    onPressed: () => _run(context, () async {
+                      final preferences = await SharedPreferences.getInstance();
+                      if (!await preferences.remove(
+                        'unlabel.photo-reading-consent.v2',
+                      )) {
+                        throw const AppFailure(
+                          'local_storage',
+                          'Could not reset the photo reading choice. Try again.',
+                        );
+                      }
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Your next label photo will ask how you want it read.',
+                            ),
+                          ),
+                        );
+                      }
+                    }),
+                    child: const Text('Reset photo reading choice'),
                   ),
                   const SizedBox(height: 20),
                   if (signedIn) ...[

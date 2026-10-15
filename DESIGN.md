@@ -151,6 +151,8 @@ a large camera preview beside the mode selector and capture actions; phone and
 portrait iPad stack the large preview above those controls and retain the app
 navbar. Mobile Scan also retains the shared Unlabel home/search/Profile header
 used by the other app screens; its Scan Label title remains task-specific.
+The scanner's own header contains only that title, with no second back arrow,
+settings action or instruction paragraph, leaving more height for the preview.
 Barcode is the initial mode; the other modes are Front and Back. A
 centered phone title, pale garden artwork and the shared forest/mint controls
 preserve the selected visual direction. One continuous garden illustration sits

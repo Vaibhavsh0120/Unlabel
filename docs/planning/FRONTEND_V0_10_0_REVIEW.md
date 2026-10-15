@@ -22,7 +22,10 @@ main, automatic native publication and the stable LiveContainer feed.
   animation. Reduced motion and stop/cancellation paths remain available.
 - Mobile Scan retains the same shared brand/search/profile AppBar as the other
   screens. One continuous mascot/garden layer extends behind preview and controls;
-  the floating bottom navigation remains accessible.
+  the floating bottom navigation remains accessible. The local scanner header keeps
+  only Scan Label: duplicate back/settings icons and the instruction line were
+  removed, enlarging the preview to 440 px at 390x844 with the app header/navbar.
+  Photo-reading consent can be reset from Profile > Privacy.
 - Preview uses aspect-preserving cover. Capture crops the upright still to the
   preview aspect and then to the visible viewport. Mode/lifecycle/resize changes
   discard stale captures; front-camera text is unmirrored.
@@ -57,7 +60,7 @@ uploaded AI nutrition enter this request.
 Local release checks on 15 October:
 
 - `flutter analyze --no-pub`: no issues.
-- `flutter test --no-pub`: 495 passed.
+- `flutter test --no-pub`: 497 passed.
 - `flutter build web --release --no-pub`: succeeded (JavaScript release build).
 - Node web/auth-bridge tests: 22 passed; script tests: 16 passed.
 - Workspace validation, current contract export, OCR assets (21) and platform
