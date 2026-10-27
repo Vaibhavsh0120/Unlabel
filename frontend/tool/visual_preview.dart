@@ -337,7 +337,7 @@ Future<void> main() async {
           report: report,
           store: store,
           onChanged: () {},
-          sessionPhoto: photo,
+          sessionPhoto: report.isHistorical ? null : photo,
           navigation: navigation,
         ),
       },

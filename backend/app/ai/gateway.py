@@ -21,12 +21,13 @@ class AiGateway:
         self.credentials = credentials(config)
         self.by_id = {value.id: value for value in self.credentials}
         self.configuration = configuration_digest(self.credentials)
-        if config.ai_initial_credential_id not in self.by_id:
+        self.initial_credential_id = config.initial_ai_slot(tuple(self.by_id))
+        if self.initial_credential_id not in self.by_id:
             raise ValueError("Initial AI credential is not configured")
 
     async def selection(self) -> ActiveSelection:
         return await run_in_threadpool(
-            self.store.read, self.config.ai_initial_credential_id, self.configuration,
+            self.store.read, self.initial_credential_id, self.configuration,
         )
 
     async def runnable_selection(self) -> ActiveSelection:

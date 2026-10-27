@@ -1,12 +1,15 @@
 # Website and shared API deployment
 
-Updated **13 October 2026** for the current [frontend](../../frontend/pubspec.yaml)
-and [backend](../../backend/pyproject.toml) sources. The backend retains
-**27 paths / 28 operations**. Final exact-source hosted/native verification for
-auth/profile and Google compatibility is pending; earlier read-only backend
-checks exclude authenticated extraction/private staging and device accuracy.
-[Frontend review](../planning/FRONTEND_V0_8_1_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_12_1_REVIEW.md).
+Updated **15 October 2026** against canonical [frontend](../../frontend/pubspec.yaml)
+and [backend](../../backend/pyproject.toml) versions. The API has **30 paths /
+32 operations**. Barcode-first capture preserves camera framing, front-name
+matches require pack-size selection, and ProductInfoPage is the shared result
+destination. Automatic back-label observations remain machine-unverified and
+source-preserving. Optional NutriGraph facts are session-only and disabled
+pending a key. Local, hosted, native and device proof are recorded separately.
+[Frontend review](../planning/FRONTEND_V0_10_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_14_0_REVIEW.md) ·
+[Product Info](PRODUCT_INFO.md) · [Live facts](LIVE_PRODUCT_FACTS.md).
 
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).

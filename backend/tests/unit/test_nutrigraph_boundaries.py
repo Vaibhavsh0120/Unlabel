@@ -135,6 +135,68 @@ async def test_monthly_budget_resets_but_cached_results_remain_usable_at_limit()
 
 
 @pytest.mark.asyncio
+async def test_sandbox_budget_never_renews_at_calendar_month_change():
+    clock = [NOW]
+    calls = []
+
+    def respond(request):
+        calls.append(request)
+        return httpx.Response(200, json=payload())
+
+    provider = NutriGraphLookup(
+        httpx.AsyncClient(transport=httpx.MockTransport(respond)),
+        "synthetic-key", sandbox_limit=1, clock=lambda: clock[0],
+    )
+    try:
+        assert (await provider.lookup(CODE, "actor")).status == "found"
+        assert (await provider.lookup(CODE, "actor")).status == "found"
+        clock[0] = NOW.replace(month=11, day=1)
+        exhausted = await provider.lookup(SECOND_CODE, "actor")
+        assert exhausted.status == "rate_limited" and exhausted.retry_after is None
+        assert len(calls) == 1
+    finally:
+        await provider.close()
+
+
+@pytest.mark.asyncio
+async def test_vendor_429_does_not_assume_sandbox_renews_next_month():
+    clock = [NOW]
+    calls = []
+
+    def respond(request):
+        calls.append(request)
+        return httpx.Response(429, text="private upstream quota diagnostics")
+
+    provider = NutriGraphLookup(
+        httpx.AsyncClient(transport=httpx.MockTransport(respond)),
+        "synthetic-key", clock=lambda: clock[0],
+    )
+    try:
+        assert (await provider.lookup(CODE, "actor")).status == "rate_limited"
+        clock[0] = NOW.replace(month=11, day=1)
+        assert (await provider.lookup(SECOND_CODE, "actor")).status == "rate_limited"
+        assert len(calls) == 1
+    finally:
+        await provider.close()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("is_json,expected", [(False, "unavailable"), (True, "not_found")])
+async def test_endpoint_html_404_is_not_misreported_as_missing_food(is_json, expected):
+    def respond(request):
+        return (httpx.Response(404, json={"error": "Product not found"}) if is_json
+                else httpx.Response(404, text="Generic endpoint not found"))
+
+    provider = NutriGraphLookup(
+        httpx.AsyncClient(transport=httpx.MockTransport(respond)), "synthetic-key",
+    )
+    try:
+        assert (await provider.lookup(CODE, "actor")).status == expected
+    finally:
+        await provider.close()
+
+
+@pytest.mark.asyncio
 async def test_cancelled_waiter_does_not_duplicate_or_cancel_counted_upstream_request():
     entered, release = asyncio.Event(), asyncio.Event()
     calls = []

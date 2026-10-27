@@ -1,9 +1,8 @@
 # Product catalogue: tracked source, verified SQLite
 
-Updated **12 October 2026** for backend **v0.12.0** and frontend
-**v0.7.0+11**. Both read-only catalogues are implemented: the preserved **24,641**
+Updated **15 October 2026** against the canonical component manifests. Both read-only catalogues are implemented: the preserved **24,641**
 supported OFF codes and **243** immutable researched-product observations.
-The current API has **27 paths / 28 operations**. Search/results consume these
+The current API has **30 paths / 32 operations**. Search/results consume these
 qualified sources; no record becomes confirmed-label evidence automatically.
 Backend read-only hosted proof and latest frontend hosted proof remain separate.
 [Backend review](../planning/BACKEND_V0_12_0_REVIEW.md) ·

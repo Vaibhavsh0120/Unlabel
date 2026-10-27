@@ -1,0 +1,248 @@
+{
+  "checked_at_utc": "2026-10-27T13:15:16.071580+00:00",
+  "local_date": "2026-10-27",
+  "timezone": "Asia/Calcutta",
+  "status": "reviewed_with_explicit_environment_limits",
+  "fixture": "frontend/tool/visual_preview.dart",
+  "scope": "Actual local Flutter UI. Product fixture is a dated public Maggi catalogue report and its sourced Open Food Facts image. Camera uses an owned synthetic label fixture; no physical camera or account provider is exercised.",
+  "baseline_comparison": {
+    "status": "content_mismatch",
+    "reason": "Earlier before captures used a synthetic report; final captures use the public Maggi report. Their structure can be reviewed, but this is not a matched-content pixel comparison."
+  },
+  "reference_acceptance": "Responsive hierarchy and latest smaller phone typography were visually reviewed. No exact pixel-equivalence claim.",
+  "typography": {
+    "families": [
+      "Nunito",
+      "Quicksand"
+    ],
+    "source": "Existing bundled licensed fonts. Screenshot review and actual-font widget geometry; Flutter canvas font loading is not inferred from DOM computed styles.",
+    "latest_change": "Final compiled browser capture confirms complete Carbohydrates label on one line after removing extra letter spacing; font size and TextScaler remain unchanged."
+  },
+  "chromium": {
+    "states": 12,
+    "page_errors": 0,
+    "viewports": [
+      {
+        "name": "report-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "report-phone-light",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "report-desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "name": "report-wide",
+        "width": 1728,
+        "height": 1100
+      },
+      {
+        "name": "research-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "research-desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "name": "report-large",
+        "width": 320,
+        "height": 844
+      },
+      {
+        "name": "scan-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "scan-short",
+        "width": 390,
+        "height": 640
+      },
+      {
+        "name": "scan-large",
+        "width": 320,
+        "height": 844
+      },
+      {
+        "name": "scan-ipad",
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "name": "scan-landscape",
+        "width": 1024,
+        "height": 768
+      }
+    ],
+    "results": "output/playwright/after-chromium-results.json"
+  },
+  "webkit": {
+    "engine": "WebKit 26.0 build2215, Windows host",
+    "states": 8,
+    "context": "iPhone13 Safari user agent, isMobile, touch, deviceScaleFactor1; viewport adjusted for each case; reduced motion enabled.",
+    "page_errors": 0,
+    "console_errors": 0,
+    "results": "output/playwright/after-webkit-results.json",
+    "behaviors": [
+      "The unchanged application paints the sourced Maggi photo in WebKit 26 with test-only CanvasKit software rendering. Default Windows headless GPU mode leaves it blank. Both engines receive the identical valid JPEG with CORS allowed; native HTMLImage.decode succeeds inWebKit. No global software renderer or application workaround was added.",
+      "Source references reached through semantic scrollIntoView at 390 px and320px2x text.",
+      "Choose Photo reached in all five scanner viewport states; measured browser semantic bounds are at least 48 px high."
+    ],
+    "physical_iphone_safari": false
+  },
+  "spacing": {
+    "status": "completed",
+    "widths": [
+      390,
+      1440,
+      1728
+    ],
+    "raw_states": "output/playwright/product-spacing-states.json",
+    "raw_report": "output/playwright/product-spacing-raw-report.json",
+    "raw_findings": {
+      "critical": 0,
+      "serious": 7,
+      "moderate": 6
+    },
+    "qualified_report": "output/playwright/product-spacing-qualified-report.json",
+    "qualified_findings": {
+      "critical": 0,
+      "serious": 1,
+      "moderate": 6
+    },
+    "exclusions": "Only the six nonvisual Flutter live-announcement nodes at(-99999,-99999),1x1: polite/assertive in each of three states. Original raw captures and findings remain unchanged.",
+    "qualifications": [
+      {
+        "finding": "Fold-clipped nutrient-panel semantics reported358x16 at(x16,y828) on390x844.",
+        "evidence": "The same node measures358x427 at(x16,y178) after scrolling; its content and disclosure remain reachable.",
+        "file": "output/playwright/product-spacing-scroll-probe.json"
+      },
+      {
+        "finding": "Ingredients/Allergens painted semantics are40px high in all three widths.",
+        "evidence": "Actual Flutter SegmentedButton RenderBox measures326 x 56 at 390 px. A tap 1 px from the outer top edge changed selection and exposed Milk. Material padded tap target exceeds 44 px.",
+        "probe": "output/product_hitbox_probe_test.dart",
+        "result": "1 passed; no source change needed."
+      }
+    ],
+    "limits": "Flutter draws cards on canvas. DOM semantics measure visible bounds and scroll clipping; they do not establish actual card padding, column gaps or a valid layout score.",
+    "input_projection": "The measurement submission retained all captured element geometry, labels, parent identity and spacing properties; nonspacing presentation styles and redundant client/scroll metrics were omitted from the tool payload. Full original captures remain in raw_states."
+  },
+  "comprehension": {
+    "status": "passed",
+    "panels": [
+      "product identity",
+      "recorded-value summary",
+      "evidence overview",
+      "nutrition snapshot",
+      "ingredients/allergens",
+      "unknown facts",
+      "source references",
+      "ingredient insights"
+    ],
+    "limits": "Text-only checks; no visual approval is inferred."
+  },
+  "widget_evidence": {
+    "report_layout": "5 passed after latest label correction with bundled fonts loaded; includes390px summary<=160px, complete Carbohydrates single-line label,2x text, tabs and disclosure access.",
+    "product_widget_migration": "widget_test.dart11 passed through updated allergen/source interactions.",
+    "tap_target_probe": "1 passed using actual Flutter hit testing; not device touch proof."
+  },
+  "remaining_limits": [
+    "Default Windows headless WebKit GPU mode leaves the remote photo blank; the unchanged application paints it under test-only CanvasKitCPU. PhysicaliPhoneSafariGPU/image acceptance remains unverified. No globalCPU forcing or app performance regression was introduced.",
+    "No physical iPhone Safari camera permission, sensor framing, browser toolbar/keyboard, Google consent or LiveContainer acceptance.",
+    "Reduced-motion render/reachability checks are not a real-device scrolling or animation frame-rate benchmark.",
+    "Local browser rendering does not establish hosted deployment or native publication."
+  ],
+  "captures": [
+    {
+      "file": "output/playwright/final-chromium-report-phone-image.png",
+      "bytes": 133621,
+      "sha256": "a74caee738245c8111c061a63116a5bc3973684d3c8a96267a691b37c0706dd2"
+    },
+    {
+      "file": "output/playwright/after-chromium-report-desktop.png",
+      "bytes": 547378,
+      "sha256": "50e03ba2c79447f632ba17ede79c90feb1d85e196d9de5c003f1a92a53a4f327"
+    },
+    {
+      "file": "output/playwright/after-chromium-report-wide.png",
+      "bytes": 547673,
+      "sha256": "873a26e54172267a663978d9c99f07c5f399b757845a48fd67790f770ea6fc83"
+    },
+    {
+      "file": "output/playwright/final-chromium-report-phone-nutrition.png",
+      "bytes": 77852,
+      "sha256": "20fdaa85069edcf21d8bc563b177544e4cb3a4037e43db41631533384fab2052"
+    },
+    {
+      "file": "output/playwright/after-webkit-report-phone.png",
+      "bytes": 128254,
+      "sha256": "841007ecd6b70a0298f0800e31f9779e640637d7200dc1f6e4f6291900ff4fc5"
+    },
+    {
+      "file": "output/playwright/after-webkit-report-phone-scrolled.png",
+      "bytes": 124506,
+      "sha256": "b40d14ccc8bea31b61cf4a3b155fb93814e3d189dc0b0929d432faa1aed335c1"
+    },
+    {
+      "file": "output/playwright/after-webkit-scan-phone.png",
+      "bytes": 61540,
+      "sha256": "e666c686b8408aab7cc550fa4b60741e9b5610be6516260181d0428787236e6b"
+    },
+    {
+      "file": "output/playwright/after-webkit-scan-large-scrolled.png",
+      "bytes": 66838,
+      "sha256": "3e045fec1237eac469da8ea684607bf86ec488200956b175a053703c6afc28de"
+    },
+    {
+      "file": "output/playwright/after-webkit-scan-ipad.png",
+      "bytes": 95656,
+      "sha256": "cd29ea1a586cdf3fc0d9b7cb715fb5b10727ffaa30192350ae354d49b576aa8c"
+    },
+    {
+      "file": "output/playwright/after-webkit-scan-landscape.png",
+      "bytes": 83451,
+      "sha256": "4194e7eb97f66d8d99aa4b3d5164c82f6c0b964b8dc67b858f8b6a8d2fbe5731"
+    },
+    {
+      "file": "output/playwright/final-webkit-report-phone-image.png",
+      "bytes": 128254,
+      "sha256": "841007ecd6b70a0298f0800e31f9779e640637d7200dc1f6e4f6291900ff4fc5"
+    },
+    {
+      "file": "output/playwright/resumed-webkit-cpu-image.png",
+      "bytes": 159569,
+      "sha256": "eb1ce100e2800393877c08fe20b275d64524a737f7831ed9044c4f6d082e74a7"
+    }
+  ],
+  "remote_image_probe": "output/playwright/final-webkit-product-image.json",
+  "remote_image_diagnosis": {
+    "status": "isolated_to_Windows_headless_WebKit_GPU_rendering",
+    "source_unchanged": true,
+    "response": {
+      "status": 200,
+      "bytes": 26755,
+      "content_type": "image/jpeg",
+      "sha256": "0d056680befaf3d36559f21dea93d8ed103c4365ae8f09bddae0f33eb71a9ab8",
+      "cors_allow_origin": "*",
+      "native_html_decode_dimensions": [
+        400,
+        215
+      ]
+    },
+    "comparison": "Identical JPEG bytes and successful native HTML decode rule out a missing source, CORS rejection or invalid image. The pinned Flutter engine uses an HTMLImage lazy GPU texture on WebKit. Switching only the test bootstrap to CanvasKit CPU makes the image visible in the unchanged application.",
+    "software_probe": "output/playwright/webkit-cpu-image-probe.json",
+    "response_probe": "output/playwright/webkit-image-diagnostics.json",
+    "software_configuration": "canvasKitForceCpuOnly:true injected by a local Playwright route; no application bootstrap/source change.",
+    "limits": "This isolates the local Windows WebKit GPU path; it does not establish a failure or acceptance on physical iPhone Safari."
+  },
+  "scanner_runtime_receipt": "docs/research/SCANNER_SDK_V0_11_0_SYNTHETIC.json"
+}

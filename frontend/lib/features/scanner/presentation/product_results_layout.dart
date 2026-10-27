@@ -1,6 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'ui_components.dart';
 import '../../../core/widgets/brand_mark.dart';
@@ -35,6 +34,41 @@ class ResultsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final nav = navigation;
+    if (nav != null && MediaQuery.sizeOf(context).width < 1080) {
+      return AppBar(
+        titleSpacing: 16,
+        automaticallyImplyLeading: Navigator.of(context).canPop(),
+        title: BrandHomeButton(
+          onPressed: nav.home,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const BrandLeaf(size: 28),
+              const SizedBox(width: 6),
+              if (MediaQuery.textScalerOf(context).scale(16) < 24)
+                Text(
+                  'Unlabel',
+                  style: Theme.of(context).textTheme.titleLarge
+                      ?.copyWith(fontFamily: 'Nunito'),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Search products',
+            onPressed: nav.products,
+            icon: const FeatureIcon('magnifer', size: 24),
+          ),
+          IconButton(
+            tooltip: 'Profile',
+            onPressed: nav.profile,
+            icon: const Icon(Icons.person_outline),
+          ),
+          const SizedBox(width: 8),
+        ],
+      );
+    }
     if (nav == null ||
         MediaQuery.sizeOf(context).width < 1080 ||
         MediaQuery.textScalerOf(context).scale(16) >= 24) {
@@ -117,9 +151,11 @@ class ProductResultsLayout extends StatelessWidget {
   const ProductResultsLayout({
     required this.main,
     required this.aside,
+    this.mobile,
     super.key,
   });
   final List<Widget> main, aside;
+  final List<Widget>? mobile;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -127,26 +163,52 @@ class ProductResultsLayout extends StatelessWidget {
       final wide =
           constraints.maxWidth >= 1080 &&
           MediaQuery.textScalerOf(context).scale(16) < 26;
-      return Material(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Theme.of(context).colorScheme.surface
-            : const Color(0xfff3fbf8),
-        child: PageBody(
-          maxWidth: 1480,
-          children: [
-            if (wide)
-              Row(
-                key: const Key('results-desktop-columns'),
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 7, child: _column(main)),
-                  const SizedBox(width: 24),
-                  Expanded(flex: 4, child: _column(aside)),
-                ],
-              )
-            else
-              _column([...main, ...aside]),
-          ],
+      final base = Theme.of(context);
+      final body = base.textTheme.apply(fontFamily: 'Quicksand');
+      final compact = constraints.maxWidth < 600;
+      final typography = body.copyWith(
+        headlineLarge: body.headlineLarge?.copyWith(fontFamily: 'Nunito'),
+        headlineMedium: body.headlineMedium?.copyWith(fontFamily: 'Nunito'),
+        headlineSmall: body.headlineSmall?.copyWith(fontFamily: 'Nunito'),
+        titleLarge: body.titleLarge?.copyWith(
+          fontFamily: 'Nunito',
+          fontSize: compact ? 18 : 22,
+        ),
+        titleMedium: body.titleMedium?.copyWith(
+          fontFamily: 'Nunito',
+          fontSize: compact ? 14 : 16,
+        ),
+        titleSmall: body.titleSmall?.copyWith(
+          fontFamily: 'Nunito',
+          fontSize: compact ? 12 : 14,
+        ),
+        bodyLarge: body.bodyLarge?.copyWith(fontSize: compact ? 12 : 16),
+        bodyMedium: body.bodyMedium?.copyWith(fontSize: compact ? 12 : 14),
+        bodySmall: body.bodySmall?.copyWith(fontSize: compact ? 11 : 12),
+      );
+      return Theme(
+        data: base.copyWith(textTheme: typography),
+        child: Material(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).colorScheme.surface
+              : const Color(0xfff3fbf8),
+          child: PageBody(
+            maxWidth: 1480,
+            children: [
+              if (wide)
+                Row(
+                  key: const Key('results-desktop-columns'),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 7, child: _column(main)),
+                    const SizedBox(width: 24),
+                    Expanded(flex: 4, child: _column(aside)),
+                  ],
+                )
+              else
+                _column(mobile ?? [...main, ...aside]),
+            ],
+          ),
         ),
       );
     },
@@ -168,16 +230,18 @@ class ResultsIdentityCard extends StatelessWidget {
     this.imageUrl,
     this.imageDescription,
     this.actions,
+    this.barcode,
     super.key,
   });
   final String name;
-  final String? brand, variant, quantity, imageUrl, imageDescription;
+  final String? brand, variant, quantity, imageUrl, imageDescription, barcode;
   final Uint8List? photo;
   final Widget? actions;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final compact = MediaQuery.sizeOf(context).width < 600;
     final fallback = Semantics(
       label: 'Product photo unavailable',
       child: const Center(child: FeatureIcon('document-text', size: 36)),
@@ -185,7 +249,7 @@ class ResultsIdentityCard extends StatelessWidget {
     final image = ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: SizedBox.square(
-        dimension: MediaQuery.sizeOf(context).width < 500 ? 80 : 112,
+        dimension: compact ? 80 : 176,
         child: ColoredBox(
           color: theme.colorScheme.surfaceContainerLow,
           child: photo != null
@@ -208,10 +272,51 @@ class ResultsIdentityCard extends StatelessWidget {
         ),
       ),
     );
+    final barcodeLine = barcode == null
+        ? null
+        : Row(
+            children: [
+              const FeatureIcon('barcode', size: 20),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Semantics(
+                  label: 'Barcode $barcode',
+                  child: ExcludeSemantics(
+                    child: Text(barcode!, style: theme.textTheme.bodySmall),
+                  ),
+                ),
+              ),
+              IconButton(
+                tooltip: 'Copy barcode',
+                onPressed: () async {
+                  try {
+                    await Clipboard.setData(ClipboardData(text: barcode!));
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Barcode copied')),
+                      );
+                    }
+                  } catch (_) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Could not copy barcode')),
+                      );
+                    }
+                  }
+                },
+                icon: const Icon(Icons.copy_outlined, size: 17),
+              ),
+            ],
+          );
     final copy = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name, style: theme.textTheme.titleLarge),
+        Text(
+          name,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontSize: compact ? 21 : 28,
+          ),
+        ),
         if (brand != null) ...[
           const SizedBox(height: 4),
           Text(brand!, style: theme.textTheme.bodyLarge),
@@ -221,19 +326,20 @@ class ResultsIdentityCard extends StatelessWidget {
           quantity ?? 'Pack size unknown',
           style: theme.textTheme.bodyMedium,
         ),
+        if (!compact && barcodeLine != null) barcodeLine,
       ],
     );
-    return SectionCard(
-      padding: 16,
+    return ResultsSurface(
+      padding: compact ? 16 : 20,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           LayoutBuilder(
             builder: (context, constraints) {
               final stack =
-                  constraints.maxWidth < 270 ||
+                  constraints.maxWidth < 290 ||
                   MediaQuery.textScalerOf(context).scale(16) >= 28;
-              return stack
+              final identity = stack
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [image, const SizedBox(height: 12), copy],
@@ -245,9 +351,60 @@ class ResultsIdentityCard extends StatelessWidget {
                         Expanded(child: copy),
                       ],
                     );
+              if (actions == null) {
+                return compact && barcodeLine != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          identity,
+                          const SizedBox(height: 8),
+                          barcodeLine,
+                        ],
+                      )
+                    : identity;
+              }
+              if (compact &&
+                  !stack &&
+                  barcodeLine != null &&
+                  MediaQuery.textScalerOf(context).scale(16) < 23) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    identity,
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(flex: 6, child: barcodeLine),
+                        const SizedBox(width: 10),
+                        Expanded(flex: 5, child: actions!),
+                      ],
+                    ),
+                  ],
+                );
+              }
+              return constraints.maxWidth >= 680 && !stack
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(child: identity),
+                        const SizedBox(width: 16),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 220),
+                          child: actions!,
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        identity,
+                        if (compact && barcodeLine != null) barcodeLine,
+                        const SizedBox(height: 12),
+                        actions!,
+                      ],
+                    );
             },
           ),
-          if (actions != null) ...[const SizedBox(height: 12), actions!],
         ],
       ),
     );
@@ -270,98 +427,169 @@ class ResultsSummaryCard extends StatelessWidget {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
     final ink = dark ? const Color(0xffd3f5e5) : const Color(0xff10483b);
-    final ring = Semantics(
-      label: '$count recorded nutrition values. This is a fact count.',
-      child: ExcludeSemantics(
-        child: Container(
-          width: MediaQuery.sizeOf(context).width < 500 ? 76 : 120,
-          height: MediaQuery.sizeOf(context).width < 500 ? 76 : 120,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: dark ? const Color(0xff70cfa3) : const Color(0xff42bf85),
-              width: 9,
+    final accent = dark ? const Color(0xff20efc3) : theme.colorScheme.primary;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 600;
+        final largeText = MediaQuery.textScalerOf(context).scale(16) >= 24;
+        final ring = Semantics(
+          label:
+              '$count recorded nutrition ${count == 1 ? 'value' : 'values'}. This is a fact count.',
+          child: ExcludeSemantics(
+            child: Container(
+              width: compact ? 56 : 100,
+              height: compact ? 56 : 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: accent, width: compact ? 6 : 8),
+              ),
+              child: Center(
+                child: BrandLeaf(size: compact ? 30 : 46, color: accent),
+              ),
             ),
           ),
-          child: const Center(child: FeatureIcon('leaf', size: 44)),
-        ),
-      ),
-    );
-    final copy = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$count ${count == 1 ? 'value' : 'values'}',
-          style: theme.textTheme.headlineMedium?.copyWith(
-            color: ink,
-            fontSize: MediaQuery.sizeOf(context).width < 500 ? 34 : 44,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: dark ? const Color(0xff244b3b) : const Color(0xffd7f5e3),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            heading,
-            style: theme.textTheme.titleMedium?.copyWith(color: ink),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(message, style: theme.textTheme.bodyMedium?.copyWith(color: ink)),
-        const SizedBox(height: 8),
-        Text(
-          qualification,
-          style: theme.textTheme.bodySmall?.copyWith(color: ink),
-        ),
-      ],
-    );
-    final content = Padding(
-      padding: const EdgeInsets.all(20),
-      child: LayoutBuilder(
-        builder: (context, constraints) =>
-            constraints.maxWidth >= 275 &&
-                MediaQuery.textScalerOf(context).scale(16) < 24
-            ? Row(
-                children: [
-                  ring,
-                  const SizedBox(width: 16),
-                  Expanded(child: copy),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [ring, const SizedBox(height: 16), copy],
+        );
+        final headingRow = Wrap(
+          spacing: compact ? 8 : 16,
+          runSpacing: 6,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(
+              '$count ${count == 1 ? 'value' : 'values'}',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: ink,
+                fontSize: compact ? 26 : 40,
               ),
-      ),
-    );
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: dark ? const Color(0xff182d24) : const Color(0xffeaf9ef),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: dark ? .12 : .20,
-                child: Image.asset(
-                  'assets/artwork/results-botanical.webp',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.centerRight,
-                  excludeFromSemantics: true,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: dark ? const Color(0xff0e4a40) : const Color(0xffd7f5e3),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: accent.withValues(alpha: .25)),
+              ),
+              child: Text(
+                heading,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: ink,
+                  fontSize: compact ? 11 : 13,
                 ),
               ),
             ),
+          ],
+        );
+        final copy = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: ink,
+                fontSize: compact ? 12 : 16,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              qualification,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: ink,
+                fontSize: compact ? 11 : 13,
+              ),
+            ),
+          ],
+        );
+        final artwork = ExcludeSemantics(
+          child: Image.asset(
+            'assets/artwork/product-botanical-v2.webp',
+            width: compact ? 44 : 116,
+            height: compact ? 56 : 116,
+            fit: BoxFit.contain,
           ),
-          content,
-        ],
+        );
+        return Container(
+          padding: EdgeInsets.all(compact ? 16 : 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              colors: dark
+                  ? [const Color(0xff045949), const Color(0xff102620)]
+                  : [const Color(0xffd6f5e9), const Color(0xffedf9f2)],
+            ),
+            border: Border.all(color: accent.withValues(alpha: .4)),
+          ),
+          child: compact || largeText
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (largeText) ...[
+                      ring,
+                      const SizedBox(height: 12),
+                      headingRow,
+                    ] else
+                      Row(
+                        children: [
+                          ring,
+                          const SizedBox(width: 12),
+                          Expanded(child: headingRow),
+                        ],
+                      ),
+                    const SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(child: copy),
+                        const SizedBox(width: 8),
+                        artwork,
+                      ],
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    ring,
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          headingRow,
+                          const SizedBox(height: 10),
+                          copy,
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    artwork,
+                  ],
+                ),
+        );
+      },
+    );
+  }
+}
+
+/// Shared bordered surface; no blur or continuously animated decoration.
+class ResultsSurface extends StatelessWidget {
+  const ResultsSurface({required this.child, this.padding = 16, super.key});
+  final Widget child;
+  final double padding;
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: dark
+              ? [const Color(0xff1a252a), const Color(0xff121a1e)]
+              : [Colors.white, const Color(0xfff3faf6)],
+        ),
       ),
+      child: Padding(padding: EdgeInsets.all(padding), child: child),
     );
   }
 }
@@ -382,46 +610,48 @@ class ResultsFact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final body = Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
-            shape: BoxShape.circle,
-          ),
-          child: Center(child: FeatureIcon(icon, size: 26)),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
+    return ResultsSurface(
+      padding: 12,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compact = constraints.maxWidth < 180;
+          final symbol = Container(
+            width: compact ? 34 : 46,
+            height: compact ? 34 : 46,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: Center(child: FeatureIcon(icon, size: compact ? 22 : 26)),
+          );
+          final copy = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: theme.textTheme.titleMedium),
-              const SizedBox(height: 4),
-              Text(detail),
-              const SizedBox(height: 4),
+              Text(title, style: theme.textTheme.titleSmall),
+              const SizedBox(height: 6),
+              Text(detail, style: theme.textTheme.bodySmall),
+              const SizedBox(height: 8),
               Text(
                 status,
-                style: theme.textTheme.labelLarge?.copyWith(
+                style: theme.textTheme.labelMedium?.copyWith(
                   color: uncertain
                       ? theme.colorScheme.onSurfaceVariant
                       : theme.colorScheme.primary,
                 ),
               ),
             ],
-          ),
-        ),
-      ],
+          );
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              symbol,
+              const SizedBox(width: 8),
+              Expanded(child: copy),
+            ],
+          );
+        },
+      ),
     );
-    return grouped
-        ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: body,
-          )
-        : SectionCard(padding: 16, child: body);
   }
 }
 
@@ -432,35 +662,16 @@ class ResultsFactsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final two =
-          constraints.maxWidth >= 600 &&
-          MediaQuery.textScalerOf(context).scale(16) < 24;
-      final width = two
-          ? (constraints.maxWidth - 12) / 2
-          : constraints.maxWidth;
-      if (!two && children.every((child) => child is ResultsFact)) {
-        return SectionCard(
-          padding: 12,
-          child: Column(
-            children: [
-              for (var i = 0; i < children.length; i++) ...[
-                if (i > 0) const Divider(height: 1),
-                ResultsFact(
-                  icon: (children[i] as ResultsFact).icon,
-                  title: (children[i] as ResultsFact).title,
-                  detail: (children[i] as ResultsFact).detail,
-                  status: (children[i] as ResultsFact).status,
-                  uncertain: (children[i] as ResultsFact).uncertain,
-                  grouped: true,
-                ),
-              ],
-            ],
-          ),
-        );
-      }
+      final regularText = MediaQuery.textScalerOf(context).scale(16) < 23;
+      final columns = !regularText || constraints.maxWidth < 340
+          ? 1
+          : constraints.maxWidth >= 760
+          ? 4
+          : 2;
+      final width = (constraints.maxWidth - 10 * (columns - 1)) / columns;
       return Wrap(
-        spacing: 12,
-        runSpacing: 12,
+        spacing: 10,
+        runSpacing: 10,
         children: [
           for (final child in children) SizedBox(width: width, child: child),
         ],
@@ -499,11 +710,13 @@ class ResultsAllergenNotice extends StatelessWidget {
       decoration: BoxDecoration(
         color: declared
             ? theme.colorScheme.errorContainer
-            : theme.colorScheme.surfaceContainerLow,
+            : (theme.brightness == Brightness.dark
+                  ? const Color(0xff302717)
+                  : const Color(0xfffff4dc)),
         border: Border.all(
           color: declared
               ? theme.colorScheme.error.withValues(alpha: .3)
-              : theme.colorScheme.outlineVariant,
+              : const Color(0xffb88426),
         ),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -511,11 +724,13 @@ class ResultsAllergenNotice extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            declared ? Icons.warning_amber_rounded : Icons.info_outline,
+            declared ? Icons.warning_amber_rounded : Icons.error_outline,
             size: 32,
             color: declared
                 ? theme.colorScheme.onErrorContainer
-                : theme.colorScheme.onSurface,
+                : (theme.brightness == Brightness.dark
+                      ? const Color(0xffffbf5a)
+                      : const Color(0xff8b5900)),
           ),
           const SizedBox(width: 12),
           Expanded(

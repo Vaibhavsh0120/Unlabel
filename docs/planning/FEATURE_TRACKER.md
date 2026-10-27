@@ -1,15 +1,15 @@
 # Feature tracker
 
-Current update: **frontend 0.10.0+14 / backend 0.14.0**, covering the scanner,
-unified Product Info, Safari auth, guest names, automatic unverified readings
-and optional live product lookup. Local validation passed; publication
-and hosted/device acceptance remain separate.
-[Frontend review](FRONTEND_V0_10_0_REVIEW.md) Â· [Backend review](BACKEND_V0_14_0_REVIEW.md).
-
+Current update: **frontend 0.11.0+15 / backend 0.15.0**, covering the
+free native/WASM barcode scanner, compact reference product information,
+guest sign-in-methods toast and optional credential-based sources.
+Local checks, source publication, hosted runtime and device accuracy remain separate.
+[Frontend review](FRONTEND_V0_11_0_REVIEW.md) · [Backend review](BACKEND_V0_15_0_REVIEW.md) ·
+[Optional sources](../architecture/OPTIONAL_SOURCES.md).
 
 Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Previous scope: [reference auth and provider controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md), authorized for completion and push. Earlier reviews retain their own dated evidence.
-Current behavior and remaining gates are listed below. [Audit](MAINTENANCE_2026_10_12.md) Â·
-[Source release ledger](CONTROLLED_RELEASES.md) Â· [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
+Current behavior and remaining gates are listed below. [Audit](MAINTENANCE_2026_10_12.md) ·
+[Source release ledger](CONTROLLED_RELEASES.md) · [Remaining work](FRONTEND_BACKEND_NEXT_VERSIONS.md).
 Versioned reviews/hosted receipts keep their original source dates and test totals.
 
 The five original concept screens describe **20 feature groups**. The historical
@@ -22,11 +22,11 @@ sample products and health verdicts are illustrative.
 
 | ID | Feature / screen | Backend current | Frontend current / remaining |
 | --- | --- | --- | --- |
-| F01 | Barcode identity / Home, Scan | Ready: live and exact snapshot routes | Captured ZXing decoding has bounded off-center/rotation/inversion retries and checksum validation; known barcodes open directly. Continuous feed/device accuracy remain separate gates |
+| F01 | Barcode identity / Home, Scan | Ready: live and exact snapshot routes | Free mobile_scanner realtime camera with native platform decoders and self-hosted ZXing-C++ WASM; valid EAN/UPC checksums, scan-window filtering and one-result routing. Synthetic browser camera passes; physical package accuracy remains a device gate |
 | F02 | Search / Home | Ready: released v0.6.0 bounded indexed discovery | Name/brand search, paging and explicit selection published; v0.3.0 immediate mounted input focus, public cache/queue/skeleton and real hosted results verified |
 | F03 | Photos / Results, Compare | Ready: official attributed URL descriptors; local v0.12 adds 120/243 separate research descriptors | Actual sourced image or session front photo; missing images have an honest fallback. Fresh decorative artwork cannot impersonate a scanned product |
 | F04 | Nutrition and normalization / Results | Ready; v0.14 adds separate automatic unverified observations after exact identity checks | Local v0.6 automatically reads explicitly based tables, preserves unknowns/bounds and blocks ambiguous public rows; physical accuracy and final verification remain separate |
-| F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0â€“100 health score |
+| F05 | OFF Nutri-Score/NOVA / Home, Results | Ready: optional provider values | Dedicated grade/source display pending; no Unlabel 0–100 health score |
 | F06 | Unified report/reasons / Results | Ready: released v0.5.0 | Current/historical sourced reports and reference analysis published; hosted v0.3.0 public report opened/saved without stale SnackBar failure |
 | F07 | Claim checks / Results, Ingredients | Partial: seven reviewed numeric types | Front claim text compares with the selected catalogue SKU using sourced numeric tables. Missing category/form context remains insufficient; no human confirmation is fabricated |
 | F08 | Ingredient explanations / Ingredients | Partial: v0.9.0 expands to six reviewed English/Hindi name/function entries | v0.4.0 adds matched-ingredient detail with bilingual functions and evidence; broader ingredient coverage remains partial |
@@ -49,6 +49,8 @@ sample products and health verdicts are illustrative.
 
 | Component/version | Meaningful goal | Evidence / state |
 | --- | --- | --- |
+| Frontend v0.11.0+15 | Free SDK scanner, compact reference Product Info, Safari camera cleanup and guest toast | [Current review](FRONTEND_V0_11_0_REVIEW.md); physical device acceptance remains separate |
+| Backend v0.15.0 | Optional credential-based source controls and bounded NutriGraph sandbox | [Current review](BACKEND_V0_15_0_REVIEW.md); 1,493 tests passed, vendor endpoint HTML 404 remains external |
 | Frontend v0.10.0+14 | Reference scanner/sign-in methods, Safari keyboard fix, guest names, one Product Info page and temporary live sources | [Current review](FRONTEND_V0_10_0_REVIEW.md); final release gates recorded there |
 | Backend v0.14.0 | Automatic unverified observations, catalogue numeric claim comparisons and optional live NutriGraph lookup | [Current review](BACKEND_V0_14_0_REVIEW.md); provider disabled pending key |
 | Frontend v0.9.0+13 | Responsive reference auth, themed shared artwork, provider management and account deletion | [Dated review](FRONTEND_V0_9_0_REVIEW.md); published with separate hosted/native receipts |

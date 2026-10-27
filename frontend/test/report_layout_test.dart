@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/models/product_report.dart';
@@ -40,6 +41,91 @@ Widget _app(ProductReport report, Brightness brightness) => MaterialApp(
 );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() async {
+    for (final family in ['Nunito', 'Quicksand']) {
+      final loader = FontLoader(family)
+        ..addFont(rootBundle.load('assets/brand/fonts/$family-Variable.ttf'));
+      await loader.load();
+    }
+  });
+  testWidgets(
+    'reference evidence and nutrient grids adapt without hiding facts',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      for (final width in [390.0, 1440.0]) {
+        tester.view.physicalSize = Size(width, 900);
+        await tester.pumpWidget(_app(_report(), Brightness.dark));
+        await tester.pumpAndSettle();
+        final nutrition = tester.getRect(find.text('Nutrition facts'));
+        final claims = tester.getRect(find.text('Claim evidence'));
+        final ingredients = tester.getRect(find.text('Ingredient declaration'));
+        expect(nutrition.top, closeTo(claims.top, 1));
+        expect(
+          ingredients.top,
+          width == 390 ? greaterThan(nutrition.top) : closeTo(nutrition.top, 1),
+        );
+        final first = tester.getRect(
+          find.byKey(const Key('report-nutrient-0')),
+        );
+        final third = tester.getRect(
+          find.byKey(const Key('report-nutrient-2')),
+        );
+        final fourth = tester.getRect(
+          find.byKey(const Key('report-nutrient-3')),
+        );
+        expect(first.top, closeTo(third.top, 1));
+        if (width == 390) {
+          expect(
+            tester.getSize(find.text('Carbohydrates')).height,
+            lessThanOrEqualTo(18),
+            reason: 'The complete nutrient label fits without an orphan letter.',
+          );
+          expect(
+            tester
+                .getSize(find.byKey(const Key('report-evidence-summary')))
+                .height,
+            lessThanOrEqualTo(160),
+            reason: 'The phone overview stays compact at default text size.',
+          );
+        }
+        expect(
+          fourth.top,
+          width == 390 ? greaterThan(first.top) : closeTo(first.top, 1),
+        );
+        expect(find.text('Total sugars'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+      }
+    },
+  );
+
+  testWidgets(
+    'allergen tab and missing facts disclosure retain their details',
+    (tester) async {
+      final report = _report();
+      await tester.pumpWidget(_app(report, Brightness.light));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Allergens'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Allergens'));
+      await tester.pumpAndSettle();
+      expect(find.text('Contains'), findsOneWidget);
+      expect(find.text('Milk'), findsOneWidget);
+      expect(find.text('May contain'), findsOneWidget);
+      final unknownItems = {...report.missingInputs, ...report.warnings};
+      final showMore = find.text('+${unknownItems.length - 4} more');
+      await tester.ensureVisible(showMore);
+      await tester.pumpAndSettle();
+      await tester.tap(showMore);
+      await tester.pumpAndSettle();
+      expect(find.text('Show less'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('desktop results navigation invokes each app destination', (
     tester,
   ) async {
@@ -169,7 +255,7 @@ void main() {
           }
           for (final section in [
             'Ingredients & allergens',
-            'Sources & evidence',
+            'Source references',
           ]) {
             await tester.ensureVisible(find.text(section));
             await tester.pumpAndSettle();

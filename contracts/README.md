@@ -1,11 +1,13 @@
 # Shared API contracts
 
-Checkpoint **15 October 2026**: backend **0.14.0**, exported as
-[backend-v0.14.0.openapi.json](schemas/backend-v0.14.0.openapi.json).
+Checkpoint **26 October 2026**: backend **0.15.0**, exported as
+[backend-v0.15.0.openapi.json](schemas/backend-v0.15.0.openapi.json).
 Additive contracts cover automatic machine-unverified contributions and public
 readings, session-only live lookup, and source-backed catalogue claim checks.
 Existing confirmed observations, private libraries and historical exports remain.
-[Current review](../docs/planning/BACKEND_V0_14_0_REVIEW.md).
+[Current review](../docs/planning/BACKEND_V0_15_0_REVIEW.md).
+This update makes sources independently optional without changing wire shapes.
+[Source configuration](../docs/architecture/OPTIONAL_SOURCES.md).
 
 Run `backend/.venv/Scripts/python.exe scripts/release/export_backend_contracts.py`
 from root (Unix: backend/.venv/bin/python), then review generated diffs.

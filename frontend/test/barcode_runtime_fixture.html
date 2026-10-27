@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><base href="../web/"><title>Barcode runtime synthetic fixture</title></head>
+<body><p id="result">Synthetic EAN decoder checks</p><script src="barcode_runtime.js"></script>
+<script>
+'use strict';
+// Public EAN-13 digit/parity patterns; generated test bars are not product evidence.
+const fixtureCode = '8901764051258';
+const left = ['0001101','0011001','0010011','0111101','0100011',
+  '0110001','0101111','0111011','0110111','0001011'];
+const even = ['0100111','0110011','0011011','0100001','0011101',
+  '0111001','0000101','0010001','0001001','0010111'];
+const parity = ['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG',
+  'LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
+function fixture(turns = 0, inverted = false, invalid = false) {
+  let modules = '101';
+  for (let i = 1; i < 7; i++) {
+    modules += (parity[Number(fixtureCode[0])][i - 1] === 'L' ? left : even)[Number(fixtureCode[i])];
+  }
+  modules += '01010';
+  for (let i = 7; i < 13; i++) {
+    const digit = invalid && i === 12 ? 9 : Number(fixtureCode[i]);
+    modules += left[digit].split('').map(bit => bit === '1' ? '0' : '1').join('');
+  }
+  modules += '101';
+  const canvas = document.createElement('canvas');
+  canvas.width = turns % 2 ? 480 : 640;
+  canvas.height = turns % 2 ? 640 : 480;
+  const context = canvas.getContext('2d', {willReadFrequently: true});
+  context.fillStyle = inverted ? '#000' : '#fff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  if (turns === 1) context.translate(480, 0);
+  if (turns === 2) context.translate(640, 480);
+  if (turns === 3) context.translate(0, 640);
+  context.rotate(turns * Math.PI / 2);
+  context.fillStyle = inverted ? '#fff' : '#000';
+  for (let i = 0; i < modules.length; i++) {
+    if (modules[i] === '1') context.fillRect(110 + i * 4, 24, 4, 80);
+  }
+  return context.getImageData(0, 0, canvas.width, canvas.height);
+}
+window.runBarcodeFixtureChecks = async () => {
+  const checks = [];
+  await window.unlabelBarcodes.prepare();
+  for (let turns = 0; turns < 4; turns++) {
+    const image = fixture(turns);
+    const found = JSON.parse(await window.unlabelBarcodes.read(
+      image.data, image.width, image.height, true, `fixture:${turns}`));
+    if (found?.text !== fixtureCode || found?.points?.length !== 4 ||
+        !found.points.flat().every(value => Number.isFinite(value) && value >= 0 && value <= 1)) {
+      throw new Error(`rotation_${turns}`);
+    }
+    checks.push({turns, code: found.text, points: found.points});
+  }
+  const inverted = fixture(0, true);
+  const found = JSON.parse(await window.unlabelBarcodes.read(
+    inverted.data, inverted.width, inverted.height, true, 'fixture:inverted'));
+  if (found?.text !== fixtureCode) throw new Error('inversion');
+  checks.push({inverted: true, code: found.text});
+  const invalid = fixture(0, false, true);
+  const rejected = JSON.parse(await window.unlabelBarcodes.read(
+    invalid.data, invalid.width, invalid.height, true, 'fixture:checksum'));
+  if (rejected !== null) throw new Error('invalid_checksum_accepted');
+  const pending = window.unlabelBarcodes.read(
+    invalid.data, invalid.width, invalid.height, true, 'fixture:cancel');
+  const cancelled = pending.then(() => false, () => true);
+  window.unlabelBarcodes.cancel('fixture:cancel');
+  if (!await cancelled) throw new Error('cancel_failed');
+  const image = fixture();
+  const resumed = JSON.parse(await window.unlabelBarcodes.read(
+    image.data, image.width, image.height, true, 'fixture:resumed'));
+  if (resumed?.text !== fixtureCode) throw new Error('retry_after_cancel');
+  document.getElementById('result').textContent = 'All synthetic barcode runtime checks passed';
+  return {checks, invalidChecksumRejected: true, cancelled: true, retryAfterCancel: true};
+};
+</script></body></html>

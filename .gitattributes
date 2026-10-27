@@ -22,3 +22,8 @@ frontend/web/ocr/provenance.json text eol=lf
 frontend/web/ocr/licenses/* -whitespace
 frontend/assets/brand/fonts/CormorantGaramond-OFL.txt -text -whitespace
 frontend/assets/brand/fonts/Quicksand-OFL.txt -text -whitespace
+# Preserve downloaded decoder bytes for recorded hashes; normalize our manifest.
+frontend/web/vendor/** -text
+frontend/web/vendor/zxing-wasm/3.1.3/provenance.json text eol=lf
+frontend/web/vendor/zxing-wasm/3.1.3/LICENSE -whitespace
+frontend/web/vendor/zxing-wasm/3.1.3/ZXING_CPP_LICENSE -whitespace

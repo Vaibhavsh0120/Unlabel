@@ -1,14 +1,14 @@
 # Frontend/backend API plan
 
-Updated **13 October 2026** for the canonical [backend](../../backend/pyproject.toml)
+Updated **15 October 2026** for the canonical [backend](../../backend/pyproject.toml)
 and [frontend](../../frontend/pubspec.yaml) versions. Current OpenAPI is
-[backend-v0.13.0.openapi.json](../../contracts/schemas/backend-v0.13.0.openapi.json):
-**27 paths / 29 operations**, adding recent-auth `DELETE /v1/account/sync` while
-preserving existing wire shapes. Historical exports remain immutable. Current auth/provider and deletion work await
-final exact-source hosted/native verification. Authenticated extraction/staging
-and physical-device accuracy remain separate. [Contracts](../../contracts/README.md) ·
-[Backend review](../planning/BACKEND_V0_13_0_REVIEW.md) ·
-[Frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md).
+[backend-v0.14.0.openapi.json](../../contracts/schemas/backend-v0.14.0.openapi.json):
+**30 paths / 32 operations**. Additions cover machine-unverified observations,
+source-backed catalogue numeric claim comparisons and optional live lookup.
+Confirmed observations and private snapshot contracts remain compatible.
+Local, hosted, native and physical-device evidence are separate in the
+[backend review](../planning/BACKEND_V0_14_0_REVIEW.md) and
+[frontend review](../planning/FRONTEND_V0_10_0_REVIEW.md).
 
 ## Historical research checkpoint — backend v0.10.0
 

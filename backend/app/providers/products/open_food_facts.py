@@ -43,6 +43,8 @@ class OpenFoodFactsProvider:
             retrieved_at=datetime.now(UTC),
         )
         result = ProductLookup(requested_barcode=barcode, status="unavailable", source=source)
+        if not self.settings.off_enabled:
+            return result, None
         try:
             async with asyncio.timeout(self.settings.off_timeout_seconds):
                 async with self.client.stream(

@@ -1,9 +1,10 @@
+import json
 import os
 from pathlib import Path
 from typing import Any, Literal
 from urllib.parse import urlsplit
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_settings.sources import ENV_FILE_SENTINEL, DotenvType
 
@@ -19,9 +20,14 @@ class Settings(BaseSettings):
     )
     off_user_agent: str = f"Unlabel/{__version__} (https://github.com/Vaibhavsh0120/Unlabel)"
     off_timeout_seconds: float = Field(default=8, ge=1, le=15)
+    off_enabled: bool = True
     off_max_response_bytes: int = Field(default=524_288, ge=1024, le=1_048_576)
     cors_origins: list[str] = Field(default_factory=list)
     catalogue_directory: str = Field(default="", max_length=1024)
+    catalogue_enabled: bool = True
+    research_catalogue_enabled: bool = True
+    claims_enabled: bool = True
+    glossary_enabled: bool = True
     catalogue_require_receipt: bool = False
     research_catalogue_directory: str = Field(default="", max_length=1024)
     claims_knowledge_directory: str = Field(default="", max_length=1024)
@@ -33,9 +39,11 @@ class Settings(BaseSettings):
     community_database_id: Literal["unlabel"] = "unlabel"
     community_service_account_json: SecretStr | None = Field(default=None, repr=False)
     community_actor_secret: SecretStr | None = Field(default=None, repr=False)
-    ai_enabled: bool = False
+    ai_enabled: bool | Literal["auto"] = "auto"
+    gemini_enabled: bool = True
+    openai_enabled: bool = True
     ai_initial_credential_id: str = Field(
-        default="gemini-primary", pattern=r"^[a-z][a-z0-9-]{0,47}$"
+        default="auto", pattern=r"^[a-z][a-z0-9-]{0,47}$"
     )
     ai_failover_enabled: bool = True
     ai_daily_request_limit: int = Field(default=100, ge=1, le=200)
@@ -46,13 +54,46 @@ class Settings(BaseSettings):
     gemini_model: str = Field(default="gemini-3.5-flash-lite", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     openai_model: str = Field(default="gpt-4.1-mini", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     ai_fallback_credentials_json: SecretStr | None = Field(default=None, repr=False)
-    nutrigraph_enabled: bool = False
+    nutrigraph_enabled: bool | Literal["auto"] = "auto"
     nutrigraph_api_key: SecretStr | None = Field(default=None, repr=False)
     nutrigraph_monthly_request_limit: int = Field(default=1000, ge=1, le=1000)
+    nutrigraph_sandbox_request_limit: int = Field(default=1000, ge=1, le=1000)
 
     def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
         # Preserve BaseSettings' supported dotenv override in its typed signature.
         super().__init__(_env_file=_env_file, **values)
+
+    @model_validator(mode="after")
+    def resolve_optional_sources(self) -> "Settings":
+        # A key is configuration, never proof of provider connectivity. Explicit
+        # false always wins; true cannot make a missing credential usable.
+        fallback_keys = False
+        if self.ai_fallback_credentials_json is not None:
+            try:
+                replacements = json.loads(self.ai_fallback_credentials_json.get_secret_value())
+                fallback_keys = isinstance(replacements, list) and any(
+                    isinstance(value, dict) and value.get("api_key")
+                    and ((value.get("provider") == "gemini" and self.gemini_enabled)
+                         or (value.get("provider") == "openai" and self.openai_enabled))
+                    for value in replacements
+                )
+            except (ValueError, TypeError):
+                pass  # Invalid optional configuration is never a usable key.
+        ai_keys = bool(
+            (self.gemini_enabled and self.gemini_api_key is not None)
+            or (self.openai_enabled and self.openai_api_key is not None)
+            or fallback_keys
+        )
+        self.ai_enabled = self.ai_enabled is not False and ai_keys
+        self.nutrigraph_enabled = (
+            self.nutrigraph_enabled is not False and self.nutrigraph_api_key is not None
+        )
+        return self
+
+    def initial_ai_slot(self, available: tuple[str, ...]) -> str:
+        if self.ai_initial_credential_id == "auto":
+            return available[0] if available else ""
+        return self.ai_initial_credential_id
 
     def claims_knowledge_path(self) -> Path:
         backend = Path(__file__).resolve().parents[2]

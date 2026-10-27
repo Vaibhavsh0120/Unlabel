@@ -61,6 +61,8 @@ def create_app(
     config = settings or Settings()
     knowledge_artifact = None
     try:
+        if not config.claims_enabled:
+            raise ValueError("Reviewed claim source disabled")
         knowledge_path = config.claims_knowledge_path()
         if (
             os.environ.get("VERCEL") == "1"
@@ -76,6 +78,8 @@ def create_app(
         knowledge_artifact = None
 
     try:
+        if not config.glossary_enabled:
+            raise ValueError("Ingredient glossary source disabled")
         glossary = GlossaryStore()
     except (OSError, ValueError):
         glossary = None
@@ -94,6 +98,8 @@ def create_app(
             application.state.catalogue_artifact = None
             application.state.research_catalogue = None
             try:
+                if not config.research_catalogue_enabled:
+                    raise ValueError("Research catalogue source disabled")
                 application.state.research_catalogue = ResearchCatalogueStore(
                     config.research_catalogue_path()
                 )
@@ -143,9 +149,10 @@ def create_app(
                 application.state.nutrigraph = NutriGraphLookup(
                     live_client, config.nutrigraph_api_key.get_secret_value(),
                     monthly_limit=config.nutrigraph_monthly_request_limit,
+                    sandbox_limit=config.nutrigraph_sandbox_request_limit,
                 )
             directory = config.catalogue_path()
-            if directory is not None:
+            if config.catalogue_enabled and directory is not None:
                 try:
                     artifact = None
                     if config.catalogue_require_receipt:
@@ -219,7 +226,7 @@ def create_app(
 
     def catalogue_metadata(request: Request):
         directory = config.catalogue_path()
-        if directory is None:
+        if not config.catalogue_enabled or directory is None:
             return CatalogueStatus(status="not_configured")
         try:
             store = request.app.state.catalogue
@@ -322,8 +329,8 @@ def create_app(
                 "ai_extraction": request.app.state.ai_gateway is not None,
                 "ai_machine_observations": request.app.state.ai_gateway is not None,
                 "live_nutrigraph": request.app.state.nutrigraph is not None,
-                "product_lookup": True,
-                "nutrition_lookup": True,
+                "product_lookup": config.off_enabled,
+                "nutrition_lookup": config.off_enabled,
                 "nutrition_normalization": True,
                 "catalogue_lookup": catalogue["status"] == "ready",
                 "research_catalogue": research["status"] == "ready",

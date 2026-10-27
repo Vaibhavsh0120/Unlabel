@@ -14,7 +14,7 @@
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
-[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.10.0%2B14-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.14.0-155b4b)](backend/pyproject.toml)
+[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.11.0%2B15-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.15.0-155b4b)](backend/pyproject.toml)
 
 </div>
 
@@ -47,20 +47,20 @@ Import and launch on an actual iPhone remain unverified.
 
 ### Latest update
 
-The scanner now starts in Barcode mode, with a larger camera view, matching
-capture crop, Front/Back photo reading and an animated processing indicator.
-Search, scans, history and saved items open one Product Info page; its visual
-redesign is planned separately. Front/back scans retain package-size choices.
-Compatible AI label readings can contribute automatically as explicitly
-unverified observations without replacing original sources. Optional live
-NutriGraph lookup stays separate from saved reports and remains disabled until
-a trial key is configured.
+Barcode scanning now uses the free `mobile_scanner` package: native platform
+decoders and a bundled ZXing-C++ WebAssembly reader for web. The scanner follows
+the mobile reference, with front/back photo capture, gallery and lifecycle guards.
+Product information follows the supplied desktop/mobile hierarchy, with smaller
+phone text, nutrition basis, unknown/conflicting facts and source references.
+Guests selecting Sign-in methods receive a sign-in toast.
 
-Safari auth keeps its artwork when browser controls resize the viewport, tapping
-outside a field dismisses the keyboard, guests can keep a display name on their
-device, and sign-in methods follow the supplied phone/desktop layout.
-[Frontend scope and checks](docs/planning/FRONTEND_V0_10_0_REVIEW.md) ·
-[Backend scope and checks](docs/planning/BACKEND_V0_14_0_REVIEW.md).
+Every backend source can be switched off. Keyed sources automatically stay off
+without credentials; a fresh clone can use the bundled data without vendor accounts.
+[Optional-source setup](docs/architecture/OPTIONAL_SOURCES.md).
+NutriGraph is configured server-side and remains temporary; its supplied endpoint
+returned HTML 404 during testing, so successful live lookup is unverified.
+[Frontend scope and checks](docs/planning/FRONTEND_V0_11_0_REVIEW.md) ·
+[Backend scope and checks](docs/planning/BACKEND_V0_15_0_REVIEW.md).
 
 Publication, hosted checks and native/device evidence are recorded separately in
 [the release ledger](docs/planning/CONTROLLED_RELEASES.md).

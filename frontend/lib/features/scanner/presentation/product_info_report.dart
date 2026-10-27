@@ -88,6 +88,11 @@ class _ReportContentState extends State<_ReportContent> {
 
   Widget _saveAction() => OutlinedButton.icon(
     key: const Key('save-report'),
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      side: BorderSide(color: Theme.of(context).colorScheme.primary),
+    ),
     onPressed: _saving || _checkingSaved || _savedError != null
         ? null
         : _toggleSaved,
@@ -104,8 +109,12 @@ class _ReportContentState extends State<_ReportContent> {
           : _saving
           ? 'Saving…'
           : _saved
-          ? 'Saved · remove'
-          : 'Save on this device',
+          ? (MediaQuery.sizeOf(context).width < 600
+                ? 'Saved'
+                : 'Saved · remove')
+          : (MediaQuery.sizeOf(context).width < 600
+                ? 'Save'
+                : 'Save on this device'),
     ),
   );
 
@@ -114,64 +123,60 @@ class _ReportContentState extends State<_ReportContent> {
     final report = widget.report;
     final theme = Theme.of(context);
     final photo = ReportImageDescriptor.fromReport(report);
-    return ProductResultsLayout(
-      main: [
-        SectionCard(
-          key: const Key('report-product-card'),
-          padding: 18,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _ProductIdentity(
-                report: report,
-                photo: photo,
-                sessionPhoto: widget.sessionPhoto,
-              ),
-              const SizedBox(height: 16),
-              Wrap(
-                spacing: 16,
-                runSpacing: 12,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  _saveAction(),
-                  if (report.barcode != null)
-                    Text(
-                      'Barcode ${report.barcode}',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                ],
-              ),
-              if (_savedError != null) ...[
-                const SizedBox(height: 12),
-                Text('Saved status could not be loaded. $_savedError'),
-                TextButton(
-                  onPressed: _readSaved,
-                  child: const Text('Retry saved status'),
+    final identity = ResultsIdentityCard(
+      key: const Key('report-product-card'),
+      name: report.name,
+      brand: report.brand,
+      variant: report.variant,
+      quantity: report.quantity,
+      photo: widget.sessionPhoto,
+      imageUrl: photo?.url,
+      imageDescription: photo == null
+          ? null
+          : '${photo.attribution}. ${photo.license}.',
+      barcode: report.barcode,
+      actions: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _saveAction(),
+          if (_savedError != null) ...[
+            const SizedBox(height: 8),
+            Text('Saved status could not be loaded. $_savedError'),
+            TextButton(
+              onPressed: _readSaved,
+              child: const Text('Retry saved status'),
+            ),
+          ],
+        ],
+      ),
+    );
+    final nutrition = report.nutrients.isEmpty
+        ? const StatusNotice(
+            title: 'Nutrition is not available',
+            message: 'No usable printed nutrient rows were found. Check the nutrition table on your package.',
+          )
+        : _NutritionSnapshot(nutrients: report.nutrients);
+    final claims = SectionCard(
+      padding: 16,
+      child: report.claims.isEmpty
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  report.isHistorical
+                      ? 'Current claims need the current label'
+                      : 'No front claims captured',
+                  style: theme.textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  report.isHistorical
+                      ? 'Catalogue nutrient values cannot establish claims on a current package.'
+                      : 'Photograph the front and back labels to check printed claims.',
                 ),
               ],
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        _ReportSummary(report: report),
-        const SectionTitle('Evidence at a glance'),
-        _EvidenceOverview(report: report),
-        const SectionTitle('Claim check'),
-        if (report.claims.isEmpty)
-          StatusNotice(
-            title: report.isHistorical
-                ? 'Current claims need the current label'
-                : 'No front claims captured',
-            message: report.isHistorical
-                ? 'Catalogue nutrient values cannot establish claims on a current package.'
-                : 'Photograph the front and back labels to check printed claims.',
-          )
-        else
-          SectionCard(
-            padding: 18,
-            child: Column(
+            )
+          : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 for (var index = 0; index < report.claims.length; index++) ...[
@@ -180,218 +185,219 @@ class _ReportContentState extends State<_ReportContent> {
                 ],
               ],
             ),
-          ),
-        const SectionTitle('Nutrition snapshot'),
-        if (report.nutrients.isEmpty)
-          const StatusNotice(
-            title: 'Nutrition is not available',
-            message: 'No usable printed nutrient rows were found. Check the nutrition table on your package.',
-          )
-        else
-          _NutritionSnapshot(nutrients: report.nutrients),
-        if (report.sugar != null) ...[
-          const SectionTitle('Sugar reality'),
-          _SugarReality(sugar: report.sugar!),
-        ],
-      ],
-      aside: [
-        if (widget.repository != null && report.barcode != null)
-          _CatalogueClaims(
-            repository: widget.repository!,
-            barcode: report.barcode!,
-            claims: widget.frontClaims,
-          ),
-        if (widget.repository != null && report.barcode != null)
-          _ProductSupplements(
-            repository: widget.repository!,
-            barcode: report.barcode!,
-          ),
-        _IngredientPreview(report: report),
-        const SizedBox(height: 16),
-        ResultsAllergenNotice(
-          contains: report.contains.text,
-          mayContain: report.mayContain.text,
-        ),
-        const SectionTitle('Ingredients & allergens'),
-        SectionCard(
-          padding: 18,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _Declaration('Ingredients', report.ingredients),
-              const Divider(),
-              _Declaration('Contains', report.contains),
-              const Divider(),
-              _Declaration('May contain', report.mayContain),
-              const SizedBox(height: 16),
-              Text(
-                'Missing allergen information does not mean allergy-safe. Read the current package.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+    );
+    final ingredients = _ReportDeclarations(report: report);
+    final allergen = ResultsAllergenNotice(
+      contains: report.contains.text,
+      mayContain: report.mayContain.text,
+    );
+    final unknown = _UnknownFacts(
+      items: {...report.missingInputs, ...report.warnings}.map(_human).toList(),
+    );
+    final sources = ResultsSurface(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (report.sourceLabels.isEmpty)
+            const Text('Source details are unavailable in this report.')
+          else
+            for (final source in report.sourceLabels)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ResultsSelectableText(source),
               ),
-              const SizedBox(height: 16),
-              OutlinedButton.icon(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => IngredientPage(report: report),
-                  ),
-                ),
-                icon: const FeatureIcon('document-text', size: 20),
-                label: const Text('Explore ingredient functions'),
-              ),
-            ],
-          ),
-        ),
-        if (!report.isHistorical) ...[
-          const SectionTitle('Catalogue update'),
-          StatusNotice(
-            title: _storageTitle(report.storageStatus),
-            message: _storageMessage(report.storageStatus),
-          ),
-        ],
-        if (report.missingInputs.isNotEmpty || report.warnings.isNotEmpty) ...[
-          const SectionTitle('What is still unknown'),
-          SectionCard(
-            padding: 18,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final item in <String>{
-                  ...report.missingInputs,
-                  ...report.warnings,
-                })
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text('• ${_human(item)}'),
-                  ),
-              ],
+          if (photo != null) ...[
+            ResultsSelectableText(
+              '${photo.attribution} · Creative Commons Attribution-ShareAlike 3.0 (${photo.license})',
             ),
+            ResultsSelectableText(photo.licenseUrl),
+            const SizedBox(height: 12),
+          ],
+          const Text(
+            'These explanations describe the supplied label facts. They do not establish a health score, allergy safety or regulatory compliance.',
           ),
         ],
-        const SectionTitle('Sources & evidence'),
-        SectionCard(
-          padding: 18,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (report.sourceLabels.isEmpty)
-                const Text('Source details are unavailable in this report.')
-              else
-                for (final source in report.sourceLabels)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: ResultsSelectableText(source),
-                  ),
-              if (photo != null) ...[
-                const SizedBox(height: 4),
-                ResultsSelectableText(
-                  '${photo.attribution} · ${photo.license}',
-                ),
-                ResultsSelectableText(photo.licenseUrl),
-                const SizedBox(height: 12),
-              ],
-              const SizedBox(height: 8),
-              const Text(
-                'These explanations describe the supplied label facts. They do not establish a health score, allergy safety or regulatory compliance.',
-              ),
-            ],
-          ),
+      ),
+    );
+    final core = <Widget>[
+      identity,
+      const SizedBox(height: 16),
+      _ReportSummary(report: report),
+      const SectionTitle('Evidence at a glance'),
+      _EvidenceOverview(report: report),
+      const SectionTitle('Nutrition snapshot'),
+      nutrition,
+    ];
+    final lower = <Widget>[
+      if (report.sugar != null) ...[
+        const SectionTitle('Sugar reality'),
+        _SugarReality(sugar: report.sugar!),
+      ],
+      const SectionTitle('Claim check'),
+      claims,
+    ];
+    final supporting = <Widget>[
+      if (widget.repository != null && report.barcode != null)
+        _CatalogueClaims(
+          repository: widget.repository!,
+          barcode: report.barcode!,
+          claims: widget.frontClaims,
         ),
+      if (widget.repository != null && report.barcode != null)
+        _ProductSupplements(
+          repository: widget.repository!,
+          barcode: report.barcode!,
+        ),
+      if (!report.isHistorical) ...[
+        const SectionTitle('Catalogue update'),
+        StatusNotice(
+          title: _storageTitle(report.storageStatus),
+          message: _storageMessage(report.storageStatus),
+        ),
+      ],
+    ];
+    return ProductResultsLayout(
+      main: [...core, ...lower],
+      aside: [
+        _IngredientPreview(report: report),
+        const SizedBox(height: 14),
+        allergen,
+        const SectionTitle('Ingredients & allergens', topSpacing: 16),
+        ingredients,
+        const SizedBox(height: 14),
+        unknown,
+        const SectionTitle('Source references', topSpacing: 16),
+        sources,
+        ...supporting,
+      ],
+      mobile: [
+        ...core,
+        const SectionTitle('Ingredients & allergens'),
+        ingredients,
+        const SizedBox(height: 12),
+        allergen,
+        const SizedBox(height: 14),
+        unknown,
+        const SectionTitle('Source references', topSpacing: 16),
+        sources,
+        const SizedBox(height: 16),
+        _IngredientPreview(report: report),
+        ...lower,
+        ...supporting,
       ],
     );
   }
 }
 
-class _ProductIdentity extends StatelessWidget {
-  const _ProductIdentity({
-    required this.report,
-    required this.photo,
-    this.sessionPhoto,
-  });
+class _ReportDeclarations extends StatefulWidget {
+  const _ReportDeclarations({required this.report});
   final ProductReport report;
-  final ReportImageDescriptor? photo;
-  final Uint8List? sessionPhoto;
+  @override
+  State<_ReportDeclarations> createState() => _ReportDeclarationsState();
+}
 
+class _ReportDeclarationsState extends State<_ReportDeclarations> {
+  bool _allergens = false;
+  @override
+  Widget build(BuildContext context) => ResultsSurface(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SegmentedButton<bool>(
+          showSelectedIcon: false,
+          segments: const [
+            ButtonSegment(
+              value: false,
+              label: Text('Ingredients'),
+              icon: Icon(Icons.eco_outlined),
+            ),
+            ButtonSegment(
+              value: true,
+              label: Text('Allergens'),
+              icon: Icon(Icons.warning_amber_rounded),
+            ),
+          ],
+          selected: {_allergens},
+          onSelectionChanged: (selected) =>
+              setState(() => _allergens = selected.single),
+        ),
+        const SizedBox(height: 16),
+        if (_allergens) ...[
+          _Declaration('Contains', widget.report.contains),
+          const Divider(),
+          _Declaration('May contain', widget.report.mayContain),
+          const SizedBox(height: 12),
+          const Text(
+            'Missing allergen information does not mean allergy-safe. Read the current package.',
+          ),
+        ] else ...[
+          _Declaration(
+            'Printed ingredient declaration',
+            widget.report.ingredients,
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => IngredientPage(report: widget.report),
+              ),
+            ),
+            icon: const FeatureIcon('document-text', size: 20),
+            label: const Text('Explore ingredient functions'),
+          ),
+        ],
+      ],
+    ),
+  );
+}
+
+class _UnknownFacts extends StatefulWidget {
+  const _UnknownFacts({required this.items});
+  final List<String> items;
+  @override
+  State<_UnknownFacts> createState() => _UnknownFactsState();
+}
+
+class _UnknownFactsState extends State<_UnknownFacts> {
+  bool _expanded = false;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
-        final size = constraints.maxWidth < 450 ? 76.0 : 100.0;
-        final fallback = Semantics(
-          label: 'Product photo unavailable',
-          child: const Center(child: FeatureIcon('document-text', size: 32)),
-        );
-        final picture = ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: SizedBox.square(
-            dimension: size,
-            child: ColoredBox(
-              color: theme.colorScheme.surfaceContainerLow,
-              child: sessionPhoto != null
-                  ? Image.memory(
-                      sessionPhoto!,
-                      fit: BoxFit.contain,
-                      semanticLabel: 'Your current package photo',
-                      errorBuilder: (_, _, _) => fallback,
-                    )
-                  : photo == null
-                  ? fallback
-                  : Image.network(
-                      photo!.url,
-                      fit: BoxFit.contain,
-                      semanticLabel:
-                          'Product photo of ${report.name}. ${photo!.attribution}. ${photo!.license}.',
-                      loadingBuilder: (_, image, progress) =>
-                          progress == null ? image : fallback,
-                      errorBuilder: (_, _, _) => fallback,
-                    ),
-            ),
-          ),
-        );
-        final copy = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final shown = _expanded ? widget.items : widget.items.take(4);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text('What is still unknown', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
           children: [
-            Text(report.name, style: theme.textTheme.titleLarge),
-            if (report.brand?.isNotEmpty ?? false) ...[
-              const SizedBox(height: 4),
-              Text(
-                report.brand!,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+            if (widget.items.isEmpty)
+              const Text('No additional missing fields were recorded.'),
+            for (final item in shown)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 7,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: theme.colorScheme.outlineVariant),
+                ),
+                child: Text(item, style: theme.textTheme.bodySmall),
+              ),
+            if (widget.items.length > 4)
+              TextButton(
+                onPressed: () => setState(() => _expanded = !_expanded),
+                child: Text(
+                  _expanded ? 'Show less' : '+${widget.items.length - 4} more',
                 ),
               ),
-            ],
-            if (report.variant?.isNotEmpty ?? false) ...[
-              const SizedBox(height: 4),
-              Text(report.variant!),
-            ],
-            if (report.quantity?.isNotEmpty ?? false) ...[
-              const SizedBox(height: 4),
-              Text(
-                report.quantity!,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
           ],
-        );
-        return largeText && constraints.maxWidth < 500
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [picture, const SizedBox(height: 12), copy],
-              )
-            : Row(
-                children: [
-                  picture,
-                  const SizedBox(width: 16),
-                  Expanded(child: copy),
-                ],
-              );
-      },
+        ),
+      ],
     );
   }
 }
@@ -406,10 +412,9 @@ class _ReportSummary extends StatelessWidget {
     count: report.nutrients.where((item) => item.value != null).length,
     heading: report.isHistorical ? 'Dated catalogue facts' : 'Confirmed label',
     message: report.isHistorical
-        ? 'Dated observations may differ from the package in your hand.'
-        : 'Your confirmed facts, with missing or conflicting information kept unknown.',
-    qualification:
-        'Recorded values describe this label; they are not a health score.',
+        ? 'Dated facts may differ from your package.'
+        : 'Missing or conflicting facts stay unknown.',
+    qualification: 'Recorded facts, not a health score.',
   );
 }
 
@@ -438,7 +443,7 @@ class _EvidenceOverview extends StatelessWidget {
           title: 'Claim evidence',
           detail: report.claims.isEmpty
               ? 'No current-package claim assessments'
-              : '${report.claims.length} recorded assessments',
+              : '${report.claims.length} recorded ${report.claims.length == 1 ? 'assessment' : 'assessments'}',
           status: report.claims.isEmpty
               ? 'Not assessed'
               : 'Checked against evidence',
@@ -480,7 +485,7 @@ class _IngredientPreview extends StatelessWidget {
   final ProductReport report;
 
   @override
-  Widget build(BuildContext context) => SectionCard(
+  Widget build(BuildContext context) => ResultsSurface(
     padding: 16,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -589,12 +594,18 @@ class _NutritionSnapshot extends StatelessWidget {
       ['sodium'],
       ['sugars'],
     ]) {
-      for (final item in nutrients) {
-        if (names.contains(item.name)) {
-          selected.add(item);
-          break;
-        }
-      }
+      final matching = nutrients.where((item) => names.contains(item.name));
+      selected.add(
+        matching.isNotEmpty
+            ? matching.first
+            : ReportNutrient(
+                name: names.first,
+                value: null,
+                unit: names.first == 'energy' ? 'kcal' : 'g',
+                basisLabel: 'Basis unknown',
+                state: 'unknown',
+              ),
+      );
     }
     return selected.isEmpty ? nutrients.take(6).toList() : selected;
   }
@@ -602,22 +613,24 @@ class _NutritionSnapshot extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SectionCard(
     key: const Key('report-nutrition-snapshot'),
-    padding: 18,
+    padding: 12,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         LayoutBuilder(
           builder: (context, constraints) {
             final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
-            final minimum = largeText ? 220.0 : 110.0;
-            final columns = (constraints.maxWidth / minimum).floor().clamp(
-              1,
-              5,
-            );
-            final width = (constraints.maxWidth - 16 * (columns - 1)) / columns;
+            final columns = largeText
+                ? 1
+                : constraints.maxWidth >= 760
+                ? 6
+                : constraints.maxWidth >= 330
+                ? 3
+                : 2;
+            final width = (constraints.maxWidth - 8 * (columns - 1)) / columns;
             return Wrap(
-              spacing: 16,
-              runSpacing: 20,
+              spacing: 8,
+              runSpacing: 10,
               children: [
                 for (var index = 0; index < _overview.length; index++)
                   SizedBox(
@@ -658,28 +671,59 @@ class _SnapshotValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
+    final dark = theme.brightness == Brightness.dark;
+    final (symbol, tint) = switch (nutrient.name) {
+      'energy' => (
+        Icons.local_fire_department_rounded,
+        const Color(0xffffa958),
+      ),
+      'protein' => (Icons.fitness_center_rounded, const Color(0xffa78bee)),
+      'carbohydrates' ||
+      'carbohydrates_total' => (Icons.grain_rounded, const Color(0xffffce56)),
+      'fat' => (Icons.water_drop_rounded, const Color(0xfff58daf)),
+      'sodium' => (Icons.scatter_plot_rounded, const Color(0xff6fcdf3)),
+      _ => (Icons.view_in_ar_rounded, const Color(0xff70dfbc)),
+    };
+    return Container(
       key: Key('report-nutrient-$index'),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            symbol,
+            size: 28,
+            color: dark ? tint : Color.lerp(tint, Colors.black, .4),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            nutrient.value == null
+                ? _human(nutrient.state)
+                : '${_number(nutrient.value!)} ${nutrient.unit}',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontSize: MediaQuery.sizeOf(context).width < 600 ? 17 : 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
         Text(
           _human(nutrient.name),
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+          style: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
+        ),
+          const SizedBox(height: 5),
+          Text(
+            nutrient.basisLabel,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          nutrient.value == null
-              ? _human(nutrient.state)
-              : '${_number(nutrient.value!)} ${nutrient.unit}',
-          style: nutrient.value == null
-              ? theme.textTheme.titleMedium
-              : theme.textTheme.titleLarge?.copyWith(fontSize: 25),
-        ),
-        const SizedBox(height: 5),
-        Text(nutrient.basisLabel, style: theme.textTheme.bodySmall),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -833,7 +877,7 @@ class _Declaration extends StatelessWidget {
       if (section.sourceIds.isNotEmpty)
         ExpansionTile(
           tilePadding: EdgeInsets.zero,
-          title: const Text('Source references'),
+          title: const Text('Declaration source references'),
           children: [
             for (final source in section.sourceIds)
               Padding(

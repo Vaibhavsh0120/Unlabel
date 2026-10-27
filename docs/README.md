@@ -1,10 +1,11 @@
 # Unlabel documentation
 
-Current update: **frontend 0.10.0+14 / backend 0.14.0**, covering the scanner,
-unified Product Info, Safari auth, guest names, automatic unverified readings
-and optional live product lookup. Local validation passed; publication
-and hosted/device acceptance remain separate.
-[Frontend review](planning/FRONTEND_V0_10_0_REVIEW.md) Â· [Backend review](planning/BACKEND_V0_14_0_REVIEW.md).
+Current update: **frontend 0.11.0+15 / backend 0.15.0**, covering the free native/WASM
+scanner, compact reference product page, Safari camera cleanup, guest toast and
+independently optional sources. Local, hosted, native and device evidence remain
+separate. [Frontend review](planning/FRONTEND_V0_11_0_REVIEW.md) ·
+[Backend review](planning/BACKEND_V0_15_0_REVIEW.md) ·
+[Optional sources](architecture/OPTIONAL_SOURCES.md).
 
 
 Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)

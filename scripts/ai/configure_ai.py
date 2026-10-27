@@ -30,7 +30,8 @@ def save_key(provider: str, key: str) -> None:
     updates = {provider.upper() + "_API_KEY": key, "AI_ENABLED": "true"}
     previous_config = Settings(_env_file=path if path.exists() else None)
     configured_ids = {item.id for item in credentials(previous_config)} | {provider + "-primary"}
-    if previous_config.ai_initial_credential_id not in configured_ids:
+    if (previous_config.ai_initial_credential_id != "auto"
+        and previous_config.ai_initial_credential_id not in configured_ids):
         updates["AI_INITIAL_CREDENTIAL_ID"] = provider + "-primary"
     lines = [line for line in previous.decode("utf-8").splitlines() if not any(
         re.match(rf"\s*(?:export\s+)?{name}\s*=", line) for name in updates

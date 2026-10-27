@@ -138,6 +138,36 @@ Future<AccountController> controller(
 }
 
 void main() {
+  testWidgets('guest sign-in methods shows a toast without opening auth', (
+    tester,
+  ) async {
+    final prefs = MemoryPreferences(), auth = FakeAuth(), api = FakeSync();
+    final value = await controller(prefs, auth, api);
+    addTearDown(value.dispose);
+    addTearDown(auth.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true),
+          child: child!,
+        ),
+        home: ProfilePage(controller: value, onContinue: () {}),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Sign-in methods'));
+    await tester.tap(find.text('Sign-in methods'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Please sign in to manage sign-in methods.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('auth-email')), findsNothing);
+    expect(find.byKey(const ValueKey('profile-sign-in-methods')), findsNothing);
+    expect(auth.signIns, 0);
+    expect(api.fetches, 0);
+  });
+
   test(
     'guest name persists locally and never enters an account library',
     () async {

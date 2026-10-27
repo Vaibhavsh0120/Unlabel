@@ -54,6 +54,7 @@ class _ExtractedContentState extends State<_ExtractedContent> {
           variant: label.identity['variant'],
           quantity: label.identity['quantity'],
           photo: photo,
+          barcode: widget.barcode ?? label.identity['barcode'],
         ),
         const SizedBox(height: 16),
         ResultsSummaryCard(

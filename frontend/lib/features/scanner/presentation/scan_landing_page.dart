@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/capture/live_camera.dart';
 import '../../../core/capture/photo_decode.dart';
 import '../../../core/capture/automatic_label_reader.dart';
+import '../../../core/capture/barcode_reader.dart';
+import '../../../core/capture/live_barcode_scanner.dart';
 import '../../../core/models/extracted_label.dart';
 import '../../../core/models/app_failure.dart';
 import '../../../core/interaction/ui_feedback.dart';
@@ -20,12 +22,16 @@ class ScanLandingPage extends StatefulWidget {
     required this.onResult,
     this.camera,
     this.pickPhoto,
+    this.barcodeScanner,
+    this.barcodeScannerFactory,
     super.key,
   });
   final AutomaticLabelReader reader;
   final Future<void> Function(AutomaticScanResult, Uint8List?) onResult;
   final LiveCamera? camera;
   final Future<Uint8List?> Function()? pickPhoto;
+  final LiveBarcodeScanner? barcodeScanner;
+  final LiveBarcodeScanner Function()? barcodeScannerFactory;
 
   @override
   State<ScanLandingPage> createState() => _ScanLandingPageState();
@@ -44,12 +50,74 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   int _photoRevision = 0;
   bool _working = false, _routeOpen = false, _foreground = true;
   String? _photoError;
+  late final _barcodeScanner =
+      widget.barcodeScanner ??
+      widget.barcodeScannerFactory?.call() ??
+      LiveBarcodeScanner();
+  StreamSubscription<BarcodeDetection>? _barcodeSubscription;
+  bool _takingBarcodePhoto = false;
+  String? _detectedBarcode;
+  int _cameraSyncRevision = 0;
+  bool get _usesBarcodeSdk =>
+      widget.barcodeScanner != null ||
+      widget.barcodeScannerFactory != null ||
+      widget.camera == null;
+  bool get _barcodeMode =>
+      _usesBarcodeSdk && _mode == 2 && !_takingBarcodePhoto;
+  bool get _previewReady =>
+      _barcodeMode ? _barcodeScanner.ready : _camera.ready;
+  bool get _previewBusy => _barcodeMode ? _barcodeScanner.busy : _camera.busy;
+  String? get _previewError =>
+      _barcodeMode ? _barcodeScanner.error : _camera.error;
+
+  Future<void> _stopCameras() async {
+    await _barcodeScanner.stop();
+    await _camera.stop();
+  }
+
+  Future<void> _barcodeDetected(BarcodeDetection detection) async {
+    if (!mounted ||
+        !_foreground ||
+        _blocked ||
+        _mode != 2 ||
+        _detectedBarcode != null) {
+      return;
+    }
+    final revision = ++_photoRevision;
+    setState(() {
+      _reading = true;
+      _detectedBarcode = detection.code;
+      _photoError = null;
+    });
+    await _stopCameras();
+    try {
+      final result = await _reader.lookupBarcode(detection.code);
+      if (!mounted || revision != _photoRevision) return;
+      setState(() => _result = result);
+      if (!_foreground) return;
+      _routeOpen = true;
+      await widget.onResult(result, null);
+      unawaited(UiFeedback.confirmed());
+    } catch (_) {
+      if (mounted && revision == _photoRevision) {
+        setState(() => _photoError = 'Could not open this product. Try again.');
+      }
+    } finally {
+      _routeOpen = false;
+      if (mounted && revision == _photoRevision) {
+        setState(() => _reading = false);
+        unawaited(_syncCamera());
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _camera.addListener(_cameraChanged);
+    _barcodeScanner.addListener(_cameraChanged);
+    _barcodeSubscription = _barcodeScanner.detections.listen(_barcodeDetected);
     final state = WidgetsBinding.instance.lifecycleState;
     _foreground = state == null || state == AppLifecycleState.resumed;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -105,20 +173,32 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Future<void> _syncCamera() async {
     if (!mounted) return;
+    final revision = ++_cameraSyncRevision;
     if (_foreground &&
         !_routeOpen &&
         !_working &&
         !_reading &&
         _photos[_mode] == null) {
-      await _camera.start();
+      if (_barcodeMode) {
+        await _camera.stop();
+        if (mounted &&
+            revision == _cameraSyncRevision &&
+            _detectedBarcode == null) {
+          await _barcodeScanner.start();
+        }
+      } else {
+        await _barcodeScanner.stop();
+        if (mounted && revision == _cameraSyncRevision) await _camera.start();
+      }
     } else {
-      await _camera.stop();
+      await _stopCameras();
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _foreground = state == AppLifecycleState.resumed;
+
     unawaited(_syncCamera());
   }
 
@@ -126,7 +206,8 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     if (_working || _routeOpen) return;
     _photoRevision++;
     _routeOpen = true;
-    await _camera.stop();
+
+    await _stopCameras();
     if (!mounted) return;
     try {
       await open();
@@ -143,7 +224,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   }
 
   Future<void> _capture() async {
-    if (_working || _reading || !_camera.ready || _previewSize.isEmpty) return;
+    if (_working || _reading || !_previewReady || _previewSize.isEmpty) return;
     final revision = ++_photoRevision;
     final mode = _mode;
     final viewport = _previewSize;
@@ -151,7 +232,14 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       _working = true;
       _photoError = null;
     });
+
     try {
+      if (_barcodeMode) {
+        setState(() => _takingBarcodePhoto = true);
+        await _barcodeScanner.stop();
+        await _camera.start();
+      }
+      if (!mounted || revision != _photoRevision || !_camera.ready) return;
       final bytes = await _camera.captureFramed(viewport);
       if (!mounted || revision != _photoRevision || mode != _mode) return;
       if (viewport != _previewSize) {
@@ -175,7 +263,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       }
     } finally {
       if (mounted) {
-        setState(() => _working = false);
+        setState(() {
+          _working = false;
+          _takingBarcodePhoto = false;
+        });
         unawaited(_syncCamera());
       }
     }
@@ -189,7 +280,8 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       _working = true;
       _photoError = null;
     });
-    await _camera.stop();
+
+    await _stopCameras();
     try {
       if (!mounted) return;
       final bytes = widget.pickPhoto != null
@@ -216,7 +308,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       }
     } finally {
       if (mounted) {
-        setState(() => _working = false);
+        setState(() {
+          _working = false;
+          _takingBarcodePhoto = false;
+        });
         unawaited(_syncCamera());
       }
     }
@@ -255,22 +350,34 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   Future<void> _analyze() async {
     if (_reading || !mounted || _photos.isEmpty) return;
     final revision = _photoRevision;
+
     setState(() {
       _reading = true;
       _result = null;
       _photoError = null;
     });
-    await _camera.stop();
+    await _stopCameras();
     try {
       for (final entry in _photos.entries.toList()) {
         final photo = await decodePhoto(entry.value, maxEdge: 1);
         _sizes[entry.key] = photo.originalSize;
         photo.image.dispose();
       }
-      final result = await _reader.read(
-        Map.unmodifiable(_photos),
-        allowCloud: _allowCloud,
-      );
+      final AutomaticScanResult result;
+      if (_usesBarcodeSdk && _mode == 2) {
+        final detection = kIsWeb
+            ? await BarcodeReader().read(_photos[2]!)
+            : await _barcodeScanner.analyzeBytes(_photos[2]!);
+        if (!mounted || revision != _photoRevision) return;
+        result = detection == null
+            ? const AutomaticScanResult()
+            : await _reader.lookupBarcode(detection.code);
+      } else {
+        result = await _reader.read(
+          Map.unmodifiable(_photos),
+          allowCloud: _allowCloud,
+        );
+      }
       if (!mounted || revision != _photoRevision) return;
       setState(() {
         _result = result;
@@ -278,7 +385,8 @@ class _ScanLandingPageState extends State<ScanLandingPage>
           _photoError = 'No readable product information yet. Try a closer, clearer photo.';
         }
       });
-      if (_mode == 2 &&
+      if (_foreground &&
+          _mode == 2 &&
           (result.barcode != null ||
               result.report != null ||
               result.candidates.isNotEmpty)) {
@@ -308,8 +416,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     _reader.cancel();
     setState(() {
       _reading = false;
+      _detectedBarcode = null;
       _photoError = 'Reading stopped. You can retry or retake the photo.';
     });
+    unawaited(_syncCamera());
   }
 
   Future<Uint8List?> _pickPhoto() async {
@@ -338,8 +448,11 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   void _selectMode(int mode) {
     if (_working || _reading || _mode == mode) return;
     _photoRevision++;
+
     setState(() {
       _mode = mode;
+      _detectedBarcode = null;
+      _result = null;
       _photoError = null;
     });
     unawaited(UiFeedback.selection());
@@ -348,6 +461,9 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   @override
   void dispose() {
+    unawaited(_barcodeSubscription?.cancel());
+    _barcodeScanner.removeListener(_cameraChanged);
+    _barcodeScanner.dispose();
     WidgetsBinding.instance.removeObserver(this);
     _reader.dispose();
     _camera.removeListener(_cameraChanged);
@@ -377,17 +493,19 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       ? () => _route(() => widget.onResult(_result!, _photos[0]))
       : _photos[_mode] != null
       ? _analyze
-      : _camera.ready
+      : _previewReady
       ? _capture
       : null;
 
   Future<void> _cameraControl(Future<void> Function() action) async {
     if (_blocked) return;
+
     setState(() => _photoError = null);
     try {
+      if (!mounted) return;
       await action();
-      if (mounted && _camera.error != null) {
-        setState(() => _photoError = _camera.error);
+      if (mounted && _previewError != null) {
+        setState(() => _photoError = _previewError);
       }
     } on LiveCameraException catch (error) {
       if (mounted) setState(() => _photoError = error.message);
@@ -412,111 +530,82 @@ class _ScanLandingPageState extends State<ScanLandingPage>
             final desktop =
                 constraints.maxWidth >= 800 ||
                 (constraints.maxWidth >= 650 && constraints.maxHeight < 500);
-            return Stack(
-              children: [
-                const Positioned.fill(
-                  child: IgnorePointer(
-                    child: CustomPaint(painter: _ScanBackdropPainter()),
-                  ),
-                ),
-                if (!desktop)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: IgnorePointer(
-                      child: ExcludeSemantics(
-                        child: Image.asset(
-                          'assets/artwork/scanner-garden-v1.png',
-                          fit: BoxFit.fitWidth,
+            return Padding(
+              padding: EdgeInsets.fromLTRB(
+                desktop ? 24 : 0,
+                desktop ? 16 : 0,
+                desktop ? 24 : 0,
+                12,
+              ),
+              child: desktop
+                  ? DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: scheme.surfaceContainerLowest.withValues(
+                          alpha: .9,
                         ),
+                        borderRadius: BorderRadius.circular(28),
                       ),
-                    ),
-                  ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    desktop ? 24 : 0,
-                    desktop ? 16 : 0,
-                    desktop ? 24 : 0,
-                    12,
-                  ),
-                  child: desktop
-                      ? DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: scheme.surfaceContainerLowest.withValues(
-                              alpha: .9,
-                            ),
-                            borderRadius: BorderRadius.circular(28),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                              constraints.maxHeight < 500 ? 16 : 28,
-                            ),
-                            child: Column(
-                              children: [
-                                _header(
-                                  desktop: true,
-                                  compact: constraints.maxHeight < 500,
-                                ),
-                                const SizedBox(height: 12),
-                                Expanded(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Expanded(flex: 7, child: _preview()),
-                                      const SizedBox(width: 28),
-                                      Expanded(
-                                        flex: 5,
-                                        child: Center(
-                                          child: SingleChildScrollView(
-                                            child: _controls(
-                                              desktop: true,
-                                              large: large,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : large || constraints.maxHeight < 460
-                      ? SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              _header(desktop: false),
-                              SizedBox(height: 300, child: _mobilePreview()),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                  20,
-                                  16,
-                                  20,
-                                  8,
-                                ),
-                                child: _controls(desktop: false, large: large),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Column(
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                          constraints.maxHeight < 500 ? 16 : 28,
+                        ),
+                        child: Column(
                           children: [
                             _header(
-                              desktop: false,
-                              compact: constraints.maxHeight < 620,
+                              desktop: true,
+                              compact: constraints.maxHeight < 500,
                             ),
-                            Expanded(child: _mobilePreview()),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                              child: _controls(desktop: false, large: false),
+                            const SizedBox(height: 12),
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(flex: 7, child: _preview()),
+                                  const SizedBox(width: 28),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Center(
+                                      child: SingleChildScrollView(
+                                        child: _controls(
+                                          desktop: true,
+                                          large: large,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                ),
-              ],
+                      ),
+                    )
+                  : large || constraints.maxHeight < 460
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _header(desktop: false),
+                          SizedBox(height: 300, child: _mobilePreview()),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                            child: _controls(desktop: false, large: large),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        _header(
+                          desktop: false,
+                          compact: constraints.maxHeight < 620,
+                        ),
+                        Expanded(child: _mobilePreview()),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                          child: _controls(desktop: false, large: false),
+                        ),
+                      ],
+                    ),
             );
           },
         ),
@@ -531,16 +620,34 @@ class _ScanLandingPageState extends State<ScanLandingPage>
         horizontal: desktop ? 0 : 6,
         vertical: compact ? 4 : 6,
       ),
-      child: Align(
-        alignment: desktop ? Alignment.centerLeft : Alignment.center,
-        child: Text(
-          'Scan Label',
-          style: theme.textTheme.headlineMedium?.copyWith(
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.w800,
-            fontSize: desktop && !compact ? 38 : 26,
+      child: Column(
+        crossAxisAlignment: desktop
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Scan Label',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontFamily: 'Nunito',
+              fontWeight: FontWeight.w800,
+              fontSize: desktop && !compact
+                  ? 38
+                  : compact
+                  ? 26
+                  : 30,
+            ),
           ),
-        ),
+          const SizedBox(height: 2),
+          Text(
+            'Capture the front, back or barcode',
+            textAlign: desktop ? TextAlign.start : TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: compact ? 12 : 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
       ),
     );
   }
@@ -548,7 +655,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   Widget _mobilePreview() => LayoutBuilder(
     builder: (context, constraints) => Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: (constraints.maxWidth * .09).clamp(24, 72),
+        horizontal: (constraints.maxWidth * .05).clamp(16, 40),
       ),
       child: _preview(),
     ),
@@ -561,22 +668,44 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: _modeCard(0, 'Front', 'document-text', desktop, large),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(color: theme.colorScheme.outlineVariant),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: _modeCard(
+                      0,
+                      'Front',
+                      'document-text',
+                      desktop,
+                      large,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  Expanded(
+                    child: _modeCard(
+                      1,
+                      'Back',
+                      'document-text',
+                      desktop,
+                      large,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  Expanded(
+                    child: _modeCard(2, 'Barcode', 'barcode', desktop, large),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _modeCard(1, 'Back', 'document-text', desktop, large),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _modeCard(2, 'Barcode', 'barcode', desktop, large),
-              ),
-            ],
+            ),
           ),
         ),
         SizedBox(height: desktop ? 28 : 12),
@@ -588,56 +717,24 @@ class _ScanLandingPageState extends State<ScanLandingPage>
               child: Text(_photoError!, style: theme.textTheme.bodySmall),
             ),
           ),
-        if (desktop || hasPhoto || !_camera.ready)
-          FilledButton.icon(
-            key: const Key('scan-primary'),
-            onPressed: _primaryAction,
-            style: FilledButton.styleFrom(
-              minimumSize: Size.fromHeight(desktop ? 64 : 52),
-              backgroundColor: const Color(0xff007a61),
-              foregroundColor: Colors.white,
-            ),
-            icon: Icon(
-              hasPhoto ? Icons.fact_check_outlined : Icons.camera_alt_outlined,
-            ),
-            label: Text(_primaryLabel, textAlign: TextAlign.center),
-          )
-        else
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _torchButton(),
-              Tooltip(
-                message: 'Click Photo',
-                excludeFromSemantics: true,
-                child: SizedBox.square(
-                  dimension: 68,
-                  child: OutlinedButton(
-                    key: const Key('scan-primary'),
-                    onPressed: _primaryAction,
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.all(4),
-                      shape: const CircleBorder(),
-                      side: const BorderSide(
-                        color: Color(0xff009b79),
-                        width: 2,
-                      ),
-                    ),
-                    child: Semantics(
-                      label: 'Click Photo',
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xff007a61),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              _switchCameraButton(),
-            ],
+        FilledButton.icon(
+          key: const Key('scan-primary'),
+          onPressed: _primaryAction,
+          style: FilledButton.styleFrom(
+            minimumSize: Size.fromHeight(desktop ? 64 : 52),
+            backgroundColor: theme.brightness == Brightness.dark
+                ? const Color(0xff00e8c1)
+                : theme.colorScheme.primary,
+            foregroundColor: theme.brightness == Brightness.dark
+                ? const Color(0xff062923)
+                : theme.colorScheme.onPrimary,
+            shape: const StadiumBorder(),
           ),
+          icon: Icon(
+            hasPhoto ? Icons.fact_check_outlined : Icons.camera_alt_outlined,
+          ),
+          label: Text(_primaryLabel, textAlign: TextAlign.center),
+        ),
         if (desktop) ...[
           const SizedBox(height: 20),
           const Row(
@@ -652,31 +749,19 @@ class _ScanLandingPageState extends State<ScanLandingPage>
           ),
           const SizedBox(height: 20),
         ],
-        if (!_reading)
+        if (!_reading) ...[
+          SizedBox(height: desktop ? 0 : 10),
           OutlinedButton.icon(
             key: const Key('scan-gallery'),
             onPressed: _blocked ? null : _gallery,
             style: OutlinedButton.styleFrom(
-              minimumSize: Size.fromHeight(desktop ? 60 : 44),
-              side: desktop
-                  ? BorderSide(
-                      color: theme.colorScheme.primary.withValues(alpha: .3),
-                    )
-                  : BorderSide.none,
+              minimumSize: Size.fromHeight(desktop ? 60 : 48),
+              side: BorderSide(color: theme.colorScheme.primary),
+              shape: const StadiumBorder(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
             icon: const FeatureIcon('gallery', size: 22),
             label: const Text('Choose Photo'),
-          ),
-        if (desktop && !hasPhoto) ...[
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _torchButton(),
-              const SizedBox(width: 16),
-              _switchCameraButton(),
-            ],
           ),
         ],
         if (_reading)
@@ -688,21 +773,29 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     );
   }
 
+  bool get _canToggleTorch =>
+      _barcodeMode ? _barcodeScanner.canToggleTorch : _camera.canToggleTorch;
+  bool get _canSwitchCamera =>
+      _barcodeMode ? _barcodeScanner.canSwitchCamera : _camera.canSwitchCamera;
+  bool get _torchOn => _barcodeMode ? _barcodeScanner.torchOn : _camera.torchOn;
+
   Widget _torchButton() => IconButton.filledTonal(
-    tooltip: _camera.torchOn ? 'Turn flash off' : 'Turn flash on',
-    onPressed: _blocked || !_camera.canToggleTorch
+    tooltip: _torchOn ? 'Turn flash off' : 'Turn flash on',
+    onPressed: _blocked || !_canToggleTorch
         ? null
-        : () => _cameraControl(_camera.toggleTorch),
-    icon: Icon(
-      _camera.torchOn ? Icons.flash_on_rounded : Icons.flash_off_rounded,
-    ),
+        : () => _cameraControl(
+            _barcodeMode ? _barcodeScanner.toggleTorch : _camera.toggleTorch,
+          ),
+    icon: Icon(_torchOn ? Icons.flash_on_rounded : Icons.flash_off_rounded),
   );
 
   Widget _switchCameraButton() => IconButton.filledTonal(
     tooltip: 'Switch camera',
-    onPressed: _blocked || !_camera.canSwitchCamera
+    onPressed: _blocked || !_canSwitchCamera
         ? null
-        : () => _cameraControl(_camera.switchCamera),
+        : () => _cameraControl(
+            _barcodeMode ? _barcodeScanner.switchCamera : _camera.switchCamera,
+          ),
     icon: const Icon(Icons.flip_camera_ios_outlined),
   );
 
@@ -716,10 +809,30 @@ class _ScanLandingPageState extends State<ScanLandingPage>
           borderRadius: BorderRadius.circular(28),
           child: Container(
             key: const Key('scan-preview'),
-            color: const Color(0xff17211e),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xff293338),
+                  Color(0xff11191d),
+                  Color(0xff17221f),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(color: theme.colorScheme.outlineVariant),
+            ),
             child: Stack(
               fit: StackFit.expand,
               children: [
+                if (_usesBarcodeSdk)
+                  Offstage(
+                    offstage:
+                        !_barcodeMode ||
+                        photo != null ||
+                        _detectedBarcode != null,
+                    child: _barcodeScanner.buildPreview(),
+                  ),
                 if (photo != null)
                   Image.memory(
                     photo,
@@ -732,10 +845,10 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                     errorBuilder: (_, _, _) =>
                         const Center(child: Text('Photo unavailable')),
                   )
-                else if (_camera.ready)
-                  _camera.buildPreview()
-                else
-                  _cameraStatus(),
+                else if (!_barcodeMode && _camera.ready)
+                  _camera.buildPreview(),
+                if (photo == null && !_previewReady)
+                  _detectedBarcode == null ? _cameraStatus() : _barcodeStatus(),
                 if (_reading && photo != null)
                   Positioned.fill(
                     child: ScanProcessingOverlay(
@@ -743,17 +856,43 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                       active: _foreground,
                     ),
                   ),
-                if (_camera.ready && photo == null)
+                if (photo == null)
                   Positioned.fill(
                     child: IgnorePointer(
                       child: Padding(
                         padding: const EdgeInsets.all(24),
                         child: CustomPaint(
-                          painter: _ScanFramePainter(const Color(0xff70efba)),
+                          painter: _ScanFramePainter(const Color(0xff32f1c5)),
                         ),
                       ),
                     ),
                   ),
+                if (_previewReady && photo == null) ...[
+                  const Center(
+                    child: IgnorePointer(
+                      child: SizedBox.square(
+                        dimension: 36,
+                        child: CustomPaint(
+                          painter: _ScanFramePainter(Color(0xffa5b7b1)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (_canToggleTorch) _torchButton(),
+                        if (_canSwitchCamera) ...[
+                          const SizedBox(width: 8),
+                          _switchCameraButton(),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
                 if (photo != null)
                   if (_sizes[_mode] != null && _result != null)
                     Positioned.fill(
@@ -796,14 +935,14 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                       label: const Text('Retake'),
                     ),
                   ),
-                if (_camera.ready && photo == null)
+                if (_previewReady && photo == null)
                   Positioned(
                     left: 16,
                     right: 16,
                     bottom: 16,
                     child: Text(
                       _mode == 2
-                          ? 'Photograph the barcode for an instant lookup'
+                          ? 'Hold the barcode steady. Scanning automatically.'
                           : _mode == 0
                           ? 'Keep the front label in the frame'
                           : 'Keep nutrition and ingredients in the frame',
@@ -824,7 +963,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
 
   Widget _cameraStatus() => LayoutBuilder(
     builder: (context, constraints) {
-      if (_camera.busy) {
+      if (_previewBusy) {
         return Center(
           child: Semantics(
             label: 'Opening camera',
@@ -853,13 +992,18 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  _camera.error ?? 'Camera preview is unavailable.',
+                  _previewError ?? 'Camera preview is unavailable.',
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
               TextButton(
-                onPressed: _working ? null : () => _camera.start(),
+                onPressed: _working
+                    ? null
+                    : () {
+                        _detectedBarcode = null;
+                        unawaited(_syncCamera());
+                      },
                 child: const Text(
                   'Retry Camera',
                   style: TextStyle(color: Color(0xff70efba)),
@@ -872,7 +1016,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                     builder: (context) => AlertDialog(
                       title: const Text('Camera access'),
                       content: Text(
-                        _camera.error ?? 'Camera preview is unavailable. Retry or choose a photo.',
+                        _previewError ?? 'Camera preview is unavailable. Retry or choose a photo.',
                       ),
                       actions: [
                         TextButton(
@@ -894,6 +1038,49 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     },
   );
 
+  Widget _barcodeStatus() => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _reading ? Icons.search_rounded : Icons.check_circle_outline,
+            color: const Color(0xff32f1c5),
+            size: 36,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            _reading ? 'Finding product…' : 'Barcode found',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _detectedBarcode!,
+            style: const TextStyle(color: Color(0xffb7cbc5)),
+          ),
+          if (!_reading)
+            TextButton(
+              onPressed: () {
+                _photoRevision++;
+                setState(() {
+                  _detectedBarcode = null;
+                  _result = null;
+                  _photoError = null;
+                });
+                unawaited(_syncCamera());
+              },
+              child: const Text(
+                'Scan another',
+                style: TextStyle(color: Color(0xff32f1c5)),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
+
   Widget _modeCard(
     int index,
     String title,
@@ -908,21 +1095,19 @@ class _ScanLandingPageState extends State<ScanLandingPage>
     final label = Text(
       title,
       textAlign: TextAlign.center,
-      style: theme.textTheme.labelLarge?.copyWith(fontSize: desktop ? 16 : 12),
+      style: theme.textTheme.labelLarge?.copyWith(fontSize: desktop ? 16 : 13),
     );
-    final symbol = FeatureIcon(icon, size: desktop ? 28 : 18);
+    final symbol = FeatureIcon(icon, size: desktop ? 28 : 20);
     return Semantics(
       selected: selected,
       child: Material(
         color: selected
             ? theme.colorScheme.primaryContainer
-            : theme.colorScheme.surfaceContainerLowest,
+            : Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(desktop ? 22 : 24),
           side: BorderSide(
-            color: selected
-                ? theme.colorScheme.primary
-                : theme.colorScheme.outlineVariant,
+            color: selected ? theme.colorScheme.primary : Colors.transparent,
           ),
         ),
         clipBehavior: Clip.antiAlias,
@@ -1108,7 +1293,8 @@ class _ScanFramePainter extends CustomPainter {
       ..strokeWidth = 4
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-    const length = 24.0;
+    final length = size.shortestSide < 60 ? 11.0 : 30.0;
+    final radius = size.shortestSide < 60 ? 4.0 : 12.0;
     for (final corner in [
       (0.0, 0.0, 1.0, 1.0),
       (size.width, 0.0, -1.0, 1.0),
@@ -1118,7 +1304,13 @@ class _ScanFramePainter extends CustomPainter {
       canvas.drawPath(
         Path()
           ..moveTo(corner.$1, corner.$2 + length * corner.$4)
-          ..lineTo(corner.$1, corner.$2)
+          ..lineTo(corner.$1, corner.$2 + radius * corner.$4)
+          ..quadraticBezierTo(
+            corner.$1,
+            corner.$2,
+            corner.$1 + radius * corner.$3,
+            corner.$2,
+          )
           ..lineTo(corner.$1 + length * corner.$3, corner.$2),
         paint,
       );
@@ -1128,32 +1320,4 @@ class _ScanFramePainter extends CustomPainter {
   @override
   bool shouldRepaint(_ScanFramePainter oldDelegate) =>
       color != oldDelegate.color;
-}
-
-class _ScanBackdropPainter extends CustomPainter {
-  const _ScanBackdropPainter();
-  @override
-  void paint(Canvas canvas, Size size) {
-    final wave = Path()
-      ..moveTo(0, size.height * .9)
-      ..quadraticBezierTo(
-        size.width * .3,
-        size.height * .74,
-        size.width * .58,
-        size.height * .94,
-      )
-      ..quadraticBezierTo(
-        size.width * .8,
-        size.height * .81,
-        size.width,
-        size.height * .9,
-      )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-    canvas.drawPath(wave, Paint()..color = const Color(0x1264c6a2));
-  }
-
-  @override
-  bool shouldRepaint(_ScanBackdropPainter oldDelegate) => false;
 }

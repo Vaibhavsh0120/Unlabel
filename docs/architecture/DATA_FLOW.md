@@ -1,12 +1,16 @@
 # Data flow
 
-Updated **13 October 2026** against the canonical [frontend](../../frontend/pubspec.yaml)
-and [backend](../../backend/pyproject.toml) versions. The API retains
-**27 paths / 28 operations**. Current auth/profile and Google compatibility await
-final exact-source hosted/native checks; earlier read-only backend proof excludes
-authenticated AI/staging and physical-device accuracy.
-[Frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_13_0_REVIEW.md).
+Updated **15 October 2026** against canonical [frontend](../../frontend/pubspec.yaml)
+and [backend](../../backend/pyproject.toml) versions. The API has **30 paths /
+32 operations**. Barcode-first capture preserves camera framing, front-name
+matches require pack-size selection, and ProductInfoPage is the shared result
+destination. Automatic back-label observations remain machine-unverified and
+source-preserving. Optional NutriGraph facts are session-only and disabled
+pending a key. Local, hosted, native and device proof are recorded separately.
+[Frontend review](../planning/FRONTEND_V0_10_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_14_0_REVIEW.md) ·
+[Product Info](PRODUCT_INFO.md) · [Live facts](LIVE_PRODUCT_FACTS.md).
+
 
 ## Capture, source lookup and qualified results
 

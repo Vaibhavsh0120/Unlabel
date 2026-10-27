@@ -3,8 +3,8 @@
 The maintenance pass publishes missing reviewed source identities and preserves
 historical tags/assets. Current versions come from the component manifests.
 Current authorized source work is documented in the
-[frontend scanner review](FRONTEND_V0_10_0_REVIEW.md) and
-[backend observations review](BACKEND_V0_14_0_REVIEW.md). Prior auth/profile and
+[frontend scanner review](FRONTEND_V0_11_0_REVIEW.md) and
+[backend optional-source review](BACKEND_V0_15_0_REVIEW.md). Prior auth/profile and
 Google compatibility checkpoints retain their own source identities.
 
 Historical source identities are recorded in [the machine ledger](../../contracts/versioning/releases.json).
@@ -38,10 +38,18 @@ their component; mobile frontend-vVERSION+BUILD tags identify separate artifacts
 | frontend | [0.6.2](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.6.2) | `ed2b8ff6` | [Evidence](FRONTEND_V0_6_2_REVIEW.md) |
 | frontend | [0.6.3](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.6.3) | `afccb9c1` | [Evidence](FRONTEND_V0_6_3_REVIEW.md) |
 | frontend | [0.7.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.7.0) | `8b5f9064` | [Evidence](FRONTEND_V0_7_0_REVIEW.md) |
+| backend | [0.14.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.14.0) | `5e0f925f` | [Evidence](BACKEND_V0_14_0_REVIEW.md) |
+| frontend | [0.10.0+14](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.10.0%2B14) | `5e0f925f` | [Evidence](FRONTEND_V0_10_0_REVIEW.md) |
 
 Source publication does not imply native signing, current hosted runtime or
 physical camera/recognition proof. Versioned reviews/JSON receipts retain their
 original test totals, deployed commit and unavailable gates.
+
+The preserved `backend-v0.14.0` and `frontend-v0.10.0+14` tags both resolve to
+`5e0f925f93bad428dbc2556e96c75671b2c9ceaf`; their component manifests match those
+versions. The [15 October hosted receipt](../research/RELEASE_2026_10_15_PRODUCTION.json)
+records the independently verified web/API checkpoint. Current 0.11.0+15/0.15.0
+work receives its own exact source identity and publication evidence after release.
 
 The historical mobile 0.6.1+5 draft targets frontend 0.6.2+9 source using explicit
 build/version overrides. Its assets remain a draft and are not relabeled as the

@@ -52,6 +52,67 @@ class AutomaticLabelReader {
   bool _disposed = false;
   Completer<void>? _abort;
 
+  /// Resolve an already checksum-validated SDK barcode without decoding it again.
+  Future<AutomaticScanResult> lookupBarcode(String code) async {
+    if (!validProductBarcode(code)) {
+      throw const AppFailure(
+        'invalid_barcode',
+        'This barcode is incomplete. Try again.',
+      );
+    }
+    cancel();
+    final generation = ++_generation;
+    void current() {
+      if (_disposed || generation != _generation) {
+        throw const AppFailure('cancelled', 'Reading stopped.');
+      }
+    }
+
+    current();
+    return _lookupBarcode(code, current);
+  }
+
+  Future<AutomaticScanResult> _lookupBarcode(
+    String code,
+    void Function() current, {
+    List<Offset> points = const [],
+    int? slot,
+  }) async {
+    try {
+      final report = await repository.loadReport(code);
+      current();
+      return AutomaticScanResult(
+        barcode: code,
+        report: report,
+        barcodePoints: points,
+        barcodeSlot: slot,
+      );
+    } on AppFailure catch (failure) {
+      current();
+      if (failure.kind == 'cancelled') rethrow;
+    }
+    try {
+      final candidates = await repository.researchByBarcode(code);
+      current();
+      if (candidates.isNotEmpty) {
+        return AutomaticScanResult(
+          barcode: code,
+          candidates: candidates,
+          barcodePoints: points,
+          barcodeSlot: slot,
+        );
+      }
+    } on AppFailure catch (failure) {
+      current();
+      if (failure.kind == 'cancelled') rethrow;
+    }
+    return AutomaticScanResult(
+      barcode: code,
+      barcodePoints: points,
+      barcodeSlot: slot,
+    );
+  }
+
   Future<AutomaticScanResult> read(
     Map<int, Uint8List> photos, {
     required Future<bool> Function() allowCloud,
@@ -103,39 +164,12 @@ class AutomaticLabelReader {
     // Front/back capture explicitly requests a fresh label reading, even when
     // a barcode happens to be visible in that photo.
     if (detected != null && photos.keys.every((slot) => slot == 2)) {
-      try {
-        final report = await repository.loadReport(detected);
-        current();
-        return AutomaticScanResult(
-          barcode: detected,
-          report: report,
-          barcodePoints: detection!.points,
-          barcodeSlot: barcodeSlot,
-        );
-      } on AppFailure catch (failure) {
-        if (failure.kind == 'cancelled') rethrow;
-      }
-      try {
-        final candidates = await repository.researchByBarcode(detected);
-        current();
-        if (candidates.isNotEmpty) {
-          return AutomaticScanResult(
-            barcode: detected,
-            candidates: candidates,
-            barcodePoints: detection!.points,
-            barcodeSlot: barcodeSlot,
-          );
-        }
-      } on AppFailure catch (failure) {
-        if (failure.kind == 'cancelled') rethrow;
-      }
-      if (photos.keys.every((slot) => slot == 2)) {
-        return AutomaticScanResult(
-          barcode: detected,
-          barcodePoints: detection!.points,
-          barcodeSlot: barcodeSlot,
-        );
-      }
+      return _lookupBarcode(
+        detected,
+        current,
+        points: detection!.points,
+        slot: barcodeSlot,
+      );
     }
     if (photos.keys.every((slot) => slot == 2)) {
       return AutomaticScanResult(barcode: detected);

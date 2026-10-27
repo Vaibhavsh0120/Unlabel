@@ -28,12 +28,12 @@ class Replacement(BaseModel):
 
 def credentials(config: Settings) -> tuple[Credential, ...]:
     result: list[Credential] = []
-    if config.gemini_api_key is not None:
+    if config.gemini_enabled and config.gemini_api_key is not None:
         result.append(Credential(
             id="gemini-primary", provider="gemini", api_key=config.gemini_api_key,
             model=config.gemini_model,
         ))
-    if config.openai_api_key is not None:
+    if config.openai_enabled and config.openai_api_key is not None:
         result.append(Credential(
             id="openai-primary", provider="openai", api_key=config.openai_api_key,
             model=config.openai_model,
@@ -45,6 +45,8 @@ def credentials(config: Settings) -> tuple[Credential, ...]:
                 raise ValueError()
             for raw in data:
                 value = Replacement.model_validate(raw)
+                if not getattr(config, f"{value.provider}_enabled"):
+                    continue
                 result.append(Credential(
                     id=value.id, provider=value.provider, api_key=value.api_key, model=value.model,
                 ))

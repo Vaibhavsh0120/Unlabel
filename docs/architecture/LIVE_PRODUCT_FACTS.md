@@ -2,8 +2,11 @@
 
 NutriGraph is an optional live display source, separate from Unlabel's catalogue,
 report history, synced libraries, comparison facts and AI observations. The
-integration is disabled until a backend-only trial key is configured. Mock tests
-do not establish provider coverage or live response compatibility.
+integration defaults to credential-based `auto` and remains disabled without a
+backend key/authentication runtime, or when explicitly switched off. See
+[optional sources](OPTIONAL_SOURCES.md). Mock tests do not establish provider
+coverage or live response compatibility. The configured sandbox endpoint returned
+HTML 404 on 26 October; successful live lookup is not verified.
 
 ## Request and evidence boundaries
 
@@ -40,23 +43,27 @@ in the open page and clear it on expiry/disposal; it is not part of `ProductRepo
 
 Concurrent requests for one barcode share one operation. The process permits two
 concurrent upstream calls and 30 uncached calls per actor per UTC day. Its monthly
-counter is an additional per-process guard capped at 1,000; it resets on a cold
-start and is **not** an account-wide quota ledger. The vendor's free plan enforces
-the account-wide 1,000-call calendar-month hard limit. A vendor 429 blocks further
-uncached requests until the next UTC month. There is no paid-plan activation,
+counter is an additional per-process guard capped at 1,000. A separate sandbox
+counter never renews by month; the supplied sandbox grants 1,000 total calls.
+Both counters reset on a cold start and are **not** an account-wide quota ledger.
+The vendor remains the account-wide authority. A vendor 429 blocks further
+uncached requests for the process lifetime. HTML 404 endpoint errors use a
+five-minute unavailable cooldown rather than claiming product absence. There is no paid-plan activation,
 overage purchasing, automatic product submission or bulk enumeration.
 
 ## Configuration and verification
 
 `backend/.env.example` documents `NUTRIGRAPH_ENABLED`, `NUTRIGRAPH_API_KEY` and
-`NUTRIGRAPH_MONTHLY_REQUEST_LIMIT`. Use the existing backend environment/encryption
+`NUTRIGRAPH_MONTHLY_REQUEST_LIMIT` and `NUTRIGRAPH_SANDBOX_REQUEST_LIMIT`.
+Use the existing backend environment/encryption
 workflow for a supplied key; never put it in Flutter or a public runtime manifest.
 The configured Firebase community runtime is required. `live_nutrigraph` metadata
 stays false if either the key or runtime is missing.
 
-After receiving a key, verify a bounded representative UPC sample and obtain
-explicit EAN-13/India coverage guidance before changing supported formats. No key
-has been used for the current implementation's tests. Existing Unlabel product
+The supplied key was used for two bounded UPC checks on 26 October: both the
+supplied sample and the documentation sample returned generic HTML 404. No live
+product payload or India coverage was verified. Obtain explicit EAN-13/India
+lookup guidance before changing supported formats. Existing Unlabel product
 information remains available when the vendor is disabled, misses, times out or
 exhausts its free quota.
 

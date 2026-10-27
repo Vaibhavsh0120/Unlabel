@@ -1,0 +1,17 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-10-26",
+  "generator": "image_gen.imagegen (built-in)",
+  "purpose": "Decorative product evidence banner botanical; never package, nutrition or health evidence.",
+  "prompt": "Use case: stylized-concept. Create a production UI decorative botanical cutout for the existing Unlabel food-label app, a small elegant cluster of 5 broad lanceolate leaves emerging from one slender stem, fresh mint and deep forest green, softly shaded polished botanical illustration with subtle luminous edges. Transparent background with genuine alpha, no background rectangle, no ground, no text, no logo, no product package, no nutrition or health symbols. Portrait-ish square canvas, cluster occupies right/lower two thirds with a complete clean silhouette and ample transparent padding. Designed to place at trailing edge of charcoal or pale mint evidence banner without covering live text. Match attached reference mood conceptually: restrained forest/mint botanical, no mascot, no sparkle or confetti.",
+  "assets": [
+    {
+      "asset": "frontend/assets/artwork/product-botanical-v2.webp",
+      "dimensions": [640, 640],
+      "bytes": 54470,
+      "sha256": "f9860f73018cb0aaed13330b32dcf99ee7eba2319e05a78fc1451a0214661e74",
+      "alpha_preserved": true,
+      "encoding": "WebP quality 86; bounded to 640 pixels for the small UI slot"
+    }
+  ]
+}

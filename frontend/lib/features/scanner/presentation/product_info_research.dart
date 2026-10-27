@@ -24,6 +24,7 @@ class _ResearchContent extends StatelessWidget {
           brand: product.brand,
           variant: product.variant,
           quantity: product.quantity,
+          barcode: product.barcode,
           imageUrl: product.imageUrl,
           imageDescription:
               '${product.imageAttribution ?? ''}. ${product.imageLicense ?? ''}',
@@ -47,7 +48,7 @@ class _ResearchContent extends StatelessWidget {
           message: 'Dated website facts for this product and variant.',
           qualification: 'Check your package. No health score is assigned.',
         ),
-        const SectionTitle('What the source shows'),
+        const SectionTitle('Evidence at a glance'),
         ResultsFactsGrid(
           children: [
             ResultsFact(
@@ -71,9 +72,25 @@ class _ResearchContent extends StatelessWidget {
                   : 'Source attached',
               uncertain: product.tables.isEmpty,
             ),
+            const ResultsFact(
+              icon: 'shield',
+              title: 'Claim evidence',
+              detail: 'Website facts do not confirm current front claims.',
+              status: 'Not assessed',
+              uncertain: true,
+            ),
+            ResultsFact(
+              icon: 'history',
+              title: 'Package context',
+              detail: 'Source dates and variant remain attached.',
+              status: product.match == 'exact_sku'
+                  ? 'Dated product information'
+                  : 'Check product identity',
+              uncertain: true,
+            ),
           ],
         ),
-        const SectionTitle('Nutrition'),
+        const SectionTitle('Nutrition snapshot'),
         SectionCard(
           padding: 16,
           child: Column(

@@ -1,0 +1,70 @@
+{
+  "checked_at_utc": "2026-10-15T16:52:43.294325+00:00",
+  "source_sha": "5e0f925f93bad428dbc2556e96c75671b2c9ceaf",
+  "backend_origin": "https://unlabel-api.vercel.app",
+  "frontend_origin": "https://unlabel-india.vercel.app",
+  "checks_passed": [
+    "Backend health identifies0.14.0",
+    "Machine observations advertised and NutriGraph disabled",
+    "24,641 bulk products retained",
+    "243 research observations retained",
+    "Six sourced glossary entries retained",
+    "Claim knowledge matches rules/claims/reviewed-v1.json",
+    "Claim knowledge matches sources/registry/fssai-claims-v1.json",
+    "Hosted OpenAPI matches0.14.0 export",
+    "Live provider stays disabled without key and does not cache",
+    "Catalogue claims stay insufficient and sourced",
+    "Machine observation lookup is bounded and unverified",
+    "Unauthenticated private GET is rejected without caching",
+    "Unauthenticated private DELETE is rejected without caching",
+    "Hosted web identifies0.10.0+14",
+    "Public frontend has final privacy-reset control and omits removed scanner settings",
+    "Live guest navigation opens final mobile Scan with shared header, title-only scanner and all mode/gallery controls"
+  ],
+  "backend_version": "0.14.0",
+  "frontend_version": {
+    "app_name": "unlabel",
+    "version": "0.10.0",
+    "build_number": "14",
+    "package_name": "unlabel"
+  },
+  "knowledge_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "deployments": {
+    "frontend": "dpl_F4Gb9ERE94UM9UYsSHT3AsY3Fjnt",
+    "backend": "dpl_7Nnzvus5aqVYznFUVHaQYitZEkU7"
+  },
+  "repository_checks": "https://github.com/Vaibhavsh0120/Unlabel/actions/runs/38771462597",
+  "boundaries": [
+    "No authenticated AI extraction or new public/private record writes performed",
+    "Live NutriGraph calls await key",
+    "Real provider consent, physical camera accuracy and LiveContainer execution remain unverified"
+  ],
+  "frontend_bundle_sha256": "5ccd45b79eaab842f08e67bf2b9892ef6c82a91d8f870a9339938a0e481f1884",
+  "deployment_states": {
+    "frontend": "READY",
+    "backend": "READY"
+  },
+  "deployment_source_verification": "Authenticated Vercel deployment metadata maps both production aliases to5e0f925; compiled public frontend contains final UI refinement.",
+  "hosted_mobile_ui": {
+    "viewport": "390x844",
+    "browser": "isolated headless Chrome",
+    "page_errors": [],
+    "camera": "permission fallback shown; physical camera not used",
+    "capture_sha256": "6f833c8504c21f2cf294ddfb39e60521d0fffaf17a5bd515b6c6ee8deac3ea83"
+  }
+}

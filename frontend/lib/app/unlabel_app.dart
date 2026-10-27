@@ -25,6 +25,7 @@ import '../features/scanner/presentation/insights_page.dart';
 import '../features/scanner/domain/insight_controller.dart';
 import '../features/scanner/domain/insight_catalogue.dart';
 import '../core/capture/automatic_label_reader.dart';
+import '../core/capture/live_barcode_scanner.dart';
 import '../features/scanner/presentation/product_info_page.dart';
 import '../features/scanner/presentation/library_page.dart';
 import '../features/scanner/presentation/mobile_navigation.dart';
@@ -47,6 +48,7 @@ class UnlabelApp extends StatefulWidget {
     this.repository,
     this.store,
     this.accountController,
+    this.barcodeScannerFactory,
     this.initialUri,
     this.showWelcome = true,
     super.key,
@@ -54,6 +56,10 @@ class UnlabelApp extends StatefulWidget {
   final UnlabelRepository? repository;
   final LocalStore? store;
   final AccountController? accountController;
+
+  /// Dependency boundary for deterministic camera tests and embedded hosts.
+  /// Production defaults to the maintained scanner SDK.
+  final LiveBarcodeScanner Function()? barcodeScannerFactory;
 
   /// Composition can provide an entry URI; browser startup defaults to Uri.base.
   final Uri? initialUri;
@@ -333,6 +339,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
         : _ClientHome(
             key: ValueKey(_identity ?? 'guest'),
             repository: _repository,
+            barcodeScannerFactory: widget.barcodeScannerFactory,
             store: _account.activeStore,
             account: _account,
             libraryRevision: _libraryRevision,
@@ -364,6 +371,7 @@ class _ClientHome extends StatefulWidget {
     required this.onThemeModeChanged,
     required this.onMissingPageRecovered,
     this.showNotFound = false,
+    this.barcodeScannerFactory,
     super.key,
   });
   final UnlabelRepository repository;
@@ -374,6 +382,7 @@ class _ClientHome extends StatefulWidget {
   final ValueChanged<ThemeMode> onThemeModeChanged;
   final VoidCallback onMissingPageRecovered;
   final bool showNotFound;
+  final LiveBarcodeScanner Function()? barcodeScannerFactory;
   @override
   State<_ClientHome> createState() => _ClientHomeState();
 }
@@ -914,6 +923,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                         ),
                         1 => ScanLandingPage(
                           reader: AutomaticLabelReader(widget.repository),
+                          barcodeScannerFactory: widget.barcodeScannerFactory,
                           onResult: _scanResult,
                         ),
                         2 => ComparePage(

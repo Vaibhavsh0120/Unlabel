@@ -13,6 +13,7 @@ import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
+import 'package:unlabel/features/scanner/presentation/ui_components.dart';
 
 class MemoryPreferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -382,6 +383,12 @@ void main() {
       expect(find.textContaining('/100'), findsNothing);
       expect(find.text('About 3 sugar cubes'), findsOneWidget);
       expect(find.textContaining('Per serving (40 g)'), findsWidgets);
+      // Allergen details now live on the explicit declaration tab. Exercise
+      // that control before checking the original missing-information warning.
+      await _tapVisible(tester, find.text('Allergens'));
+      expect(find.text('Contains'), findsOneWidget);
+      expect(find.text('Milk'), findsOneWidget);
+      expect(find.text('May contain'), findsOneWidget);
       expect(
         find.text('Not captured — check the current package.'),
         findsOneWidget,
@@ -392,8 +399,7 @@ void main() {
         ),
         findsOneWidget,
       );
-      await tester.tap(find.byKey(const Key('save-report')));
-      await tester.pumpAndSettle();
+      await _tapVisible(tester, find.byKey(const Key('save-report')));
       expect(
         (await store.saved()).single.report.name,
         'Synthetic corrected oats',
@@ -447,9 +453,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Dated catalogue facts'), findsOneWidget);
       expect(
-        find.textContaining('may differ from the package'),
+        find.text('Dated facts may differ from your package.'),
         findsOneWidget,
       );
+      expect(find.text('Recorded facts, not a health score.'), findsOneWidget);
       expect(
         find.text('Current claims need the current label'),
         findsOneWidget,
@@ -545,15 +552,35 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    for (final text in [
-      'Nutrition snapshot',
-      'Ingredients & allergens',
-      'Sources & evidence',
-    ]) {
+    for (final text in ['Nutrition snapshot', 'Ingredients & allergens']) {
       await tester.ensureVisible(find.text(text));
       await tester.pumpAndSettle();
       expect(find.text(text).hitTestable(), findsOneWidget);
       expect(tester.takeException(), isNull);
     }
+    await _tapVisible(tester, find.text('Allergens'));
+    expect(find.text('Contains'), findsOneWidget);
+    expect(find.text('Milk'), findsOneWidget);
+    expect(find.text('May contain'), findsOneWidget);
+    expect(
+      find.text('Not captured — check the current package.'),
+      findsOneWidget,
+    );
+    final nutrientEvidence = find.byKey(const Key('report-nutrient-evidence'));
+    await _tapVisible(tester, nutrientEvidence);
+    expect(find.text('Fibre'), findsOneWidget);
+    expect(find.text('Added sugars'), findsOneWidget);
+    expect(find.text('Observed 2026-10-07'), findsWidgets);
+    expect(tester.takeException(), isNull);
+    // Source rows inside the expanded nutrient disclosure share their label;
+    // target the page section explicitly to verify it remains reachable.
+    final sourceHeading = find.widgetWithText(
+      SectionTitle,
+      'Source references',
+    );
+    await tester.ensureVisible(sourceHeading);
+    await tester.pumpAndSettle();
+    expect(sourceHeading.hitTestable(), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

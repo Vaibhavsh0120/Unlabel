@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -5,37 +6,98 @@ import 'package:zxing_lib/common.dart';
 import 'package:zxing_lib/zxing.dart';
 
 import '../models/extracted_label.dart';
+import 'barcode_runtime.dart' as runtime;
 import 'photo_decode.dart';
 
 class BarcodeDetection {
   const BarcodeDetection(this.code, this.points);
   final String code;
 
-  /// Actual decoder scan-line anchors, normalized in the upright original photo.
-  /// These points do not claim to bound the entire printed barcode.
+  /// Actual decoder anchors/corners, normalized in the upright original photo.
+  /// They are decoder geometry, not a verified printed-package boundary.
   final List<ui.Offset> points;
 }
 
 class BarcodeReader {
+  static int _nextReader = 0;
+  final int _reader = ++_nextReader;
   int _generation = 0;
   bool _disposed = false;
-  Future<BarcodeDetection?> read(Uint8List bytes) async {
+  String? _webJob;
+
+  /// Preview reads trade a bounded 960 px frame and the expensive retry passes
+  /// for a responsive camera. Explicit photographs retain all retry passes.
+  Future<BarcodeDetection?> readPreview(Uint8List bytes) =>
+      _read(bytes, maxEdge: 960, thorough: false);
+
+  Future<BarcodeDetection?> read(Uint8List bytes) =>
+      _read(bytes, maxEdge: 1400, thorough: true);
+
+  Future<BarcodeDetection?> _read(
+    Uint8List bytes, {
+    required int maxEdge,
+    required bool thorough,
+  }) async {
     if (_disposed || bytes.isEmpty || bytes.length > 12 * 1024 * 1024) {
       return null;
     }
     final generation = ++_generation;
+    final previousJob = _webJob;
+    if (previousJob != null) runtime.cancelBarcodeRead(previousJob);
+    final job = '$_reader:$generation';
     ui.Image? image;
     try {
-      image = (await decodePhoto(bytes, maxEdge: 1400)).image;
+      image = (await decodePhoto(bytes, maxEdge: maxEdge)).image;
       final rgba = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
       if (rgba == null || _disposed || generation != _generation) return null;
-      final decoded = await compute(
-        _decode,
-        _BarcodePixels(
+      final pixels = rgba.buffer.asUint8List(
+        rgba.offsetInBytes,
+        rgba.lengthInBytes,
+      );
+      if (kIsWeb) {
+        _webJob = job;
+        final raw = await runtime.readBarcodePixels(
+          pixels,
           image.width,
           image.height,
-          rgba.buffer.asUint8List(rgba.offsetInBytes, rgba.lengthInBytes),
-        ),
+          thorough,
+          job,
+        );
+        if (_disposed || generation != _generation || raw == null) return null;
+        final value = jsonDecode(raw);
+        if (value is! Map<String, dynamic> || value['text'] is! String) {
+          return null;
+        }
+        final text = value['text'] as String;
+        final code = value['format'] == 'UPCE' ? _expandUpce(text) : text;
+        if (!validProductBarcode(code)) return null;
+        final rawPoints = value['points'];
+        final points = <ui.Offset>[];
+        if (rawPoints is List && rawPoints.length <= 4) {
+          for (final point in rawPoints) {
+            if (point is! List ||
+                point.length != 2 ||
+                point[0] is! num ||
+                point[1] is! num) {
+              continue;
+            }
+            final x = (point[0] as num).toDouble();
+            final y = (point[1] as num).toDouble();
+            if (x.isFinite &&
+                y.isFinite &&
+                x >= 0 &&
+                x <= 1 &&
+                y >= 0 &&
+                y <= 1) {
+              points.add(ui.Offset(x, y));
+            }
+          }
+        }
+        return BarcodeDetection(code, List.unmodifiable(points));
+      }
+      final decoded = await compute(
+        _decode,
+        _BarcodePixels(image.width, image.height, pixels, thorough),
       );
       if (_disposed || generation != _generation || decoded == null) {
         return null;
@@ -44,11 +106,18 @@ class BarcodeReader {
     } catch (_) {
       return null;
     } finally {
+      if (_webJob == job) _webJob = null;
       image?.dispose();
     }
   }
 
-  void cancel() => _generation++;
+  void cancel() {
+    _generation++;
+    final job = _webJob;
+    _webJob = null;
+    if (job != null) runtime.cancelBarcodeRead(job);
+  }
+
   void dispose() {
     _disposed = true;
     cancel();
@@ -56,9 +125,10 @@ class BarcodeReader {
 }
 
 class _BarcodePixels {
-  const _BarcodePixels(this.width, this.height, this.rgba);
+  const _BarcodePixels(this.width, this.height, this.rgba, this.thorough);
   final int width, height;
   final Uint8List rgba;
+  final bool thorough;
 }
 
 BarcodeDetection? _decode(_BarcodePixels pixels) {
@@ -85,7 +155,7 @@ BarcodeDetection? _decode(_BarcodePixels pixels) {
   // Keep the inexpensive center scans first, then inspect more rows and the
   // opposite print polarity. Input is capped at 1400 px and these six attempts
   // are finite; no camera loop or network decoder is started here.
-  for (var pass = 0; pass < 3; pass++) {
+  for (var pass = 0; pass < (pixels.thorough ? 3 : 1); pass++) {
     for (var rotated = 0; rotated < 2; rotated++) {
       final width = rotated == 0 ? pixels.width : pixels.height;
       final height = rotated == 0 ? pixels.height : pixels.width;

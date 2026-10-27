@@ -144,13 +144,23 @@ def supported_upc(barcode: str) -> bool:
 
 
 class NutriGraphLookup:
-    """One-process cache/budget; the free vendor plan enforces the account-wide hard quota."""
+    """One-process cache/budgets; the vendor enforces the account-wide hard quota.
+
+    The sandbox cap never renews automatically while this process runs. A restart
+    resets local counters, so these are conservative guards, not a durable
+    account-wide allowance ledger. The operator must track the vendor's remaining
+    trial allowance across deployments.
+    """
 
     def __init__(self, client: httpx.AsyncClient, api_key: str, *,
-                 monthly_limit: int = 1000, clock: Callable[[], datetime] | None = None):
+                 monthly_limit: int = 1000, sandbox_limit: int = 1000,
+                 clock: Callable[[], datetime] | None = None):
         self.client, self._key = client, api_key
         self._clock = clock or (lambda: datetime.now(UTC))
         self._monthly_limit = monthly_limit
+        self._sandbox_limit = sandbox_limit
+        self._sandbox_requests = 0
+        self._quota_exhausted = False
         self._month = ""
         self._requests = 0
         self._blocked_until: datetime | None = None
@@ -203,6 +213,8 @@ class NutriGraphLookup:
                     self._month, self._requests = month, 0
                 if day != self._day:
                     self._day, self._actors = day, {}
+                if self._quota_exhausted or self._sandbox_requests >= self._sandbox_limit:
+                    return LiveLookup(status="rate_limited", requested_barcode=barcode)
                 if self._requests >= self._monthly_limit:
                     return LiveLookup(status="rate_limited", requested_barcode=barcode,
                                       retry_after=self._month_wait(now))
@@ -217,6 +229,7 @@ class NutriGraphLookup:
                     or (actor not in self._actors and len(self._actors) >= 256)):
                     return LiveLookup(status="rate_limited", requested_barcode=barcode, retry_after=60)
                 self._requests += 1
+                self._sandbox_requests += 1
                 self._actors[actor] = self._actors.get(actor, 0) + 1
                 operation = asyncio.create_task(self._fetch(barcode))
                 self._pending[barcode] = operation
@@ -240,23 +253,30 @@ class NutriGraphLookup:
                              "Accept-Encoding": "identity"}, follow_redirects=False,
                     timeout=httpx.Timeout(8, connect=3, pool=2),
                 ) as response:
-                    if response.status_code == 404:
+                    is_json = "application/json" in response.headers.get("content-type", "").lower()
+                    if response.status_code == 404 and is_json:
                         result = LiveLookup(status="not_found", requested_barcode=barcode)
                         seconds = 300
+                    elif response.status_code == 404:
+                        # Generic HTML 404s indicate a missing/broken endpoint,
+                        # not evidence that the requested food is absent.
+                        self._blocked_until = self._clock() + timedelta(minutes=5)
+                        self._blocked_status = "unavailable"
+                        result = LiveLookup(status="unavailable", requested_barcode=barcode,
+                                            retry_after=300)
+                        seconds = 300
                     elif response.status_code == 429:
-                        now = self._clock()
-                        wait = self._month_wait(now)
-                        self._blocked_until = now + timedelta(seconds=wait)
-                        self._blocked_status = "rate_limited"
-                        result = LiveLookup(status="rate_limited", requested_barcode=barcode,
-                                            retry_after=wait)
+                        # A trial allowance may be finite. Do not invent a reset
+                        # date and keep spending after the upstream quota stop.
+                        self._quota_exhausted = True
+                        result = LiveLookup(status="rate_limited", requested_barcode=barcode)
                     elif response.status_code in {401, 403}:
                         self._blocked_until = self._clock() + timedelta(minutes=5)
                         self._blocked_status = "unavailable"
                     elif response.status_code == 200:
                         if response.headers.get("content-encoding", "identity") not in {"", "identity"}:
                             raise ValueError("Unexpected compressed vendor response")
-                        if "application/json" not in response.headers.get("content-type", "").lower():
+                        if not is_json:
                             raise ValueError("Invalid vendor content type")
                         body = bytearray()
                         async for chunk in response.aiter_bytes(chunk_size=16384):

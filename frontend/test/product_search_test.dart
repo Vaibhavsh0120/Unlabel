@@ -155,19 +155,21 @@ void main() {
     await tester.enterText(find.byType(TextField), 'oats');
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.bySemanticsLabel('Searching products'), findsOneWidget);
-    final pulse =
-        tester
-                .widget<AnimatedBuilder>(
-                  find.descendant(
-                    of: find.byType(SearchSkeleton),
-                    matching: find.byType(AnimatedBuilder),
-                  ),
-                )
-                .animation
-            as AnimationController;
+    final painter = tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byType(SearchSkeleton),
+        matching: find.byType(CustomPaint),
+      ),
+    ).painter!;
+    var repaintRequests = 0;
+    void onRepaint() => repaintRequests++;
+    painter.addListener(onRepaint);
     await tester.pump(const Duration(seconds: 2));
-    expect(pulse.isAnimating, isFalse);
-    expect(pulse.value, .5);
+    expect(find.bySemanticsLabel('Searching products'), findsOneWidget);
+    // The search field's caret can still request frames. Observe only the
+    // placeholder's repaint notifications, through CustomPainter's public API.
+    expect(repaintRequests, 0);
+    painter.removeListener(onRepaint);
     response.complete(_page('oats'));
     await tester.pumpAndSettle();
     expect(find.bySemanticsLabel('Searching products'), findsNothing);

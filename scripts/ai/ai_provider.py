@@ -29,12 +29,13 @@ def main(argv: list[str] | None = None) -> int:
         config = Settings()
         values = credentials(config)
         by_id = {value.id: value for value in values}
+        initial_id = config.initial_ai_slot(tuple(by_id))
         digest = configuration_digest(values)
         if (
             not config.ai_enabled or not config.community_enabled
             or args.project != config.community_project_id
             or config.community_service_account_json is None
-            or config.ai_initial_credential_id not in by_id
+            or initial_id not in by_id
         ):
             raise ValueError()
         runtime = create_runtime(
@@ -46,10 +47,10 @@ def main(argv: list[str] | None = None) -> int:
             if args.credential_id not in by_id:
                 raise ValueError()
             current = store.activate(
-                args.credential_id, args.expected_revision, config.ai_initial_credential_id, digest,
+                args.credential_id, args.expected_revision, initial_id, digest,
             )
         else:
-            current = store.read(config.ai_initial_credential_id, digest)
+            current = store.read(initial_id, digest)
         value = by_id.get(current.credential_id)
         print(json.dumps({
             "scope": "global", "credential_id": current.credential_id,

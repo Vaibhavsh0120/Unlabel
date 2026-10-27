@@ -59,10 +59,7 @@ class ProductInfoPage extends StatelessWidget {
     super.key,
   }) : _content = ProductResultsLayout(
          main: [
-           ResultsIdentityCard(
-             name: 'Scanned product',
-             quantity: 'Barcode $barcode',
-           ),
+           ResultsIdentityCard(name: 'Scanned product', barcode: barcode),
            const SizedBox(height: 16),
            const StatusNotice(
              title: 'Package details needed',

@@ -12,12 +12,31 @@ import 'package:unlabel/core/accounts/account_data.dart';
 import 'package:unlabel/core/accounts/account_store.dart';
 import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
+import 'package:unlabel/core/capture/live_barcode_scanner.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
 import 'package:unlabel/features/scanner/presentation/insights_page.dart';
 import 'package:unlabel/features/scanner/presentation/library_page.dart';
 import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/sources_page.dart';
+
+class _UnavailableScanner extends LiveBarcodeScanner {
+  @override
+  bool get ready => false;
+  @override
+  bool get busy => false;
+  @override
+  String? get error => 'No camera is connected to this test host.';
+  @override
+  Future<void> start() async {
+    notifyListeners();
+  }
+
+  @override
+  Future<void> stop() async {}
+  @override
+  Widget buildPreview() => const SizedBox.shrink();
+}
 
 class _Preferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -209,6 +228,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(_Auth(), _Sync(), guest),
@@ -299,6 +319,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(_Auth(), _Sync(), guest),
@@ -343,6 +364,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(auth, sync, guest),
@@ -386,6 +408,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(_Auth(), _Sync(), guest),
@@ -467,6 +490,7 @@ void main() {
         addTearDown(repository.close);
         await tester.pumpWidget(
           UnlabelApp(
+            barcodeScannerFactory: _UnavailableScanner.new,
             repository: repository,
             store: guest,
             accountController: _controller(_Auth(), _Sync(), guest),
@@ -507,6 +531,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(_Auth(), _Sync(), guest),
@@ -549,6 +574,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(auth, sync, guest),
@@ -589,6 +615,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(_Auth(), _Sync(), guest),
@@ -613,6 +640,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(_Auth(), _Sync(), guest),
@@ -649,6 +677,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(_Auth(), _Sync(), guest),
@@ -756,6 +785,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(auth, sync, guest),
@@ -808,6 +838,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: _controller(auth, sync, guest),
@@ -846,6 +877,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(_Auth(), _Sync(), guest),
@@ -891,6 +923,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(auth, sync, guest),
@@ -935,6 +968,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: _controller(auth, sync, guest),
@@ -971,6 +1005,7 @@ void main() {
       final repository = _Repository();
       addTearDown(repository.close);
       Widget app() => UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: controller,
@@ -1010,6 +1045,7 @@ void main() {
     addTearDown(repository.close);
     await tester.pumpWidget(
       UnlabelApp(
+        barcodeScannerFactory: _UnavailableScanner.new,
         repository: repository,
         store: guest,
         accountController: controller,
@@ -1041,6 +1077,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: controller,
@@ -1111,6 +1148,7 @@ void main() {
       addTearDown(repository.close);
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: controller,
@@ -1169,6 +1207,7 @@ void main() {
       repository.loader = (_) => pending.future;
       await tester.pumpWidget(
         UnlabelApp(
+          barcodeScannerFactory: _UnavailableScanner.new,
           repository: repository,
           store: guest,
           accountController: controller,

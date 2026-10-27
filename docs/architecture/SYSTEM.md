@@ -1,24 +1,23 @@
 # System architecture
 
-Updated **13 October 2026** against the canonical
-[backend](../../backend/pyproject.toml) and [frontend](../../frontend/pubspec.yaml) versions. The backend exports **27 paths / 28 operations**. Automatic
-captured-barcode reading, local OCR, optional consented cloud extraction,
-sourced comparison and private account sync are implemented. Insights contains
-twenty sourced articles, a shared date-stable daily four and local bookmarks.
+Updated **15 October 2026** against canonical [frontend](../../frontend/pubspec.yaml)
+and [backend](../../backend/pyproject.toml) versions. The API has **30 paths /
+32 operations**. Barcode-first capture preserves camera framing, front-name
+matches require pack-size selection, and ProductInfoPage is the shared result
+destination. Automatic back-label observations remain machine-unverified and
+source-preserving. Optional NutriGraph facts are session-only and disabled
+pending a key. Local, hosted, native and device proof are recorded separately.
+[Frontend review](../planning/FRONTEND_V0_10_0_REVIEW.md) ·
+[Backend review](../planning/BACKEND_V0_14_0_REVIEW.md) ·
+[Product Info](PRODUCT_INFO.md) · [Live facts](LIVE_PRODUCT_FACTS.md).
 
-The latest auth/profile and Google-provider compatibility changes await final
-exact-source hosted/native verification. Earlier read-only backend checks do not
-prove authenticated extraction/staging. See the
-[frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md),
-[backend review](../planning/BACKEND_V0_13_0_REVIEW.md) and
-[master plan](../planning/MASTER_PLAN.md).
 
 ## Product and delivery boundary
 
 One Flutter project in `frontend/` targets Android, iOS and web. Two Vercel
 projects serve the static Flutter website and shared FastAPI backend. Native apps
 call the same API; a laptop supplies an optional local demo backend. Keep the
-project at **â‚¹0 additional platform cost, no credit card and no billing upgrade**.
+project at **₹0 additional platform cost, no credit card and no billing upgrade**.
 
 Fresh lookup and deterministic analysis require the backend. OFF, the preserved
 bulk snapshot and the separate research catalogue supply qualified source facts.

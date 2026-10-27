@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/capture/automatic_label_reader.dart';
+import 'package:unlabel/core/capture/barcode_reader.dart';
+import 'package:unlabel/core/capture/live_barcode_scanner.dart';
 import 'package:unlabel/core/capture/local_label_parser.dart';
 import 'package:unlabel/core/capture/live_camera.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
@@ -86,6 +88,14 @@ class _Reader extends AutomaticLabelReader {
   }
 
   @override
+  Future<AutomaticScanResult> lookupBarcode(String code) async {
+    reads.add({});
+    return operation != null
+        ? operation!()
+        : AutomaticScanResult(barcode: code);
+  }
+
+  @override
   void cancel() {
     cancellations++;
     super.cancel();
@@ -98,12 +108,56 @@ class _Reader extends AutomaticLabelReader {
   }
 }
 
+class _BarcodeScanner extends LiveBarcodeScanner {
+  final stream = StreamController<BarcodeDetection>.broadcast();
+  bool active = false;
+  int starts = 0, stops = 0;
+  BarcodeDetection? photoResult;
+  @override
+  Stream<BarcodeDetection> get detections => stream.stream;
+  @override
+  bool get ready => active;
+  @override
+  bool get busy => false;
+  @override
+  String? get error => null;
+  @override
+  bool get canToggleTorch => false;
+  @override
+  bool get canSwitchCamera => false;
+  @override
+  Future<void> start() async {
+    starts++;
+    active = true;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> stop() async {
+    stops++;
+    active = false;
+    notifyListeners();
+  }
+
+  @override
+  Widget buildPreview() =>
+      const ColoredBox(key: Key('sdk-barcode-feed'), color: Colors.blue);
+  @override
+  Future<BarcodeDetection?> analyzeBytes(Uint8List bytes) async => photoResult;
+  @override
+  void dispose() {
+    unawaited(stream.close());
+    super.dispose();
+  }
+}
+
 Future<void> _show(
   WidgetTester tester,
   _Camera camera,
   _Reader reader, {
   Future<Uint8List?> Function()? pickPhoto,
   Future<void> Function(AutomaticScanResult, Uint8List?)? onResult,
+  LiveBarcodeScanner? barcodeScanner,
 }) async {
   await tester.pumpWidget(
     MaterialApp(
@@ -111,6 +165,7 @@ Future<void> _show(
       home: ScanLandingPage(
         camera: camera,
         reader: reader,
+        barcodeScanner: barcodeScanner,
         pickPhoto: pickPhoto ?? () async => null,
         onResult: onResult ?? (_, _) async {},
       ),
@@ -128,7 +183,78 @@ Future<void> _finishRead(WidgetTester tester) async {
 
 void main() {
   testWidgets(
-    'scanner task header keeps only its title and frees preview space',
+    'SDK barcode opens a decoded product once and stops the photo camera',
+    (tester) async {
+      final camera = _Camera();
+      final reader = _Reader();
+      final scanner = _BarcodeScanner();
+      var opened = 0;
+      await _show(
+        tester,
+        camera,
+        reader,
+        barcodeScanner: scanner,
+        onResult: (_, _) async {
+          opened++;
+        },
+      );
+      expect(scanner.ready, isTrue);
+      expect(camera.ready, isFalse);
+      expect(reader.reads, isEmpty);
+      scanner.stream.add(const BarcodeDetection('8901764051258', []));
+      scanner.stream.add(const BarcodeDetection('8901764051258', []));
+      await tester.pumpAndSettle();
+      expect(reader.reads, hasLength(1));
+      expect(opened, 1);
+      expect(scanner.ready, isFalse);
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+    },
+  );
+
+  testWidgets(
+    'SDK stops for Front and background; stale detections never route',
+    (tester) async {
+      final camera = _Camera();
+      final reader = _Reader();
+      final scanner = _BarcodeScanner();
+      var opened = 0;
+      await _show(
+        tester,
+        camera,
+        reader,
+        barcodeScanner: scanner,
+        onResult: (_, _) async {
+          opened++;
+        },
+      );
+      await tester.tap(find.byKey(const Key('scan-mode-0')));
+      await tester.pumpAndSettle();
+      expect(scanner.ready, isFalse);
+      expect(camera.ready, isTrue);
+      scanner.stream.add(const BarcodeDetection('8901764051258', []));
+      await tester.pumpAndSettle();
+      expect(opened, 0);
+      await tester.tap(find.byKey(const Key('scan-mode-2')));
+      await tester.pumpAndSettle();
+      expect(scanner.ready, isTrue);
+      expect(camera.ready, isFalse);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      await tester.pumpAndSettle();
+      expect(scanner.ready, isFalse);
+      scanner.stream.add(const BarcodeDetection('8901764051258', []));
+      await tester.pumpAndSettle();
+      expect(opened, 0);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(scanner.ready, isTrue);
+      await tester.pumpWidget(const SizedBox());
+      camera.dispose();
+    },
+  );
+
+  testWidgets(
+    'reference scanner has subtitle, wide preview and full width capture',
     (tester) async {
       tester.view.physicalSize = const Size(390, 844);
       tester.view.devicePixelRatio = 1;
@@ -164,7 +290,16 @@ void main() {
       );
       expect(
         tester.getSize(find.byKey(const Key('scan-preview'))).height,
-      greaterThan(844 / 2),
+        greaterThan(360),
+      );
+      expect(find.text('Capture the front, back or barcode'), findsOneWidget);
+      expect(
+        tester.getSize(find.byKey(const Key('scan-preview'))).width,
+        greaterThan(340),
+      );
+      expect(
+        tester.getSize(find.byKey(const Key('scan-primary'))).width,
+        greaterThan(330),
       );
       await tester.pumpWidget(const SizedBox());
       camera.dispose();
@@ -193,13 +328,7 @@ void main() {
           (widget.image as AssetImage).assetName ==
               'assets/artwork/scanner-garden-v1.png',
     );
-    expect(garden, findsOneWidget);
-    expect(
-      tester.getRect(garden).bottom,
-      greaterThanOrEqualTo(
-        tester.getRect(find.byKey(const Key('scan-gallery'))).bottom,
-      ),
-    );
+    expect(garden, findsNothing);
     await tester.tap(find.byKey(const Key('scan-primary')));
     await _finishRead(tester);
     expect(camera.captures, 1);
@@ -245,12 +374,8 @@ void main() {
       expect(find.textContaining('Flash is unavailable'), findsOneWidget);
       expect(camera.ready, isTrue);
       expect(
-        tester
-            .widget<IconButton>(
-              find.widgetWithIcon(IconButton, Icons.flash_off_rounded),
-            )
-            .onPressed,
-        isNull,
+        find.widgetWithIcon(IconButton, Icons.flash_off_rounded),
+        findsNothing,
       );
       await tester.pumpWidget(const SizedBox());
       camera.dispose();

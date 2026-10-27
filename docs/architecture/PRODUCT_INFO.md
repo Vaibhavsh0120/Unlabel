@@ -4,7 +4,10 @@
 `ProductInfoPage`, the destination for scanning, catalogue search, research
 matches, history and saved products. Its report/research/extracted/barcode
 constructors select private content widgets, with one page title and navigation
-shell. The user deferred its visual redesign to the next update.
+shell. The 26 October update implements the supplied reference hierarchy with
+smaller phone typography, fact-count summary, evidence cards, six nutrient tiles,
+ingredient/allergen tabs, unknowns and source disclosures. It supersedes the
+earlier deferred visual redesign. See [current frontend review](../planning/FRONTEND_V0_11_0_REVIEW.md).
 
 Source-specific facts remain distinct. A dated catalogue snapshot is not a
 current-package check; a model reading is not human-confirmed. Original source

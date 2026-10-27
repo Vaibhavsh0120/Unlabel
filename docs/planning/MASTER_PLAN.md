@@ -1,11 +1,11 @@
 # Unlabel master plan
 
-Current update: **frontend 0.10.0+14 / backend 0.14.0**, covering the scanner,
-unified Product Info, Safari auth, guest names, automatic unverified readings
-and optional live product lookup. Local validation passed; publication
-and hosted/device acceptance remain separate.
-[Frontend review](FRONTEND_V0_10_0_REVIEW.md) Ã‚Â· [Backend review](BACKEND_V0_14_0_REVIEW.md).
-
+Current update: **frontend 0.11.0+15 / backend 0.15.0**, covering the
+free native/WASM barcode scanner, compact reference product information,
+guest sign-in-methods toast and optional credential-based sources.
+Local checks, source publication, hosted runtime and device accuracy remain separate.
+[Frontend review](FRONTEND_V0_11_0_REVIEW.md) · [Backend review](BACKEND_V0_15_0_REVIEW.md) ·
+[Optional sources](../architecture/OPTIONAL_SOURCES.md).
 
 Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Previous scope: [reference auth and account controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md); preceding source reviews retain their dated evidence.
 This document records product intent and contracts. Current delivered capabilities
@@ -16,7 +16,7 @@ viewport/keyboard fixes, guest names, aspect-preserving camera capture and one
 Product Info destination. Front photos identify candidate products and claims;
 back photos contribute qualified unverified facts automatically, preserving exact
 SKU identity and source disagreements. NutriGraph live facts remain temporary and
-optional. The Product Info visual redesign is deferred to the next update.
+optional. The reference Product Info redesign is implemented in the current source review.
 Auth retains fixed desktop cards and a whole mobile card moving over fixed art.
 Portrait iPad fills the width; landscape uses the desktop composition.
 The user authorized completion and push on main, native publication and the stable
@@ -35,7 +35,7 @@ facts. The user explicitly rejected a separate optional sharing action.
 The five concept screens cover 20 feature groups, not 20 equally sized tasks.
 Their example 85/100 score, claims and recommendations are illustrative.
 A universal health score is not a requirement for the first useful product.
-Keep the project at Ã¢â€šÂ¹0, with no card or linked billing account.
+Keep the project at ₹0, with no card or linked billing account.
 
 ## Architecture decision
 
@@ -127,9 +127,9 @@ Keep snapshots replaceable on the existing nine-calendar-month manual schedule.
 OFF data/image attribution survives use alongside community assertions.
 [OFF licensing](https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/).
 
-Acquire in this order: reuse the snapshot Ã¢â€ â€™ selectively fetch newer OFF direct
-facts Ã¢â€ â€™ automatically accumulate corrected package observations Ã¢â€ â€™ add permitted
-exact manufacturer facts Ã¢â€ â€™ evaluate the overlap with eligible USDA Branded
+Acquire in this order: reuse the snapshot → selectively fetch newer OFF direct
+facts → automatically accumulate corrected package observations → add permitted
+exact manufacturer facts → evaluate the overlap with eligible USDA Branded
 records. OFF live and the OFF snapshot are one upstream source, not independent
 votes. USDA nutrient derivations require checking; per-100 g provider values can
 be converted/calculated rather than a directly printed label row.
@@ -257,7 +257,7 @@ does not erase the original origin or grant a new license. Reference already
 stored provider records rather than copying them into new CC0 assertions. Keep
 field confirmation separate from origin and moderator review.
 
-An observation progresses from **unmatched/provisional Ã¢â€ â€™ submitter-confirmed Ã¢â€ â€™
+An observation progresses from **unmatched/provisional → submitter-confirmed →
 eligible candidate**, or to needs-correction/conflict/rejected. Moderator review
 is an additional evidence state. Known barcode/front/back links bind
 it to an exact candidate. Barcode-less structured observations can be staged
@@ -276,7 +276,7 @@ identical scan. Repeated observations do not constitute accuracy votes.
 The factual fingerprint is separate from the observation/revision identifier.
 Reuse duplicate facts only within an active compatible revision context; retain
 observation dates and scoped review decisions independently. If a product changes
-**A Ã¢â€ â€™ B Ã¢â€ â€™ A**, the new A may reuse factual content but needs a new revision
+**A → B → A**, the new A may reuse factual content but needs a new revision
 association and cannot inherit old supersession/review state. Duplicate receipts
 still consume writes, so they also need bounded admission; factual deduplication
 does not create an unlimited free receipt stream.
@@ -386,9 +386,9 @@ not measured results.
 
 Consider a custom model only after logs/benchmark identify one repeated task
 that rules/OCR cannot handle and a rights-cleared annotated dataset covers it.
-Then build one automatic pipeline: acquire/resume/check hashes and licenses Ã¢â€ â€™
-prepare product-separated splits Ã¢â€ â€™ train locally Ã¢â€ â€™ compare against the baseline Ã¢â€ â€™
-export a bounded checkpoint/model card Ã¢â€ â€™ enable only if the gate passes.
+Then build one automatic pipeline: acquire/resume/check hashes and licenses →
+prepare product-separated splits → train locally → compare against the baseline →
+export a bounded checkpoint/model card → enable only if the gate passes.
 Include real progress and cancellation, reproducible pins and resumability.
 Do not build that pipeline speculatively now.
 
@@ -429,7 +429,7 @@ and geometry testing rather than blocking still-photo correction.
 
 The v0.4.0 acceptance cases must include compatible missing-field fill, contradictory
 unreviewed sources, unknown reformulation, ordered partial ingredient sections,
-mass/volume/preparation mismatches, provider-prefilled provenance, A Ã¢â€ â€™ B Ã¢â€ â€™ A
+mass/volume/preparation mismatches, provider-prefilled provenance, A → B → A
 revision handling, coalesced/duplicate saves and save failure preserving analysis.
 The final implementation/tests and separate cloud evidence are recorded in the
 v0.4.0 review. Released v0.5.0 separately verifies useful reports despite save failure;

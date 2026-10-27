@@ -281,10 +281,22 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> _signInMethods() => showDialog<void>(
-    context: context,
-    builder: (context) => _SignInMethodsDialog(controller: controller),
-  );
+  Future<void> _signInMethods() async {
+    if (controller.identity == null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text('Please sign in to manage sign-in methods.'),
+          ),
+        );
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (context) => _SignInMethodsDialog(controller: controller),
+    );
+  }
 
   Future<void> _choosePreferences({bool allergensOnly = false}) async {
     final preferences = await showDialog<DeviceProfilePreferences>(
@@ -993,11 +1005,7 @@ class _ProfilePageState extends State<ProfilePage> {
               subtitle: signedIn
                   ? 'Manage Google and email sign-in'
                   : 'Sign in to connect your account',
-              onTap: controller.authBusy
-                  ? null
-                  : signedIn
-                  ? _signInMethods
-                  : () => ProfilePage.showSignIn(context, controller),
+              onTap: controller.authBusy ? null : _signInMethods,
             ),
             _setting(
               'Notifications',

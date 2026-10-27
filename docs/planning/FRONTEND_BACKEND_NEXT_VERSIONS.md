@@ -1,24 +1,22 @@
 # Current components and remaining work
 
-Current working release: **frontend 0.10.0+14 / backend 0.14.0**, dated
-15 October 2026. The scanner/reference account update adds camera framing,
-Barcode-first capture, AI front/back matches, automatic unverified observations,
-optional live NutriGraph lookup and one ProductInfoPage. Its visual redesign is
-explicitly reserved for the next update.
-[Frontend review](FRONTEND_V0_10_0_REVIEW.md) · [Backend review](BACKEND_V0_14_0_REVIEW.md) ·
-[Release ledger](CONTROLLED_RELEASES.md).
+Current working source: **frontend 0.11.0+15 / backend 0.15.0**.
+The free native/WASM scanner, compact reference product page, optional sources
+and guest sign-in-methods toast are implemented. Final local/release evidence
+belongs to the current reviews.
+[Frontend review](FRONTEND_V0_11_0_REVIEW.md) · [Backend review](BACKEND_V0_15_0_REVIEW.md) ·
+[Source setup](../architecture/OPTIONAL_SOURCES.md) · [Release ledger](CONTROLLED_RELEASES.md).
 
 | Remaining gate | Owner/evidence needed |
 | --- | --- |
-| NutriGraph activation/coverage | User sent trial email; key and India/EAN-13 response pending. Keep disabled until configured |
-| Product Info visual redesign | User explicitly deferred to the next update; one shared destination is implemented now |
+| NutriGraph live endpoint/coverage | Key and encrypted environment configured; supplied endpoint returns HTML 404, so vendor availability and India coverage remain unverified |
 | Physical barcode/OCR accuracy and shopping latency | Android/iPhone tests with dated package samples and measured results |
 | LiveContainer import and execution | Actual iPhone/LiveContainer test of the published device IPA |
 | Production Android signing | Stable private demo key is registered/restored/verified; production release signing remains separate |
 | Supported reset/sign-in return | Local SDK requests use Firebase's reserved handler and fixed authorized Continue URL; SDK tests and synthetic no-email request passed; no real inbox delivery claim |
 | Real Google/reset/profile acceptance | Actual provider consent, email delivery and device/cross-account flows beyond local tests |
 | Hosted authenticated extraction/private staging | Separately authorized synthetic consent/authentication/write verification |
-| Continuous camera recognition/highlights | Future implementation and device performance verification |
+| Real camera recognition accuracy | Free SDK realtime scanning implemented; synthetic browser proof is separate from physical package tests |
 | Notifications/comparison-history totals | Future explicit feature scope |
 | Personal suitability and broader ingredient/claim coverage | Reviewed evidence and separately scoped product work |
 

@@ -142,7 +142,7 @@ def build_router(config: Settings) -> APIRouter:
         try:
             current = await run_in_threadpool(
                 selected.store.activate, body.credential_id, body.expected_revision,
-                config.ai_initial_credential_id, selected.configuration,
+                selected.initial_credential_id, selected.configuration,
             )
             value = selected.by_id[current.credential_id]
             return JSONResponse({

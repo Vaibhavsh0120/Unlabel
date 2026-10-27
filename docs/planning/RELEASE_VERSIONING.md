@@ -29,12 +29,23 @@ receipts are in the [release ledger](CONTROLLED_RELEASES.md), [frontend review](
 and [backend review](BACKEND_V0_13_0_REVIEW.md). The superseded 0.8.1 working note
 was never a release.
 
-The 15 October working release uses **frontend 0.10.0+14 / backend 0.14.0**.
+The preceding 15 October source checkpoint uses **frontend 0.10.0+14 / backend 0.14.0**.
 The last published GitHub versions were checked directly before choosing this
 increment. Scanner flows, unified Product Info and additive machine/live lookup
 contracts justify minor versions; native build 14 follows 13. API major and
 existing stored-report schemas stay unchanged. The same version increase triggers
 the existing automatic APK/IPA publication and stable feed workflow.
+
+The 26-27 October source task advances to **frontend 0.11.0+15 / backend 0.15.0**.
+The compact Product Info redesign, free native/web barcode scanner and Safari
+camera lifecycle fixes justify the frontend minor release; independently optional
+sources and finite NutriGraph sandbox guards justify the backend minor release.
+Native build 15 follows 14. The API major and saved-report schemas are unchanged.
+Current local evidence and remaining hosted/provider/device gates belong to the
+[frontend review](FRONTEND_V0_11_0_REVIEW.md) and
+[backend review](BACKEND_V0_15_0_REVIEW.md). Add historical source-ledger records
+only after an exact implementation SHA exists; do not invent source tags or
+native-publication proof before the corresponding publication is verified.
 
 Current-status docs are dated checkpoints. Write a future review/ledger entry
 for a new release; do not rewrite old reviews, receipts or source references.

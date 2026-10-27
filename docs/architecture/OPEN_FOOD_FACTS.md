@@ -1,10 +1,9 @@
 # Open Food Facts integration
 
-Updated **12 October 2026** for backend **v0.12.0** and frontend
-**v0.7.0+11**. OFF was selected on **5 October 2026** and remains the fixed-origin
+Updated **15 October 2026** against the canonical component manifests. OFF was selected on **5 October 2026** and remains the fixed-origin
 live product/nutrition provider alongside the preserved read-only bulk snapshot.
 The separate 243-observation research catalogue retains its own publisher facts.
-The backend API has 27 paths/28 operations; existing product/catalogue v1
+The backend API has 30 paths/32 operations; existing product/catalogue v1
 contracts remain compatible.
 
 Python applies seven reviewed numerical claims and six sourced English/Hindi

@@ -217,6 +217,22 @@
       "source_sha": "bd06bfb9dbf7307c9ccf6e9f2402a13ec3419084",
       "review": "docs/planning/FRONTEND_V0_9_0_REVIEW.md",
       "title": "Frontend v0.9.0+13 - Authentication and account controls"
+    },
+    {
+      "component": "backend",
+      "version": "0.14.0",
+      "tag": "backend-v0.14.0",
+      "source_sha": "5e0f925f93bad428dbc2556e96c75671b2c9ceaf",
+      "review": "docs/planning/BACKEND_V0_14_0_REVIEW.md",
+      "title": "Backend v0.14.0 - Automatic package facts and live product lookup"
+    },
+    {
+      "component": "frontend",
+      "version": "0.10.0",
+      "tag": "frontend-v0.10.0+14",
+      "source_sha": "5e0f925f93bad428dbc2556e96c75671b2c9ceaf",
+      "review": "docs/planning/FRONTEND_V0_10_0_REVIEW.md",
+      "title": "Frontend v0.10.0+14 - Scanner and unified product information"
     }
   ]
 }

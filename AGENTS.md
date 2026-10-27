@@ -2,10 +2,18 @@
 
 ## Active checkpoint and maintenance
 
+- The 26-27 October task advances source to frontend 0.11.0+15/backend 0.15.0.
+  The compact reference Product Info redesign supersedes its earlier deferral.
+  Barcode mode uses free mobile_scanner and self-hosted ZXing-C++ WASM; no
+  Dynamsoft trial/license/billing dependency is selected. See current
+  FRONTEND_V0_11_0_REVIEW.md/BACKEND_V0_15_0_REVIEW.md and
+  docs/architecture/OPTIONAL_SOURCES.md. Keyed backend sources use auto with
+  explicit false overrides; community persistence remains explicit opt-in.
+
 - Work directly on main only; do not create a branch or worktree. Preserve teammate
   edits, licensed sources, historical tags and published assets. Update docs before push.
   The user authorized completion and push on 13 October, superseding the local
-  auth-repair hold. Current source scope is frontend 0.10.0+14/backend 0.14.0;
+  auth-repair hold. Current source scope is frontend 0.11.0+15/backend 0.15.0;
   pushing main triggers the existing web/API Git deployments. The later user scope
   also authorizes native APK/IPA publication and refreshing the stable iOS feed.
   Frontend version/build increases now trigger native release automatically.
@@ -17,8 +25,9 @@
   Canonical versions are
   frontend/pubspec.yaml and backend/pyproject.toml; scripts/config/workspace.json pins
   Flutter. Do not reintroduce repeated Dart/runtime/workflow version literals.
-- Current proof belongs to docs/planning/FRONTEND_V0_10_0_REVIEW.md and
-  docs/planning/BACKEND_V0_14_0_REVIEW.md. Prior auth proof belongs to
+- Current proof belongs to docs/planning/FRONTEND_V0_11_0_REVIEW.md and
+  docs/planning/BACKEND_V0_15_0_REVIEW.md. The preceding scanner checkpoint remains
+  in FRONTEND_V0_10_0_REVIEW.md/BACKEND_V0_14_0_REVIEW.md. Prior auth proof belongs to
   docs/planning/FRONTEND_V0_9_0_REVIEW.md;
   the preceding source scope stays in docs/planning/FRONTEND_V0_8_0_REVIEW.md;
   backend deletion proof belongs to docs/planning/BACKEND_V0_13_0_REVIEW.md.
@@ -60,12 +69,14 @@
   frontend-release builds native artifacts. Backend work does not rebuild APK/IPA.
 
 - Current scanner defaults to Barcode, preserves camera aspect ratio and crops captures
-  to the preview. ProductInfoPage is the single product destination; its visual redesign
-  is deferred. Guest names stay device-local. Front claims compare against sourced
+  to the preview. ProductInfoPage is the single product destination, with the compact
+  reference desktop/mobile redesign implemented. Guest names stay device-local. Front claims compare against sourced
   catalogue data without fabricating human confirmation. Back-label facts can join a
   separate immutable machine-unverified stream after exact identity checks; originals
-  and conflicts remain. NutriGraph is optional, disabled pending a trial key, session-only
-  with at most 24-hour retention, and never enriches the permanent catalogue.
+  and conflicts remain. NutriGraph is optional, configured with a backend-only trial
+  key and credential-based auto enablement, session-only with at most 24-hour retention,
+  and never enriches the permanent catalogue. Its supplied endpoint returned HTML 404;
+  successful live lookup and India coverage remain unverified.
 
 ## Product, setup and evidence boundaries
 

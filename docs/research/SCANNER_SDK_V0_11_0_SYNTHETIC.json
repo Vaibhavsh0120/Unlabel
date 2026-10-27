@@ -1,0 +1,262 @@
+{
+  "schema_version": "1",
+  "checked_at": "2026-10-27",
+  "scope": "Owned synthetic camera input and real browser mobile_scanner/ZXing-C++ runtime; not physical package or device accuracy.",
+  "detection_and_cleanup": {
+    "schema_version": "1",
+    "runtime": "Chrome fake getUserMedia, real mobile_scanner 7.4.2 and same-origin ZXing-C++ WASM3.1.3",
+    "synthetic_barcode": "8901764051258",
+    "body": "SDK detections: 1; barcode: 8901764051258\nClose scanner\nScan Label\nCapture the front, back or barcode\nBarcode found\n8901764051258\nScan another\nFront\nBack\nBarcode\nView results\nChoose Photo",
+    "before": {
+      "cameraRequests": [
+        {
+          "video": {
+            "width": {
+              "ideal": 1280
+            },
+            "height": {
+              "ideal": 720
+            },
+            "facingMode": "environment"
+          }
+        }
+      ],
+      "videoStates": [
+        {
+          "playsinline": true,
+          "muted": true,
+          "paused": false,
+          "readyState": 4,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "playsinline": true,
+          "muted": true,
+          "paused": false,
+          "readyState": 4,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "playsinline": true,
+          "muted": true,
+          "paused": false,
+          "readyState": 4,
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "playsinline": true,
+          "muted": true,
+          "paused": false,
+          "readyState": 4,
+          "width": 1280,
+          "height": 720
+        }
+      ],
+      "trackStates": [
+        {
+          "kind": "video",
+          "readyState": "ended"
+        }
+      ]
+    },
+    "after": {
+      "trackStates": [
+        {
+          "kind": "video",
+          "readyState": "ended"
+        }
+      ]
+    },
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [
+      {
+        "url": "https://www.gstatic.com/flutter-canvaskit/06a2e2a110089dff50fe635cffd2a61e1b24fbcd/chromium/canvaskit.wasm",
+        "method": "GET"
+      },
+      {
+        "url": "https://www.gstatic.com/flutter-canvaskit/06a2e2a110089dff50fe635cffd2a61e1b24fbcd/chromium/canvaskit.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me4GZLCzYlKw.woff2",
+        "method": "GET"
+      },
+      {
+        "url": "https://accounts.google.com/gsi/client",
+        "method": "GET"
+      }
+    ],
+    "limitations": [
+      "Owned synthetic Y4M camera fixture, not physical iPhone/Safari accuracy",
+      "No backend/catalogue requests from this developer-only entrypoint"
+    ]
+  },
+  "frame_and_cancel": {
+    "fixture": "Valid synthetic EAN outside the visible portrait frame",
+    "barcode": "8901764051258",
+    "before": "SDK detections: 0; barcode: none\nClose scanner\nScan Label\nCapture the front, back or barcode\nHold the barcode steady. Scanning automatically.\nFront\nBack\nBarcode\nClick Photo\nChoose Photo",
+    "live": [
+      "live"
+    ],
+    "after": [
+      "ended"
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "webkit_still_decoder": {
+    "schema_version": "1",
+    "checked_at": "2026-10-27T13:11:00.856Z",
+    "engine": "Playwright WebKit 26.0 on Windows; iPhone13 mobile/touch context",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1",
+    "scope": "Actual pinned ZXing-C++ WASM and cancellable web-worker still-image decoder; owned synthetic fixtures only",
+    "results": {
+      "checks": [
+        {
+          "turns": 0,
+          "code": "8901764051258",
+          "points": [
+            [
+              0.171875,
+              0.2125
+            ],
+            [
+              0.7640625,
+              0.2125
+            ],
+            [
+              0.7640625,
+              0.21458333333333332
+            ],
+            [
+              0.171875,
+              0.21458333333333332
+            ]
+          ]
+        },
+        {
+          "turns": 1,
+          "code": "8901764051258",
+          "points": [
+            [
+              0.7854166666666667,
+              0.171875
+            ],
+            [
+              0.7854166666666667,
+              0.7640625
+            ],
+            [
+              0.7833333333333333,
+              0.7640625
+            ],
+            [
+              0.7833333333333333,
+              0.171875
+            ]
+          ]
+        },
+        {
+          "turns": 2,
+          "code": "8901764051258",
+          "points": [
+            [
+              0.8265625,
+              0.7833333333333333
+            ],
+            [
+              0.234375,
+              0.7833333333333333
+            ],
+            [
+              0.234375,
+              0.7854166666666667
+            ],
+            [
+              0.8265625,
+              0.7854166666666667
+            ]
+          ]
+        },
+        {
+          "turns": 3,
+          "code": "8901764051258",
+          "points": [
+            [
+              0.21458333333333332,
+              0.8265625
+            ],
+            [
+              0.21458333333333332,
+              0.234375
+            ],
+            [
+              0.2125,
+              0.234375
+            ],
+            [
+              0.2125,
+              0.8265625
+            ]
+          ]
+        },
+        {
+          "inverted": true,
+          "code": "8901764051258"
+        }
+      ],
+      "invalidChecksumRejected": true,
+      "cancelled": true,
+      "retryAfterCancel": true
+    },
+    "elapsed_ms": 360,
+    "page_errors": [],
+    "console_errors": [],
+    "external_requests": [],
+    "source_hashes": {
+      "frontend/test/barcode_runtime_fixture.html": "87119c71f85880c0999e2da95e441e767174303423a307375e671b8bf090c594",
+      "frontend/web/barcode_runtime.js": "eb14937aae67ca88978522b35f549720670981eb7a5e1435cac2aac4390c48e0",
+      "frontend/web/barcode_worker.js": "e67486165c3d1c87d958ff7c62eadcfb8aaa3631f56a765c7b7ec52b6e319838",
+      "frontend/web/vendor/zxing-wasm/3.1.3/index.js": "98e44c8063b9aa75b31562f6b64b2cead420842ac3e4f57a791c01cd8f450a7a",
+      "frontend/web/vendor/zxing-wasm/3.1.3/zxing_reader.wasm": "2ebda08a93eea3efcd8399cda6b276e6a0b1de4fec60b4d8988a047de4c6d1ba"
+    },
+    "limitations": [
+      "Not physical iPhone Safari, camera permission, camera sensor framing or real-package accuracy",
+      "This exercises the web-worker still decoder; real SDK camera capture was separately verified in Chrome using synthetic Y4M"
+    ]
+  },
+  "native_integration_static": {
+    "scope": "Source, manifest and generated plugin-registration compatibility inspection; no native compilation or device run in this check.",
+    "mobile_scanner_version": "7.4.2",
+    "plugin_license": "BSD-3-Clause",
+    "android": {
+      "flutter_pin": "3.47.4",
+      "application_compile_sdk": 36,
+      "plugin_compile_sdk": 36,
+      "application_min_sdk": 24,
+      "plugin_min_sdk": 23,
+      "application_java_source_target": 17,
+      "plugin_java_source_target": 17,
+      "camera_permission_present": true,
+      "microphone_and_broad_storage_permissions_removed": true,
+      "bundled_mlkit_selected": true,
+      "generated_flutter_plugin_dependency_present": true
+    },
+    "ios": {
+      "application_deployment_target": "15.0",
+      "plugin_deployment_target": "12.0",
+      "application_and_plugin_swift_version": "5.0",
+      "camera_and_photo_library_usage_descriptions_present": true,
+      "generated_plugin_registrant_contains_mobile_scanner": true
+    },
+    "remaining_gates": [
+      "Android APK and iOS IPA compilation/publication through the existing native release workflow",
+      "Physical iPhone Safari camera permission, focus/glare, scan framing and real-package accuracy",
+      "Physical native iOS/Android camera switching, macro-lens selection and capture/gallery behavior"
+    ]
+  }
+}

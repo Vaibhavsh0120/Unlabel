@@ -1,6 +1,6 @@
 # Folder structure and root responsibilities
 
-Updated **12 October 2026** for frontend **v0.7.0+11** and backend **v0.12.0**.
+Updated **15 October 2026** against the canonical component manifests.
 The root coordinates component source, knowledge, contracts, documentation and
 releases. Empty foundation scaffolding is removed; the map below describes
 retained source, with future capabilities recorded in plans instead of empty
@@ -61,14 +61,15 @@ scanner presentation; no duplicate reserved feature module is required.
 
 | Path under `backend/` | Actual responsibility |
 | --- | --- |
-| `app/main.py` | Composition/lifespan, **27 paths / 28 operations**, capability isolation and redacted failures |
+| `app/main.py` | Composition/lifespan, **30 paths / 32 operations**, capability isolation and redacted failures |
 | `app/core/` | Validated settings/CORS, actual-byte request limits and numeric token validation |
 | `app/api/v1/` | Account, claim, community, report/glossary and comparison routes |
 | `app/accounts/` | Password-owned private snapshots, CAS mutations, quotas and explicit clear |
-| `app/ai/` | Scanner photo extraction, server-only credentials, global selection/cooldowns, quotas and private proposals |
+| `app/ai/` | Scanner photo extraction, server-only credentials, global selection/cooldowns, quotas, private proposals and separate immutable machine observations |
+| `app/live_products/` | Optional bounded session-only NutriGraph adapter; no permanent catalogue writes |
 | `app/catalogue/` | Strict bulk-source identity/facts contracts, staged imports, read-only lookup/search and verified bundle |
 | `app/research_catalogue/` | Separate immutable research search/details, strict observation provenance and validated URL descriptors |
-| `app/claims/` | Seven numerical rules, source knowledge loader and receipt-verified two-file bundle |
+| `app/claims/` | Seven numerical rules, read-only catalogue comparisons, source knowledge loader and receipt-verified two-file bundle |
 | `app/community/` | Observations, normalized hashes/dedup, auth, transactions and compatible-field resolution |
 | `app/comparison/` | Exact-source table selection, compatible nutrient comparisons and limitations |
 | `app/reports/` | Current/historical sourced reports, original-basis sugar cubes and six-entry glossary; v1 glossary retained historically |

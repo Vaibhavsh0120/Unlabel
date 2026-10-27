@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-10-15T16:37:46.072778+00:00",
+  "checked_at_utc": "2026-10-15T16:45:05.347110+00:00",
   "fixture": "frontend/tool/visual_preview.dart",
   "scope": "Synthetic camera/account fixtures; actual Flutter UI with production navigation components. Not real camera/provider/device proof.",
   "viewports": [
@@ -32,38 +32,38 @@
   "captures": [
     {
       "file": "output/playwright/scanner-desktop-dark.png",
-      "bytes": 142980,
-      "sha256": "2684c885609ca9f0ecc49378fd18e66665654a97df50d90170d146c3135410d8"
+      "bytes": 134180,
+      "sha256": "1e9cde4eee223e84ac2ea928b42412d15307d4f732677c3d359e4abf33474bce"
     },
     {
       "file": "output/playwright/scanner-desktop-light.png",
-      "bytes": 142253,
-      "sha256": "3ba8c7acdfa5fc6030b8f34241d1e37fca6ca313ad9e22ae50f623e1d51b4e6c"
+      "bytes": 134117,
+      "sha256": "7dc2a85206b69a06a631d04bb7c4afdb80c0bb1c51d9f0232457a5fa7a46efbe"
     },
     {
       "file": "output/playwright/scanner-desktop-wide.png",
-      "bytes": 153189,
-      "sha256": "693e029b80a0af9051fbf07859eb18758fb1e4ca76ca98af09c22f5479613dcd"
+      "bytes": 155552,
+      "sha256": "8d6abc388a84026884f257fe780f6f9636f64d8c05789ba0c1b226049ad46768"
     },
     {
       "file": "output/playwright/scanner-ipad-landscape.png",
-      "bytes": 96594,
-      "sha256": "3f34c9dd69a852ad6f914e7f62a8422d1dd8d0231c4a481d278d63e68a4d58fa"
+      "bytes": 92345,
+      "sha256": "f60c6f399a56842355f08fadb2148bca2be9c6bc3cdc59db800a45f2226c9451"
     },
     {
       "file": "output/playwright/scanner-ipad-portrait.png",
-      "bytes": 255386,
-      "sha256": "634b07ab4cd327ad677a8a8d77cf8a03be59d6408ed4bf3296c35b0851911577"
+      "bytes": 249418,
+      "sha256": "f1a497fc6dd3e2e1cd66ceac301cd991e181da9f17e09863fc33333dea9961f0"
     },
     {
       "file": "output/playwright/scanner-iphone-dark.png",
-      "bytes": 123141,
-      "sha256": "12885fb4909f709f1433b07af27e499d6c0fc8b77ec30364b37a22427f716d91"
+      "bytes": 120501,
+      "sha256": "3adc971d2135076e5639872254e30e1f8008e8b232e0e337d45d12ac7aec8884"
     },
     {
       "file": "output/playwright/scanner-iphone-light.png",
-      "bytes": 123742,
-      "sha256": "df7c6d3f700c3575bd430196100c087466738ff8dc82da7288442fbdc1bc38de"
+      "bytes": 121149,
+      "sha256": "7184491e30750a04783189c2e191b659b703e517d00a12f8454a8875ca747623"
     },
     {
       "file": "output/playwright/scanner-large-gallery-reachable.png",
@@ -87,17 +87,24 @@
     },
     {
       "file": "output/playwright/scanner-phone-large.png",
-      "bytes": 91782,
-      "sha256": "e182a0217d272b37c78e10a60088a5dedcb43e2cf3e8089acd3e3695a4e78be7"
+      "bytes": 101849,
+      "sha256": "7b87be8bdc1b836bb8e36ed5ac82c0a108c1209731e22113a4f79611ea0e4f10"
     },
     {
       "file": "output/playwright/scanner-processing-phone.png",
-      "bytes": 118969,
-      "sha256": "cef33b75bbfcfad6fbfc7645a943f40a4d68e545b1a6fdc80d17f27c1b05c3b0"
+      "bytes": 116346,
+      "sha256": "25bcc9f90800db1d0db3a68a99d16c4d11b9dfc9fea4a9b00ec8463287399ec0"
     }
   ],
   "control_geometry": {
     "mobile_preview_height_at_390x844": 440,
-    "evidence": "Flutter shell widget geometry with shared AppBar and floating navigation"
-  }
+    "evidence": "Flutter shell widget geometry with shared AppBar and floating navigation",
+    "browser_preview_at_390x844": {
+      "x": 35.1,
+      "y": 110,
+      "width": 319.8,
+      "height": 460
+    }
+  },
+  "source_sha": "5e0f925f93bad428dbc2556e96c75671b2c9ceaf"
 }

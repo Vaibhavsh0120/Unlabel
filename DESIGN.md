@@ -1,5 +1,44 @@
 # Unlabel interface contract
 
+26 October product-information scope supersedes the earlier deferred visual
+redesign while preserving its evidence contracts and the historical directions
+below. [Frontend 0.11.0 review](docs/planning/FRONTEND_V0_11_0_REVIEW.md) records
+this source scope separately from final browser, hosted and physical-device proof.
+The latest user correction asks for smaller phone text and a denser composition;
+the supplied dark desktop/phone product references remain the layout direction.
+
+Product information uses its own Nunito heading/Quicksand body theme, drawn from
+the already bundled licensed fonts. At ordinary phone text size, product names
+use 21 px, section headings 18 px, secondary headings 14 px, evidence-card titles
+12 px and body copy 11–13 px. The compact identity card uses an 80 px contained
+product image and 16 px padding. Barcode digits and their copy action sit beside
+the short Save action when space permits, retaining 48 px tap targets. Wider
+layouts retain larger type and imagery. Text scaling is unchanged: enlarged text
+wraps and stacks naturally rather than shrinking to fit these default dimensions.
+
+The product hierarchy is identity, recorded-value summary, evidence overview,
+nutrition snapshot, ingredient/allergen declarations, qualified allergen notice,
+missing facts and source references. Desktop keeps main/supporting columns;
+phones use one scroll surface. Four evidence cards form two phone columns or four
+desktop columns at ordinary text size. Six nutrient tiles include total sugars;
+missing values remain unknown and conflicts remain conflicts. Every original
+nutrient row, table basis, evidence state and source reference remains available
+through the full nutrient disclosure. Ingredient functions, claim assessments,
+sugar conversion, catalogue receipts and optional live/machine readings remain
+reachable without becoming part of the fact-count summary.
+
+The compact phone summary has a 56 px leaf ring, a 26 px count, its evidence tag,
+and short qualifications. The generated `product-botanical-v2.webp` decoration
+occupies its own layout slot, outside live text; it never represents the package.
+The default 390 px report-summary regression check uses the actual bundled fonts
+and bounds the summary to 160 px. That widget bound is not pixel-match or device
+performance proof. Ingredients and Allergens are real tabs; the first four
+missing facts expand to the full list. The source heading is Source references,
+with a distinct Declaration source references disclosure for label provenance.
+Both light/dark themes, existing navigation callbacks, session-only photos and
+local save behavior remain. Final rendered reference acceptance is recorded
+separately after the latest sizing pass.
+
 The outlined Solar leaf is prohibited. All leaf icons use the filled Unlabel
 brand vector from the wordmark through `BrandLeaf`; the retired outline asset is
 removed. Food preference and allergen symbols keep their distinct pictograms.
