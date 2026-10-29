@@ -1,0 +1,118 @@
+{
+  "schema_version": "1",
+  "checked_at_utc": "2026-10-27T13:22:55.154388+00:00",
+  "source_sha": "2246edaa32b29fefef640a53081e8d1ecb8ecb3f",
+  "backend_origin": "https://unlabel-api.vercel.app",
+  "frontend_origin": "https://unlabel-india.vercel.app",
+  "backend_version": "0.15.0",
+  "frontend_version": {
+    "app_name": "unlabel",
+    "version": "0.11.0",
+    "build_number": "15",
+    "package_name": "unlabel"
+  },
+  "checks_passed": [
+    "Backend health/meta identifies0.15.0",
+    "NutriGraph configured capability present; no vendor success inferred",
+    "24,641 bundled products preserved",
+    "243 immutable research observations preserved",
+    "Hosted reviewed knowledge matches rules/claims/reviewed-v1.json",
+    "Hosted reviewed knowledge matches sources/registry/fssai-claims-v1.json",
+    "Hosted OpenAPI equals0.15.0 export",
+    "/v1/account/sync rejects unauthenticated reads without cache",
+    "/v1/live-products/nutrigraph/811620022118 rejects unauthenticated reads without cache",
+    "Backend excludes /.env",
+    "Backend excludes /.env.age",
+    "Backend excludes /app/core/config.py",
+    "Hosted web identifies0.11.0+15",
+    "Pinned decoder asset matches index.js",
+    "Pinned decoder asset matches zxing_reader.wasm",
+    "Pinned decoder asset matches LICENSE",
+    "Pinned decoder asset matches ZXING_CPP_LICENSE",
+    "Hosted runtime matches barcode_runtime.js",
+    "Hosted runtime matches barcode_worker.js"
+  ],
+  "checks_passed_count": 19,
+  "deployments": {
+    "frontend": "dpl_8m92BRc3HsKTUa7ECZoJ5KsSHfRw",
+    "backend": "dpl_4rqeL8dqTfgykjFRUwJXtLbiHGd3"
+  },
+  "deployment_states": {
+    "frontend": "READY",
+    "backend": "READY"
+  },
+  "deployment_source_verification": "Authenticated Vercel deployment metadata maps both production aliases to source 2246edaa32b29fefef640a53081e8d1ecb8ecb3f. Public version, API and decoder-asset checks passed after alias assignment.",
+  "repository_checks": "https://github.com/Vaibhavsh0120/Unlabel/actions/runs/40510533854",
+  "repository_check_state": {
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "backend_source_release": "https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.15.0",
+  "capabilities": {
+    "ai_extraction": true,
+    "ai_machine_observations": true,
+    "live_nutrigraph": true,
+    "product_lookup": true,
+    "nutrition_lookup": true,
+    "nutrition_normalization": true,
+    "catalogue_lookup": true,
+    "research_catalogue": true,
+    "catalogue_facts": true,
+    "catalogue_search": true,
+    "nutrition_analysis": true,
+    "label_reports": true,
+    "claim_checks": true,
+    "ingredient_explanations": true,
+    "comparison": true,
+    "ai_explanations": false,
+    "community_contributions": true,
+    "community_lookup": true,
+    "account_sync": true,
+    "account_deletion": true,
+    "resolved_product_lookup": true
+  },
+  "catalogue_counts": {
+    "indexed_products": 24641,
+    "research_observations": 243
+  },
+  "knowledge_artifact": {
+    "schema_version": "1",
+    "knowledge_version": "claims-2026-10-06.1",
+    "files": [
+      {
+        "path": "rules/claims/reviewed-v1.json",
+        "bytes": 11477,
+        "sha256": "2c3cb7cb82e72999f6523ceee8e121a58bfcb8626aa18ee45e294a48e454b21e"
+      },
+      {
+        "path": "sources/registry/fssai-claims-v1.json",
+        "bytes": 2913,
+        "sha256": "6697f183d315475eacb7fb678df3be6bf3123e35f0122e070bb020b9f1f57e4d"
+      }
+    ]
+  },
+  "browser_smoke": {
+    "checked_at_utc": "2026-10-27T13:31:32.267910+00:00",
+    "engine": "Installed Chrome through Playwright; headless with GPU disabled and reduced motion",
+    "viewports": ["390x844", "1440x1000"],
+    "steps_passed": 10,
+    "flow": ["Guest welcome", "Public Maggi 8901058000306 report", "Product source references", "Sources page", "Scanner fallback and reachable gallery action"],
+    "page_errors": 0,
+    "unexpected_console_errors": 0,
+    "expected_blocked_vendor_console_errors": 2,
+    "vendor_calls_blocked": 2,
+    "gallery_target_height_px": {"phone": 48, "desktop": 60},
+    "camera_permission_granted": false,
+    "capture_without_permission": "Disabled as expected",
+    "product_image": "Visible in the hosted Chrome report",
+    "local_receipt": "output/playwright/hosted-oct27-smoke-final.json",
+    "hashed_screenshot_count": 10,
+    "limits": "Public guest UI only; no provider login, personal record writes, physical camera or physical Safari acceptance. Vendor transport was blocked to preserve quota."
+  },
+  "boundaries": [
+    "No authenticated vendor lookup; prior upstream HTML404 remains unresolved",
+    "No physical iPhone/native/LiveContainer acceptance",
+    "Native pipeline/publication recorded separately",
+    "No authenticated AI extraction, NutriGraph upstream lookup or public/private record writes performed."
+  ]
+}

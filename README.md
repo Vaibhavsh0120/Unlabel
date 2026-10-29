@@ -62,7 +62,9 @@ returned HTML 404 during testing, so successful live lookup is unverified.
 [Frontend scope and checks](docs/planning/FRONTEND_V0_11_0_REVIEW.md) ·
 [Backend scope and checks](docs/planning/BACKEND_V0_15_0_REVIEW.md).
 
-Publication, hosted checks and native/device evidence are recorded separately in
+On 27 October, web 0.11.0+15 and API 0.15.0 were verified live; all nineteen
+[hosted checks](docs/research/RELEASE_2026_10_27_PRODUCTION.json) passed.
+Publication and native/device evidence are recorded separately in
 [the release ledger](docs/planning/CONTROLLED_RELEASES.md).
 
 ## Run locally

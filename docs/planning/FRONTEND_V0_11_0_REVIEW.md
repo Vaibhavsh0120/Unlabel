@@ -1,6 +1,6 @@
 # Frontend 0.11.0+15 - product information, scanner and web refinement
 
-Working review, 26-27 October 2026. This follows the 0.10.0 source checkpoint.
+Release review, 26-27 October 2026. This follows the 0.10.0 source checkpoint.
 Historical reviews and publication receipts retain their own evidence dates.
 The user requested completion of the ongoing work, a reference product-page and
 phone scanner redesign, smoother web behavior with particular attention to
@@ -123,6 +123,22 @@ remains available separately. Signed-in provider/linking/last-method guards rema
 
 ## Release state
 
-Final source identity, push, deployment and native publication evidence are
-recorded after validation and publication. No status in this working document
-establishes physical-device camera, Google-consent or LiveContainer execution.
+Implementation commit `2246edaa32b29fefef640a53081e8d1ecb8ecb3f` was pushed to
+main on 27 October. [Repository CI](https://github.com/Vaibhavsh0120/Unlabel/actions/runs/40510533854)
+passed. Both Vercel production deployments are READY and authenticated deployment
+metadata maps their public aliases to that exact source. Nineteen
+[hosted checks](../research/RELEASE_2026_10_27_PRODUCTION.json) verified web
+0.11.0+15, API 0.15.0, the preserved data/knowledge, unauthenticated rejection
+guards and the exact self-hosted decoder assets/runtime.
+
+The live guest browser flow also passed ten checks across 390 px phone and
+1440 px desktop layouts: welcome, the public Maggi report, product source
+references, Sources and the scanner fallback/gallery action. The actual product
+photo displayed. There were no page errors or unexpected console errors;
+two expected blocked-request console entries came from deliberately intercepting
+optional NutriGraph calls before transport. Camera permission was not granted;
+capture stayed disabled and gallery remained reachable with 48/60 px targets.
+
+The hosted checks made no authenticated AI or vendor lookup and no record writes.
+Native publication is recorded separately. Hosted/source proof does not establish
+physical-device camera, Google-consent or LiveContainer execution.

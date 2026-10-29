@@ -1,9 +1,9 @@
 # Current components and remaining work
 
-Current working source: **frontend 0.11.0+15 / backend 0.15.0**.
+Current source: **frontend 0.11.0+15 / backend 0.15.0**.
 The free native/WASM scanner, compact reference product page, optional sources
-and guest sign-in-methods toast are implemented. Final local/release evidence
-belongs to the current reviews.
+and guest sign-in-methods toast are implemented and deployed. Local/release
+evidence belongs to the current reviews.
 [Frontend review](FRONTEND_V0_11_0_REVIEW.md) · [Backend review](BACKEND_V0_15_0_REVIEW.md) ·
 [Source setup](../architecture/OPTIONAL_SOURCES.md) · [Release ledger](CONTROLLED_RELEASES.md).
 

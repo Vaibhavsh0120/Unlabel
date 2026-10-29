@@ -39,6 +39,7 @@ their component; mobile frontend-vVERSION+BUILD tags identify separate artifacts
 | frontend | [0.6.3](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.6.3) | `afccb9c1` | [Evidence](FRONTEND_V0_6_3_REVIEW.md) |
 | frontend | [0.7.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.7.0) | `8b5f9064` | [Evidence](FRONTEND_V0_7_0_REVIEW.md) |
 | backend | [0.14.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.14.0) | `5e0f925f` | [Evidence](BACKEND_V0_14_0_REVIEW.md) |
+| backend | [0.15.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.15.0) | `2246edaa` | [Evidence](BACKEND_V0_15_0_REVIEW.md) |
 | frontend | [0.10.0+14](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/frontend-v0.10.0%2B14) | `5e0f925f` | [Evidence](FRONTEND_V0_10_0_REVIEW.md) |
 
 Source publication does not imply native signing, current hosted runtime or
@@ -48,8 +49,12 @@ original test totals, deployed commit and unavailable gates.
 The preserved `backend-v0.14.0` and `frontend-v0.10.0+14` tags both resolve to
 `5e0f925f93bad428dbc2556e96c75671b2c9ceaf`; their component manifests match those
 versions. The [15 October hosted receipt](../research/RELEASE_2026_10_15_PRODUCTION.json)
-records the independently verified web/API checkpoint. Current 0.11.0+15/0.15.0
-work receives its own exact source identity and publication evidence after release.
+records the independently verified web/API checkpoint. The 27 October 0.11.0+15/0.15.0
+implementation source is `2246edaa32b29fefef640a53081e8d1ecb8ecb3f`; its
+[27 October hosted receipt](../research/RELEASE_2026_10_27_PRODUCTION.json) records
+nineteen passing checks and both READY production deployments. Repository CI
+passed for that source. Backend 0.15.0 was published at the same implementation
+commit; native publication and physical-device execution remain separate evidence.
 
 The historical mobile 0.6.1+5 draft targets frontend 0.6.2+9 source using explicit
 build/version overrides. Its assets remain a draft and are not relabeled as the
@@ -79,3 +84,6 @@ that IPA and retains 0.8.0+12 and 0.7.0+11. The [native receipt](../research/FRO
 records these checks separately from hosted checks.
 Physical device, LiveContainer launch, real provider consent and inbox reset
 acceptance remain separate. The superseded 0.8.1 development note is not a release.
+
+The subsequent [29 October web Google authentication repair](WEB_GOOGLE_AUTH_2026_10_29.md)
+was pushed as `6856578`; the dated 27 October receipts retain their original source identity.

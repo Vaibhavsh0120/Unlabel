@@ -1,6 +1,6 @@
 # Backend 0.15.0 - optional sources and NutriGraph sandbox
 
-Working review, 26-27 October 2026. Source, hosted deployment and vendor connectivity
+Release review, 26-27 October 2026. Source, hosted deployment and vendor connectivity
 are separate evidence states.
 
 ## Delivered source
@@ -40,5 +40,17 @@ Final local checks passed. Production-only NutriGraph settings were added to the
 existing backend Vercel project after verifying it owns `unlabel-api.vercel.app`:
 the API key is sensitive/readback-redacted, enable mode is `auto`, and remaining
 sandbox process cap is 998. Existing AI settings/keys/selection were preserved.
-This changes configuration for the next deployment; it does not prove provider
-success. Source commit/push and hosted verification are recorded after publication.
+Those settings are active in the READY backend deployment of pushed implementation
+commit `2246edaa32b29fefef640a53081e8d1ecb8ecb3f` on 27 October.
+[Repository CI](https://github.com/Vaibhavsh0120/Unlabel/actions/runs/40510533854)
+passed, and [backend-v0.15.0](https://github.com/Vaibhavsh0120/Unlabel/releases/tag/backend-v0.15.0)
+was published at that exact source. Authenticated Vercel metadata maps both web/API
+production aliases to the same commit. Nineteen
+[hosted checks](../research/RELEASE_2026_10_27_PRODUCTION.json) verified API/web
+versions, the current OpenAPI export, preserved catalogue/knowledge, private/live
+authentication guards and exact decoder assets.
+
+`live_nutrigraph` is configured, and unauthenticated live requests are rejected
+before vendor admission. No authenticated vendor lookup, AI extraction or record
+write was performed. The prior upstream HTML 404 remains unresolved; configuration
+and deployment do not establish successful provider lookup or India coverage.

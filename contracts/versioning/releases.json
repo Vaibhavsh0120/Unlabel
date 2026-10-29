@@ -233,6 +233,14 @@
       "source_sha": "5e0f925f93bad428dbc2556e96c75671b2c9ceaf",
       "review": "docs/planning/FRONTEND_V0_10_0_REVIEW.md",
       "title": "Frontend v0.10.0+14 - Scanner and unified product information"
+    },
+    {
+      "component": "backend",
+      "version": "0.15.0",
+      "tag": "backend-v0.15.0",
+      "source_sha": "2246edaa32b29fefef640a53081e8d1ecb8ecb3f",
+      "review": "docs/planning/BACKEND_V0_15_0_REVIEW.md",
+      "title": "Backend v0.15.0 - Optional food sources"
     }
   ]
 }

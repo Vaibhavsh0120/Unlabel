@@ -7,7 +7,6 @@ separate. [Frontend review](planning/FRONTEND_V0_11_0_REVIEW.md) ·
 [Backend review](planning/BACKEND_V0_15_0_REVIEW.md) ·
 [Optional sources](architecture/OPTIONAL_SOURCES.md).
 
-
 Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
 and [backend pyproject](../backend/pyproject.toml). The preceding auth/profile and UI
 work is recorded in the [frontend update](planning/FRONTEND_V0_9_0_REVIEW.md) and
@@ -29,16 +28,16 @@ and physical-device checks have separate receipts.
 
 | Architecture | Contract |
 | --- | --- |
-| [System](architecture/SYSTEM.md) Â· [Folders](architecture/FOLDER_STRUCTURE.md) | Actual stack and source map |
-| [API](architecture/API_PLAN.md) Â· [Shared schemas](../contracts/README.md) | Runtime routes and preserved historical exports |
-| [Data flow](architecture/DATA_FLOW.md) Â· [Privacy](SAFETY_PRIVACY.md) | Sources, consent, retention and uncertainty |
-| [Catalogue](architecture/CATALOGUE.md) Â· [Discovery](architecture/PRODUCT_DISCOVERY.md) | Immutable packaged catalogue, indexed search and dated sources |
-| [Product Info](architecture/PRODUCT_INFO.md) Â· [Reports](architecture/LABEL_REPORT.md) Â· [Comparison](architecture/SOURCED_COMPARISON.md) | Sourced facts, compatible tables and unknowns |
-| [Community](architecture/COMMUNITY_CATALOGUE.md) Â· [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) | Separate public observations and optional account libraries |
+| [System](architecture/SYSTEM.md) · [Folders](architecture/FOLDER_STRUCTURE.md) | Actual stack and source map |
+| [API](architecture/API_PLAN.md) · [Shared schemas](../contracts/README.md) | Runtime routes and preserved historical exports |
+| [Data flow](architecture/DATA_FLOW.md) · [Privacy](SAFETY_PRIVACY.md) | Sources, consent, retention and uncertainty |
+| [Catalogue](architecture/CATALOGUE.md) · [Discovery](architecture/PRODUCT_DISCOVERY.md) | Immutable packaged catalogue, indexed search and dated sources |
+| [Product Info](architecture/PRODUCT_INFO.md) · [Reports](architecture/LABEL_REPORT.md) · [Comparison](architecture/SOURCED_COMPARISON.md) | Sourced facts, compatible tables and unknowns |
+| [Community](architecture/COMMUNITY_CATALOGUE.md) · [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) | Separate public observations and optional account libraries |
 | [Account and profile](architecture/ACCOUNT_PROFILE.md) | Linked sign-in, password reset, private avatars and optional gender |
 | [AI routing](architecture/AI_ROUTING.md) | Bounded photo extraction, private proposals and automatic unverified observations |
-| [Insights](architecture/INSIGHTS.md) Â· [UI contract](../DESIGN.md) | Sourced educational articles and reference visual direction |
-| [Master plan](planning/MASTER_PLAN.md) Â· [Remaining work](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Product intent and pending acceptance |
+| [Insights](architecture/INSIGHTS.md) · [UI contract](../DESIGN.md) | Sourced educational articles and reference visual direction |
+| [Master plan](planning/MASTER_PLAN.md) · [Remaining work](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Product intent and pending acceptance |
 
 The user authorized completion and push from main on 13 October. Current source,
 Git-triggered deployment and native publication remain separate evidence. The
