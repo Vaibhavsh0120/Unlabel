@@ -4,7 +4,29 @@
   "installCommand": "",
   "buildCommand": "bash tool/vercel-build.sh",
   "outputDirectory": "build/web",
+  "rewrites": [
+    {
+      "source": "/__/auth/:path*",
+      "destination": "https://unlabel-india-catalogue.firebaseapp.com/__/auth/:path*"
+    },
+    {
+      "source": "/__/firebase/init.json",
+      "destination": "https://unlabel-india-catalogue.firebaseapp.com/__/firebase/init.json"
+    }
+  ],
   "headers": [
+    {
+      "source": "/__/auth/:path*",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store"}
+      ]
+    },
+    {
+      "source": "/__/firebase/init.json",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store"}
+      ]
+    },
     {
       "source": "/ocr/lang/:path*",
       "headers": [

@@ -130,7 +130,9 @@ class FirebaseAccountAuth extends AccountAuth {
     @visibleForTesting FirebaseAuth? firebaseAuth,
     @visibleForTesting Future<AuthCredential> Function()? googleCredential,
     @visibleForTesting Future<void> Function()? googleSignOut,
-  }) : _providedAuth = firebaseAuth {
+    @visibleForTesting bool? isWeb,
+  }) : _providedAuth = firebaseAuth,
+       _isWeb = isWeb ?? kIsWeb {
     final google = NativeGoogleAccountProvider(
       clientId:
           googleClientId ??
@@ -144,6 +146,7 @@ class FirebaseAccountAuth extends AccountAuth {
   }
   final FirebaseOptions options;
   final FirebaseAuth? _providedAuth;
+  final bool _isWeb;
   late final Future<AuthCredential> Function() _googleCredential;
   late final Future<void> Function() _googleSignOut;
   FirebaseAuth? _auth;
@@ -170,6 +173,18 @@ class FirebaseAccountAuth extends AccountAuth {
       final auth = _auth =
           _providedAuth ?? await resolveAccountFirebaseAuth(options);
       if (_disposed) return;
+      AppFailure? redirectFailure;
+      if (_isWeb) {
+        // Finish Firebase's tab-based Google flow before restoring the session.
+        // No account mutation is replayed after returning from a redirect.
+        try {
+          await auth.getRedirectResult();
+        } on FirebaseAuthException catch (error) {
+          // A failed link must still restore the existing password owner.
+          redirectFailure = _authFailure(error.code);
+        }
+      }
+      if (_disposed) return;
       // authStateChanges waits for the SDK's persisted-session restoration.
       final first = Completer<void>();
       _subscription = auth.authStateChanges().listen(
@@ -194,8 +209,11 @@ class FirebaseAccountAuth extends AccountAuth {
       );
       await first.future;
       _ready = !_disposed;
+      if (redirectFailure != null) throw redirectFailure;
     } catch (_) {
-      _starting = null;
+      // Surface a redirect error once. A restored session stays usable and
+      // must not acquire a second listener when the next action starts.
+      _starting = _ready ? Future.value() : null;
       rethrow;
     }
   }
@@ -342,8 +360,11 @@ class FirebaseAccountAuth extends AccountAuth {
   @override
   Future<void> signInGoogle() => _run((auth) async {
     _requireGuest(auth);
-    if (kIsWeb) {
-      await auth.signInWithPopup(_googleProvider());
+    if (_isWeb) {
+      await _googlePopupOrRedirect(
+        popup: () => auth.signInWithPopup(_googleProvider()),
+        redirect: () => auth.signInWithRedirect(_googleProvider()),
+      );
     } else {
       final credential = await _googleCredential();
       _requireGuest(auth);
@@ -361,8 +382,16 @@ class FirebaseAccountAuth extends AccountAuth {
       throw _providerLinked;
     }
     final UserCredential result;
-    if (kIsWeb) {
-      result = await user.linkWithPopup(_googleProvider());
+    if (_isWeb) {
+      final popupResult = await _googlePopupOrRedirect(
+        popup: () => user.linkWithPopup(_googleProvider()),
+        redirect: () {
+          _requireOwner(auth, user.uid);
+          return user.linkWithRedirect(_googleProvider());
+        },
+      );
+      if (popupResult == null) return;
+      result = popupResult;
     } else {
       final credential = await _googleCredential();
       _requireOwner(auth, user.uid);
@@ -418,7 +447,7 @@ class FirebaseAccountAuth extends AccountAuth {
         EmailAuthProvider.credential(email: user.email!, password: password),
       );
     } else if (_hasProvider(user, 'google.com')) {
-      if (kIsWeb) {
+      if (_isWeb) {
         result = await user.reauthenticateWithPopup(_googleProvider());
       } else {
         final credential = await _googleCredential();
@@ -490,7 +519,7 @@ class FirebaseAccountAuth extends AccountAuth {
     // password remains available if choosing/linking replacement Google fails.
     try {
       final UserCredential result;
-      if (kIsWeb) {
+      if (_isWeb) {
         result = await user.linkWithPopup(_googleProvider());
       } else {
         final credential = await _googleCredential();
@@ -570,7 +599,7 @@ class FirebaseAccountAuth extends AccountAuth {
     // timeout has elapsed, so confirmed late deletion still purges this owner.
     await deleteLocalData();
     _publishIdentity(auth.currentUser);
-    if (!kIsWeb) {
+    if (!_isWeb) {
       try {
         await _googleSignOut();
       } catch (_) {}
@@ -579,6 +608,21 @@ class FirebaseAccountAuth extends AccountAuth {
 
   GoogleAuthProvider _googleProvider() =>
       GoogleAuthProvider()..setCustomParameters({'prompt': 'select_account'});
+
+  Future<UserCredential?> _googlePopupOrRedirect({
+    required Future<UserCredential> Function() popup,
+    required Future<void> Function() redirect,
+  }) async {
+    try {
+      return await popup();
+    } on FirebaseAuthException catch (error) {
+      if (error.code != 'popup-blocked') rethrow;
+      // Firebase may lose browser activation while loading its auth helper.
+      // Continue in the same tab instead of asking users to change settings.
+      await redirect();
+      return null;
+    }
+  }
 
   void _requireGuest(FirebaseAuth auth) {
     if (auth.currentUser != null && !auth.currentUser!.isAnonymous) {
@@ -648,7 +692,7 @@ class FirebaseAccountAuth extends AccountAuth {
   Future<void> signOut() => _run((auth) async {
     await auth.signOut();
     _publishIdentity(auth.currentUser);
-    if (!kIsWeb) {
+    if (!_isWeb) {
       // Firebase sign-out is authoritative. Failure to clear the optional
       // Google chooser cache cannot restore a Firebase account session.
       try {
@@ -732,7 +776,7 @@ AppFailure _authFailure(String code) => switch (code) {
   ),
   'popup-blocked' => const AppFailure(
     'popup_blocked',
-    'Allow the Google sign-in pop-up in your browser, then try again.',
+    'Google sign-in could not open. Try again or use email.',
   ),
   'invalid-credential' ||
   'wrong-password' ||

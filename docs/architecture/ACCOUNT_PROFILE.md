@@ -95,6 +95,12 @@ hosts, `unlabel-india.vercel.app`, `localhost` and `127.0.0.1`. Public app/OAuth
 live in [firebase_options.dart](../../frontend/lib/app/firebase_options.dart).
 They are client identifiers, not backend/admin credentials.
 
+The [29 October web authentication repair](../planning/WEB_GOOGLE_AUTH_2026_10_29.md)
+adds popup failure recovery and production same-origin Firebase auth helpers.
+The four OAuth clients cover three platforms: Android uses distinct local-debug
+and published-demo signing certificates. Both remain required. The production
+web callback is `/__/auth/handler`, proxied transparently to Firebase.
+
 The Android package is `in.unlabel.unlabel`. Local and CI demo certificate SHA-1
 values are registered with Firebase. The manual release job restores the stable
 private `UNLABEL_ANDROID_DEMO_KEYSTORE` Actions secret and verifies the APK signing

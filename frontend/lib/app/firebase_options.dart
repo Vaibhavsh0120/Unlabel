@@ -6,7 +6,7 @@ abstract final class UnlabelFirebaseOptions {
   static const googleServerClientId =
       '122855940292-nu1sadtls8cq8cfn20187nqehmmpe8ga.apps.googleusercontent.com';
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) return web;
+    if (kIsWeb) return webForOrigin(Uri.base);
     return switch (defaultTargetPlatform) {
       TargetPlatform.android => android,
       TargetPlatform.iOS => ios,
@@ -14,6 +14,17 @@ abstract final class UnlabelFirebaseOptions {
         'Anonymous saving supports Android, iOS and web.',
       ),
     };
+  }
+
+  /// Production proxies Firebase's helpers to avoid cross-site auth storage.
+  /// Local servers and previews do not have the production OAuth callback.
+  static FirebaseOptions webForOrigin(Uri origin) {
+    if (origin.scheme == 'https' &&
+        origin.host == 'unlabel-india.vercel.app' &&
+        origin.port == 443) {
+      return web.copyWith(authDomain: origin.host);
+    }
+    return web;
   }
 
   static const web = FirebaseOptions(
