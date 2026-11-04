@@ -255,3 +255,22 @@ Unlabel artwork and provides no product, nutrition or health evidence. Its SHA-2
 is `6b04b3a060bec25551f001fecf40e94628211673889c4c5188cd2f526f220f58`.
 Live headings, mode labels, camera framing and controls remain Flutter widgets;
 no labels or interactive controls are baked into the artwork.
+# 5 November 2026 visual maintenance
+
+The latest user direction adds a modern glass treatment in both themes and
+supersedes the earlier Nunito/Quicksand UI pairing: use **Manrope for headings**
+and **Inter for body text, forms and navigation**. The startup's existing serif
+wordmark remains distinct. Both variable fonts are bundled locally with SIL OFL
+notices, source URLs and SHA-256 provenance in
+`frontend/assets/brand/fonts/ui-font-source.json`; no runtime font service is used.
+
+Use forest/mint accents, neutral teal-black text, quiet green-gray surfaces and
+consistent 16/24px side gutters. Page top padding is 20/28px, with 16/32px compact/
+regular section separation. Shared section cards, desktop search and navigation
+use restrained layered gradients and fine borders. Only the small floating phone
+navigation blurs its backdrop; scrolling cards and camera frames avoid repeated
+blur work. High-contrast mode replaces translucent surfaces with opaque ones and
+disables the navigation blur. Preserve readable evidence, source and error colors,
+48px controls, existing navigation and the stationary desktop shell.
+
+Historical reference notes elsewhere in this document retain their original context.

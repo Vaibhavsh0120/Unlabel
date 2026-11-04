@@ -3,7 +3,7 @@
 The maintenance pass publishes missing reviewed source identities and preserves
 historical tags/assets. Current versions come from the component manifests.
 Current authorized source work is documented in the
-[frontend scanner review](FRONTEND_V0_11_0_REVIEW.md) and
+[frontend scanner maintenance review](FRONTEND_V0_11_1_REVIEW.md) and
 [backend optional-source review](BACKEND_V0_15_0_REVIEW.md). Prior auth/profile and
 Google compatibility checkpoints retain their own source identities.
 

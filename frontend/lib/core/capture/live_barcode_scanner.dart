@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show DeviceOrientation;
 import 'package:flutter/widgets.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -8,6 +10,7 @@ import '../models/extracted_label.dart';
 import 'barcode_reader.dart';
 import 'barcode_camera.dart';
 import 'barcode_runtime.dart';
+import 'camera_framing.dart';
 import 'live_barcode_photo.dart';
 
 /// A single owner of the maintained scanner SDK's camera and decoder.
@@ -22,7 +25,7 @@ class LiveBarcodeScanner extends ChangeNotifier {
             detectionSpeed: DetectionSpeed.normal,
             detectionTimeoutMs: 350,
             formats: productFormats,
-            cameraResolution: const Size(1280, 720),
+            cameraResolution: const Size(1920, 1080),
             autoZoom: true,
           ) {
     _controller.addListener(_changed);
@@ -35,12 +38,17 @@ class LiveBarcodeScanner extends ChangeNotifier {
     BarcodeFormat.upcE,
   ];
   final MobileScannerController _controller;
+  final _photoReader = BarcodeReader();
   final _detections = StreamController<BarcodeDetection>.broadcast();
   Future<void> _pending = Future.value();
   Future<void>? _starting;
   bool _wanted = false, _disposed = false, _busy = false;
   int _revision = 0;
+  int _photoGeneration = 0;
   String? _error, _acceptedCode;
+  double _zoomOrigin = 0;
+  double? _nextZoom;
+  Future<void>? _zoomOperation;
 
   Stream<BarcodeDetection> get detections => _detections.stream;
   bool get ready => !_disposed && _wanted && _controller.value.isRunning;
@@ -51,6 +59,79 @@ class LiveBarcodeScanner extends ChangeNotifier {
   bool get torchOn => _controller.value.torchState == TorchState.on;
   bool get canSwitchCamera =>
       ready && (_controller.value.availableCameras ?? 1) > 1;
+
+  void beginZoom() {
+    if (!ready) return;
+    if (kIsWeb) {
+      beginBarcodeCameraZoom();
+    } else {
+      _zoomOrigin = _controller.value.zoomScale.clamp(0, 1);
+    }
+  }
+
+  Future<void> updateZoom(double scale) {
+    if (!ready || !scale.isFinite || scale <= 0) return Future.value();
+    if (kIsWeb) return zoomBarcodeCamera(scale);
+    _nextZoom = (_zoomOrigin + math.log(scale) * .45).clamp(0, 1);
+    return _zoomOperation ??= _applyZoom().whenComplete(
+      () => _zoomOperation = null,
+    );
+  }
+
+  Future<void> _applyZoom() async {
+    final revision = _revision;
+    while (_nextZoom != null && ready && revision == _revision) {
+      final scale = _nextZoom!;
+      _nextZoom = null;
+      try {
+        await _controller.setZoomScale(scale);
+      } catch (_) {
+        // A fixed-focus or unsupported camera must keep scanning.
+      }
+    }
+  }
+
+  Future<void> focusAt(Offset position, Size viewport) async {
+    if (!ready || kIsWeb || viewport.isEmpty) return;
+    var point = Offset(
+      position.dx / viewport.width,
+      position.dy / viewport.height,
+    );
+    final state = _controller.value;
+    // Match the SDK's texture orientation used for its visible scan window.
+    final source = switch (state.deviceOrientation) {
+      DeviceOrientation.landscapeLeft ||
+      DeviceOrientation.landscapeRight => state.size.flipped,
+      DeviceOrientation.portraitUp ||
+      DeviceOrientation.portraitDown => state.size,
+    };
+    if (!source.isEmpty) {
+      final visible = cameraVisibleRect(
+        source,
+        viewport,
+        previewAspectRatio: source.aspectRatio,
+      );
+      point = Offset(
+        (visible.left + point.dx * visible.width) / source.width,
+        (visible.top + point.dy * visible.height) / source.height,
+      );
+    }
+    if (_controller.value.cameraDirection == CameraFacing.front) {
+      point = Offset(1 - point.dx, point.dy);
+    }
+    try {
+      await _controller.setFocusPoint(
+        Offset(point.dx.clamp(0, 1), point.dy.clamp(0, 1)),
+      );
+    } catch (_) {
+      /* Fixed-focus cameras still decode normally. */
+    }
+  }
+
+  void cancelPhotoRead() {
+    _photoGeneration++;
+    _photoReader.cancel();
+  }
 
   Future<void> start() {
     if (_disposed || ready) return Future.value();
@@ -129,6 +210,8 @@ class LiveBarcodeScanner extends ChangeNotifier {
 
   Future<void> stop() {
     if (_disposed) return _pending;
+    cancelPhotoRead();
+    _nextZoom = null;
     _wanted = false;
     _revision++;
     _busy = false;
@@ -172,36 +255,61 @@ class LiveBarcodeScanner extends ChangeNotifier {
   }
 
   Future<BarcodeDetection?> analyzeBytes(Uint8List bytes) async {
-    if (bytes.isEmpty || bytes.length > 12 * 1024 * 1024) return null;
-    final capture = await withBarcodePhoto(
-      bytes,
-      (path) => _controller.analyzeImage(path, formats: productFormats),
-    );
-    return capture == null ? null : productBarcodeDetection(capture);
+    if (_disposed || bytes.isEmpty || bytes.length > 12 * 1024 * 1024) {
+      return null;
+    }
+    final generation = ++_photoGeneration;
+    if (!kIsWeb) {
+      try {
+        final capture = await withBarcodePhoto(
+          bytes,
+          (path) => _controller.analyzeImage(path, formats: productFormats),
+        );
+        final found = capture == null ? null : productBarcodeDetection(capture);
+        if (_disposed || generation != _photoGeneration) return null;
+        if (found != null) return found;
+      } catch (_) {
+        // The independent local reader also handles devices without SDK stills.
+      }
+    }
+    return _disposed || generation != _photoGeneration
+        ? null
+        : _photoReader.read(bytes);
   }
 
   Widget buildPreview() => LayoutBuilder(
-    builder: (context, constraints) => MobileScanner(
-      controller: _controller,
-      fit: BoxFit.cover,
-      scanWindow: (Offset.zero & constraints.biggest).deflate(24),
-      scanWindowUpdateThreshold: 2,
-      useAppLifecycleState: false,
-      tapToFocus: true,
-      onDetect: (capture) {
-        if (!ready || _acceptedCode != null) return;
-        final detection = productBarcodeDetection(capture);
-        if (detection == null) return;
-        _acceptedCode = detection.code;
-        _detections.add(detection);
+    builder: (context, constraints) => GestureDetector(
+      onTapUp: (details) =>
+          unawaited(focusAt(details.localPosition, constraints.biggest)),
+      onScaleStart: (_) => beginZoom(),
+      onScaleUpdate: (details) {
+        if (details.pointerCount >= 2) unawaited(updateZoom(details.scale));
       },
-      onDetectError: (error, _) {
-        if (_disposed) return;
-        _error = 'The barcode reader could not start. Retry or choose a photo.';
-        _notify();
-      },
-      errorBuilder: (_, _) => const SizedBox.shrink(),
-      placeholderBuilder: (_) => const SizedBox.shrink(),
+      child: MobileScanner(
+        controller: _controller,
+        fit: BoxFit.cover,
+        scanWindow: (Offset.zero & constraints.biggest).deflate(24),
+        scanWindowUpdateThreshold: 2,
+        useAppLifecycleState: false,
+        // Focus is handled in preview coordinates above; the SDK uses screen
+        // coordinates on native and throws on web. Web keeps continuous focus.
+        tapToFocus: false,
+        onDetect: (capture) {
+          if (!ready || _acceptedCode != null) return;
+          final detection = productBarcodeDetection(capture);
+          if (detection == null) return;
+          _acceptedCode = detection.code;
+          _detections.add(detection);
+        },
+        onDetectError: (error, _) {
+          if (_disposed) return;
+          _error =
+              'The barcode reader could not start. Retry or choose a photo.';
+          _notify();
+        },
+        errorBuilder: (_, _) => const SizedBox.shrink(),
+        placeholderBuilder: (_) => const SizedBox.shrink(),
+      ),
     ),
   );
 
@@ -237,6 +345,8 @@ class LiveBarcodeScanner extends ChangeNotifier {
     _disposed = true;
     _wanted = false;
     _revision++;
+    _nextZoom = null;
+    _photoReader.dispose();
     _controller.removeListener(_changed);
     unawaited(
       _serialize(() async {

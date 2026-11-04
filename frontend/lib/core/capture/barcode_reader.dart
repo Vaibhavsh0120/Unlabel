@@ -30,8 +30,20 @@ class BarcodeReader {
   Future<BarcodeDetection?> readPreview(Uint8List bytes) =>
       _read(bytes, maxEdge: 960, thorough: false);
 
-  Future<BarcodeDetection?> read(Uint8List bytes) =>
-      _read(bytes, maxEdge: 1400, thorough: true);
+  Future<BarcodeDetection?> read(Uint8List bytes) async {
+    final generation = _generation + 1;
+    final found = await _read(bytes, maxEdge: 1400, thorough: true);
+    if (found != null || _disposed || generation != _generation) return found;
+    try {
+      if (photoHeaderSize(bytes).longestSide <= 1400) return null;
+    } catch (_) {
+      return null;
+    }
+    // A small barcode can lose entire bars at 1400px. Retry from the original
+    // encoded photo, never by enlarging already discarded pixels. At most 7.84
+    // megapixels reach the isolate/worker; ordinary successes keep the fast path.
+    return _read(bytes, maxEdge: 2800, thorough: true);
+  }
 
   Future<BarcodeDetection?> _read(
     Uint8List bytes, {

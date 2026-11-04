@@ -2,6 +2,18 @@
 
 ## Active checkpoint and maintenance
 
+- The 5 November scanner maintenance advances frontend to 0.11.1+16; backend
+  stays 0.15.0. Current scanner proof is in
+  docs/planning/FRONTEND_V0_11_1_REVIEW.md. Camera pinch
+  zoom, native preview-relative focus, 1080p resolution preference and bounded
+  high-detail photo retry improve capture behavior. Browser hardware zoom is
+  capability-dependent; physical-device accuracy remains an acceptance gate.
+  The later 5 November user direction authorizes a shared visual polish pass:
+  Manrope headings, Inter body/forms/navigation, improved spacing, subtle glass
+  panels and modern light/dark surfaces. This supersedes the earlier request to
+  leave styling untouched; preserve navigation order, stationary shells and
+  auth/camera behavior. Keep fonts local, licensed and provenance-tracked.
+
 - The 26-27 October task advances source to frontend 0.11.0+15/backend 0.15.0.
   The compact reference Product Info redesign supersedes its earlier deferral.
   Barcode mode uses free mobile_scanner and self-hosted ZXing-C++ WASM; no

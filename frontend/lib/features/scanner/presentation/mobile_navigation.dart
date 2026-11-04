@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/interaction/ui_feedback.dart';
+import '../../../core/widgets/glass_panel.dart';
 
 import 'ui_components.dart';
 
@@ -101,14 +102,10 @@ class _MobileNavigationState extends State<MobileNavigation>
                   ),
                 ],
               ),
-              child: Material(
+              child: GlassPanel(
                 key: const Key('floating-navigation'),
-                color: colors.surfaceContainerLow.withValues(alpha: .96),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(34),
-                  side: BorderSide(color: colors.outlineVariant),
-                ),
-                clipBehavior: Clip.antiAlias,
+                radius: 34,
+                blur: true,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 6,

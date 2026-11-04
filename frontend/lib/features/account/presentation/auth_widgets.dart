@@ -17,15 +17,15 @@ class AuthPalette {
   Color get button => dark ? const Color(0xff24965a) : const Color(0xff21844f);
 
   TextStyle heading(double size) => TextStyle(
-    fontFamily: 'Nunito',
+    fontFamily: 'Manrope',
     fontSize: size,
-    fontWeight: FontWeight.w900,
+    fontWeight: FontWeight.w800,
     color: ink,
     height: 1.08,
     letterSpacing: -.6,
   );
   TextStyle body(double size, {bool bold = false}) => TextStyle(
-    fontFamily: 'Quicksand',
+    fontFamily: 'Inter',
     fontSize: size,
     fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
     color: bold ? ink : muted,

@@ -19,7 +19,7 @@ self.onmessage = async event => {
   const {job, buffer, width, height, thorough} = event.data ?? {};
   try {
     if (!Number.isInteger(width) || !Number.isInteger(height) ||
-        width < 1 || height < 1 || width > 1400 || height > 1400 ||
+        width < 1 || height < 1 || width > 2800 || height > 2800 ||
         !(buffer instanceof ArrayBuffer) || buffer.byteLength !== width * height * 4) {
       throw new Error();
     }

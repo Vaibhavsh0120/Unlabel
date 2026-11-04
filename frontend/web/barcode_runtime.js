@@ -12,6 +12,47 @@
   let cameraGeneration = 0;
   const cameraStreams = new Set();
   const cameraVideos = new Set();
+  let zoomTrack;
+  let zoomOrigin = 1;
+  let zoomPending;
+  let zoomOperation;
+
+  function beginZoom() {
+    zoomTrack = [...cameraStreams].flatMap(stream => stream.getTracks())
+      .find(track => {
+        try { return track.getCapabilities?.().zoom?.max > 1; }
+        catch (_) { return false; }
+      });
+    zoomOrigin = zoomTrack?.getSettings?.().zoom ?? 1;
+  }
+
+  function zoom(scale) {
+    if (!zoomTrack || !Number.isFinite(scale) || scale <= 0) return Promise.resolve();
+    zoomPending = {track: zoomTrack, generation: cameraGeneration, scale};
+    // Keep only the latest pinch update while hardware is busy.
+    zoomOperation ??= (async () => {
+      while (zoomPending) {
+        const {track, generation, scale} = zoomPending;
+        zoomPending = undefined;
+        if (generation !== cameraGeneration || ![...cameraStreams]
+          .some(stream => stream.getTracks().includes(track))) continue;
+        try {
+          const range = track.getCapabilities().zoom;
+          const step = range.step || .01;
+          const value = Math.max(range.min, Math.min(range.max,
+            range.min + Math.round((zoomOrigin * scale - range.min) / step) * step));
+          const {zoom: previousZoom, ...existing} = track.getConstraints?.() ?? {};
+          await track.applyConstraints({...existing,
+            advanced: [...(existing.advanced ?? []).map(item => {
+              const {zoom: _, ...rest} = item;
+              return rest;
+            }), {zoom: value}],
+          });
+        } catch (_) { /* Optional controls must never interrupt decoding. */ }
+      }
+    })().finally(() => { zoomOperation = undefined; });
+    return zoomOperation;
+  }
 
   function stopTracks(stream) {
     for (const track of stream.getTracks()) {
@@ -81,6 +122,8 @@
 
   function releaseCamera() {
     cameraGeneration++;
+    zoomTrack = undefined;
+    zoomPending = undefined;
     finishCameraStart();
     for (const video of cameraVideos) {
       // Another owner may have reused the element after SDK shutdown.
@@ -155,7 +198,7 @@
 
   function read(pixels, width, height, thorough, job) {
     if (!Number.isInteger(width) || !Number.isInteger(height) ||
-        width < 1 || height < 1 || width > 1400 || height > 1400 ||
+        width < 1 || height < 1 || width > 2800 || height > 2800 ||
         pixels?.byteLength !== width * height * 4 ||
         typeof job !== 'string' || job.length > 80) {
       return Promise.reject(new Error('barcode_input'));
@@ -202,5 +245,5 @@
   }
 
   window.unlabelBarcodes = Object.freeze({prepare, read, cancel,
-    beginCameraStart, finishCameraStart, releaseCamera});
+    beginCameraStart, finishCameraStart, releaseCamera, beginZoom, zoom});
 })();

@@ -255,7 +255,7 @@ class _AuthPageState extends State<AuthPage>
     final base = Theme.of(context);
     final authTheme = base.copyWith(
       textTheme: base.textTheme.apply(
-        fontFamily: 'Quicksand',
+        fontFamily: 'Inter',
         bodyColor: p.ink,
         displayColor: p.ink,
       ),

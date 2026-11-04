@@ -43,7 +43,7 @@ Widget _app(ProductReport report, Brightness brightness) => MaterialApp(
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(() async {
-    for (final family in ['Nunito', 'Quicksand']) {
+    for (final family in ['Manrope', 'Inter']) {
       final loader = FontLoader(family)
         ..addFont(rootBundle.load('assets/brand/fonts/$family-Variable.ttf'));
       await loader.load();

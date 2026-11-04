@@ -1,0 +1,30 @@
+{
+  "acquired": "2026-11-05",
+  "license": "SIL Open Font License 1.1",
+  "files": [
+    {
+      "path": "Manrope-Variable.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/Manrope%5Bwght%5D.ttf",
+      "bytes": 164700,
+      "sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6"
+    },
+    {
+      "path": "Manrope-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "path": "Inter-Variable.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
+      "bytes": 876576,
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031"
+    },
+    {
+      "path": "Inter-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/OFL.txt",
+      "bytes": 4377,
+      "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57"
+    }
+  ]
+}

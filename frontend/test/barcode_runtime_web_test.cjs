@@ -103,10 +103,18 @@ test('new still request cancels pending work rather than queueing UI-blocking de
 
 test('oversized or inconsistent pixels stop before engine acquisition', async () => {
   const {api, state} = harness();
-  await assert.rejects(api.read(pixels(), 1401, 8, true, 'a'), /barcode_input/);
+  await assert.rejects(api.read(pixels(), 2801, 8, true, 'a'), /barcode_input/);
   await assert.rejects(api.read(pixels(), 10, 8, true, 'a'), /barcode_input/);
   assert.equal(state.workers.length, 0);
   assert.equal(state.scripts.length, 0);
+});
+
+test('high-detail still retry accepts bounded 2800px input', async () => {
+  const {api, state} = harness();
+  const reading = api.read(new Uint8Array(2800 * 8 * 4), 2800, 8, true, 'detail');
+  assert.equal(state.workers.length, 1);
+  state.workers[0].result(null);
+  assert.equal(await reading, 'null');
 });
 
 test('runtime acquisition failure remains retryable without selecting another engine', async () => {
@@ -140,6 +148,41 @@ function mediaStream() {
   const track = {stops: 0, stop() { this.stops++; }};
   return {track, getTracks: () => [track]};
 }
+
+test('browser pinch zoom uses owned track capabilities and preserves camera constraints', async () => {
+  const {api, state, navigator} = harness();
+  const owned = mediaStream();
+  const applied = [];
+  owned.track.getCapabilities = () => ({zoom: {min: 1, max: 8, step: .1}});
+  owned.track.getSettings = () => ({zoom: 1});
+  owned.track.getConstraints = () => ({width: {ideal: 1920}, torch: true});
+  owned.track.applyConstraints = async value => applied.push(value);
+  state.nextStream = owned;
+  api.beginCameraStart();
+  await navigator.mediaDevices.getUserMedia({video: true});
+  api.finishCameraStart();
+  api.beginZoom();
+  await api.zoom(2);
+  assert.equal(applied.at(-1).advanced[0].zoom, 2);
+  assert.equal(applied.at(-1).width.ideal, 1920);
+  assert.equal(applied.at(-1).torch, true);
+  await api.zoom(100);
+  assert.equal(applied.at(-1).advanced[0].zoom, 8);
+  api.releaseCamera();
+  await api.zoom(2);
+  assert.equal(applied.length, 2);
+});
+
+test('unsupported browser controls leave scanning available', async () => {
+  const {api, state, navigator} = harness();
+  state.nextStream = mediaStream();
+  api.beginCameraStart();
+  await navigator.mediaDevices.getUserMedia({video: true});
+  api.finishCameraStart();
+  api.beginZoom();
+  await api.zoom(2);
+  assert.equal(state.nextStream.track.stops, 0);
+});
 
 test('SDK start sets Safari video flags before play and releases only its owned stream', async () => {
   const {api, state, navigator, HTMLMediaElement} = harness();

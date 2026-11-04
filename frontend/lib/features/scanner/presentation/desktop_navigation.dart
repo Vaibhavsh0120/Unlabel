@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/brand_mark.dart';
+import '../../../core/widgets/glass_panel.dart';
 import '../../account/presentation/profile_avatar.dart';
 import 'ui_components.dart';
 
@@ -35,7 +36,11 @@ class DesktopNavigation extends StatelessWidget {
       width: 240,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: colors.surface,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [colors.surfaceContainerLowest, colors.surface],
+          ),
           border: Border(right: BorderSide(color: colors.outlineVariant)),
         ),
         child: Stack(
@@ -271,9 +276,8 @@ class DesktopTopBar extends StatelessWidget implements PreferredSizeWidget {
             Flexible(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 740),
-                child: Material(
-                  color: colors.surfaceContainerLow,
-                  shape: const StadiumBorder(),
+                child: GlassPanel(
+                  radius: 40,
                   child: InkWell(
                     onTap: onSearch,
                     customBorder: const StadiumBorder(),

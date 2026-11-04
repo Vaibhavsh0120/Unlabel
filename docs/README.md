@@ -1,9 +1,10 @@
 # Unlabel documentation
 
-Current update: **frontend 0.11.0+15 / backend 0.15.0**, covering the free native/WASM
-scanner, compact reference product page, Safari camera cleanup, guest toast and
-independently optional sources. Local, hosted, native and device evidence remain
-separate. [Frontend review](planning/FRONTEND_V0_11_0_REVIEW.md) ·
+Current update: **frontend 0.11.1+16 / backend 0.15.0**, adding pinch zoom,
+preview-relative native focus and higher-detail small-barcode photo decoding,
+plus Manrope/Inter typography and glass surfaces in both themes.
+Local, hosted, native and device evidence remain
+separate. [Frontend review](planning/FRONTEND_V0_11_1_REVIEW.md) ·
 [Backend review](planning/BACKEND_V0_15_0_REVIEW.md) ·
 [Optional sources](architecture/OPTIONAL_SOURCES.md).
 

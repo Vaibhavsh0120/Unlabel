@@ -70,6 +70,21 @@ window.runBarcodeFixtureChecks = async () => {
   const resumed = JSON.parse(await window.unlabelBarcodes.read(
     image.data, image.width, image.height, true, 'fixture:resumed'));
   if (resumed?.text !== fixtureCode) throw new Error('retry_after_cancel');
+  // A small off-center barcode in a detailed package photo: the bar footprint
+  // is only 166px wide in a 2800px image. Exercise the real worker/WASM bound.
+  const large = document.createElement('canvas');
+  large.width = 2800; large.height = 2100;
+  const ctx = large.getContext('2d', {willReadFrequently: true});
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 2800, 2100);
+  const code = document.createElement('canvas');
+  code.width = 640; code.height = 480;
+  code.getContext('2d').putImageData(image, 0, 0);
+  ctx.drawImage(code, 110, 24, 380, 80, 2108, 1715, 166.25, 70);
+  const detail = ctx.getImageData(0, 0, 2800, 2100);
+  const small = JSON.parse(await window.unlabelBarcodes.read(
+    detail.data, 2800, 2100, true, 'fixture:small'));
+  if (small?.text !== fixtureCode) throw new Error('small_barcode');
+  checks.push({smallBarcode: true, code: small.text, size: [2800, 2100]});
   document.getElementById('result').textContent = 'All synthetic barcode runtime checks passed';
   return {checks, invalidChecksumRejected: true, cancelled: true, retryAfterCancel: true};
 };

@@ -365,9 +365,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       }
       final AutomaticScanResult result;
       if (_usesBarcodeSdk && _mode == 2) {
-        final detection = kIsWeb
-            ? await BarcodeReader().read(_photos[2]!)
-            : await _barcodeScanner.analyzeBytes(_photos[2]!);
+        final detection = await _barcodeScanner.analyzeBytes(_photos[2]!);
         if (!mounted || revision != _photoRevision) return;
         result = detection == null
             ? const AutomaticScanResult()
@@ -382,7 +380,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
       setState(() {
         _result = result;
         if (!result.useful) {
-          _photoError = 'No readable product information yet. Try a closer, clearer photo.';
+          _photoError = 'No readable product information yet. Keep the label in focus, avoid glare, or choose a clearer photo.';
         }
       });
       if (_foreground &&
@@ -414,6 +412,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   void _stopReading() {
     _photoRevision++;
     _reader.cancel();
+    _barcodeScanner.cancelPhotoRead();
     setState(() {
       _reading = false;
       _detectedBarcode = null;
@@ -425,9 +424,9 @@ class _ScanLandingPageState extends State<ScanLandingPage>
   Future<Uint8List?> _pickPhoto() async {
     final file = await ImagePicker().pickImage(
       source: ImageSource.gallery,
-      maxWidth: 2000,
-      maxHeight: 2000,
-      imageQuality: 85,
+      maxWidth: _mode == 2 ? 2800 : 2000,
+      maxHeight: _mode == 2 ? 2800 : 2000,
+      imageQuality: _mode == 2 ? 95 : 85,
       requestFullMetadata: false,
     );
     return file == null ? null : _readPhoto(file);
@@ -628,7 +627,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
           Text(
             'Scan Label',
             style: theme.textTheme.headlineMedium?.copyWith(
-              fontFamily: 'Nunito',
+              fontFamily: 'Manrope',
               fontWeight: FontWeight.w800,
               fontSize: desktop && !compact
                   ? 38
@@ -942,7 +941,7 @@ class _ScanLandingPageState extends State<ScanLandingPage>
                     bottom: 16,
                     child: Text(
                       _mode == 2
-                          ? 'Hold the barcode steady. Scanning automatically.'
+                          ? 'Hold steady. Pinch to zoom; keep the barcode in focus.'
                           : _mode == 0
                           ? 'Keep the front label in the frame'
                           : 'Keep nutrition and ingredients in the frame',

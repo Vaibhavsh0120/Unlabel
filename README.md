@@ -14,7 +14,7 @@
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
-[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.11.0%2B15-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.15.0-155b4b)](backend/pyproject.toml)
+[![Build and tests status](https://img.shields.io/github/actions/workflow/status/Vaibhavsh0120/Unlabel/maintenance-ci.yml?branch=main&label=Build%20%26%20tests)](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/maintenance-ci.yml) [![Frontend version](https://img.shields.io/badge/frontend-0.11.1%2B16-155b4b)](frontend/pubspec.yaml) [![Backend version](https://img.shields.io/badge/backend-0.15.0-155b4b)](backend/pyproject.toml)
 
 </div>
 
@@ -32,6 +32,12 @@
 [https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json](https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json)
 
 [Open the source](https://github.com/Vaibhavsh0120/Unlabel/releases/download/ios-source/apps.json) · [Download the unsigned IPA](https://github.com/Vaibhavsh0120/Unlabel/releases?q=demo+APK&expanded=true)
+
+The [GitHub Actions release workflow](https://github.com/Vaibhavsh0120/Unlabel/actions/workflows/frontend-release.yml)
+builds the APK and unsigned IPA when the frontend version/build increases on
+`main`. After it verifies and publishes both artifacts, it automatically updates
+this same LiveContainer source with the new version. Add the source once, then
+refresh it in LiveContainer to find later releases.
 
 The source and IPA downloads are verified. If you added the source while it
 returned HTTP 404, refresh it; remove and add it again if the old error persists.

@@ -712,7 +712,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       ),
       SizedBox(height: 12),
       Text(
-        'Solar icons by 480 Design — CC BY 4.0. Bundled brand typeface: Nunito — SIL Open Font License.',
+        'Solar icons by 480 Design — CC BY 4.0. Bundled typefaces: Manrope, Inter, Nunito, Quicksand and Cormorant Garamond — SIL Open Font License.',
       ),
     ],
   );

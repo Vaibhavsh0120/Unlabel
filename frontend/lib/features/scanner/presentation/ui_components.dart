@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/widgets/brand_mark.dart';
+import '../../../core/widgets/glass_panel.dart';
 
 /// Decorative artwork fits inside a reserved box, including its motion inset.
 /// It never owns a gesture or accessibility node and pauses while scrolling or
@@ -197,7 +198,7 @@ class PageBody extends StatelessWidget {
                 padding ??
                 EdgeInsets.fromLTRB(
                   MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
-                  MediaQuery.sizeOf(context).width < 600 ? 16 : 24,
+                  MediaQuery.sizeOf(context).width < 600 ? 20 : 28,
                   MediaQuery.sizeOf(context).width < 400 ? 16 : 24,
                   40 + MediaQuery.paddingOf(context).bottom,
                 ),
@@ -220,7 +221,11 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-    child: Padding(padding: EdgeInsets.all(padding), child: child),
+    color: Colors.transparent,
+    child: GlassPanel(
+      border: false,
+      child: Padding(padding: EdgeInsets.all(padding), child: child),
+    ),
   );
 }
 
@@ -299,7 +304,7 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: EdgeInsets.only(
-      top: topSpacing ?? (compact ? 12 : 28),
+      top: topSpacing ?? (compact ? 16 : 32),
       bottom: compact ? 8 : 16,
     ),
     child: Wrap(

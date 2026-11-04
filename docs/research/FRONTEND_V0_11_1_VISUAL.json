@@ -1,0 +1,58 @@
+{
+  "schema_version": "1",
+  "date": "2026-11-05",
+  "environment": "Local production Flutter JavaScript build; Chromium; deviceScaleFactor=1; reduced motion",
+  "frontend": "0.11.1+16",
+  "screenshots": [
+    {
+      "path": "ui-2026-11-05-auth-desktop-dark.png",
+      "sha256": "89c0eaa2bdbb27b36414e7eacc8b633399694ca87b58fc87c6934ecc301172c4"
+    },
+    {
+      "path": "ui-2026-11-05-auth-landscape-dark.png",
+      "sha256": "8807a31fdd2e16b905dfc31afdd8e307b61e7fc794c7dfd6ac870068d3088d1a"
+    },
+    {
+      "path": "ui-2026-11-05-auth-phone-light.png",
+      "sha256": "30c493b9fb4803dd0fb3e6fa5ccb9078593683396b5e20e24c5a1595a0fdea34"
+    },
+    {
+      "path": "ui-2026-11-05-auth-portrait-light.png",
+      "sha256": "cc548f1638e60f9873eaebd7ffc780f9355dbf36b6abc33b4685b9aef8702c3d"
+    },
+    {
+      "path": "ui-2026-11-05-desktop-dark.png",
+      "sha256": "843ec8a87c1585e2fdd97dcabc982fdd0c9f02b6bf502fd4690885cb97ce37af"
+    },
+    {
+      "path": "ui-2026-11-05-desktop-light.png",
+      "sha256": "7fc47ec9ab3a69fdecfcf77161ec82ac964bda4c4ab78bc849dddd8156316eeb"
+    },
+    {
+      "path": "ui-2026-11-05-phone-dark.png",
+      "sha256": "723e25c116366b633fe617edd6675d6512ab394f3a83fe1e59167716a8b481b5"
+    },
+    {
+      "path": "ui-2026-11-05-phone-light.png",
+      "sha256": "680817d1eece577330c14588bd691d7d32dfad320c69af7883303ce936e927a5"
+    }
+  ],
+  "home_checks": [
+    "1440x1000 light and dark",
+    "390x844 light and dark",
+    "Manrope and Inter assets returned HTTP 200",
+    "No browser page errors"
+  ],
+  "auth_checks": [
+    "834x1194 portrait light",
+    "1194x834 landscape dark",
+    "390x844 phone light",
+    "1440x1000 desktop dark",
+    "No browser page errors"
+  ],
+  "limits": [
+    "Synthetic local browser; no physical iPad or phone validation",
+    "Sign-in rendering only; no credentials or provider login exercised",
+    "Both themes were checked on Home; auth samples cover both iPad orientations across different themes"
+  ]
+}

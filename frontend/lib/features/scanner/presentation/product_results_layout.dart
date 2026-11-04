@@ -49,7 +49,7 @@ class ResultsAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   'Unlabel',
                   style: Theme.of(context).textTheme.titleLarge
-                      ?.copyWith(fontFamily: 'Nunito'),
+                      ?.copyWith(fontFamily: 'Manrope'),
                 ),
             ],
           ),
@@ -164,22 +164,22 @@ class ProductResultsLayout extends StatelessWidget {
           constraints.maxWidth >= 1080 &&
           MediaQuery.textScalerOf(context).scale(16) < 26;
       final base = Theme.of(context);
-      final body = base.textTheme.apply(fontFamily: 'Quicksand');
+      final body = base.textTheme.apply(fontFamily: 'Inter');
       final compact = constraints.maxWidth < 600;
       final typography = body.copyWith(
-        headlineLarge: body.headlineLarge?.copyWith(fontFamily: 'Nunito'),
-        headlineMedium: body.headlineMedium?.copyWith(fontFamily: 'Nunito'),
-        headlineSmall: body.headlineSmall?.copyWith(fontFamily: 'Nunito'),
+        headlineLarge: body.headlineLarge?.copyWith(fontFamily: 'Manrope'),
+        headlineMedium: body.headlineMedium?.copyWith(fontFamily: 'Manrope'),
+        headlineSmall: body.headlineSmall?.copyWith(fontFamily: 'Manrope'),
         titleLarge: body.titleLarge?.copyWith(
-          fontFamily: 'Nunito',
+          fontFamily: 'Manrope',
           fontSize: compact ? 18 : 22,
         ),
         titleMedium: body.titleMedium?.copyWith(
-          fontFamily: 'Nunito',
+          fontFamily: 'Manrope',
           fontSize: compact ? 14 : 16,
         ),
         titleSmall: body.titleSmall?.copyWith(
-          fontFamily: 'Nunito',
+          fontFamily: 'Manrope',
           fontSize: compact ? 12 : 14,
         ),
         bodyLarge: body.bodyLarge?.copyWith(fontSize: compact ? 12 : 16),

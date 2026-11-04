@@ -14,6 +14,7 @@ Future<({Uint8List bytes, ui.Rect bounds})> _fixture({
   bool lowContrast = false,
   bool invalidChecksum = false,
   int turns = 0,
+  bool smallInLargePhoto = false,
 }) async {
   // Synthetic bars are generated at runtime; no photographed product data is stored.
   final modules = EAN13Writer().encodeContent(_code);
@@ -25,8 +26,11 @@ Future<({Uint8List bytes, ui.Rect bounds})> _fixture({
       modules[85 + i] = wrongDigit[i] == '1';
     }
   }
-  const width = 600, height = 900;
-  final top = offCenter ? 24.0 : 400.0;
+  final width = smallInLargePhoto ? 3200 : 600;
+  final height = smallInLargePhoto ? 2400 : 900;
+  final top = smallInLargePhoto ? 1960.0 : (offCenter ? 24.0 : 400.0);
+  final moduleWidth = smallInLargePhoto ? 2.0 : 4.0;
+  final left = smallInLargePhoto ? 2410.0 : 110.0;
   final recorder = ui.PictureRecorder();
   final canvas = ui.Canvas(recorder);
   final dark = lowContrast ? 100 : 0;
@@ -45,7 +49,7 @@ Future<({Uint8List bytes, ui.Rect bounds})> _fixture({
   for (var x = 0; x < modules.length; x++) {
     if (modules[x]) {
       canvas.drawRect(
-        ui.Rect.fromLTWH(110 + x * 4.0, top, 4, 80),
+        ui.Rect.fromLTWH(left + x * moduleWidth, top, moduleWidth, 80),
         ui.Paint()..color = grey(inverted ? light : dark),
       );
     }
@@ -58,7 +62,7 @@ Future<({Uint8List bytes, ui.Rect bounds})> _fixture({
   final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
   image.dispose();
   picture.dispose();
-  final rect = ui.Rect.fromLTWH(110, top, 380, 80);
+  final rect = ui.Rect.fromLTWH(left, top, 95 * moduleWidth, 80);
   final transformed = switch (turns) {
     1 => ui.Rect.fromLTRB(
       height - rect.bottom,
@@ -93,6 +97,18 @@ Future<({Uint8List bytes, ui.Rect bounds})> _fixture({
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  test(
+    'small off-center barcode retains detail in a large package photo',
+    () async {
+      final reader = BarcodeReader();
+      addTearDown(reader.dispose);
+      final photo = await _fixture(smallInLargePhoto: true);
+      final result = await reader.read(photo.bytes);
+      expect(result?.code, _code);
+      expect(result!.points.every(photo.bounds.inflate(.01).contains), isTrue);
+    },
+  );
 
   for (final turns in [0, 1, 2, 3]) {
     test(
