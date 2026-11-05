@@ -39,6 +39,12 @@ builds the APK and unsigned IPA when the frontend version/build increases on
 this same LiveContainer source with the new version. Add the source once, then
 refresh it in LiveContainer to find later releases.
 
+**Release categories:** [Latest frontend apps](https://github.com/Vaibhavsh0120/Unlabel/releases/latest)
+· [All frontend releases](https://github.com/Vaibhavsh0120/Unlabel/releases?q=Frontend)
+· [Backend/API updates](https://github.com/Vaibhavsh0120/Unlabel/releases?q=Backend).
+GitHub's Latest download is reserved for a verified frontend app release;
+backend-only updates have their own clearly labeled release entries.
+
 The source and IPA downloads are verified. If you added the source while it
 returned HTTP 404, refresh it; remove and add it again if the old error persists.
 Import and launch on an actual iPhone remain unverified.

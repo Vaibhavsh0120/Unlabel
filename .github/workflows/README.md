@@ -1,5 +1,16 @@
 # Repository and mobile release workflows
 
+[release-organization.yml](release-organization.yml) runs after a successful
+frontend publication. It accepts only a completed, successful, owned main-branch
+frontend release run, verifies the exact source tag, Actions bot author and
+LiveContainer IPA URL/size/hash, then classifies titles and selects that app as
+Latest. It never builds or modifies app assets. Manual dispatch takes a completed
+release run ID and applies the same checks; an arbitrary/backend release cannot
+be selected. Historical tags, downloads and release notes remain unchanged.
+Manual release publication or editing also triggers this guard: it locates the successful
+Actions run behind the current feed and restores that frontend app as Latest.
+Changes made with `GITHUB_TOKEN` do not recursively trigger release events.
+
 [maintenance-ci.yml](maintenance-ci.yml) runs on main pushes, pull requests and
 manual dispatch. It checks maintained scripts/Markdown/JSON, canonical metadata,
 tracked OCR/icons, Python lint and release guard tests; rebuilds the read-only

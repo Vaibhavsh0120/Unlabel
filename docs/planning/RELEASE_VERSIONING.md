@@ -58,6 +58,22 @@ New source tags use `backend-vVERSION` and `frontend-vVERSION`. Earlier backend
 remain historical. Release titles identify backend, frontend source or frontend
 mobile artifacts explicitly. Source releases do not prove native installation.
 
+The 5 November release-list policy reserves GitHub **Latest** for the newest
+published frontend app release with APK, IPA and source snapshot. After verified
+asset publication, LiveContainer feed refresh and successful workflow completion,
+the organization workflow promotes
+that release out of prerelease and explicitly sets `make_latest: true`.
+This is download organization, not production signing or device acceptance.
+Backend/API-only releases and historical source releases use `make_latest: false`.
+Titles distinguish `Frontend ... - Apps`, `Frontend ... - Web/source`,
+`Backend ... - API`, and the separate LiveContainer subscription. Historical
+tags, assets, source commits and release notes are preserved.
+The [organization workflow](../../.github/workflows/release-organization.yml)
+also finalizes successful older publisher runs. It verifies main/owned workflow
+identity, the exact source tag, Actions bot authorship and the feed's IPA hash
+before selecting Latest. Its retry input is a successful frontend workflow run
+ID, never an arbitrary release ID. Latest promotion is performed by Actions.
+
 [Release workflow](../../.github/workflows/frontend-release.yml) detects canonical
 version/build increases on main and automatically builds a demo APK
 on Linux and an unsigned iPhoneOS IPA on a standard Intel macOS runner. It

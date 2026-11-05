@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-05",
+  "changes": [
+    {
+      "tag": "backend-v0.15.0",
+      "old_title": "Backend v0.15.0 - optional food sources",
+      "new_title": "Backend v0.15.0 - API - optional food sources"
+    },
+    {
+      "tag": "frontend-v0.11.0+15",
+      "old_title": "Frontend v0.11.0+15 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.11.0+15 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "backend-v0.14.0",
+      "old_title": "Backend v0.14.0 - package observations and live lookup",
+      "new_title": "Backend v0.14.0 - API - package observations and live lookup"
+    },
+    {
+      "tag": "frontend-v0.10.0+14",
+      "old_title": "Frontend v0.10.0+14 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.10.0+14 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "backend-v0.13.0",
+      "old_title": "Backend v0.13.0 - Owner account deletion",
+      "new_title": "Backend v0.13.0 - API - Owner account deletion"
+    },
+    {
+      "tag": "frontend-v0.9.0+13",
+      "old_title": "Frontend v0.9.0+13 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.9.0+13 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "frontend-v0.8.0",
+      "old_title": "Frontend v0.8.0 \u2014 Linked sign-in and private profiles",
+      "new_title": "Frontend v0.8.0 - Web/source - Linked sign-in and private profiles"
+    },
+    {
+      "tag": "backend-v0.12.1",
+      "old_title": "Backend v0.12.1 \u2014 Verified Google scanner compatibility",
+      "new_title": "Backend v0.12.1 - API - Verified Google scanner compatibility"
+    },
+    {
+      "tag": "frontend-v0.8.0+12",
+      "old_title": "Frontend v0.8.0+12 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.8.0+12 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "ios-source",
+      "old_title": "iOS source \u2014 LiveContainer",
+      "new_title": "Frontend - LiveContainer source (automatic updates)"
+    },
+    {
+      "tag": "frontend-v0.7.0+11",
+      "old_title": "Frontend v0.7.0+11 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.7.0+11 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "frontend-v0.7.0",
+      "old_title": "Frontend v0.7.0 \u2014 Daily Sourced Insights",
+      "new_title": "Frontend v0.7.0 - Web/source - Daily Sourced Insights"
+    },
+    {
+      "tag": "frontend-v0.6.3",
+      "old_title": "Frontend v0.6.3 \u2014 Transparent Insight Artwork",
+      "new_title": "Frontend v0.6.3 - Web/source - Transparent Insight Artwork"
+    },
+    {
+      "tag": "frontend-v0.6.2",
+      "old_title": "Frontend v0.6.2 \u2014 Selected Profile Summaries",
+      "new_title": "Frontend v0.6.2 - Web/source - Selected Profile Summaries"
+    },
+    {
+      "tag": "frontend-v0.6.1",
+      "old_title": "Frontend v0.6.1 \u2014 Home and Profile Refinement",
+      "new_title": "Frontend v0.6.1 - Web/source - Home and Profile Refinement"
+    },
+    {
+      "tag": "frontend-v0.6.0",
+      "old_title": "Frontend v0.6.0 \u2014 Automatic Captured Label Reading",
+      "new_title": "Frontend v0.6.0 - Web/source - Automatic Captured Label Reading"
+    },
+    {
+      "tag": "frontend-v0.5.0",
+      "old_title": "Frontend v0.5.0 \u2014 Sourced Research Search",
+      "new_title": "Frontend v0.5.0 - Web/source - Sourced Research Search"
+    },
+    {
+      "tag": "frontend-v0.4.0",
+      "old_title": "Frontend v0.4.0 \u2014 Sourced Comparison and Ingredient Detail",
+      "new_title": "Frontend v0.4.0 - Web/source - Sourced Comparison and Ingredient Detail"
+    },
+    {
+      "tag": "backend-v0.9.0",
+      "old_title": "Backend v0.9.0 \u2014 Reviewed Ingredient Functions",
+      "new_title": "Backend v0.9.0 - API - Reviewed Ingredient Functions"
+    },
+    {
+      "tag": "backend-v0.12.0",
+      "old_title": "Backend v0.12.0 \u2014 Private Proposals and Research Images",
+      "new_title": "Backend v0.12.0 - API - Private Proposals and Research Images"
+    },
+    {
+      "tag": "backend-v0.11.0",
+      "old_title": "Backend v0.11.0 \u2014 Optional Photo Extraction",
+      "new_title": "Backend v0.11.0 - API - Optional Photo Extraction"
+    },
+    {
+      "tag": "backend-v0.10.0",
+      "old_title": "Backend v0.10.0 \u2014 Sourced Research Catalogue",
+      "new_title": "Backend v0.10.0 - API - Sourced Research Catalogue"
+    },
+    {
+      "tag": "v0.7.0",
+      "old_title": "Backend v0.7.0 \u2014 Private Account Sync",
+      "new_title": "Backend v0.7.0 - API - Private Account Sync"
+    },
+    {
+      "tag": "v0.6.0",
+      "old_title": "Backend v0.6.0 \u2014 Product Discovery",
+      "new_title": "Backend v0.6.0 - API - Product Discovery"
+    },
+    {
+      "tag": "v0.5.0",
+      "old_title": "Backend v0.5.0 \u2014 Useful Label Report",
+      "new_title": "Backend v0.5.0 - API - Useful Label Report"
+    },
+    {
+      "tag": "v0.4.0",
+      "old_title": "Backend v0.4.0 \u2014 Community Product Catalogue",
+      "new_title": "Backend v0.4.0 - API - Community Product Catalogue"
+    },
+    {
+      "tag": "frontend-v0.3.0",
+      "old_title": "Frontend v0.3.0 \u2014 Visual Label Reader",
+      "new_title": "Frontend v0.3.0 - Web/source - Visual Label Reader"
+    },
+    {
+      "tag": "frontend-v0.2.0",
+      "old_title": "Frontend v0.2.0 \u2014 Welcome and Private Accounts",
+      "new_title": "Frontend v0.2.0 - Web/source - Welcome and Private Accounts"
+    },
+    {
+      "tag": "frontend-v0.1.0",
+      "old_title": "Frontend v0.1.0 \u2014 Connected Label Reader",
+      "new_title": "Frontend v0.1.0 - Web/source - Connected Label Reader"
+    },
+    {
+      "tag": "backend-v0.8.0",
+      "old_title": "Backend v0.8.0 \u2014 Sourced Nutrient Comparison",
+      "new_title": "Backend v0.8.0 - API - Sourced Nutrient Comparison"
+    },
+    {
+      "tag": "mobile-v0.2.0+3",
+      "old_title": "Frontend v0.2.0+3 \u2014 demo APK / unsigned iOS",
+      "new_title": "Frontend v0.2.0+3 - Apps (demo APK / unsigned IPA)"
+    },
+    {
+      "tag": "v0.3.0",
+      "old_title": "Backend v0.3.0 \u2014 Reviewed confirmed-label claims",
+      "new_title": "Backend v0.3.0 - API - Reviewed confirmed-label claims"
+    },
+    {
+      "tag": "v0.2.3",
+      "old_title": "Backend v0.2.3 \u2014 Rich India product facts",
+      "new_title": "Backend v0.2.3 - API - Rich India product facts"
+    },
+    {
+      "tag": "v0.2.2",
+      "old_title": "Backend v0.2.2 \u2014 Hosted India Catalogue",
+      "new_title": "Backend v0.2.2 - API - Hosted India Catalogue"
+    },
+    {
+      "tag": "v0.2.1",
+      "old_title": "Backend v0.2.1 \u2014 India Catalogue Tooling",
+      "new_title": "Backend v0.2.1 - API - India Catalogue Tooling"
+    },
+    {
+      "tag": "v0.2.0",
+      "old_title": "Backend v0.2.0 \u2014 Nutrition Normalization",
+      "new_title": "Backend v0.2.0 - API - Nutrition Normalization"
+    },
+    {
+      "tag": "v0.1.0",
+      "old_title": "Backend v0.1.0 \u2014 Product Lookup",
+      "new_title": "Backend v0.1.0 - API - Product Lookup"
+    },
+    {
+      "tag": "v0.0.0",
+      "old_title": "Frontend v0.0.0+1 \u2014 historical starter mobile artifacts",
+      "new_title": "Frontend v0.0.0+1 - Apps (demo APK / unsigned IPA)"
+    }
+  ],
+  "preserved": [
+    "tags",
+    "release notes",
+    "asset identities/names/sizes",
+    "draft/prerelease states"
+  ],
+  "latest_policy": "No make_latest mutation in this title-only maintenance. Latest selection is reserved for the successful Actions job."
+}

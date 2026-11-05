@@ -1,0 +1,39 @@
+name: Organize GitHub releases
+
+on:
+  release:
+    types: [published, edited]
+  workflow_run:
+    workflows: ['Frontend APK and unsigned IPA release']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release_run_id:
+        description: Successful frontend release workflow run ID
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-organization
+  cancel-in-progress: false
+
+jobs:
+  organize:
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Classify titles and select the verified Actions app release as Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_RUN_ID: ${{ inputs.release_run_id || github.event.workflow_run.id }}
+        run: python3 scripts/release/organize_releases.py

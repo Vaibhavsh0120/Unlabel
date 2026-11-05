@@ -14,6 +14,7 @@ from frontend_release_gate import version_changed
 from mobile_release import (
     GitHub,
     JsonObject,
+    promote_frontend_release,
     public_assets,
     refresh_source,
     response_list,
@@ -26,6 +27,45 @@ from prepare_android_ci import android_versions
 
 
 class ReleaseGuardTests(unittest.TestCase):
+    def test_latest_is_reserved_for_complete_published_frontend_apps(self):
+        class FakeGitHub:
+            root = "https://api.github.com/repos/owner/repo"
+
+            def __init__(self):
+                self.calls = []
+
+            def api(self, url, data=None, method=None):
+                self.calls.append((url, data, method))
+                return {"tag_name": "frontend-v0.11.1+16"}
+
+        good = {
+            "tag_name": "frontend-v0.11.1+16",
+            "draft": False,
+            "url": "https://api.github.com/repos/owner/repo/releases/1",
+            "assets": [{"name": n} for n in ["app.apk", "app.ipa", "apps.json"]],
+        }
+        github = FakeGitHub()
+        with (
+            patch.dict(os.environ, {"GITHUB_ACTIONS": "false"}),
+            self.assertRaises(ValueError),
+        ):
+            promote_frontend_release(github, good)
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}):
+            promote_frontend_release(github, good)
+        self.assertEqual(
+            github.calls[0][1], {"prerelease": False, "make_latest": "true"}
+        )
+        for bad in [
+            {**good, "draft": True},
+            {**good, "tag_name": "backend-v0.15.0"},
+            {**good, "assets": [{"name": "apps.json"}]},
+        ]:
+            with (
+                patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}),
+                self.assertRaises(ValueError),
+            ):
+                promote_frontend_release(github, bad)
+
     def test_dependency_or_copy_edits_do_not_trigger_mobile_release(self):
         old = "name: unlabel\nversion: 0.8.0+12\ndependencies: {}\n"
         self.assertFalse(version_changed(old, ("0.8.0", "12")))

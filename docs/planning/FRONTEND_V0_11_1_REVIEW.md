@@ -73,6 +73,26 @@ targets remain. Browser theme-color matches the app surface. See [design notes](
   landscape dark). [Visual receipt and screenshot hashes](../research/FRONTEND_V0_11_1_VISUAL.json).
 - Workspace source/docs/link validation, pinned OCR assets, platform icons and
   diff whitespace checks passed. Backend source and data are unchanged.
+- [Production asset receipt](../research/FRONTEND_V0_11_1_HOSTED.json) verifies
+  READY deployment `dpl_CyR4rKjjtPML5CMeuVgvuWu58RZB` at implementation
+  `66f5e39ef5e04347ecc7face2a4525a962a1cdaf`, version 0.11.1+16 and exact scanner,
+  browser-appearance and Manrope/Inter font bytes. Repository CI passed for that
+  source. Release-policy follow-up adds 19 passing script guard tests and 25
+  passing workspace integration checks; it does not change the compiled apps.
+
+## Release-list organization
+
+Historical release titles now explicitly distinguish frontend apps, frontend
+web/source, backend API and the LiveContainer subscription. The
+[title-only audit](../research/RELEASE_ORGANIZATION_2026_11_05.json) records 38
+changes with tags, notes, download identities and historical release states
+preserved. The obsolete Latest pointer was caused by newer mobile releases being
+prereleases. The follow-up organization workflow now reserves
+Latest for a verified, published frontend app built by successful GitHub Actions.
+The follow-up validates owned main-branch workflow identity, exact source tag,
+Actions bot author, and matching LiveContainer IPA URL/size/hash. Manual retries
+require a completed frontend workflow run ID. Backend, source-only, draft and
+failed workflows cannot qualify. Latest selection is not performed locally.
 
 The Better Design free-call allowance was exhausted; discovery/guidance/review
 calls returned no result. Styling follows the user's direction and the existing

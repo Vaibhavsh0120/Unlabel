@@ -279,6 +279,32 @@ def refresh_source(
     return final["browser_download_url"]
 
 
+def promote_frontend_release(github: ReleaseClient, release: JsonObject) -> None:
+    """Only a published app release can own the repository's main download."""
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        raise ValueError("Latest selection runs only inside GitHub Actions.")
+    tag = str(release.get("tag_name", ""))
+    assets = {
+        str(asset.get("name", "")) for asset in response_list(release.get("assets"))
+    }
+    if (
+        release.get("draft", True)
+        or not re.fullmatch(r"frontend-v\d+\.\d+\.\d+\+[1-9]\d*", tag)
+        or "apps.json" not in assets
+        or not any(name.endswith(".apk") for name in assets)
+        or not any(name.endswith(".ipa") for name in assets)
+    ):
+        raise ValueError(
+            "Latest requires a published frontend APK, IPA and source snapshot."
+        )
+    github.api(release["url"], {"prerelease": False, "make_latest": "true"}, "PATCH")
+    latest = response_object(github.api(f"{github.root}/releases/latest"))
+    if latest.get("tag_name") != tag:
+        raise ValueError(
+            "GitHub did not select the published frontend release as Latest."
+        )
+
+
 def publish(out: Path) -> None:
     validate_inputs()
     version, build = os.environ["RELEASE_VERSION"], os.environ["BUILD_NUMBER"]
@@ -368,7 +394,7 @@ def publish(out: Path) -> None:
             {
                 "tag_name": tag,
                 "target_commitish": os.environ["SOURCE_SHA"],
-                "name": f"Frontend v{version}+{build} — demo APK / unsigned iOS",
+                "name": f"Frontend v{version}+{build} - Apps (demo APK / unsigned IPA)",
                 "body": notes,
                 "draft": True,
                 "prerelease": True,
@@ -394,6 +420,8 @@ def publish(out: Path) -> None:
         if remote["draft"]:
             raise ValueError("GitHub did not publish the verified mobile release.")
         source_url = refresh_source(github, out / names[1], remote, timestamp)
+        # Latest is selected only by the workflow_run follow-up, after this
+        # entire workflow (including evidence upload) has completed successfully.
     summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
     with summary.open("a", encoding="utf-8") as stream:
         stream.write(
