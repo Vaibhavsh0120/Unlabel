@@ -148,6 +148,7 @@ def create_app(
                 )
                 application.state.nutrigraph = NutriGraphLookup(
                     live_client, config.nutrigraph_api_key.get_secret_value(),
+                    lookup_url=config.nutrigraph_lookup_url,
                     monthly_limit=config.nutrigraph_monthly_request_limit,
                     sandbox_limit=config.nutrigraph_sandbox_request_limit,
                 )

@@ -56,6 +56,10 @@ class Settings(BaseSettings):
     ai_fallback_credentials_json: SecretStr | None = Field(default=None, repr=False)
     nutrigraph_enabled: bool | Literal["auto"] = "auto"
     nutrigraph_api_key: SecretStr | None = Field(default=None, repr=False)
+    nutrigraph_lookup_url: str = Field(
+        default="https://d1vesbk2e1akwx.cloudfront.net/api/lookup",
+        pattern=r"^https://[a-zA-Z0-9.-]+/[a-zA-Z0-9._/-]+$",
+    )
     nutrigraph_monthly_request_limit: int = Field(default=1000, ge=1, le=1000)
     nutrigraph_sandbox_request_limit: int = Field(default=1000, ge=1, le=1000)
 

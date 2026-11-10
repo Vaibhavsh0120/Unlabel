@@ -87,8 +87,8 @@
   separate immutable machine-unverified stream after exact identity checks; originals
   and conflicts remain. NutriGraph is optional, configured with a backend-only trial
   key and credential-based auto enablement, session-only with at most 24-hour retention,
-  and never enriches the permanent catalogue. Its supplied endpoint returned HTML 404;
-  successful live lookup and India coverage remain unverified.
+  and never enriches the permanent catalogue. The refreshed AWS CloudFront lookup endpoint
+  is verified for live UPC lookups; regional India and Europe databases remain in vendor staging.
 
 ## Product, setup and evidence boundaries
 

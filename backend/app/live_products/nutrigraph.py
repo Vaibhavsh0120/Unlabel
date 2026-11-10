@@ -13,7 +13,7 @@ import httpx
 from app.core.json_numbers import checked_float, reject_constant
 from app.live_products.models import LiveField, LiveLookup, LiveProduct
 
-LOOKUP_URL = "https://barcode-api-140543331861.asia-south1.run.app/api/lookup"
+LOOKUP_URL = "https://d1vesbk2e1akwx.cloudfront.net/api/lookup"
 MAX_RESPONSE_BYTES = 512 * 1024
 MAX_DISPLAY_BYTES = 128 * 1024
 CACHE_SECONDS = 24 * 60 * 60
@@ -68,14 +68,28 @@ def normalize(data: object, barcode: str, now: datetime) -> LiveProduct:
         raise ValueError("Vendor identity does not match")
     fields: list[LiveField] = []
     ingredients = analysed.get("ingredients")
-    if isinstance(ingredients, list) and 0 < len(ingredients) <= 200:
-        names = [_text(item.get("name"), 300) if isinstance(item, dict) else None
-                 for item in ingredients]
+    raw_ingredients: list[object] = []
+    ingredients_source_node: object = ingredients
+    if isinstance(ingredients, list):
+        raw_ingredients = ingredients
+    elif isinstance(ingredients, dict):
+        stated_ingredients = ingredients.get("stated")
+        if isinstance(stated_ingredients, dict):
+            ingredients_source_node = stated_ingredients
+            raw_list = stated_ingredients.get("ingredientList")
+            if isinstance(raw_list, list):
+                raw_ingredients = raw_list
+        elif isinstance(ingredients.get("ingredientList"), list):
+            raw_ingredients = ingredients["ingredientList"]
+
+    if 0 < len(raw_ingredients) <= 200:
+        names = [_text(item.get("name") or item.get("text"), 300) if isinstance(item, dict) else None
+                 for item in raw_ingredients]
         complete_names = [name for name in names if name is not None]
         if len(complete_names) == len(names) and len("; ".join(complete_names)) <= 6000:
             fields.append(LiveField(
                 section="ingredients", label="Provider ingredient list",
-                value="; ".join(complete_names), sources=_sources(ingredients),
+                value="; ".join(complete_names), sources=_sources(ingredients_source_node),
             ))
     allergens = analysed.get("npiFoodPackagesAllergensIntolerances")
     if isinstance(allergens, dict):
@@ -91,11 +105,20 @@ def normalize(data: object, barcode: str, now: datetime) -> LiveProduct:
                 fields.append(LiveField(
                     section="allergens", label=label, value=value, sources=provenance,
                 ))
-        additional = allergens.get("additionalInfo")
+        additional = allergens.get("additionalInfo") or (
+            analysed.get("additionalInfo") if isinstance(analysed.get("additionalInfo"), dict) else None
+        )
         if isinstance(additional, dict) and (value := _text(additional.get("traces"))):
             fields.append(LiveField(
                 section="allergens", label="Provider trace statement", value=value,
                 sources=provenance,
+            ))
+    elif isinstance(analysed.get("additionalInfo"), dict):
+        additional = analysed["additionalInfo"]
+        if value := _text(additional.get("traces")):
+            fields.append(LiveField(
+                section="allergens", label="Provider trace statement", value=value,
+                sources=_sources(additional),
             ))
     nutrition = analysed.get("nutritionalInformation")
     stated = nutrition.get("stated") if isinstance(nutrition, dict) else None
@@ -108,7 +131,9 @@ def normalize(data: object, barcode: str, now: datetime) -> LiveProduct:
             for item in entries:
                 if not isinstance(item, dict):
                     continue
-                name, unit, value = _text(item.get("name"), 120), _text(item.get("unit"), 12), item.get("value")
+                name = _text(item.get("name"), 120)
+                unit = _text(item.get("unit") or item.get("UOM"), 12)
+                value = item.get("value") if item.get("value") is not None else item.get("amount")
                 if (name and unit in {"g", "mg", "mcg", "µg", "kcal", "kJ"}
                     and type(value) in {int, float} and 0 <= value <= 100000 and math.isfinite(value)):
                     fields.append(LiveField(
@@ -127,7 +152,8 @@ def normalize(data: object, barcode: str, now: datetime) -> LiveProduct:
                                      if key in {"source", "data_source", "data_last_updated"}}
     root_sources["general"] = general
     result = LiveProduct(
-        barcode=barcode, name=_text(general.get("productName"), 240),
+        barcode=barcode,
+        name=_text(general.get("productName"), 240) or _text(general.get("productTitle"), 240),
         brand=_text(general.get("brandName"), 200), fields=tuple(fields),
         sources=_sources(root_sources), retrieved_at=now,
         expires_at=now + timedelta(seconds=CACHE_SECONDS),
@@ -153,9 +179,11 @@ class NutriGraphLookup:
     """
 
     def __init__(self, client: httpx.AsyncClient, api_key: str, *,
+                 lookup_url: str = LOOKUP_URL,
                  monthly_limit: int = 1000, sandbox_limit: int = 1000,
                  clock: Callable[[], datetime] | None = None):
         self.client, self._key = client, api_key
+        self._lookup_url = lookup_url
         self._clock = clock or (lambda: datetime.now(UTC))
         self._monthly_limit = monthly_limit
         self._sandbox_limit = sandbox_limit
@@ -248,7 +276,7 @@ class NutriGraphLookup:
         try:
             async with asyncio.timeout(10):
                 async with self.client.stream(
-                    "GET", LOOKUP_URL, params={"barcode": barcode},
+                    "GET", self._lookup_url, params={"barcode": barcode},
                     headers={"X-API-Key": self._key, "Accept": "application/json",
                              "Accept-Encoding": "identity"}, follow_redirects=False,
                     timeout=httpx.Timeout(8, connect=3, pool=2),

@@ -69,8 +69,8 @@ Guests selecting Sign-in methods receive a sign-in toast.
 Every backend source can be switched off. Keyed sources automatically stay off
 without credentials; a fresh clone can use the bundled data without vendor accounts.
 [Optional-source setup](docs/architecture/OPTIONAL_SOURCES.md).
-NutriGraph is configured server-side and remains temporary; its supplied endpoint
-returned HTML 404 during testing, so successful live lookup is unverified.
+NutriGraph is configured server-side and remains temporary; its refreshed CloudFront
+endpoint is verified for live UPC lookups; regional India and Europe databases remain in staging.
 [Frontend scope and checks](docs/planning/FRONTEND_V0_11_0_REVIEW.md) ·
 [Backend scope and checks](docs/planning/BACKEND_V0_15_0_REVIEW.md).
 

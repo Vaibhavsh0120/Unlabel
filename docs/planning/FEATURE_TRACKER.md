@@ -51,7 +51,7 @@ sample products and health verdicts are illustrative.
 | Component/version | Meaningful goal | Evidence / state |
 | --- | --- | --- |
 | Frontend v0.11.0+15 | Free SDK scanner, compact reference Product Info, Safari camera cleanup and guest toast | [Current review](FRONTEND_V0_11_0_REVIEW.md); physical device acceptance remains separate |
-| Backend v0.15.0 | Optional credential-based source controls and bounded NutriGraph sandbox | [Current review](BACKEND_V0_15_0_REVIEW.md); 1,493 tests passed, vendor endpoint HTML 404 remains external |
+| Backend v0.15.0 | Optional credential-based source controls and bounded NutriGraph sandbox | [Current review](BACKEND_V0_15_0_REVIEW.md); 1,494 tests passed, vendor CloudFront endpoint verified live for UPC lookup; regional staging external |
 | Frontend v0.10.0+14 | Reference scanner/sign-in methods, Safari keyboard fix, guest names, one Product Info page and temporary live sources | [Current review](FRONTEND_V0_10_0_REVIEW.md); final release gates recorded there |
 | Backend v0.14.0 | Automatic unverified observations, catalogue numeric claim comparisons and optional live NutriGraph lookup | [Current review](BACKEND_V0_14_0_REVIEW.md); provider disabled pending key |
 | Frontend v0.9.0+13 | Responsive reference auth, themed shared artwork, provider management and account deletion | [Dated review](FRONTEND_V0_9_0_REVIEW.md); published with separate hosted/native receipts |

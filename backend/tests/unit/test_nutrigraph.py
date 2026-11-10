@@ -69,3 +69,56 @@ async def test_vendor_failures_are_bounded_and_do_not_expose_secrets(status):
         assert len(calls) == 1 and 'secret' not in first.model_dump_json()
     finally:
         await provider.close()
+
+
+def test_live_vendor_structure_normalizes_cleanly():
+    live_sample = {
+        'analysed_data': {
+            'generalData': {
+                'upc12': CODE,
+                'brandName': 'Live Brand',
+                'productTitle': 'Live Product Title',
+            },
+            'ingredients': {
+                'stated': {
+                    'source': 'Package OCR',
+                    'ingredientList': [
+                        {'text': 'Distilled vinegar', 'amount': 40.0},
+                        {'text': 'Black pepper', 'amount': 1.0},
+                    ],
+                },
+            },
+            'npiFoodPackagesAllergensIntolerances': {
+                'eggStated': 'No',
+                'falcpaCommonAllergensStated': 'None identified',
+            },
+            'additionalInfo': {
+                'traces': 'May contain traces of soy',
+            },
+            'nutritionalInformation': {
+                'stated': {
+                    'source': 'Package OCR',
+                    'macronutrients': [
+                        {'name': 'Energy', 'UOM': 'kcal', 'amount': 20.0},
+                        {'name': 'Fat', 'UOM': 'g', 'amount': 0.5},
+                    ],
+                    'micronutrients': [
+                        {'name': 'Sodium', 'UOM': 'mg', 'amount': 220.0},
+                    ],
+                },
+            },
+        },
+    }
+    product = normalize(live_sample, CODE, NOW)
+    assert product.name == 'Live Product Title'
+    assert product.brand == 'Live Brand'
+    sections = [f.section for f in product.fields]
+    assert 'ingredients' in sections
+    assert 'allergens' in sections
+    assert 'nutrition' in sections
+    ing_field = next(f for f in product.fields if f.section == 'ingredients')
+    assert ing_field.value == 'Distilled vinegar; Black pepper'
+    trace_field = next(f for f in product.fields if f.label == 'Provider trace statement')
+    assert trace_field.value == 'May contain traces of soy'
+    energy_field = next(f for f in product.fields if 'Energy' in f.label)
+    assert energy_field.value == '20 kcal'

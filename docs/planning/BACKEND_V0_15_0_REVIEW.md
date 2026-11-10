@@ -54,3 +54,7 @@ authentication guards and exact decoder assets.
 before vendor admission. No authenticated vendor lookup, AI extraction or record
 write was performed. The prior upstream HTML 404 remains unresolved; configuration
 and deployment do not establish successful provider lookup or India coverage.
+
+## 10 November 2026 endpoint refresh
+
+On 10 November 2026, the vendor supplied refreshed credentials and a production-ready AWS CloudFront lookup endpoint (`https://d1vesbk2e1akwx.cloudfront.net/api/lookup`). A live test with UPC `610840324923` returned HTTP 200 OK with full structured facts (title "Yummy Sauce Cajun Sauce Lemon Pepper Flavor", brand "Yummy Sauce", 10 stated ingredients, 7 allergen declarations including soy trace statement, and 8 stated nutrient quantities with units). Barcode lookups for unindexed items return JSON 404 (`{"message":"No record found"}`). The adapter was updated to default to the CloudFront endpoint, make lookup URL configurable via `NUTRIGRAPH_LOOKUP_URL`, and support live vendor schema formats alongside legacy synthetic payloads. Encrypted environment ciphertext `backend/.env.age` was refreshed via `scripts/env.py encrypt`. Vendor regional staging for India (890 EANs) and Europe (EAN-13) remains scheduled for future vendor rollout.

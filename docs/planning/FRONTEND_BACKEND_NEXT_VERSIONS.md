@@ -9,7 +9,7 @@ evidence belongs to the current reviews.
 
 | Remaining gate | Owner/evidence needed |
 | --- | --- |
-| NutriGraph live endpoint/coverage | Key and encrypted environment configured; supplied endpoint returns HTML 404, so vendor availability and India coverage remain unverified |
+| NutriGraph live endpoint/coverage | Key, endpoint and encrypted environment configured; CloudFront endpoint verified live for UPC lookup; regional India and Europe coverage remain in vendor staging |
 | Physical barcode/OCR accuracy and shopping latency | Android/iPhone tests with dated package samples and measured results |
 | LiveContainer import and execution | Actual iPhone/LiveContainer test of the published device IPA |
 | Production Android signing | Stable private demo key is registered/restored/verified; production release signing remains separate |

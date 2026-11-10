@@ -5,8 +5,9 @@ report history, synced libraries, comparison facts and AI observations. The
 integration defaults to credential-based `auto` and remains disabled without a
 backend key/authentication runtime, or when explicitly switched off. See
 [optional sources](OPTIONAL_SOURCES.md). Mock tests do not establish provider
-coverage or live response compatibility. The configured sandbox endpoint returned
-HTML 404 on 26 October; successful live lookup is not verified.
+coverage or live response compatibility. The refreshed AWS CloudFront lookup endpoint
+was verified on 10 November 2026 for live UPC lookup with stated ingredients, allergens
+and nutrition; India and Europe regional databases remain in vendor staging.
 
 ## Request and evidence boundaries
 
@@ -60,10 +61,11 @@ workflow for a supplied key; never put it in Flutter or a public runtime manifes
 The configured Firebase community runtime is required. `live_nutrigraph` metadata
 stays false if either the key or runtime is missing.
 
-The supplied key was used for two bounded UPC checks on 26 October: both the
-supplied sample and the documentation sample returned generic HTML 404. No live
-product payload or India coverage was verified. Obtain explicit EAN-13/India
-lookup guidance before changing supported formats. Existing Unlabel product
+The refreshed key and AWS CloudFront endpoint (`https://d1vesbk2e1akwx.cloudfront.net/api/lookup`)
+were verified on 10 November 2026 with a bounded live UPC-12 lookup (`610840324923`),
+successfully returning stated ingredient, allergen trace, and nutritional declarations.
+India (890 EANs) and Europe (EAN-13) regional datasets remain in vendor staging.
+Obtain explicit EAN-13/India lookup guidance before changing supported formats. Existing Unlabel product
 information remains available when the vendor is disabled, misses, times out or
 exhausts its free quota.
 

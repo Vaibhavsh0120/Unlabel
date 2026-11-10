@@ -65,7 +65,7 @@ def test_authenticated_live_response_has_attribution_and_cannot_write_any_store(
     def respond(request):
         requests.append(request)
         assert request.url.scheme == "https"
-        assert request.url.host == "barcode-api-140543331861.asia-south1.run.app"
+        assert request.url.host == "d1vesbk2e1akwx.cloudfront.net"
         assert request.url.path == "/api/lookup"
         assert dict(request.url.params) == {"barcode": CODE}
         assert request.headers["x-api-key"] == "synthetic-vendor-key"
