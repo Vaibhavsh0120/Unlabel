@@ -17,7 +17,7 @@ store has its own credentials, named resource and purpose in the Coolify canvas:
 | MongoDB evidence | Immutable original/research document observations and receipts |
 | Redis cache | Bounded expiring public cache and rate-limit counters, LRU eviction |
 | Sign-in service | Private GoTrue identity API. Google, email and anonymous sign-in. Verified Brevo SMTP configuration |
-| Guest cleanup - 24h expiry | Private worker calling a fixed-policy, execute-only PostgreSQL function every five minutes |
+| Guest cleanup - 7d retention | Private worker calling a fixed-policy, execute-only PostgreSQL function once a day |
 
 The original five stores reached healthy status on 14 November 2026. After
 consolidation, three database servers remain. The old identity PostgreSQL had
@@ -39,7 +39,7 @@ receipt table. A subsequent deployment passed its health check. This is recorded
 separately from the application's own checksum-verified migration history.
 
 See [guest lifecycle](../../docs/architecture/GUEST_SESSION_LIFECYCLE.md) for
-24-hour cleanup, account-conversion protection, permissions and test evidence.
+seven-day inactive-guest retention and daily cleanup, account-conversion protection, permissions and test evidence.
 The SMTP credential has no configured expiry and is recovered through the age
 backup. Explicit credential rotation is still required when replacing it.
 

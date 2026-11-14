@@ -5,12 +5,12 @@ Firebase release remains active until the complete backend cutover is verified.
 
 Guest access JWTs expire after 900 seconds. The client may refresh while in use.
 An anonymous account with no identity, email or phone is eligible for removal
-after 24 hours without account or session activity. Activity includes creation,
+after seven days without account or session activity. Activity includes creation,
 sign-in, account updates and refresh activity across every session. Email/Google
 accounts and guests in the process of linking a provider are protected.
 
-The private maintenance scheduler runs every five minutes, removing at most
-100 eligible accounts in one transaction. This is a bounded cleanup cadence,
+The private maintenance scheduler runs once a day, removing at most
+100 eligible accounts in one transaction. A durable database guard prevents an extra cleanup after process restarts. This is a bounded cleanup cadence,
 not an exact-to-the-second promise. PostgreSQL cascading foreign keys delete
 their sessions and refresh tokens. The API checks the upstream identity/session
 for protected requests, so a deleted guest cannot keep using an unexpired JWT.
@@ -22,10 +22,10 @@ scans, saved items, preferences and inbox records are not deleted by this job.
 The `unlabel_guest_gc` login has CONNECT on the identity database, USAGE on the
 private `auth_maintenance` schema and EXECUTE on two maintenance functions only.
 It cannot read users, password hashes, sessions or token tables and cannot choose
-an arbitrary user or shorten the 24-hour period. The fixed-policy cleanup is a
+an arbitrary user or shorten the seven-day period. The fixed-policy cleanup is a
 SECURITY DEFINER function owned by the non-superuser identity owner, with a
 fixed search path and PUBLIC access revoked. The health function exposes only
-a boolean indicating a successful run in the preceding 15 minutes.
+a boolean indicating a successful run in the preceding 26 hours.
 
 One transaction advisory lock prevents overlapping scheduler runs. Candidate
 user locks skip a concurrent conversion or sign-in. Existing sessions are locked
@@ -45,15 +45,15 @@ and `verify` before publishing the updated encrypted backup. Runtime deployment
 uses `infrastructure/docker/guest-cleanup.Dockerfile`, a digest-pinned Python base,
 hash-locked dependencies, a non-root user and a database-backed health check.
 
-The 14 real PostgreSQL integration cases cover expired-user/session/token
+The real PostgreSQL integration cases cover expired-user/session/token
 deletion, recent guests, recent refresh activity, converted accounts, partially
 linked identities, 100-row bounds, execute-only privileges, competing user/session
 locks and overlapping schedulers. Tests create a disposable database and role;
 set `UNLABEL_TEST_POSTGRES_ADMIN_DSN` explicitly to run them. No existing identity
 database is used as the test fixture.
 
-An additional 14 November 2026 smoke test exercised the actual private GoTrue
-service: a synthetic guest received a 900-second JWT, was aged beyond 24 hours,
+An additional 14 November 2026 initial-policy smoke test exercised the actual private GoTrue
+service: a synthetic guest received a 900-second JWT, was aged beyond its then-configured 24-hour retention,
 was cleaned up, and then failed both `/user` and refresh-token requests. A fresh
 guest remained usable and refreshed successfully. Both synthetic fixtures were
 removed afterward. Local device data and physical-device guest recovery were

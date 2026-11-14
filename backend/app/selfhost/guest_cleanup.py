@@ -57,7 +57,7 @@ def main():
             print("Guest cleanup failed; next scheduled run will retry.", flush=True)
             if args.once:
                 raise SystemExit(1) from None
-        if args.once or stopped.wait(300):
+        if args.once or stopped.wait(86400):
             break
 
 

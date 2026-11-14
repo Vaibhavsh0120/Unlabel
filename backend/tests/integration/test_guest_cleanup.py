@@ -46,6 +46,10 @@ def database():
                 """)
                 connection.execute(MIGRATION.read_text(), prepare=False)
                 connection.execute(
+                    (MIGRATION.parent / "0003_weekly_guest_retention.sql").read_text(),
+                    prepare=False,
+                )
+                connection.execute(
                     sql.SQL("GRANT USAGE ON SCHEMA auth_maintenance TO {}").format(
                         sql.Identifier(role)
                     )
@@ -71,7 +75,7 @@ def connection(database):
         connection.execute("TRUNCATE auth.users, auth_maintenance.runs CASCADE")
 
 
-def user(connection, *, hours=25, anonymous=True, email=None, phone=None):
+def user(connection, *, hours=192, anonymous=True, email=None, phone=None):
     identity = uuid4()
     connection.execute(
         """INSERT INTO auth.users
@@ -83,7 +87,7 @@ def user(connection, *, hours=25, anonymous=True, email=None, phone=None):
     return identity
 
 
-def session(connection, identity, *, hours=25, refreshed_hours=None):
+def session(connection, identity, *, hours=192, refreshed_hours=None):
     identifier = uuid4()
     connection.execute(
         """INSERT INTO auth.sessions VALUES
@@ -115,7 +119,7 @@ def test_stale_guest_removed_with_sessions_and_refresh_tokens(connection):
     assert prune(connection) == 0
 
 
-@pytest.mark.parametrize("hours", [0, 1, 23.99])
+@pytest.mark.parametrize("hours", [0, 1, 167.99])
 def test_recent_guest_preserved(connection, hours):
     identifier = user(connection, hours=hours)
     assert prune(connection) == 0
@@ -155,6 +159,8 @@ def test_execution_is_bounded(connection):
     for _ in range(105):
         user(connection)
     assert prune(connection) == 100
+    assert prune(connection) == 0
+    connection.execute("UPDATE auth_maintenance.runs SET completed_at=now()-interval '25 hours'")
     assert prune(connection) == 5
 
 
@@ -183,6 +189,8 @@ def test_login_or_refresh_in_flight_is_skipped(connection, database, locked):
         assert prune(connection) == 0
         assert exists(connection, identifier)
         connection.commit()
+    assert prune(connection) == 0  # A skipped locked row is reconsidered on the next daily run.
+    connection.execute("UPDATE auth_maintenance.runs SET completed_at=now()-interval '25 hours'")
     assert prune(connection) == 1
 
 
