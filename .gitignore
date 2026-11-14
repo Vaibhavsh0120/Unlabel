@@ -104,3 +104,10 @@ Desktop.ini
 /scripts/caddy_windows_amd64.exe
 /scripts/tools/caddy/*
 !/scripts/tools/caddy/.gitkeep
+
+# Next-major local data-store credentials; never a deployment secret source.
+/infrastructure/development/.secrets/
+/infrastructure/production/.secrets/
+/secrets/local/
+/.secrets-work-*/
+/.secrets-work.lock

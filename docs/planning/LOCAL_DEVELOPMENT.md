@@ -69,6 +69,14 @@ separate in the [review](BACKEND_V0_4_0_REVIEW.md).
 
 ## Restore encrypted settings
 
+For all project secrets, use the root `secrets.ps1` menu. Run
+`.\secrets.ps1 decrypt` after cloning, paste the private key into the hidden
+terminal prompt, then run setup. `.\secrets.ps1 encrypt` uses your `agel`
+function to refresh both the full-project bundle and legacy backend ciphertext.
+`.\secrets.ps1 verify` checks every file byte-for-byte. See
+[secret recovery](../../secrets/README.md) for inventory, conflict handling and
+private-key-file options. These files include the next-major database credentials.
+
 `backend/.env.age` is tracked ciphertext for the public recipient in `scripts/config/age-recipient.txt`. Plaintext, decrypted staging files and private identities stay outside Git. Vercel excludes `.env*`; production settings are managed separately.
 
 If `.env` is absent, setup offers **key file**, **hidden private-key paste**, or **safe example**. `-Identity PATH`, `--identity PATH` or `AGE_IDENTITY_FILE` supplies a key path without prompting. Existing `.env` is checked first and kept unchanged. Hidden paste accepts one native `AGE-SECRET-KEY-1...` line and passes it directly to age stdin: no saved identity file, command argument or echoed key. Terminals unable to hide input are refused. Share authorized key access separately from GitHub.

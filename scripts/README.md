@@ -19,6 +19,7 @@ entry points. Helpers are grouped one level down:
 
 | Tool | Responsibility |
 | --- | --- |
+| `project_secrets.py` / root `secrets.ps1` | Full-project age backup, original-path restore and byte verification. PowerShell uses the operator's `agel` function. Public manifest/index and ciphertext only enter Git. |
 | `release/version_metadata.py` | Read frontend pubspec/backend pyproject and pinned Flutter metadata; JSON or GitHub outputs. No duplicated release defaults. |
 | `release/validate_workspace.py` | Validate source syntax, Markdown links, private-key boundaries, README version badges against canonical manifests and the current backend OpenAPI export; includes added/deleted source files. |
 | `release/prepare_android_ci.py` | CI-only SDK/NDK preparation and bounded Gradle settings from the pinned Flutter SDK. |
