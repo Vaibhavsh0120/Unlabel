@@ -3,6 +3,9 @@
 Project `Unlabel` and its production environment are on the Volcanica Oracle VM.
 The backend domain is `https://unlabel.duckdns.org`. DNS resolves to the correct
 VM. Resource identities are recorded in [resources.json](resources.json).
+These identifiers are public resource references, not credentials. GitGuardian
+incident 40084626 was confirmed to match the identity database UUID and marked
+Not a secret (false positive). Credential values remain in the age backup only.
 
 The private `unlabel` Docker destination isolates application data services from
 the old shared destination. No database ports are published on the VM. Each

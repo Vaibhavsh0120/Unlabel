@@ -7,7 +7,7 @@
   "backend_host": "unlabel.duckdns.org",
   "databases": {
     "app": "lbhz7c20afhuzadjkpsmwmaj",
-    "auth": "vtc49vljyyyhbjgpy4f9rvz9",
+    "identity_store_uuid": "vtc49vljyyyhbjgpy4f9rvz9",
     "evidence": "e7hi0gaw18vp26fvch12hbx5",
     "cache": "gqdjuzfobptnl9smqviz1prj",
     "jobs": "1crhoqu0a8tixksfbytxupeo"
