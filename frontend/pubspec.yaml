@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 0.11.1+16
+version: 0.12.0+17
 
 environment:
   sdk: ^3.13.3
@@ -46,6 +46,9 @@ dependencies:
   google_sign_in: 7.2.0
   cloud_firestore: 6.10.0
   mobile_scanner: 7.4.2
+  flutter_local_notifications: 22.2.0
+  flutter_timezone: 5.1.1
+  timezone: 0.11.2
 
 dev_dependencies:
   flutter_test:
@@ -83,15 +86,9 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/brand/fonts/Inter-Variable.ttf
-    - family: Nunito
-      fonts:
-        - asset: assets/brand/fonts/Nunito-Variable.ttf
-    - family: Quicksand
-      fonts:
-        - asset: assets/brand/fonts/Quicksand-Variable.ttf
     - family: CormorantGaramond
       fonts:
-        - asset: assets/brand/fonts/CormorantGaramond-Variable.ttf
+        - asset: assets/brand/fonts/UnlabelStartup-Wordmark.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

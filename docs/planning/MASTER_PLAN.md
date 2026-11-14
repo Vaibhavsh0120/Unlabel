@@ -1,12 +1,10 @@
 # Unlabel master plan
 
-Current update: **frontend 0.11.1+16 / backend 0.15.0**, adding camera pinch zoom,
-preview-relative native focus and a higher-detail small-barcode photo retry.
-Manrope/Inter typography, shared glass surfaces and consistent spacing polish
-the existing navigation and product-information structure in both themes.
-Local checks, source publication, hosted runtime and device accuracy remain separate.
-[Frontend review](FRONTEND_V0_11_1_REVIEW.md) · [Backend review](BACKEND_V0_15_0_REVIEW.md) ·
-[Optional sources](../architecture/OPTIONAL_SOURCES.md).
+Current update: **frontend 0.12.0+17 / backend 0.16.0**: stronger readable
+ typography, charcoal glass, compact profile/settings and working notification
+ inbox/reminders with unsubscribe. Hosting remains Vercel/Firebase for this release.
+ See the [frontend review](FRONTEND_V0_12_0_REVIEW.md), [backend review](BACKEND_V0_16_0_REVIEW.md) and
+ [source audit](SOURCE_AND_ASSET_AUDIT_2026_11_14.md). The [Coolify rebuild](COOLIFY_ARCHITECTURE_REBUILD_PLAN.md) is the separate next major version.
 
 Active versions come from [frontend pubspec](../../frontend/pubspec.yaml) and [backend pyproject](../../backend/pyproject.toml). Previous scope: [reference auth and account controls](FRONTEND_V0_9_0_REVIEW.md) and [private account deletion](BACKEND_V0_13_0_REVIEW.md); preceding source reviews retain their dated evidence.
 This document records product intent and contracts. Current delivered capabilities

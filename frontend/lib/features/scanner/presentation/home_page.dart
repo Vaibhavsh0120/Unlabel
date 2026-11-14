@@ -1152,34 +1152,35 @@ class _SourcesCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         child: Padding(
           padding: EdgeInsets.all(desktop ? 12 : 20),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const FeatureIcon('shield', size: 30),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const FeatureIcon('shield', size: 30),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
                       desktop
                           ? 'Data from package labels, manufacturer websites and Open Food Facts'
                           : 'Know where facts come from',
                       style: theme.textTheme.titleMedium,
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      desktop
-                          ? 'Source references stay attached. FSSAI guidance informs our label explanations.'
-                          : 'Open Food Facts, your confirmed label and reviewed FSSAI guidance.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.chevron_right, size: 20),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                desktop
+                    ? 'Source references stay attached. FSSAI guidance informs our label explanations.'
+                    : 'Open Food Facts, your confirmed label and reviewed FSSAI guidance.',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(width: 8),
-              const Icon(Icons.chevron_right, size: 20),
             ],
           ),
         ),

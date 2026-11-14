@@ -9,7 +9,7 @@
     document.getElementById('unlabel-favicon').href = `favicon-${name}.png`;
     document.getElementById('unlabel-touch-icon').href = `icons/apple-touch-${name}.png`;
     document.getElementById('unlabel-manifest').href = dark ? 'manifest-dark.json' : 'manifest.json';
-    document.getElementById('unlabel-theme-color').content = dark ? '#0D1719' : '#F4F8F6';
+    document.getElementById('unlabel-theme-color').content = dark ? '#101214' : '#F4F8F6';
     document.documentElement.style.colorScheme = name;
   }
   window.unlabelSetAppearance = (value) => {

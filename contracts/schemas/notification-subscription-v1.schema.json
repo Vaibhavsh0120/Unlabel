@@ -1,0 +1,65 @@
+{
+  "$defs": {
+    "PushKeys": {
+      "additionalProperties": false,
+      "properties": {
+        "p256dh": {
+          "maxLength": 88,
+          "minLength": 86,
+          "pattern": "^[A-Za-z0-9_-]+={0,2}$",
+          "title": "P256Dh",
+          "type": "string"
+        },
+        "auth": {
+          "maxLength": 24,
+          "minLength": 22,
+          "pattern": "^[A-Za-z0-9_-]+={0,2}$",
+          "title": "Auth",
+          "type": "string"
+        }
+      },
+      "required": [
+        "p256dh",
+        "auth"
+      ],
+      "title": "PushKeys",
+      "type": "object"
+    },
+    "PushSubscription": {
+      "additionalProperties": false,
+      "properties": {
+        "endpoint": {
+          "maxLength": 2048,
+          "minLength": 20,
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "keys": {
+          "$ref": "#/$defs/PushKeys"
+        }
+      },
+      "required": [
+        "endpoint",
+        "keys"
+      ],
+      "title": "PushSubscription",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "subscription": {
+      "$ref": "#/$defs/PushSubscription"
+    },
+    "enabled": {
+      "title": "Enabled",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "subscription",
+    "enabled"
+  ],
+  "title": "SubscriptionChange",
+  "type": "object"
+}

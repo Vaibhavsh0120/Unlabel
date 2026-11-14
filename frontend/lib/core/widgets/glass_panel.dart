@@ -32,11 +32,11 @@ class GlassPanel extends StatelessWidget {
           colors: highContrast
               ? [colors.surfaceContainerLow, colors.surfaceContainerLow]
               : [
-                  (dark ? const Color(0xff24383b) : Colors.white).withValues(
-                    alpha: .96,
+                  (dark ? const Color(0xff30343a) : Colors.white).withValues(
+                    alpha: blur ? .78 : .96,
                   ),
-                  (dark ? const Color(0xff142528) : const Color(0xffeef8f3))
-                      .withValues(alpha: .9),
+                  (dark ? const Color(0xff1b1e22) : const Color(0xffeef8f3))
+                      .withValues(alpha: blur ? .76 : .94),
                 ],
         ),
         border: border

@@ -495,7 +495,6 @@ void main() {
         for (final window in [
           ('Gender', 'Cancel'),
           ('Sign-in methods', 'Back'),
-          ('Notifications', 'Close'),
           ('Privacy', 'Close'),
           ('Help', 'Close'),
         ]) {

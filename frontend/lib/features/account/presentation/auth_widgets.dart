@@ -9,7 +9,7 @@ class AuthPalette {
       dark ? const Color(0xff101416) : const Color(0xfff8f6ef);
   Color get paper => dark ? const Color(0xff161b1e) : const Color(0xfffffefd);
   Color get ink => dark ? const Color(0xfff5f7f5) : const Color(0xff1b2732);
-  Color get muted => dark ? const Color(0xffb4bdc4) : const Color(0xff777c80);
+  Color get muted => dark ? const Color(0xffc2c7cc) : const Color(0xff5f676d);
   Color get green => dark ? const Color(0xff4fe09a) : const Color(0xff21844f);
   Color get border => dark ? const Color(0xff363e43) : const Color(0xffdedfdd);
   Color get mint => dark ? const Color(0xff1c2a25) : const Color(0xffedf2eb);
@@ -27,7 +27,7 @@ class AuthPalette {
   TextStyle body(double size, {bool bold = false}) => TextStyle(
     fontFamily: 'Inter',
     fontSize: size,
-    fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
+    fontWeight: bold ? FontWeight.w700 : FontWeight.w600,
     color: bold ? ink : muted,
     height: 1.3,
   );

@@ -819,7 +819,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('1'), findsNWidgets(2));
       expect(find.text('128'), findsNothing);
-      expect(find.text('—'), findsOneWidget);
+      expect(find.text('—'), findsNothing);
       await tester.ensureVisible(find.text('Preferences'));
       await tester.tap(find.text('Preferences'));
       await tester.pumpAndSettle();
@@ -844,19 +844,7 @@ void main() {
       });
       expect(api.mutations, isEmpty);
       await tester.ensureVisible(find.text('Notifications'));
-      final notificationSwitch = tester.widget<Switch>(
-        find.byType(Switch).first,
-      );
-      expect(notificationSwitch.value, false);
-      expect(notificationSwitch.onChanged, isNull);
-      await tester.tap(find.text('Notifications'));
-      await tester.pumpAndSettle();
-      expect(
-        find.text(
-          'Push notifications and reminders are not supported in this version.',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('Inbox & daily reminder'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
@@ -882,7 +870,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Choose your sync library'));
+      await tester.ensureVisible(find.text('Library sync'));
+      await tester.tap(find.text('Library sync'));
       await tester.pumpAndSettle();
       expect(find.text('Use cloud library'), findsOneWidget);
       expect(find.text('Use this device library'), findsOneWidget);
@@ -986,6 +975,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Forgot your password?'), findsOneWidget);
       await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const ValueKey('account-submit')));
       await tester.pumpAndSettle();
       expect(auth.resets, 1);
@@ -1016,6 +1006,7 @@ void main() {
         await tester.enterText(field, entry.value);
       }
       await tester.ensureVisible(find.byKey(const ValueKey('account-submit')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const ValueKey('account-submit')));
       await tester.pumpAndSettle();
       expect(value.identity, isNotNull);

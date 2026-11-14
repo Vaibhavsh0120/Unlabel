@@ -2,6 +2,17 @@
 
 ## Active checkpoint and maintenance
 
+- 14 November release: frontend 0.12.0+17 / backend 0.16.0, with larger type,
+  neutral charcoal glass, compact profile/settings and real inbox/browser push/
+  native scheduled reminders plus unsubscribe. Proof: FRONTEND_V0_12_0_REVIEW.md,
+  BACKEND_V0_16_0_REVIEW.md and SOURCE_AND_ASSET_AUDIT_2026_11_14.md under docs/planning.
+  This release retains current hosting. The user explicitly defers the complete
+  Coolify/PostgreSQL/MongoDB/Redis/self-hosted-auth replacement to the next major
+  version; see COOLIFY_ARCHITECTURE_REBUILD_PLAN.md. Existing Firebase data may be
+  discarded at that future cutover, after replacement verification. Public source
+  bundles/licenses and device-local guest data stay preserved.
+
+
 - The 5 November scanner maintenance advances frontend to 0.11.1+16; backend
   stays 0.15.0. Current scanner proof is in
   docs/planning/FRONTEND_V0_11_1_REVIEW.md. Camera pinch

@@ -108,17 +108,19 @@ class _InsightsPageState extends State<InsightsPage>
                   onOpen: () => _open(articles.first),
                 ),
                 const SizedBox(height: 20),
-                Row(
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 16,
+                  runSpacing: 8,
                   children: [
-                    Expanded(
-                      child: Text(
-                        _browseAll
-                            ? 'All insights'
-                            : _controller.selectedTopic == InsightTopic.all
-                            ? 'Today’s insights'
-                            : '${_controller.selectedTopic.label} insights',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
+                    Text(
+                      _browseAll
+                          ? 'All insights'
+                          : _controller.selectedTopic == InsightTopic.all
+                          ? 'Today’s insights'
+                          : '${_controller.selectedTopic.label} insights',
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     if (!_browseAll &&
                         _controller.selectedTopic == InsightTopic.all)

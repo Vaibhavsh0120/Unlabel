@@ -274,3 +274,17 @@ disables the navigation blur. Preserve readable evidence, source and error color
 48px controls, existing navigation and the stationary desktop shell.
 
 Historical reference notes elsewhere in this document retain their original context.
+
+
+# 14 November 2026 readability and notification release
+
+Use the 0.12.0 review for current evidence. Body text is 16–17px with medium
+weight, supporting text is 14px, and navigation labels are 13px. Dark surfaces
+are neutral charcoal. Profile email owns a selectable full-width row; sync sits
+in Settings, and two compact real library statistics replace the unrecorded
+comparison total. Larger text stacks cards and provider actions. Navigation
+moves 12px into the upper home-indicator inset, retaining control clearance.
+Auth keeps the original character, sprout and gardens as pixel-identical lossless
+WebP. The full PNG masters are in frontend/design_sources/artwork/auth; the
+retired scanner PNG is no longer bundled. Runtime/retained asset hashes and
+wordmark font derivation are in frontend/design_sources/runtime-assets.json.

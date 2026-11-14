@@ -67,6 +67,9 @@ class _ReportContentState extends State<_ReportContent> {
       }
       if (!mounted) return;
       setState(() => _saved = !_saved);
+      if (_saved) {
+        unawaited(NotificationScope.maybeOf(context)?.activity(saved: true));
+      }
       unawaited(UiFeedback.confirmed());
       widget.onChanged();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -711,10 +714,10 @@ class _SnapshotValue extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-        Text(
-          _human(nutrient.name),
-          style: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
-        ),
+          Text(
+            _human(nutrient.name),
+            style: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
+          ),
           const SizedBox(height: 5),
           Text(
             nutrient.basisLabel,

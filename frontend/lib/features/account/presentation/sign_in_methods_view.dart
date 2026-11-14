@@ -95,7 +95,9 @@ class SignInMethodsView extends StatelessWidget {
     Widget providerRow(Widget icon, Widget text, Widget action) =>
         LayoutBuilder(
           builder: (context, bounds) {
-            final large = MediaQuery.textScalerOf(context).scale(14) > 21;
+            final large =
+                bounds.maxWidth < 380 ||
+                MediaQuery.textScalerOf(context).scale(14) > 21;
             final content = Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

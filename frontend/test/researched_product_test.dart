@@ -628,6 +628,11 @@ void main() {
             )
             .first,
       );
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Show more products')),
+        alignment: .5,
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Show more products'));
       await tester.pumpAndSettle();
       expect(find.text('Research second'), findsOneWidget);
@@ -641,6 +646,12 @@ void main() {
             )
             .first,
       );
+      await tester.pumpAndSettle();
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Show more products')),
+        alignment: .5,
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Show more products'));
       await tester.pumpAndSettle();
       expect(repository.offCursors, [null, 'off-next', 'off-next']);

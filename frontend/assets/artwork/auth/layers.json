@@ -5,7 +5,7 @@
   "encoding": "Original generated RGBA PNG bytes; no resampling or crop.",
   "assets": [
     {
-      "asset": "frontend/assets/artwork/auth/mascot.png",
+      "asset": "frontend/design_sources/artwork/auth/mascot.png",
       "generated_artifact": "exec-c04fb3b1-9535-4e1a-928f-5b1c98b3d482.png",
       "generator": "image_gen.imagegen (built-in)",
       "prompt_intent": "Cream clay mascot holding green snack packet, separate from sprout and animated eyes.",
@@ -19,7 +19,7 @@
       "alpha_preserved": true
     },
     {
-      "asset": "frontend/assets/artwork/auth/sprout.png",
+      "asset": "frontend/design_sources/artwork/auth/sprout.png",
       "generated_artifact": "exec-d1629ecb-b500-41b0-8ed0-9a9f5f5e904c.png",
       "generator": "image_gen.imagegen (built-in)",
       "prompt_intent": "Two soft green clay leaves on a sprout for independent swaying.",
@@ -33,7 +33,7 @@
       "alpha_preserved": true
     },
     {
-      "asset": "frontend/assets/artwork/auth/garden.png",
+      "asset": "frontend/design_sources/artwork/auth/garden.png",
       "generated_artifact": "exec-20e7cb62-fc45-43f7-b72d-3bf96deff8f5.png",
       "generator": "image_gen.imagegen (built-in)",
       "prompt_intent": "Transparent clay garden with tomato on left, carton and banana on right, empty central stage.",
@@ -47,7 +47,7 @@
       "alpha_preserved": true
     },
     {
-      "asset": "frontend/assets/artwork/auth/garden-dark.png",
+      "asset": "frontend/design_sources/artwork/auth/garden-dark.png",
       "generated_artifact": "exec-a37c7cac-fe39-448c-bc53-9ef34906299d.png",
       "generator": "image_gen.imagegen (built-in)",
       "prompt_intent": "Edit the garden preserving its objects and transparent sky; charcoal tabletop, moss platform, emerald foliage and subdued warm highlights.",

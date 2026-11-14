@@ -39,6 +39,7 @@ from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
 from app.live_products.nutrigraph import NutriGraphLookup
 from app.live_products.router import build_router as build_live_products_router
+from app.notifications import build_router as build_notifications_router
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import BARCODE_PATTERN, OpenFoodFactsProvider
 from app.reports.glossary import GlossaryStore
@@ -188,6 +189,7 @@ def create_app(
         responses={422: {"model": ValidationFailure, "description": "Invalid request data"}},
     )
     application.include_router(build_router(store=claim_store))
+    application.include_router(build_notifications_router(config))
     application.include_router(build_live_products_router(config))
     application.include_router(
         build_research_router(lambda request: request.app.state.research_catalogue)
@@ -327,6 +329,7 @@ def create_app(
                 "authentication": "password_or_google",
             },
             "capabilities": {
+                "notification_inbox": True,
                 "ai_extraction": request.app.state.ai_gateway is not None,
                 "ai_machine_observations": request.app.state.ai_gateway is not None,
                 "live_nutrigraph": request.app.state.nutrigraph is not None,

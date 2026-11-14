@@ -35,6 +35,7 @@ class _AuthSceneState extends State<AuthScene>
     duration: const Duration(milliseconds: 560),
   );
   bool _foreground = true;
+  bool _mascotReady = false, _preparingMascot = false;
   bool get _motion =>
       _foreground &&
       TickerMode.valuesOf(context).enabled &&
@@ -50,6 +51,17 @@ class _AuthSceneState extends State<AuthScene>
   void didChangeDependencies() {
     super.didChangeDependencies();
     _syncMotion();
+    if (!_preparingMascot) {
+      _preparingMascot = true;
+      var failed = false;
+      precacheImage(
+        const AssetImage('assets/artwork/auth/mascot.webp'),
+        context,
+        onError: (_, _) => failed = true,
+      ).then((_) {
+        if (mounted && !failed) setState(() => _mascotReady = true);
+      });
+    }
   }
 
   void _syncMotion() {
@@ -101,17 +113,17 @@ class _AuthSceneState extends State<AuthScene>
             ? math.min(w * .55, h * .47)
             : w * (tablet ? .43 : .55);
         final body = Image.asset(
-          'assets/artwork/auth/mascot.png',
+          'assets/artwork/auth/mascot.webp',
           filterQuality: FilterQuality.medium,
           gaplessPlayback: true,
         );
         final sprout = Image.asset(
-          'assets/artwork/auth/sprout.png',
+          'assets/artwork/auth/sprout.webp',
           filterQuality: FilterQuality.medium,
           gaplessPlayback: true,
         );
         final garden = Image.asset(
-          'assets/artwork/auth/garden${p.dark ? '-dark' : ''}.png',
+          'assets/artwork/auth/garden${p.dark ? '-dark' : ''}.webp',
           fit: BoxFit.fill,
           filterQuality: FilterQuality.medium,
         );
@@ -191,18 +203,19 @@ class _AuthSceneState extends State<AuthScene>
                                   height: mascotSize,
                                   child: child!,
                                 ),
-                                Positioned(
-                                  left: 0,
-                                  top: mascotSize * .12,
-                                  width: mascotSize,
-                                  height: mascotSize,
-                                  child: CustomPaint(
-                                    painter: _Eyes(
-                                      phase: _idle.value,
-                                      happy: widget.celebrating,
+                                if (_mascotReady)
+                                  Positioned(
+                                    left: 0,
+                                    top: mascotSize * .12,
+                                    width: mascotSize,
+                                    height: mascotSize,
+                                    child: CustomPaint(
+                                      painter: _Eyes(
+                                        phase: _idle.value,
+                                        happy: widget.celebrating,
+                                      ),
                                     ),
                                   ),
-                                ),
                                 if (widget.celebrating)
                                   Positioned.fill(
                                     child: CustomPaint(
@@ -505,7 +518,7 @@ class _SceneCard extends StatelessWidget {
     final graphic = SizedBox.square(
       dimension: 43 * scale,
       child: kind == 0
-          ? Image.asset('assets/artwork/auth/sprout.png')
+          ? Image.asset('assets/artwork/auth/sprout.webp')
           : CustomPaint(painter: kind == 1 ? const _Bars() : const _Heart()),
     );
     return Container(

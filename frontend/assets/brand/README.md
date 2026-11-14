@@ -5,8 +5,10 @@ The unchanged Google G in `google-g.svg` comes from Google's official
 on Google sign-in controls. It identifies that provider, not Unlabel branding.
 
 The app-only startup wordmark uses bundled Cormorant Garamond at regular weight.
-Its unmodified variable font, SIL Open Font License and pinned official Google
-Fonts source URLs/SHA-256 hashes are in `fonts/startup-font-source.json`. It does
+Its full original variable font, SIL Open Font License and pinned official Google
+Fonts source URLs/SHA-256 hashes are in `fonts/startup-font-source.json`. Runtime
+uses the regular-weight Unlabel-only subset, with derivation/hashes recorded in
+`frontend/design_sources/runtime-assets.json`. It does
 not require an installed system serif or a runtime font download.
 
 Original large leaf above a rounded Unlabel wordmark, following the supplied

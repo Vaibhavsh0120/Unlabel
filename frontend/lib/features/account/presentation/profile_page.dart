@@ -8,6 +8,8 @@ import '../../../core/accounts/account_controller.dart';
 import '../../../core/accounts/profile_media.dart';
 import '../../../core/accounts/password_policy.dart';
 import '../../../core/models/app_failure.dart';
+import '../../../core/interaction/ui_feedback.dart';
+import '../../../core/widgets/glass_panel.dart';
 import '../../scanner/presentation/ui_components.dart';
 import '../data/device_profile_preferences.dart';
 import 'auth_page.dart';
@@ -47,7 +49,7 @@ class ProfilePage extends StatefulWidget {
     this.onAbout,
     this.onSaved,
     this.onScans,
-    this.onCompare,
+    this.onNotifications,
     this.themeMode,
     this.onThemeModeChanged,
     this.showHeader = true,
@@ -57,7 +59,7 @@ class ProfilePage extends StatefulWidget {
   });
   final AccountController controller;
   final VoidCallback onContinue;
-  final VoidCallback? onAppearance, onAbout, onSaved, onScans, onCompare;
+  final VoidCallback? onAppearance, onAbout, onSaved, onScans, onNotifications;
   final ThemeMode? themeMode;
   final ValueChanged<ThemeMode>? onThemeModeChanged;
   final bool embedded, showHeader;
@@ -176,6 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => _preferencesBusy = true);
     await _run(context, () async {
       await _preferencesStore.write(preferences);
+      unawaited(UiFeedback.confirmed());
       if (mounted) {
         setState(() {
           _preferences = preferences;
@@ -321,9 +324,7 @@ class _ProfilePageState extends State<ProfilePage> {
         : null,
     builder: (context) => _ProfileWindow(
       title: title,
-      icon: title == 'Notifications'
-          ? Icons.notifications_none_outlined
-          : Icons.help_outline_rounded,
+      icon: Icons.help_outline_rounded,
       content: Text(message),
       actions: [
         if (showAbout && widget.onAbout != null)
@@ -521,18 +522,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ? const Color(0xff1d332b)
       : const Color(0xffe8faf2);
 
-  Widget _card(Widget child, {double padding = 16}) {
-    final theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? theme.colorScheme.surfaceContainerLow
-            : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: .5),
-        ),
-      ),
+  Widget _card(Widget child, {double padding = 20}) {
+    return GlassPanel(
       child: Padding(padding: EdgeInsets.all(padding), child: child),
     );
   }
@@ -546,24 +537,17 @@ class _ProfilePageState extends State<ProfilePage> {
         : signedIn
         ? 'Your Unlabel account'
         : 'Your guest profile';
-    return DecoratedBox(
+    return GlassPanel(
       key: const ValueKey('profile-identity-card'),
-      decoration: BoxDecoration(
-        color: _mint,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: .45),
-        ),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: LayoutBuilder(
           builder: (context, box) {
             final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
             final avatar = AccountAvatar(
               identity: controller.identity,
               displayName: displayName,
-              size: largeText ? 72 : 88,
+              size: largeText ? 64 : 68,
             );
             final edit = IconButton(
               key: const ValueKey('profile-edit'),
@@ -577,15 +561,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   name,
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontSize: 20,
+                    fontSize: 23,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  signedIn
-                      ? controller.identity!.email ?? 'Signed in'
-                      : 'Saved on this device',
+                  signedIn ? 'Your account' : 'Saved on this device',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -602,27 +584,45 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ],
             );
-            if (largeText && box.maxWidth < 460) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [avatar, const Spacer(), edit],
-                  ),
-                  const SizedBox(height: 12),
-                  details,
-                ],
-              );
-            }
-            return Row(
+            final header = Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 avatar,
-                const SizedBox(width: 14),
-                Expanded(child: details),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: largeText && box.maxWidth < 460
+                      ? const SizedBox()
+                      : details,
+                ),
                 const SizedBox(width: 8),
                 edit,
+              ],
+            );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                header,
+                if (largeText && box.maxWidth < 460) ...[
+                  const SizedBox(height: 16),
+                  details,
+                ],
+                if (signedIn && controller.identity!.email != null) ...[
+                  const SizedBox(height: 20),
+                  Divider(height: 1, color: theme.colorScheme.outlineVariant),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Email address',
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  SelectableText(
+                    controller.identity!.email!,
+                    key: const ValueKey('profile-email'),
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                ],
               ],
             );
           },
@@ -640,15 +640,12 @@ class _ProfilePageState extends State<ProfilePage> {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             child: LayoutBuilder(
               builder: (context, box) {
-                final vertical =
-                    box.maxWidth < 75 ||
-                    MediaQuery.textScalerOf(context).scale(12) > 17;
-                final compact = box.maxWidth < 130;
+                final vertical = box.maxWidth < 100;
                 final image = Container(
-                  width: compact ? 28 : 38,
+                  width: 40,
                   height: 40,
                   decoration: BoxDecoration(
                     color: _mint,
@@ -658,28 +655,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
                 final caption = Text(
                   label,
-                  maxLines: vertical ? null : 1,
                   semanticsLabel: label,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: compact ? 10 : 11,
+                    fontSize: 14,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 );
                 final text = Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (vertical)
-                      caption
-                    else
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
-                        child: caption,
-                      ),
+                    caption,
                     Text(
                       value,
                       style: theme.textTheme.titleLarge?.copyWith(
-                        fontSize: 23,
+                        fontSize: 26,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -693,7 +682,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     : Row(
                         children: [
                           image,
-                          SizedBox(width: compact ? 6 : 10),
+                          const SizedBox(width: 12),
                           Expanded(child: text),
                         ],
                       );
@@ -724,20 +713,14 @@ class _ProfilePageState extends State<ProfilePage> {
           FeatureIcon('bookmark', size: 24, color: theme.colorScheme.onSurface),
           widget.onSaved,
         ),
-        Tooltip(
-          message: 'Comparison totals are not recorded on this device.',
-          child: _stat(
-            'Comparisons',
-            '—',
-            Icon(
-              Icons.balance_outlined,
-              size: 25,
-              color: theme.colorScheme.onSurface,
-            ),
-            widget.onCompare,
-          ),
-        ),
       ];
+      if (box.maxWidth < 340 ||
+          MediaQuery.textScalerOf(context).scale(14) > 21) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [tiles[0], const SizedBox(height: 12), tiles[1]],
+        );
+      }
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -926,7 +909,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 48),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   children: [
                     Container(
@@ -950,7 +933,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Text(
                             label,
                             style: theme.textTheme.bodyLarge?.copyWith(
-                              fontSize: 15,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
                               color: color,
                               height: 1.2,
                             ),
@@ -1000,6 +984,21 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             _sectionHeading('Settings', Icons.settings_outlined),
             _setting(
+              'Library sync',
+              Icons.cloud_outlined,
+              subtitle: !signedIn
+                  ? 'Sign in to sync your library'
+                  : switch (controller.state) {
+                      AccountSyncState.needsChoice =>
+                        'Choose your sync library',
+                      AccountSyncState.failed => 'Check private sync',
+                      AccountSyncState.syncing =>
+                        'Syncing your private library…',
+                      _ => 'Manage your private library',
+                    },
+              onTap: _privacy,
+            ),
+            _setting(
               'Sign-in methods',
               Icons.manage_accounts_outlined,
               subtitle: signedIn
@@ -1010,15 +1009,8 @@ class _ProfilePageState extends State<ProfilePage> {
             _setting(
               'Notifications',
               Icons.notifications_none_outlined,
-              subtitle: 'Not available yet',
-              onTap: () => _information(
-                'Notifications',
-                'Push notifications and reminders are not supported in this version.',
-              ),
-              trailing: Semantics(
-                label: 'Notifications unavailable in this version',
-                child: const Switch(value: false, onChanged: null),
-              ),
+              subtitle: 'Inbox & daily reminder',
+              onTap: widget.onNotifications,
             ),
             _setting(
               'Dark mode',
@@ -1043,7 +1035,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Icons.help_outline_rounded,
               onTap: () => _information(
                 'Help',
-                'Scan a package label, confirm the text, and read its report. Saved keeps your selected reports. Compare uses each package’s stated nutrition basis. Unknown facts are left unknown.',
+                'Scan a barcode or photograph a package label to read its report. Save reports to find them later. Compare uses each package’s stated nutrition basis. Unknown facts are left unknown.',
                 showAbout: true,
               ),
             ),
@@ -1081,28 +1073,14 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 18),
             ],
             _identity(),
-            if (controller.identity != null &&
-                (controller.state == AccountSyncState.needsChoice ||
-                    controller.state == AccountSyncState.failed)) ...[
-              const SizedBox(height: 8),
-              TextButton.icon(
-                onPressed: _privacy,
-                icon: const Icon(Icons.cloud_outlined),
-                label: Text(
-                  controller.state == AccountSyncState.needsChoice
-                      ? 'Choose your sync library'
-                      : 'Check private sync',
-                ),
-              ),
-            ],
             if (controller.identity == null &&
                 controller.state == AccountSyncState.failed) ...[
               const SizedBox(height: 8),
               Text(controller.message),
             ],
-            const SizedBox(height: 14),
+            const SizedBox(height: 20),
             _statistics(),
-            const SizedBox(height: 14),
+            const SizedBox(height: 24),
             if (desktop)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1114,7 +1092,7 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             else ...[
               _preferenceCard(),
-              const SizedBox(height: 14),
+              const SizedBox(height: 20),
               _settingsCard(),
             ],
           ],

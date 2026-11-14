@@ -28,6 +28,7 @@ GET_ROUTES = (
     rf"/v1/researched/products/{ENTRY_ID}",
     rf"/v1/researched/products/by-barcode/{BARCODE}",
     r"/v1/account/sync",
+    r"/v1/notifications(?:/push-config)?",
     r"/v1/ai/active",
     rf"/v1/ai/observations/{BARCODE}",
     rf"/v1/live-products/nutrigraph/{BARCODE}",
@@ -35,6 +36,7 @@ GET_ROUTES = (
 POST_ROUTES = (
     r"/v1/(?:nutrition/normalize|claims/check|claims/catalogue-check|community/contributions|reports/check|reports/compare|account/sync)",
     r"/v1/ai/extract",
+    r"/v1/notifications/(?:subscription|test)",
 )
 DELETE_ROUTES = (r"/v1/account/sync",)
 

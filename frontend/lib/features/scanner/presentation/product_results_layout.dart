@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/notifications/notification_controller.dart';
 import 'package:flutter/services.dart';
 
 import 'ui_components.dart';
@@ -122,11 +123,7 @@ class ResultsAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           const SizedBox(width: 24),
-          IconButton(
-            tooltip: 'Notifications',
-            onPressed: nav.notifications,
-            icon: const FeatureIcon('bell', size: 24),
-          ),
+          NotificationBell(onPressed: nav.notifications),
           const SizedBox(width: 16),
           IconButton(
             tooltip: 'Profile',

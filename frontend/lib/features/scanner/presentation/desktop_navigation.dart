@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/notifications/notification_controller.dart';
+
 import '../../../core/widgets/brand_mark.dart';
 import '../../../core/widgets/glass_panel.dart';
 import '../../account/presentation/profile_avatar.dart';
@@ -307,11 +309,7 @@ class DesktopTopBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const Spacer(),
-            IconButton(
-              onPressed: onNotifications,
-              tooltip: 'Notifications',
-              icon: const FeatureIcon('bell', size: 28),
-            ),
+            NotificationBell(onPressed: onNotifications),
             const SizedBox(width: 24),
             TextButton(
               onPressed: onProfile,

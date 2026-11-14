@@ -36,6 +36,7 @@ ai = import_module("app.ai.models")
 ai_router = import_module("app.ai.router")
 machine_observations = import_module("app.ai.observations")
 live_products = import_module("app.live_products.models")
+notifications = import_module("app.notifications")
 compare = import_module("app.comparison.service").compare
 
 
@@ -53,6 +54,9 @@ def main():
         create_app(Settings(_env_file=None)).openapi(),
     )
     for filename, model in {
+        "notification-feed-v1.schema.json": notifications.NotificationFeed,
+        "notification-subscription-v1.schema.json": notifications.SubscriptionChange,
+        "notification-push-config-v1.schema.json": notifications.PushConfig,
         "nutrition-lookup-v1.schema.json": products.NutritionLookup,
         "nutrition-normalize-request-v1.schema.json": nutrition.NormalizeRequest,
         "nutrition-normalize-response-v1.schema.json": products.NormalizeResponse,

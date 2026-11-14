@@ -81,10 +81,17 @@ class _MobileNavigationState extends State<MobileNavigation>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    return SafeArea(
-      top: false,
+    // The home-indicator area already includes breathing room. Use its upper
+    // half to lower the floating pill while keeping every control above it.
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        16 + MediaQuery.paddingOf(context).left,
+        8,
+        16 + MediaQuery.paddingOf(context).right,
+        (MediaQuery.paddingOf(context).bottom - 12).clamp(4.0, 40.0),
+      ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
+        padding: EdgeInsets.zero,
         child: Center(
           heightFactor: 1,
           child: ConstrainedBox(

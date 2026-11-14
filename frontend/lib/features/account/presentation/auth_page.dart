@@ -611,8 +611,8 @@ class _AuthPageState extends State<AuthPage>
     bool compact = false,
   }) {
     final p = AuthPalette(context), s = scale;
-    final font = (desktop ? 20 : 15) * s;
-    final control = math.max(44.0, (desktop ? (_creating ? 55 : 64) : 44) * s);
+    final font = math.max(16.0, (desktop ? 21 : 17) * s);
+    final control = math.max(50.0, (desktop ? (_creating ? 55 : 64) : 50) * s);
     final gap = (desktop ? (_creating ? 15 : 22) : (_creating ? 8 : 14)) * s;
     return AutofillGroup(
       onDisposeAction: AutofillContextAction.cancel,
@@ -713,7 +713,7 @@ class _AuthPageState extends State<AuthPage>
                 confirmation: true,
               ),
               SizedBox(height: 12 * s),
-              _passwordHints((desktop ? 14.5 : 12.5) * s),
+              _passwordHints(math.max(14.0, (desktop ? 15 : 14) * s)),
               SizedBox(height: (desktop ? 24 : 17) * s),
             ] else
               Align(
@@ -754,7 +754,7 @@ class _AuthPageState extends State<AuthPage>
               ),
             ] else ...[
               SizedBox(height: (desktop ? 21 : 16) * s),
-              _legal((desktop ? 14.5 : 12.3) * s),
+              _legal(math.max(14.0, (desktop ? 15 : 14) * s)),
             ],
             if (!desktop) ...[
               SizedBox(height: (_creating ? 8 : 6) * s),

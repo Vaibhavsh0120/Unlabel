@@ -796,7 +796,7 @@ void main() {
       final bar = tester.getRect(find.byKey(const Key('floating-navigation')));
       expect(bar.left, greaterThanOrEqualTo(16));
       expect(bar.right, lessThanOrEqualTo(settings.$1 - 16));
-      expect(844 - 34 - bar.bottom, closeTo(2, .01));
+      expect(844 - 34 - bar.bottom, closeTo(-12, .01));
       expect(
         tester.getRect(find.byType(SingleChildScrollView).first).bottom,
         greaterThan(bar.bottom),

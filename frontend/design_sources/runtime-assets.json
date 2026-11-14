@@ -1,0 +1,50 @@
+{
+  "schema_version": "1",
+  "assets": [
+    {
+      "source": "frontend/design_sources/artwork/auth/garden.png",
+      "runtime": "frontend/assets/artwork/auth/garden.webp",
+      "source_sha256": "d173224e3651d0b9e248284416047b289d8224c5d68d6e2efe5fef644ca45f6c",
+      "runtime_sha256": "8879d5c292916148f0ceed0b5ae803be05cef2c0d7c9b0061160cc01ba942055",
+      "source_bytes": 1211359,
+      "runtime_bytes": 777822,
+      "derivation": "Lossless WebP; identical RGBA pixels and dimensions"
+    },
+    {
+      "source": "frontend/design_sources/artwork/auth/garden-dark.png",
+      "runtime": "frontend/assets/artwork/auth/garden-dark.webp",
+      "source_sha256": "7424706b4ae4f74e6d1a7bb63dcd1a8ea5a597fe24264b28af16beb7265f3ef2",
+      "runtime_sha256": "94587ca86339c7b196d4ce827a353bd1c77b4165b62fd89ac0c486239e83d066",
+      "source_bytes": 1306631,
+      "runtime_bytes": 867600,
+      "derivation": "Lossless WebP; identical RGBA pixels and dimensions"
+    },
+    {
+      "source": "frontend/design_sources/artwork/auth/mascot.png",
+      "runtime": "frontend/assets/artwork/auth/mascot.webp",
+      "source_sha256": "da68a4c62bbfb16b216d57277d5a00037b2af7caacf27b1453bfdc4730743cb8",
+      "runtime_sha256": "b25c97fd826ca2dc5b8b54327b041838602061efbf45eb4cfe6cc084cf211590",
+      "source_bytes": 1133801,
+      "runtime_bytes": 644372,
+      "derivation": "Lossless WebP; identical RGBA pixels and dimensions"
+    },
+    {
+      "source": "frontend/design_sources/artwork/auth/sprout.png",
+      "runtime": "frontend/assets/artwork/auth/sprout.webp",
+      "source_sha256": "23ea71ab208f8d3d14fcc93c43a1cbdb993e94b8b9ff99e61ec1ef3040c2badd",
+      "runtime_sha256": "537e71a8fc1560e76f5c3dfb75d2cc79b41637e6666ea6c2c9513040cb2fcadb",
+      "source_bytes": 754232,
+      "runtime_bytes": 424644,
+      "derivation": "Lossless WebP; identical RGBA pixels and dimensions"
+    },
+    {
+      "source": "frontend/assets/brand/fonts/CormorantGaramond-Variable.ttf",
+      "runtime": "frontend/assets/brand/fonts/UnlabelStartup-Wordmark.ttf",
+      "source_sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+      "runtime_sha256": "0fac27cea41dbbd8555bb62bdf5131ed38b2055d4fafe775a76c4668485fc120",
+      "source_bytes": 1195560,
+      "runtime_bytes": 2376,
+      "derivation": "Regular 400 instance; only the literal startup wordmark Unlabel; derived family renamed"
+    }
+  ]
+}

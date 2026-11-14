@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "available": {
+      "title": "Available",
+      "type": "boolean"
+    },
+    "public_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Public Key"
+    },
+    "reminder_utc_hour": {
+      "default": 13,
+      "title": "Reminder Utc Hour",
+      "type": "integer"
+    },
+    "reminder_utc_minute": {
+      "default": 30,
+      "title": "Reminder Utc Minute",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "available"
+  ],
+  "title": "PushConfig",
+  "type": "object"
+}

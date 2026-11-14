@@ -74,6 +74,58 @@ class UnlabelRepository {
     }
   }
 
+  Future<List<Map<String, dynamic>>> notifications() async {
+    final value = await _request('GET', '/v1/notifications');
+    final items = value['items'];
+    if (value['schema_version'] != '1' ||
+        items is! List ||
+        items.length > 20 ||
+        items.any((v) => v is! Map<String, dynamic>)) {
+      throw const AppFailure(
+        'notification_format',
+        'App updates could not be read. Please try again.',
+      );
+    }
+    return items.cast<Map<String, dynamic>>();
+  }
+
+  Future<JsonMap> notificationPushConfig() =>
+      _request('GET', '/v1/notifications/push-config');
+  Future<void> notificationSubscription(
+    JsonMap subscription, {
+    required bool enabled,
+  }) async {
+    final token = await _auth.token();
+    if (token == null) {
+      throw const AppFailure(
+        'notification_auth',
+        'The reminder could not connect. Please try again.',
+      );
+    }
+    await _request(
+      'POST',
+      '/v1/notifications/subscription',
+      token: token,
+      body: {'subscription': subscription, 'enabled': enabled},
+    );
+  }
+
+  Future<void> testNotification(JsonMap subscription) async {
+    final token = await _auth.token();
+    if (token == null) {
+      throw const AppFailure(
+        'notification_auth',
+        'The test could not connect. Please try again.',
+      );
+    }
+    await _request(
+      'POST',
+      '/v1/notifications/test',
+      token: token,
+      body: subscription,
+    );
+  }
+
   Future<JsonMap> _serviceMetadata() async {
     _ensureOpen();
     if (_metadataAt == null ||

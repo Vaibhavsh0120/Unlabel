@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/interaction/ui_feedback.dart';
+import '../../../core/notifications/notification_controller.dart';
 import '../../../core/network/unlabel_repository.dart';
 import '../../../core/storage/local_store.dart';
 import 'product_results_layout.dart';

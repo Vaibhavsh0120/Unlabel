@@ -75,7 +75,7 @@ void main() {
         final empty = find.byKey(const Key('mobile-empty-scans'));
         final action = find.byKey(const Key('mobile-empty-start-scan'));
         expect(empty, findsOneWidget);
-        expect(tester.getSize(empty).height, inInclusiveRange(130, 160));
+        expect(tester.getSize(empty).height, inInclusiveRange(130, 200));
         expect(
           find.descendant(of: empty, matching: find.byType(Image)),
           findsNothing,

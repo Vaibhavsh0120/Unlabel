@@ -39,6 +39,9 @@ class Settings(BaseSettings):
     community_database_id: Literal["unlabel"] = "unlabel"
     community_service_account_json: SecretStr | None = Field(default=None, repr=False)
     community_actor_secret: SecretStr | None = Field(default=None, repr=False)
+    web_push_private_key: SecretStr | None = Field(default=None, repr=False)
+    web_push_public_key: str = Field(default="", max_length=128)
+    cron_secret: SecretStr | None = Field(default=None, repr=False)
     ai_enabled: bool | Literal["auto"] = "auto"
     gemini_enabled: bool = True
     openai_enabled: bool = True

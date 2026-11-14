@@ -64,7 +64,7 @@ Future<void> _tap(WidgetTester tester, Finder finder) async {
 
 Future<void> _pick(WidgetTester tester, String side, String name) async {
   await _tap(tester, find.text('Choose $side'));
-  await _tap(tester, find.widgetWithText(ListTile, name));
+  await _tap(tester, find.text(name));
 }
 
 http.Response _response(JsonMap body, {double sugarDifference = 0}) {

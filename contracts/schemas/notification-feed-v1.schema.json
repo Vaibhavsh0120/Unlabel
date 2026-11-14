@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "Announcement": {
+      "properties": {
+        "id": {
+          "maxLength": 80,
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 100,
+          "title": "Title",
+          "type": "string"
+        },
+        "body": {
+          "maxLength": 360,
+          "title": "Body",
+          "type": "string"
+        },
+        "published_at": {
+          "format": "date-time",
+          "title": "Published At",
+          "type": "string"
+        },
+        "destination": {
+          "enum": [
+            "profile",
+            "insights",
+            "scan"
+          ],
+          "title": "Destination",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "body",
+        "published_at",
+        "destination"
+      ],
+      "title": "Announcement",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/Announcement"
+      },
+      "maxItems": 20,
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "title": "NotificationFeed",
+  "type": "object"
+}

@@ -9,12 +9,14 @@ import '../core/accounts/account_controller.dart';
 import '../core/accounts/account_sync_api.dart';
 import '../core/accounts/profile_media.dart';
 import '../core/interaction/ui_feedback.dart';
+import '../core/notifications/notification_controller.dart';
 import '../core/network/scanner_auth.dart';
 import '../core/network/unlabel_repository.dart';
 import '../core/storage/local_store.dart';
 import '../core/widgets/brand_mark.dart';
 import 'artwork_warmup.dart';
 import '../features/account/presentation/profile_page.dart';
+import '../features/account/presentation/notifications_page.dart';
 import '../features/account/presentation/profile_avatar.dart';
 import '../features/account/presentation/auth_page.dart';
 import '../features/scanner/presentation/compare_page.dart';
@@ -77,6 +79,8 @@ class _UnlabelAppState extends State<UnlabelApp> {
   late final LocalStore _store;
   late final AccountController _account;
   late final ProfileMediaController _profileMedia;
+  late final NotificationController _notifications;
+  bool _pendingNotificationOpen = false, _notificationRouteOpen = false;
   bool _showSignInReturn = false;
   bool _accountRestored = false;
   final _navigator = GlobalKey<NavigatorState>();
@@ -102,6 +106,11 @@ class _UnlabelAppState extends State<UnlabelApp> {
           guestStore: _store,
           preferences: _store.preferences,
         );
+    _notifications = NotificationController(
+      preferences: _store.preferences,
+      repository: _repository,
+    );
+    unawaited(_notifications.start(_openNotifications));
     _identity = _account.identity?.uid;
     _showSignInReturn = isAccountSignInReturnUri(
       widget.initialUri ?? Uri.base,
@@ -194,6 +203,27 @@ class _UnlabelAppState extends State<UnlabelApp> {
       _welcome = welcome && !_missingPageRecovered && !_welcomeDismissed;
       _loading = false;
     });
+    if (_pendingNotificationOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _openNotifications());
+    }
+  }
+
+  void _openNotifications() {
+    if (!mounted || _notificationRouteOpen) return;
+    final navigator = _navigator.currentState;
+    if (_loading || navigator == null) {
+      _pendingNotificationOpen = true;
+      return;
+    }
+    _pendingNotificationOpen = false;
+    _notificationRouteOpen = true;
+    navigator
+        .push<void>(
+          MaterialPageRoute(
+            builder: (_) => NotificationsPage(controller: _notifications),
+          ),
+        )
+        .whenComplete(() => _notificationRouteOpen = false);
   }
 
   Future<void> _continue() async {
@@ -235,6 +265,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
   @override
   void dispose() {
     _profileMedia.dispose();
+    _notifications.dispose();
     _account.removeListener(_accountChanged);
     if (widget.accountController == null) {
       _account.dispose();
@@ -259,11 +290,14 @@ class _UnlabelAppState extends State<UnlabelApp> {
         : isMissingWebPage
         ? '/not-found'
         : null,
-    builder: (context, child) => ProfileMediaScope(
-      controller: _profileMedia,
-      child: ArtworkWarmup(
-        welcome: _welcome,
-        child: _RootPageScope(buildPage: _rootPage, child: child!),
+    builder: (context, child) => NotificationScope(
+      controller: _notifications,
+      child: ProfileMediaScope(
+        controller: _profileMedia,
+        child: ArtworkWarmup(
+          welcome: _welcome,
+          child: _RootPageScope(buildPage: _rootPage, child: child!),
+        ),
       ),
     ),
     onGenerateInitialRoutes: (name) => [_pageRoute(RouteSettings(name: name))],
@@ -313,6 +347,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
           ),
           body: ProfilePage(
             controller: _account,
+            onNotifications: _openNotifications,
             onContinue: _finishSignInReturn,
             embedded: true,
             showHeader: false,
@@ -346,6 +381,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
             themeMode: _themeMode,
             onThemeModeChanged: (mode) => unawaited(_setAppearance(mode)),
             showNotFound: missing,
+            onNotifications: _openNotifications,
             onMissingPageRecovered: onRecovered,
           );
   }
@@ -370,6 +406,7 @@ class _ClientHome extends StatefulWidget {
     required this.themeMode,
     required this.onThemeModeChanged,
     required this.onMissingPageRecovered,
+    required this.onNotifications,
     this.showNotFound = false,
     this.barcodeScannerFactory,
     super.key,
@@ -381,6 +418,7 @@ class _ClientHome extends StatefulWidget {
   final ThemeMode themeMode;
   final ValueChanged<ThemeMode> onThemeModeChanged;
   final VoidCallback onMissingPageRecovered;
+  final VoidCallback onNotifications;
   final bool showNotFound;
   final LiveBarcodeScanner Function()? barcodeScannerFactory;
   @override
@@ -447,7 +485,10 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) _insightController.refreshDay();
+    if (state == AppLifecycleState.resumed) {
+      _insightController.refreshDay();
+      unawaited(NotificationScope.maybeOf(context)?.refresh());
+    }
   }
 
   @override
@@ -504,6 +545,9 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     }
     try {
       await widget.store.record(report);
+      if (mounted) {
+        unawaited(NotificationScope.maybeOf(context)?.activity(saved: false));
+      }
       _changed();
     } on AppFailure catch (error) {
       if (mounted) {
@@ -712,7 +756,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       ),
       SizedBox(height: 12),
       Text(
-        'Solar icons by 480 Design — CC BY 4.0. Bundled typefaces: Manrope, Inter, Nunito, Quicksand and Cormorant Garamond — SIL Open Font License.',
+        'Solar icons by 480 Design — CC BY 4.0. Bundled typefaces: Manrope, Inter and Cormorant Garamond — SIL Open Font License.',
       ),
     ],
   );
@@ -743,13 +787,10 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
               Navigator.of(context).pop();
               _library(2);
             },
-            onCompare: () {
-              Navigator.of(context).pop();
-              _selectTab(2);
-            },
             onContinue: () => Navigator.of(context).pop(),
             onAppearance: _appearance,
             onAbout: _about,
+            onNotifications: _notifications,
           ),
         ),
       ),
@@ -773,21 +814,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       MediaQuery.sizeOf(context).width >= 1200 &&
       MediaQuery.textScalerOf(context).scale(14) <= 21;
 
-  void _notifications() => showDialog<void>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Notifications'),
-      content: const Text(
-        'You have no notifications. Product reminders are not enabled yet.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
-        ),
-      ],
-    ),
-  );
+  void _notifications() => widget.onNotifications();
 
   @override
   Widget build(BuildContext context) {
@@ -839,7 +866,11 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                                           : () => _selectTab(0),
                                     )
                                   : null,
-                              toolbarHeight: largeText ? 112 : 64,
+                              toolbarHeight: largeText
+                                  ? (MediaQuery.sizeOf(context).height < 500
+                                        ? 88
+                                        : 112)
+                                  : 64,
                               title: _tab == 6
                                   ? const Text('Our Sources')
                                   : _tab == 5
@@ -873,16 +904,21 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
                                                 const BrandLeaf(size: 30),
                                             ],
                                           ),
-                                          Text(
-                                            'Know Beyond the Label',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: theme.textTheme.bodySmall,
-                                          ),
+                                          if (!largeText ||
+                                              MediaQuery.sizeOf(context)
+                                                      .height >=
+                                                  500)
+                                            Text(
+                                              'Know Beyond the Label',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: theme.textTheme.bodySmall,
+                                            ),
                                         ],
                                       ),
                                     ),
                               actions: [
+                                NotificationBell(onPressed: _notifications),
                                 IconButton(
                                   constraints: const BoxConstraints(
                                     minWidth: 48,

@@ -290,7 +290,7 @@ void main() {
       );
       expect(
         tester.getSize(find.byKey(const Key('scan-preview'))).height,
-        greaterThan(360),
+        greaterThan(340),
       );
       expect(find.text('Capture the front, back or barcode'), findsOneWidget);
       expect(

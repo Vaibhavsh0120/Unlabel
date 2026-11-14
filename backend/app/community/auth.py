@@ -32,6 +32,8 @@ class CommunityRuntime:
         self.store = FirestoreContributionStore(database)
         self.personal_store = FirestorePersonalStore(database)
         self.ai_store = FirestoreAiSelectionStore(database)
+        from app.notifications import BrowserPushStore
+        self.notification_store = BrowserPushStore(database)
 
     def verify_token(self, token: str) -> str:
         return self._verify_token(token, account=False)

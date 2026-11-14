@@ -1,12 +1,10 @@
 # Unlabel documentation
 
-Current update: **frontend 0.11.1+16 / backend 0.15.0**, adding pinch zoom,
-preview-relative native focus and higher-detail small-barcode photo decoding,
-plus Manrope/Inter typography and glass surfaces in both themes.
-Local, hosted, native and device evidence remain
-separate. [Frontend review](planning/FRONTEND_V0_11_1_REVIEW.md) ·
-[Backend review](planning/BACKEND_V0_15_0_REVIEW.md) ·
-[Optional sources](architecture/OPTIONAL_SOURCES.md).
+Current update: **frontend 0.12.0+17 / backend 0.16.0**: stronger readable
+ typography, charcoal glass, compact profile/settings and working notification
+ inbox/reminders with unsubscribe. Hosting remains Vercel/Firebase for this release.
+ See the [frontend review](planning/FRONTEND_V0_12_0_REVIEW.md), [backend review](planning/BACKEND_V0_16_0_REVIEW.md) and
+ [source audit](planning/SOURCE_AND_ASSET_AUDIT_2026_11_14.md). The [Coolify rebuild](planning/COOLIFY_ARCHITECTURE_REBUILD_PLAN.md) is the separate next major version.
 
 Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
 and [backend pyproject](../backend/pyproject.toml). The preceding auth/profile and UI

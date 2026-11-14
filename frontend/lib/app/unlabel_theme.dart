@@ -17,26 +17,26 @@ abstract final class UnlabelTheme {
           onPrimaryContainer: dark
               ? const Color(0xffc6f4df)
               : const Color(0xff0d483b),
-          surface: dark ? const Color(0xff0d1719) : const Color(0xfff4f8f6),
-          surfaceContainerLowest: dark ? const Color(0xff101d20) : Colors.white,
+          surface: dark ? const Color(0xff101214) : const Color(0xfff4f8f6),
+          surfaceContainerLowest: dark ? const Color(0xff141618) : Colors.white,
           surfaceContainerLow: dark
-              ? const Color(0xff162528)
+              ? const Color(0xff1b1e21)
               : const Color(0xffedf5f1),
           surfaceContainer: dark
-              ? const Color(0xff1b2b2e)
+              ? const Color(0xff222529)
               : const Color(0xfff1f6f3),
           surfaceContainerHigh: dark
-              ? const Color(0xff242a2e)
+              ? const Color(0xff292d31)
               : const Color(0xffeaf2ed),
           surfaceContainerHighest: dark
-              ? const Color(0xff2c3338)
+              ? const Color(0xff32373c)
               : const Color(0xffe4ede7),
           onSurface: dark ? const Color(0xffedf5f2) : const Color(0xff162f32),
           onSurfaceVariant: dark
-              ? const Color(0xffb1c3c2)
+              ? const Color(0xffbdc5c8)
               : const Color(0xff51666a),
           outlineVariant: dark
-              ? const Color(0xff344a4d)
+              ? const Color(0xff41464c)
               : const Color(0xffd5e4de),
         );
     final base = ThemeData(
@@ -95,22 +95,44 @@ abstract final class UnlabelTheme {
         ),
         titleMedium: base.textTheme.titleMedium?.copyWith(
           fontFamily: 'Manrope',
-          fontWeight: FontWeight.w600,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
           letterSpacing: -.2,
         ),
         titleSmall: base.textTheme.titleSmall?.copyWith(
           fontFamily: 'Manrope',
-          fontWeight: FontWeight.w600,
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
         ),
         bodyLarge: base.textTheme.bodyLarge?.copyWith(
-          height: 1.55,
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          height: 1.5,
           letterSpacing: -.15,
         ),
         bodyMedium: base.textTheme.bodyMedium?.copyWith(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
           height: 1.5,
           letterSpacing: -.1,
         ),
-        bodySmall: base.textTheme.bodySmall?.copyWith(height: 1.45),
+        bodySmall: base.textTheme.bodySmall?.copyWith(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          height: 1.45,
+        ),
+        labelLarge: base.textTheme.labelLarge?.copyWith(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
+        labelMedium: base.textTheme.labelMedium?.copyWith(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        labelSmall: base.textTheme.labelSmall?.copyWith(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
@@ -127,7 +149,7 @@ abstract final class UnlabelTheme {
         centerTitle: false,
       ),
       cardTheme: CardThemeData(
-        color: dark ? const Color(0xff18282b) : Colors.white,
+        color: dark ? const Color(0xff1d2023) : Colors.white,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
@@ -159,7 +181,7 @@ abstract final class UnlabelTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: dark ? const Color(0xff162528) : Colors.white,
+        fillColor: dark ? const Color(0xff1b1e21) : Colors.white,
         contentPadding: const EdgeInsets.all(18),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         enabledBorder: OutlineInputBorder(
