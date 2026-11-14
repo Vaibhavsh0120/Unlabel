@@ -18,6 +18,36 @@ defaults:
     shell: bash
 
 jobs:
+  guest-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:18.7-bookworm@sha256:ece55f7868da684e400f82f1030a050718adbdd65c23aa500c486f6e2950dc0f
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['127.0.0.1:5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      # Public disposable CI database credentials; never production settings.
+      UNLABEL_TEST_POSTGRES_ADMIN_DSN: postgresql://postgres:postgres@127.0.0.1:5432/postgres
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Restore hash-locked maintenance dependencies
+        run: |
+          python -m pip install --require-hashes -r infrastructure/docker/guest-cleanup.requirements.txt
+          python -m pip install pytest==9.1.1
+      - name: Verify guest cleanup on real PostgreSQL
+        working-directory: backend
+        run: python -m pytest tests/integration/test_guest_cleanup.py -q
+
   backend-and-repository:
     runs-on: ubuntu-24.04
     timeout-minutes: 20

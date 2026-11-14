@@ -13,16 +13,35 @@ store has its own credentials, named resource and purpose in the Coolify canvas:
 
 | Resource | Purpose |
 | --- | --- |
-| PostgreSQL app | Accounts, profiles, private sync, searchable catalogue and durable outbox |
-| PostgreSQL auth | Self-hosted identity/session storage with separate ownership |
+| PostgreSQL - app and sign-in | One server, isolated `unlabel_app` and `unlabel_auth` databases and login roles. App data, catalogue, durable outbox and identity/session storage |
 | MongoDB evidence | Immutable original/research document observations and receipts |
 | Redis cache | Bounded expiring public cache and rate-limit counters, LRU eviction |
-| Redis jobs | Streams transport, no eviction, AOF; durable intent stays in PostgreSQL |
+| Sign-in service | Private GoTrue identity API. Google, email and anonymous sign-in. Verified Brevo SMTP configuration |
+| Guest cleanup - 24h expiry | Private worker calling a fixed-policy, execute-only PostgreSQL function every five minutes |
 
-All five stores reached healthy status on 14 November 2026. Creating containers
-does not establish domain integration or cutover readiness. API/auth/worker
-integration, importer parity, recovery and client acceptance remain required.
+The original five stores reached healthy status on 14 November 2026. After
+consolidation, three database servers remain. The old identity PostgreSQL had
+zero users and no other client connections; the old Redis queue had zero keys.
+Both redundant resources were deleted after the shared identity database passed
+actual anonymous sign-in, refresh and revocation checks and a healthy redeploy.
+Jobs use PostgreSQL's durable leased outbox directly, so Redis is only for cache
+and rate limits. App and identity roles were verified unable to connect to each
+other's logical database. One PostgreSQL server remains a shared failure domain.
+
+Creating containers does not establish cutover readiness. API/worker wiring,
+importer parity, recovery and client acceptance remain required.
 The existing production Vercel/Firebase release remains active until then.
+
+The initial GoTrue bootstrap wrote embedded migration receipts in `public`
+before its role search path was installed. The version-specific alignment
+migration moved the verified 75 receipts into `auth` and removed the duplicate
+receipt table. A subsequent deployment passed its health check. This is recorded
+separately from the application's own checksum-verified migration history.
+
+See [guest lifecycle](../../docs/architecture/GUEST_SESSION_LIFECYCLE.md) for
+24-hour cleanup, account-conversion protection, permissions and test evidence.
+The SMTP credential has no configured expiry and is recovered through the age
+backup. Explicit credential rotation is still required when replacing it.
 
 ## Secrets
 

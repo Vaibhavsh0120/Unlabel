@@ -72,8 +72,9 @@ is `python scripts/project_secrets.py encrypt`. Decrypt/verify accept
 including the actual Windows profile `agel` function, fresh-file restoration,
 binary/CRLF preservation, legacy `.env.age` compatibility, tampering rejection,
 preflight conflicts, rollback, missing-file retention, unsafe paths, Git
-exclusions and stdin-only private-key handling. The operator's eight current
-files were encrypted with the tracked public recipient. Verification with the
-operator's existing configured identity also passed for all eight files. Only
+exclusions and stdin-only private-key handling. The operator's 23 current
+files, including production database, guest-cleanup and Brevo SMTP credentials,
+were encrypted with the tracked public recipient. Verification with the
+operator's existing configured identity also passed for all 23 files. Only
 age opened the identity file; its contents were never printed or read by the
 assistant. You can repeat `verify` locally without changing any files.

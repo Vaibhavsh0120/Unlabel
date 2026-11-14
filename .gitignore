@@ -111,3 +111,5 @@ Desktop.ini
 /secrets/local/
 /.secrets-work-*/
 /.secrets-work.lock
+# Temporary operator credential handoff; ingest into the encrypted secret inventory.
+/note.txt
