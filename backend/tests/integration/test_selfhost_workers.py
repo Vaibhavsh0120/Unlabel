@@ -16,6 +16,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from pydantic import SecretStr
 from pywebpush import WebPushException
 
+from app import notifications
 from app.selfhost.worker_settings import NotificationWorkerSettings, SchedulerSettings
 
 psycopg = pytest.importorskip("psycopg")
@@ -385,7 +386,7 @@ def test_push_transport_classifies_provider_failures_without_logging(
             "synthetic-private-transport-details", response=SimpleNamespace(status_code=status)
         )
 
-    monkeypatch.setattr(module, "deliver", fail)
+    monkeypatch.setattr(notifications, "deliver", fail)
     assert deliver_status(None, None) == expected
     assert "synthetic-private" not in capsys.readouterr().out
 

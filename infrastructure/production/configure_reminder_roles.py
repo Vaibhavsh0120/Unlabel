@@ -92,8 +92,8 @@ def main():
     )
     args = parser.parse_args()
     protected = ROOT / "infrastructure/production/.secrets"
-    private_directory(protected)
     try:
+        private_directory(protected)
         with psycopg.connect(
             host="127.0.0.1",
             port=args.port,
@@ -111,9 +111,7 @@ def main():
         raise SystemExit(
             "Reminder role setup failed. Configuration values were withheld."
         ) from None
-    print(
-        f"Installed reminder roles and verified grants. Applied migrations: {len(applied)}."
-    )
+    print(f"Installed reminder roles and grants. Applied migrations: {len(applied)}.")
     print("Refresh and verify the encrypted project secret backup.")
 
 

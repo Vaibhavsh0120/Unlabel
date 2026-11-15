@@ -1,6 +1,7 @@
 """PostgreSQL reminder scheduling and topic-specific, fenced push delivery."""
 
 import argparse
+import logging
 import signal
 import threading
 from contextlib import contextmanager
@@ -11,10 +12,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
-from pywebpush import WebPushException
 
-from app.core.config import Settings
-from app.notifications import PushSubscription, deliver
 from app.selfhost.worker_settings import NotificationWorkerSettings, SchedulerSettings
 
 TOPIC = "notifications.deliver"
@@ -26,6 +24,10 @@ class LeaseLost(RuntimeError):
 
 
 def deliver_status(config, subscription):
+    from pywebpush import WebPushException
+
+    from app.notifications import deliver
+
     try:
         deliver(config, subscription)
         return "sent"
@@ -74,14 +76,14 @@ class Worker:
         self.sender = sender
         self.worker_id = process_id(settings, kind)
         self.stopped = threading.Event()
-        self.config = (
-            None
-            if kind == "scheduler"
-            else Settings(
+        self.config = None
+        if kind == "worker":
+            from app.core.config import Settings
+
+            self.config = Settings(
                 _env_file=None,
                 web_push_private_key=settings.web_push_private_key,
             )
-        )
 
     def stop(self, *_):
         self.stopped.set()
@@ -131,6 +133,8 @@ class Worker:
             keeper.join(timeout=9)
 
     def notification(self, job):
+        from app.notifications import PushSubscription
+
         reference = job["payload"]["reference"]
         with self.pool.connection() as connection:
             today = connection.execute("SELECT (now() AT TIME ZONE 'UTC')::date").fetchone()[0]
@@ -216,6 +220,8 @@ def main():
     parser.add_argument("kind", choices=["worker", "scheduler"])
     parser.add_argument("--healthcheck", action="store_true")
     args = parser.parse_args()
+    # The process reports bounded status messages instead of raw connection errors.
+    logging.getLogger("psycopg.pool").disabled = True
     try:
         # Health checks require only the database; scheduler never receives VAPID.
         settings = (
