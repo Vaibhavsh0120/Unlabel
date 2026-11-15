@@ -35,7 +35,7 @@ PY
 flutter pub get --enforce-lockfile
 python3 ../scripts/release/generate_app_icons.py --check
 python3 ../scripts/release/vendor_web_ocr.py --check
-node --test test/*_web_test.cjs ../firebase/auth-bridge.test.cjs
+node --test test/*_web_test.cjs ../infrastructure/firebase/auth-bridge.test.cjs
 flutter analyze
 # Keep passing negative-case test names out of the deployment error filter.
 # Preserve the command's exit status and all diagnostics on an actual failure.

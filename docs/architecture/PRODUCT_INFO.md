@@ -7,7 +7,7 @@ constructors select private content widgets, with one page title and navigation
 shell. The 26 October update implements the supplied reference hierarchy with
 smaller phone typography, fact-count summary, evidence cards, six nutrient tiles,
 ingredient/allergen tabs, unknowns and source disclosures. It supersedes the
-earlier deferred visual redesign. See [current frontend review](../planning/FRONTEND_V0_11_0_REVIEW.md).
+earlier deferred visual redesign. See [current frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_11_0_REVIEW.md).
 
 Source-specific facts remain distinct. A dated catalogue snapshot is not a
 current-package check; a model reading is not human-confirmed. Original source
@@ -29,7 +29,7 @@ expiry, page disposal or an expired lifecycle resume. Its absence never removes
 local facts. The backend key and quota are independent of the user's account;
 the provider is disabled until configured. Product-name search is not forwarded
 to NutriGraph. See [AI routing](AI_ROUTING.md) and the
-[backend review](../planning/BACKEND_V0_14_0_REVIEW.md).
+[backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md).
 
 Photographed front claims travel with the explicit candidate selection. The
 read-only `POST /v1/claims/catalogue-check` sends the selected barcode and claim

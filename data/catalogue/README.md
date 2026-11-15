@@ -10,17 +10,17 @@ Source normalization does not import the runtime; `scripts/data/build_research_c
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.
-Local verification and hosted/push status: [backend review](../../docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
-[frontend review](../../docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
-[product list](../../docs/research/POPULAR_PRODUCTS_ADDED.md).
+Local verification and hosted/push status: [backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
+[frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
+[product list](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/POPULAR_PRODUCTS_ADDED.md).
 The user's next automatic-capture/results redesign is recorded in the
-[automatic scan plan](../../docs/planning/AUTOMATIC_SCAN_PLAN.md).
+[automatic scan plan](../../docs/roadmap.md).
 Earlier release statements below retain their historical scope.
 
 
 Product data from [Open Food Facts](https://world.openfoodfacts.org/) is retained under [ODbL 1.0](licenses/ODbL-1.0.txt), with individual contents under [DbCL 1.0](licenses/DbCL-1.0.txt). The compact public source, provenance and license notices belong in Git; generated SQLite/receipts do not.
 
-Backend v0.4.0 retains the independently released v0.2.3 identity/rich-facts source and rebuilds it without another global download. No world dump, image bytes, contributor identities, private scans, credentials or history are bundled. Selected-front image metadata supplies attributed official URL descriptors with separate CC-BY-SA licensing. The separate confirmed-label claim knowledge is maintained in [knowledge/](../../knowledge/README.md), not inferred from community snapshot fields.
+Backend v0.4.0 retains the independently released v0.2.3 identity/rich-facts source and rebuilds it without another global download. No world dump, image bytes, contributor identities, private scans, credentials or history are bundled. Selected-front image metadata supplies attributed official URL descriptors with separate CC-BY-SA licensing. The separate confirmed-label claim knowledge is maintained in [knowledge/](../knowledge/README.md), not inferred from community snapshot fields.
 
 | File | Purpose |
 | --- | --- |
@@ -33,7 +33,7 @@ The complete official JSONL acquisition verified **13,084,464,175 compressed byt
 
 The original source, compressed India gzip and decoded India JSONL have different hashes/lengths. Original compressed SHA-256: `26d5bb5538838f531e406fe73e9070a502bc2070e5bc0a9bda60869bd091d693`; projected compressed SHA-256: `bbdd13097ede75777b2356e27910ae01aff38d7ad0c59598af6868dcf447db24`; decoded projection/import-source SHA-256: `e508b33d8bf3694d11d052ad4ad70895b254527e0556937e9d2454a8b665818f`.
 
-The tracked replacement validates all **24,641 supported fact records** and generates a verified **62,472,192-byte SQLite (59.58 MiB)** with local receipt. **4,657** records have direct tables (**4,519** with reported values), **15,486** are legacy-unsupported, **4,050** missing and **448** invalid; **18,682** have official image descriptors. All indexed records have validated modification dates. [Full indexed-field and local receipt report](../../docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Raw acquisition counts, strict API facts and actual hosted reads remain distinct evidence. The [v0.2.3 review](../../docs/planning/BACKEND_V0_2_3_REVIEW.md) records complete-source, local artifact and actual hosted verification; preceding [v0.2.2 CSV measurements](../../docs/planning/BACKEND_V0_2_2_REVIEW.md) remain historical.
+The tracked replacement validates all **24,641 supported fact records** and generates a verified **62,472,192-byte SQLite (59.58 MiB)** with local receipt. **4,657** records have direct tables (**4,519** with reported values), **15,486** are legacy-unsupported, **4,050** missing and **448** invalid; **18,682** have official image descriptors. All indexed records have validated modification dates. [Full indexed-field and local receipt report](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Raw acquisition counts, strict API facts and actual hosted reads remain distinct evidence. The [v0.2.3 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_3_REVIEW.md) records complete-source, local artifact and actual hosted verification; preceding [v0.2.2 CSV measurements](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_2_REVIEW.md) remain historical.
 
 ## Projected facts and coverage
 
@@ -45,7 +45,7 @@ Coverage stays `unverified`. Complete processing of a dated OFF export does not 
 
 ## Rebuild and manual refresh
 
-Setup verifies tracked hashes/counts and regenerates the local index. The network-free hosted build reads this same source and creates ignored `app/catalogue/data/catalogue.sqlite3` plus receipt; hosted startup verifies its artifact before enabling reads. [Catalogue workflow](../../docs/architecture/CATALOGUE.md) · [Current validation gates](../../docs/planning/BACKEND_V0_2_3_REVIEW.md).
+Setup verifies tracked hashes/counts and regenerates the local index. The network-free hosted build reads this same source and creates ignored `app/catalogue/data/catalogue.sqlite3` plus receipt; hosted startup verifies its artifact before enabling reads. [Catalogue workflow](../../docs/architecture/CATALOGUE.md) · [Current validation gates](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_3_REVIEW.md).
 
 Replace the source manually every **nine calendar months** from its actual export time; rebuilding does not reset age:
 

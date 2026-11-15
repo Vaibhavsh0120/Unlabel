@@ -14,7 +14,7 @@ configuration separately. Production builds must not embed an expiring preview
 URL or a private shared token.
 
 Public Firebase app identifiers live in lib/app/firebase_options.dart and
-firebase/client-config.json at the repository root. The Firebase SDK initializes
+`infrastructure/firebase/client-config.json`. The Firebase SDK initializes
 through the shared account/scanner adapter to restore an existing SDK session or
 perform an explicit authentication action. Confirmed public submissions create
 anonymous scanner authentication for guests and retain an existing Google/password
@@ -39,7 +39,7 @@ choice. Package photos/raw OCR, dietary/health reminders, appearance and Welcome
 completion are excluded from library sync. Profile thumbnails are a separate
 bounded private document; no Storage bucket or second database is used.
 [Account/profile contract](../../docs/architecture/ACCOUNT_PROFILE.md) ·
-[Current local repair](../../docs/planning/FRONTEND_V0_8_1_REVIEW.md).
+[Current local repair](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_8_1_REVIEW.md).
 Reset requests retain Firebase's hosted action handler and an SDK-supplied fixed
 `https://unlabel-india.vercel.app/#/account-signin` return; the app never needs a
 custom action URL or receives the reset code. The 13 October source completion
@@ -56,5 +56,5 @@ configuration. Optional user-chosen gender controls the default avatar; unset us
 the approved male art without recording or inferring gender.
 
 [Frontend guide](../README.md) ·
-[Local development](../../docs/planning/LOCAL_DEVELOPMENT.md) ·
+[Local development](../../docs/development.md) ·
 [Firebase policy](../../docs/architecture/COMMUNITY_CATALOGUE.md)

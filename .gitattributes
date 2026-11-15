@@ -12,12 +12,16 @@
 *.xml text eol=lf
 *.txt text eol=lf
 *.lock text eol=lf
+infrastructure/docker/auth-source/go.mod text eol=lf
+infrastructure/docker/auth-source/go.sum text eol=lf
 *.png binary
 *.jpg binary
 *.jpeg binary
 *.ico binary
 *.age binary
 *.gz binary
+# Acquisition receipts record hashes of the original bytes, including line endings.
+data/catalogue/popular-india-v1/acquisition/*.json -text whitespace=cr-at-eol
 # Preserve vendored OCR and font-license bytes for their recorded source hashes.
 frontend/web/ocr/** -text
 frontend/web/ocr/provenance.json text eol=lf

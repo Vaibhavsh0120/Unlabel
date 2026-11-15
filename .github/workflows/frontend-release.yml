@@ -112,7 +112,7 @@ jobs:
         working-directory: frontend
         run: |
           flutter pub get --enforce-lockfile
-          node --test test/*_web_test.cjs ../firebase/auth-bridge.test.cjs
+          node --test test/*_web_test.cjs ../infrastructure/firebase/auth-bridge.test.cjs
           flutter analyze
           flutter test
 

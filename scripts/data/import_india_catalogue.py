@@ -8,9 +8,11 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPOSITORY_ROOT / "backend"))
+sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
 
 from app.catalogue.importer import build_catalogue
 from app.catalogue.store import DATABASE_FILENAME
+from dev._workspace import local_catalogue_directory
 
 
 def aware_datetime(value: str) -> datetime:
@@ -33,8 +35,7 @@ def main() -> int:
     parser.add_argument(
         "--directory",
         type=Path,
-        default=REPOSITORY_ROOT / "backend" / "storage" / "runtime" / "india",
-        help="Existing catalogue directory (created by the operator)",
+        help="Existing catalogue directory. The managed .local cache is created when omitted.",
     )
     parser.add_argument(
         "--source-url", required=True, help="Official upstream source provenance"
@@ -50,6 +51,9 @@ def main() -> int:
     )
     args = parser.parse_args()
     try:
+        if args.directory is None:
+            args.directory = local_catalogue_directory(REPOSITORY_ROOT)
+            args.directory.mkdir(parents=True, exist_ok=True)
         manifest = build_catalogue(
             args.input,
             args.directory,

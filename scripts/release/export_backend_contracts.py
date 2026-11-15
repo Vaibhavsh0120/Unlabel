@@ -258,7 +258,7 @@ def main():
     write(
         "examples", "catalogue-facts-v1.synthetic.json", facts.model_dump(mode="json")
     )
-    store = claim_knowledge.KnowledgeStore(ROOT / "knowledge")
+    store = claim_knowledge.KnowledgeStore(ROOT / "data/knowledge")
     claim_request = claims.ClaimsRequest.model_validate(
         {
             **request.model_dump(mode="json"),

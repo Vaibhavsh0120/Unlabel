@@ -10,8 +10,17 @@ dependencies = [
   "pywebpush==2.5.0",
 ]
 
+[project.optional-dependencies]
+selfhost = [
+  "psycopg[binary]==3.3.9", "psycopg-pool==3.3.3",
+  "pymongo==4.20.0", "redis==8.1.0",
+]
+
 [tool.vercel]
 entrypoint = "app.main:app"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
 
 [tool.vercel.scripts]
 build = "python build_catalogue.py"

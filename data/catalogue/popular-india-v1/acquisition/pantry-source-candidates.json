@@ -1,0 +1,3331 @@
+{
+  "schema_version": "1",
+  "scope": "Popular India pantry/breakfast/staple/dairy/spread packaged products. Unconfirmed SKU identities; qualified factual source observations only.",
+  "observations": [
+    {
+      "candidate_id": "india-pantry-retailer-40301493",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40301493/kelloggs-chocos-with-protein-fibre-of-1-roti-in-each-bowl-high-in-calcium-protein-breakfast-cereals-715-g/",
+        "retrieved_at": "2026-10-08T05:01:07.614371Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Chocos",
+        "brand": "Kellogg's",
+        "variant": "Chocos",
+        "quantity": "675 g (Pack of 12)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Wheat Solids (62.6%) {Wheat Flour (Atta) (31.3%), Refined Wheat Flour (Maida) (31.3%)}, Sugar, Cocoa Solids (5.4%), Minerals, Edible Vegetable Oil (Palmolein), Cereal Extract, Iodized Salt, Colour (Ins 150D), Vitamins, Antioxidant (Ins 320) Contains Permitted Natural Colour & Added Flavours (Nature Identical & Artificial Cream Flavouring Substances)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40301493/kelloggs-chocos-with-protein-fibre-of-1-roti-in-each-bowl-high-in-calcium-protein-breakfast-cereals-715-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "4e43e39d779c5f5bcf5776917d4ed12f3eb502fad6ae094d06357b10d159ba90",
+        "retailer_product_id": "40301493",
+        "source_reported_ean": "40301493",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "675 g",
+        "source_pack_description": "(Pack of 12)",
+        "ingredient_word_count": 46,
+        "raw_nutrition_excerpt": "",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "No unambiguous explicit nutrition basis in selected source; numeric amounts not admitted."
+      ],
+      "conflicts": [
+        "Retailer declaration has 62.6% wheat solids including maida; current manufacturer Multigrain Chocos page has 64.8% multigrain flour and a different antioxidant. Package revision and barcode identity are unconfirmed; do not resolve across these rows."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40301494",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40301494/kelloggs-corn-flakes-475-g/",
+        "retrieved_at": "2026-10-08T05:01:07.616345Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Corn Flakes - Original",
+        "brand": "Kellogg's",
+        "variant": "Corn Flakes - Original",
+        "quantity": "500 g (Pack of 12)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Corn Grits, Sugar, Malt Extract, Iodized Salt, Vitamins, Minerals And Antioxidant (ins 320)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40301494/kelloggs-corn-flakes-475-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "a6ae61a71f50e88aa40eb34d0f7f148e780896a368e0eaa2e3f936c153431817",
+        "retailer_product_id": "40301494",
+        "source_reported_ean": "8901499010568",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "(Pack of 12)",
+        "ingredient_word_count": 13,
+        "raw_nutrition_excerpt": "",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "No unambiguous explicit nutrition basis in selected source; numeric amounts not admitted."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40301497",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40301497/kelloggs-corn-flakes-with-real-strawberry-puree-300-g/",
+        "retrieved_at": "2026-10-08T05:01:07.739347Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Corn Flakes With Real Strawberry Puree",
+        "brand": "Kellogg's",
+        "variant": "Corn Flakes With Real Strawberry Puree",
+        "quantity": "300 g (Pack of 16)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Corn Grits, Sugar, Beetroot Extract, Strawberry Puree (2.4%), Cereal Extract, Iodized Salt, Vitamins, Minerals And Antioxidants (ins 320). Contains Added Flavour (nature-identical Flavouring Substance)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40301497/kelloggs-corn-flakes-with-real-strawberry-puree-300-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "b0ba761c10a6fd0f8df047cdc0dad7e25d8822ca10ae7c75606a6e7a8829c4b8",
+        "retailer_product_id": "40301497",
+        "source_reported_ean": "40301497",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "300 g",
+        "source_pack_description": "(Pack of 16)",
+        "ingredient_word_count": 24,
+        "raw_nutrition_excerpt": "",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "No unambiguous explicit nutrition basis in selected source; numeric amounts not admitted."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-273807",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/273807/kelloggs-oats-heart-to-heart-200-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:08.474541Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Oats",
+        "brand": "Kellogg's",
+        "variant": "Oats",
+        "quantity": "200 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Rolled Oats (100%)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/273807/kelloggs-oats-heart-to-heart-200-g-pouch/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/273807/kelloggs-oats-heart-to-heart-200-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 379.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (kcal): 379 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 11.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein (g): 11.6 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 67.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Carbohydrates (g): 67.8 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Sugar (g): 0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 9.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat (g): 9.0 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 1.7,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fatty Acids (g): 1.7 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fatty Acids (g): 0 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol (mg): 0 mg"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 10.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre (g): 10.0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 7.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium (mg): 7.0 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 2.4,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron (mg): 2.4 mg"
+              },
+              {
+                "nutrient": "magnesium",
+                "value": 101.3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Magnesium (mg): 101.3 mg"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 2.2,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Zinc (mg): 2.2 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "e39165430a4a63e017d605310a0dc1011c35131f543b926112c1847b423a6f36",
+        "retailer_product_id": "273807",
+        "source_reported_ean": "8901499007704",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "200 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 3,
+        "raw_nutrition_excerpt": "Nutrition_Per: 100g Serving_Size: 40g Energy (kcal): 379 kcal Energy From Fat (kcal): 81 kcal Total Fat (g): 9.0 g Saturated Fatty Acids (g): 1.7 g Monounsaturated Fatty Acids (g): 4.3 g Polyunsaturated Fatty Acids (g): 3.0 g Trans Fatty Acids (g): 0 g Cholesterol (mg): 0 mg Total Carbohydrates (g):",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-266122",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/266122/quaker-oats-breakfast-cereal-rich-in-protein-dietary-fibre-nutritious-easy-to-cook-400-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:08.176128Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Quaker Rolled Oats",
+        "brand": "Quaker",
+        "variant": "Rolled Oats",
+        "quantity": "400 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "ROLLED OATS FLAKES",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266122/quaker-oats-breakfast-cereal-rich-in-protein-dietary-fibre-nutritious-easy-to-cook-400-g-pouch/"
+        },
+        "contains": null,
+        "may_contain": {
+          "text": "MAY CONTAIN WHEAT, BARLEY",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266122/quaker-oats-breakfast-cereal-rich-in-protein-dietary-fibre-nutritious-easy-to-cook-400-g-pouch/"
+        }
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/266122/quaker-oats-breakfast-cereal-rich-in-protein-dietary-fibre-nutritious-easy-to-cook-400-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 407.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "ENERGY: 407 Kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 11.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "PROTEIN: 11.8g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 68.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "CARBOHYDRATE: 68.5g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 1.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL SUGARS: 1.8g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "ADDED SUGARS: 0g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 9.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL FAT: 9.5g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 1.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "SATURATED FAT: 1.9g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TRANS FAT: 0g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "CHOLESTEROL: 0 mg"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 10.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL DIETARY FIBRE: 10g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 9.5,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "SODIUM: 9.5 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 2.9,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "IRON: 2.9 mg"
+              },
+              {
+                "nutrient": "magnesium",
+                "value": 106.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "MAGNESIUM: 106 mg"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 2.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "ZINC: 2 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "be17347c4ec6145e13295b06d1a14607d2e527836ba64ecbfada700adb8de5c1",
+        "retailer_product_id": "266122",
+        "source_reported_ean": "266122",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "400 g",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 9,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 40g ENERGY: 407 Kcal PROTEIN: 11.8g TOTAL FAT: 9.5g PUFA: 4g MUFA: 3.6g SATURATED FAT: 1.9g TRANS FAT: 0g CHOLESTEROL: 0 mg CARBOHYDRATE: 68.5g TOTAL SUGARS: 1.8g ADDED SUGARS: 0g TOTAL DIETARY FIBRE: 10g SOLUBLE FIBRE: 3.8g INSOLUBE FIBRE: 6.2g IRON: 2.9 mg MAGNESI",
+        "raw_allergen_declaration": "MAY CONTAIN WHEAT, BARLEY",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40007739",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40007739/quaker-oats-multigrain-breakfast-cereal-rich-source-of-energy-nutritious-easy-to-cook-600-g-carton/",
+        "retrieved_at": "2026-10-08T05:01:08.107134Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Quaker Oats Multigrain",
+        "brand": "Quaker",
+        "variant": "Oats Multigrain",
+        "quantity": "600 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Wholegrain Whole Oat Flakes (60%), Wheat Flakes (18%), Barley Flakes (10%), Ragi Flakes (5%), Flax Seeds (5%), Sugar, Iodised Salt, Malt Extract, Flavour (Natural and Nature Identical Flavouring Substances)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40007739/quaker-oats-multigrain-breakfast-cereal-rich-source-of-energy-nutritious-easy-to-cook-600-g-carton/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40007739/quaker-oats-multigrain-breakfast-cereal-rich-source-of-energy-nutritious-easy-to-cook-600-g-carton/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 407.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 407 Kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 11.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 11.1g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 71.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 71g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 2.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 2.2g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 1.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 1.2g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 9.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 9g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 1.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 1.8g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 12.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Dietary Fibre: 12g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 117.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 117 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 46.6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Calcium: 46.6 mg"
+              },
+              {
+                "nutrient": "magnesium",
+                "value": 113.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Magnesium: 113 mg"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 2.6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Zinc: 2.6 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "2eeabb9bf017cc716b895e019eb74b880ca1731410138e3f726f784f00c16777",
+        "retailer_product_id": "40007739",
+        "source_reported_ean": "8901491702549",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "600 g",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 29,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 45g Energy: 407 Kcal Protein: 11.1g Total Fat: 9g MUFA: 3.6g PUFA: 3.6g Saturated Fat: 1.8g Trans Fat: 0g Carbohydrate: 71g Total Sugars: 2.2g Added Sugars: 1.2g Total Dietary Fibre: 12g Soluble Fibre: 3.6g Insoluble Fibre: 8.4g Sodium: 117 mg Zinc: 2.6 mg Calcium: ",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-268690",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/268690/saffola-rolled-oats-100-natural-500-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:08.718543Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Saffola Soft & Creamy Instant Rolled Oats",
+        "brand": "Saffola",
+        "variant": "Soft & Creamy Instant Rolled Oats",
+        "quantity": "460 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Rolled Oats",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/268690/saffola-rolled-oats-100-natural-500-g-pouch/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/268690/saffola-rolled-oats-100-natural-500-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 369.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (Kcal): 369"
+              },
+              {
+                "nutrient": "protein",
+                "value": 12.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein(g): 12.6"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 66.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate (g): 66.8"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "total sugars (g): 0.5"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "added sugars (g): 0"
+              },
+              {
+                "nutrient": "fat",
+                "value": 8.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat (g): 8"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 1.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat (g): 1.6"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat (g): 0"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 10.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre (g): 10.4"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 5.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium (mg): 5"
+              },
+              {
+                "nutrient": "iron",
+                "value": 3.7,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron (mg): 3.7"
+              },
+              {
+                "nutrient": "magnesium",
+                "value": 113.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Magnesium (mg): 113"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 2.6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Zinc (mg): 2.6"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "5bdd4ec50d51a974bff041408d3656daa3a89729c4541762f2870f08883ec4da",
+        "retailer_product_id": "268690",
+        "source_reported_ean": "268690",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "460 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 2,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 40g (½ cup) Energy (Kcal): 369 Protein(g): 12.6 Carbohydrate (g): 66.8 of which total sugars (g): 0.5 of which added sugars (g): 0 Dietary Fibre (g): 10.4 Soluble Dietary Fibre (g): 4.3 Insoluble Dietary Fibre (g): 6.1 Total Fat (g): 8 Saturated Fat (g): 1.6 Trans F",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-265966",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/265966/mtr-breakfast-mix-rava-idli-500-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:08.925082Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "MTR Rava Idli Mix",
+        "brand": "MTR",
+        "variant": "Rava Idli Mix",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/265966/mtr-breakfast-mix-rava-idli-500-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 1800.0,
+                "unit": "kJ",
+                "qualifier": "exact",
+                "raw_label": "Energy: 1800kj"
+              },
+              {
+                "nutrient": "protein",
+                "value": 7.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 7g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 1.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Sugars: 1.5g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 8.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Fat: 8g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol: 0mg"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 4.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre: 4.2g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 860.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 860mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "942c3160c132ff7a30f96f6c98044bd72649085650ec8cd51af7abd8c9c5c370",
+        "retailer_product_id": "265966",
+        "source_reported_ean": "8901042969657",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 0,
+        "raw_nutrition_excerpt": "Per: 100g Serving_Size: 40g ; Energy: 1800kj ; Protein: 7g ; Fat: 8g; Sugars: 1.5g ; Saturated: 5% ; Transfat: 0% ; Dietary Fibre: 4.2g; Cholesterol: 0mg ; Sodium: 860mg",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ],
+      "conflicts": [
+        "Saturated and trans fat shown only as percentages; percentage values were excluded from mass rows."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-265954",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/265954/mtr-breakfast-mix-rice-idli-500-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:08.876542Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "MTR Breakfast Mix - Rice Idli",
+        "brand": "MTR",
+        "variant": "Breakfast Mix - Rice Idli",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Rice (60%), Black gram, Interesterified vegetable fat, Iodised salt, Acidity regulator (INS 296), Raising agent [INS 500(ii)]",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/265954/mtr-breakfast-mix-rice-idli-500-g-pouch/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "b64daa4e6d0a0f99113e5ea750d197f4614b0b2238ddb6981713e67d2ea31450",
+        "retailer_product_id": "265954",
+        "source_reported_ean": "8901042969640",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 17,
+        "raw_nutrition_excerpt": "Nutrition_per: Per Serve Serving_Size: 40g Protein: 10%* Carbohydrate: 67g Sugars: 23g (1%) Saturated Fat: 2% Transfat: 0.5g (7%) Added Sugars: 0% Dietary Fibre: 0% Cholesterol: mg Sodium: 900mg (18%)",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "No unambiguous explicit nutrition basis in selected source; numeric amounts not admitted."
+      ],
+      "conflicts": [
+        "Source says per serve, 40g, but reports carbohydrate 67g and sugar 23g. Units/columns inconsistent; entire numerical table withheld pending package evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40113723",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40113723/gits-gulab-jamun-dessert-mix-with-no-preservatives-500-g/",
+        "retrieved_at": "2026-10-08T05:01:09.353913Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Gits Dessert Mix - Gulab Jamun",
+        "brand": "Gits",
+        "variant": "Dessert Mix - Gulab Jamun",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Refined Wheat Flour (Maida), Skimmed Milk Powder (35%), Bakery Shortening (Palmolein Oil, Sesame Oil & Antioxidant (BHA)), Raising Agents (Sodium Bicarbonate & Citric Acid)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40113723/gits-gulab-jamun-dessert-mix-with-no-preservatives-500-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40113723/gits-gulab-jamun-dessert-mix-with-no-preservatives-500-g/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 422.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 422kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 17.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 17g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 57.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 57g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 18.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 18g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 0g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 14.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 14g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 8.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 8g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol: 0mg"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 752.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 752mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "9b31890c479f30ce8df9031fc9725cfef9c28b73754a73b6b8a7f9260595fbab",
+        "retailer_product_id": "40113723",
+        "source_reported_ean": "40113723",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 24,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 14.3g (1¼ tbsp.) Energy: 422kcal Protein: 17g Carbohydrate: 57g Total Sugars: 18g Added Sugars: 0g Total Fat: 14g Saturated Fat: 8g Trans Fat: 0g Cholesterol: 0mg Sodium: 752mg RDA: The % RDA is calculated on the basis of 2000 kcal a day.",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-266577",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/266577/kissan-mixed-fruit-jam-500-g/",
+        "retrieved_at": "2026-10-08T05:01:10.112896Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kissan Mixed Fruit Jam",
+        "brand": "Kissan",
+        "variant": "Mixed Fruit Jam",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "SUGAR, MIXED FRUIT PULP BLEND - 60% (PAPAYA PULP, PEAR PULP, APPLE JUICE, BANANA PULP, PINEAPPLE JUICE, ORANGE JUICE, MANGO PULP, GRAPE JUICE), ACIDITY REGULATOR - E330, THICKENER - E440, IODISED SALT, VITAMINS & MINERAL, PRESERVATIVE - E202, NATURAL FLAVOURING SUBSTANCES, FOOD COLOUR - E122",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266577/kissan-mixed-fruit-jam-500-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/266577/kissan-mixed-fruit-jam-500-g/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 285.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "ENERGY (Kcal): 285"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "PROTEIN (g): 0.3"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 70.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "CARBOHYDRATE (g): 70.5"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 68.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL SUGARS (g): 68.1"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 62.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "ADDED SUGARS (g): 62.6"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL FAT (g): 0.1"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TRANS FAT (g): 0"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "CHOLESTEROL (mg): 0"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 0.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "DIETARY FIBRE (g): 0.8"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 51.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "SODIUM (mg): 51"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 4.4,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "ZINC (mg): 4.4"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "018c7b657f0a9f0a10911fef60afb2669abacf82a245b8f6a56070b2b98a9e0e",
+        "retailer_product_id": "266577",
+        "source_reported_ean": "8901030326936",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 45,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 20g ENERGY (Kcal): 285 PROTEIN (g): 0.3 CARBOHYDRATE (g): 70.5 TOTAL SUGARS (g): 68.1 ADDED SUGARS (g): 62.6 DIETARY FIBRE (g): 0.8 TOTAL FAT (g): 0.1 SATURATED FAT (g): TRACE TRANS FAT (g): 0 CHOLESTEROL (mg): 0 SODIUM (mg): 51 VITAMIN A (µg): 472.5 VITAMIN B6 (mg)",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "TRACE saturation value not converted to zero or a fabricated amount."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-266570",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/266570/kissan-chilli-tomato-sauce-500-g-bottle/",
+        "retrieved_at": "2026-10-08T05:01:10.032913Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kissan Chilli Tomato Sauce",
+        "brand": "Kissan",
+        "variant": "Chilli Tomato Sauce",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "WATER, SUGAR, TOMATO PASTE# (22.4%), CHILLI PUREE (3.8%), IODISED SALT, ACIDITY REGULATOR - E260, STABILIZERS - E1422, E415, GARLIC POWDER, ONION POWDER, PRESERVATIVE - E211, NATURE IDENTICAL FLAVOURING SUBSTANCE, SPICES AND CONDIMENTS",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266570/kissan-chilli-tomato-sauce-500-g-bottle/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/266570/kissan-chilli-tomato-sauce-500-g-bottle/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 148.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (kcal): 148"
+              },
+              {
+                "nutrient": "protein",
+                "value": 1.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein (g): 1"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 34.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate (g): 34.8"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 32.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars (g): 32.8"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 30.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars (g): 30"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat (g): 0.3"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.02,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat (g): 0.02"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat (g): 0"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol (mg): 0"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 0.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre (g): 0.6"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 719.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium (mg): 719"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "16854cec724345ece00d3146e2714a22fe6ad59affadd6cc6d944bb48fe2ef1a",
+        "retailer_product_id": "266570",
+        "source_reported_ean": "890103926532",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "Bottle",
+        "ingredient_word_count": 32,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 15 g Energy (kcal): 148 Protein (g): 1 Carbohydrate (g): 34.8 Total Sugars (g): 32.8 Added Sugars (g): 30 Dietary Fibre (g): 0.6 Total Fat (g): 0.3 Saturated Fat (g): 0.02 Trans Fat (g): 0 Cholesterol (mg): 0 Sodium (mg): 719 RDA: % of an average adult's Recommended",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-266545",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/266545/kissan-fresh-tomato-ketchup-200-g/",
+        "retrieved_at": "2026-10-08T05:01:09.925852Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kissan Fresh Tomato Ketchup",
+        "brand": "Kissan",
+        "variant": "Fresh Tomato Ketchup",
+        "quantity": "200 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "WATER, TOMATO PASTE# (28%), SUGAR, IODISED SALT, ACIDITY REGULATOR - E260, STABILIZERS - E1422, E415, PRESERVATIVE - E211, ONION POWDER, GARLIC POWDER, SPICES AND CONDIMENTS",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266545/kissan-fresh-tomato-ketchup-200-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/266545/kissan-fresh-tomato-ketchup-200-g/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 133.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "ENERGY (kcal): 133"
+              },
+              {
+                "nutrient": "protein",
+                "value": 1.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "PROTEIN (g): 1.1"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 31.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "CARBOHYDRATE (g): 31"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 29.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL SUGARS (g): 29.2"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 26.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "ADDED SUGARS (g): 26"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TOTAL FAT (g): 0.4"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.03,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "SATURATED FAT (g): 0.03"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "TRANS FAT (g): 0"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "CHOLESTEROL (mg): 0"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 0.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "DIETARY FIBRE (g): 0.6"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 948.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "SODIUM (mg): 948"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "b036d70c4f97c4e2da53af27fd57ed87fb1bd9c0588661ca5b61ce01d7cec071",
+        "retailer_product_id": "266545",
+        "source_reported_ean": "266545",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "200 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 25,
+        "raw_nutrition_excerpt": "Nutrition_per: 100 g Serving_Size: 15 g ENERGY (kcal): 133 ENERGY (kcal) per serve: 20 ENERGY (kcal) % RDA: 1% PROTEIN (g): 1.1 PROTEIN (g) per serve: 0.2 CARBOHYDRATE (g): 31 CARBOHYDRATE (g) per serve: 4.6 TOTAL SUGARS (g): 29.2 TOTAL SUGARS (g) per serve: 4.4 ADDED SUGARS (g): 26 ADDED SUGARS (g)",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "TRACE saturation value not converted to zero or a fabricated amount."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40015686",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40015686/del-monte-tomato-ketchup-classic-blend-rich-thick-condiment-950-g-spout-pouch/",
+        "retrieved_at": "2026-10-08T05:01:10.580911Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Del Monte Tomato Ketchup - Classic Blend",
+        "brand": "Del Monte",
+        "variant": "Tomato Ketchup - Classic Blend",
+        "quantity": "800 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Tomato paste (25%), Sugar, Iodized Salt, Thickeners (INS 1422, INS 415), Acidity Regulator (INS 260), Spices and Condiments (Onion Powder, Garlic Powder and Mixed Spices), Sea Salt, Preservative (INS 211), Sweetener {Steviol Glycoside (INS 960)}",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40015686/del-monte-tomato-ketchup-classic-blend-rich-thick-condiment-950-g-spout-pouch/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40015686/del-monte-tomato-ketchup-classic-blend-rich-thick-condiment-950-g-spout-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 108.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 108 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 27.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Carbohydrate: 27 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 18.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Sugars: 18 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 648.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 648 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "a0f483c9c0a343f4382728cf3c102eaf459e0e89eadd2eb30cf11d0ebde6bce2",
+        "retailer_product_id": "40015686",
+        "source_reported_ean": "8901246000606",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "800 g",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 36,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Energy: 108 kcal Total Carbohydrate: 27 g Sugars: 18 g Protein: 0 g Total Fat: 0 g Sodium: 648 mg",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-102221",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/102221/amul-gold-homogenised-standardised-milk-1-l-carton/",
+        "retrieved_at": "2026-10-08T05:01:10.728020Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul Gold Homogenised Standardised Milk",
+        "brand": "Amul",
+        "variant": "Gold Homogenised Standardised Milk",
+        "quantity": "1 L (Pack of 12)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Standardised Milk, Fat 4.5% Minimum, SNF 8.5% Minimum, Vitamin A & D.",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/102221/amul-gold-homogenised-standardised-milk-1-l-carton/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/102221/amul-gold-homogenised-standardised-milk-1-l-carton/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 75.0,
+                "unit": "kcal",
+                "qualifier": "approximate",
+                "raw_label": "Energy - 75 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 3.5,
+                "unit": "g",
+                "qualifier": "approximate",
+                "raw_label": "Protein - 3.5 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 5.0,
+                "unit": "g",
+                "qualifier": "approximate",
+                "raw_label": "Total Carbohydrate - 5 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "approximate",
+                "raw_label": "Added Sugar - 0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 4.5,
+                "unit": "g",
+                "qualifier": "approximate",
+                "raw_label": "Total Fat - 4.5 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 2.8,
+                "unit": "g",
+                "qualifier": "approximate",
+                "raw_label": "Saturated Fat - 2.8 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 12.0,
+                "unit": "mg",
+                "qualifier": "approximate",
+                "raw_label": "Cholesterol - 12 mg"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 50.0,
+                "unit": "mg",
+                "qualifier": "approximate",
+                "raw_label": "Sodium - 50 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 150.0,
+                "unit": "mg",
+                "qualifier": "approximate",
+                "raw_label": "Calcium - 150 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "140c4c76698a1ea934c39c572fdf53b5890e47860971a03f119879af012dd5d6",
+        "retailer_product_id": "102221",
+        "source_reported_ean": "18901262150269",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "1 L",
+        "source_pack_description": "(Pack of 12)",
+        "ingredient_word_count": 12,
+        "raw_nutrition_excerpt": "On Approx Value 100 ml: Energy - 75 kcal , Energy from Fat - 41 kcal, Total Fat - 4.5 g from that Saturated Fat - 2.8 g, Cholesterol - 12 mg, Sodium - 50 mg, Total Carbohydrate - 5 g, Added Sugar - 0 g, Protein - 3.5 g, Calcium - 150 mg, Vitamin (A) - 75 mg, Vitamin (D) 0.5 mg, Not significant sourc",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ],
+      "conflicts": [
+        "Source reports vitamins A and D with implausible mg units; vitamin numbers withheld without correcting to guessed units. Macros/minerals use source approximate per100mL basis."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-104615",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/104615/amul-processed-cheese-cubes-200-g-carton/",
+        "retrieved_at": "2026-10-08T05:01:11.267015Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul Pure Milk Cheese Cubes",
+        "brand": "Amul",
+        "variant": "Pure Milk Cheese Cubes",
+        "quantity": "200 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/104615/amul-processed-cheese-cubes-200-g-carton/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 311.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (kcal): 311 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 20.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein (g): 20.0 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 1.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate (g): 1.5 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 1.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars (g): 1.5 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars (g): 0.0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 25.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat (g): 25.0 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 16.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat (g): 16.0 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat (g): 0.0 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 67.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol (mg): 67 mg"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 1220.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium (mg): 1220 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "2c3fdb78d4a24616e69145bbac407f11f13065a9cc8e79be765dd38969bcae8d",
+        "retailer_product_id": "104615",
+        "source_reported_ean": "8901262020039",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "200 g",
+        "source_pack_description": "(8 pcs)",
+        "ingredient_word_count": 0,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 25g Energy (kcal): 311 kcal Total Fat (g): 25.0 g Saturated Fat (g): 16.0 g Trans Fat (g): 0.0 g Cholesterol (mg): 67 mg Carbohydrate (g): 1.5 g Total Sugars (g): 1.5 g Added Sugars (g): 0.0 g Protein (g): 20.0 g Sodium (mg): 1220 mg RDA: Recommended Dietary Allowan",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40006899",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40006899/amul-cooking-butter-unsalted-500-g-carton/",
+        "retrieved_at": "2026-10-08T05:01:11.970269Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Amul Unsalted Butter",
+        "brand": "Amul",
+        "variant": "Unsalted Butter",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40006899/amul-cooking-butter-unsalted-500-g-carton/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 740.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 740kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0.6g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Carbohydrate: 0.0g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added sugar: 0.0g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 82.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 82.0g"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "916ed141849e947837d092c4cb14d8898b051e371c3abf4c51b233c2650a1575",
+        "retailer_product_id": "40006899",
+        "source_reported_ean": "8901262010030",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "Carton",
+        "ingredient_word_count": 0,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 500g Energy: 740kcal Total Fat: 82.0g Total Carbohydrate: 0.0g Added sugar: 0.0g Protein: 0.6g Vitamin A: 666mcg",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ],
+      "conflicts": [
+        "Source reports serving size 500g, matching total pack weight. Per100g table is explicit; pack weight is not offered as a serving recommendation."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-266065",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/266065/nestle-everyday-dairy-whitener-milk-powder-for-tea-400-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:11.977667Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Nestle EveryDay Dairy Creamer",
+        "brand": "Nestle",
+        "variant": "EveryDay Dairy Creamer",
+        "quantity": "400 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Milk solids, Sugar, Maltodextrin (7.7%), Lactose (5.3%) and stabilizer 339 (iii)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266065/nestle-everyday-dairy-whitener-milk-powder-for-tea-400-g-pouch/"
+        },
+        "contains": {
+          "text": "Contains Milk",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/266065/nestle-everyday-dairy-whitener-milk-powder-for-tea-400-g-pouch/"
+        },
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/266065/nestle-everyday-dairy-whitener-milk-powder-for-tea-400-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 429.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 429 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 18.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 18.5 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 56.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 56.0 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 46.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 46.9 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 22.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 22.1 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 14.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 14.5 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 10.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 10.5 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 43.3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol: 43.3 mg"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 460.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 460.0 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "f19d8040e26eebc4264217d45da539cdee3f63b8f0fa28c2a478cf1d4b37b9c5",
+        "retailer_product_id": "266065",
+        "source_reported_ean": "8901058031256",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "400 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 11,
+        "raw_nutrition_excerpt": "Per 100 g:; Energy: 429 kcal; ; Protein: 18.5 g; ; Carbohydrate: 56.0 g; ; Total Sugars: 46.9 g; ; Added Sugars: 22.1 g; ; Total Fat: 14.5 g; ; Saturated Fat: 10.5 g; ; Cholesterol: 43.3 mg; ; Sodium: 460.0 mg",
+        "raw_allergen_declaration": "Contains Milk.",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40000291",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40000291/tata-sampann-unpolished-toor-dalarhar-dal-1-kg-pouch/",
+        "retrieved_at": "2026-10-08T05:01:12.102613Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Tata Sampann Toor Dal/Togari Bele",
+        "brand": "Tata Sampann",
+        "variant": "Toor Dal/Togari Bele",
+        "quantity": "1 kg",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40000291/tata-sampann-unpolished-toor-dalarhar-dal-1-kg-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 364.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 364 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 18.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 18.2 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 64.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 64.3 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 0.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 0.5 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 0.0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 1.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 1.3 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0.4 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0.0 g"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 11.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre: 11.6 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 14.4,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 14.4 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "1be9d914a3098de863a5be642e94d7ac6926ffca9e3e1d88ddd1c5c76415ff34",
+        "retailer_product_id": "40000291",
+        "source_reported_ean": "40000291",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "1 kg",
+        "source_pack_description": "Pouch",
+        "ingredient_word_count": 0,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 30g Energy: 364 kcal Protein: 18.2 g Carbohydrate: 64.3 g Total Sugars: 0.5 g Added Sugars: 0.0 g Dietary Fibre: 11.6 g Total Fat: 1.3 g Saturated Fat: 0.4 g Trans Fat: 0.0 g Sodium: 14.4 mg",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-30006887",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/30006887/aashirvaad-atta-whole-wheat-1-kg-pouch/",
+        "retrieved_at": "2026-10-08T05:01:12.649612Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Aashirvaad Atta/Godihittu - Whole Wheat",
+        "brand": "Aashirvaad",
+        "variant": "Atta/Godihittu - Whole Wheat",
+        "quantity": "1 kg",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/30006887/aashirvaad-atta-whole-wheat-1-kg-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 338.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (kcal): 338"
+              },
+              {
+                "nutrient": "protein",
+                "value": 10.7,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein (g): 10.7"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 76.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate (g): 76.0"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 3.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars (g): 3.6"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars (g): 0.0"
+              },
+              {
+                "nutrient": "fat",
+                "value": 1.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total fat (g): 1.3"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat (g): 0.3"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol (mg): 0.0"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 10.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fiber (g): 10.4"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 1.5,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium (mg): 1.5"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat (other than naturally occuring trans fat (g)): 0.0"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "c7cc8711845c97b46be063855046cb4e982ee604667f18719d0ebae4fd3c1c5a",
+        "retailer_product_id": "30006887",
+        "source_reported_ean": "8901725121747",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "1 kg",
+        "source_pack_description": "",
+        "ingredient_word_count": 49,
+        "raw_nutrition_excerpt": "Nutrition per gram/ml: 100g Energy (kcal): 338 Protein (g): 10.7 Carbohydrate (g): 76.0 Total Sugars (g): 3.6 Added Sugars (g): 0.0 Dietary Fiber (g): 10.4 Total fat (g): 1.3 Saturated Fat (g): 0.3 Trans Fat (other than naturally occuring trans fat (g)): 0.0 Cholesterol (mg): 0.0 Sodium (mg): 1.5",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Retailer ingredient tab contains a nutrition table rather than an ingredient declaration; no ingredient statement imported.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-284422",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/284422/aashirvaad-atta-multigrains-1-kg-pouch/",
+        "retrieved_at": "2026-10-08T05:01:12.578611Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Aashirvaad Atta/Godihittu - Multigrains",
+        "brand": "Aashirvaad",
+        "variant": "Atta/Godihittu - Multigrains",
+        "quantity": "1 kg",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/284422/aashirvaad-atta-multigrains-1-kg-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 336.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy (kcal): 336 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 14.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 14.4 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 71.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 71.8 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 4.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 4.8 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 0.0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 1.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 1.9 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.35,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0.35 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0.0 g"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 13.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fibre: 13.0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 4.6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 4.6 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 4.3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron: 4.3 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "a12712259d3cb9636c67abcd8ab39ae731c82161277066c63f76abad81338fda",
+        "retailer_product_id": "284422",
+        "source_reported_ean": "891725121242",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "1 kg",
+        "source_pack_description": "",
+        "ingredient_word_count": 0,
+        "raw_nutrition_excerpt": "Nutrition_per: 100g Serving_Size: 60g Energy (kcal): 336 kcal Carbohydrate: 71.8 g Total Sugars: 4.8 g Added Sugars: 0.0 g Dietary Fibre: 13.0 g Total Fat: 1.9 g Saturated Fat: 0.35 g Trans Fat: 0.0 g Sodium: 4.6 mg Protein: 14.4 g Iron: 4.3 mg Vitamin B1: 0.38 mg",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "Ingredient declaration unavailable in selected source; not filled from a generic food or inferred composition."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40361379",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40361379/fortune-sunlite-refined-sunflower-oil-840-g/",
+        "retrieved_at": "2026-10-08T05:01:12.450610Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Fortune Sunlite Refined Sunflower Oil",
+        "brand": "Fortune",
+        "variant": "Sunlite Refined Sunflower Oil",
+        "quantity": "840 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Refined Sunflower Oil, Antioxidants (INS 319, INS 330), Vitamin A, Vitamin D, Antifoaming Agent (INS 900a)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40361379/fortune-sunlite-refined-sunflower-oil-840-g/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "15ca8588353b17e56e54ff9add36ae9764d83a6cf4bdd53d561eabe0e29dded8",
+        "retailer_product_id": "40361379",
+        "source_reported_ean": "8906007280272",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "840 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 16,
+        "raw_nutrition_excerpt": "Energy (kcal): 900; Protein (g): 0; Carbohydrate (g): 0; Total Sugar (g): 0; Added Sugar (g): 0; Total Fat (g): 100; Saturated Fat (g) NMT: 11; Trans Fat (g) NMT: 1; Sodium (mg): 0; Monounsaturated Fatty Acids (g): 29; Polyunsaturated Fatty Acids (g): 60; Omega-3 Fatty Acid (g): 0.15; Omega-6 Fatty ",
+        "raw_allergen_declaration": "",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence.",
+        "No unambiguous explicit nutrition basis in selected source; numeric amounts not admitted.",
+        "Nutrition numbers and NMT bounds exist, but the selected nutrition tab has no explicit denominator. No per100g assumption used."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-102833",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/102833/cadbury-chocolate-health-drink-bournvita-refill-pack-500-g-pouch/",
+        "retrieved_at": "2026-10-08T05:01:13.375727Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Bournvita Chocolate Nutrition Drink",
+        "brand": "Bournvita",
+        "variant": "Chocolate Nutrition Drink",
+        "quantity": "500 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Cereal Extract 58%* (Barley, Millets, Wheat), Sugar, Cocoa Solids, Maltodextrin, Colour (150c), Wheat Gluten, Minerals, Liquid Glucose, Emulsifiers (322, 471), Vitamins, Raising Agent (500(ii)), Flavours (Natural, Nature Identical and Artificial (Vanilla) Flavouring Substances), Milk Solids, lodised Salt.",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/102833/cadbury-chocolate-health-drink-bournvita-refill-pack-500-g-pouch/"
+        },
+        "contains": {
+          "text": "Contains Milk, Wheat, Barley, Sulphites, Soy",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/102833/cadbury-chocolate-health-drink-bournvita-refill-pack-500-g-pouch/"
+        },
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/102833/cadbury-chocolate-health-drink-bournvita-refill-pack-500-g-pouch/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 381.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 381 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 7.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 7 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 86.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 86 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 46.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 46 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 32.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 32.2 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 1.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 1.8 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0.9 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 0.1,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Cholesterol: 0.1 mg"
+              },
+              {
+                "nutrient": "fibre",
+                "value": 3.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Dietary Fiber: 3.5 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 175.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 175 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 500.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Calcium: 500 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 23.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron: 23 mg"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 7.4,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Zinc: 7.4 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "b521116728f64f435895f56b4405c3f510cdaca3c5f4affb0c578a56e587a973",
+        "retailer_product_id": "102833",
+        "source_reported_ean": "7622202846892",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "500 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 46,
+        "raw_nutrition_excerpt": "Per 100 g:; Energy: 381 kcal; ; Protein: 7 g; ; Carbohydrate: 86 g; ; Total Sugars: 46 g; ; Added Sugars: 32.2 g; ; Dietary Fiber: 3.5 g; ; Total Fat: 1.8 g; ; Saturated Fat: 0.9 g; ; Cholesterol: 0.1 mg; ; Trans Fat: 0 g; ; Sodium: 175 mg; ; Vitamin D2: 18.8 mcg; ; Calcium: 500 mg; ; Manganese: 1.8",
+        "raw_allergen_declaration": "Contains Milk, Wheat, Barley, Sulphites, Soy.",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-retailer-40117959",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40117959/horlicks-health-nutrition-drink-classic-malt-500-g-value-pack/",
+        "retrieved_at": "2026-10-08T05:01:14.508273Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Horlicks Classic Malt Flavour Nutritional Drink",
+        "brand": "Horlicks",
+        "variant": "Classic Malt Flavour Nutritional Drink",
+        "quantity": "450 g",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Malt (66.7%) [Barley (32%), Wheat Flour (Atta), Wheat, Millet], Milk Solids (14%), Sugar, Wheat Gluten, Minerals, Edible Iodized Salt, Soy Protein Isolate, Acidity Regulators [INS 501(ii), INS 500(ii)], Vitamins.",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40117959/horlicks-health-nutrition-drink-classic-malt-500-g-value-pack/"
+        },
+        "contains": {
+          "text": "Contains Wheat, Barley, Milk and Soy",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40117959/horlicks-health-nutrition-drink-classic-malt-500-g-value-pack/"
+        },
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "g"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40117959/horlicks-health-nutrition-drink-classic-malt-500-g-value-pack/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 377.0,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 377 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 11.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 11 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 79.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 79 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 46.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 46 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 13.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugar: 13.5 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 2.0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 2 g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 1.4,
+                "unit": "g",
+                "qualifier": "less_than",
+                "raw_label": "Saturated Fat: <1.4 g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0.1,
+                "unit": "g",
+                "qualifier": "less_than",
+                "raw_label": "Trans Fat: <0.1 g"
+              },
+              {
+                "nutrient": "cholesterol",
+                "value": 5.0,
+                "unit": "mg",
+                "qualifier": "less_than",
+                "raw_label": "Cholesterol: <5 mg"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 400.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 400 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 741.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Calcium: 741 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 26.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron: 26 mg"
+              },
+              {
+                "nutrient": "magnesium",
+                "value": 65.0,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Magnesium: 65 mg"
+              },
+              {
+                "nutrient": "zinc",
+                "value": 8.3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Zinc: 8.3 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected product object in live HTML; related SKUs excluded.",
+        "response_sha256": "e66a7a30f21ab2bfcdec76cccb596be63716e9f84448552da3f36a2cc6e3459f",
+        "retailer_product_id": "40117959",
+        "source_reported_ean": "8909106008960",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "450 g",
+        "source_pack_description": "",
+        "ingredient_word_count": 37,
+        "raw_nutrition_excerpt": "per gram: 100 g; Serving Size: 27 g; Energy: 377 kcal; Protein: 11 g; Carbohydrate: 79 g; Total Sugars: 46 g; Added Sugar: 13.5 g; Total Fat: 2 g; Saturated Fat: <1.4 g; Trans Fat: <0.1 g; Cholesterol: <5 mg; Sodium: 400 mg; Vitamin D: 9.3 mcg; Calcium: 741 mg; Magnesium: 65 mg; Phosphorus: 280 mg; ",
+        "raw_allergen_declaration": "Contains Wheat, Barley, Milk and Soy.",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Current package revision/date not established from source.",
+        "No packaging barcode visually verified; EAN metadata remains an unlinked lead.",
+        "Retailer nutrition transcription is not independently verified package/manufacturer evidence."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-manufacturer-multigrain-chocos",
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.kelloggs.com/en-in/products/chocos/chocos-whole-grain-cereal.html",
+        "retrieved_at": "2026-10-08T05:10:00.527058Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Multigrain Chocos",
+        "brand": "Kellogg's",
+        "variant": "Multigrain Chocos",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Multigrain Flour Mix (64.8%) {Wheat Flour (Atta) (55.8%), Sorghum (Jowar) Flour (3%), Rice Flour (3%), Corn Meal (3%)}, Sugar, Cocoa Solids (5.3%), Minerals, Cereal Extract, Iodized Salt, Colours (INS 150a, INS 150d), Edible Vegetable Oil (Palmolein), Flavours {Nature Identical & Artificial (Cream)}, Vitamins, Antioxidant (INS 307b)",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-whole-grain-cereal.html"
+        },
+        "contains": {
+          "text": "CONTAINS WHEAT & BARLEY",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-whole-grain-cereal.html"
+        },
+        "may_contain": {
+          "text": "MAY CONTAIN SOY, MILK, OATS & NUTS",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-whole-grain-cereal.html"
+        }
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Official India manufacturer page successfully inspected through web.open; direct urllib transport was rejected with HTTP405. Ingredient/allergen factual declarations only.",
+        "response_sha256": null,
+        "factual_declaration_sha256": "c6ccbe56db7d0968605181f938af84636ad818e822d3e77b7321aba28e5f7d83",
+        "source_available_pack_quantities": [
+          "9 g",
+          "20 g",
+          "40 g",
+          "127 g",
+          "250 g",
+          "385 g",
+          "675 g",
+          "1050 g"
+        ],
+        "source_image_asset_identifier": "EN_IN_8901499010728_2608201107_P_1",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Multiple available pack sizes are listed; exact SKU/GTIN/pack revision remains unknown and no barcode was assigned from image asset identifiers.",
+        "Nutrition is displayed as an image; numeric values not transcribed or guessed.",
+        "No license grant for page prose/images asserted; only factual ingredient/allergen observations retained."
+      ],
+      "conflicts": [
+        "Current multigrain formulation differs from older retailer Chocos wheat/maida declaration. Retain both as unlinked observations; no automatic complementary gap fill."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-manufacturer-multigrain-chocos-crunchy-bites",
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.kelloggs.com/en-in/products/chocos/chocos-crunchy-bites.html",
+        "retrieved_at": "2026-10-08T05:10:00.527058Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Multigrain Chocos Crunchy Bites",
+        "brand": "Kellogg's",
+        "variant": "Multigrain Chocos Crunchy Bites",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "MULTIGRAIN FLOUR MIX (68.9%) {WHEAT FLOUR (ATTA) (47.5%), CORN MEAL (17.8%), SORGHUM (JOWAR) FLOUR (3.6%)}, SUGAR, CHOCO CREME (4.7%) {SUGAR, EDIBLE VEGETABLE OIL (PALM KERNEL OIL), COCOA SOLIDS, EMULSIFIER (INS 476)}, INVERT SYRUP, MINERALS, IODIZED SALT, FLAVOURS {NATURE IDENTICAL & ARTIFICIAL (MARSHMALLOW, CARAMEL & VANILLA)}, COCOA SOLIDS (0.3%), COLOUR (INS 150d), VITAMINS, ANTIOXIDANT (INS 307b).",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-crunchy-bites.html"
+        },
+        "contains": {
+          "text": "CONTAINS WHEAT",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-crunchy-bites.html"
+        },
+        "may_contain": {
+          "text": "MAY CONTAIN SOY, MILK, OATS, BARLEY & NUTS",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/chocos/chocos-crunchy-bites.html"
+        }
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Official India manufacturer page successfully inspected through web.open; direct urllib transport was rejected with HTTP405. Ingredient/allergen factual declarations only.",
+        "response_sha256": null,
+        "factual_declaration_sha256": "0925955cb333de5e594fa4d1ace456c3f539fd9e8555ff73d2d467e40751bb81",
+        "source_available_pack_quantities": [
+          "20 g",
+          "375 g"
+        ],
+        "source_image_asset_identifier": "EN_IN_8901499010742_2608201114_P_1",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Multiple available pack sizes are listed; exact SKU/GTIN/pack revision remains unknown and no barcode was assigned from image asset identifiers.",
+        "Nutrition is displayed as an image; numeric values not transcribed or guessed.",
+        "No license grant for page prose/images asserted; only factual ingredient/allergen observations retained."
+      ]
+    },
+    {
+      "candidate_id": "india-pantry-manufacturer-cornflakes-real-honey",
+      "source": {
+        "provider": "manufacturer",
+        "url": "https://www.kelloggs.com/en-in/products/corn-flakes/corn-flakes-real-honey.html",
+        "retrieved_at": "2026-10-08T05:10:00.527058Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Kellogg's Corn Flakes Real Honey",
+        "brand": "Kellogg's",
+        "variant": "Corn Flakes Real Honey",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Corn Grits (67,516), Sugar, Honey (2.8%), Cereal Extract, lodized Salt, Vitamins, Antioxidant (INS 307b), Flavour (Nature Identical), Minerals.",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/corn-flakes/corn-flakes-real-honey.html"
+        },
+        "contains": {
+          "text": "CONTAINS WHEAT & BARLEY",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/corn-flakes/corn-flakes-real-honey.html"
+        },
+        "may_contain": {
+          "text": "MAY CONTAIN SOY, MILK, OATS & NUTS",
+          "completeness": "complete",
+          "source_url": "https://www.kelloggs.com/en-in/products/corn-flakes/corn-flakes-real-honey.html"
+        }
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Official India manufacturer page successfully inspected through web.open; direct urllib transport was rejected with HTTP405. Ingredient/allergen factual declarations only.",
+        "response_sha256": null,
+        "factual_declaration_sha256": "a1d30af0de8f9593f20091dc79c3fca0bb7d975dc7dd93c394024e90767740e6",
+        "source_available_pack_quantities": [
+          "300 g",
+          "630 g"
+        ],
+        "source_image_asset_identifier": "EN_IN_08901499008695_2606111126_P_1",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Multiple available pack sizes are listed; exact SKU/GTIN/pack revision remains unknown and no barcode was assigned from image asset identifiers.",
+        "Nutrition is displayed as an image; numeric values not transcribed or guessed.",
+        "No license grant for page prose/images asserted; only factual ingredient/allergen observations retained."
+      ],
+      "conflicts": [
+        "Malformed Corn Grits (67,516) in source preserved; percentage not inferred or corrected."
+      ]
+    }
+  ],
+  "retrieval_failures": [
+    {
+      "url": "https://business.bigbasket.com/pd/265990/mtr-ready-to-eat-paneer-makhani-300-g-carton/",
+      "reason": "ValueError: selected product object unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/40109851/veeba-mayonnaise-classic-250-g/",
+      "reason": "ValueError: selected product object unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/40049001/veeba-mayonnaise-mint-300-g/",
+      "reason": "ValueError: selected product object unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/292064/nestle-a-nourish-dahi-400-g-cup/",
+      "reason": "ValueError: selected product object unavailable"
+    },
+    {
+      "url": "https://www.kelloggs.com/en-in/products/chocos/chocos-whole-grain-cereal.html",
+      "reason": "HTTPError: HTTP Error 405: Method Not Allowed"
+    },
+    {
+      "url": "https://www.kelloggs.com/en-in/products/chocos/chocos-crunchy-bites.html",
+      "reason": "HTTPError: HTTP Error 405: Method Not Allowed"
+    },
+    {
+      "url": "https://www.kelloggs.com/en-in/products/corn-flakes/corn-flakes-real-honey.html",
+      "reason": "HTTPError: HTTP Error 405: Method Not Allowed"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "url": "https://business.bigbasket.com/pd/293717/saffola-masala-oats-masala-coriander-38-g/",
+      "retrieved_at": "2026-10-08T05:01:08.514541Z",
+      "reason": "Selected page has neither usable ingredient declaration nor an interpretable nutrition table.",
+      "source_selected_quantity": "38 g",
+      "conflicts": []
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/265951/mtr-breakfast-mix-dosa-500-g-pouch/",
+      "retrieved_at": "2026-10-08T05:01:09.186134Z",
+      "reason": "Selected page has neither usable ingredient declaration nor an interpretable nutrition table.",
+      "source_selected_quantity": "500 g",
+      "conflicts": [
+        "Only 45g serving size is explicit while carbohydrate is 65g and protein 12g; no reliable table basis established. Table withheld."
+      ]
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/70001832/amul-taaza-fresh-toned-milk-200-ml-carton/",
+      "retrieved_at": "2026-10-08T05:01:11.067442Z",
+      "reason": "Selected page has neither usable ingredient declaration nor an interpretable nutrition table.",
+      "source_selected_quantity": "200 ml",
+      "conflicts": []
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/412503/amul-cream-fresh-1-l/",
+      "retrieved_at": "2026-10-08T05:01:11.118616Z",
+      "reason": "Selected page has neither usable ingredient declaration nor an interpretable nutrition table.",
+      "source_selected_quantity": "1 L Pack of 12",
+      "conflicts": []
+    },
+    {
+      "url": "https://old.amul.com/products/amul-uhttaaza-info.php",
+      "reason": "Actual retrieval redirects to generic Amul homepage; cached search nutrient table was not imported."
+    },
+    {
+      "url": "https://www.amul.com/products/amul_meetha_dahi_info.php",
+      "reason": "Actual retrieval redirects to category page; cached search ingredients/nutrients not imported."
+    },
+    {
+      "url": "https://www.gitsfood.com/product/gulab-jamun/",
+      "reason": "Product page was inspected, but marketing description is not a full ingredient declaration; not used to supplement exact retailer mix facts."
+    }
+  ],
+  "methodology": {
+    "discovery": "Internet search and live manufacturer/retailer pages; summaries were not imported as facts.",
+    "source_access": "Live exact selected retailer object. Promotional/health prose ignored.",
+    "barcode_policy": "All actualidentity barcode values remain null; source metadata needs independent exact package/quantity/variant verification.",
+    "images": "No image bytes acquired.",
+    "ingredients_limit_words": 140,
+    "nutrition_policy": "Only explicit basis and numeric unit-qualified rows were transcribed; percentage RDA, TRACE, malformed columns and vitamin unit errors stay unknown. Bounds remain qualified. Retailer tables remain retailer_transcription.",
+    "identity_policy": "Live selected w/pack_desc values supersede obsolete URL slug quantities. Manufacturer pages covering several sizes stay brand_family_only with null quantity/barcode. No automatic cross-source merge."
+  },
+  "coverage": {
+    "observations": 27,
+    "manufacturer": 3,
+    "retailer": 24,
+    "ingredient_sections": 21,
+    "nutrition_tables": 19,
+    "nutrition_rows": 202,
+    "verified_packet_barcodes": 0,
+    "valid_noninternal_ean_leads": 14,
+    "rejected_sources": 7,
+    "transport_failures": 7
+  }
+}

@@ -7,8 +7,8 @@ matches require pack-size selection, and ProductInfoPage is the shared result
 destination. Automatic back-label observations remain machine-unverified and
 source-preserving. Optional NutriGraph facts are session-only and disabled
 pending a key. Local, hosted, native and device proof are recorded separately.
-[Frontend review](../planning/FRONTEND_V0_10_0_REVIEW.md) ·
-[Backend review](../planning/BACKEND_V0_14_0_REVIEW.md) ·
+[Frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md) ·
+[Backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) ·
 [Product Info](PRODUCT_INFO.md) · [Live facts](LIVE_PRODUCT_FACTS.md).
 
 
@@ -33,7 +33,7 @@ pending a key. Local, hosted, native and device proof are recorded separately.
    and useful partial states. Six reviewed ingredient functions, original-basis
    sugar cubes and exact-source comparison have their own source references.
 
-[Automatic scan plan](../planning/AUTOMATIC_SCAN_PLAN.md) ·
+[Automatic scan plan](../roadmap.md) ·
 [OFF adapter](OPEN_FOOD_FACTS.md) · [AI routing](AI_ROUTING.md).
 
 ## Preserved normalization and claim contracts
@@ -133,8 +133,8 @@ authenticated hosted generation, private writes and a complete offline web cache
 The v0.2.3 full acquisition reached validated gzip EOF with **24,695 India rows**
 and **24,641 supported codes**, source **2026-10-06T06:53:46Z**, refresh due
 **2027-07-06T06:53:46Z**. Its dated generated SQLite was **62,472,192 bytes**;
-[coverage/build report](../research/CATALOGUE_V0_2_3_COVERAGE.json) and
-[hosted proof](../research/BACKEND_V0_2_3_PRODUCTION.json) remain historical.
+[coverage/build report](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/CATALOGUE_V0_2_3_COVERAGE.json) and
+[hosted proof](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_2_3_PRODUCTION.json) remain historical.
 Current bulk records and 243 separate research observations are preserved.
 Coverage remains unverified. Refresh uses nine calendar months from source
 export, never a new build date; replacement creates a new immutable deployment.

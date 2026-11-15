@@ -14,7 +14,10 @@ ROOT = Path(__file__).resolve().parents[3]
 
 def module(name, monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / "scripts"))
-    spec = importlib.util.spec_from_file_location(f"workspace_{name}", ROOT / (f"scripts/dev/{name}.py" if name.startswith("_") else f"scripts/{name}.py"))
+    spec = importlib.util.spec_from_file_location(
+        f"workspace_{name}",
+        ROOT / (f"scripts/dev/{name}.py" if name.startswith("_") else f"scripts/{name}.py"),
+    )
     assert spec is not None and spec.loader is not None
     result = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(result)
@@ -128,7 +131,7 @@ def test_setup_progress_reports_failed_hash_without_verification(clone, monkeypa
     label = f"Validate {layer} catalogue"
     assert f"Stopped: {label}" in output
     assert f"Verified: {label}" not in output
-    assert not (clone / "backend/storage/runtime/india/catalogue.sqlite3").exists()
+    assert not (clone / ".local/backend/catalogue/catalogue.sqlite3").exists()
 
 
 @pytest.mark.parametrize("source_format", ["off_jsonl", "off_csv_projection"])
@@ -138,7 +141,7 @@ def test_setup_rebuilds_then_reuses_index_and_retains_different_valid_index(
     setup = module("setup", monkeypatch)
     directory, _ = source_bundle(clone, source_format=source_format)
     assert setup.prepare_catalogue(clone) == "built"
-    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    active = clone / ".local/backend/catalogue/catalogue.sqlite3"
     original = active.read_bytes()
     assert setup.prepare_catalogue(clone) == "reused"
     assert active.read_bytes() == original
@@ -160,7 +163,7 @@ def test_setup_migrates_same_source_identity_only_jsonl_index_with_explicit_repl
     setup = module("setup", monkeypatch)
     _, metadata = source_bundle(clone)
     assert setup.prepare_catalogue(clone) == "built"
-    directory = clone / "backend/storage/runtime/india"
+    directory = clone / ".local/backend/catalogue"
     active = directory / "catalogue.sqlite3"
     # An older importer can legitimately have indexed the same JSONL identities
     # before the optional facts table was implemented.
@@ -192,7 +195,7 @@ def test_setup_upgrades_same_source_missing_discovery_without_replacing_differen
     setup = module("setup", monkeypatch)
     _, metadata = source_bundle(clone)
     assert setup.prepare_catalogue(clone) == "built"
-    directory = clone / "backend/storage/runtime/india"
+    directory = clone / ".local/backend/catalogue"
     with closing(sqlite3.connect(directory / "catalogue.sqlite3")) as connection:
         for table in (
             "catalogue_search_terms",
@@ -215,7 +218,7 @@ def test_setup_rejects_tampered_bundle_before_replacing_index(clone, monkeypatch
     setup = module("setup", monkeypatch)
     directory, _ = source_bundle(clone)
     assert setup.prepare_catalogue(clone) == "built"
-    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    active = clone / ".local/backend/catalogue/catalogue.sqlite3"
     previous = active.read_bytes()
     with (directory / "india-products.jsonl.gz").open("ab") as stream:
         stream.write(b"damage")
@@ -228,7 +231,7 @@ def test_setup_wrong_expected_counts_preserve_active_index(clone, monkeypatch):
     setup = module("setup", monkeypatch)
     directory, metadata = source_bundle(clone)
     assert setup.prepare_catalogue(clone) == "built"
-    active = clone / "backend/storage/runtime/india/catalogue.sqlite3"
+    active = clone / ".local/backend/catalogue/catalogue.sqlite3"
     previous = active.read_bytes()
     metadata["indexed_products"] = 2
     (directory / "bundle.json").write_text(json.dumps(metadata))
@@ -274,3 +277,42 @@ def test_local_frontend_metadata_reads_canonical_version(tmp_path, monkeypatch):
     pubspec.write_text("version: 0.1.0+0\n")
     with pytest.raises(ValueError, match="positive build"):
         workspace.frontend_version(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "directory",
+    ["../outside", ".local/../../outside", "/absolute", "C:/outside", ".local\\cache", ".local"],
+)
+def test_local_catalogue_config_stays_inside_ignored_root(clone, monkeypatch, directory):
+    workspace = module("_workspace", monkeypatch)
+    path = clone / "scripts/config/workspace.json"
+    settings = json.loads(path.read_text())
+    settings["local_catalogue_directory"] = directory
+    path.write_text(json.dumps(settings))
+    with pytest.raises(ValueError, match="catalogue directory"):
+        workspace.local_catalogue_directory(clone)
+    assert not (clone / ".local").exists()
+
+
+def test_importer_creates_managed_directory_from_fresh_clone(clone, monkeypatch, capsys):
+    importer = module("data/import_india_catalogue", monkeypatch)
+    directory, metadata = source_bundle(clone)
+    monkeypatch.setattr(importer, "REPOSITORY_ROOT", clone)
+    monkeypatch.setattr(
+        importer.sys,
+        "argv",
+        [
+            "import_india_catalogue.py",
+            "--input",
+            str(directory / "india-products.jsonl.gz"),
+            "--source-url",
+            metadata["source_url"],
+            "--exported-at",
+            metadata["exported_at"],
+        ],
+    )
+    assert importer.main() == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["manifest"]["indexed_products"] == 1
+    assert (clone / ".local/backend/catalogue/catalogue.sqlite3").is_file()
+    assert not (clone / "backend/storage").exists()

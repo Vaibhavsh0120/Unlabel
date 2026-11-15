@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "upstream": "https://github.com/supabase/auth",
+  "upstream_tag": "v2.197.0",
+  "upstream_commit": "4eee58f296d9698a1c2c0ae14d7a0b379c7622d3",
+  "archive_url": "https://codeload.github.com/supabase/auth/tar.gz/4eee58f296d9698a1c2c0ae14d7a0b379c7622d3",
+  "archive_sha256": "dd5168b9f0bb294fa1e1d343c23b6bb5f68376f271d97dea897339b28fbd4b8d",
+  "archive_bytes": 760261,
+  "license": "MIT",
+  "license_file": "LICENSE",
+  "go_version": "1.27.4",
+  "builder_image": "golang:1.27.4-bookworm@sha256:4fa7c968ba93f1635670522dbb01a2c78150443e1385746924566079f36570ea",
+  "runtime": "scratch - static auth and healthcheck, CA roots, timezone data, migrations and licenses only",
+  "patches": {
+    "golang.org/x/net": "v0.62.0",
+    "golang.org/x/crypto": "v0.59.0",
+    "google.golang.org/grpc": "v1.83.2",
+    "github.com/go-jose/go-jose/v4": "v4.1.6"
+  },
+  "transitive_patch_changes": {
+    "golang.org/x/mod": "v0.42.0",
+    "golang.org/x/sync": "v0.25.0",
+    "golang.org/x/sys": "v0.50.0",
+    "golang.org/x/text": "v0.44.0"
+  },
+  "lock_sha256": {
+    "go.mod": "daf999da3c39e35efa0971aa0d29d5fb74b2da72310c4b91f2e16097116e8426",
+    "go.sum": "8cbf3b6a941f4cf6e0dba1f2be33dcee41d53c3e0030f9736fb476a6e93c6088",
+    "LICENSE": "68c80ef00664ea62a2c6f38c0ef044497caacc6648a8bd92eec7fdb81e01f904"
+  },
+  "application_source_changes": false,
+  "image_version": "v2.197.0-unlabel.1",
+  "verified_on": "2026-11-15",
+  "acceptance": "Source/toolchain/dependency identities verified. Build, integration, delivery and vulnerability scan evidence are recorded separately in README.md.",
+  "local_build": {
+    "target": "linux/arm64",
+    "cgo_enabled": false,
+    "binary_bytes": 34406560,
+    "binary_sha256": "df605ccab569e4b44e527d4648171061d7697aa674b208860e4252e8170f0659",
+    "upstream_crypto_tests": "passed",
+    "healthcheck_unit_tests": "passed",
+    "govulncheck_version": "1.9.0",
+    "govulncheck_remaining": [
+      "GO-2026-6909",
+      "GO-2026-5004",
+      "GO-2026-4518"
+    ],
+    "container_integration": "pending",
+    "image_scan": "pending"
+  }
+}

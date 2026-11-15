@@ -25,7 +25,7 @@ authoring environment and run the script without `--check`.
 Normal setup/build uses committed assets and does not download an icon tool.
 
 The rounded wordmark uses Nunito at weight 800. The unmodified variable font and
-its SIL Open Font License are retained in [fonts](fonts/), acquired from the
+its SIL Open Font License are retained in [fonts](fonts), acquired from the
 [official Google Fonts repository](https://github.com/google/fonts/tree/main/ofl/nunito).
 The Android/SVG wordmark is outlined, so displaying the icon never downloads a
 font or depends on a platform-installed typeface. Font acquisition is an explicit

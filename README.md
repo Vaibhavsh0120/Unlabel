@@ -71,13 +71,13 @@ without credentials; a fresh clone can use the bundled data without vendor accou
 [Optional-source setup](docs/architecture/OPTIONAL_SOURCES.md).
 NutriGraph is configured server-side and remains temporary; its refreshed CloudFront
 endpoint is verified for live UPC lookups; regional India and Europe databases remain in staging.
-[Frontend scope and checks](docs/planning/FRONTEND_V0_11_0_REVIEW.md) ·
-[Backend scope and checks](docs/planning/BACKEND_V0_15_0_REVIEW.md).
+[Frontend scope and checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_11_0_REVIEW.md) ·
+[Backend scope and checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_15_0_REVIEW.md).
 
 On 27 October, web 0.11.0+15 and API 0.15.0 were verified live; all nineteen
-[hosted checks](docs/research/RELEASE_2026_10_27_PRODUCTION.json) passed.
+[hosted checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/RELEASE_2026_10_27_PRODUCTION.json) passed.
 Publication and native/device evidence are recorded separately in
-[the release ledger](docs/planning/CONTROLLED_RELEASES.md).
+[the release ledger](contracts/versioning/README.md).
 
 ## Run locally
 
@@ -91,8 +91,7 @@ cd Unlabel
 **Windows / PowerShell**
 
 ```powershell
-./scripts/setup.ps1
-./scripts/run-local.ps1
+./dev.ps1
 ```
 
 **macOS / Linux**
@@ -116,7 +115,7 @@ Caddy and certificate instructions: [local network tools](scripts/tools/README.m
 
 Use `--scope frontend` or `--scope backend` with the Python setup/runner to work
 on one component. The runner supplies local API, catalogue and CORS settings.
-[Full setup and troubleshooting](docs/planning/LOCAL_DEVELOPMENT.md).
+[Full setup and troubleshooting](docs/development.md).
 
 ## How it works
 
@@ -162,10 +161,10 @@ Generic food-composition tables never fill a branded packet's unknown values.
 
 | Find your way | Start here |
 | --- | --- |
-| **Understand the project** | [Documentation index](docs/README.md) · [Feature tracker](docs/planning/FEATURE_TRACKER.md) · [Architecture](docs/architecture/SYSTEM.md) |
-| **Develop and contribute** | [Contributing](CONTRIBUTING.md) · [Teammate handoff](docs/planning/TEAM_HANDOFF.md) · [Scripts](scripts/README.md) · [UI contract](DESIGN.md) |
-| **Build and publish** | [Release/versioning](docs/planning/RELEASE_VERSIONING.md) · [Source release ledger](docs/planning/CONTROLLED_RELEASES.md) · [Vercel setup](docs/planning/VERCEL_SETUP.md) |
-| **Check the evidence** | [Maintenance receipt](docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](docs/planning/FRONTEND_V0_9_0_REVIEW.md) · [Backend review](docs/planning/BACKEND_V0_13_0_REVIEW.md) |
+| **Understand the project** | [Documentation index](docs/README.md) · [Feature tracker](docs/roadmap.md) · [Architecture](docs/architecture/SYSTEM.md) |
+| **Develop and contribute** | [Contributing](CONTRIBUTING.md) · [Teammate handoff](docs/development.md) · [Scripts](scripts/README.md) · [UI contract](frontend/DESIGN.md) |
+| **Build and publish** | [Release/versioning](docs/releases.md) · [Source release ledger](contracts/versioning/README.md) · [Vercel setup](docs/deployment.md) |
+| **Check the evidence** | [Maintenance receipt](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/MAINTENANCE_2026_10_12.json) · [Frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_9_0_REVIEW.md) · [Backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_13_0_REVIEW.md) |
 
 <details>
 <summary><strong>Repository map</strong></summary>
@@ -175,7 +174,7 @@ Generic food-composition tables never fill a branded packet's unknown values.
 | [frontend](frontend/README.md) | Flutter app, native/web platforms, API client and local persistence |
 | [backend](backend/README.md) | FastAPI, catalogue, reviewed checks and reports |
 | [contracts](contracts/README.md) | Versioned schemas, historical OpenAPI and synthetic fixtures |
-| [data](data/README.md) / [knowledge](knowledge/README.md) | Licensed source bundles, provenance and reviewed rules |
+| [data](data/README.md) / [knowledge](data/knowledge/README.md) | Licensed source bundles, provenance and reviewed rules |
 | [scripts](scripts/README.md) | Restore, run, encryption, imports and verified publication |
 | [docs](docs/README.md) / design | Architecture, release evidence and supplied UI references |
 

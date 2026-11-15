@@ -22,7 +22,7 @@ def main() -> int:
     parser.add_argument(
         "--knowledge-directory",
         type=Path,
-        default=BACKEND_DIRECTORY.parent / "knowledge",
+        default=BACKEND_DIRECTORY.parent / "data/knowledge",
         help="Existing reviewed claim knowledge source directory",
     )
     parser.add_argument(

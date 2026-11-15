@@ -5,8 +5,8 @@ supported OFF codes and **243** immutable researched-product observations.
 The current API has **30 paths / 32 operations**. Search/results consume these
 qualified sources; no record becomes confirmed-label evidence automatically.
 Backend read-only hosted proof and latest frontend hosted proof remain separate.
-[Backend review](../planning/BACKEND_V0_12_0_REVIEW.md) ·
-[Frontend review](../planning/FRONTEND_V0_7_0_REVIEW.md).
+[Backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_0_REVIEW.md) ·
+[Frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_7_0_REVIEW.md).
 
 ## Historical research checkpoint — backend v0.10.0
 
@@ -20,11 +20,11 @@ Source normalization does not import the runtime; `scripts/data/build_research_c
 the backend deployment build and `scripts/setup.py --catalogue-only` do. Runtime
 files live in ignored `backend/app/research_catalogue/data/`. Frontend **v0.5.0+6**
 adds mixed-source search and qualified ingredient/nutrition/source details.
-Local verification and hosted/push status: [backend review](../planning/BACKEND_V0_10_0_REVIEW.md) ·
-[frontend review](../planning/FRONTEND_V0_5_0_REVIEW.md) ·
-[product list](../research/POPULAR_PRODUCTS_ADDED.md).
+Local verification and hosted/push status: [backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_10_0_REVIEW.md) ·
+[frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_5_0_REVIEW.md) ·
+[product list](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/POPULAR_PRODUCTS_ADDED.md).
 The subsequent automatic-capture/results implementation is recorded in the
-[automatic scan plan](../planning/AUTOMATIC_SCAN_PLAN.md).
+[automatic scan plan](../roadmap.md).
 Earlier release statements below retain their historical scope.
 
 
@@ -39,9 +39,9 @@ gates pending; camera/OCR and native device behavior remain separate. Firebase's
 first Standard database `unlabel` in Mumbai retains free tier/no linked billing,
 anonymous Auth and denied direct client access. Optional scanner login/private
 sync is accepted only for the next v0.7.0/v0.2.0 scope.
-[Historical review](../planning/BACKEND_V0_6_0_REVIEW.md) ·
-[23 hosted checks](../research/BACKEND_V0_6_0_PRODUCTION.json) ·
-[Subsequently implemented account plan](../planning/ACCOUNT_SYNC_SCREEN_PLAN.md).
+[Historical review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_6_0_REVIEW.md) ·
+[23 hosted checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_6_0_PRODUCTION.json) ·
+[Subsequently implemented account plan](../roadmap.md).
 Website: [unlabel-india.vercel.app](https://unlabel-india.vercel.app);
 API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).
 
@@ -56,13 +56,13 @@ API: [unlabel-api.vercel.app](https://unlabel-api.vercel.app/docs).
 
 The [tracked bundle](../../data/catalogue/README.md) keeps the projected gzip, compressed/decoded hashes and lengths, original acquisition provenance, source date, expected counts and ODbL/DbCL notices. SQLite/receipts are generated, ignored outputs. Image metadata has separate CC-BY-SA attribution; image bytes and the global dump are not retained.
 
-The full v0.2.3 JSONL stream reached validated EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source rows**, **24,695 exact India rows** and **24,641 supported unique codes**. Candidate projection is **2,098,225 gzip bytes / 15,084,130 decoded bytes**. Source date **2026-10-06T06:53:46Z** sets refresh due **2027-07-06T06:53:46Z**. The [rich-facts source review](../planning/BACKEND_V0_2_3_REVIEW.md) records hashes, raw gaps, strict facts/local build evidence and actual hosted evidence. All **24,641** supported facts pass strict validation; **4,657** have direct tables (**4,519** with reported values), **18,682** have official image descriptors and all have record dates. The network-free local build verifies **62,472,192 SQLite bytes (59.58 MiB)** and its receipt. [Full field/local build report](../research/CATALOGUE_V0_2_3_COVERAGE.json). Local scope has **402 passing tests** and independent review has **103 passing tests**, no actionable findings and no demonstrably dead v0.2.3 code. Actual private-key restoration was not rerun; hosted verification passed with matching actual build receipt/public artifact, 20 HTTP checks and both READY deployments. [Dated production evidence](../research/BACKEND_V0_2_3_PRODUCTION.json). Source-only tag `v0.2.3` points to tested implementation `56064d7fd13d585c949eb2d31a53eb3884a5d520`. The [v0.2.2 CSV coverage report](../research/CATALOGUE_V0_2_2_COVERAGE.json) remains historical. Coverage stays `unverified`: a complete dated India-tagged OFF export is not every product sold in India.
+The full v0.2.3 JSONL stream reached validated EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source rows**, **24,695 exact India rows** and **24,641 supported unique codes**. Candidate projection is **2,098,225 gzip bytes / 15,084,130 decoded bytes**. Source date **2026-10-06T06:53:46Z** sets refresh due **2027-07-06T06:53:46Z**. The [rich-facts source review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_3_REVIEW.md) records hashes, raw gaps, strict facts/local build evidence and actual hosted evidence. All **24,641** supported facts pass strict validation; **4,657** have direct tables (**4,519** with reported values), **18,682** have official image descriptors and all have record dates. The network-free local build verifies **62,472,192 SQLite bytes (59.58 MiB)** and its receipt. [Full field/local build report](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Local scope has **402 passing tests** and independent review has **103 passing tests**, no actionable findings and no demonstrably dead v0.2.3 code. Actual private-key restoration was not rerun; hosted verification passed with matching actual build receipt/public artifact, 20 HTTP checks and both READY deployments. [Dated production evidence](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_2_3_PRODUCTION.json). Source-only tag `v0.2.3` points to tested implementation `56064d7fd13d585c949eb2d31a53eb3884a5d520`. The [v0.2.2 CSV coverage report](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/CATALOGUE_V0_2_2_COVERAGE.json) remains historical. Coverage stays `unverified`: a complete dated India-tagged OFF export is not every product sold in India.
 
 ## Acquire, restore and build
 
 1. `scripts/data/acquire_india_jsonl.py` streams the fixed official full JSONL gzip through validated compressed length, gzip CRC/EOF and bounded strict objects. A range feasibility sample cannot replace full-source proof. Acquisition retains only the selected India fields and records original/source/projection measurements. It is an explicit maintenance operation outside requests and deployment builds.
 2. `scripts/data/import_india_catalogue.py` validates plain/gzip local input and stages SQLite. Exact duplicate supported codes fail. Optional facts are bounded and must match identity keys/counts. Integrity/count checks finish before replacing the single local database; failed import preserves the active file.
-3. `scripts/setup.py` verifies tracked source hashes/counts and rebuilds `backend/storage/runtime/india/catalogue.sqlite3` without another bulk download. `run_local.py` activates this local index through process settings with receipt checks off.
+3. `scripts/setup.py` verifies tracked source hashes and counts, then rebuilds `.local/backend/catalogue/catalogue.sqlite3` without another bulk download. `run_local.py` uses this local index with receipt checks disabled.
 4. Vercel's backend build invokes `python build_catalogue.py` through `[tool.vercel.scripts]`. Outside-root build access supplies tracked `data/catalogue/`. The build downloads nothing, decrypts no env, verifies input, generates SQLite/receipt under ignored `app/catalogue/data/`, then checks integrity/hash/manifest/counts before succeeding. The hook also validates/packages the approved claim-knowledge JSON/receipt under `app/claims/data/` and generates the separate research SQLite/receipt under `app/research_catalogue/data/`. Current stdout has `catalogue`, `claims_knowledge` and `research_catalogue` keys.
 5. Hosted startup requires `CATALOGUE_REQUIRE_RECEIPT=true`, validates the full database once and opens a read-only store. Failure disables catalogue access while health/meta/live APIs remain usable. Each lookup reads identity, facts and manifest in one short transaction.
 
@@ -105,4 +105,4 @@ There is no scheduled refresh job. Git keeps old source versions and repository 
 
 The JSONL acquisition caps compressed transfer at 16 GiB, decoded stream at 160 GiB, source records at 16 MiB, projected records at 512 KiB, retained projection at 100 MiB and elapsed time at three hours. Older CSV acquisition retains its own smaller bounds. Bundle/source/SQLite limits remain 100 MiB; local immediate-work-directory defaults are 1 GiB. Check free disk separately for source and repository history. The backend bundles URL descriptors, without an image-byte cache.
 
-The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual v0.2.3 Vercel artifact size/read verification passed and is recorded separately from the local build. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter integrates bulk/research lookup and bounded short-lived public read caches, separate from private libraries. Saved dated reports, local reminders and bundled Insights can be read locally after app loading; offline website restart needs separate caching/verification. The preserved confirmed-label claim subset does not consume snapshot facts automatically. Exact-source comparison and optional consented AI extraction are implemented independently; neither establishes product safety. [API contracts](../../contracts/README.md) · [20-group tracker](../planning/FEATURE_TRACKER.md).
+The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual v0.2.3 Vercel artifact size/read verification passed and is recorded separately from the local build. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter integrates bulk/research lookup and bounded short-lived public read caches, separate from private libraries. Saved dated reports, local reminders and bundled Insights can be read locally after app loading; offline website restart needs separate caching/verification. The preserved confirmed-label claim subset does not consume snapshot facts automatically. Exact-source comparison and optional consented AI extraction are implemented independently; neither establishes product safety. [API contracts](../../contracts/README.md) · [20-group tracker](../roadmap.md).

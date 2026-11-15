@@ -66,7 +66,7 @@ def main():
         staging.unlink(missing_ok=True)
     print("SMTP authenticated successfully. No email was sent.")
     print("Credentials saved in the ignored production secret directory.")
-    print("Next run: .\\secrets.ps1 encrypt")
+    print("Next run .\\secrets\\secrets.ps1 encrypt")
 
 
 if __name__ == "__main__":

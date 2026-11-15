@@ -2,12 +2,12 @@
 
 The current [frontend](../../frontend/pubspec.yaml) and
 [backend](../../backend/pyproject.toml) versions preserve `personal-sync-v1`, introduced in backend v0.7.0/frontend v0.2.0. The later
-[Google compatibility patch](../planning/BACKEND_V0_12_1_REVIEW.md) accepts verified
+[Google compatibility patch](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_1_REVIEW.md) accepts verified
 Google sessions without changing snapshot ownership or schema. Device-wide dietary/allergen
 reminders, appearance, Welcome completion and Insight bookmarks are outside this
 snapshot and stay separate from scanner account namespaces.
 
-The [current deletion feature](../planning/BACKEND_V0_13_0_REVIEW.md) adds
+The [current deletion feature](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_13_0_REVIEW.md) adds
 bodyless `DELETE /v1/account/sync`. It requires the verified owner and fresh
 authentication within 300 seconds, removes the private snapshot and thumbnail,
 and writes private deletion markers to prevent late sync/media resurrection.

@@ -140,6 +140,12 @@ def test_modes_launch_only_owned_services(
     (tmp_path / "backend/.env").write_bytes(b"existing settings remain private")
     python = tmp_path / "backend/.venv/python"
     python.touch()
+    configuration = tmp_path / "scripts/config/workspace.json"
+    configuration.parent.mkdir(parents=True)
+    configuration.write_bytes((ROOT / "scripts/config/workspace.json").read_bytes())
+    catalogue = tmp_path / ".local/backend/catalogue"
+    catalogue.mkdir(parents=True)
+    (catalogue / "catalogue.sqlite3").touch()
     calls, stopped, checked_ports = [], [], []
 
     class Process:
@@ -174,6 +180,10 @@ def test_modes_launch_only_owned_services(
     assert runner.main() == 0
     commands = [call[0].command for call in calls]
     assert any("uvicorn" in command for command in commands) is backend_expected
+    if backend_expected:
+        backend_env = next(call[2] for call in calls if "uvicorn" in call[0].command)
+        assert backend_env["CATALOGUE_DIRECTORY"] == str(catalogue)
+        assert backend_env["CATALOGUE_REQUIRE_RECEIPT"] == "false"
     assert (8000 in checked_ports) is backend_expected
     build = next(command for command in commands if "build" in command)
     assert "--debug" in build and "--no-pub" in build

@@ -10,7 +10,7 @@ use a different unverified contract. [Data flow](DATA_FLOW.md) ·
 ## Historical introduction — backend v0.5.0
 
 Production **v0.5.0** was independently reviewed, pushed, hosted-verified and
-published after the separate v0.4.0 release. [Twenty hosted checks](../research/BACKEND_V0_5_0_PRODUCTION.json)
+published after the separate v0.4.0 release. [Twenty hosted checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_5_0_PRODUCTION.json)
 verified real reports, anonymous saving/retry, correction-blocked writes,
 historical evidence, glossary boundaries and unchanged source receipts. The
 report connects confirmed normalization, reviewed numerical claims and exact
@@ -78,7 +78,7 @@ coverage**, not a complete ingredient explorer or bilingual report.
 Aliases require complete words, including their Unicode combining marks; an
 unknown longer Hindi word cannot inherit a shorter ingredient's explanation.
 
-The [current source check](../research/INGREDIENT_GLOSSARY_V0_9_0.md)
+The [current source check](../../data/knowledge/provenance/glossary-v2.md)
 records exact official canonical records, source rights and projection hashes.
 The bounded tracked `app/reports/glossary-v2.json` projection records official
 Codex GSFA URLs, review date and function-only scope. A hash/byte/count artifact
@@ -118,8 +118,8 @@ belongs to v0.5.0. Preserve the fifteen released v0.4.0 APIs and historical expo
 The historical eighteen-route OpenAPI and four added schemas are exported with five
 new report/glossary examples, bringing the validated synthetic set to 22.
 
-[Accepted design](../superpowers/specs/2026-10-07-useful-label-report-design.md)
-· [Implementation plan](../superpowers/plans/2026-10-07-backend-v0.5.0.md)
-· [Historical review](../planning/BACKEND_V0_5_0_REVIEW.md)
-· [Release scope](../planning/BACKEND_V0_5_0_RELEASE.md)
-· [Current API guide](../../backend/README.md) · [Feature tracker](../planning/FEATURE_TRACKER.md)
+[Accepted design](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/superpowers/specs/2026-10-07-useful-label-report-design.md)
+· [Implementation plan](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/superpowers/plans/2026-10-07-backend-v0.5.0.md)
+· [Historical review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_5_0_REVIEW.md)
+· [Release scope](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_5_0_RELEASE.md)
+· [Current API guide](../../backend/README.md) · [Feature tracker](../roadmap.md)

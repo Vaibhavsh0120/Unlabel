@@ -80,7 +80,7 @@ busy photographic backdrop differed from the supplied pale mint reference.
 branch was generated specifically from the user's later pale mint leaf reference
 and replaces the unsuitable dark dense bouquet in the desktop footer.
 Final app-layout comparison is recorded separately in the
-[frontend local review](../../../docs/planning/FRONTEND_V0_6_0_REVIEW.md).
+[frontend local review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_6_0_REVIEW.md).
 
 | Asset | Use / composition | Dimensions | Bytes | SHA-256 |
 | --- | --- | --- | --- | --- |

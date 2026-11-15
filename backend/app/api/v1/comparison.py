@@ -11,7 +11,9 @@ from app.comparison.models import ComparisonRequest, ComparisonResponse
 from app.comparison.service import compare
 
 
-def build_router(*, snapshot_lookup: Callable[[Request, str], FactsLookup]) -> APIRouter:
+def build_router(
+    *, snapshot_lookup: Callable[[Request, str], FactsLookup], community_enabled: bool = True
+) -> APIRouter:
     router = APIRouter(tags=["Nutrient comparison"])
 
     @router.post(
@@ -22,7 +24,7 @@ def build_router(*, snapshot_lookup: Callable[[Request, str], FactsLookup]) -> A
     def compare_reports(request: Request, body: ComparisonRequest):
         def community_lookup(barcode: str) -> CommunityLookup:
             active = request.app.state.community_runtime
-            if active is None:
+            if active is None or not community_enabled:
                 return CommunityLookup(requested_barcode=barcode, status="unavailable")
             return active.store.lookup(barcode)
 

@@ -2,10 +2,10 @@
 
 Current source is **0.10.0+14**. Version comes from [pubspec.yaml](pubspec.yaml);
 Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
-The [scanner/Product Info review](../docs/planning/FRONTEND_V0_10_0_REVIEW.md)
+The [scanner/Product Info review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md)
 records this update's checks and remaining device gates. The published
-[0.9.0 auth release](../docs/planning/FRONTEND_V0_9_0_REVIEW.md) is historical.
-[Release guide](../docs/planning/RELEASE_VERSIONING.md).
+[0.9.0 auth release](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_9_0_REVIEW.md) is historical.
+[Release guide](../docs/releases.md).
 
 ## What works
 
@@ -140,7 +140,7 @@ Native APK/unsigned-IPA workflows remain manual and independent of backend/web
 source releases. No Firebase billing/card setup or custom training is introduced.
 Gemini/OpenAI extraction uses the operator's configured credentials; provider
 availability and data-use terms remain separate from Flutter verification.
-See the [local repair review](../docs/planning/FRONTEND_V0_8_1_REVIEW.md) for current
+See the [local repair review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_8_1_REVIEW.md) for current
 gates. Reset email requests use SDK ActionCodeSettings with handleCodeInApp:false
 and a fixed authorized Unlabel sign-in return. The rejected custom action URL is
 not required. Real email delivery and provider/device acceptance remain separate
@@ -163,8 +163,8 @@ from local tests or a synthetic generated-link check; this bugfix is not pushed.
 | test | Network/model/storage, OCR, form, lifecycle and responsive interaction regressions |
 | android, ios, web | Platform projects, OCR integration and pinned browser runtime assets |
 
-[Account/screen plan](../docs/planning/ACCOUNT_SYNC_SCREEN_PLAN.md) ·
-[UI requirements](../docs/planning/UI_REQUIREMENTS.md) ·
+[Account/screen plan](../docs/roadmap.md) ·
+[UI requirements](DESIGN.md) ·
 [Data flow](../docs/architecture/DATA_FLOW.md) ·
 [API contracts](../contracts/README.md) ·
-[Release/versioning](../docs/planning/RELEASE_VERSIONING.md)
+[Release/versioning](../docs/releases.md)

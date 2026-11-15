@@ -9,7 +9,7 @@ from app.claims.models import ClaimsResponse, ClaimsRulesResponse, EvidenceRespo
 from app.core.config import Settings
 from app.main import create_app
 
-KNOWLEDGE = Path(__file__).resolve().parents[3] / "knowledge"
+KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"
 
 
 def payload():

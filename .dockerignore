@@ -9,6 +9,8 @@
 .firebase
 .vercel
 .local-tools
+.local
+.local
 .secrets-work-*
 output
 secrets
@@ -18,10 +20,9 @@ frontend
 **/.pytest_cache
 **/node_modules
 **/build
-**/storage/runtime
 backend/app/catalogue/data
 backend/app/research_catalogue/data
 backend/app/claims/data
-knowledge/sources/downloads
+data/knowledge/sources/downloads
 data/private
 note.txt

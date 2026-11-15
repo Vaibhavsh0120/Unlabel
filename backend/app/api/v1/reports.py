@@ -31,6 +31,8 @@ def build_router(
     router = APIRouter(tags=["Label reports"])
 
     def runtime(request: Request) -> CommunityRuntimeProtocol | None:
+        if not config.community_enabled:
+            return None
         return cast(CommunityRuntimeProtocol | None, request.app.state.community_runtime)
 
     @router.get(

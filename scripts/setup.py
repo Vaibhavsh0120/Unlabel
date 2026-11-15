@@ -12,7 +12,14 @@ from datetime import datetime
 from pathlib import Path
 
 from dev._progress import Progress
-from dev._workspace import ROOT, backend_python, config, execute, flutter_executable
+from dev._workspace import (
+    ROOT,
+    backend_python,
+    config,
+    execute,
+    flutter_executable,
+    local_catalogue_directory,
+)
 from env import EnvError, decrypt_env, decrypt_env_text, prompt_identity
 
 
@@ -120,7 +127,7 @@ def prepare_catalogue(root: Path, *, replace: bool = False) -> str:
     from app.catalogue.store import CatalogueStore
 
     metadata, source = verified_bundle(root)
-    directory = root / "backend/storage/runtime/india"
+    directory = local_catalogue_directory(root)
     directory.mkdir(parents=True, exist_ok=True)
     active = directory / "catalogue.sqlite3"
     if active.exists():
@@ -203,7 +210,7 @@ def main() -> int:
     try:
         # Setup is a bootstrap entry point and can be invoked before the user
         # installs the supported interpreter; keep its actionable version gate.
-        if sys.version_info < (3, 12):  # noqa: UP036
+        if sys.version_info < (3, 12):  # noqa: UP036 - bootstrap also runs on older Python.
             raise ValueError("Install Python 3.12+ to run setup.")
         if args.catalogue_only:
             prepare_catalogue(ROOT, replace=args.replace_catalogue)

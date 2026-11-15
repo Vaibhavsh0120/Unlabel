@@ -6,7 +6,7 @@ import pytest
 
 from app.claims.bundle import build_knowledge_bundle, verify_knowledge_bundle
 
-KNOWLEDGE = Path(__file__).resolve().parents[3] / "knowledge"
+KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"
 
 
 def test_network_free_bundle_copies_only_reviewed_json_and_verifies(tmp_path):

@@ -18,6 +18,9 @@ store has its own credentials, named resource and purpose in the Coolify canvas:
 | Redis cache | Bounded expiring public cache and rate-limit counters, LRU eviction |
 | Sign-in service | Private GoTrue identity API. Google, email and anonymous sign-in. Verified Brevo SMTP configuration |
 | Guest cleanup - 7d retention | Private worker calling a fixed-policy, execute-only PostgreSQL function once a day |
+| Unlabel API | Private staging API for catalogue, research, profiles and private sync |
+| Web Push worker | Claims leased outbox jobs and delivers opted-in reminders |
+| Reminder scheduler | Queues daily reminders on Oracle using a restricted PostgreSQL role |
 
 The original five stores reached healthy status on 14 November 2026. After
 consolidation, three database servers remain. The old identity PostgreSQL had
@@ -47,7 +50,7 @@ backup. Explicit credential rotation is still required when replacing it.
 
 Production credentials are generated locally under `.secrets/`, installed into
 Coolify and backed up in the root age workflow. Never commit plaintext. Run
-`secrets.ps1 encrypt` and `verify` after changing or adding credentials, and push
+`secrets/secrets.ps1 encrypt` and `verify` after changing or adding credentials, and push
 the updated encrypted bundle/index. Resources were created with the local
 passwords before first startup. Runtime roles and grants are a separate migration
 step; bootstrap owners must not be used as API credentials.

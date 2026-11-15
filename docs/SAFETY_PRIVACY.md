@@ -2,8 +2,8 @@
 
 Current source versions come from [frontend pubspec](../frontend/pubspec.yaml)
 and [backend pyproject](../backend/pyproject.toml). The scanner and automatic
-machine-observation update has separate [frontend](planning/FRONTEND_V0_10_0_REVIEW.md)
-and [backend](planning/BACKEND_V0_14_0_REVIEW.md) reviews. Source, hosted behavior,
+machine-observation update has separate [frontend](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md)
+and [backend](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) reviews. Source, hosted behavior,
 native publication and physical-device accuracy retain separate evidence.
 
 After cloud consent v2, exact-identity-compatible AI back-label facts may be
@@ -41,7 +41,7 @@ exception is strict owner-only `profile_media/{uid}`; anonymous users, other own
 collection listing and other databases are denied. These stores have
 independent admission. Earlier v0.4/v0.5/v0.7 backend and v0.1/v0.2/v0.3 frontend
 release evidence remains in its dated reviews; it does not establish current
-hosted or native behavior. [Master plan](planning/MASTER_PLAN.md).
+hosted or native behavior. [Master plan](roadmap.md).
 
 ## Findings and uncertainty
 

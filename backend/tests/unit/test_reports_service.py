@@ -62,7 +62,7 @@ def row(
 
 
 def knowledge():
-    return KnowledgeStore(Path(__file__).resolve().parents[3] / "knowledge")
+    return KnowledgeStore(Path(__file__).resolve().parents[3] / "data/knowledge")
 
 
 CONTEXT = {"food_category": "ordinary_general_food", "form": "solid", "preparation": "as_sold"}

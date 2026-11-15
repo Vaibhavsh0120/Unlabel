@@ -3,7 +3,7 @@
 From PowerShell in the repository root:
 
 ```powershell
-.\secrets.ps1
+.\secrets\secrets.ps1
 ```
 
 Choose 1 to encrypt, 2 to restore, 3 to verify, or 4 for status. The same operations
@@ -11,9 +11,9 @@ are available as `encrypt`, `decrypt`, `verify`, and `status` arguments. You can
 run the script by its absolute path from another directory.
 
 ```powershell
-.\secrets.ps1 encrypt
-.\secrets.ps1 decrypt
-.\secrets.ps1 verify
+.\secrets\secrets.ps1 encrypt
+.\secrets\secrets.ps1 decrypt
+.\secrets\secrets.ps1 verify
 python scripts/setup.py
 ```
 

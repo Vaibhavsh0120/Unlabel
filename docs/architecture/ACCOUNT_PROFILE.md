@@ -1,11 +1,11 @@
 # Account sign-in and private profile media
 
 Current versions come from [frontend pubspec](../../frontend/pubspec.yaml) and
-[backend pyproject](../../backend/pyproject.toml). The [frontend update](../planning/FRONTEND_V0_9_0_REVIEW.md)
-and [backend deletion release](../planning/BACKEND_V0_13_0_REVIEW.md) are authorized
+[backend pyproject](../../backend/pyproject.toml). The [frontend update](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_9_0_REVIEW.md)
+and [backend deletion release](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_13_0_REVIEW.md) are authorized
 for completion/push from main. The preceding
-[frontend source scope](../planning/FRONTEND_V0_8_0_REVIEW.md) and unchanged
-[backend compatibility review](../planning/BACKEND_V0_12_1_REVIEW.md) retain separate
+[frontend source scope](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_8_0_REVIEW.md) and unchanged
+[backend compatibility review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_1_REVIEW.md) retain separate
 implementation, provider, hosted and device evidence.
 
 ## One identity, multiple sign-in methods
@@ -64,9 +64,9 @@ named Standard Firestore database **`unlabel`**, Mumbai. Its strict fields are
 and `content_type`. The thumbnail is a **192×192 PNG, at most 96 KiB**. The app
 decodes bounded input, crops and re-encodes pixels; the original photo and EXIF
 are never stored. The binary field is exempt from indexing in
-[firestore.indexes.json](../../firestore.indexes.json).
+[firestore.indexes.json](../../infrastructure/firebase/firestore.indexes.json).
 
-[Rules](../../firebase/firestore.rules) allow only a non-anonymous owner to get,
+[Rules](../../infrastructure/firebase/firestore.rules) allow only a non-anonymous owner to get,
 create, update or delete that exact document; listing, other owners, other databases
 and all remaining collections are denied. A permanent backend-owned
 `profile_deletions/{uid}` marker also denies profile-media access after deletion.
@@ -95,7 +95,7 @@ hosts, `unlabel-india.vercel.app`, `localhost` and `127.0.0.1`. Public app/OAuth
 live in [firebase_options.dart](../../frontend/lib/app/firebase_options.dart).
 They are client identifiers, not backend/admin credentials.
 
-The [29 October web authentication repair](../planning/WEB_GOOGLE_AUTH_2026_10_29.md)
+The [29 October web authentication repair](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/WEB_GOOGLE_AUTH_2026_10_29.md)
 adds popup failure recovery and production same-origin Firebase auth helpers.
 The four OAuth clients cover three platforms: Android uses distinct local-debug
 and published-demo signing certificates. Both remain required. The production
@@ -134,7 +134,7 @@ Both API and Console rejected a custom action URL with
 `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`. The supported flow deliberately retains
 Firebase's working reserved handler, so it needs no custom email-template update,
 alternate email service, new database or billing upgrade. The earlier public
-[bridge](../../firebase/auth-bridge/account-action.js) forwards all supported account
+[bridge](../../infrastructure/firebase/auth-bridge/account-action.js) forwards all supported account
 actions to Firebase's same-project reserved handler with the fixed Unlabel sign-in
 return; it no longer forwards reset codes into a custom app password screen. Its
 current source still needs its own verification and exact-source deployment evidence.
@@ -143,7 +143,7 @@ The two unused custom new-password/success illustrations are removed from the
 runtime bundle. Login/signup share one generated packet panel per theme;
 illustration badges are decorative, not product evidence. Current SDK/route/bridge tests
 and synthetic link verification are recorded in the
-[frontend review](../planning/FRONTEND_V0_9_0_REVIEW.md) after they run. Generating
+[frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_9_0_REVIEW.md) after they run. Generating
 a synthetic link sends no email and cannot prove inbox delivery. Real Google
 consent, reset-email delivery, exact-source hosted/native behavior and physical
 LiveContainer launch remain separate gates.

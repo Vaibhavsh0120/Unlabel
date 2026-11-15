@@ -1,0 +1,2355 @@
+{
+  "schema_version": "1",
+  "scope": "Final bounded drink gap collection for India; exact live selected source observations, unconfirmed physical SKU identities.",
+  "observations": [
+    {
+      "candidate_id": "india-drink-gap-retailer-251047",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/251047/pepsi-soft-drink-750-ml/",
+        "retrieved_at": "2026-10-08T05:23:08.536127Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Pepsi Soft Drink",
+        "brand": "Pepsi",
+        "variant": "Soft Drink",
+        "quantity": "750 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/251047/pepsi-soft-drink-750-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 43,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 43 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 10.9g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 10.9g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 10.9g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 3mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "1cebd0a20f8266b9912dd8984bc83883a823e50cb8bbb26f29598250c0c20c89",
+        "retailer_product_id": "251047",
+        "source_reported_ean": "251047",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "750 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 200 ml Energy: 43 kcal Protein: 0g Carbohydrate: 10.9g Total Sugars: 10.9g Added Sugars: 10.9g Total Fat: 0g Saturated Fat: 0g Trans Fat: 0g Sodium: 3mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40094179",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40094179/pepsi-soft-drink-225-l/",
+        "retrieved_at": "2026-10-08T05:23:08.783452Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Pepsi Soft Drink",
+        "brand": "Pepsi",
+        "variant": "Soft Drink",
+        "quantity": "2.25 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40094179/pepsi-soft-drink-225-l/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 43,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 43 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 10.9g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 10.9g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 10.9g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 3 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "dc8c6ca0ea02c8ef8378ef1f3217c93b0dc778830f95aa8179fedf36b3966415",
+        "retailer_product_id": "40094179",
+        "source_reported_ean": "89020801043",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "2.25 L",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 200 ml Energy: 43 kcal Protein: 0g Carbohydrate: 10.9g Total Sugars: 10.9g Added Sugars: 10.9g Total Fat: 0g Saturated Fat: 0g Trans Fat: 0g Sodium: 3 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40327060",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40327060/pepsi-soft-drink-330-ml/",
+        "retrieved_at": "2026-10-08T05:23:08.561822Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Pepsi Soft Drink",
+        "brand": "Pepsi",
+        "variant": "Soft Drink",
+        "quantity": "300 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated Water, Sugar, Colour (150d), Acidity Regulator (338), Caffeine (10 mg/100g), Flavour (Natural Flavouring Substances), Stabilizer(436)",
+          "completeness": "partial",
+          "source_url": "https://business.bigbasket.com/pd/40327060/pepsi-soft-drink-330-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "f80ce12e7f26fc2d38c089b8dd7ae9914e61dc4e288404ec11dfb4edab9214da",
+        "retailer_product_id": "40327060",
+        "source_reported_ean": "8902080001347",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "300 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Energy: 43 kcal; Protein: 0 g; Carbohydrate: 10.9 g; Total Sugars: 10.9 g; Added Sugars: 10.9 g; Total Fat: 0 g; Saturated Fat: 0 g; Trans Fat: 0 g; Sodium: 3 mg",
+        "image_bytes_acquired": false,
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "preparation": "as_sold",
+          "rows": [
+            {
+              "nutrient": "energy",
+              "value": 43,
+              "unit": "kcal",
+              "qualifier": "exact",
+              "raw_label": "Energy: 43 kcal"
+            },
+            {
+              "nutrient": "protein",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Protein: 0 g"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 10.9,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Carbohydrate: 10.9 g"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 10.9,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Sugars: 10.9 g"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 10.9,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Added Sugars: 10.9 g"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Fat: 0 g"
+            },
+            {
+              "nutrient": "saturated_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Saturated Fat: 0 g"
+            },
+            {
+              "nutrient": "trans_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Trans Fat: 0 g"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 3,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Sodium: 3 mg"
+            }
+          ],
+          "source_url": "https://business.bigbasket.com/pd/40327060/pepsi-soft-drink-330-ml/",
+          "status": "basis_unknown_not_runtime_nutrition"
+        }
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No explicit numeric table basis in selected source; values retained only as candidate metadata.",
+        "Numeric declarations lack an explicit denominator; serving size alone is not treated as the table basis."
+      ],
+      "conflicts": [
+        "Source lists Stabilizer (436); this potentially malformed additive identifier is retained verbatim, without correction or mapping.",
+        "URL slug quantity differs from the current selected product quantity. Assigned quantity follows the selected source object; physical pack identity remains unverified."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40130830",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40130830/7-up-soft-drink-lemon-750-ml/",
+        "retrieved_at": "2026-10-08T05:23:09.192903Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "7UP Soft Drink",
+        "brand": "7UP",
+        "variant": "Soft Drink",
+        "quantity": "750 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "86967494720670b71760483b57eb4db9f4c2889cb5d972239f64117017b6d4de",
+        "retailer_product_id": "40130830",
+        "source_reported_ean": "8902080304059",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "750 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Serving Size: 200 ml Energy: 47 kcal Protein: 0 g Carbohydrate: 11.7 g Total Sugars: 11.7 g Added Sugars: 11.7 g Total Fat: 0 g Saturated Fat: 0 g Trans Fat: 0 g Sodium: 18 mg",
+        "image_bytes_acquired": false,
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "preparation": "as_sold",
+          "rows": [
+            {
+              "nutrient": "energy",
+              "value": 47,
+              "unit": "kcal",
+              "qualifier": "exact",
+              "raw_label": "Energy: 47 kcal"
+            },
+            {
+              "nutrient": "protein",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Protein: 0 g"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Carbohydrate: 11.7 g"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Sugars: 11.7 g"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Added Sugars: 11.7 g"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Fat: 0 g"
+            },
+            {
+              "nutrient": "saturated_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Saturated Fat: 0 g"
+            },
+            {
+              "nutrient": "trans_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Trans Fat: 0 g"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 18,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Sodium: 18 mg"
+            }
+          ],
+          "source_url": "https://business.bigbasket.com/pd/40130830/7-up-soft-drink-lemon-750-ml/",
+          "status": "basis_unknown_not_runtime_nutrition"
+        }
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported.",
+        "No explicit numeric table basis in selected source; values retained only as candidate metadata.",
+        "Numeric declarations lack an explicit denominator; serving size alone is not treated as the table basis."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40345438",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40345438/7-up-soft-drink-300-ml-can/",
+        "retrieved_at": "2026-10-08T05:23:09.325936Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "7UP Soft Drink",
+        "brand": "7UP",
+        "variant": "Soft Drink",
+        "quantity": "300 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "8b609707cdf9412d42180e89fb5ec77cda415db01fd9e0f3f4833c656e6a6ea3",
+        "retailer_product_id": "40345438",
+        "source_reported_ean": "8902080001361",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "300 ml",
+        "source_pack_description": "Can",
+        "raw_nutrition_excerpt": "Energy: 47 kcal; Protein: 0 g; Carbohydrate: 11.7 g; Total Sugars: 11.7 g; Added Sugars: 11.7 g; Total Fat: 0 g; Saturated Fat: 0 g; Trans Fat: 0 g; Sodium: 18 mg",
+        "image_bytes_acquired": false,
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "preparation": "as_sold",
+          "rows": [
+            {
+              "nutrient": "energy",
+              "value": 47,
+              "unit": "kcal",
+              "qualifier": "exact",
+              "raw_label": "Energy: 47 kcal"
+            },
+            {
+              "nutrient": "protein",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Protein: 0 g"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Carbohydrate: 11.7 g"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Sugars: 11.7 g"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 11.7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Added Sugars: 11.7 g"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Fat: 0 g"
+            },
+            {
+              "nutrient": "saturated_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Saturated Fat: 0 g"
+            },
+            {
+              "nutrient": "trans_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Trans Fat: 0 g"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 18,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Sodium: 18 mg"
+            }
+          ],
+          "source_url": "https://business.bigbasket.com/pd/40345438/7-up-soft-drink-300-ml-can/",
+          "status": "basis_unknown_not_runtime_nutrition"
+        },
+        "quarantined_ingredient_declaration": {
+          "text": "Carbonated Water, Sugar, Colour (150d), Acidity Regulator (338), Caffeine (10 mg/100g), Flavour (Natural Flavouring Substances), Stabilizer(436)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40345438/7-up-soft-drink-300-ml-can/"
+        }
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No explicit numeric table basis in selected source; values retained only as candidate metadata.",
+        "Numeric declarations lack an explicit denominator; serving size alone is not treated as the table basis.",
+        "Usable ingredients are unknown because the source declaration appears copied from another product."
+      ],
+      "conflicts": [
+        "The selected 7UP 300 ml ingredient declaration exactly duplicates the selected Pepsi 300 ml cola declaration, including colour 150d, acidity regulator 338 and caffeine. It is withheld from ingredients pending package verification.",
+        "URL slug quantity differs from the current selected product quantity. Assigned quantity follows the selected source object; physical pack identity remains unverified."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40130831",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40130831/mirinda-soft-drink-orange-750-ml/",
+        "retrieved_at": "2026-10-08T05:23:09.547242Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mirinda Soft Drink - With Added Orange Flavour",
+        "brand": "Mirinda",
+        "variant": "Soft Drink - With Added Orange Flavour",
+        "quantity": "750 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40130831/mirinda-soft-drink-orange-750-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 55,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 55kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 13.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Carbohydrate: 13.8g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 13.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Sugars: 13.8g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 14,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 14mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "8b62a6788d7de90da7d02647bb14868e217c5057c20aa3a79160bb6619992e01",
+        "retailer_product_id": "40130831",
+        "source_reported_ean": "8902080204052",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "750 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 154ml Energy: 55kcal Total Carbohydrate: 13.8g of which Sugars: 13.8g Total fat: 0g Saturated fat: 0g Trans fat: 0g Protein: 0g Sodium: 14mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": [
+        "Mirinda 300 ml explicitly lists sweeteners 955 and 960A with 28 kcal/6.8 g sugars per 100 ml, whereas the 750 ml and 2.25 L sources state 55 kcal/13.8 g sugars. Different formulas or source revisions remain unresolved; do not complement across these packs."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40327061",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40327061/mirinda-soft-drink-330-ml/",
+        "retrieved_at": "2026-10-08T05:23:09.753991Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mirinda Soft Drink",
+        "brand": "Mirinda",
+        "variant": "Soft Drink",
+        "quantity": "300 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated Water, Sugar, Acidity Regulators (330, 331), Flavour (Natural Flavouring Substances), Sweeteners (955, 960A), Preservative (211), Stabilizer (444), Colour (110)",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/40327061/mirinda-soft-drink-330-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40327061/mirinda-soft-drink-330-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 28,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 28 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 6.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 6.9g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 6.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 6.8g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 6.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 6.8g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 7,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 7mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "c5b4ee24f8f1f2d2ebacfbff04b32530328d95ff217fa75ba50e584124d366d3",
+        "retailer_product_id": "40327061",
+        "source_reported_ean": "8902080001378",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "300 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_Per: 100ml Serving_Size: 200ml Energy: 28 kcal Protein: 0g Carbohydrate: 6.9g Total Sugars: 6.8g Added Sugars: 6.8g Total Fat: 0g Saturated Fat: 0g Trans Fat: 0g Sodium: 7mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence."
+      ],
+      "conflicts": [
+        "Mirinda 300 ml explicitly lists sweeteners 955 and 960A with 28 kcal/6.8 g sugars per 100 ml, whereas the 750 ml and 2.25 L sources state 55 kcal/13.8 g sugars. Different formulas or source revisions remain unresolved; do not complement across these packs.",
+        "URL slug quantity differs from the current selected product quantity. Assigned quantity follows the selected source object; physical pack identity remains unverified."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40094180",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40094180/mirinda-soft-drink-225-l/",
+        "retrieved_at": "2026-10-08T05:23:10.088445Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Mirinda Soft Drink",
+        "brand": "Mirinda",
+        "variant": "Soft Drink",
+        "quantity": "2.25 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40094180/mirinda-soft-drink-225-l/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 55,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 55kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 13.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Carbohydrate: 13.8g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 13.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Sugars: 13.8g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 14,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 14mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "8ed2d65b287f08411fc0d0fc25922550a6ced68c516345512fd579042316c04f",
+        "retailer_product_id": "40094180",
+        "source_reported_ean": "89020802052",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "2.25 L",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Energy: 55kcal Total Carbohydrate: 13.8g of which Sugars: 13.8g Total fat: 0g Saturated fat: 0g Trans fat: 0g Protein: 0g Sodium: 14mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": [
+        "Mirinda 300 ml explicitly lists sweeteners 955 and 960A with 28 kcal/6.8 g sugars per 100 ml, whereas the 750 ml and 2.25 L sources state 55 kcal/13.8 g sugars. Different formulas or source revisions remain unresolved; do not complement across these packs."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40189384",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40189384/slice-thickest-mango-drink-175-l/",
+        "retrieved_at": "2026-10-08T05:23:10.240427Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Slice Mango Drink",
+        "brand": "Slice",
+        "variant": "Mango Drink",
+        "quantity": "1.75 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40189384/slice-thickest-mango-drink-175-l/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 50,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 50 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 12.5g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 10.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 10.8g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 10.0 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 7.3,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 7.3 mg"
+              },
+              {
+                "nutrient": "potassium",
+                "value": 22,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Potassium: 22 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "18ece5f267495517022a4a852609dde626751cf1a8398c337123551968ee49a9",
+        "retailer_product_id": "40189384",
+        "source_reported_ean": "8902080404575",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "1.75 L",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 200ml Energy: 50 kcal Protein: 0g Total Fat: 0g Saturated Fat: 0g Trans Fat: 0g Carbohydrate: 12.5g Total Sugars: 10.8g Added Sugars: 10.0 g Sodium: 7.3 mg Potassium: 22 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-229792",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/229792/tropicana-fruit-juice-delight-orange-1-l/",
+        "retrieved_at": "2026-10-08T05:23:10.725254Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Tropicana Fruit Juice - Orange Delight",
+        "brand": "Tropicana",
+        "variant": "Fruit Juice - Orange Delight",
+        "quantity": "1 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": null,
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/229792/tropicana-fruit-juice-delight-orange-1-l/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 36,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 36 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 9g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 8g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 5,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 5g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0g"
+              },
+              {
+                "nutrient": "saturated_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Saturated Fat: 0g"
+              },
+              {
+                "nutrient": "trans_fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Trans Fat: 0g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 37,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 37 mg"
+              },
+              {
+                "nutrient": "potassium",
+                "value": 55,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Potassium: 55 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "82df03b3fe5cef52f0854bcd601bf87de6e74d4d8dd069d48b391ece0022c192",
+        "retailer_product_id": "229792",
+        "source_reported_ean": "8902080013296",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "1 L",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 200 ml Energy: 36 kcal Protein: 0g Total Fat: 0g Saturated Fat: 0g Trans Fat: 0g Carbohydrate: 9g Total Sugars: 8g Added Sugars: 5g Sodium: 37 mg Potassium: 55 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No ingredient declaration in selected source; generic marketing description was not imported."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-265719",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/265719/tropicana-delight-fruit-juice-orange-200-ml-tetra/",
+        "retrieved_at": "2026-10-08T05:23:10.798253Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Tropicana Fruit Juice - Orange Delight",
+        "brand": "Tropicana",
+        "variant": "Fruit Juice - Orange Delight",
+        "quantity": "180 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Concentrated Orange Juice, Sugar, Acidity Regulator, Iodised Salt, Stabiliser. Contains Permitted Natural Colours & Added Flavour (Natural & Nature Identical Flavouring Substances).",
+          "completeness": "complete",
+          "source_url": "https://business.bigbasket.com/pd/265719/tropicana-delight-fruit-juice-orange-200-ml-tetra/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "befbc9ae5542459991c7e6f0d05792dfe5bb7abd04a79ff163570a39274d90b6",
+        "retailer_product_id": "265719",
+        "source_reported_ean": "8902080002085",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "180 ml",
+        "source_pack_description": "Tetra Pak",
+        "raw_nutrition_excerpt": "Serving Size: 180 ml Energy: 50 kcal Protein: 0.1 g Total Fat: 0 g Saturated Fat: 0 g Trans Fat: 0 g Carbohydrate: 12.4 g Total Sugars: 12 g Added Sugars: 7 g Sodium: 34 mg Potassium: 82 mg",
+        "image_bytes_acquired": false,
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "preparation": "as_sold",
+          "rows": [
+            {
+              "nutrient": "energy",
+              "value": 50,
+              "unit": "kcal",
+              "qualifier": "exact",
+              "raw_label": "Energy: 50 kcal"
+            },
+            {
+              "nutrient": "protein",
+              "value": 0.1,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Protein: 0.1 g"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 12.4,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Carbohydrate: 12.4 g"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 12,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Sugars: 12 g"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 7,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Added Sugars: 7 g"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Fat: 0 g"
+            },
+            {
+              "nutrient": "saturated_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Saturated Fat: 0 g"
+            },
+            {
+              "nutrient": "trans_fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Trans Fat: 0 g"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 34,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Sodium: 34 mg"
+            },
+            {
+              "nutrient": "potassium",
+              "value": 82,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Potassium: 82 mg"
+            }
+          ],
+          "source_url": "https://business.bigbasket.com/pd/265719/tropicana-delight-fruit-juice-orange-200-ml-tetra/",
+          "status": "basis_unknown_not_runtime_nutrition"
+        }
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No explicit numeric table basis in selected source; values retained only as candidate metadata.",
+        "Numeric declarations lack an explicit denominator; serving size alone is not treated as the table basis."
+      ],
+      "conflicts": [
+        "URL slug quantity differs from the current selected product quantity. Assigned quantity follows the selected source object; physical pack identity remains unverified."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40190763",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40190763/real-fruit-power-juice-mixed-fruit-180-ml/",
+        "retrieved_at": "2026-10-08T05:23:11.130253Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Real Fruit Power Mixed Fruit Juice",
+        "brand": "Real",
+        "variant": "Fruit Power Mixed Fruit Juice",
+        "quantity": "180 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Concentrated Mixed Fruit juice (8.2%) [From Apple, Orange, Guava, Apricot, Mango, Banana, Lime, Passion Fruit, Pineapple). Acidity Regulator (INS 330), Stabilizer (INS 440), Flavours (Natural and Nature Identical Flavouring Substances), Colour [INS 160a (ii) & (iii) and Antioxidant (INS 300). THIS CONTAINS 40% FRUIT JUICE CONTENT.",
+          "completeness": "partial",
+          "source_url": "https://business.bigbasket.com/pd/40190763/real-fruit-power-juice-mixed-fruit-180-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40190763/real-fruit-power-juice-mixed-fruit-180-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 53,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 53 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0.2 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 13.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 13.4 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 13.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 13.4 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 7.4,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 7.4 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 20,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 20 mg"
+              },
+              {
+                "nutrient": "potassium",
+                "value": 42,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Potassium: 42 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Calcium: 6 mg"
+              },
+              {
+                "nutrient": "iron",
+                "value": 0.1,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Iron: 0.1 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "9efda0699688c4ed192a9bc7b68137a3a3e7882ada71991c4aa7bb662021ab79",
+        "retailer_product_id": "40190763",
+        "source_reported_ean": "8901888006363",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "180 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 150ml Energy: 53 kcal Protein: 0.2 g Carbohydrate: 13.4 g Total Sugars: 13.4 g Added Sugars: 7.4 g Total Fat: 0 g Sodium: 20 mg Potassium: 42 mg Calcium: 6 mg Iron: 0.1 mg Vitamin C: 20 mg % RDA contribution calculated on the basis of average requirements of adult per day: RDA values calculated basis ICMR 2010 for Men - Mod",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence."
+      ],
+      "conflicts": [
+        "Ingredient text has malformed punctuation, percentages or additive identifiers. Raw declaration is retained as partial; ambiguity is not repaired by guessing."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40170924",
+      "source": {
+        "provider": "retailer",
+        "url": "https://business.bigbasket.com/pd/40170924/real-fruit-power-juice-masala-mixed-fruit-1-l/",
+        "retrieved_at": "2026-10-08T05:23:11.526682Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Real Fruit Power Masala Mixed Fruit Juice",
+        "brand": "Real",
+        "variant": "Fruit Power Masala Mixed Fruit Juice",
+        "quantity": "1 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Mixed Fruit Concentrate (4%) [Orange Conc. (1. 5%), Apple Conc. (1. 32%), Pink Guava Puree (0. 33%), Apricot Conc. (0. 29%), Mango Conc. (0. 16%), Banana Puree (0. 16%), Orange Puree (0. 13%), Passion Fruit Conc. (0. 09%), Lime Conc. (0. 01%), Lemon Conc (0. 01%)], Mango Pulp (3. 3%), Acidity Regulator (Ins 330), Salts Stabilisers (Ins 440, Ins 446M Ins 418), Antioxidant (Ins300), Spices & Condiments (0. 017%) [Chili Pepper, Cumin Coriander, Black Pepper And Turmeric ].",
+          "completeness": "partial",
+          "source_url": "https://business.bigbasket.com/pd/40170924/real-fruit-power-juice-masala-mixed-fruit-1-l/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://business.bigbasket.com/pd/40170924/real-fruit-power-juice-masala-mixed-fruit-1-l/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 49,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 49 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0.9,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0.9 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 12.2 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 12.2,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 12.2 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 9.8,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 9.8 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 110,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 110 mg"
+              },
+              {
+                "nutrient": "potassium",
+                "value": 32,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Potassium: 32 mg"
+              },
+              {
+                "nutrient": "calcium",
+                "value": 6,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Calcium: 6 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "d9e9d2b8909b8df73d9cd93b36e5c322a26b557447106ebc73694a6fe933ccd5",
+        "retailer_product_id": "40170924",
+        "source_reported_ean": "40170924",
+        "source_reported_ean_gtin_checksum_valid": false,
+        "source_ean_is_retailer_product_id": true,
+        "source_selected_quantity": "1 L",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Nutrition_per: 100ml Serving_Size: 150ml Energy: 49 kcal Protein: 0.9 g Carbohydrate: 12.2 g Total Sugars: 12.2 g Added Sugars: 9.8 g Total Fat: 0 g Sodium: 110 mg Potassium: 32 mg Calcium: 6 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence."
+      ],
+      "conflicts": [
+        "Ingredient text has malformed punctuation, percentages or additive identifiers. Raw declaration is retained as partial; ambiguity is not repaired by guessing."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40374671",
+      "source": {
+        "provider": "retailer",
+        "url": "https://bbnow.bigbasket.com/pd/40374671/slice-gold-mango-fruit-drink-600-ml/",
+        "retrieved_at": "2026-10-08T05:24:13.763890Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Slice Gold Mango Fruit Drink",
+        "brand": "Slice",
+        "variant": "Gold Mango Fruit Drink",
+        "quantity": "600 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, *Concentrated Mango Pulp (6.5%) and *Alphonso Mango Pulp (1.1%), Acidity Regulator (330), Stabilisers (466, 440), Flavour (Natural and Nature Identical Flavouring Substances), Sweetener (960a), Preservative (202), Colour (110).",
+          "completeness": "complete",
+          "source_url": "https://bbnow.bigbasket.com/pd/40374671/slice-gold-mango-fruit-drink-600-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://bbnow.bigbasket.com/pd/40374671/slice-gold-mango-fruit-drink-600-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 52,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 52 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 13,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 13 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 12.6,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 12.6 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 10.1,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 10.1 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 12,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 12 mg"
+              },
+              {
+                "nutrient": "potassium",
+                "value": 22,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Potassium: 22 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "c3c51fff74a0e626dcbab3022ef815bf33aa7b8178b1e87951da071ee3fbbc75",
+        "retailer_product_id": "40374671",
+        "source_reported_ean": "8902080100217",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "600 ml",
+        "source_pack_description": "",
+        "raw_nutrition_excerpt": "Per 100 ml; Energy: 52 kcal; Protein: 0 g; Total Fat: 0 g; Carbohydrate: 13 g; Total Sugars: 12.6 g; Added Sugars: 10.1 g; Sodium: 12 mg; Potassium: 22 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40364487",
+      "source": {
+        "provider": "retailer",
+        "url": "https://bbnow.bigbasket.com/pd/40364487/appy-fizz-apple-drink-160-ml/",
+        "retrieved_at": "2026-10-08T05:24:13.672432Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Appy Fizz Apple Drink",
+        "brand": "Appy Fizz",
+        "variant": "Apple Drink",
+        "quantity": "160 ml (Pack of 10)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Carbonating Agent (INS 290), ACIDITY REGULATORS [INS 296. INS 331 (iii), INS 330], STABILIZER (INS 440), Food Colour (INS 150d), Preservative (INS 211), Antioxidant (INS 300), Nature - Identical Flavouring Substance (Apple)",
+          "completeness": "complete",
+          "source_url": "https://bbnow.bigbasket.com/pd/40364487/appy-fizz-apple-drink-160-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "cd293959674e9fa58bed001a28de612b925e96ce4b99db71f323372c155437c5",
+        "retailer_product_id": "40364487",
+        "source_reported_ean": "8902579003913",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "160 ml",
+        "source_pack_description": "(Pack of 10)",
+        "raw_nutrition_excerpt": "Serving_Size: 160ml ENERGY (kcal): 89.6 kcal PROTEIN (g): 0.0 g CARBOHYDRATE (g): 22.4 g TOTAL SUGARS (g): 22.2 g ADDED SUGARS (g): 22.2 g TOTAL FAT (g): 0.0 g SODIUM (mg): 33.9 mg CALCIUM (mg): 80.6 mg %RDA**: PERCENT RDA VALUES ARE BASED ON A 2000kcal ENERGY DIET.",
+        "image_bytes_acquired": false,
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "preparation": "as_sold",
+          "rows": [
+            {
+              "nutrient": "energy",
+              "value": 89.6,
+              "unit": "kcal",
+              "qualifier": "exact",
+              "raw_label": "ENERGY (kcal): 89.6 kcal"
+            },
+            {
+              "nutrient": "protein",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "PROTEIN (g): 0.0 g"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 22.4,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "CARBOHYDRATE (g): 22.4 g"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 22.2,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "TOTAL SUGARS (g): 22.2 g"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 22.2,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "ADDED SUGARS (g): 22.2 g"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "TOTAL FAT (g): 0.0 g"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 33.9,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "SODIUM (mg): 33.9 mg"
+            }
+          ],
+          "source_url": "https://bbnow.bigbasket.com/pd/40364487/appy-fizz-apple-drink-160-ml/",
+          "status": "basis_unknown_not_runtime_nutrition"
+        },
+        "source_ingredient_notation": "Water, Sugar, Carbonating Agent (INS 290), ACIDITY REGULATORS [INS 296. INS 331 (iii), INS 330], STABILIZER (INS 440), Food Colour (INS 150d), Preservative (INS 211), Antioxidant (INS 300), Nature - Identical Flavouring Substance (Apple) INS-International Numbering System"
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence.",
+        "No explicit numeric table basis in selected source; values retained only as candidate metadata.",
+        "Numeric declarations lack an explicit denominator; serving size alone is not treated as the table basis.",
+        "This 160 ml declaration lists apple flavour but no apple juice percentage; no apple juice is inferred from the brand or another pack."
+      ],
+      "conflicts": []
+    },
+    {
+      "candidate_id": "india-drink-gap-retailer-40327121",
+      "source": {
+        "provider": "retailer",
+        "url": "https://bbnow.bigbasket.com/pd/40327121/real-fruit-power-mixed-juice-110-ml/",
+        "retrieved_at": "2026-10-08T05:24:13.766816Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Real Fruit Power Mixed Fruit Juice",
+        "brand": "Real",
+        "variant": "Fruit Power Mixed Fruit Juice",
+        "quantity": "135 ml (Pack of 10)",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Mango Pulp (3.12)*, Banana Puree (2%). Guava Pulp (0.75%)\". Concentrated Apple Juice (0.55%0)\". Acidity Regulator (Ins 300). Stabilizers (Ins 412. Ins 466). Flavours (Natural And Nature Identical Flavouring Substances), Concentrated Mixed Fruit Juice (0.05%)* (From Apple, Orange, Guava, Mango, Apricot, Banana. Lime, Passion Fruit. Pineapple]. Andoxidant (Ns 300) And Colour (Ns 110).",
+          "completeness": "partial",
+          "source_url": "https://bbnow.bigbasket.com/pd/40327121/real-fruit-power-mixed-juice-110-ml/"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://bbnow.bigbasket.com/pd/40327121/real-fruit-power-mixed-juice-110-ml/",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 49,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "Energy: 49 kcal"
+              },
+              {
+                "nutrient": "protein",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Protein: 0 g"
+              },
+              {
+                "nutrient": "carbohydrates",
+                "value": 12.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Carbohydrate: 12.3 g"
+              },
+              {
+                "nutrient": "sugars",
+                "value": 12.3,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Sugars: 12.3 g"
+              },
+              {
+                "nutrient": "added_sugars",
+                "value": 11,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Added Sugars: 11 g"
+              },
+              {
+                "nutrient": "fat",
+                "value": 0,
+                "unit": "g",
+                "qualifier": "exact",
+                "raw_label": "Total Fat: 0 g"
+              },
+              {
+                "nutrient": "sodium",
+                "value": 14,
+                "unit": "mg",
+                "qualifier": "exact",
+                "raw_label": "Sodium: 14 mg"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Exact selected live retailer product object inspected; related SKU sections and marketing prose excluded.",
+        "response_sha256": "1e410367003f3c702460c0a355e31a53fcb2aa135b40a4765492c8b85290ee44",
+        "retailer_product_id": "40327121",
+        "source_reported_ean": "8901207056024",
+        "source_reported_ean_gtin_checksum_valid": true,
+        "source_ean_is_retailer_product_id": false,
+        "source_selected_quantity": "135 ml",
+        "source_pack_description": "(Pack of 10)",
+        "raw_nutrition_excerpt": "Per 100 ml:; Energy: 49 kcal; ; Protein: 0 g; ; Carbohydrate: 12.3 g; ; Total Sugars: 12.3 g; ; Added Sugars: 11 g; ; Total Fat: 0 g; ; Sodium: 14 mg",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Exact current physical packet, date and barcode remain unconfirmed.",
+        "Retailer table is a source transcription, not independently verified manufacturer/package evidence."
+      ],
+      "conflicts": [
+        "Ingredient text has malformed punctuation, percentages or additive identifiers. Raw declaration is retained as partial; ambiguity is not repaired by guessing.",
+        "URL slug quantity differs from the current selected product quantity. Assigned quantity follows the selected source object; physical pack identity remains unverified."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-instamart-7up-225l",
+      "source": {
+        "provider": "retailer",
+        "url": "https://instamart.in/p/7-up-soft-drink-bottle-HDH341YGOK",
+        "retrieved_at": "2026-10-08T05:30:45Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "7 Up Soft Drink Bottle",
+        "brand": "7UP",
+        "variant": "Original Lemon Lime",
+        "quantity": "2.25 L",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Carbonated Water, Sugar, Acidity Regulators (330, 331, 296), Preservative (211).",
+          "completeness": "partial",
+          "source_url": "https://instamart.in/p/7-up-soft-drink-bottle-HDH341YGOK"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Underlying current product page inspected with web.open; search and AI summaries were not fact sources.",
+        "response_sha256": null,
+        "source_country_of_origin": "India",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Physical barcode, batch and formula revision were not verified.",
+        "Allergen and may-contain declarations were not shown in the inspected section.",
+        "Short retailer ingredient enumeration is not claimed to be a complete package declaration.",
+        "Nutrition heading has marketing statements rather than numeric nutrition; no table acquired."
+      ],
+      "conflicts": [
+        "This source differs from the quarantined BigBasket 7UP 300 ml cola-like declaration. Cross-pack compatibility and source revision are unresolved."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-instamart-appy-600ml",
+      "source": {
+        "provider": "retailer",
+        "url": "https://instamart.in/p/appy-fizz-apple-juice-bottle-8Y6ZTLZUNZ",
+        "retrieved_at": "2026-10-08T05:30:45Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Appy Fizz Apple Juice (Bottle)",
+        "brand": "Appy Fizz",
+        "variant": "Apple",
+        "quantity": "600 ml",
+        "market": "india",
+        "match": "identity_unconfirmed",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Apple Juice Concentrate 1.90% (Equivalent To 12.7% Apple Juice Reconstituted), Carbon Dioxide (INS 290), Acidity Regulators (INS 296, INS 330), Permitted Class II Preservatives (INS 211, INS 224, INS 202), Antioxidant (INS 300).",
+          "completeness": "complete",
+          "source_url": "https://instamart.in/p/appy-fizz-apple-juice-bottle-8Y6ZTLZUNZ"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Underlying current product page inspected with web.open; search and AI summaries were not fact sources.",
+        "response_sha256": null,
+        "source_country_of_origin": "India",
+        "image_bytes_acquired": false
+      },
+      "unknowns": [
+        "Physical barcode, batch and formula revision were not verified.",
+        "Allergen and may-contain declarations were not shown in the inspected section.",
+        "Nutrition heading contains unsupported marketing statements rather than a numeric table; those statements were not imported."
+      ],
+      "conflicts": [
+        "This 600 ml juice-concentrate declaration differs from the 160 ml apple-flavour declaration. Formula revision and cross-pack compatibility are unresolved.",
+        "Other narrative contradicts the ingredient declaration about sugar and preservatives; narrative claims were discarded."
+      ]
+    },
+    {
+      "candidate_id": "india-drink-gap-aamghar-appy-quantity-conflict",
+      "source": {
+        "provider": "retailer",
+        "url": "https://www.aamghar.in/products/appy-appy-fizz",
+        "retrieved_at": "2026-10-08T05:30:45Z",
+        "source_updated_at": null,
+        "license": {
+          "database": null,
+          "contents": null,
+          "images": null,
+          "reuse_status": "factual_observations_only"
+        }
+      },
+      "identity": {
+        "barcode": null,
+        "name": "Appy Fizz",
+        "brand": "Appy Fizz",
+        "variant": "Apple",
+        "quantity": null,
+        "market": "india",
+        "match": "brand_family_only",
+        "barcode_evidence_url": null
+      },
+      "sections": {
+        "ingredients": {
+          "text": "Water, Sugar, Carbonating Agent (INS 290), Acidity Regulators (INS 296, INS 331(iii), INS 330), Stabilizer (INS 440), Natural Colour (INS 150d), Preservative (INS 211), Antioxidant (INS 300), Nature-Identical Flavouring Substance (Apple).",
+          "completeness": "complete",
+          "source_url": "https://www.aamghar.in/products/appy-appy-fizz"
+        },
+        "contains": null,
+        "may_contain": null
+      },
+      "nutrition": {
+        "direct_tables": [
+          {
+            "source": "retailer_transcription",
+            "basis": {
+              "amount": 100,
+              "unit": "mL"
+            },
+            "preparation": "as_sold",
+            "source_url": "https://www.aamghar.in/products/appy-appy-fizz",
+            "rows": [
+              {
+                "nutrient": "energy",
+                "value": 51.8,
+                "unit": "kcal",
+                "qualifier": "exact",
+                "raw_label": "51.8 kcal per 100ml"
+              }
+            ]
+          }
+        ],
+        "legacy_aggregates": null
+      },
+      "evidence": {
+        "retrieval": "Underlying current product page inspected with web.open; search and AI summaries were not fact sources.",
+        "response_sha256": null,
+        "source_country_of_origin": "India",
+        "image_bytes_acquired": false,
+        "source_quantity_candidates": [
+          "600 ml in title",
+          "1 L in unit and weight fields"
+        ],
+        "unbased_nutrition_candidates": {
+          "source": "retailer_transcription",
+          "basis": null,
+          "status": "Other listed rows lack an explicit table denominator; only energy separately states per 100 ml.",
+          "source_url": "https://www.aamghar.in/products/appy-appy-fizz",
+          "rows": [
+            {
+              "nutrient": "protein",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Protein (g) 0.0"
+            },
+            {
+              "nutrient": "carbohydrates",
+              "value": 12.95,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Carbohydrate (g) 12.95"
+            },
+            {
+              "nutrient": "sugars",
+              "value": 12.9,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Sugars (g) 12.9"
+            },
+            {
+              "nutrient": "added_sugars",
+              "value": 12.9,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Added Sugars (g) 12.9"
+            },
+            {
+              "nutrient": "fat",
+              "value": 0,
+              "unit": "g",
+              "qualifier": "exact",
+              "raw_label": "Total Fat (g) 0.0"
+            },
+            {
+              "nutrient": "sodium",
+              "value": 21.2,
+              "unit": "mg",
+              "qualifier": "exact",
+              "raw_label": "Sodium (mg) 21.2"
+            }
+          ]
+        }
+      },
+      "unknowns": [
+        "Physical barcode, batch and formula revision were not verified.",
+        "Allergen and may-contain declarations were not shown in the inspected section.",
+        "Energy alone has an explicit 100 ml basis; no denominator is inferred for the other nutrition rows."
+      ],
+      "conflicts": [
+        "Title says 600 ml but unit and weight fields say 1 L. Physical quantity remains unassigned.",
+        "Apple-flavour list differs from Instamart 600 ml juice-concentrate list; revision and compatibility are unresolved."
+      ]
+    }
+  ],
+  "retrieval_failures": [
+    {
+      "url": "https://business.bigbasket.com/pd/40374671/slice-gold-mango-fruit-drink-600-ml/",
+      "reason": "ValueError: selected product unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/40364487/appy-fizz-apple-drink-160-ml/",
+      "reason": "ValueError: selected product unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/40327121/real-fruit-power-mixed-juice-110-ml/",
+      "reason": "ValueError: selected product unavailable"
+    },
+    {
+      "url": "https://business.bigbasket.com/pd/130307/real-mixed-fruit-1-l-pack-of-12/",
+      "reason": "ValueError: No useful ingredient or numeric facts in selected page"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "url": "https://blinkit.com/prn/7up-soft-drink-pack-of-2/prid/507613",
+      "reason": "320 ml two-pack recipe and country/formula compatibility with India unestablished; no facts imported."
+    },
+    {
+      "url": "https://instamart.in/p/maaza-real-mango-fruit-drink-the-coca-cola-company-ROMH71MXAV",
+      "reason": "Inspected but not added: nutrition denominator absent; existing collection has official Maaza alternatives."
+    }
+  ],
+  "methodology": [
+    {
+      "discovery": "Google/web searches discovered exact underlying pages; search summaries never imported.",
+      "retrieval": "Live retailer selected product object; related products excluded.",
+      "barcode_policy": "All actual barcode fields null. EAN metadata kept as unlinked identity leads only.",
+      "nutrition_policy": "Explicit per100mL or100g only. Serving-size-only amounts stay candidate metadata.",
+      "image_bytes_acquired": false
+    },
+    "Unbased numeric values are retained only as evidence.unbased_nutrition_candidates, never runtime nutrition. Copied 7UP cola ingredients are retained only as quarantined evidence."
+  ],
+  "acquired_at": "2026-10-08T05:30:45Z",
+  "coverage": {
+    "observations": 19,
+    "brands": [
+      "7UP",
+      "Appy Fizz",
+      "Mirinda",
+      "Pepsi",
+      "Real",
+      "Slice",
+      "Tropicana"
+    ],
+    "ingredient_sections": 11,
+    "direct_tables": 12,
+    "direct_numeric_rows": 98,
+    "verified_barcodes": 0,
+    "checksum_valid_retailer_ean_leads": 12,
+    "records_with_conflicts": 12,
+    "unbased_numeric_candidate_records": 6
+  }
+}

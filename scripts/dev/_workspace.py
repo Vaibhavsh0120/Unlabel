@@ -3,8 +3,9 @@
 import json
 import os
 import shutil
+import stat
 import subprocess
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
 from release.version_metadata import frontend_version as read_frontend_version
@@ -18,7 +19,43 @@ def frontend_version(root: Path = ROOT) -> tuple[str, str]:
 
 
 def config(root: Path = ROOT) -> dict:
-    return json.loads((root / "scripts/config/workspace.json").read_text(encoding="utf-8"))
+    return json.loads(
+        (root / "scripts/config/workspace.json").read_text(encoding="utf-8")
+    )
+
+
+def local_catalogue_directory(root: Path = ROOT) -> Path:
+    """Return the ignored catalogue cache without traversing external links."""
+    value = config(root).get("local_catalogue_directory")
+    if not isinstance(value, str) or "\\" in value:
+        raise ValueError("Configure a repository-relative local catalogue directory.")
+    relative = PurePosixPath(value)
+    if (
+        relative.is_absolute()
+        or relative.as_posix() != value
+        or len(relative.parts) < 2
+        or relative.parts[0] != ".local"
+        or any(part in {".", ".."} for part in relative.parts)
+    ):
+        raise ValueError(
+            "Local catalogue directory must stay inside repository .local/."
+        )
+    root = root.resolve()
+    directory = root.joinpath(*relative.parts)
+    current = root
+    for part in relative.parts:
+        current /= part
+        try:
+            info = current.lstat()
+        except FileNotFoundError:
+            continue
+        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+            raise ValueError(
+                "Refusing a symlink or junction in the local catalogue directory."
+            )
+    if not directory.resolve().is_relative_to(root):
+        raise ValueError("Local catalogue directory escapes the repository.")
+    return directory
 
 
 def backend_python(root: Path = ROOT) -> Path:

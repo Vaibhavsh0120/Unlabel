@@ -4,20 +4,20 @@ Checkpoint **15 October 2026**: Python **3.12+**. Canonical version is
 project.version in [pyproject.toml](pyproject.toml); current routes are exported in
 [OpenAPI](../contracts/schemas/backend-v0.14.0.openapi.json).
 
-The [0.14 review](../docs/planning/BACKEND_V0_14_0_REVIEW.md) adds automatic,
+The [0.14 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) adds automatic,
 immutable machine-unverified package observations, sourced catalogue claim
 comparison and optional session-only NutriGraph lookup. Original catalogue facts,
 243 research observations, 120 image descriptors and 24,641 barcodes remain.
 NutriGraph stays disabled until a server-side trial key is configured; its facts
 never enter the permanent catalogue or private libraries.
 
-[Account deletion](../docs/planning/BACKEND_V0_13_0_REVIEW.md) and prior hosted
+[Account deletion](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_13_0_REVIEW.md) and prior hosted
 receipts retain their dated scope. Current validation, publication and physical
-acceptance are separate in the [release ledger](../docs/planning/CONTROLLED_RELEASES.md).
+acceptance are separate in the [release ledger](../contracts/versioning/README.md).
 
 ## Run locally
 
-Recommended from root: `./scripts/setup.ps1 -Scope backend`, then `./scripts/run-local.ps1 -Scope backend`. Python equivalents: `python scripts/setup.py --scope backend`, then `python scripts/run_local.py --scope backend`. Setup regenerates the catalogue from committed data and offers encrypted env restoration. The runner supplies local catalogue/CORS settings without rewriting `.env`. [Clone guide](../docs/planning/LOCAL_DEVELOPMENT.md). Manual installation follows.
+Recommended from root: `./scripts/setup.ps1 -Scope backend`, then `./scripts/run-local.ps1 -Scope backend`. Python equivalents: `python scripts/setup.py --scope backend`, then `python scripts/run_local.py --scope backend`. Setup regenerates the catalogue from committed data and offers encrypted env restoration. The runner supplies local catalogue/CORS settings without rewriting `.env`. [Clone guide](../docs/development.md). Manual installation follows.
 
 Python 3.12+; commands from `backend/`:
 
@@ -102,7 +102,7 @@ A missing snapshot record returns dated 404 with its checked manifest; inactive/
 
 ## Nutrition facts and confirmed input
 
-Nutrition lookup uses OFF v3.6 `nutrition.input_sets`, accepting only `packaging` or `manufacturer` sources with a supported declared basis/preparation. It excludes computed sets, estimated sources, qualified values such as `<`, and entries without a direct `value`. Invalid/unsupported entries produce warnings or unknowns. The adapter accepts at most 16 input tables and 64 rows; a table that would exceed the row budget is omitted as a whole with `nutrition_row_budget_exceeded`. These limits deliberately do not promise every field from a product record. See [verified upstream research](../docs/research/OFF_NUTRITION_V3_6.md).
+Nutrition lookup uses OFF v3.6 `nutrition.input_sets`, accepting only `packaging` or `manufacturer` sources with a supported declared basis/preparation. It excludes computed sets, estimated sources, qualified values such as `<`, and entries without a direct `value`. Invalid/unsupported entries produce warnings or unknowns. The adapter accepts at most 16 input tables and 64 rows; a table that would exceed the row budget is omitted as a whole with `nutrition_row_budget_exceeded`. These limits deliberately do not promise every field from a product record. See [verified upstream research](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/OFF_NUTRITION_V3_6.md).
 
 The lookup wrapper identifies `assessment_basis: open_food_facts_community_data`, OFF source/date/licenses, and each accepted table's packaging/manufacturer source. Confirmed input uses a different wrapper, `assessment_basis: user_confirmed_label`; confirmation is a user action, not independent verification. These responses do not merge origins.
 
@@ -137,7 +137,7 @@ Check `/v1/meta.capabilities.claim_checks` before submitting to `/v1/claims/chec
 | `very_low_sodium` | Sodium at most 0.04 g/100 g or 100 mL for the matching form |
 | `sodium_free` | Sodium at most 0.005 g/100 g or 100 mL for the matching form |
 
-The source is the reviewed 2022 Schedule I amendment plus principal 2018 requirements, cross-checked against the compendium. [Reviewed source register and hashes](../knowledge/README.md). Scope is `numeric_criterion_only` for confirmed ordinary general foods. Unknown/special categories, unknown form/preparation, conflicting tables/rows, unsupported bases and missing values cannot establish applicability or a contradiction. For fibre alternatives, one applicable pass supports the numerical claim; contradiction requires every applicable alternative to be known and fail. An unknown remaining alternative keeps the result `insufficient_information`.
+The source is the reviewed 2022 Schedule I amendment plus principal 2018 requirements, cross-checked against the compendium. [Reviewed source register and hashes](../data/knowledge/README.md). Scope is `numeric_criterion_only` for confirmed ordinary general foods. Unknown/special categories, unknown form/preparation, conflicting tables/rows, unsupported bases and missing values cannot establish applicability or a contradiction. For fibre alternatives, one applicable pass supports the numerical claim; contradiction requires every applicable alternative to be known and fail. An unknown remaining alternative keeps the result `insufficient_information`.
 
 `high_protein`, `source_of_protein`, `no_added_sugar` and `multigrain` are recognized but unreviewed and always return `insufficient_information`, with explicit reasons/missing inputs. Total sugar alone cannot establish manufacturing non-addition. A claim assessment is `supported`, `contradicted` or `insufficient_information`; it includes applicability, selected criteria, input row/region IDs, rule/source IDs and bounded explanatory wording. It is neither a health score nor complete legal certification.
 
@@ -257,7 +257,7 @@ Settings load the ignored `.env` at this backend root; environment variables ove
 - `COMMUNITY_DATABASE_ID`: literal `unlabel`.
 - `COMMUNITY_SERVICE_ACCOUNT_JSON`: backend-only `SecretStr`, bounded to 32 KiB; no ambient credential fallback.
 - `COMMUNITY_ACTOR_SECRET`: backend-only `SecretStr`, 32â€“1024 characters; keyed ownership hashes, never public.
-- `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source/bundle directory, relative to backend or absolute. Local default uses `app/claims/data` when it exists, otherwise canonical root `knowledge/`. An existing invalid packaged bundle never falls back to source. With `VERCEL=1`, the default selects the packaged path and every selected directory requires a verified knowledge receipt, including an explicit override; no source fallback is permitted.
+- `CLAIMS_KNOWLEDGE_DIRECTORY`: optional source or bundle directory, relative to the backend or absolute. Local runs use `app/claims/data` when present and the canonical `data/knowledge/` otherwise. Packaged runs require a verified receipt and reject an invalid bundle. With `VERCEL=1`, this also applies to explicit overrides.
 
 OFF reads require no API key. Bounded live reads fetched Nutella's nutrition tables in 0.68 seconds and Coca-Cola's in 0.18 seconds during the 5 October 2026 feasibility check; these samples do not establish general latency, Indian coverage or availability. Optional Gemini/OpenAI photo reading now uses server-only settings, scanner authentication, explicit consent and shared bounded admission. See [AI routing](../docs/architecture/AI_ROUTING.md) for keys and global selection. Secrets must never appear in logs, API output, contracts or Git. CORS permits GET/POST for configured origins and is a browser control, not authentication.
 
@@ -299,9 +299,9 @@ Vercel uses root `backend`, framework FastAPI, Python 3.12 and the tracked entry
 
 ## India catalogue and measured-source gate
 
-v0.2.3 acquired the complete official JSONL through validated gzip EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source records** and **24,695 exact India rows**. There are **24,641 supported unique barcodes**, **54 unsupported codes** and **0 duplicates**. The candidate gzip is **2,098,225 bytes**, decoding to **15,084,130 bytes**. Source **2026-10-06T06:53:46Z** is due **2027-07-06T06:53:46Z**. [Hashes and raw-field evidence](../docs/planning/BACKEND_V0_2_3_REVIEW.md).
+v0.2.3 acquired the complete official JSONL through validated gzip EOF: **13,084,464,175 compressed bytes**, **83,007,975,584 decoded bytes**, **4,795,607 source records** and **24,695 exact India rows**. There are **24,641 supported unique barcodes**, **54 unsupported codes** and **0 duplicates**. The candidate gzip is **2,098,225 bytes**, decoding to **15,084,130 bytes**. Source **2026-10-06T06:53:46Z** is due **2027-07-06T06:53:46Z**. [Hashes and raw-field evidence](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_3_REVIEW.md).
 
-All **24,641 indexed fact records** pass strict validation. **4,657** have direct tables (**4,519** with reported nutrient values); **15,486** are legacy-unsupported, **4,050** missing and **448** invalid. **18,682** have official image descriptors; all supported records have a validated modification date. Local SQLite is **62,472,192 bytes (59.58 MiB)** with a verified receipt. [Dated field/build report](../docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Local suite **402 passed**; independent code/security/dead-code review found no actionable issues, with **103** reviewer tests passing. Hosted v0.2.3 source/count/date/hash and facts/identity reads passed; the actual build receipt matches the public 62,472,192-byte artifact. [Dated production proof](../docs/research/BACKEND_V0_2_3_PRODUCTION.json). Source-only tag `v0.2.3` points to tested implementation `56064d7fd13d585c949eb2d31a53eb3884a5d520`. Actual private-key restoration was not rerun in this continuation. Descriptors do not establish remote image availability. Coverage remains `unverified`; India-tagged OFF records are not every product sold in India. The preceding CSV measurements remain in the [v0.2.2 review](../docs/planning/BACKEND_V0_2_2_REVIEW.md).
+All **24,641 indexed fact records** pass strict validation. **4,657** have direct tables (**4,519** with reported nutrient values); **15,486** are legacy-unsupported, **4,050** missing and **448** invalid. **18,682** have official image descriptors; all supported records have a validated modification date. Local SQLite is **62,472,192 bytes (59.58 MiB)** with a verified receipt. [Dated field/build report](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/CATALOGUE_V0_2_3_COVERAGE.json). Local suite **402 passed**; independent code/security/dead-code review found no actionable issues, with **103** reviewer tests passing. Hosted v0.2.3 source/count/date/hash and facts/identity reads passed; the actual build receipt matches the public 62,472,192-byte artifact. [Dated production proof](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_2_3_PRODUCTION.json). Source-only tag `v0.2.3` points to tested implementation `56064d7fd13d585c949eb2d31a53eb3884a5d520`. Actual private-key restoration was not rerun in this continuation. Descriptors do not establish remote image availability. Coverage remains `unverified`; India-tagged OFF records are not every product sold in India. The preceding CSV measurements remain in the [v0.2.2 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_2_2_REVIEW.md).
 
 Build and exercise the hosted bundle locally from `backend/`:
 
@@ -321,8 +321,8 @@ The network-free builder checks compressed/decoded catalogue hashes, byte budget
 From repository root, acquire into a new existing owned directory:
 
 ~~~powershell
-New-Item -ItemType Directory -Force backend/storage/runtime/new-source
-backend/.venv/Scripts/python.exe scripts/data/acquire_india_jsonl.py --directory backend/storage/runtime/new-source
+New-Item -ItemType Directory -Force .local/new-source
+backend/.venv/Scripts/python.exe scripts/data/acquire_india_jsonl.py --directory .local/new-source
 ~~~
 
 Validate complete transfer/gzip EOF, compressed/decoded hashes, source date, exact India/counts, field rates, representative sparse/rich records and size budgets. Record unresolved export/live-count differences. Update the tracked gzip, `bundle.json`, `acquisition.json`, license notices and current evidence together; do not retain the world dump or image bytes. Setup regenerates the local SQLite; the hosted build generates its own immutable SQLite/receipt without network acquisition. Plain/gzip JSONL imports also remain supported for explicit local inputs and samples; supply the actual source URL/format and use `coverage: sample` for samples.
@@ -351,13 +351,13 @@ npm exec --yes --package=pyright@1.1.414 -- pyright --project pyrightconfig.json
 
 This uses the backend Python environment and checks backend application/build/test code plus maintained Python scripts in basic mode. Node/npm is needed only to run this optional development check; no npm project dependency or runtime service is introduced. Use `backend/.venv/bin/python` on Unix. The flags follow [Pyright's official CLI documentation](https://github.com/microsoft/pyright/blob/main/docs/command-line.md); configuration follows its [configuration guide](https://github.com/microsoft/pyright/blob/main/docs/configuration.md), checked through Context7 for this update.
 
-See [current compatibility review](../docs/planning/BACKEND_V0_12_1_REVIEW.md),
-[preceding v0.12.0 review](../docs/planning/BACKEND_V0_12_0_REVIEW.md),
-[published v0.7.0 review](../docs/planning/BACKEND_V0_7_0_REVIEW.md),
+See [current compatibility review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_1_REVIEW.md),
+[preceding v0.12.0 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_0_REVIEW.md),
+[published v0.7.0 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_7_0_REVIEW.md),
 [comparison contract](../docs/architecture/SOURCED_COMPARISON.md),
 [private sync contract](../docs/architecture/PRIVATE_ACCOUNT_SYNC.md),
-[historical v0.5.0 review](../docs/planning/BACKEND_V0_5_0_REVIEW.md) and
-[published v0.4.0 verification](../docs/planning/BACKEND_V0_4_0_REVIEW.md).
+[historical v0.5.0 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_5_0_REVIEW.md) and
+[published v0.4.0 verification](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_4_0_REVIEW.md).
 Historical v0.5.0 exports describe eighteen routes and four added report/glossary
 schemas and 22 validated synthetic examples; historical v0.4.0 exports are preserved.
 Independent local/review/hosted gates passed; v0.5.0 is separately published.

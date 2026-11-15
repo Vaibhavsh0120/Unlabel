@@ -1,0 +1,13 @@
+# Self-hosted processes have no Firebase Admin SDK dependency.
+fastapi==0.142.2
+httpx==0.28.1
+pydantic-settings==2.15.0
+uvicorn==0.54.0
+pywebpush==2.5.0
+psycopg[binary]==3.3.9
+psycopg-pool==3.3.3
+pymongo==4.20.0
+redis==8.1.0
+PyJWT==2.15.1
+# Import compatibility for shared legacy type definitions, never a Firestore client.
+google-cloud-firestore==2.34.0

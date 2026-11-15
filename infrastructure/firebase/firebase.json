@@ -1,0 +1,38 @@
+{
+  "firestore": {
+    "database": "unlabel",
+    "location": "asia-south1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Unlabel",
+        "supportEmail": "vaibhavsh0120@gmail.com"
+      }
+    }
+  },
+  "hosting": {
+    "site": "unlabel-india-catalogue",
+    "public": "auth-bridge",
+    "ignore": [".*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {"key": "Referrer-Policy", "value": "no-referrer"},
+          {"key": "Cache-Control", "value": "no-store"},
+          {"key": "X-Content-Type-Options", "value": "nosniff"}
+        ]
+      }
+    ]
+  },
+  "emulators": {
+    "firestore": {"host": "127.0.0.1", "port": 8080},
+    "ui": {"enabled": false},
+    "singleProjectMode": false
+  }
+}

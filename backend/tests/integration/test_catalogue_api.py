@@ -54,9 +54,9 @@ def test_catalogue_paths_are_backend_relative_and_empty_is_inactive():
     assert Settings(_env_file=None, catalogue_directory=" ").catalogue_path() is None
     from pathlib import Path
 
-    expected = Path(__file__).resolve().parents[2] / "storage/runtime/india"
+    expected = Path(__file__).resolve().parents[3] / ".local/backend/catalogue"
     assert (
-        Settings(_env_file=None, catalogue_directory="storage/runtime/india").catalogue_path()
+        Settings(_env_file=None, catalogue_directory="../.local/backend/catalogue").catalogue_path()
         == expected.resolve()
     )
 

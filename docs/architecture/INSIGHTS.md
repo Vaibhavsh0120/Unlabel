@@ -92,6 +92,6 @@ twenty distinct corresponding symbols. Their saved summaries use the same
 mapping as the complete editors. The [icon provenance](../../frontend/assets/icons/README.md)
 distinguishes original food pictograms from the retained Solar controls.
 
-See the [original collection review](../planning/FRONTEND_V0_7_0_REVIEW.md)
-and [current UI/auth review](../planning/FRONTEND_V0_8_0_REVIEW.md) for their
+See the [original collection review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_7_0_REVIEW.md)
+and [current UI/auth review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_8_0_REVIEW.md) for their
 separate local, hosted and publication evidence.

@@ -11,7 +11,7 @@ from app.claims.engine import assess_claims
 from app.claims.knowledge import KnowledgeStore
 from app.claims.models import ClaimsRequest
 
-KNOWLEDGE = Path(__file__).resolve().parents[3] / "knowledge"
+KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"
 NOW = datetime(2026, 10, 6, 18, 0, tzinfo=UTC)
 
 

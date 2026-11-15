@@ -58,6 +58,7 @@ def create_app(
     community_runtime: CommunityRuntimeProtocol | None = None,
     ai_transport: httpx.AsyncBaseTransport | None = None,
     nutrigraph_transport: httpx.AsyncBaseTransport | None = None,
+    data_runtime=None,
 ) -> FastAPI:
     config = settings or Settings()
     knowledge_artifact = None
@@ -98,33 +99,39 @@ def create_app(
             application.state.catalogue = None
             application.state.catalogue_artifact = None
             application.state.research_catalogue = None
-            try:
-                if not config.research_catalogue_enabled:
-                    raise ValueError("Research catalogue source disabled")
-                application.state.research_catalogue = ResearchCatalogueStore(
-                    config.research_catalogue_path()
-                )
-            except (OSError, ValueError):
-                pass
+            if data_runtime is not None:
+                application.state.research_catalogue = data_runtime.research
+            else:
+                try:
+                    if not config.research_catalogue_enabled:
+                        raise ValueError("Research catalogue source disabled")
+                    application.state.research_catalogue = ResearchCatalogueStore(
+                        config.research_catalogue_path()
+                    )
+                except (OSError, ValueError):
+                    pass
             application.state.community_runtime = None
             application.state.ai_gateway = None
             application.state.ai_client = None
             application.state.nutrigraph = None
-            if config.community_enabled:
-                if community_runtime is not None and config.community_actor_secret is not None:
-                    application.state.community_runtime = community_runtime
-                elif config.community_configured():
-                    account = config.community_service_account_json
-                    assert account is not None
-                    try:
-                        application.state.community_runtime = await run_in_threadpool(
-                            create_runtime,
-                            config.community_project_id,
-                            config.community_database_id,
-                            account.get_secret_value(),
-                        )
-                    except AuthenticationUnavailable:
-                        pass
+            if (
+                community_runtime is not None
+                and config.community_actor_secret is not None
+                and (config.community_enabled or data_runtime is not None)
+            ):
+                application.state.community_runtime = community_runtime
+            elif config.community_enabled and config.community_configured():
+                account = config.community_service_account_json
+                assert account is not None
+                try:
+                    application.state.community_runtime = await run_in_threadpool(
+                        create_runtime,
+                        config.community_project_id,
+                        config.community_database_id,
+                        account.get_secret_value(),
+                    )
+                except AuthenticationUnavailable:
+                    pass
             if config.ai_enabled and application.state.community_runtime is not None:
                 ai_store = getattr(application.state.community_runtime, "ai_store", None)
                 if ai_store is not None:
@@ -154,7 +161,9 @@ def create_app(
                     sandbox_limit=config.nutrigraph_sandbox_request_limit,
                 )
             directory = config.catalogue_path()
-            if config.catalogue_enabled and directory is not None:
+            if data_runtime is not None:
+                application.state.catalogue = data_runtime.catalogue
+            elif config.catalogue_enabled and directory is not None:
                 try:
                     artifact = None
                     if config.catalogue_require_receipt:
@@ -229,7 +238,7 @@ def create_app(
 
     def catalogue_metadata(request: Request):
         directory = config.catalogue_path()
-        if not config.catalogue_enabled or directory is None:
+        if not config.catalogue_enabled or (directory is None and data_runtime is None):
             return CatalogueStatus(status="not_configured")
         try:
             store = request.app.state.catalogue
@@ -282,7 +291,8 @@ def create_app(
                 research = store.status()
             except (OSError, ValueError):
                 pass  # A changed bundle must not break unrelated service metadata.
-        community_ready = request.app.state.community_runtime is not None
+        identity_ready = request.app.state.community_runtime is not None
+        community_ready = config.community_enabled and identity_ready
         return {
             "backend_version": __version__,
             "api_major": 1,
@@ -318,7 +328,7 @@ def create_app(
             },
             "account_sync": {
                 "status": "ready"
-                if config.account_sync_enabled and community_ready
+                if config.account_sync_enabled and identity_ready
                 else "unavailable"
                 if config.account_sync_enabled
                 else "not_configured",
@@ -350,8 +360,8 @@ def create_app(
                 "ai_explanations": False,
                 "community_contributions": community_ready,
                 "community_lookup": community_ready,
-                "account_sync": config.account_sync_enabled and community_ready,
-                "account_deletion": config.account_sync_enabled and community_ready,
+                "account_sync": config.account_sync_enabled and identity_ready,
+                "account_deletion": config.account_sync_enabled and identity_ready,
                 "resolved_product_lookup": community_ready
                 or (catalogue["status"] == "ready" and request.app.state.catalogue.supports_facts),
             },
@@ -359,7 +369,7 @@ def create_app(
 
     def snapshot_result(request: Request, barcode: str, *, facts: bool = False):
         model = FactsLookup if facts else CatalogLookup
-        if config.catalogue_path() is None:
+        if data_runtime is None and config.catalogue_path() is None:
             return model(
                 requested_barcode=barcode,
                 status="unavailable",
@@ -426,7 +436,7 @@ def create_app(
                     normalized_query=" ".join(terms),
                     warnings=[
                         "catalogue_not_configured"
-                        if config.catalogue_path() is None
+                        if data_runtime is None and config.catalogue_path() is None
                         else "catalogue_search_unavailable"
                     ],
                 )
@@ -580,7 +590,8 @@ def create_app(
         build_comparison_router(
             snapshot_lookup=lambda request, barcode: cast(
                 FactsLookup, snapshot_result(request, barcode, facts=True)
-            )
+            ),
+            community_enabled=config.community_enabled,
         )
     )
     application.include_router(build_accounts_router(config=config))

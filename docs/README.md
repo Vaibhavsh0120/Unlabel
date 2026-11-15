@@ -1,47 +1,41 @@
 # Unlabel documentation
 
-Current update: **frontend 0.12.0+17 / backend 0.16.0**: stronger readable
- typography, charcoal glass, compact profile/settings and working notification
- inbox/reminders with unsubscribe. Hosting remains Vercel/Firebase for this release.
- See the [frontend review](planning/FRONTEND_V0_12_0_REVIEW.md), [backend review](planning/BACKEND_V0_16_0_REVIEW.md) and
- [source audit](planning/SOURCE_AND_ASSET_AUDIT_2026_11_14.md). The [Coolify rebuild](planning/COOLIFY_ARCHITECTURE_REBUILD_PLAN.md) is the separate next major version.
+Component versions come from the [frontend manifest](../frontend/pubspec.yaml)
+and [backend manifest](../backend/pyproject.toml), not duplicated release prose.
 
-Current component versions come from [frontend pubspec](../frontend/pubspec.yaml)
-and [backend pyproject](../backend/pyproject.toml). The preceding auth/profile and UI
-work is recorded in the [frontend update](planning/FRONTEND_V0_9_0_REVIEW.md) and
-[backend deletion release](planning/BACKEND_V0_13_0_REVIEW.md), with
-the [preceding frontend source scope](planning/FRONTEND_V0_8_0_REVIEW.md) and
-[backend Google compatibility](planning/BACKEND_V0_12_1_REVIEW.md) separate.
-Source, native artifacts, hosted deployment
-and physical-device checks have separate receipts.
-
-| Start here | Purpose |
+| Task | Guide |
 | --- | --- |
-| [Clone, restore, run](planning/LOCAL_DEVELOPMENT.md) | Reproducible component setup and owned-process cleanup |
-| [Release/versioning](planning/RELEASE_VERSIONING.md) | Canonical versions, native builds and LiveContainer source |
-| [Release ledger](planning/CONTROLLED_RELEASES.md) | Independent component tags and immutable source identities |
-| [Maintenance audit](planning/MAINTENANCE_2026_10_12.md) | Findings, scope and validation gates |
-| [Feature tracker](planning/FEATURE_TRACKER.md) | Implemented functionality and remaining device/product gates |
-| [Team handoff](planning/TEAM_HANDOFF.md) | Working commands and module ownership |
-| [Deployment settings](planning/VERCEL_SETUP.md) | Independent Git-connected web/API projects |
+| Clone, recover secrets and run | [Development](development.md) |
+| Deploy or operate services | [Deployment](deployment.md) |
+| Build and publish apps | [Releases](releases.md) |
+| Check changes and acceptance | [Verification](verification.md) |
+| Continue unfinished work | [Roadmap](roadmap.md) |
+| Find source ownership | [Repository structure](architecture/FOLDER_STRUCTURE.md) |
+| Recover credentials | [Encrypted secrets](../secrets/README.md) |
 
-| Architecture | Contract |
+## Architecture and contracts
+
+| Topic | Contract |
 | --- | --- |
-| [System](architecture/SYSTEM.md) · [Folders](architecture/FOLDER_STRUCTURE.md) | Actual stack and source map |
-| [API](architecture/API_PLAN.md) · [Shared schemas](../contracts/README.md) | Runtime routes and preserved historical exports |
-| [Data flow](architecture/DATA_FLOW.md) · [Privacy](SAFETY_PRIVACY.md) | Sources, consent, retention and uncertainty |
-| [Catalogue](architecture/CATALOGUE.md) · [Discovery](architecture/PRODUCT_DISCOVERY.md) | Immutable packaged catalogue, indexed search and dated sources |
-| [Product Info](architecture/PRODUCT_INFO.md) · [Reports](architecture/LABEL_REPORT.md) · [Comparison](architecture/SOURCED_COMPARISON.md) | Sourced facts, compatible tables and unknowns |
-| [Community](architecture/COMMUNITY_CATALOGUE.md) · [Private sync](architecture/PRIVATE_ACCOUNT_SYNC.md) | Separate public observations and optional account libraries |
-| [Account and profile](architecture/ACCOUNT_PROFILE.md) | Linked sign-in, password reset, private avatars and optional gender |
-| [AI routing](architecture/AI_ROUTING.md) | Bounded photo extraction, private proposals and automatic unverified observations |
-| [Insights](architecture/INSIGHTS.md) · [UI contract](../DESIGN.md) | Sourced educational articles and reference visual direction |
-| [Master plan](planning/MASTER_PLAN.md) · [Remaining work](planning/FRONTEND_BACKEND_NEXT_VERSIONS.md) | Product intent and pending acceptance |
+| System and hosting | [System](architecture/SYSTEM.md), [self-hosted platform](architecture/SELF_HOSTED_PLATFORM.md) |
+| HTTP and shared models | [API](architecture/API.md), [schemas/examples](../contracts/README.md) |
+| Product evidence | [Data flow](architecture/DATA_FLOW.md), [catalogue](architecture/CATALOGUE.md), [discovery](architecture/PRODUCT_DISCOVERY.md) |
+| Sources | [Open Food Facts](architecture/OPEN_FOOD_FACTS.md), [optional sources](architecture/OPTIONAL_SOURCES.md), [live facts](architecture/LIVE_PRODUCT_FACTS.md) |
+| Reports | [Label reports](architecture/LABEL_REPORT.md), [Product Info](architecture/PRODUCT_INFO.md), [comparison](architecture/SOURCED_COMPARISON.md) |
+| Private data | [Accounts](architecture/ACCOUNT_PROFILE.md), [sync](architecture/PRIVATE_ACCOUNT_SYNC.md), [guest retention](architecture/GUEST_SESSION_LIFECYCLE.md) |
+| Contributions | [Community](architecture/COMMUNITY_CATALOGUE.md), [AI routing](architecture/AI_ROUTING.md) |
+| Client experience | [Insights](architecture/INSIGHTS.md), [interface contract](../frontend/DESIGN.md) |
+| Privacy and uncertainty | [Safety/privacy](SAFETY_PRIVACY.md) |
 
-The user authorized completion and push from main on 13 October. Current source,
-Git-triggered deployment and native publication remain separate evidence. The
-[preceding backend provider review](planning/BACKEND_V0_12_1_REVIEW.md) and earlier source
-reviews retain their own hosted/native evidence. Older versioned reviews,
-production JSON receipts, research notes, accepted specs and plans remain dated
-historical evidence. Their versions and test totals describe their own source
-revisions; they are not instructions to revert current code or repeat old work.
+## Maintaining these guides
+
+Update the relevant guide with the code change. Keep commands/configuration at
+their owning component; link to manifests instead of copying versions, route
+counts or old test totals. Keep one roadmap. Release notes belong in
+[GitHub releases](https://github.com/Vaibhavsh0120/Unlabel/releases). Historical
+evidence remains in Git history and the [source ledger](../contracts/versioning/releases.json).
+Fixed source receipts and licenses stay beside their data. Do not add another
+dated planning/review directory to the maintained documentation.
+
+CI checks local links and heading anchors offline. This catches broken navigation,
+not semantic drift: verify the implementation described by a changed guide.

@@ -69,8 +69,6 @@ node_modules/
 *.sqlite3
 *.sqlite3-shm
 *.sqlite3-wal
-backend/storage/runtime/**
-!backend/storage/runtime/.gitkeep
 backend/app/catalogue/data/
 backend/app/claims/data/
 backend/app/research_catalogue/data/
@@ -78,8 +76,8 @@ output/playwright/
 .playwright-cli/
 data/private/**
 !data/private/.gitkeep
-knowledge/sources/downloads/**
-!knowledge/sources/downloads/.gitkeep
+data/knowledge/sources/downloads/**
+!data/knowledge/sources/downloads/.gitkeep
 *.log
 logs/
 tmp/
@@ -111,5 +109,7 @@ Desktop.ini
 /secrets/local/
 /.secrets-work-*/
 /.secrets-work.lock
+# Owned generated local databases, source archives and verification output.
+/.local/
 # Temporary operator credential handoff; ingest into the encrypted secret inventory.
 /note.txt

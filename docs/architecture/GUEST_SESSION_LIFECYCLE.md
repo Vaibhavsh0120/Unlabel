@@ -40,7 +40,7 @@ After GoTrue has initialized its schema, run
 `python infrastructure/production/configure_guest_cleanup.py` using the existing
 loopback PostgreSQL SSH tunnel on port 15432. The helper applies checksum-recorded
 identity migrations and installs the restricted login. Its random credential is
-stored only in the ignored production secret inventory. Run `secrets.ps1 encrypt`
+stored only in the ignored production secret inventory. Run `secrets/secrets.ps1 encrypt`
 and `verify` before publishing the updated encrypted backup. Runtime deployment
 uses `infrastructure/docker/guest-cleanup.Dockerfile`, a digest-pinned Python base,
 hash-locked dependencies, a non-root user and a database-backed health check.

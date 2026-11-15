@@ -27,11 +27,22 @@ class RequestBodyLimit:
             await self.app(scope, receive, send)
             return
         personal = scope["path"].rstrip("/") == "/v1/account/sync"
+        profile = scope["path"].rstrip("/") == "/v1/account/profile"
+        identity = scope["path"].startswith("/auth/v1/")
         comparison = scope["path"].rstrip("/") == "/v1/reports/compare"
         extraction = scope["path"].rstrip("/") == "/v1/ai/extract"
         max_bytes = (
-            4 * 1024 * 1024 if extraction
-            else MAX_BODY_BYTES if personal else 65536 if comparison else self.max_bytes
+            144 * 1024
+            if profile
+            else 128 * 1024
+            if identity
+            else 4 * 1024 * 1024
+            if extraction
+            else MAX_BODY_BYTES
+            if personal
+            else 65536
+            if comparison
+            else self.max_bytes
         )
         for name, value in scope.get("headers", []):
             if name.lower() == b"content-length":
@@ -53,7 +64,7 @@ class RequestBodyLimit:
             if not message.get("more_body", False):
                 break
         consumed = False
-        if personal and (
+        if (personal or profile) and (
             scope.get("query_string") or (scope["method"] in {"GET", "DELETE"} and body)
         ):
             await JSONResponse(
@@ -73,7 +84,9 @@ class RequestBodyLimit:
             return
 
         if (
-            scope["path"].rstrip("/")
+            identity
+            or profile
+            or scope["path"].rstrip("/")
             in {
                 "/v1/nutrition/normalize",
                 "/v1/claims/check",
@@ -84,13 +97,14 @@ class RequestBodyLimit:
                 "/v1/ai/extract",
                 "/v1/ai/control/activate",
             }
-            and scope["method"] == "POST"
-        ):
+        ) and scope["method"] in {"POST", "PUT"}:
             try:
                 ai_path = scope["path"].rstrip("/").startswith("/v1/ai/")
                 json.loads(
-                    body, parse_float=checked_float, parse_constant=reject_constant,
-                    object_pairs_hook=unique_properties if ai_path else dict,
+                    body,
+                    parse_float=checked_float,
+                    parse_constant=reject_constant,
+                    object_pairs_hook=unique_properties if ai_path or profile or identity else dict,
                 )
             except (json.JSONDecodeError, UnicodeDecodeError):
                 pass  # Framework handles malformed JSON with its sanitized validation response.
@@ -123,8 +137,17 @@ class RequestBodyLimit:
     async def reject(self, scope, receive, send):
         path = scope["path"].rstrip("/")
         size = (
-            "4096" if path == "/v1/ai/extract" else "512" if path == "/v1/account/sync"
-            else "64" if path == "/v1/reports/compare" else "32"
+            "144"
+            if path == "/v1/account/profile"
+            else "128"
+            if path.startswith("/auth/v1/")
+            else "4096"
+            if path == "/v1/ai/extract"
+            else "512"
+            if path == "/v1/account/sync"
+            else "64"
+            if path == "/v1/reports/compare"
+            else "32"
         )
         await JSONResponse(
             {"detail": f"Request body exceeds {size} KiB"},

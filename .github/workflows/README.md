@@ -87,4 +87,4 @@ No paid runner or card is configured. Actions use pinned revisions, dependency
 caches and short artifact retention. `contents: write` is limited to the release
 job and uses only the automatic `GITHUB_TOKEN`; backend URLs contain no secrets.
 Backend/website Vercel deployments, hosted health and real-device proof are
-separate gates. See [release/versioning](../../docs/planning/RELEASE_VERSIONING.md).
+separate gates. See [release/versioning](../../docs/releases.md).

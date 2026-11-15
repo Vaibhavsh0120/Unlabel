@@ -16,8 +16,8 @@ sync, outside these source bundles. Photos/raw OCR are never account/database sy
 
 The original `fixtures/ocr`, `fixtures/scans` and `fixtures/expected` directories
 were empty foundation scaffolding and have been removed. Actual owned synthetic
-fixtures/examples live in [contracts/examples/](../contracts/examples/),
-[backend tests](../backend/tests/) and [frontend tests](../frontend/test/).
+fixtures/examples live in [contracts/examples/](../contracts/examples),
+[backend tests](../backend/tests) and [frontend tests](../frontend/test).
 They cover missing values, original table bases, conflict/pairing, source age,
 provider failures and bounded/redacted inputs without retaining real personal
 scans. New fixtures need known reuse rights and explicit synthetic provenance.

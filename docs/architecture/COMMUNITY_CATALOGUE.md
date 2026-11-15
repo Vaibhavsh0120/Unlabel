@@ -3,7 +3,7 @@
 The current backend retains the structured observation/resolution contracts;
 the frontend integrates qualified capture, separate acceptance and automatic
 confirmed intake. Versions come from the component manifests. The
-[Google compatibility patch](../planning/BACKEND_V0_12_1_REVIEW.md) changes only the
+[Google compatibility patch](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_1_REVIEW.md) changes only the
 verified provider allowlist. Machine extraction has its own private staging,
 without automatic public promotion. [Current data flow](DATA_FLOW.md) ·
 [AI boundaries](AI_ROUTING.md).
@@ -12,11 +12,11 @@ without automatic public promotion. [Current data flow](DATA_FLOW.md) ·
 
 **7 October 2026:** v0.4.0 was independently reviewed, pushed, hosted-verified and
 published as a source-only release at `d793f628581f509481d6dc60a82afe59ca013439`.
-[Sixteen hosted checks](../research/BACKEND_V0_4_0_PRODUCTION.json) matched the
+[Sixteen hosted checks](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/BACKEND_V0_4_0_PRODUCTION.json) matched the
 unchanged OFF/claim receipts and cleaned synthetic records. Firebase **Unlabel**
 has its first Standard database **`unlabel`** in Mumbai (`asia-south1`), free tier
 and no linked billing. Anonymous Auth, deny-all client rules and dedicated
-credentials are configured. [Review](../planning/BACKEND_V0_4_0_REVIEW.md) records
+credentials are configured. [Review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_4_0_REVIEW.md) records
 local, emulator, live Firebase and hosted evidence separately.
 
 ## Automatic observations
@@ -133,6 +133,6 @@ free-tier boundaries. Live synthetic create/read/retry/review/cleanup and direct
 REST denial were verified separately from hosted API deployment; see the review
 for exact evidence and remaining gates.
 
-[Master plan](../planning/MASTER_PLAN.md) · [Design](../superpowers/specs/2026-10-07-community-catalogue-design.md)
-· [Implementation checklist](../superpowers/plans/2026-10-07-backend-v0.4.0.md)
-· [Coverage strategy](../research/INDIAN_FOOD_COVERAGE.md) · [Operator commands](../../scripts/README.md)
+[Master plan](../roadmap.md) · [Design](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/superpowers/specs/2026-10-07-community-catalogue-design.md)
+· [Implementation checklist](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/superpowers/plans/2026-10-07-backend-v0.4.0.md)
+· [Coverage strategy](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/INDIAN_FOOD_COVERAGE.md) · [Operator commands](../../scripts/README.md)

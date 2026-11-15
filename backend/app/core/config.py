@@ -112,7 +112,7 @@ class Settings(BaseSettings):
         return (
             packaged
             if packaged.exists() or os.environ.get("VERCEL") == "1"
-            else backend.parent / "knowledge"
+            else backend.parent / "data/knowledge"
         )
 
     def catalogue_path(self) -> Path | None:
@@ -192,7 +192,7 @@ class Settings(BaseSettings):
     @classmethod
     def bounded_actor_secret(cls, value: SecretStr | None) -> SecretStr | None:
         if value is not None and not 32 <= len(value.get_secret_value()) <= 1024:
-            raise ValueError("Community ownership secret must contain 32–1024 characters")
+            raise ValueError("Community ownership secret must contain 32â€“1024 characters")
         return value
 
     @field_validator("off_user_agent")

@@ -111,7 +111,7 @@ This adds no paid service, billing requirement, Gemini dependency or training jo
 The synthetic [request](../../contracts/examples/comparison-v1.request.synthetic.json)
 and [response](../../contracts/examples/comparison-v1.response.synthetic.json)
 are integration examples, not real products or scans. The
-[release review](../planning/BACKEND_V0_8_0_REVIEW.md) records implementation,
+[release review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_8_0_REVIEW.md) records implementation,
 local validation and hosted/publication evidence as separate gates. The frontend server integration is recorded separately in the
-[frontend v0.4.0 review](../planning/FRONTEND_V0_4_0_REVIEW.md); its exact source/table
+[frontend v0.4.0 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_4_0_REVIEW.md); its exact source/table
 selection remains implemented in the current client.

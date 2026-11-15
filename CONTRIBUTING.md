@@ -7,7 +7,7 @@ affected docs before pushing. Do not bump versions for the current maintenance.
 
 Restore with `python scripts/setup.py`; run with `python scripts/run_local.py`.
 Use `--scope backend` or `frontend` when appropriate. See
-[local development](docs/planning/LOCAL_DEVELOPMENT.md) and
+[local development](docs/development.md) and
 [actual folder ownership](docs/architecture/FOLDER_STRUCTURE.md).
 
 From frontend, run `flutter analyze`, `flutter test`, `flutter build web --release`
@@ -20,7 +20,7 @@ preserve old versioned OpenAPI. Native builds use the manual workflow separately
 
 Edit only pubspec.yaml or backend/pyproject.toml for a future component version;
 do not repeat version literals in runtime/workflow files. Document the new release
-without rewriting dated reviews. See [release/versioning](docs/planning/RELEASE_VERSIONING.md).
+without rewriting dated reviews. See [release/versioning](docs/releases.md).
 
 Never commit plaintext credentials, private identities or real scans. Keep
 public sourced package facts separate from personal sync/private machine proposals.

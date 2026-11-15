@@ -11,7 +11,7 @@ based nutrition tables. These are observations, not 243 newly verified formulas;
 146 distinct literal brand/product names include repeated packs and source aliases.
 The generated read-only database is 1,413,120 bytes. Dataset SHA-256:
 `1f5693f29ffff1f62ef57b8a1a7fb321f6efb5a1559f8efdad19d1e0f4d38a52`.
-[Measured source/runtime checks](../../../docs/research/POPULAR_PRODUCTS_DATASET_VALIDATION.json).
+[Measured source/runtime checks](provenance/validation.json).
 
 | Artifact | Purpose |
 | --- | --- |
@@ -19,7 +19,7 @@ The generated read-only database is 1,413,120 bytes. Dataset SHA-256:
 | `manifest.json` | Compressed/decoded hashes, input hashes, provider/field counts and barcode conflicts. |
 | `targets.json` | Bounded keyword-based discovery targets from the dated OFF snapshot; not sales/coverage proof. |
 | `off-api-observations.json` | Original exact-code acquisition/checkpoint evidence and rate-limit failures. |
-| [Website sources](../../../docs/research/popular-products-2026-10-08/) | Actually inspected manufacturer/retailer inputs with conflicts, exclusions and unknowns. |
+| [Website sources](acquisition/) | Inspected manufacturer and retailer inputs with conflicts, exclusions and unknowns. |
 
 Build the source explicitly with `scripts/data/build_popular_dataset.py --web-input ...`
 and optional `--off-input ...`; verify it using:
@@ -53,5 +53,5 @@ targets were not silently marked acquired. Decimal strings from an earlier resum
 encoding defect remain raw/unknown pending source restoration; no blind coercion
 is allowed. Future acquisition uses the fixed resume/checkpoint/pacing boundaries.
 
-[Full product list](../../../docs/research/POPULAR_PRODUCTS_ADDED.md) ·
-[Implementation plan](../../../docs/planning/POPULAR_PRODUCTS_DATABASE_PLAN.md).
+[Full product list](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/POPULAR_PRODUCTS_ADDED.md) ·
+[Implementation plan](../../../docs/roadmap.md).

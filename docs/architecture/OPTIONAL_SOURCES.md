@@ -2,7 +2,7 @@
 
 Every backend source can be disabled without removing its files. A fresh clone
 can start without any private API keys. Build the bundled data with
-`python scripts/setup.py`; see [local development](../planning/LOCAL_DEVELOPMENT.md).
+`python scripts/setup.py`; see [local development](../development.md).
 
 Copy [backend/.env.example](../../backend/.env.example) to ignored `backend/.env`.
 Leave unused keys blank. `AI_ENABLED=auto` and `NUTRIGRAPH_ENABLED=auto` resolve

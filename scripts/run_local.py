@@ -24,6 +24,7 @@ from dev._workspace import (
     backend_python,
     config,
     flutter_executable,
+    local_catalogue_directory,
     public_origin,
 )
 
@@ -220,8 +221,9 @@ def main() -> int:
                     web_url,
                 ]
             )
-            if (ROOT / "backend/storage/runtime/india/catalogue.sqlite3").is_file():
-                environment["CATALOGUE_DIRECTORY"] = "storage/runtime/india"
+            catalogue = local_catalogue_directory(ROOT)
+            if (catalogue / "catalogue.sqlite3").is_file():
+                environment["CATALOGUE_DIRECTORY"] = str(catalogue)
                 environment["CATALOGUE_REQUIRE_RECEIPT"] = "false"
             command = [
                 python,

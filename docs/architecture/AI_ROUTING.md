@@ -8,7 +8,7 @@ password or Google Firebase authentication. No reviewer/admin app role is introd
 Published v0.12.0 adds bounded private structured machine proposals and an
 independent response storage status. Its READY deployment passed 389 read-only
 hosted checks; authenticated extraction/staging is outside that audit. See the
-[release review](../planning/BACKEND_V0_12_0_REVIEW.md). Historical v0.11 extraction
+[release review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_12_0_REVIEW.md). Historical v0.11 extraction
 does not persist output; v0.12 behavior must not be inferred for that deployment.
 
 ## Current automatic contributions
@@ -27,7 +27,7 @@ exact barcode, recomputing disagreements against current known sources. The
 separate machine stream is bounded to 4,000 lifetime observations; semantic
 rescans deduplicate. Private staging and public machine observations have
 independent statuses. Raw photos, OCR, region geometry and account identities
-never enter that public stream. See the [current backend review](../planning/BACKEND_V0_14_0_REVIEW.md).
+never enter that public stream. See the [current backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md).
 
 NutriGraph is independent of AI extraction and permanently stored data. Its
 optional authenticated live lookup uses a server-only key, documented UPC-12,
@@ -142,6 +142,6 @@ zero retention. See [Gemini pricing/data-use](https://ai.google.dev/gemini-api/d
 and [OpenAI data controls](https://platform.openai.com/docs/guides/your-data).
 No paid Firebase services or billing/card setup is added.
 
-The synthetic Gemini check is [recorded separately](../research/AI_VISION_SYNTHETIC_CHECK.json).
+The synthetic Gemini check is [recorded separately](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/research/AI_VISION_SYNTHETIC_CHECK.json).
 It validates one clear owned test label and timing, not real-package accuracy,
 native camera behavior, all model/provider access or production deployment.
