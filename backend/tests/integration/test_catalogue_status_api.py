@@ -6,14 +6,13 @@ from datetime import UTC, datetime
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from app.catalogue.bundle import build_bundle
 from app.catalogue.importer import build_catalogue
 from app.catalogue.models import CatalogLookup
 from app.catalogue.status import CatalogueStatus
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
 
 
 def forbidden(request):

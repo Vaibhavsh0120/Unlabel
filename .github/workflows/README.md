@@ -22,11 +22,16 @@ Only the native release lane restores the private registered demo signing key.
 
 [frontend-release.yml](frontend-release.yml) automatically runs on main pushes that
 change `frontend/pubspec.yaml`. Its version gate skips dependency-only edits and
-requires an increased build number without lowering SemVer. The pushed SHA is
-built and published automatically; no repeated manual dispatch is needed.
+requires an increased build number without lowering SemVer. Automatic native
+publication is deferred with a warning until the selected Oracle API passes its
+cutover readiness check; a push cannot publish a client against an unaccepted
+backend. The pushed SHA is built and published automatically after that gate
+passes; no repeated manual dispatch is needed.
 **Run workflow** remains available for deliberate retries/drafts.
 Its inputs are `source_ref` (default `main`), `backend_url` (default
-`https://unlabel-api.vercel.app`) and `publish_release` (default `true`).
+`https://unlabel.duckdns.org`), `self_hosted_auth` (default `true`) and
+`publish_release` (default `true`). Self-hosted auth requires ready dependency
+health and the API's explicit `cutover_ready` signal before building.
 `frontend/pubspec.yaml` supplies the version and build number; the same metadata
 goes into Android, iOS, Dart runtime and the release manifest. There are no manual
 version overrides or duplicated version defaults. The source must have the same

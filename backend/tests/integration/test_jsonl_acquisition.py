@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 from app import __version__
 
 SCRIPT = Path(__file__).resolve().parents[3] / "scripts/data/acquire_india_jsonl.py"

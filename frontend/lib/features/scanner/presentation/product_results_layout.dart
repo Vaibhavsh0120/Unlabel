@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../core/notifications/notification_controller.dart';
+
+import '../../../core/widgets/notification_bell.dart';
+
 import 'package:flutter/services.dart';
 
 import 'ui_components.dart';

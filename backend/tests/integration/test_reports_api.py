@@ -7,10 +7,6 @@ from typing import Any, Literal, cast
 
 import httpx
 import pytest
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-from pydantic import SecretStr
-
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.catalogue.facts import FactsLookup
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
@@ -19,6 +15,9 @@ from app.community.service import verify_provider_references
 from app.community.store import StoreConflict, StoreQuotaExceeded, StoreUnavailable
 from app.core.config import Settings
 from app.main import create_app
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from pydantic import SecretStr
 from tests.community_fixtures import CODE, NOW, candidate_revision, contribution_dict
 
 

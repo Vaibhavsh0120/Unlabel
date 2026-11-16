@@ -14,8 +14,13 @@ on:
       backend_url:
         description: Public HTTPS backend origin used by the connected client
         required: true
-        default: 'https://unlabel-api.vercel.app'
+        default: 'https://unlabel.duckdns.org'
         type: string
+      self_hosted_auth:
+        description: Use self-hosted sign-in only when the API confirms cutover readiness
+        required: true
+        default: true
+        type: boolean
       publish_release:
         description: Publish verified assets and update LiveContainer source (false keeps a draft)
         required: true
@@ -31,7 +36,8 @@ concurrency:
 
 env:
   SOURCE_REF: ${{ inputs.source_ref || github.sha }}
-  BACKEND_BASE_URL: ${{ inputs.backend_url || 'https://unlabel-api.vercel.app' }}
+  BACKEND_BASE_URL: ${{ inputs.backend_url || 'https://unlabel.duckdns.org' }}
+  UNLABEL_SELF_HOSTED_AUTH: ${{ inputs.self_hosted_auth == false && github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
   PUBLISH_RELEASE: ${{ github.event_name == 'push' && 'true' || format('{0}', inputs.publish_release) }}
 
 defaults:
@@ -42,7 +48,7 @@ jobs:
   version-gate:
     runs-on: ubuntu-24.04
     outputs:
-      requested: ${{ steps.gate.outputs.requested }}
+      requested: ${{ steps.gate.outputs.requested == 'true' && (github.event_name == 'workflow_dispatch' || steps.backend.outcome == 'success') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -52,6 +58,14 @@ jobs:
       - name: Detect a canonical frontend version increase
         id: gate
         run: python3 scripts/release/frontend_release_gate.py >> "$GITHUB_OUTPUT"
+      - name: Verify the selected API before an automatic release
+        id: backend
+        if: github.event_name == 'push' && steps.gate.outputs.requested == 'true'
+        continue-on-error: true
+        run: python3 scripts/release/backend_target.py "$BACKEND_BASE_URL" "$UNLABEL_SELF_HOSTED_AUTH"
+      - name: Explain deferred mobile publication
+        if: github.event_name == 'push' && steps.gate.outputs.requested == 'true' && steps.backend.outcome != 'success'
+        run: echo "::warning::Mobile publication is deferred until the Oracle API passes its cutover readiness gate."
 
   checks:
     needs: version-gate
@@ -99,6 +113,8 @@ jobs:
           RELEASE_VERSION: ${{ steps.metadata.outputs.version }}
           BUILD_NUMBER: ${{ steps.metadata.outputs.build_number }}
         run: python3 scripts/release/mobile_release.py preflight
+      - name: Verify the selected API before building release assets
+        run: python3 scripts/release/backend_target.py "$BACKEND_BASE_URL" "$UNLABEL_SELF_HOSTED_AUTH"
       - name: Verify authored platform icons and local OCR sources
         run: |
           python3 scripts/release/generate_app_icons.py --check
@@ -175,7 +191,7 @@ jobs:
           COMMIT_SHA: ${{ needs.checks.outputs.source_sha }}
         run: |
           flutter pub get --enforce-lockfile
-          flutter build apk --release --no-pub --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="COMMIT_SHA=$COMMIT_SHA" 2>&1 | tee android-build.log
+          flutter build apk --release --no-pub --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="UNLABEL_SELF_HOSTED_AUTH=$UNLABEL_SELF_HOSTED_AUTH" --dart-define="COMMIT_SHA=$COMMIT_SHA" 2>&1 | tee android-build.log
           APK_PATH='build/app/outputs/flutter-apk/app-release.apk'
           APKSIGNER="$ANDROID_HOME/build-tools/36.0.0/apksigner"
           "$APKSIGNER" verify --print-certs "$APK_PATH" > apk-signing.txt
@@ -236,7 +252,7 @@ jobs:
           COMMIT_SHA: ${{ needs.checks.outputs.source_sha }}
         run: |
           flutter pub get --enforce-lockfile
-          flutter build ios --release --no-pub --no-codesign --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="COMMIT_SHA=$COMMIT_SHA"
+          flutter build ios --release --no-pub --no-codesign --build-name "$RELEASE_VERSION" --build-number "$BUILD_NUMBER" --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" --dart-define="UNLABEL_SELF_HOSTED_AUTH=$UNLABEL_SELF_HOSTED_AUTH" --dart-define="COMMIT_SHA=$COMMIT_SHA"
           python3 ../scripts/release/package_ios.py --app build/ios/iphoneos/Runner.app --output "dist/unlabel-${RELEASE_VERSION}+${BUILD_NUMBER}-ios-unsigned.ipa" --version "$RELEASE_VERSION" --build-number "$BUILD_NUMBER"
           flutter --version --machine > dist/ios-toolchain.json
           python3 - <<'PY'

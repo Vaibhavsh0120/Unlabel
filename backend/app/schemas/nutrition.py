@@ -1,9 +1,8 @@
 from typing import Annotated, Literal, Self, get_args
 from uuid import UUID
 
-from pydantic import BeforeValidator, Field, model_validator
-
 from app.schemas.products import ContractModel
+from pydantic import BeforeValidator, Field, model_validator
 
 NutrientName = Literal[
     "energy",

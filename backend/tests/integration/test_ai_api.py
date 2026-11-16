@@ -5,14 +5,13 @@ from typing import cast
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from pydantic import SecretStr
-
 from app.ai.models import MAX_REQUEST_BYTES
 from app.ai.store import FirestoreAiSelectionStore
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.community.auth import AuthenticationInvalid
 from app.main import create_app
+from fastapi.testclient import TestClient
+from pydantic import SecretStr
 from tests.integration.test_community_api import FakeRuntime, forbidden
 from tests.unit.test_ai_gateway import GEMINI_KEY, OPENAI_KEY, ai_config, provider_of
 from tests.unit.test_ai_models import image_dict

@@ -7,11 +7,10 @@ from email.utils import format_datetime
 
 import httpx
 import pytest
-from pydantic import SecretStr, ValidationError
-
 from app.ai import providers
 from app.ai.models import ExtractionRequest
 from app.ai.providers import Credential, ProviderFailure, extract
+from pydantic import SecretStr, ValidationError
 from tests.unit.test_ai_models import extracted_dict, image_dict
 
 SECRET = "synthetic-private-provider-key"

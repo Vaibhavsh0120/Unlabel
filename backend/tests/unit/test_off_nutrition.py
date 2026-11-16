@@ -2,7 +2,6 @@ import json
 
 import httpx
 import pytest
-
 from app.core.config import Settings
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import OpenFoodFactsProvider

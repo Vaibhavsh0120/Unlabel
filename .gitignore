@@ -113,3 +113,4 @@ Desktop.ini
 /.local/
 # Temporary operator credential handoff; ingest into the encrypted secret inventory.
 /note.txt
+/Oracle

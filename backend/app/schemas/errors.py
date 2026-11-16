@@ -1,8 +1,7 @@
 from typing import Literal
 
-from pydantic import ConfigDict, Field
-
 from app.schemas.products import ContractModel
+from pydantic import ConfigDict, Field
 
 
 class ValidationErrorDetail(ContractModel):

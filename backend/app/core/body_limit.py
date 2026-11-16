@@ -1,9 +1,8 @@
 import json
 
-from starlette.responses import JSONResponse
-
 from app.accounts.models import MAX_BODY_BYTES
 from app.core.json_numbers import checked_float, reject_constant
+from starlette.responses import JSONResponse
 
 
 def unique_properties(pairs):

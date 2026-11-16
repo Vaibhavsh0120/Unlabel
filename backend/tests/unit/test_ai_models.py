@@ -5,14 +5,13 @@ import struct
 import zlib
 
 import pytest
-from pydantic import ValidationError
-
 from app.ai.models import (
     MAX_IMAGE_BYTES,
     ExtractedLabel,
     ExtractionImage,
     ExtractionRequest,
 )
+from pydantic import ValidationError
 
 
 def png_bytes(width=2, height=2):

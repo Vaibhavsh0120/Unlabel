@@ -416,7 +416,7 @@ class _FeaturedInsight extends StatelessWidget {
                     constraints.maxWidth < 340 ||
                     MediaQuery.textScalerOf(context).scale(14) > 21;
                 final copy = Padding(
-                  padding: EdgeInsets.fromLTRB(narrow ? 20 : 28, 28, 8, 24),
+                  padding: EdgeInsets.fromLTRB(narrow ? 20 : 28, 20, 8, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -427,11 +427,11 @@ class _FeaturedInsight extends StatelessWidget {
                           color: theme.colorScheme.primary,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       Text(
                         article.title,
                         style: theme.textTheme.headlineLarge?.copyWith(
-                          fontSize: narrow ? 24 : 36,
+                          fontSize: narrow ? 24 : 32,
                           height: 1.08,
                         ),
                       ),
@@ -444,16 +444,16 @@ class _FeaturedInsight extends StatelessWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       _ReadBadge(article: article),
                     ],
                   ),
                 );
                 final art = Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 28, 12, 12),
+                  padding: EdgeInsets.fromLTRB(4, stacked ? 0 : 40, 16, 16),
                   child: _ArticleArt(
                     article: article,
-                    height: narrow ? 180 : 300,
+                    height: narrow ? 160 : 200,
                   ),
                 );
                 return stacked

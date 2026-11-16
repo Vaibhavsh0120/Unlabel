@@ -2,11 +2,10 @@ import importlib.util
 from uuid import uuid4
 
 import pytest
-from pydantic import ValidationError
-
 from app.catalogue.facts import FactsLookup, project_facts
 from app.catalogue.models import Manifest
 from app.schemas.products import Product
+from pydantic import ValidationError
 from tests.community_fixtures import (
     CODE,
     NOW,

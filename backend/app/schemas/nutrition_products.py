@@ -2,10 +2,9 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import Field
-
 from app.schemas.nutrition import NutritionSnapshot
 from app.schemas.products import ContractModel, LookupStatus, Source
+from pydantic import Field
 
 
 class InputTableSource(ContractModel):

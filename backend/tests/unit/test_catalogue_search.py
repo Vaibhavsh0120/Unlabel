@@ -5,7 +5,6 @@ from contextlib import closing
 from datetime import UTC, datetime
 
 import pytest
-
 from app.catalogue.importer import build_catalogue
 from app.catalogue.store import CatalogueStore, read_only_connection
 

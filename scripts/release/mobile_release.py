@@ -13,6 +13,8 @@ import zipfile
 from pathlib import Path
 from typing import Any, Protocol
 
+from backend_target import validate_backend_target
+
 SOURCE_TAG = "ios-source"
 SOURCE_ASSET = "apps.json"
 
@@ -83,6 +85,10 @@ def validate_inputs() -> None:
         raise ValueError(
             "Backend URL must be a public HTTPS origin without credentials or a path."
         )
+    selfhost_auth = os.environ.get("UNLABEL_SELF_HOSTED_AUTH", "true")
+    if selfhost_auth not in ("true", "false"):
+        raise ValueError("UNLABEL_SELF_HOSTED_AUTH must be boolean.")
+    validate_backend_target(url, selfhost_auth == "true")
     if os.environ["PUBLISH_RELEASE"] not in ("true", "false"):
         raise ValueError("publish_release must be boolean.")
 
@@ -344,6 +350,8 @@ def publish(out: Path) -> None:
         "built_at_utc": timestamp,
         "toolchains": toolchains,
         "backend_base_url": os.environ["BACKEND_BASE_URL"],
+        "self_hosted_auth": os.environ.get("UNLABEL_SELF_HOSTED_AUTH", "true")
+        == "true",
         "supported_api_major": 1,
         "contract_schema": "1",
         "report_version": "label-report-v1",

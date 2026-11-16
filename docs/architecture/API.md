@@ -1,11 +1,12 @@
 # Frontend/backend API plan
 
-Updated **15 October 2026** for the canonical [backend](../../backend/pyproject.toml)
-and [frontend](../../frontend/pubspec.yaml) versions. Current OpenAPI is
-[backend-v0.14.0.openapi.json](../../contracts/schemas/backend-v0.14.0.openapi.json):
-**30 paths / 32 operations**. Additions cover machine-unverified observations,
-source-backed catalogue numeric claim comparisons and optional live lookup.
-Confirmed observations and private snapshot contracts remain compatible.
+Updated **16 November 2026** for the canonical [backend](../../backend/pyproject.toml)
+and [frontend](../../frontend/pubspec.yaml) versions. The current source contract is
+[backend-v1.0.0.openapi.json](../../contracts/schemas/backend-v1.0.0.openapi.json):
+**34 paths / 36 operations**. Existing v1 product, report, account, research and
+community contracts remain versioned independently. The next-major entrypoint adds
+health/platform and identity routes outside this legacy OpenAPI export; those remain
+behind the separate hosted cutover gate.
 Local, hosted, native and physical-device evidence are separate in the
 [backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) and
 [frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md).

@@ -289,25 +289,47 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               )
             : _MobileEmptyScans(onScan: widget.onEnterLabel)
       else if (widget.desktop)
-        Row(
-          key: const Key('desktop-recent-scans'),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (var i = 0; i < _recent.length; i++) ...[
-              if (i > 0) const SizedBox(width: 12),
-              Expanded(
-                child: _RecentRow(
-                  item: _recent[i],
-                  desktop: true,
-                  onTap: () => widget.onOpenReport(_recent[i].report),
-                ),
-              ),
-            ],
-            for (var i = _recent.length; i < 3; i++) ...[
-              const SizedBox(width: 12),
-              const Spacer(),
-            ],
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = ((constraints.maxWidth + 12) / 360).floor().clamp(
+              1,
+              _recent.length,
+            );
+            return Column(
+              key: const Key('desktop-recent-scans'),
+              children: [
+                for (
+                  var start = 0;
+                  start < _recent.length;
+                  start += columns
+                ) ...[
+                  if (start > 0) const SizedBox(height: 12),
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (
+                          var i = start;
+                          i < start + columns && i < _recent.length;
+                          i++
+                        ) ...[
+                          if (i > start) const SizedBox(width: 12),
+                          Expanded(
+                            child: _RecentRow(
+                              item: _recent[i],
+                              desktop: true,
+                              onTap: () =>
+                                  widget.onOpenReport(_recent[i].report),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            );
+          },
         )
       else
         for (final item in _recent) ...[
@@ -1093,25 +1115,26 @@ class _RecentRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
+      key: Key('recent-scan-${item.id}'),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(desktop ? 12 : 16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              StoredProductPhoto(report: item.report, size: desktop ? 64 : 76),
-              SizedBox(width: desktop ? 12 : 16),
+              StoredProductPhoto(report: item.report, size: desktop ? 104 : 76),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       item.report.name,
-                      maxLines: desktop ? 2 : null,
+                      maxLines: desktop ? 3 : null,
                       overflow: desktop ? TextOverflow.ellipsis : null,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontSize: desktop ? 14 : null,
+                        fontSize: desktop ? 17 : null,
                       ),
                     ),
                     const SizedBox(height: 6),

@@ -1,9 +1,5 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Request
-from fastapi import Path as PathParameter
-from fastapi.responses import JSONResponse
-
 from app.claims.catalogue import (
     CatalogueClaimsRequest,
     CatalogueClaimsResponse,
@@ -18,6 +14,9 @@ from app.claims.models import (
     ClaimsUnavailable,
     EvidenceResponse,
 )
+from fastapi import APIRouter, Request
+from fastapi import Path as PathParameter
+from fastapi.responses import JSONResponse
 
 
 def build_router(*, store: KnowledgeStore | None = None) -> APIRouter:

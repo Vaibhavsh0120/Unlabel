@@ -1,19 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import '../core/accounts/account_auth.dart';
 import '../core/accounts/account_controller.dart';
 import '../core/accounts/account_sync_api.dart';
+import '../core/accounts/google_account_provider.dart';
 import '../core/accounts/profile_media.dart';
+import '../core/accounts/selfhost_account_auth.dart';
+import '../core/accounts/selfhost_auth_client.dart';
+import '../core/accounts/selfhost_account_session_storage.dart';
 import '../core/interaction/ui_feedback.dart';
 import '../core/notifications/notification_controller.dart';
 import '../core/network/scanner_auth.dart';
 import '../core/network/unlabel_repository.dart';
 import '../core/storage/local_store.dart';
 import '../core/widgets/brand_mark.dart';
+import '../core/widgets/notification_bell.dart';
 import 'artwork_warmup.dart';
 import '../features/account/presentation/profile_page.dart';
 import '../features/account/presentation/notifications_page.dart';
@@ -79,6 +86,8 @@ class _UnlabelAppState extends State<UnlabelApp> {
   late final LocalStore _store;
   late final AccountController _account;
   late final ProfileMediaController _profileMedia;
+  http.Client? _selfhostHttp;
+  SelfhostAccountAuth? _selfhostAccountAuth;
   late final NotificationController _notifications;
   bool _pendingNotificationOpen = false, _notificationRouteOpen = false;
   bool _showSignInReturn = false;
@@ -92,6 +101,9 @@ class _UnlabelAppState extends State<UnlabelApp> {
   void initState() {
     super.initState();
     _store = widget.store ?? LocalStore();
+    if (BuildInfo.selfhostAuth && widget.accountController == null) {
+      _selfhostAccountAuth = _createSelfhostAuth();
+    }
     _repository =
         widget.repository ??
         UnlabelRepository(
@@ -130,6 +142,45 @@ class _UnlabelAppState extends State<UnlabelApp> {
     unawaited(_restore());
   }
 
+  SelfhostAccountAuth? _createSelfhostAuth() {
+    final origin = Uri.tryParse(BuildInfo.backendBaseUrl);
+    if (origin == null) return null;
+    final client = http.Client();
+    try {
+      final auth = SelfhostAuthClient(
+        origin: origin,
+        client: client,
+        allowInsecureLoopback: kDebugMode,
+      );
+      final nativeGoogle =
+          !kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.android ||
+              defaultTargetPlatform == TargetPlatform.iOS);
+      final google = nativeGoogle
+          ? NativeGoogleAccountProvider(
+              clientId: defaultTargetPlatform == TargetPlatform.iOS
+                  ? UnlabelFirebaseOptions.ios.iosClientId
+                  : null,
+              serverClientId: UnlabelFirebaseOptions.googleServerClientId,
+            )
+          : null;
+      final account = SelfhostAccountAuth(
+        client: auth,
+        googleIdToken: google?.idToken,
+        sessionStorage: SecureSelfhostAccountSessionStorage(
+          const FlutterSecureStorage(
+            webOptions: WebOptions(useSessionStorage: true),
+          ),
+        ),
+      );
+      _selfhostHttp = client;
+      return account;
+    } on ArgumentError {
+      client.close();
+      return null;
+    }
+  }
+
   Future<void> _restoreAccount() async {
     try {
       await _account.start();
@@ -139,6 +190,9 @@ class _UnlabelAppState extends State<UnlabelApp> {
   }
 
   AccountAuth _accountAuth() {
+    if (BuildInfo.selfhostAuth) {
+      return _selfhostAccountAuth ?? UnavailableAccountAuth();
+    }
     try {
       return FirebaseAccountAuth(
         options: UnlabelFirebaseOptions.currentPlatform,
@@ -150,6 +204,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
   }
 
   FirebaseProfileMediaRepository? _profileRepository() {
+    if (BuildInfo.selfhostAuth) return null;
     try {
       return FirebaseProfileMediaRepository(
         options: UnlabelFirebaseOptions.currentPlatform,
@@ -160,6 +215,12 @@ class _UnlabelAppState extends State<UnlabelApp> {
   }
 
   ScannerAuth _scannerAuth() {
+    if (BuildInfo.selfhostAuth) {
+      final account = widget.accountController?.auth ?? _selfhostAccountAuth;
+      return account is SelfhostAccountAuth
+          ? account.scannerAuth
+          : const UnavailableScannerAuth();
+    }
     try {
       return FirebaseScannerAuth(
         options: UnlabelFirebaseOptions.currentPlatform,
@@ -273,6 +334,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
       _account.api.close();
     }
     if (widget.repository == null) _repository.close();
+    _selfhostHttp?.close();
     super.dispose();
   }
 

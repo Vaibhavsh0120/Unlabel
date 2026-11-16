@@ -1,7 +1,6 @@
 from datetime import UTC, datetime
 
 import pytest
-
 from app.catalogue.status import snapshot_freshness
 
 

@@ -1,10 +1,24 @@
 # Client configuration
 
 Only public configuration belongs in this app. BuildInfo reads Flutter appBuildName/appBuildNumber, derived from pubspec.yaml,
-and reads COMMIT_SHA/BACKEND_BASE_URL from public Dart build defines. The stable production API is
-https://unlabel-api.vercel.app; frontend version/build come from the selected
+and reads COMMIT_SHA/BACKEND_BASE_URL from public Dart build defines. The next-major API target is
+https://unlabel.duckdns.org; frontend version/build come from the selected
 source's canonical pubspec. Local-run and release scripts inject their actual
 metadata; the URL is an address, never a credential.
+
+`UNLABEL_SELF_HOSTED_AUTH` defaults to `true` for release builds. Enabling it
+requires the selected API to report ready dependencies at `/health/dependencies`
+and `cutover_ready: true` at `/v1/platform`; otherwise the build fails closed.
+Oracle requires self-hosted auth; do not pair its API URL with Firebase auth.
+The platform flag defaults false and must not be enabled until the documented
+account, data, worker, recovery, hosted and device acceptance gates pass. Local
+backend mode explicitly uses the legacy Firebase adapter; the production preview
+uses the bounded Oracle API/auth proxy. The existing Vercel/Firebase release stays
+live until client cutover is verified.
+
+Self-hosted account refresh tokens are stored using platform secure storage;
+web uses tab-scoped `sessionStorage` and requires HTTPS or localhost. This
+browser implementation does not protect against a same-origin script compromise.
 
 The HTTP adapter accepts an HTTPS origin without credentials, query or fragment.
 Debug loopback HTTP is allowed for local web development. It does not enable

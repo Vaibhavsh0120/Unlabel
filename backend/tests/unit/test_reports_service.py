@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Any, Literal
 
 import pytest
-
 from app.claims.knowledge import KnowledgeStore
 from app.community.models import CommunityLookup
 from app.community.resolver import resolve_product

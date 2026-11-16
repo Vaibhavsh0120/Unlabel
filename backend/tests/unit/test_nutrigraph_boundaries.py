@@ -5,9 +5,6 @@ from typing import cast
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from pydantic import SecretStr, ValidationError
-
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.core.config import Settings
 from app.live_products.nutrigraph import (
@@ -17,6 +14,8 @@ from app.live_products.nutrigraph import (
     supported_upc,
 )
 from app.main import create_app
+from fastapi.testclient import TestClient
+from pydantic import SecretStr, ValidationError
 from tests.integration.test_community_api import FakeRuntime, forbidden
 from tests.unit.test_nutrigraph import CODE, NOW, payload
 

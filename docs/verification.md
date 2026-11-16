@@ -81,6 +81,7 @@ concurrent session activity. Do not paste the connection string into command log
 
 Before cutover, demonstrate:
 
+- Public Oracle `/openapi.json` matches the committed self-hosted 1.0 contract and deployed source SHA; `/v1/platform` reports `cutover_ready: true` only after all other acceptance gates pass.
 - PostgreSQL/MongoDB source import parity, immutable hashes, exact identity and
   conflict handling without silently replacing source evidence.
 - Owner isolation, recent-auth account deletion, provider collision protection,

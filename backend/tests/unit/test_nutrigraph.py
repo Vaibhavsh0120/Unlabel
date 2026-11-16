@@ -3,7 +3,6 @@ from datetime import UTC, datetime, timedelta
 
 import httpx
 import pytest
-
 from app.live_products.nutrigraph import NutriGraphLookup, normalize
 
 CODE = '039978009579'

@@ -10,6 +10,10 @@ abstract final class BuildInfo {
   );
   static const backendBaseUrl = String.fromEnvironment(
     'BACKEND_BASE_URL',
-    defaultValue: 'https://unlabel-api.vercel.app',
+    defaultValue: 'https://unlabel.duckdns.org',
+  );
+  static const selfhostAuth = bool.fromEnvironment(
+    'UNLABEL_SELF_HOSTED_AUTH',
+    defaultValue: true,
   );
 }

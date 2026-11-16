@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 
 import pytest
-
 from app.claims.bundle import build_knowledge_bundle, verify_knowledge_bundle
 
 KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"

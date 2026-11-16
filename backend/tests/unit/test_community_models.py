@@ -8,7 +8,6 @@ from uuid import uuid4
 
 import pytest
 from pydantic import ValidationError
-
 from tests.community_fixtures import contribution_dict
 
 

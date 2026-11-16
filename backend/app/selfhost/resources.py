@@ -26,7 +26,9 @@ class PlatformSettings(BaseSettings):
     frontend_url: str = "https://unlabel-india.vercel.app"
     web_push_private_key: SecretStr | None = None
     web_push_public_key: str = ""
+    community_enabled: bool = False
     worker_kind: str = "worker"
+    cutover_ready: bool = False
 
 
 class Resources:
@@ -81,6 +83,8 @@ class Resources:
         with self.pool.connection() as connection:
             connection.execute("SELECT id FROM accounts.users LIMIT 0")
             connection.execute("SELECT id FROM operations.push_subscriptions LIMIT 0")
+            if self.settings.community_enabled:
+                connection.execute("SELECT revision_id FROM community.revisions LIMIT 0")
         if (
             self.catalogue.manifest.indexed_products < 1
             or self.research.status()["observation_count"] < 1

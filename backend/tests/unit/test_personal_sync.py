@@ -7,11 +7,10 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from pydantic import ValidationError
-
 from app.accounts.models import MAX_SNAPSHOT_BYTES, PersonalData, SyncRequest
 from app.accounts.store import FirestorePersonalStore, SyncConflict, owner_hash
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
+from pydantic import ValidationError
 from tests.unit.test_community_store import ACTOR, NOW, OTHER, MemoryFirestore
 
 

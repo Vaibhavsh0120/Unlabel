@@ -4,11 +4,10 @@ from pathlib import Path
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from app.core.config import Settings
 from app.main import create_app
 from app.research_catalogue.store import build_research_bundle
+from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[3]
 

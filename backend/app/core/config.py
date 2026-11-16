@@ -4,11 +4,10 @@ from pathlib import Path
 from typing import Any, Literal
 from urllib.parse import urlsplit
 
+from app import __version__
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_settings.sources import ENV_FILE_SENTINEL, DotenvType
-
-from app import __version__
 
 
 class Settings(BaseSettings):

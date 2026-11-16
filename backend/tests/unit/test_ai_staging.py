@@ -3,7 +3,6 @@ import json
 from datetime import UTC, datetime, timedelta
 
 import pytest
-
 from app.ai.models import ExtractedLabel
 from app.ai.staging import MAX_BUCKET_ITEMS, stage_machine_facts
 from app.community.store import FirestoreContributionStore, StoreUnavailable

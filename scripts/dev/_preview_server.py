@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import cast
 from urllib.parse import unquote, urlsplit
 
-PRODUCTION_HOST = "unlabel-api.vercel.app"
+PRODUCTION_HOST = "unlabel.duckdns.org"
 PRODUCTION_ORIGIN = f"https://{PRODUCTION_HOST}"
 BARCODE = r"(?:[0-9]{8}|[0-9]{12,14})"
 UUID = r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}"
@@ -28,6 +28,7 @@ GET_ROUTES = (
     rf"/v1/researched/products/{ENTRY_ID}",
     rf"/v1/researched/products/by-barcode/{BARCODE}",
     r"/v1/account/sync",
+    r"/v1/account/profile",
     r"/v1/notifications(?:/push-config)?",
     r"/v1/ai/active",
     rf"/v1/ai/observations/{BARCODE}",
@@ -39,6 +40,13 @@ POST_ROUTES = (
     r"/v1/notifications/(?:subscription|test)",
 )
 DELETE_ROUTES = (r"/v1/account/sync",)
+PUT_ROUTES = (r"/v1/account/profile", r"/auth/v1/user")
+AUTH_ROUTES = {
+    "GET": (r"/auth/v1/(?:health|settings|user)",),
+    "POST": (
+        r"/auth/v1/(?:signup|token|logout|recover|verify|resend)",
+    ),
+}
 
 
 def allowed_route(method: str, path: str) -> bool:
@@ -49,9 +57,15 @@ def allowed_route(method: str, path: str) -> bool:
         if method == "POST"
         else DELETE_ROUTES
         if method == "DELETE"
+        else PUT_ROUTES
+        if method == "PUT"
         else ()
     )
-    return any(re.fullmatch(pattern, path) for pattern in patterns)
+    if any(re.fullmatch(pattern, path) for pattern in patterns):
+        return True
+    return any(
+        re.fullmatch(pattern, path) for pattern in AUTH_ROUTES.get(method, ())
+    )
 
 
 def web_handler(directory: Path, mode: str):
@@ -184,19 +198,23 @@ def web_handler(directory: Path, mode: str):
 
         def do_GET(self):
             if self.valid_request():
-                if urlsplit(self.path).path.startswith("/v1/"):
+                if urlsplit(self.path).path.startswith(("/v1/", "/auth/v1/")):
                     self.proxy()
                 else:
                     super().do_GET()
 
         def do_HEAD(self):
             if self.valid_request():
-                if urlsplit(self.path).path.startswith("/v1/"):
+                if urlsplit(self.path).path.startswith(("/v1/", "/auth/v1/")):
                     self.fail(405, "preview_method_not_allowed")
                 else:
                     super().do_HEAD()
 
         def do_POST(self):
+            if self.valid_request():
+                self.proxy()
+
+        def do_PUT(self):
             if self.valid_request():
                 self.proxy()
 
@@ -225,7 +243,7 @@ def web_handler(directory: Path, mode: str):
                 return
             self.send_response(204)
             self.send_header(
-                "Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS"
+                "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"
             )
             self.send_header(
                 "Access-Control-Allow-Headers", "Authorization, Content-Type"
@@ -252,6 +270,11 @@ def web_handler(directory: Path, mode: str):
                 "/v1/account/sync": 512 * 1024,
                 "/v1/reports/compare": 64 * 1024,
                 "/v1/ai/extract": 4 * 1024 * 1024,
+                "/auth/v1/signup": 128 * 1024,
+                "/auth/v1/token": 128 * 1024,
+                "/auth/v1/recover": 128 * 1024,
+                "/auth/v1/verify": 128 * 1024,
+                "/auth/v1/user": 128 * 1024,
             }.get(path, 32 * 1024)
             if size > limit:
                 self.fail(413, "preview_request_too_large")
@@ -262,7 +285,7 @@ def web_handler(directory: Path, mode: str):
             if self.command == "DELETE" and size:
                 self.fail(400, "preview_delete_body_not_allowed")
                 return
-            if self.command == "POST" and (
+            if self.command in {"POST", "PUT"} and (
                 not lengths
                 or self.headers.get("Content-Type", "").split(";", 1)[0].lower()
                 != "application/json"
@@ -290,7 +313,7 @@ def web_handler(directory: Path, mode: str):
                     self.fail(400, "incomplete_preview_body")
                     return
                 headers = {"Accept": "application/json", "Accept-Encoding": "identity"}
-                if self.command == "POST":
+                if self.command in {"POST", "PUT"}:
                     headers["Content-Type"] = "application/json"
                 if auth:
                     headers["Authorization"] = auth[0]
@@ -300,7 +323,11 @@ def web_handler(directory: Path, mode: str):
                 response = connection.getresponse()
                 declared = response.getheader("Content-Length")
                 response_limit = (
-                    512 * 1024 if path == "/v1/account/sync" else 2 * 1024 * 1024
+                    512 * 1024
+                    if path == "/v1/account/sync"
+                    else 256 * 1024
+                    if path.startswith("/auth/v1/")
+                    else 2 * 1024 * 1024
                 )
                 if (
                     300 <= response.status < 400

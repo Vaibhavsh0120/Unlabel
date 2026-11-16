@@ -2,13 +2,12 @@
 
 from collections.abc import Callable
 
-from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse
-
 from app.catalogue.facts import FactsLookup
 from app.community.models import CommunityLookup
 from app.comparison.models import ComparisonRequest, ComparisonResponse
 from app.comparison.service import compare
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
 
 
 def build_router(

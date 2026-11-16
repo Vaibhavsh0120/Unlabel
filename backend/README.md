@@ -1,8 +1,8 @@
 # Unlabel backend
 
-Checkpoint **15 October 2026**: Python **3.12+**. Canonical version is
+Checkpoint **16 November 2026**: Python **3.12+**. Canonical version is
 project.version in [pyproject.toml](pyproject.toml); current routes are exported in
-[OpenAPI](../contracts/schemas/backend-v0.14.0.openapi.json).
+[OpenAPI](../contracts/schemas/backend-v1.0.0.openapi.json).
 
 The [0.14 review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) adds automatic,
 immutable machine-unverified package observations, sourced catalogue claim

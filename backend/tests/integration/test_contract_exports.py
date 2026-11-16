@@ -124,3 +124,37 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         (CONTRACTS / "examples/claims-check-v1.response.synthetic.json").read_text()
     )
     assert response.assessments[0].status == "supported"
+
+
+def test_current_selfhost_openapi_matches_runtime_without_service_connections():
+    from types import SimpleNamespace
+    from unittest.mock import patch
+
+    from app.selfhost import entrypoint
+    from pydantic import SecretStr
+
+    class Resources:
+        def __init__(self, _settings):
+            self.pool = object()
+
+    settings = SimpleNamespace(
+        identity_url="https://identity.invalid",
+        frontend_url="https://frontend.invalid",
+        public_url="https://unlabel.duckdns.org",
+        actor_secret=SecretStr("synthetic-contract-export-key-0000"),
+        web_push_private_key=None,
+        web_push_public_key="",
+        community_enabled=False,
+        cutover_ready=False,
+    )
+    with (
+        patch.object(entrypoint, "Resources", Resources),
+        patch.object(entrypoint, "IdentityRuntime", lambda _resources: object()),
+        patch.object(entrypoint, "PostgresProfileStore", lambda _pool: object()),
+    ):
+        runtime = entrypoint.create_platform_app(settings).openapi()
+
+    saved = json.loads(
+        (CONTRACTS / "schemas/backend-v1.0.0.selfhost.openapi.json").read_text()
+    )
+    assert saved == runtime

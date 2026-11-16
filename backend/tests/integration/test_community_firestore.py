@@ -7,7 +7,6 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 import pytest
-
 from app.community.service import prepare_submission
 from app.community.store import StoreConflict, StoreUnavailable, create_emulator_store
 from tests.community_fixtures import contribution_request

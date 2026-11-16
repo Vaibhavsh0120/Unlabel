@@ -4,16 +4,15 @@ import asyncio
 import json
 from datetime import UTC, datetime, timedelta
 
+import app.ai.gateway as gateway_module
 import httpx
 import pytest
-from pydantic import SecretStr
-
-import app.ai.gateway as gateway_module
 from app.ai.gateway import AiGateway
 from app.ai.providers import ProviderFailure
 from app.ai.store import AiSelectionConflict, FirestoreAiSelectionStore
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
 from app.core.config import Settings
+from pydantic import SecretStr
 from tests.unit.test_ai_providers import envelope, request
 from tests.unit.test_community_store import MemoryFirestore
 

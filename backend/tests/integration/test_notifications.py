@@ -3,15 +3,14 @@ from typing import cast
 
 import httpx
 import pytest
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ec
-from fastapi.testclient import TestClient
-from pydantic import SecretStr, ValidationError
-
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.core.config import Settings
 from app.main import create_app
 from app.notifications import BrowserPushStore, PushSubscription, SubscriptionChange
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import ec
+from fastapi.testclient import TestClient
+from pydantic import SecretStr, ValidationError
 from tests.integration.test_personal_sync_api import Runtime
 
 

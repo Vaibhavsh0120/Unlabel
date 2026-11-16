@@ -4,6 +4,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 from version_metadata import frontend_version, parse_frontend_version
@@ -22,6 +23,27 @@ def version_changed(previous: str, current: tuple[str, str]) -> bool:
     return True
 
 
+def previous_frontend_manifest(before: str) -> str | None:
+    command = ["git", "show", f"{before}:frontend/pubspec.yaml"]
+    previous = subprocess.run(command, capture_output=True, text=True, check=False)
+    if previous.returncode:
+        subprocess.run(
+            ["git", "fetch", "--no-tags", "origin", before],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        previous = subprocess.run(command, capture_output=True, text=True, check=False)
+    if previous.returncode:
+        print(
+            "::warning::Could not retrieve the push base; skipping automatic mobile "
+            "release because the version increase cannot be verified.",
+            file=sys.stderr,
+        )
+        return None
+    return previous.stdout
+
+
 def requested() -> bool:
     if os.environ["GITHUB_EVENT_NAME"] == "workflow_dispatch":
         return True
@@ -36,12 +58,9 @@ def requested() -> bool:
         raise ValueError("Push event requires an exact previous commit.")
     if before == "0" * 40:
         return True
-    previous = subprocess.run(
-        ["git", "show", f"{before}:frontend/pubspec.yaml"],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
+    previous = previous_frontend_manifest(before)
+    if previous is None:
+        return False
     return version_changed(previous, frontend_version())
 
 

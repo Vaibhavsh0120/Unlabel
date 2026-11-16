@@ -1,11 +1,10 @@
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from pydantic import ValidationError
-
 from app.core.config import Settings
 from app.main import create_app
 from app.schemas.errors import ValidationErrorDetail, ValidationFailure
+from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 ROUTES = [
     ("/v1/health", "get"),

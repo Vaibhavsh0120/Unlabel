@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/notifications/notification_controller.dart';
+import '../../../core/widgets/notification_bell.dart';
 
 import '../../../core/widgets/brand_mark.dart';
 import '../../../core/widgets/glass_panel.dart';
@@ -70,7 +70,12 @@ class DesktopNavigation extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 18, 20, 28),
+                    padding: EdgeInsets.fromLTRB(
+                      28,
+                      18,
+                      20,
+                      compactArtwork ? 20 : 28,
+                    ),
                     child: BrandHomeButton(
                       key: const Key('desktop-brand-home'),
                       onPressed: () => onSelect(0),
@@ -108,9 +113,6 @@ class DesktopNavigation extends StatelessWidget {
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        final footerHeight = (constraints.maxHeight - 432)
-                            .clamp(0.0, 340.0);
-                        final compactFooter = footerHeight < 260;
                         return SingleChildScrollView(
                           key: const Key('desktop-sidebar-scroll'),
                           child: ConstrainedBox(
@@ -128,11 +130,11 @@ class DesktopNavigation extends StatelessWidget {
                                       i++
                                     )
                                       Padding(
-                                        padding: const EdgeInsets.fromLTRB(
+                                        padding: EdgeInsets.fromLTRB(
                                           16,
                                           0,
                                           16,
-                                          8,
+                                          compactArtwork ? 4 : 8,
                                         ),
                                         child: Semantics(
                                           selected: i == selectedIndex,
@@ -150,7 +152,9 @@ class DesktopNavigation extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(16),
                                               ),
-                                              minTileHeight: 56,
+                                              minTileHeight: compactArtwork
+                                                  ? 48
+                                                  : 56,
                                               horizontalTitleGap: 24,
                                               leading: i == 2
                                                   ? Icon(
@@ -191,54 +195,41 @@ class DesktopNavigation extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                if (footerHeight >= 140)
-                                  SizedBox(
-                                    key: const Key('desktop-sidebar-footer'),
-                                    height: footerHeight,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: compactFooter ? 88 : 44,
-                                          right: compactFooter ? 16 : 24,
-                                          bottom: compactFooter ? 24 : 32,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Make\nhealthier choices\nfor a brighter\ntomorrow.',
-                                                style: theme.textTheme.bodyLarge
-                                                    ?.copyWith(
-                                                      fontSize: compactFooter
-                                                          ? 14
-                                                          : null,
-                                                      color: colors
-                                                          .onSurfaceVariant,
-                                                      height: 1.3,
-                                                    ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                              Container(
-                                                width: 44,
-                                                height: 2,
-                                                color: const Color(0xff70c9ac),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        if (!compactFooter)
-                                          const Positioned(
-                                            right: 32,
-                                            bottom: 38,
-                                            child: FeatureIcon(
-                                              'leaf',
-                                              color: Color(0xff70c9ac),
-                                              size: 24,
+                                Padding(
+                                  key: const Key('desktop-sidebar-footer'),
+                                  padding: EdgeInsets.fromLTRB(44, 12, 24, 24),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Make\nhealthier choices\nfor a brighter\ntomorrow.',
+                                        style: theme.textTheme.bodyLarge
+                                            ?.copyWith(
+                                              fontSize: 16,
+                                              color: colors.onSurfaceVariant,
+                                              height: 1.3,
                                             ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 44,
+                                            height: 2,
+                                            color: const Color(0xff70c9ac),
                                           ),
-                                      ],
-                                    ),
+                                          const Spacer(),
+                                          const FeatureIcon(
+                                            'leaf',
+                                            color: Color(0xff70c9ac),
+                                            size: 22,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
+                                ),
                               ],
                             ),
                           ),

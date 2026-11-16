@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
 
 void main() {
-  for (final height in [730.0, 941.0, 1117.0]) {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() async {
+    for (final family in ['Manrope', 'Inter']) {
+      await (FontLoader(family)..addFont(
+            rootBundle.load('assets/brand/fonts/$family-Variable.ttf'),
+          ))
+          .load();
+    }
+  });
+  for (final height in [650.0, 730.0, 941.0, 1117.0]) {
     testWidgets('all sidebar destinations remain visible at $height px', (
       tester,
     ) async {
@@ -36,6 +46,15 @@ void main() {
       }
       final footer = tester.getRect(
         find.byKey(const Key('desktop-sidebar-footer')),
+      );
+      expect(footer.bottom, lessThanOrEqualTo(height));
+      expect(
+        tester
+            .getRect(
+              find.text('Make\nhealthier choices\nfor a brighter\ntomorrow.'),
+            )
+            .bottom,
+        lessThanOrEqualTo(footer.bottom),
       );
       expect(
         footer.top,

@@ -3,9 +3,6 @@
 from collections.abc import Callable
 from typing import Annotated, cast
 
-from fastapi import APIRouter, Header, Path, Request
-from fastapi.responses import JSONResponse
-
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.catalogue.facts import FactsLookup
 from app.claims.knowledge import KnowledgeStore
@@ -19,6 +16,8 @@ from app.providers.products.open_food_facts import BARCODE_PATTERN
 from app.reports.glossary import GlossaryResponse, GlossaryStore
 from app.reports.models import LabelReport, ReportCheckRequest, ReportFailure, StorageOutcome
 from app.reports.service import report_from_observation, report_from_resolved
+from fastapi import APIRouter, Header, Path, Request
+from fastapi.responses import JSONResponse
 
 
 def build_router(

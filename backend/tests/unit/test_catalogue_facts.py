@@ -4,12 +4,11 @@ import sqlite3
 from datetime import UTC, datetime
 
 import pytest
-from pydantic import ValidationError
-
 from app.catalogue.facts import AvailableTags, FactsLookup, FrontImage, project_facts
 from app.catalogue.importer import build_catalogue
 from app.catalogue.models import SourceFormat
 from app.catalogue.store import CatalogueStore
+from pydantic import ValidationError
 
 CODE = "0123456789012"
 SOURCE_URL = "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz"

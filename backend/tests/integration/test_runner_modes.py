@@ -12,7 +12,6 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 
 import pytest
-
 from app.main import create_app
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -123,7 +122,7 @@ def test_selection_has_no_silent_default(monkeypatch, capsys):
     [
         (["--mode", "production"], False, "production"),
         (
-            ["--scope", "frontend", "--backend-url", "https://unlabel-api.vercel.app"],
+            ["--scope", "frontend", "--backend-url", "https://unlabel.duckdns.org"],
             False,
             "production",
         ),
@@ -200,6 +199,10 @@ def test_modes_launch_only_owned_services(
         else ("http://127.0.0.1:8000" if backend_expected else "http://127.0.0.1:8123")
     )
     assert f"--dart-define=BACKEND_BASE_URL={url}" in build
+    assert (
+        "--dart-define=UNLABEL_SELF_HOSTED_AUTH="
+        + ("true" if proxy_mode == "production" else "false")
+    ) in build
     if proxy_mode == "lan":
         assert commands[-1][0] == "caddy" and "run" in commands[-1]
         config = (tmp_path / "output/local-network/Caddyfile").read_text()
@@ -239,6 +242,12 @@ def test_proxy_covers_exact_current_operations(monkeypatch):
     assert not handler.allowed_route("GET", "/v1/researched/products/" + "g" * 64)
     assert not handler.allowed_route("POST", "/v1/researched/products/search")
     assert not handler.allowed_route("GET", "/v1/researched/products/by-barcode/123")
+    assert handler.allowed_route("POST", "/auth/v1/token")
+    assert handler.allowed_route("POST", "/auth/v1/signup")
+    assert handler.allowed_route("GET", "/auth/v1/user")
+    assert handler.allowed_route("PUT", "/auth/v1/user")
+    assert not handler.allowed_route("POST", "/auth/v1/admin/users")
+    assert not handler.allowed_route("DELETE", "/auth/v1/user")
 
 
 def test_proxy_preserves_comparison_body_budget(tmp_path, monkeypatch):
@@ -282,7 +291,7 @@ def test_proxy_forwards_only_bearer_to_fixed_https_target(tmp_path, monkeypatch,
             },
         )
     assert status == 200 and json.loads(body)["status"] == "ready"
-    assert calls[0] == ("connect", "unlabel-api.vercel.app", 15)
+    assert calls[0] == ("connect", "unlabel.duckdns.org", 15)
     assert calls[1][3] == {
         "Accept": "application/json",
         "Accept-Encoding": "identity",
@@ -295,6 +304,63 @@ def test_proxy_forwards_only_bearer_to_fixed_https_target(tmp_path, monkeypatch,
         "fixture" not in output.out + output.err
         and "synthetic.token" not in output.out + output.err
     )
+
+
+def test_auth_proxy_forwards_signin_and_user_update_to_oracle(tmp_path, monkeypatch):
+    handler = module("_preview_server", monkeypatch)
+    calls = upstream(monkeypatch, handler)
+    with preview(handler, tmp_path) as port:
+        origin = f"http://127.0.0.1:{port}"
+        signin_body = b'{"email":"person@example.test","password":"synthetic"}'
+        status, _, _ = request(
+            port,
+            "POST",
+            "/auth/v1/token?grant_type=password",
+            signin_body,
+            {
+                "Content-Type": "application/json",
+                "Origin": origin,
+                "Cookie": "untrusted=ignored",
+            },
+        )
+        assert status == 200
+        profile_body = b'{"password":"synthetic"}'
+        status, _, _ = request(
+            port,
+            "PUT",
+            "/auth/v1/user",
+            profile_body,
+            {
+                "Authorization": "Bearer synthetic.token",
+                "Content-Type": "application/json",
+                "Origin": origin,
+                "Cookie": "untrusted=ignored",
+            },
+        )
+        assert status == 200
+    assert calls[0] == ("connect", "unlabel.duckdns.org", 15)
+    assert calls[1] == (
+        "POST",
+        "/auth/v1/token?grant_type=password",
+        signin_body,
+        {
+            "Accept": "application/json",
+            "Accept-Encoding": "identity",
+            "Content-Type": "application/json",
+        },
+    )
+    assert calls[4] == (
+        "PUT",
+        "/auth/v1/user",
+        profile_body,
+        {
+            "Accept": "application/json",
+            "Accept-Encoding": "identity",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer synthetic.token",
+        },
+    )
+    assert calls[-1] == ("closed",)
 
 
 def test_proxy_forwards_bodyless_owner_delete_and_allows_local_preflight(tmp_path, monkeypatch):
@@ -318,7 +384,7 @@ def test_proxy_forwards_bodyless_owner_delete_and_allows_local_preflight(tmp_pat
     assert status == 200 and json.loads(body) == {"status": "deleted"}
     assert headers["Cache-Control"] == "no-store"
     assert headers["Access-Control-Allow-Origin"] == origin
-    assert calls[0] == ("connect", "unlabel-api.vercel.app", 15)
+    assert calls[0] == ("connect", "unlabel.duckdns.org", 15)
     assert calls[1] == ("DELETE", "/v1/account/sync", None, {
         "Accept": "application/json", "Accept-Encoding": "identity",
         "Authorization": "Bearer synthetic.token",

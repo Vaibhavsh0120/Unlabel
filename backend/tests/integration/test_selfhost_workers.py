@@ -11,13 +11,12 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
+from app import notifications
+from app.selfhost.worker_settings import NotificationWorkerSettings, SchedulerSettings
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 from pydantic import SecretStr
 from pywebpush import WebPushException
-
-from app import notifications
-from app.selfhost.worker_settings import NotificationWorkerSettings, SchedulerSettings
 
 psycopg = pytest.importorskip("psycopg")
 pytest.importorskip("psycopg_pool")

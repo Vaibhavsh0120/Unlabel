@@ -5,6 +5,10 @@ import sys
 from datetime import UTC, datetime
 from importlib import import_module
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from pydantic import SecretStr
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "backend"))
@@ -40,6 +44,31 @@ notifications = import_module("app.notifications")
 compare = import_module("app.comparison.service").compare
 
 
+def create_selfhost_openapi():
+    entrypoint = import_module("app.selfhost.entrypoint")
+
+    class OpenApiResources:
+        def __init__(self, _settings):
+            self.pool = object()
+
+    settings = SimpleNamespace(
+        identity_url="https://identity.invalid",
+        frontend_url="https://frontend.invalid",
+        public_url="https://unlabel.duckdns.org",
+        actor_secret=SecretStr("synthetic-contract-export-key-0000"),
+        web_push_private_key=None,
+        web_push_public_key="",
+        community_enabled=False,
+        cutover_ready=False,
+    )
+    with (
+        patch.object(entrypoint, "Resources", OpenApiResources),
+        patch.object(entrypoint, "IdentityRuntime", lambda _resources: object()),
+        patch.object(entrypoint, "PostgresProfileStore", lambda _pool: object()),
+    ):
+        return entrypoint.create_platform_app(settings).openapi()
+
+
 def write(directory: str, name: str, value):
     target = ROOT / "contracts" / directory / name
     target.write_text(
@@ -52,6 +81,11 @@ def main():
         "schemas",
         f"backend-v{version}.openapi.json",
         create_app(Settings(_env_file=None)).openapi(),
+    )
+    write(
+        "schemas",
+        f"backend-v{version}.selfhost.openapi.json",
+        create_selfhost_openapi(),
     )
     for filename, model in {
         "notification-feed-v1.schema.json": notifications.NotificationFeed,

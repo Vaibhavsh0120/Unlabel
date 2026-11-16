@@ -247,6 +247,7 @@ def main() -> int:
                 "--debug",
                 "--no-pub",
                 f"--dart-define=BACKEND_BASE_URL={backend_url}",
+                f"--dart-define=UNLABEL_SELF_HOSTED_AUTH={'true' if mode == 'production' else 'false'}",
             ]
             build = spawn(command, ROOT / "frontend", dict(os.environ))
             processes.append(build)

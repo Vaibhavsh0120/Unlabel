@@ -4,7 +4,6 @@ import re
 from datetime import UTC, datetime
 
 import httpx
-
 from app.core.config import Settings
 from app.core.json_numbers import checked_float, reject_constant
 from app.schemas.products import Product, ProductLookup, ProviderInsights, Source

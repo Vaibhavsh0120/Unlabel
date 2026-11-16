@@ -1,10 +1,9 @@
 from copy import deepcopy
 
 import pytest
-from pydantic import ValidationError
-
 from app.schemas.nutrition import NormalizeRequest, NutrientRow
 from app.services.parsing.nutrition import normalize_rows
+from pydantic import ValidationError
 
 
 def row(**overrides):

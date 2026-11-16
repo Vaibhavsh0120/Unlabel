@@ -4,9 +4,6 @@ from typing import cast
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from pydantic import SecretStr
-
 from app.accounts.models import SyncSnapshot
 from app.accounts.store import FirestorePersonalStore
 from app.api.v1.community import CommunityRuntimeProtocol
@@ -14,6 +11,8 @@ from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.store import FirestoreContributionStore, StoreUnavailable
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
+from pydantic import SecretStr
 from tests.unit.test_community_store import NOW, MemoryFirestore
 from tests.unit.test_personal_sync import data, request
 

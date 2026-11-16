@@ -4,8 +4,6 @@ import copy
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
-
 from app.catalogue.facts import FactsLookup
 from app.community.models import CommunityLookup
 from app.comparison.models import (
@@ -15,6 +13,7 @@ from app.comparison.models import (
     OffSource,
 )
 from app.comparison.service import compare
+from pydantic import ValidationError
 from tests.community_fixtures import CODE, candidate_revision, contribution_dict
 
 ROOT = Path(__file__).resolve().parents[3]

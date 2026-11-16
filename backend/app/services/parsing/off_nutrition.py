@@ -2,8 +2,6 @@
 
 from dataclasses import dataclass, field
 
-from pydantic import ValidationError
-
 from app.schemas.nutrition import (
     NUTRIENT_NAMES,
     NutrientCell,
@@ -16,6 +14,7 @@ from app.schemas.nutrition import (
 )
 from app.schemas.nutrition_products import InputTableSource
 from app.services.parsing.nutrition import normalize_rows
+from pydantic import ValidationError
 
 
 @dataclass

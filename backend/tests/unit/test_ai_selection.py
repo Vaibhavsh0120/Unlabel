@@ -5,7 +5,6 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 
 import pytest
-
 from app.ai.store import AiSelectionConflict, FirestoreAiSelectionStore
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
 from tests.unit.test_community_store import ACTOR, OTHER, MemoryFirestore

@@ -2,11 +2,10 @@ import json
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
-
 from app.research_catalogue.images import load_images
 from app.research_catalogue.models import ResearchImage
 from app.research_catalogue.store import ResearchCatalogueStore
+from pydantic import ValidationError
 
 
 def test_image_sources_preserve_immutable_catalogue_and_checked_origin_scope():

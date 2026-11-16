@@ -23,15 +23,10 @@ if actual != sys.argv[2]:
     raise SystemExit(f"Expected Flutter {sys.argv[2]}, got {actual}")
 PY
 
-: "${BACKEND_BASE_URL:?Set the public BACKEND_BASE_URL in this Vercel project}"
-python3 - "$BACKEND_BASE_URL" <<'PY'
-import sys
-from urllib.parse import urlsplit
-
-url = urlsplit(sys.argv[1])
-if url.scheme != "https" or not url.hostname or url.username or url.password or url.query or url.fragment or url.path not in ("", "/"):
-    raise SystemExit("BACKEND_BASE_URL must be a public HTTPS origin")
-PY
+BACKEND_BASE_URL="${BACKEND_BASE_URL:-https://unlabel.duckdns.org}"
+UNLABEL_SELF_HOSTED_AUTH="${UNLABEL_SELF_HOSTED_AUTH:-true}"
+python3 ../scripts/release/backend_target.py \
+  "$BACKEND_BASE_URL" "$UNLABEL_SELF_HOSTED_AUTH"
 flutter pub get --enforce-lockfile
 python3 ../scripts/release/generate_app_icons.py --check
 python3 ../scripts/release/vendor_web_ocr.py --check
@@ -48,4 +43,5 @@ else
 fi
 flutter build web --release \
   --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" \
+  --dart-define="UNLABEL_SELF_HOSTED_AUTH=$UNLABEL_SELF_HOSTED_AUTH" \
   --dart-define="COMMIT_SHA=${VERCEL_GIT_COMMIT_SHA:-local}"

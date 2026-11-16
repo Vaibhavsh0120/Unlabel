@@ -1,10 +1,13 @@
 # Shared API contracts
 
-Checkpoint **26 October 2026**: backend **0.15.0**, exported as
-[backend-v0.15.0.openapi.json](schemas/backend-v0.15.0.openapi.json).
-Additive contracts cover automatic machine-unverified contributions and public
-readings, session-only live lookup, and source-backed catalogue claim checks.
-Existing confirmed observations, private libraries and historical exports remain.
+Current source candidate (**16 November 2026**): backend **1.0.0**, exported as
+[backend-v1.0.0.openapi.json](schemas/backend-v1.0.0.openapi.json). This is not a
+published source release or proof of hosted cutover. The existing v1 product,
+report, account, research and community contracts remain versioned independently;
+historical exports and releases stay intact. Self-hosted identity/platform routes
+are captured separately in
+[backend-v1.0.0.selfhost.openapi.json](schemas/backend-v1.0.0.selfhost.openapi.json);
+that full Oracle route surface remains behind cutover acceptance.
 [Current review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_15_0_REVIEW.md).
 This update makes sources independently optional without changing wire shapes.
 [Source configuration](../docs/architecture/OPTIONAL_SOURCES.md).

@@ -18,21 +18,23 @@ A container or image build alone is not a completed hosting migration.
   Brevo SMTP authentication succeeded; end-user mail delivery is a separate gate.
 - Guest retention is seven days of inactivity with a durable daily cleanup guard.
   Access JWTs expire after 15 minutes. Accounts and device-local data are protected.
+- There is an encrypted off-VM backup. Disposable restore checks passed for both
+  PostgreSQL databases and MongoDB. The Oracle firewall blocks direct admin ports.
 
 ## Before cutover
 
 | Work | Current state and acceptance gate |
 | --- | --- |
-| API | Adapters in development. Finish endpoint parity, profile/sync CAS, owner isolation, real-store failure tests and HTTPS deployment. |
+| API | All eight Coolify resources are healthy. Public TLS, API dependency health and GoTrue health returned 200. Coolify reports source commit `36c66d90f340b42e790493835c78472c5b3a4538`; live OpenAPI is 1.0.0 and its 40 route/method pairs match the self-hosted contract. The catalogue summary matches the tracked source SHA, 24,641 products and 243 observations. `/v1/platform` still reports `cutover_ready: false`; hosted account/profile behavior remains unverified. |
 | Community/AI | Replace legacy and unfinished persistence adapters. Preserve admission, conflicts, immutable receipts, consent, quotas and provider boundaries. |
 | Clients | Replace Firebase auth/profile access. Test web/native Google/email signup, linking collisions, recovery/expiry, sign-out, deletion and guest renewal. |
 | Reminders | Deploy the Oracle scheduler/worker. Test leases, deduplication, retry, failed jobs and unsubscribe. No app schedules in GitHub Actions. |
 | Canvas | Add actual API/worker/scheduler resources and labelled runtime connections with descriptions. |
 | Security | Review auth dependencies, effective firewall, grants, request limits and redacted logs. Keep unfinished services private. |
-| Recovery | Configure encrypted off-VM database backups and prove restoration. Encrypted credentials are not database backups. |
+| Recovery | Configure a recurring off-VM destination and repeat the verified restore process from that destination. |
 | Performance | Measure queries, pools, concurrency, queue recovery, memory and disk. One VM is one failure domain. |
 | UI | Ship prepared bell, recent-scan, Insights-height and sidebar fixes. Recheck themes, enlarged text and phone/tablet/desktop layouts. |
-| Release | Update canonical versions/contracts, publish web/APK/IPA and verify hosted flows. Separate source, artifact and physical-device proof. |
+| Release | Canonical versions/contracts are now 1.0; publish web/APK/IPA only after cutover verification, then verify hosted flows. Separate source, artifact and physical-device proof. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
 Existing Firebase accounts/data may be discarded at verified cutover. Public

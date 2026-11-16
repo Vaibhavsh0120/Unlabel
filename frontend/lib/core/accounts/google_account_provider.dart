@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/app_failure.dart';
 
 /// Native Google authentication requests identity only, without Drive, Contacts
-/// or other Google API scopes. Firebase remains the persisted account session.
+/// or other Google API scopes. The selected account service owns its session.
 class NativeGoogleAccountProvider {
   NativeGoogleAccountProvider({this.clientId, this.serverClientId});
 
@@ -12,7 +12,10 @@ class NativeGoogleAccountProvider {
   final String? serverClientId;
   static Future<void>? _initializing;
 
-  Future<AuthCredential> credential() async {
+  Future<AuthCredential> credential() async =>
+      GoogleAuthProvider.credential(idToken: await idToken());
+
+  Future<String> idToken() async {
     await (_initializing ??= _initialize());
     final google = GoogleSignIn.instance;
     if (!google.supportsAuthenticate()) {
@@ -29,7 +32,7 @@ class NativeGoogleAccountProvider {
         'Google could not confirm this sign-in. Please try again.',
       );
     }
-    return GoogleAuthProvider.credential(idToken: token);
+    return token;
   }
 
   Future<void> _initialize() async {

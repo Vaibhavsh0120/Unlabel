@@ -26,9 +26,8 @@ def test_runtime_refuses_emulator_environment(monkeypatch, name):
 
 
 def runtime_with_verifier(monkeypatch, verifier):
-    from firebase_admin import auth
-
     from app.community.auth import CommunityRuntime
+    from firebase_admin import auth
 
     monkeypatch.setattr(auth, "verify_id_token", verifier)
     return CommunityRuntime(SimpleNamespace(), SimpleNamespace(), "unlabel-india-catalogue")
@@ -150,9 +149,8 @@ def test_google_profile_and_linked_provider_email_never_replace_uid_ownership(mo
 
 
 def test_private_account_verification_is_revocation_aware(monkeypatch):
-    from firebase_admin import auth
-
     from app.community.auth import AuthenticationInvalid
+    from firebase_admin import auth
 
     def verify(token, *, app, check_revoked, clock_skew_seconds):
         assert check_revoked is True and clock_skew_seconds == 0
@@ -165,9 +163,8 @@ def test_private_account_verification_is_revocation_aware(monkeypatch):
 
 
 def test_invalid_vs_transient_verification_errors_are_safe(monkeypatch):
-    from firebase_admin import auth
-
     from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
+    from firebase_admin import auth
 
     for error, expected in (
         (auth.InvalidIdTokenError("SECRET token"), AuthenticationInvalid),
@@ -191,9 +188,8 @@ def test_invalid_vs_transient_verification_errors_are_safe(monkeypatch):
 
 def test_runtime_passes_explicit_named_database_and_closes(monkeypatch):
     import firebase_admin
-    from firebase_admin import credentials, firestore
-
     from app.community.auth import create_runtime
+    from firebase_admin import credentials, firestore
 
     for name in ("FIRESTORE_EMULATOR_HOST", "FIREBASE_AUTH_EMULATOR_HOST"):
         monkeypatch.delenv(name, raising=False)

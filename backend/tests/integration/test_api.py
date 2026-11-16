@@ -4,12 +4,11 @@ from pathlib import Path
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from pydantic import ValidationError
-
 from app import __version__
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 
 def client_with(response):

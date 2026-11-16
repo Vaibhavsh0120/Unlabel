@@ -6,11 +6,12 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "release"))
 
-from frontend_release_gate import version_changed
+from backend_target import validate_backend_target
+from frontend_release_gate import previous_frontend_manifest, version_changed
 from mobile_release import (
     GitHub,
     JsonObject,
@@ -75,6 +76,32 @@ class ReleaseGuardTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 version_changed(old, current)
 
+    def test_release_gate_fetches_an_unavailable_push_base(self):
+        success = Mock(returncode=0, stdout="version: 0.8.0+12\n")
+        failure = Mock(returncode=1, stdout="")
+        with patch(
+            "frontend_release_gate.subprocess.run",
+            side_effect=[failure, success, success],
+        ) as run:
+            self.assertEqual(
+                previous_frontend_manifest("a" * 40), "version: 0.8.0+12\n"
+            )
+        self.assertEqual(
+            run.call_args_list[1].args[0][:4], ["git", "fetch", "--no-tags", "origin"]
+        )
+
+    def test_release_gate_skips_when_push_base_cannot_be_verified(self):
+        failure = Mock(returncode=1, stdout="")
+        with (
+            patch(
+                "frontend_release_gate.subprocess.run",
+                side_effect=[failure, failure, failure],
+            ),
+            patch("frontend_release_gate.sys.stderr", new_callable=io.StringIO) as error,
+        ):
+            self.assertIsNone(previous_frontend_manifest("b" * 40))
+        self.assertIn("skipping automatic mobile release", error.getvalue())
+
     def test_public_release_excludes_build_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -107,6 +134,7 @@ class ReleaseGuardTests(unittest.TestCase):
             "RELEASE_VERSION": "0.7.0",
             "BUILD_NUMBER": "11",
             "BACKEND_BASE_URL": "https://unlabel-api.vercel.app",
+            "UNLABEL_SELF_HOSTED_AUTH": "false",
             "PUBLISH_RELEASE": "true",
             "GITHUB_REPOSITORY": "owner/repo",
             "GH_TOKEN": "synthetic-test-token",
@@ -125,6 +153,75 @@ class ReleaseGuardTests(unittest.TestCase):
                 os.environ["BACKEND_BASE_URL"] = url
                 with self.assertRaises(ValueError):
                     validate_inputs()
+
+    def test_self_hosted_auth_requires_an_api_that_confirms_cutover(self):
+        def response(payload):
+            result = Mock()
+            result.__enter__ = Mock(return_value=result)
+            result.__exit__ = Mock(return_value=False)
+            result.status = 200
+            result.read.return_value = payload
+            return result
+
+        with patch(
+            "backend_target.urllib.request.urlopen",
+            side_effect=[
+                response(
+                    b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
+                ),
+                response(b'{"cutover_ready":true}'),
+            ],
+        ) as open_url:
+            validate_backend_target("https://selfhost.example.test", True)
+        self.assertEqual(open_url.call_count, 2)
+
+        with (
+            patch(
+                "backend_target.urllib.request.urlopen",
+                side_effect=[
+                    response(
+                        b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
+                    ),
+                    response(b'{"cutover_ready":false}'),
+                ],
+            ),
+            self.assertRaisesRegex(ValueError, "not cutover-ready"),
+        ):
+            validate_backend_target("https://selfhost.example.test", True)
+
+    def test_self_hosted_auth_requires_all_dependencies_to_be_ready(self):
+        result = Mock()
+        result.__enter__ = Mock(return_value=result)
+        result.__exit__ = Mock(return_value=False)
+        result.status = 200
+        result.read.return_value = (
+            b'{"status":"ready","dependencies":["postgresql","mongodb","redis"]}'
+        )
+        with (
+            patch("backend_target.urllib.request.urlopen", return_value=result),
+            self.assertRaisesRegex(ValueError, "dependencies are not ready"),
+        ):
+            validate_backend_target("https://selfhost.example.test", True)
+
+    def test_legacy_backend_does_not_require_a_readiness_probe(self):
+        with patch("backend_target.urllib.request.urlopen") as open_url:
+            validate_backend_target("https://unlabel-api.vercel.app", False)
+        open_url.assert_not_called()
+
+    def test_self_hosted_auth_rejects_non_https_and_invalid_flag(self):
+        for origin in ("http://selfhost.example.test", "https://example.test/api"):
+            with self.assertRaises(ValueError):
+                validate_backend_target(origin, True)
+        with self.assertRaisesRegex(ValueError, "requires self-hosted auth"):
+            validate_backend_target("https://unlabel.duckdns.org", False)
+        with (
+            patch.dict(
+                os.environ,
+                {**self.environment, "UNLABEL_SELF_HOSTED_AUTH": "yes"},
+            ),
+            self.assertRaisesRegex(ValueError, "must be boolean"),
+        ):
+            validate_inputs()
 
     def test_noncanonical_version_or_android_build_is_rejected(self):
         for variable, value in (

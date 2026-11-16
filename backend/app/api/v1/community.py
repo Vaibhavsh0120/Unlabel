@@ -4,9 +4,6 @@ from collections.abc import Callable
 from typing import Annotated, Any, Protocol
 from uuid import UUID
 
-from fastapi import APIRouter, Header, Path, Request
-from fastapi.responses import JSONResponse
-
 from app.catalogue.facts import FactsLookup
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.models import (
@@ -26,6 +23,8 @@ from app.community.store import (
 )
 from app.core.config import Settings
 from app.providers.products.open_food_facts import BARCODE_PATTERN
+from fastapi import APIRouter, Header, Path, Request
+from fastapi.responses import JSONResponse
 
 
 class CommunityRuntimeProtocol(Protocol):

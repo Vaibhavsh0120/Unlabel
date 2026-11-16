@@ -2,14 +2,13 @@
 
 from typing import Annotated, Any, Protocol, cast
 
-from fastapi import APIRouter, Header, Request
-from fastapi.responses import JSONResponse
-
 from app.accounts.models import SyncFailure, SyncRequest, SyncSnapshot
 from app.accounts.store import PersonalStore, SyncConflict, SyncDeleted, owner_hash
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
 from app.core.config import Settings
+from fastapi import APIRouter, Header, Request
+from fastapi.responses import JSONResponse
 
 
 class AccountRuntime(Protocol):

@@ -4,12 +4,11 @@ from datetime import UTC, datetime
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from app.catalogue.facts import FactsLookup
 from app.catalogue.importer import build_catalogue
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
 
 CODE = "0123456789012"
 

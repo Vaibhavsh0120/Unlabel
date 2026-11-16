@@ -4,7 +4,6 @@ import copy
 from types import SimpleNamespace
 
 import pytest
-
 from app.ai.admission import Baseline
 from app.claims.catalogue import CatalogueClaimsRequest, assess_catalogue_claims
 from app.claims.knowledge import KnowledgeStore

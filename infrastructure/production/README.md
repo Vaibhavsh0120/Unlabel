@@ -31,9 +31,8 @@ Jobs use PostgreSQL's durable leased outbox directly, so Redis is only for cache
 and rate limits. App and identity roles were verified unable to connect to each
 other's logical database. One PostgreSQL server remains a shared failure domain.
 
-Creating containers does not establish cutover readiness. API/worker wiring,
-importer parity, recovery and client acceptance remain required.
-The existing production Vercel/Firebase release remains active until then.
+The existing production Vercel/Firebase release remains active while the
+replacement completes the [cutover gates](../../docs/roadmap.md).
 
 The initial GoTrue bootstrap wrote embedded migration receipts in `public`
 before its role search path was installed. The version-specific alignment
@@ -65,3 +64,18 @@ cutover; a local Docker volume is not an independent backup.
 The retired `coolify-test-app` project was explicitly deleted at the user's
 request, including its app, PostgreSQL database, exact volume and deployment
 configuration directories. CrossWire remains a separate, running project.
+
+## Backups and direct port access
+
+The operator tool [backup_platform.py](backup_platform.py) streams encrypted
+off-VM backup sets. A restore drill loaded both PostgreSQL dumps and MongoDB
+evidence into disposable databases, compared row and collection counts to the
+live stores, and removed the scratch databases. The role archive also decrypted
+successfully. Set up a recurring off-VM destination and verify restoration from
+it before switching public clients.
+
+[close-direct-admin-ports.sh](close-direct-admin-ports.sh) restricts external
+access to TCP 6001, 6002, 8000 and 8080 for both host and Docker traffic. The
+Oracle systemd unit `unlabel-close-coolify-ports.service` reapplies the rules
+when Docker starts. External checks verified SSH and HTTPS access, with the
+direct admin ports closed. Coolify's HTTPS dashboard and CrossWire stayed healthy.

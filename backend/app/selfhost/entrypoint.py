@@ -51,7 +51,7 @@ def create_platform_app(settings=None, *, identity_transport=None):
         _env_file=None,
         cors_origins=[platform.frontend_url],
         catalogue_directory="",
-        community_enabled=False,
+        community_enabled=getattr(platform, "community_enabled", False),
         account_sync_enabled=True,
         ai_enabled=False,
         community_actor_secret=platform.actor_secret,
@@ -162,15 +162,16 @@ def create_platform_app(settings=None, *, identity_transport=None):
 
     @application.get("/v1/platform", tags=["Platform"])
     def platform_metadata():
+        cutover_ready = getattr(platform, "cutover_ready", False) is True
         return {
-            "release_channel": "next_major_staging",
+            "release_channel": "production" if cutover_ready else "next_major_staging",
             "storage": {
                 "application": "postgresql",
                 "evidence": "mongodb",
                 "cache": "redis",
                 "jobs": "postgresql",
             },
-            "cutover_ready": False,
+            "cutover_ready": cutover_ready,
         }
 
     @application.get("/v1/platform/catalogue-summary", tags=["Platform"])

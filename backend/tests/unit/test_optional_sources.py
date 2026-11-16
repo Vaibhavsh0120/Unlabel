@@ -1,12 +1,11 @@
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from app.ai.configuration import credentials
 from app.ai.gateway import AiGateway
 from app.core.config import Settings
 from app.main import create_app
 from app.providers.products.open_food_facts import OpenFoodFactsProvider
+from fastapi.testclient import TestClient
 from tests.integration.test_ai_api import CONTROL_HEADERS, AiRuntime, client_for
 
 

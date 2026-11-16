@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor
 from types import SimpleNamespace
 
 import pytest
-
 from app.accounts.store import FirestorePersonalStore, SyncDeleted, owner_hash
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable, CommunityRuntime
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
@@ -207,9 +206,8 @@ def test_invalid_media_document_identity_fails_before_any_write(uid):
 
 
 def verifier(monkeypatch, provider, authenticated_at):
-    from firebase_admin import auth
-
     import app.community.auth as module
+    from firebase_admin import auth
 
     now = NOW.timestamp()
     monkeypatch.setattr(module, "time", SimpleNamespace(time=lambda: now))

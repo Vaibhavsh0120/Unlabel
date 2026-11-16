@@ -2,7 +2,6 @@ import copy
 from types import SimpleNamespace
 
 import pytest
-
 from app.ai.admission import Baseline, automatic_contribution
 from app.ai.models import ExtractedLabel, ExtractionRequest
 from app.ai.observations import (

@@ -6,10 +6,6 @@ from uuid import UUID
 
 import httpx
 import pytest
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-from pydantic import SecretStr, ValidationError
-
 from app.api.v1.community import CommunityRuntimeProtocol
 from app.catalogue.facts import FactsLookup
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
@@ -18,6 +14,9 @@ from app.community.service import verify_provider_references
 from app.community.store import StoreConflict, StoreQuotaExceeded, StoreUnavailable
 from app.core.config import Settings
 from app.main import create_app
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from pydantic import SecretStr, ValidationError
 from tests.community_fixtures import NOW, candidate_revision, contribution_dict
 
 CODE = "0123456789012"

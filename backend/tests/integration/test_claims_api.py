@@ -3,11 +3,10 @@ from pathlib import Path
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-
 from app.claims.models import ClaimsResponse, ClaimsRulesResponse, EvidenceResponse
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
 
 KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"
 

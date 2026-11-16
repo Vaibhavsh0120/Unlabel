@@ -5,11 +5,10 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from pydantic import ValidationError
-
 from app.claims.engine import assess_claims
 from app.claims.knowledge import KnowledgeStore
 from app.claims.models import ClaimsRequest
+from pydantic import ValidationError
 
 KNOWLEDGE = Path(__file__).resolve().parents[3] / "data/knowledge"
 NOW = datetime(2026, 10, 6, 18, 0, tzinfo=UTC)

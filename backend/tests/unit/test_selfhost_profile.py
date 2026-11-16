@@ -5,9 +5,8 @@ import struct
 import zlib
 
 import pytest
-from pydantic import ValidationError
-
 from app.selfhost.profile import ProfileUpdate, avatar_bytes
+from pydantic import ValidationError
 
 
 def chunk(kind, content):

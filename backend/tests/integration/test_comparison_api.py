@@ -2,10 +2,9 @@
 
 import json
 
-from fastapi.testclient import TestClient
-
 from app.core.config import Settings
 from app.main import create_app
+from fastapi.testclient import TestClient
 from tests.unit.test_comparison import payload
 
 
