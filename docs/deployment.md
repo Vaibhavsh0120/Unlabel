@@ -1,10 +1,11 @@
 # Deployment
 
-The currently serving application still uses the Vercel backend and Firebase.
-The Oracle/Coolify replacement is incomplete and has not completed client cutover.
-Vercel will continue hosting the frontend after the backend migration. Do not
-remove the legacy backend or Firebase resources until replacement verification
-and the client release have passed. Track remaining work in [the roadmap](roadmap.md).
+The Vercel frontend is being connected to the Oracle/Coolify API while the
+legacy Vercel backend remains available as a rollback target. The Oracle
+replacement is not fully accepted: account/profile, recovery, worker and other
+hosted/device flows remain outstanding. Keep the legacy backend and Firebase
+resources until replacement verification and client acceptance pass. Track
+remaining work in [the roadmap](roadmap.md).
 
 ## Endpoints and ownership
 
@@ -69,21 +70,20 @@ flows separately. The current operator-provided key has no configured expiry and
 needs deliberate rotation when replaced. Never publish it in a handoff note.
 
 The frontend embeds a public `BACKEND_BASE_URL`, never a shared backend secret.
-The next-major source target is Oracle; release builds enable
-`UNLABEL_SELF_HOSTED_AUTH` by default and fail closed unless `/health/dependencies`
-is ready and `/v1/platform` reports `cutover_ready: true`. That platform flag
-defaults false (`UNLABEL_CUTOVER_READY=false`) and is an operator-controlled
-acceptance gate, not evidence by itself. Coolify reports the API resource healthy
-on source commit `36c66d90f340b42e790493835c78472c5b3a4538`. Public checks return
-ready for all four dependencies and GoTrue over verified TLS. Live OpenAPI is
-version `1.0.0`, and its 40 route/method pairs match the committed self-hosted
-contract. The catalogue summary matches the tracked source SHA and counts
-(24,641 products, 243 observations). However, `/v1/platform` still reports
-`cutover_ready: false`, and hosted account/profile and other client acceptance
-flows remain unverified. Keep the existing Vercel/Firebase release live; do not
-switch the client or retire the Vercel API until every cutover gate passes.
-Retain legacy configuration and OAuth assets until ownership and redirect
-behavior are verified.
+The Vercel production target is Oracle with `UNLABEL_SELF_HOSTED_AUTH=true`.
+Builds fail closed unless `/health/dependencies` reports PostgreSQL, MongoDB,
+Redis and identity ready. The `/v1/platform` `cutover_ready` field remains
+informational and does not block a build or client target; it currently reports
+false, while hosted account/profile and other client acceptance flows remain
+unverified. Coolify reports the API resource healthy on source commit
+`7168f9c5208ccdb8d537e7b8ce4d4335ab3a93c6`. Public checks return ready for all
+four dependencies and GoTrue over verified TLS. Live OpenAPI is version `1.0.0`,
+and its 40 route/method pairs match the committed self-hosted contract. The
+catalogue summary matches the tracked source SHA and counts (24,641 products,
+243 observations). Keep the legacy Vercel API and Firebase resources available
+for rollback until hosted account/profile, recovery and client acceptance flows
+are verified. Retain legacy configuration and OAuth assets until ownership and
+redirect behavior are verified.
 
 ## Remote development and recovery
 

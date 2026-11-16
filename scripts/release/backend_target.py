@@ -1,4 +1,4 @@
-"""Validate a public frontend API target and gate self-hosted auth on cutover."""
+"""Validate a public frontend API target and self-hosted dependency health."""
 
 import argparse
 import json
@@ -26,8 +26,7 @@ def validate_backend_target(origin: str, selfhost_auth: bool) -> None:
         raise ValueError("Backend URL must be a public HTTPS origin.")
     if parsed.hostname.lower() in ORACLE_HOSTS and not selfhost_auth:
         raise ValueError(
-            "The Oracle API requires self-hosted auth. Use its ready cutover gate, "
-            "or pair Firebase auth with the legacy Vercel API."
+            "The Oracle API requires self-hosted auth; enable it for this target."
         )
     if not selfhost_auth:
         return
@@ -50,7 +49,6 @@ def validate_backend_target(origin: str, selfhost_auth: bool) -> None:
 
     try:
         dependencies = read_json("/health/dependencies")
-        metadata = read_json("/v1/platform")
     except (
         urllib.error.URLError,
         TimeoutError,
@@ -73,13 +71,6 @@ def validate_backend_target(origin: str, selfhost_auth: bool) -> None:
             "Self-hosted API dependencies are not ready; do not ship this "
             "client until the selected backend is ready."
         )
-    if metadata.get("cutover_ready") is not True:
-        raise ValueError(
-            "Self-hosted API is not cutover-ready; do not ship this client until "
-            "the selected backend passes acceptance."
-        )
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("origin")

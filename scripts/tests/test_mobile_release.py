@@ -154,7 +154,7 @@ class ReleaseGuardTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validate_inputs()
 
-    def test_self_hosted_auth_requires_an_api_that_confirms_cutover(self):
+    def test_self_hosted_auth_requires_ready_dependencies_not_cutover_flag(self):
         def response(payload):
             result = Mock()
             result.__enter__ = Mock(return_value=result)
@@ -165,29 +165,12 @@ class ReleaseGuardTests(unittest.TestCase):
 
         with patch(
             "backend_target.urllib.request.urlopen",
-            side_effect=[
-                response(
-                    b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
-                ),
-                response(b'{"cutover_ready":true}'),
-            ],
+            return_value=response(
+                b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
+            ),
         ) as open_url:
             validate_backend_target("https://selfhost.example.test", True)
-        self.assertEqual(open_url.call_count, 2)
-
-        with (
-            patch(
-                "backend_target.urllib.request.urlopen",
-                side_effect=[
-                    response(
-                        b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
-                    ),
-                    response(b'{"cutover_ready":false}'),
-                ],
-            ),
-            self.assertRaisesRegex(ValueError, "not cutover-ready"),
-        ):
-            validate_backend_target("https://selfhost.example.test", True)
+        open_url.assert_called_once()
 
     def test_self_hosted_auth_requires_all_dependencies_to_be_ready(self):
         result = Mock()

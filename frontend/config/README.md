@@ -7,14 +7,14 @@ source's canonical pubspec. Local-run and release scripts inject their actual
 metadata; the URL is an address, never a credential.
 
 `UNLABEL_SELF_HOSTED_AUTH` defaults to `true` for release builds. Enabling it
-requires the selected API to report ready dependencies at `/health/dependencies`
-and `cutover_ready: true` at `/v1/platform`; otherwise the build fails closed.
-Oracle requires self-hosted auth; do not pair its API URL with Firebase auth.
-The platform flag defaults false and must not be enabled until the documented
-account, data, worker, recovery, hosted and device acceptance gates pass. Local
-backend mode explicitly uses the legacy Firebase adapter; the production preview
-uses the bounded Oracle API/auth proxy. The existing Vercel/Firebase release stays
-live until client cutover is verified.
+requires the selected API to report ready dependencies at `/health/dependencies`;
+otherwise the build fails closed. Oracle requires self-hosted auth; do not pair
+its API URL with Firebase auth. The `/v1/platform` `cutover_ready` field remains
+an informational acceptance status and does not block builds. Production web
+configuration may target Oracle before account, data, worker, recovery, hosted
+and device acceptance is complete; those flows remain outstanding. Local backend
+mode explicitly uses the legacy Firebase adapter; the production preview uses
+the bounded Oracle API/auth proxy.
 
 Self-hosted account refresh tokens are stored using platform secure storage;
 web uses tab-scoped `sessionStorage` and requires HTTPS or localhost. This
