@@ -5,7 +5,12 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "release"))
-from organize_releases import classified_title, matching_run, validate_run
+from organize_releases import (
+    classified_title,
+    matching_run,
+    mobile_release_was_skipped,
+    validate_run,
+)
 
 
 class OrganizationTests(unittest.TestCase):
@@ -51,6 +56,12 @@ class OrganizationTests(unittest.TestCase):
             self.assertEqual(classified_title({**release, "name": title}), title)
             self.assertEqual(release["tag_name"], tag)
             self.assertEqual(release["assets"], assets)
+
+    def test_deferred_publication_does_not_run_release_organizer(self):
+        self.assertTrue(mobile_release_was_skipped([{"name": "release", "conclusion": "skipped"}]))
+        self.assertFalse(mobile_release_was_skipped([{"name": "release", "conclusion": "success"}]))
+        with self.assertRaisesRegex(ValueError, "exactly one release job"):
+            mobile_release_was_skipped([])
 
 
 if __name__ == "__main__":

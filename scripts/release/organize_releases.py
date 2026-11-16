@@ -64,12 +64,28 @@ def matching_run(runs: list[dict], repository: str, sha: str) -> str:
     )
 
 
+def mobile_release_was_skipped(jobs: list[dict]) -> bool:
+    release_jobs = [job for job in jobs if job.get("name") == "release"]
+    if len(release_jobs) != 1:
+        raise ValueError("The frontend workflow run must contain exactly one release job.")
+    return release_jobs[0].get("conclusion") == "skipped"
+
+
 def main() -> None:
     if os.environ.get("GITHUB_ACTIONS") != "true":
         raise ValueError("Latest selection runs only inside GitHub Actions.")
     github = GitHub()
     repository = os.environ["GITHUB_REPOSITORY"]
     run_id = os.environ.get("RELEASE_RUN_ID", "")
+    if os.environ.get("GITHUB_EVENT_NAME") == "workflow_run":
+        if not re.fullmatch(r"[1-9][0-9]*", run_id):
+            raise ValueError("A numeric frontend release workflow run ID is required.")
+        jobs = response_object(
+            github.api(f"{github.root}/actions/runs/{run_id}/jobs?per_page=100")
+        )
+        if mobile_release_was_skipped(response_list(jobs["jobs"])):
+            print("The frontend workflow deferred publication; release organization is a no-op.")
+            return
     with urllib.request.urlopen(
         f"https://github.com/{repository}/releases/download/ios-source/apps.json?verification_run={os.environ['GITHUB_RUN_ID']}",
         timeout=30,
