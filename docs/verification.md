@@ -75,6 +75,12 @@ as passing integration tests. Browser-script tests cover popup origin/source
 binding, PKCE, recovery-token handling and callback URL clearing; they do not
 prove Google consent, SMTP delivery or native SDK behavior.
 
+The transactional community deduplication case changes capture method from
+`manual` to `ocr_corrected`: both are valid confirmed observations with distinct
+content hashes and the same factual hash. It must retain a single revision/job
+while giving each submitting actor its own receipt. An unsupported capture method
+fails input validation before exercising that database boundary.
+
 Use disposable test databases and synthetic identities. Never supply production
 credentials to a generic test command. Tests requiring an explicit database
 connection may skip without one; a skipped test is an unverified gate.

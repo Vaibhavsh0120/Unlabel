@@ -69,9 +69,11 @@ class AiSelectionStore(Protocol):
     def machine_observations(self, barcode: str) -> MachineObservationLookup: ...
 
 
-class FirestoreAiSelectionStore:
-    def __init__(self, database: Any, clock: Callable[[], datetime] | None = None) -> None:
-        self._transactions = FirestoreContributionStore(database)
+class TransactionalAiSelectionStore:
+    """Shared bounded policy; storage supplies atomic document transactions."""
+
+    def __init__(self, transactions: Any, clock: Callable[[], datetime] | None = None) -> None:
+        self._transactions = transactions
         self._clock = clock or (lambda: datetime.now(UTC))
 
     def stage(self, actor: str, label: ExtractedLabel) -> StagingResult:
@@ -212,3 +214,8 @@ class FirestoreAiSelectionStore:
             transaction.set(global_ref, {"day": day, "count": global_count + 1})
             transaction.set(actor_ref, {"day": day, "count": actor_count + 1})
         self._transactions._run(apply)
+
+
+class FirestoreAiSelectionStore(TransactionalAiSelectionStore):
+    def __init__(self, database: Any, clock: Callable[[], datetime] | None = None) -> None:
+        super().__init__(FirestoreContributionStore(database), clock)

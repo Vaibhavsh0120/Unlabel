@@ -116,7 +116,9 @@ def test_retries_and_cross_actor_semantic_dedup_are_transactional(stores):
         results = list(executor.map(lambda _: api.submit(ACTOR, prepared), range(5)))
     assert results == [results[0]] * 5
     original = results[0]
-    repeated = assertion(capture_method="photo")
+    repeated = assertion(capture_method="ocr_corrected")
+    assert repeated.content_sha256 != prepared.content_sha256
+    assert repeated.factual_sha256 == prepared.factual_sha256
     duplicate = api.submit(OTHER, repeated)
     assert duplicate.deduplicated and duplicate.revision_id == original.revision_id
     assert api.receipt(ACTOR, repeated.request.submission_id) is None
