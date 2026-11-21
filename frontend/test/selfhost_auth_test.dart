@@ -462,8 +462,10 @@ void main() {
   test(
     'browser Google exchanges a bound authorization code through the API',
     () async {
+      var popupPrepared = false;
       final auth = SelfhostAccountAuth(
         now: () => clock,
+        prepareGoogleOAuth: () => popupPrepared = true,
         client: api((request) async {
           expect(request.url.queryParameters, {'grant_type': 'pkce'});
           expect(jsonDecode(request.body), {
@@ -473,6 +475,7 @@ void main() {
           return reply(token('web-account'));
         }),
         googleOAuth: (accessToken) async {
+          expect(popupPrepared, isTrue);
           expect(accessToken, isNull);
           return {'auth_code': 'one-time', 'code_verifier': 'verifier'};
         },

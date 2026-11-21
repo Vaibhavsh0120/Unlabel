@@ -635,6 +635,18 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Show more products'));
       await tester.pumpAndSettle();
+      // New thumbnail rows and the recoverable-source notice can move a
+      // retained result outside the lazily built viewport after pagination.
+      tester
+          .state<ScrollableState>(find.byType(Scrollable).first)
+          .position
+          .jumpTo(0);
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Research second'),
+        150,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Research second'), findsOneWidget);
       await tester.scrollUntilVisible(
         find.text('Show more products'),

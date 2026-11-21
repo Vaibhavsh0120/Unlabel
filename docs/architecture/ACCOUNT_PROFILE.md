@@ -20,6 +20,8 @@ storage; web credentials use the existing secure session-storage adapter.
 Web Google sign-in uses a popup and S256 PKCE. The same-origin callback returns
 only a one-time code to the initiating window; origin and window identity are
 checked before exchange. Native Google sign-in uses the platform SDK's ID token.
+Initial web login reserves the popup during the click, as linking already does,
+before asynchronous account work can consume the browser's user activation.
 Only identity scopes are requested; Google gender is never requested or inferred.
 
 The `.2` identity policy rejects automatic linking based on equal emails.

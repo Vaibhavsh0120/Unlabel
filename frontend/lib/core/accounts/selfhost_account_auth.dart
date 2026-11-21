@@ -147,7 +147,7 @@ final class SelfhostAccountAuth extends AccountAuth {
   Future<void> signInGoogle() => _mutate(() async {
     _requireGuest();
     await _activate(await _googleSession());
-  });
+  }, prepareGoogle: true);
 
   Future<SelfhostAuthSession> _googleSession({
     SelfhostAuthSession? link,

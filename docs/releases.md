@@ -4,6 +4,13 @@ Release from a reviewed source commit on `main`. Complete the relevant
 [verification](verification.md) first. Source push, deployment, native publication
 and physical-device acceptance are separate results.
 
+The current repair is v1.1.1 (frontend build 20): immediate email signup,
+separate welcome mail, corrected Google OAuth setup and popup preparation,
+shared search/product navigation, sourced search thumbnails and a shorter web
+deployment pipeline. Hosted signup/profile/isolation/deletion checks passed.
+Google consent, inbox receipt and published native assets require their own
+observed evidence; the version number alone does not establish them.
+
 ## Canonical metadata
 
 | Value | Source |

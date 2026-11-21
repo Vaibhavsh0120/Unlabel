@@ -5,7 +5,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 
 def send_welcome(settings, email):
