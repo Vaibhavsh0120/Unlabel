@@ -220,7 +220,7 @@ def create_platform_app(settings=None, *, identity_transport=None):
         "resend": {"redirect_to"},
         "user": {"redirect_to"},
         "authorize": {"provider", "redirect_to", "code_challenge", "code_challenge_method", "prompt"},
-        "callback": {"code", "state", "error", "error_description", "scope", "authuser", "prompt", "hd"},
+        "callback": {"code", "state", "iss", "error", "error_description", "scope", "authuser", "prompt", "hd"},
         "user/identities/authorize": {
             "provider", "redirect_to", "code_challenge", "code_challenge_method", "skip_http_redirect", "prompt"
         },
@@ -260,6 +260,10 @@ def create_platform_app(settings=None, *, identity_transport=None):
             or "redirect_to" not in request.query_params
         ):
             return JSONResponse({"error": "invalid_oauth_request"}, status_code=422)
+        if path == "callback" and request.query_params.get("iss") not in {
+            None, "https://accounts.google.com"
+        }:
+            return JSONResponse({"error": "invalid_oauth_issuer"}, status_code=422)
         payload = await request.body()
         if len(payload) > 131072:
             return JSONResponse({"error": "request_too_large"}, status_code=413)

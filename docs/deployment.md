@@ -108,3 +108,7 @@ A Docker volume is not an independent backup. The VM remains one failure domain.
 
 Check remaining Firebase dependencies before retirement. Preserve necessary
 Google clients, public licenses/evidence and published native assets.
+
+The auth proxy accepts Google's `iss=https://accounts.google.com` callback
+parameter and rejects another issuer. Google now returns this parameter during
+web authorization; omitting it from the query allowlist produces `invalid_query`.

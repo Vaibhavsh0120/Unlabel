@@ -106,13 +106,22 @@ def test_google_authorization_and_callback_reach_identity_without_exposing_admin
         result = client.get("/auth/v1/authorize", params=oauth_query(), follow_redirects=False)
         assert result.status_code == 302
         assert result.headers["location"].startswith("https://accounts.google.com/")
-        result = client.get("/auth/v1/callback?code=google-code&state=signed&scope=email&authuser=0&prompt=none",
+        result = client.get("/auth/v1/callback?code=google-code&state=signed&iss=https://accounts.google.com&scope=email&authuser=0&prompt=none",
                             follow_redirects=False)
         assert result.status_code == 302
         assert result.headers["location"].startswith("https://frontend.example.test/")
         assert result.headers["cache-control"] == "no-store"
         assert client.get("/auth/v1/admin/users").status_code == 404
     assert [request.url.path for request in requests] == ["/authorize", "/callback"]
+
+
+def test_google_callback_rejects_an_unexpected_issuer(monkeypatch):
+    def upstream(_):
+        pytest.fail("Unexpected issuer must not reach the identity service")
+    with TestClient(platform_app(monkeypatch, transport=httpx.MockTransport(upstream))) as client:
+        response = client.get("/auth/v1/callback?code=code&state=state&iss=https://attacker.invalid")
+        assert response.status_code == 422
+        assert response.json()["error"] == "invalid_oauth_issuer"
 
 
 @pytest.mark.parametrize("overrides", [
