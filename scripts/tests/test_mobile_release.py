@@ -186,7 +186,7 @@ class ReleaseGuardTests(unittest.TestCase):
         ):
             validate_backend_target("https://selfhost.example.test", True)
 
-    def test_old_account_backend_cannot_publish_the_new_client(self):
+    def test_ready_backend_does_not_require_a_temporary_migration_marker(self):
         result = Mock()
         result.__enter__ = Mock(return_value=result)
         result.__exit__ = Mock(return_value=False)
@@ -194,10 +194,7 @@ class ReleaseGuardTests(unittest.TestCase):
         result.read.return_value = (
             b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
         )
-        with (
-            patch("backend_target.urllib.request.urlopen", return_value=result),
-            self.assertRaisesRegex(ValueError, "account migration is not deployed"),
-        ):
+        with patch("backend_target.urllib.request.urlopen", return_value=result):
             validate_backend_target("https://selfhost.example.test", True)
 
     def test_legacy_backend_does_not_require_a_readiness_probe(self):

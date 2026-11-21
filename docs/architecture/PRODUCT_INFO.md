@@ -4,7 +4,14 @@
 `ProductInfoPage`, the destination for scanning, catalogue search, research
 matches, history and saved products. Its report/research/extracted/barcode
 constructors select private content widgets, with one page title and navigation
-shell. The 26 October update implements the supplied reference hierarchy with
+shell. Product results reuse `ShellPage` and `ShellNavigation`, including the
+normal desktop sidebar/header and compact Home/Scan/Compare/Saved navigation.
+Search stays inside that shell too. Desktop result routes have no whole-page
+transition. Research search rows load the same validated image descriptor as
+the detail page; cross-origin web images use Flutter's HTML-image fallback.
+Missing source photos remain unavailable rather than using decorative art.
+
+The 26 October update implements the supplied reference hierarchy with
 smaller phone typography, fact-count summary, evidence cards, six nutrient tiles,
 ingredient/allergen tabs, unknowns and source disclosures. It supersedes the
 earlier deferred visual redesign. See [current frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_11_0_REVIEW.md).

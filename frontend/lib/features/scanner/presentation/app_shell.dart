@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'desktop_navigation.dart';
+import 'mobile_navigation.dart';
 
 /// Shared destinations for content that opens above the main client page.
 class ShellNavigation {
@@ -75,6 +76,7 @@ class ShellPage extends StatelessWidget {
     this.actions,
     this.selectedIndex,
     this.navigation,
+    this.showMobileNavigation = false,
     super.key,
   });
   final String title;
@@ -82,6 +84,7 @@ class ShellPage extends StatelessWidget {
   final List<Widget>? actions;
   final int? selectedIndex;
   final ShellNavigation? navigation;
+  final bool showMobileNavigation;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +96,17 @@ class ShellPage extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(title: Text(title), actions: actions),
         body: body,
+        bottomNavigationBar:
+            showMobileNavigation &&
+                nav != null &&
+                MediaQuery.viewInsetsOf(context).bottom == 0
+            ? MobileNavigation(
+                selectedIndex: nav.selectedIndex >= 0 && nav.selectedIndex < 4
+                    ? nav.selectedIndex
+                    : -1,
+                onDestinationSelected: nav.onSelect,
+              )
+            : null,
       );
     }
     return Row(

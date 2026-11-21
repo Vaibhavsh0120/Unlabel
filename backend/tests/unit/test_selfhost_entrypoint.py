@@ -68,6 +68,30 @@ def oauth_query(**overrides):
     }
 
 
+def test_new_email_signup_sends_welcome_without_delaying_account_activation(monkeypatch):
+    sent = []
+    monkeypatch.setattr(entrypoint, "send_welcome", lambda settings, email: sent.append(email), raising=False)
+    transport = httpx.MockTransport(lambda _: httpx.Response(200, json={
+        "access_token": "synthetic", "user": {"email": "scanner@example.test", "is_anonymous": False}
+    }))
+    with TestClient(platform_app(monkeypatch, transport=transport)) as client:
+        result = client.post("/auth/v1/signup", json={"email": "scanner@example.test", "password": "synthetic"})
+    assert result.status_code == 200
+    assert result.json()["access_token"] == "synthetic"
+    assert sent == ["scanner@example.test"]
+
+
+def test_guest_and_failed_signups_do_not_send_welcome(monkeypatch):
+    sent = []
+    monkeypatch.setattr(entrypoint, "send_welcome", lambda settings, email: sent.append(email), raising=False)
+    for status, payload in [(200, {"access_token": "guest", "user": {"is_anonymous": True}}),
+                            (422, {"error": "user_already_exists"})]:
+        transport = httpx.MockTransport(lambda _, s=status, p=payload: httpx.Response(s, json=p))
+        with TestClient(platform_app(monkeypatch, transport=transport)) as client:
+            client.post("/auth/v1/signup", json={})
+    assert sent == []
+
+
 def test_google_authorization_and_callback_reach_identity_without_exposing_admin(monkeypatch):
     requests = []
 

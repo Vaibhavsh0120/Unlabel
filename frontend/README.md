@@ -1,11 +1,12 @@
 # Unlabel frontend
 
-Current source is **0.10.0+14**. Version comes from [pubspec.yaml](pubspec.yaml);
-Flutter is pinned in [workspace.json](../scripts/config/workspace.json).
-The [scanner/Product Info review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md)
-records this update's checks and remaining device gates. The published
-[0.9.0 auth release](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_9_0_REVIEW.md) is historical.
-[Release guide](../docs/releases.md).
+Version comes from [pubspec.yaml](pubspec.yaml); Flutter is pinned in
+[workspace.json](../scripts/config/workspace.json). The web app uses the
+Oracle API and self-hosted sign-in service. See the [deployment guide](../docs/deployment.md)
+and [release guide](../docs/releases.md).
+
+Search and Product info reuse the shared desktop/mobile navigation. Email signup
+signs in immediately; welcome mail runs independently of account activation.
 
 ## What works
 

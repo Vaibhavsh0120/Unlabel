@@ -286,7 +286,9 @@ void main() {
               as PageRoute<void>;
       expect(reportRoute.transitionDuration, Duration.zero);
       expect(reportRoute.reverseTransitionDuration, Duration.zero);
-      await tester.tap(find.widgetWithText(TextButton, 'History'));
+      expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+      expect(find.byType(DesktopTopBar), findsOneWidget);
+      await tester.tap(find.byKey(const Key('desktop-nav-4')));
       await tester.pump();
       expect(find.byType(ProductInfoPage), findsNothing);
       expect(tester.element(sidebar), same(sidebarElement));

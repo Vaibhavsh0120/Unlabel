@@ -8,7 +8,7 @@ import 'package:unlabel/app/unlabel_theme.dart';
 import 'package:unlabel/core/models/product_report.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
-import 'package:unlabel/features/scanner/presentation/product_results_layout.dart';
+import 'package:unlabel/features/scanner/presentation/app_shell.dart';
 
 class _MemoryPreferences implements PreferencesAdapter {
   final values = <String, String>{};
@@ -81,7 +81,8 @@ void main() {
           expect(
             tester.getSize(find.text('Carbohydrates')).height,
             lessThanOrEqualTo(18),
-            reason: 'The complete nutrient label fits without an orphan letter.',
+            reason:
+                'The complete nutrient label fits without an orphan letter.',
           );
           expect(
             tester
@@ -134,36 +135,41 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final visits = <String>[];
-    final nav = ResultsNavigation(
-      home: () => visits.add('home'),
-      scan: () => visits.add('scan'),
-      history: () => visits.add('history'),
-      learn: () => visits.add('learn'),
-      products: () => visits.add('products'),
-      profile: () => visits.add('profile'),
-      notifications: () => visits.add('notifications'),
+    final nav = ShellNavigation(
+      selectedIndex: 0,
+      onSelect: (index) => visits.add('tab-$index'),
+      onHistory: () => visits.add('history'),
+      onInsights: () => visits.add('insights'),
+      onSearch: () => visits.add('search'),
+      onProfile: () => visits.add('profile'),
+      onNotifications: () => visits.add('notifications'),
     );
     await tester.pumpWidget(
       MaterialApp(
-        home: Scaffold(
-          appBar: ResultsAppBar(title: 'Scan Results', navigation: nav),
+        home: ShellPage(
+          title: 'Product info',
+          navigation: nav,
+          body: const SizedBox(),
+          showMobileNavigation: true,
         ),
       ),
     );
     await tester.pumpAndSettle();
-    for (final title in ['Unlabel', 'Scan', 'History', 'Learn', 'Products']) {
-      await tester.tap(find.text(title));
+    expect(find.byKey(const Key('desktop-sidebar')), findsOneWidget);
+    for (final index in [0, 1, 2, 3]) {
+      await tester.tap(find.byKey(Key('desktop-nav-$index')));
     }
-    await tester.tap(find.text('Search product, ingredient or claim…'));
-    await tester.tap(find.byTooltip('Profile'));
+    await tester.tap(find.byKey(const Key('desktop-nav-4')));
+    await tester.tap(find.byKey(const Key('desktop-nav-5')));
+    await tester.tap(find.bySemanticsLabel('Profile'));
     await tester.tap(find.byTooltip('Notifications'));
     expect(visits, [
-      'home',
-      'scan',
+      'tab-0',
+      'tab-1',
+      'tab-2',
+      'tab-3',
       'history',
-      'learn',
-      'products',
-      'products',
+      'insights',
       'profile',
       'notifications',
     ]);

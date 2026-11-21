@@ -11,6 +11,7 @@ import '../../../core/storage/local_store.dart';
 import 'product_results_layout.dart';
 import 'report_presentation.dart';
 import 'ui_components.dart';
+import 'app_shell.dart';
 
 part 'product_info_report.dart';
 part 'product_info_research.dart';
@@ -94,13 +95,15 @@ class ProductInfoPage extends StatelessWidget {
          navigation: navigation,
        );
 
-  final ResultsNavigation? navigation;
+  final ShellNavigation? navigation;
   final Widget _content;
 
   @override
   Widget build(BuildContext context) => ScaffoldMessenger(
-    child: Scaffold(
-      appBar: ResultsAppBar(title: 'Product info', navigation: navigation),
+    child: ShellPage(
+      title: 'Product info',
+      navigation: navigation,
+      showMobileNavigation: true,
       body: _content,
     ),
   );

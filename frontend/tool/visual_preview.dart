@@ -22,7 +22,7 @@ import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
 import 'package:unlabel/features/scanner/presentation/scan_landing_page.dart';
 import 'package:unlabel/features/scanner/presentation/desktop_navigation.dart';
 import 'package:unlabel/features/scanner/presentation/mobile_navigation.dart';
-import 'package:unlabel/features/scanner/presentation/product_results_layout.dart';
+import 'package:unlabel/features/scanner/presentation/app_shell.dart';
 import 'package:unlabel/features/account/presentation/sign_in_methods_view.dart';
 import 'package:unlabel/features/account/presentation/profile_avatar.dart';
 import 'package:unlabel/features/scanner/presentation/ui_components.dart';
@@ -173,14 +173,14 @@ Future<void> main() async {
     );
     return;
   }
-  final navigation = ResultsNavigation(
-    home: () {},
-    scan: () {},
-    history: () {},
-    learn: () {},
-    products: () {},
-    profile: () {},
-    notifications: () {},
+  final navigation = ShellNavigation(
+    selectedIndex: 0,
+    onSelect: (_) {},
+    onHistory: () {},
+    onInsights: () {},
+    onSearch: () {},
+    onProfile: () {},
+    onNotifications: () {},
   );
   final store = LocalStore(preferences: _Preferences());
   Widget extracted() => ProductInfoPage.extracted(

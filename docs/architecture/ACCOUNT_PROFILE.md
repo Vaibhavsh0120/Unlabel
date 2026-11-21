@@ -3,7 +3,7 @@
 The self-hosted implementation is being verified. Its rollout and outstanding
 production gates are in [the roadmap](../roadmap.md). Source implementation,
 hosted behavior and native-device execution are separate evidence. The legacy
-Firebase deployment remains available until acceptance completes.
+Firebase source remains for historical compatibility; the old Vercel API is retired.
 
 ## One identity, multiple sign-in methods
 
@@ -32,6 +32,17 @@ Changing Google links the replacement before removing the prior identity.
 Email and password changes prove the current credential. Email changes remain
 pending until GoTrue completes its verification. Authentication mutations are
 single-flight; restoring or refreshing a session cannot select another owner.
+
+## Email signup
+
+New email/password accounts sign in immediately without a confirmation email.
+GoTrue enables email signup and auto-confirmation. The API sends a separate
+welcome email after a successful new non-guest signup, with bounded SMTP retries.
+Welcome delivery is best effort and never gates use of the account. Duplicate or
+failed signup and anonymous sessions do not send welcome mail. This activation
+policy follows the operator's college-project requirements; it does not prove
+that the person controls the supplied inbox. Email changes and password recovery
+retain their secure confirmation links.
 
 ## Profile media
 

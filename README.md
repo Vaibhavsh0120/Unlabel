@@ -10,7 +10,7 @@
 <p>
   <a href="https://unlabel-india.vercel.app"><img src="docs/assets/readme/live-preview.svg" width="156" height="48" alt="Open Unlabel live preview"></a>
   <a href="https://github.com/Vaibhavsh0120/Unlabel/releases?q=demo+APK&amp;expanded=true"><img src="docs/assets/readme/download-apps.svg" width="156" height="48" alt="Download Android and iOS apps"></a>
-  <a href="https://unlabel-api.vercel.app/docs"><img src="docs/assets/readme/backend-api.svg" width="156" height="48" alt="Open the deployed Vercel backend API documentation"></a>
+  <a href="https://unlabel.duckdns.org/docs"><img src="docs/assets/readme/backend-api.svg" width="156" height="48" alt="Open the deployed Unlabel backend API documentation"></a>
   <a href="docs/README.md"><img src="docs/assets/readme/documentation.svg" width="156" height="48" alt="Read the documentation"></a>
 </p>
 
@@ -25,7 +25,7 @@
 | **Web** | [Open Unlabel](https://unlabel-india.vercel.app) in your browser. |
 | **Android** | Download the demo APK from the newest [Android / iOS release](https://github.com/Vaibhavsh0120/Unlabel/releases?q=demo+APK&expanded=true). |
 | **iPhone / iPad** | Add the source below in **LiveContainer → Sources → +**. LiveContainer must already be installed and configured. |
-| **Developers** | [API documentation](https://unlabel-api.vercel.app/docs) · [API metadata](https://unlabel-api.vercel.app/v1/meta) |
+| **Developers** | [API documentation](https://unlabel.duckdns.org/docs) · [API metadata](https://unlabel.duckdns.org/v1/meta) |
 
 **LiveContainer source — copy this URL:**
 

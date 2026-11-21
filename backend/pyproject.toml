@@ -16,14 +16,8 @@ selfhost = [
   "pymongo==4.20.0", "redis==8.1.0",
 ]
 
-[tool.vercel]
-entrypoint = "app.main:app"
-
 [tool.setuptools.packages.find]
 include = ["app*"]
-
-[tool.vercel.scripts]
-build = "python build_catalogue.py"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -8,7 +8,7 @@ from typing import Annotated
 from urllib.parse import urlsplit
 
 import httpx
-from fastapi import Header, Request
+from fastapi import BackgroundTasks, Header, Request
 from fastapi.responses import JSONResponse, Response
 from starlette.concurrency import run_in_threadpool
 
@@ -17,6 +17,7 @@ from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.store import StoreQuotaExceeded, StoreUnavailable
 from app.core.config import Settings
 from app.main import create_app
+from app.selfhost.mail import send_welcome
 from app.selfhost.private_store import PostgresProfileStore
 from app.selfhost.profile import ProfileSnapshot, ProfileUpdate
 from app.selfhost.resources import PlatformSettings, Resources
@@ -228,7 +229,7 @@ def create_platform_app(settings=None, *, identity_transport=None):
     @application.api_route(
         "/auth/v1/{path:path}", methods=["GET", "POST", "PUT", "DELETE"], include_in_schema=False
     )
-    async def identity_proxy(path: str, request: Request):
+    async def identity_proxy(path: str, request: Request, background_tasks: BackgroundTasks):
         permitted = methods.get(path)
         if permitted is None and re.fullmatch(
             r"user/identities/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", path
@@ -323,11 +324,23 @@ def create_platform_app(settings=None, *, identity_transport=None):
             if not google_redirect and not safe_redirect(location, platform.frontend_url):
                 return JSONResponse({"error": "invalid_redirect"}, status_code=502)
             response_headers["Location"] = location
+        if path == "signup" and result.status_code == 200:
+            try:
+                account = json.loads(content)
+                user = account.get("user", {})
+                email = user.get("email")
+                if (account.get("access_token") and user.get("is_anonymous") is False
+                        and isinstance(email, str) and 3 <= len(email) <= 320
+                        and not any(c in email for c in "\r\n\x00")):
+                    background_tasks.add_task(send_welcome, platform, email)
+            except (ValueError, AttributeError):
+                pass
         return Response(
             bytes(content),
             status_code=result.status_code,
             media_type=result.headers.get("content-type", "application/json").split(";")[0],
             headers=response_headers,
+            background=background_tasks,
         )
 
     return application

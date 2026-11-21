@@ -137,7 +137,7 @@ final class SelfhostAccountAuth extends AccountAuth {
       // account. The message is neutral for sanitized duplicate signups.
       throw const AppFailure(
         'email_confirmation_pending',
-        'Check your inbox for a confirmation email, then sign in.',
+        'Account creation could not finish. Try signing in, or reset your password.',
       );
     }
     await _activate(session);

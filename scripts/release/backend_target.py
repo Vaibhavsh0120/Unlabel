@@ -71,11 +71,6 @@ def validate_backend_target(origin: str, selfhost_auth: bool) -> None:
             "Self-hosted API dependencies are not ready; do not ship this "
             "client until the selected backend is ready."
         )
-    if dependencies.get("account_contract") != "selfhost-account-v2":
-        raise ValueError(
-            "The self-hosted account migration is not deployed; verify the "
-            "profile migration and identity account policy before shipping this client."
-        )
 
 
 def main() -> None:

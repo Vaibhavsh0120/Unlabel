@@ -31,8 +31,11 @@ Jobs use PostgreSQL's durable leased outbox directly, so Redis is only for cache
 and rate limits. App and identity roles were verified unable to connect to each
 other's logical database. One PostgreSQL server remains a shared failure domain.
 
-The existing production Vercel/Firebase release remains active while the
-replacement completes the [cutover gates](../../docs/roadmap.md).
+The old Vercel API was deleted by the operator. Vercel hosts only the frontend;
+Oracle/Coolify owns the active backend and sign-in path. The temporary account
+migration application was removed after schema updates through 0010 were applied.
+Email signup auto-confirms and the API sends welcome mail separately. See the
+[deployment guide](../../docs/deployment.md) and [remaining gates](../../docs/roadmap.md).
 
 The initial GoTrue bootstrap wrote embedded migration receipts in `public`
 before its role search path was installed. The version-specific alignment

@@ -1,10 +1,9 @@
 # Remaining work
 
-The Vercel frontend is being switched to the Oracle/Coolify API and its
-self-hosted identity service. The legacy Vercel API and Firebase resources remain
-available for rollback while hosted account/profile, recovery and other client
-acceptance work is completed. A container or image build alone is not a
-completed hosting migration.
+The frontend stays on Vercel. Oracle/Coolify runs the API, sign-in service,
+workers and private stores. The operator deleted the old Vercel backend and
+confirmed there are no real users to migrate. Preserve licensed source data,
+historical releases and device-local libraries.
 
 ## Verified foundation
 
@@ -36,46 +35,35 @@ completed hosting migration.
 | Recovery | Configure a recurring off-VM destination and repeat the verified restore process from that destination. |
 | Performance | Measure queries, pools, concurrency, queue recovery, memory and disk. One VM is one failure domain. |
 | UI | Ship prepared bell, recent-scan, Insights-height and sidebar fixes. Recheck themes, enlarged text and phone/tablet/desktop layouts. |
-| Release | Prepare v1.1.0 from canonical component manifests. Web builds require the deployed account contract and healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
+| Release | Prepare v1.1.0 from canonical component manifests. Web builds require healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
-## Authentication corrections being verified
+## Account deployment
 
-The self-hosted client had no web Google implementation, its proxy rejected
-`authorize`/`callback`, signed-in profile media had no repository, and account
-settings inherited unavailable operations. The prepared replacement adds a
-same-origin Google popup with S256 PKCE, owner-checked account operations,
-PostgreSQL profile media and an Unlabel password-recovery page. Recovery never
-activates a scanner account. Existing Firebase passwords are not migrated.
+The app uses one self-hosted account path. Email/password signup immediately
+signs in: `GOTRUE_EXTERNAL_EMAIL_ENABLED=true` and
+`GOTRUE_MAILER_AUTOCONFIRM=true`. The API sends a separate welcome email through
+Brevo after successful signup. Mail failure does not block account activation.
+Password recovery and email changes still use their own secure links.
 
-Deployment requires the following in order:
+Web Google uses the web OAuth client secret in the sign-in service, with
+`https://unlabel.duckdns.org/auth/v1/callback` as its exact Google callback.
+A browser API key and a client ID cannot replace that secret. Keep explicit
+provider linking and the pinned `.2` identity policy.
 
-1. Apply migrations through `0009_outbox_conflict_key_grants.sql` with the
-   maintained checksum runner. Migration 0008 preserves explicit avatar choices;
-   0009 grants only the outbox conflict-key reads needed for API deduplication.
-2. Build and verify identity image `v2.197.0-unlabel.2`. Its pinned source patch
-   refuses automatic email-based identity linking and removes the password
-   verifier when disconnecting email. Enable manual linking and email-identity
-   creation on password set; retain email confirmation and recent-auth checks.
-3. Install the web Google client secret in the private identity service and
-   authorize `https://unlabel.duckdns.org/auth/v1/callback` for that web client.
-   The inspected Coolify environment had no `GOTRUE_EXTERNAL_GOOGLE_SECRET`.
-4. Deploy the API, then the frontend; verify actual email signup/login, Google,
-   recovery, expiry, provider collision, profile CAS and deletion with synthetic
-   accounts. Source tests and a container health badge do not complete this gate.
+Schema updates through `0010_ai_persistence.sql` were applied with transaction,
+lock and checksum checks on 21 November. The stopped **Account migration -
+temporary** resource was deleted. This was database preparation, not migration
+of existing users. Future schema updates use the existing one-shot operator
+runner; do not keep a migration service running.
 
-The Google clients currently use project number `122855940292`, also used by
-the Firebase project. Do not delete that Google Cloud project while its OAuth
-clients are required. Move/recreate and verify the OAuth clients first, or retire
-only the Firebase-specific resources while retaining the Google project.
+Deploy API changes before the frontend, check dependency health, then check
+signup, Google, recovery and profiles. Frontend builds check live dependencies;
+they no longer require the redundant account-migration marker. Other production
+gates below remain independent of that build check.
 
-Community/AI persistence, the evidence projector, recurring off-VM recovery and
-physical-device acceptance remain separate production gates. No legacy resource
-has been retired by this source preparation.
-
-Existing Firebase accounts/data may be discarded at verified cutover. Public
-source bundles, licenses, contract fixtures, historical tags and device-local
-guest records are outside that scope.
+The Google Cloud project also owns the required OAuth clients. Retain those
+clients when removing Firebase-specific resources.
 
 ## Acceptance limits
 
@@ -83,8 +71,8 @@ The v1.1.0 source update is being prepared; the version number does not certify
 deployment or retirement. Its release requires successful CI, the ordered hosted
 account rollout above and the remaining cutover gates. The first disposable
 PostgreSQL run found missing outbox conflict-key SELECT grants; migration 0009
-repairs this without exposing job payloads. The frontend deployment correctly
-refused to ship before the identity/profile account contract was deployed.
+repairs this without exposing job payloads. The frontend build failure came from an old deployed API and a redundant
+account-contract marker check. Deploy the current API before publishing clients.
 
 GitGuardian incident 40814799 identified a synthetic password in a fully mocked
 recovery test. It was never a service credential. Recovery and password-change

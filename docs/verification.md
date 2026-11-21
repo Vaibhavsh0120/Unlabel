@@ -5,9 +5,9 @@ successful build does not establish hosted integration, native installation or
 physical-device behavior. Record the source SHA, environment, commands and any
 remaining gates with the release or deployment evidence.
 
-The legacy Vercel/Firebase application is still serving. The Coolify replacement
-remains incomplete; successful individual service tests do not establish complete
-cutover. See [deployment](deployment.md) and [the roadmap](roadmap.md).
+The old Vercel backend was deleted by the operator. Verify the Vercel frontend
+against the Coolify API; individual service tests do not establish complete
+client acceptance. See [deployment](deployment.md) and [the roadmap](roadmap.md).
 
 ## Repository and backend
 
@@ -99,7 +99,7 @@ Before cutover, demonstrate:
   conflict handling without silently replacing source evidence.
 - Owner isolation, recent-auth account deletion, provider collision protection,
   profile/sync behavior and device-local guest preservation.
-- Email verification/reset delivery and link completion, Google sign-in on each
+- Immediate email signup, welcome/reset delivery and reset completion, Google sign-in on each
   platform, session refresh/revocation and inactive-guest cleanup.
 - Real browser push and native reminder permission, delivery, deduplication and
   unsubscribe, including failure/expired-subscription behavior.
@@ -117,6 +117,6 @@ frontend and API together, then native assets and the stable iOS feed separately
 Archive diagnostics as CI artifacts or release evidence without private scans,
 tokens or credential values.
 
-Only retire the legacy backend/Firebase resources after the replacement and client
-release pass their required checks. Report remaining physical-device or provider
+The old Vercel backend is retired. Retire remaining Firebase resources only after
+checking the replacement client and preserving required Google OAuth clients. Report remaining physical-device or provider
 gates explicitly rather than treating published artifacts as acceptance.

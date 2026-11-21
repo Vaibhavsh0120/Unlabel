@@ -41,7 +41,6 @@ import '../features/scanner/presentation/product_info_page.dart';
 import '../features/scanner/presentation/library_page.dart';
 import '../features/scanner/presentation/mobile_navigation.dart';
 import '../features/scanner/presentation/product_search_page.dart';
-import '../features/scanner/presentation/product_results_layout.dart';
 import '../features/scanner/presentation/scan_landing_page.dart';
 import '../features/scanner/presentation/sources_page.dart';
 import '../features/scanner/presentation/startup_page.dart';
@@ -531,22 +530,6 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     action();
   }
 
-  ResultsNavigation get _resultNavigation => ResultsNavigation(
-    home: () => _fromResults(() {
-      _closeSearch();
-      _selectTab(0);
-    }),
-    scan: () => _fromResults(() {
-      _closeSearch();
-      _selectTab(1);
-    }),
-    history: () => _fromResults(() => _library(2)),
-    learn: () => _fromResults(_insights),
-    products: () => _fromResults(_search),
-    profile: () => _fromResults(_profile),
-    notifications: _notifications,
-  );
-
   ShellNavigation get _shellNavigation => ShellNavigation(
     selectedIndex: _tab,
     onSelect: (index) => _fromResults(() {
@@ -598,6 +581,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
   }
 
   void _selectTab(int value) {
+    if (_searching) _closeSearch();
     if (_tab == value) return;
     _leaveMissingPage();
     unawaited(UiFeedback.selection());
@@ -655,7 +639,7 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
         builder: (_) => ProductInfoPage.report(
           frontClaims: frontClaims,
           repository: widget.repository,
-          navigation: _resultNavigation,
+          navigation: _shellNavigation,
           report: report,
           store: widget.store,
           onChanged: _changed,
@@ -683,20 +667,22 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       );
       if (!mounted) return;
       return Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        ShellContentRoute<void>(
+          context: context,
           builder: (_) => ProductInfoPage.research(
             repository: widget.repository,
             product: product,
-            navigation: _resultNavigation,
+            navigation: _shellNavigation,
           ),
         ),
       );
     }
     if (result.label != null) {
       return Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        ShellContentRoute<void>(
+          context: context,
           builder: (_) => ProductInfoPage.extracted(
-            navigation: _resultNavigation,
+            navigation: _shellNavigation,
             label: result.label!,
             photo: front,
             localFallback: result.localFallback,
@@ -715,11 +701,12 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     }
     if (result.candidates.isEmpty && result.barcode != null) {
       return Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        ShellContentRoute<void>(
+          context: context,
           builder: (_) => ProductInfoPage.barcode(
             barcode: result.barcode!,
             repository: widget.repository,
-            navigation: _resultNavigation,
+            navigation: _shellNavigation,
           ),
         ),
       );
@@ -752,11 +739,12 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       );
       if (!mounted) return;
       await Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        ShellContentRoute<void>(
+          context: context,
           builder: (_) => ProductInfoPage.research(
             repository: widget.repository,
             product: product,
-            navigation: _resultNavigation,
+            navigation: _shellNavigation,
           ),
         ),
       );
@@ -921,198 +909,203 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
       },
       child: AppShellScope(
         navigation: _shellNavigation,
-        child: Stack(
+        child: Row(
           children: [
-            Offstage(
-              offstage: _searching,
-              child: Row(
-                children: [
-                  if (desktop)
-                    DesktopNavigation(
-                      selectedIndex: _tab,
-                      onSelect: _selectTab,
-                      onHistory: () => _library(2),
-                      onInsights: _insights,
-                    ),
-                  Expanded(
-                    child: Scaffold(
-                      extendBody: true,
-                      appBar: desktop
-                          ? DesktopTopBar(
-                              onSearch: _search,
-                              onProfile: _profile,
-                              onNotifications: _notifications,
-                            )
-                          : AppBar(
-                              leading: _tab >= 4
-                                  ? BackButton(
-                                      onPressed: _tab == 6
-                                          ? _sourceBack
-                                          : () => _selectTab(0),
-                                    )
-                                  : null,
-                              toolbarHeight: largeText
-                                  ? (MediaQuery.sizeOf(context).height < 500
-                                        ? 88
-                                        : 112)
-                                  : 64,
-                              title: _tab == 6
-                                  ? const Text('Our Sources')
-                                  : _tab == 5
-                                  ? const Text('Insights')
-                                  : _tab == 4
-                                  ? const Text('History')
-                                  : BrandHomeButton(
-                                      key: const Key('mobile-brand-home'),
-                                      onPressed: () => _selectTab(0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  'Unlabel',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: theme
-                                                      .textTheme
-                                                      .headlineMedium
-                                                      ?.copyWith(fontSize: 30),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 6),
-                                              if (!largeText)
-                                                const BrandLeaf(size: 30),
-                                            ],
-                                          ),
-                                          if (!largeText ||
-                                              MediaQuery.sizeOf(context)
-                                                      .height >=
-                                                  500)
-                                            Text(
-                                              'Know Beyond the Label',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: theme.textTheme.bodySmall,
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                              actions: [
-                                NotificationBell(onPressed: _notifications),
-                                IconButton(
-                                  constraints: const BoxConstraints(
-                                    minWidth: 48,
-                                    minHeight: 48,
-                                  ),
-                                  onPressed: () => _lookup(false),
-                                  tooltip: 'Search products',
-                                  icon: const FeatureIcon('magnifer'),
-                                ),
-                                IconButton(
-                                  constraints: const BoxConstraints(
-                                    minWidth: 48,
-                                    minHeight: 48,
-                                  ),
-                                  onPressed: _profile,
-                                  tooltip: 'Profile',
-                                  icon: const ExcludeSemantics(
-                                    child: AccountAvatar(size: 40),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                              ],
-                            ),
-                      body: switch (_tab) {
-                        -1 => NotFoundPage(onHome: () => _selectTab(0)),
-                        0 => HomePage(
-                          store: widget.store,
-                          refreshKey: _refreshKey,
-                          onLookup: _lookup,
-                          onEnterLabel: () => _selectTab(1),
-                          onCompare: () => _selectTab(2),
-                          onOpenReport: _openReport,
-                          onLibrary: _library,
-                          desktop: desktop,
-                          insightController: _insightController,
-                          onInsights: _insights,
-                          onSources: _sources,
-                        ),
-                        1 => ScanLandingPage(
-                          reader: AutomaticLabelReader(widget.repository),
-                          barcodeScannerFactory: widget.barcodeScannerFactory,
-                          onResult: _scanResult,
-                        ),
-                        2 => ComparePage(
-                          store: widget.store,
-                          repository: widget.repository,
-                          onOpenReport: _openReport,
-                          sessionReports: List.unmodifiable(_comparisonReports),
-                        ),
-                        4 => LibraryPage(
-                          saved: false,
-                          showTitle: desktop,
-                          store: widget.store,
-                          refreshKey: _refreshKey,
-                          onOpenReport: _openReport,
-                          onLookup: () => _lookup(true),
-                          onChanged: _changed,
-                        ),
-                        5 => InsightsPage(
-                          controller: _insightController,
-                          embedded: true,
-                        ),
-                        6 => SourcesPage(embedded: true, onBack: _sourceBack),
-                        _ => LibraryPage(
-                          saved: true,
-                          store: widget.store,
-                          refreshKey: _refreshKey,
-                          onOpenReport: _openReport,
-                          onLookup: () => _lookup(true),
-                          onChanged: _changed,
-                        ),
-                      },
-                      bottomNavigationBar:
-                          desktop ||
-                              _tab >= 4 ||
-                              MediaQuery.viewInsetsOf(context).bottom > 0
-                          ? null
-                          : MobileNavigation(
-                              selectedIndex: _tab,
-                              onDestinationSelected: _selectTab,
-                            ),
-                    ),
-                  ),
-                ],
+            if (desktop)
+              DesktopNavigation(
+                selectedIndex: _tab,
+                onSelect: _selectTab,
+                onHistory: () => _library(2),
+                onInsights: _insights,
               ),
-            ),
-            Visibility(
-              visible: _searching,
-              maintainState: true,
-              maintainAnimation: true,
-              maintainSize: true,
-              maintainFocusability: true,
-              child: TickerMode(
-                enabled: _searching,
-                child: ScaffoldMessenger(
-                  child: ProductSearchPage(
-                    resultNavigation: _resultNavigation,
-                    active: _searching,
-                    repository: widget.repository,
-                    focusNode: _searchFocus,
-                    autofocus: false,
-                    onClose: _closeSearch,
-                    onOpenReport: (report) => _openReport(report, record: true),
-                    onEnterLabel: () {
-                      _closeSearch();
-                      _selectTab(1);
-                    },
-                  ),
+            Expanded(
+              child: Scaffold(
+                extendBody: true,
+                appBar: _searching
+                    ? null
+                    : desktop
+                    ? DesktopTopBar(
+                        onSearch: _search,
+                        onProfile: _profile,
+                        onNotifications: _notifications,
+                      )
+                    : AppBar(
+                        leading: _tab >= 4
+                            ? BackButton(
+                                onPressed: _tab == 6
+                                    ? _sourceBack
+                                    : () => _selectTab(0),
+                              )
+                            : null,
+                        toolbarHeight: largeText
+                            ? (MediaQuery.sizeOf(context).height < 500
+                                  ? 88
+                                  : 112)
+                            : 64,
+                        title: _tab == 6
+                            ? const Text('Our Sources')
+                            : _tab == 5
+                            ? const Text('Insights')
+                            : _tab == 4
+                            ? const Text('History')
+                            : BrandHomeButton(
+                                key: const Key('mobile-brand-home'),
+                                onPressed: () => _selectTab(0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'Unlabel',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: theme
+                                                .textTheme
+                                                .headlineMedium
+                                                ?.copyWith(fontSize: 30),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        if (!largeText)
+                                          const BrandLeaf(size: 30),
+                                      ],
+                                    ),
+                                    if (!largeText ||
+                                        MediaQuery.sizeOf(context).height >=
+                                            500)
+                                      Text(
+                                        'Know Beyond the Label',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                        actions: [
+                          NotificationBell(onPressed: _notifications),
+                          IconButton(
+                            constraints: const BoxConstraints(
+                              minWidth: 48,
+                              minHeight: 48,
+                            ),
+                            onPressed: () => _lookup(false),
+                            tooltip: 'Search products',
+                            icon: const FeatureIcon('magnifer'),
+                          ),
+                          IconButton(
+                            constraints: const BoxConstraints(
+                              minWidth: 48,
+                              minHeight: 48,
+                            ),
+                            onPressed: _profile,
+                            tooltip: 'Profile',
+                            icon: const ExcludeSemantics(
+                              child: AccountAvatar(size: 40),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                        ],
+                      ),
+                body: Stack(
+                  children: [
+                    Offstage(
+                      offstage: _searching,
+                      child: TickerMode(
+                        enabled: !_searching,
+                        child: switch (_tab) {
+                          -1 => NotFoundPage(onHome: () => _selectTab(0)),
+                          0 => HomePage(
+                            store: widget.store,
+                            refreshKey: _refreshKey,
+                            onLookup: _lookup,
+                            onEnterLabel: () => _selectTab(1),
+                            onCompare: () => _selectTab(2),
+                            onOpenReport: _openReport,
+                            onLibrary: _library,
+                            desktop: desktop,
+                            insightController: _insightController,
+                            onInsights: _insights,
+                            onSources: _sources,
+                          ),
+                          1 => ScanLandingPage(
+                            reader: AutomaticLabelReader(widget.repository),
+                            barcodeScannerFactory: widget.barcodeScannerFactory,
+                            onResult: _scanResult,
+                          ),
+                          2 => ComparePage(
+                            store: widget.store,
+                            repository: widget.repository,
+                            onOpenReport: _openReport,
+                            sessionReports: List.unmodifiable(
+                              _comparisonReports,
+                            ),
+                          ),
+                          4 => LibraryPage(
+                            saved: false,
+                            showTitle: desktop,
+                            store: widget.store,
+                            refreshKey: _refreshKey,
+                            onOpenReport: _openReport,
+                            onLookup: () => _lookup(true),
+                            onChanged: _changed,
+                          ),
+                          5 => InsightsPage(
+                            controller: _insightController,
+                            embedded: true,
+                          ),
+                          6 => SourcesPage(embedded: true, onBack: _sourceBack),
+                          _ => LibraryPage(
+                            saved: true,
+                            store: widget.store,
+                            refreshKey: _refreshKey,
+                            onOpenReport: _openReport,
+                            onLookup: () => _lookup(true),
+                            onChanged: _changed,
+                          ),
+                        },
+                      ),
+                    ),
+                    Visibility(
+                      visible: _searching,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      maintainFocusability: true,
+                      child: TickerMode(
+                        enabled: _searching,
+                        child: ScaffoldMessenger(
+                          child: ProductSearchPage(
+                            resultNavigation: _shellNavigation,
+                            active: _searching,
+                            repository: widget.repository,
+                            focusNode: _searchFocus,
+                            autofocus: false,
+                            onClose: _closeSearch,
+                            onOpenReport: (report) =>
+                                _openReport(report, record: true),
+                            onEnterLabel: () {
+                              _closeSearch();
+                              _selectTab(1);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                bottomNavigationBar:
+                    desktop ||
+                        (_tab >= 4 && !_searching) ||
+                        MediaQuery.viewInsetsOf(context).bottom > 0
+                    ? null
+                    : MobileNavigation(
+                        selectedIndex: _tab >= 0 && _tab < 4 ? _tab : -1,
+                        onDestinationSelected: _selectTab,
+                      ),
               ),
             ),
           ],

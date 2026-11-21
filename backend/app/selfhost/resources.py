@@ -29,6 +29,11 @@ class PlatformSettings(BaseSettings):
     community_enabled: bool = False
     worker_kind: str = "worker"
     cutover_ready: bool = False
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: SecretStr | None = None
+    smtp_sender: str = ""
 
 
 class Resources:

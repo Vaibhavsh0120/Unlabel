@@ -1,148 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widgets/notification_bell.dart';
-
 import 'package:flutter/services.dart';
 
 import 'ui_components.dart';
 import '../../../core/widgets/brand_mark.dart';
-
-class ResultsNavigation {
-  const ResultsNavigation({
-    required this.home,
-    required this.scan,
-    required this.history,
-    required this.learn,
-    required this.products,
-    required this.profile,
-    required this.notifications,
-  });
-  final VoidCallback home,
-      scan,
-      history,
-      learn,
-      products,
-      profile,
-      notifications;
-}
-
-/// Desktop results keep the supplied horizontal navigation; mobile keeps its
-/// compact back/title bar. Every visible destination has a real app callback.
-class ResultsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ResultsAppBar({required this.title, this.navigation, super.key});
-  final String title;
-  final ResultsNavigation? navigation;
-  @override
-  Size get preferredSize => const Size.fromHeight(64);
-  @override
-  Widget build(BuildContext context) {
-    final nav = navigation;
-    if (nav != null && MediaQuery.sizeOf(context).width < 1080) {
-      return AppBar(
-        titleSpacing: 16,
-        automaticallyImplyLeading: Navigator.of(context).canPop(),
-        title: BrandHomeButton(
-          onPressed: nav.home,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const BrandLeaf(size: 28),
-              const SizedBox(width: 6),
-              if (MediaQuery.textScalerOf(context).scale(16) < 24)
-                Text(
-                  'Unlabel',
-                  style: Theme.of(context).textTheme.titleLarge
-                      ?.copyWith(fontFamily: 'Manrope'),
-                ),
-            ],
-          ),
-        ),
-        actions: [
-          IconButton(
-            tooltip: 'Search products',
-            onPressed: nav.products,
-            icon: const FeatureIcon('magnifer', size: 24),
-          ),
-          IconButton(
-            tooltip: 'Profile',
-            onPressed: nav.profile,
-            icon: const Icon(Icons.person_outline),
-          ),
-          const SizedBox(width: 8),
-        ],
-      );
-    }
-    if (nav == null ||
-        MediaQuery.sizeOf(context).width < 1080 ||
-        MediaQuery.textScalerOf(context).scale(16) >= 24) {
-      return AppBar(title: Text(title));
-    }
-    final theme = Theme.of(context);
-    return AppBar(
-      automaticallyImplyLeading: false,
-      titleSpacing: 32,
-      title: Row(
-        children: [
-          TextButton(
-            onPressed: nav.home,
-            child: Row(
-              children: [
-                const BrandLeaf(size: 32),
-                const SizedBox(width: 8),
-                Text(
-                  'Unlabel',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 20),
-          TextButton(onPressed: nav.scan, child: const Text('Scan')),
-          TextButton(onPressed: nav.history, child: const Text('History')),
-          TextButton(onPressed: nav.learn, child: const Text('Learn')),
-          TextButton(onPressed: nav.products, child: const Text('Products')),
-          const Spacer(),
-          SizedBox(
-            width: MediaQuery.sizeOf(context).width > 1400 ? 360 : 270,
-            child: TextButton.icon(
-              onPressed: nav.products,
-              style: TextButton.styleFrom(
-                backgroundColor: theme.colorScheme.surfaceContainerLow,
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-              ),
-              icon: const FeatureIcon('magnifer', size: 20),
-              label: const Text(
-                'Search product, ingredient or claim…',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-          const SizedBox(width: 24),
-          NotificationBell(onPressed: nav.notifications),
-          const SizedBox(width: 16),
-          IconButton(
-            tooltip: 'Profile',
-            onPressed: nav.profile,
-            icon: CircleAvatar(
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Icon(
-                Icons.person_outline,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 /// One responsive composition for confirmed, researched and machine-read facts.
 /// The views supply their own evidence status; this layout invents no scores.
@@ -261,6 +122,7 @@ class ResultsIdentityCard extends StatelessWidget {
               : imageUrl != null
               ? Image.network(
                   imageUrl!,
+                  webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
                   fit: BoxFit.contain,
                   semanticLabel: imageDescription ?? 'Product photo of $name',
                   loadingBuilder: (_, child, progress) =>

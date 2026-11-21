@@ -288,3 +288,12 @@ Auth keeps the original character, sprout and gardens as pixel-identical lossles
 WebP. The full PNG masters are in frontend/design_sources/artwork/auth; the
 retired scanner PNG is no longer bundled. Runtime/retained asset hashes and
 wordmark font derivation are in frontend/design_sources/runtime-assets.json.
+
+# 21 November 2026 shell repair
+
+Search and all Product info variants use the existing application shell. Keep
+the desktop sidebar and Home/Scan/Compare/Saved mobile navigation available.
+Remove the separate horizontal results navigation. Search replaces the content
+header with its input; choosing a shell destination closes search. Product info
+routes have zero desktop transition duration. Use validated source images in
+both search lists and details, with an HTML-image fallback for web CORS limits.

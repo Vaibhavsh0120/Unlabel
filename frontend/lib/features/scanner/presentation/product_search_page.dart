@@ -7,8 +7,8 @@ import '../../../core/network/unlabel_repository.dart';
 import 'report_presentation.dart';
 import 'product_info_page.dart';
 import 'ui_components.dart';
-import 'product_results_layout.dart';
 import '../../../core/widgets/search_skeleton.dart';
+import 'app_shell.dart';
 
 /// Name search replaces the app header and keeps typing independent of requests.
 class ProductSearchPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class ProductSearchPage extends StatefulWidget {
   final bool autofocus;
   final VoidCallback? onClose;
   final bool active;
-  final ResultsNavigation? resultNavigation;
+  final ShellNavigation? resultNavigation;
 
   @override
   State<ProductSearchPage> createState() => _ProductSearchPageState();
@@ -44,6 +44,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   int _thumbnailRequests = 0;
   final _items = <SearchCandidate>[];
   final _researchItems = <ResearchedCandidate>[];
+  final _researchProducts = <String, Future<ResearchedProduct?>>{};
   Timer? _debounce;
   SearchPage? _page;
   ResearchSearchPage? _researchPage;
@@ -158,6 +159,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
           _reports.clear();
           _items.clear();
           _researchItems.clear();
+          _researchProducts.clear();
           _page = null;
           _researchPage = null;
           _offRetryPending = false;
@@ -333,10 +335,17 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       _error = null;
     });
     try {
-      final product = await widget.repository.loadResearchProduct(item.entryId);
+      final product = await _researchProduct(item.entryId);
+      if (product == null) {
+        throw const AppFailure(
+          'unavailable',
+          'Product details could not be loaded. Please try again.',
+        );
+      }
       if (!mounted || request != _request) return;
       await Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        ShellContentRoute<void>(
+          context: context,
           builder: (_) => ProductInfoPage.research(
             repository: widget.repository,
             product: product,
@@ -361,6 +370,16 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     if (statuses.contains('refine_query')) return 'refine_query';
     return 'unavailable';
   }
+
+  Future<ResearchedProduct?> _researchProduct(String id) =>
+      _researchProducts.putIfAbsent(id, () async {
+        try {
+          return await widget.repository.loadResearchProduct(id);
+        } catch (_) {
+          _researchProducts.remove(id);
+          return null;
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -512,6 +531,31 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             clipBehavior: Clip.antiAlias,
                             child: ListTile(
                               key: ValueKey('research-${item.entryId}'),
+                              leading: SizedBox(
+                                width: 64,
+                                height: 80,
+                                child: FutureBuilder<ResearchedProduct?>(
+                                  future: _researchProduct(item.entryId),
+                                  builder: (context, snapshot) {
+                                    final url = snapshot.data?.imageUrl;
+                                    const fallback = Icon(
+                                      Icons.inventory_2_outlined,
+                                      size: 30,
+                                    );
+                                    return url == null
+                                        ? fallback
+                                        : Image.network(
+                                            url,
+                                            fit: BoxFit.contain,
+                                            webHtmlElementStrategy:
+                                                WebHtmlElementStrategy.fallback,
+                                            semanticLabel:
+                                                'Product photo of ${item.name}',
+                                            errorBuilder: (_, _, _) => fallback,
+                                          );
+                                  },
+                                ),
+                              ),
                               contentPadding: const EdgeInsets.all(16),
                               title: Text(item.name),
                               subtitle: Text(
@@ -643,6 +687,8 @@ class _ProductResult extends StatelessWidget {
                         ? fallback
                         : Image.network(
                             descriptor.url,
+                            webHtmlElementStrategy:
+                                WebHtmlElementStrategy.fallback,
                             fit: BoxFit.contain,
                             cacheWidth: 216,
                             semanticLabel: 'Product photo of ${item.name}',

@@ -15,7 +15,7 @@ class _ExtractedContent extends StatefulWidget {
   });
   final ExtractedLabel label;
   final Uint8List? photo;
-  final ResultsNavigation? navigation;
+  final ShellNavigation? navigation;
   final bool localFallback;
   final UnlabelRepository? repository;
   final Future<void> Function(ProductReport)? onOpenReport;
