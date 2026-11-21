@@ -111,7 +111,7 @@ the recurring backup gate.
 
 ## Cutover and retirement
 
-The authentication correction requires profile migration `0008`, the patched
+The authentication correction requires migrations through `0009`, the patched
 identity image `v2.197.0-unlabel.2`, API rollout, then frontend rollout. Follow
 the ordered [authentication corrections](roadmap.md#authentication-corrections-being-verified).
 The identity service needs `GOTRUE_SECURITY_MANUAL_LINKING_ENABLED=true` and

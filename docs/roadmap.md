@@ -36,7 +36,7 @@ completed hosting migration.
 | Recovery | Configure a recurring off-VM destination and repeat the verified restore process from that destination. |
 | Performance | Measure queries, pools, concurrency, queue recovery, memory and disk. One VM is one failure domain. |
 | UI | Ship prepared bell, recent-scan, Insights-height and sidebar fixes. Recheck themes, enlarged text and phone/tablet/desktop layouts. |
-| Release | Canonical versions/contracts are now 1.0; web builds require healthy API dependencies but do not gate on `cutover_ready`. Complete hosted flows and device acceptance; keep source, artifact and physical-device proof separate. |
+| Release | Prepare v1.1.0 from canonical component manifests. Web builds require the deployed account contract and healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
 ## Authentication corrections being verified
@@ -50,8 +50,9 @@ activates a scanner account. Existing Firebase passwords are not migrated.
 
 Deployment requires the following in order:
 
-1. Apply migration `0008_profile_avatar_preference.sql` with the maintained
-   checksum migration runner. Preserve explicit Automatic/Default/Google choices.
+1. Apply migrations through `0009_outbox_conflict_key_grants.sql` with the
+   maintained checksum runner. Migration 0008 preserves explicit avatar choices;
+   0009 grants only the outbox conflict-key reads needed for API deduplication.
 2. Build and verify identity image `v2.197.0-unlabel.2`. Its pinned source patch
    refuses automatic email-based identity linking and removes the password
    verifier when disconnecting email. Enable manual linking and email-identity
@@ -77,6 +78,18 @@ source bundles, licenses, contract fixtures, historical tags and device-local
 guest records are outside that scope.
 
 ## Acceptance limits
+
+The v1.1.0 source update is being prepared; the version number does not certify
+deployment or retirement. Its release requires successful CI, the ordered hosted
+account rollout above and the remaining cutover gates. The first disposable
+PostgreSQL run found missing outbox conflict-key SELECT grants; migration 0009
+repairs this without exposing job payloads. The frontend deployment correctly
+refused to ship before the identity/profile account contract was deployed.
+
+GitGuardian incident 40814799 identified a synthetic password in a fully mocked
+recovery test. It was never a service credential. Recovery and password-change
+test inputs are now generated at runtime; the historical incident needs to be
+classified as a test fixture/false positive in GitGuardian.
 
 Camera accuracy and OS notification delivery require physical devices. Chromium
 viewports do not establish Safari, Apple camera or LiveContainer acceptance.

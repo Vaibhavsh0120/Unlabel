@@ -1,10 +1,13 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const { randomBytes } = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../web/account-recovery.js'), 'utf8');
 const flush = () => new Promise(resolve => setImmediate(resolve));
+// Generated only for mocked fetch calls; never used by a real identity service.
+const testPassword = () => randomBytes(24).toString('base64url') + 'aA1!';
 
 test('confirmation discards grants without creating a browser session or sending tokens', () => {
   const script = fs.readFileSync(path.join(__dirname, '../web/account-confirmation.js'), 'utf8');
@@ -44,10 +47,11 @@ test('recovery scrubs the URL before verifying the token, and never activates an
   assert.equal(app.calls[0].options.method, 'GET');
   assert.equal(app.calls[0].options.headers.Authorization, 'Bearer synthetic-token');
   assert.equal(app.elements.recovery.hidden, false);
-  app.elements.password.value = app.elements.confirm.value = 'NewSyntheticPass123!';
+  const password = testPassword();
+  app.elements.password.value = app.elements.confirm.value = password;
   await app.submit();
   assert.equal(app.calls[1].options.method, 'PUT');
-  assert.equal(JSON.parse(app.calls[1].options.body).password, 'NewSyntheticPass123!');
+  assert.equal(JSON.parse(app.calls[1].options.body).password, password);
   assert.ok(app.calls[2].url.endsWith('/logout?scope=local'));
   assert.equal(app.elements.password.value, '');
   assert.equal(app.elements.recovery.hidden, true);
@@ -74,8 +78,8 @@ test('duplicate tokens, nonrecovery links, revoked tokens and guests cannot open
 test('mismatch and weak passwords do not mutate identity; leaving clears secret fields', async () => {
   const app = boot();
   await flush();
-  app.elements.password.value = 'StrongPassword123!';
-  app.elements.confirm.value = 'OtherPassword123!';
+  app.elements.password.value = testPassword();
+  app.elements.confirm.value = testPassword();
   await app.submit();
   assert.equal(app.calls.length, 1);
   assert.match(app.elements.status.textContent, /do not match/);

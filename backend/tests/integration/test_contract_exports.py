@@ -130,6 +130,7 @@ def test_current_selfhost_openapi_matches_runtime_without_service_connections():
     from types import SimpleNamespace
     from unittest.mock import patch
 
+    from app import __version__
     from app.selfhost import entrypoint
     from pydantic import SecretStr
 
@@ -155,6 +156,6 @@ def test_current_selfhost_openapi_matches_runtime_without_service_connections():
         runtime = entrypoint.create_platform_app(settings).openapi()
 
     saved = json.loads(
-        (CONTRACTS / "schemas/backend-v1.0.0.selfhost.openapi.json").read_text()
+        (CONTRACTS / f"schemas/backend-v{__version__}.selfhost.openapi.json").read_text()
     )
     assert saved == runtime

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -568,34 +569,34 @@ void main() {
     expect(auth.identity, isNull);
   });
 
-  test(
-    'password change reauthenticates and rotates only the same account',
-    () async {
-      var signins = 0;
-      final auth = account(
-        api((request) async {
-          if (request.method == 'PUT') {
-            expect(request.headers['authorization'], 'Bearer reauthenticated');
-            expect(jsonDecode(request.body), {'password': 'NewPassword123!'});
-            return reply(user());
-          }
-          if (request.url.queryParameters['grant_type'] == 'refresh_token') {
-            expect(jsonDecode(request.body), {
-              'refresh_token': 'refresh-reauthenticated',
-            });
-            return reply(token('rotated-after-password'));
-          }
-          signins++;
-          return reply(token(signins == 1 ? 'owner' : 'reauthenticated'));
-        }),
-      );
-      await auth.signIn(email, password);
-      await auth.changePassword(password, 'NewPassword123!');
-      expect(signins, 2);
-      expect(auth.identity?.uid, userId);
-      expect(await auth.token(userId), 'rotated-after-password');
-    },
-  );
+  test('password change reauthenticates and rotates only the same account', () async {
+    final random = Random.secure();
+    final changedPassword =
+        '${List.generate(24, (_) => String.fromCharCode(65 + random.nextInt(26))).join()}a1!';
+    var signins = 0;
+    final auth = account(
+      api((request) async {
+        if (request.method == 'PUT') {
+          expect(request.headers['authorization'], 'Bearer reauthenticated');
+          expect(jsonDecode(request.body), {'password': changedPassword});
+          return reply(user());
+        }
+        if (request.url.queryParameters['grant_type'] == 'refresh_token') {
+          expect(jsonDecode(request.body), {
+            'refresh_token': 'refresh-reauthenticated',
+          });
+          return reply(token('rotated-after-password'));
+        }
+        signins++;
+        return reply(token(signins == 1 ? 'owner' : 'reauthenticated'));
+      }),
+    );
+    await auth.signIn(email, password);
+    await auth.changePassword(password, changedPassword);
+    expect(signins, 2);
+    expect(auth.identity?.uid, userId);
+    expect(await auth.token(userId), 'rotated-after-password');
+  });
 
   test(
     'recovery links use the web password form rather than the sign-in return',

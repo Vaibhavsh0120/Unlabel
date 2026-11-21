@@ -162,6 +162,18 @@ def test_quota_failure_rolls_back_receipt_and_every_counter(stores):
     assert api.receipt(ACTOR, prepared.request.submission_id) is None
 
 
+def test_api_can_enqueue_duplicate_keys_without_reading_private_job_payloads(stores):
+    api, _, _, operator, _ = stores
+    api.submit(ACTOR, assertion())
+    with api.pool.connection() as c:
+        keys = c.execute("SELECT topic,idempotency_key FROM operations.outbox").fetchall()
+        assert len(keys) == 1
+        with pytest.raises(psycopg.errors.InsufficientPrivilege):
+            c.execute("SELECT payload FROM operations.outbox")
+    with operator.connection() as c:
+        assert c.execute("SELECT count(*) FROM operations.outbox").fetchone() == (1,)
+
+
 def test_staged_observations_stay_private_then_expire(stores):
     api, moderator, _, operator, clock = stores
     result = api.submit(ACTOR, assertion(
