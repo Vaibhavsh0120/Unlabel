@@ -81,6 +81,44 @@ jobs:
         working-directory: backend
         run: python -m pytest -q
 
+  selfhost-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18.7-bookworm@sha256:ece55f7868da684e400f82f1030a050718adbdd65c23aa500c486f6e2950dc0f
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['127.0.0.1:5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      UNLABEL_TEST_POSTGRES_ADMIN_DSN: postgresql://postgres:postgres@127.0.0.1:5432/postgres
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r backend/requirements-dev.lock
+      - name: Verify owner isolation, migrations, evidence admission and durable workers
+        working-directory: backend
+        run: >-
+          python -m pytest tests/integration/test_selfhost_profile_api.py
+          tests/integration/test_selfhost_community.py tests/integration/test_selfhost_workers.py -q
+
+  identity-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Apply the pinned account policy and compile the identity service
+        run: docker build --target build --file infrastructure/docker/auth.Dockerfile .
+
   frontend:
     runs-on: ubuntu-24.04
     timeout-minutes: 20

@@ -111,6 +111,44 @@ the recurring backup gate.
 
 ## Cutover and retirement
 
+The authentication correction requires profile migration `0008`, the patched
+identity image `v2.197.0-unlabel.2`, API rollout, then frontend rollout. Follow
+the ordered [authentication corrections](roadmap.md#authentication-corrections-being-verified).
+The identity service needs `GOTRUE_SECURITY_MANUAL_LINKING_ENABLED=true` and
+`GOTRUE_EXPERIMENTAL_CREATE_EMAIL_IDENTITY_ON_PASSWORD_SET_ENABLED=true`.
+Configure `GOTRUE_EXTERNAL_GOOGLE_SECRET` with the web client's existing secret;
+keep it out of Flutter, build arguments and logs. Google's authorized redirect
+must exactly match `https://unlabel.duckdns.org/auth/v1/callback`.
+
+New client builds require the `selfhost-account-v2` dependency-health contract.
+The API emits it only after checking the profile column and `.2` identity health.
+Pushing source before this staged rollout therefore leaves the previous frontend
+live; retry the frontend deployment after the backend passes that contract. This
+checks account compatibility without asserting that overall cutover is accepted.
+
+`/auth-callback.html` returns only a one-time code to its same-origin initiating
+window. S256 PKCE binds the exchange to that window. `/account-recovery.html`
+consumes the identity recovery grant, clears the URL before further requests,
+updates the password through Oracle and ends the recovery session. Native email
+links also finish in this web form. The Flutter app then requires a normal
+sign-in. These pages have no-store, referrer and CSP headers.
+
+Email signup/change links finish on `account-confirmation.html`; that page
+discards the confirmation grant and returns to sign-in without activating an
+account. Existing Firebase credentials are not imported into GoTrue.
+
+The private `migration-runner` Docker target is a single-use operator process,
+not an API or a schedule. It accepts only the recorded app database/migrator
+destination, applies checksum-verified migrations and holds a health marker for
+at most ten minutes. Remove its temporary Coolify resource and generated
+configuration after checking migration/API health. Never install its owner DSN
+into API, identity, notification or scheduler resources.
+
+`python -m app.selfhost.acceptance --allow-synthetic-production-check` is an
+explicit operator-only check inside the API container. It creates and removes
+synthetic identities/private profiles, sends no email and makes no public
+observations. It does not prove Google consent, SMTP delivery or device behavior.
+
 Before changing the client endpoint, verify source-import parity, account isolation,
 Google/email/reset flows, profile and sync behavior, notification delivery and
 unsubscribe, guest expiry, background retry behavior, restart persistence and

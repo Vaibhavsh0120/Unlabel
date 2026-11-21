@@ -1,0 +1,56 @@
+diff --git a/internal/api/external.go b/internal/api/external.go
+--- a/internal/api/external.go
++++ b/internal/api/external.go
+@@ -316,29 +316,10 @@
+ 	}
+ 
+ 	switch decision.Decision {
+-	case models.LinkAccount:
+-		user = decision.User
+-
+-		if identity, terr = a.createNewIdentity(tx, user, providerType, identityData); terr != nil {
+-			return 0, nil, terr
+-		}
+-
+-		if terr = user.UpdateUserMetaData(tx, identityData); terr != nil {
+-			return 0, nil, terr
+-		}
+-
+-		if terr = user.UpdateAppMetaDataProviders(tx); terr != nil {
+-			return 0, nil, terr
+-		}
+-
+-		if terr = models.NewAuditLogEntry(config.AuditLog, r, tx, user, models.IdentityLinkAction, utilities.GetIPAddress(r), map[string]any{
+-			"identity_id": identity.ID,
+-			"provider":    identity.Provider,
+-			"provider_id": identity.ProviderID,
+-		}); terr != nil {
+-			return 0, nil, terr
+-		}
+-
++	case models.LinkAccount:
++		// Unlabel requires an owner-authorized explicit link; email equality is not consent.
++		return 0, nil, apierrors.NewUnprocessableEntityError(apierrors.ErrorCodeIdentityAlreadyExists, "Sign in with your existing method, then connect Google in Profile")
++
+ 	case models.CreateAccount:
+ 		if config.DisableSignup {
+ 			return 0, nil, apierrors.NewUnprocessableEntityError(apierrors.ErrorCodeSignupDisabled, "Signups not allowed for this instance")
+diff --git a/internal/api/identity.go b/internal/api/identity.go
+--- a/internal/api/identity.go
++++ b/internal/api/identity.go
+@@ -75,7 +75,14 @@
+ 			if terr := tx.UpdateOnly(user, "phone_confirmed_at"); terr != nil {
+ 				return apierrors.NewInternalServerError("Database error updating user phone").WithInternalError(terr)
+ 			}
+-		default:
++		case EmailProvider:
++			// Removing email sign-in must also remove the password verifier.
++			user.EncryptedPassword = nil
++			if terr := tx.UpdateOnly(user, "encrypted_password"); terr != nil {
++				return apierrors.NewInternalServerError("Database error disconnecting password").WithInternalError(terr)
++			}
++			fallthrough
++		default:
+ 			if terr := user.UpdateUserEmailFromIdentities(tx, config.Mailer.Autoconfirm); terr != nil {
+ 				if models.IsUniqueConstraintViolatedError(terr) {
+ 					return apierrors.NewUnprocessableEntityError(apierrors.ErrorCodeEmailConflictIdentityNotDeletable, "Unable to unlink identity due to email conflict").WithInternalError(terr)

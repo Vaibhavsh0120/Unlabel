@@ -12,6 +12,7 @@ final class SelfhostAuthUser {
     required this.isAnonymous,
     this.email,
     this.displayName,
+    this.photoUrl,
     required this.providers,
   });
 
@@ -19,6 +20,7 @@ final class SelfhostAuthUser {
   final bool isAnonymous;
   final String? email;
   final String? displayName;
+  final String? photoUrl;
   final Set<String> providers;
 
   factory SelfhostAuthUser._parse(Object? value) {
@@ -44,6 +46,9 @@ final class SelfhostAuthUser {
         if (providers is List && providers.contains('email')) 'password',
         if (providers is List && providers.contains('google')) 'google.com',
       }),
+      photoUrl: metadata is Map
+          ? _googlePhoto(metadata['avatar_url'] ?? metadata['picture'])
+          : null,
     );
   }
 
@@ -51,6 +56,18 @@ final class SelfhostAuthUser {
       value is String && value.length <= limit && value.trim().isNotEmpty
       ? value.trim()
       : null;
+
+  static String? _googlePhoto(Object? value) {
+    if (value is! String || value.length > 2048) return null;
+    final uri = Uri.tryParse(value);
+    return uri != null &&
+            uri.scheme == 'https' &&
+            uri.userInfo.isEmpty &&
+            (uri.host == 'lh3.googleusercontent.com' ||
+                uri.host.endsWith('.googleusercontent.com'))
+        ? value
+        : null;
+  }
 }
 
 /// Memory-only credentials. Keep these out of report, guest, and log storage.
@@ -69,13 +86,6 @@ final class SelfhostAuthSession {
 
   bool needsRefresh(DateTime now) =>
       !expiresAt.isAfter(now.add(const Duration(seconds: 30)));
-}
-
-/// A recovery grant can update a password without activating a scanner session.
-final class SelfhostRecoveryGrant {
-  const SelfhostRecoveryGrant._(this._session);
-
-  final SelfhostAuthSession _session;
 }
 
 /// Redacted provider failure. Only a known, definitively invalid session can
@@ -186,6 +196,79 @@ final class SelfhostAuthClient {
     if (nonce != null) 'nonce': _requestToken(nonce, 512),
   }, anonymous: false);
 
+  Future<SelfhostAuthSession> exchangeGoogleCode(Map<String, Object?> grant) =>
+      _grant('pkce', {
+        'auth_code': _requestToken(grant['auth_code'] as String, 4096),
+        'code_verifier': _requestToken(grant['code_verifier'] as String, 128),
+      }, anonymous: false);
+
+  Future<SelfhostAuthSession> linkGoogleToken(
+    SelfhostAuthSession session,
+    String idToken,
+  ) async => _session(
+    await _request(
+      'POST',
+      '/token',
+      query: const {'grant_type': 'id_token'},
+      token: session.accessToken,
+      body: {
+        'provider': 'google',
+        'id_token': _requestToken(idToken, 16384),
+        'link_identity': true,
+      },
+    ),
+    anonymous: false,
+  );
+
+  Future<SelfhostAuthUser> updateUser(
+    SelfhostAuthSession session, {
+    String? email,
+    String? password,
+    Uri? redirectTo,
+  }) async => SelfhostAuthUser._parse(
+    await _request(
+      'PUT',
+      '/user',
+      token: session.accessToken,
+      query: _redirectQuery(redirectTo),
+      body: {
+        if (email != null) 'email': _email(email),
+        if (password != null) 'password': _password(password),
+      },
+    ),
+  );
+
+  Future<List<Map<String, Object?>>> identities(
+    SelfhostAuthSession session,
+  ) async {
+    final result = await _request('GET', '/user', token: session.accessToken);
+    if (SelfhostAuthUser._parse(result).id != session.user.id) {
+      throw _invalidResponse;
+    }
+    final values = result['identities'];
+    if (values is! List) throw _invalidResponse;
+    return values.map((value) {
+      if (value is! Map<String, Object?> ||
+          value['identity_id'] is! String ||
+          !_userId.hasMatch(value['identity_id'] as String)) {
+        throw _invalidResponse;
+      }
+      return value;
+    }).toList();
+  }
+
+  Future<void> unlinkIdentity(
+    SelfhostAuthSession session,
+    String identityId,
+  ) async {
+    if (!_userId.hasMatch(identityId)) throw _invalidInput;
+    await _request(
+      'DELETE',
+      '/user/identities/$identityId',
+      token: session.accessToken,
+    );
+  }
+
   Future<SelfhostAuthSession> signInGuest() async => _session(
     await _request('POST', '/signup', body: const {}),
     anonymous: true,
@@ -239,39 +322,6 @@ final class SelfhostAuthClient {
       query: _redirectQuery(redirectTo),
       body: {'email': _email(email)},
     );
-  }
-
-  /// For a recovery template that delivers a token hash. Link routing and
-  /// template rollout are the responsibility of the deployment and caller.
-  Future<SelfhostRecoveryGrant> verifyRecovery(String tokenHash) async =>
-      SelfhostRecoveryGrant._(
-        _session(
-          await _request(
-            'POST',
-            '/verify',
-            body: {
-              'type': 'recovery',
-              'token_hash': _requestToken(tokenHash, 4096),
-            },
-          ),
-          anonymous: false,
-        ),
-      );
-
-  Future<void> updateRecoveredPassword(
-    SelfhostRecoveryGrant grant,
-    String password,
-  ) async {
-    final session = grant._session;
-    final user = SelfhostAuthUser._parse(
-      await _request(
-        'PUT',
-        '/user',
-        body: {'password': _password(password)},
-        token: session.accessToken,
-      ),
-    );
-    if (user.id != session.user.id || user.isAnonymous) throw _invalidResponse;
   }
 
   Future<SelfhostAuthSession> _grant(

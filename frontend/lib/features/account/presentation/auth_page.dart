@@ -13,7 +13,7 @@ import 'auth_widgets.dart';
 
 enum _AuthMode { signIn, signUp, forgot, sent }
 
-/// Real SDK-backed forms. Firebase owns reset-code validation and completion.
+/// Account forms backed by the selected identity service.
 /// Passwords remain in these controllers only while the form is open.
 class AuthPage extends StatefulWidget {
   const AuthPage({
@@ -1237,8 +1237,8 @@ class _AuthPageState extends State<AuthPage>
               const SizedBox(height: 24),
               for (final step in [
                 'Open the reset email',
-                'Choose a password on Firebase’s secure page',
-                'Choose Continue to return to Unlabel',
+                'Choose a new password on Unlabel',
+                'Return here and sign in',
               ])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 14),

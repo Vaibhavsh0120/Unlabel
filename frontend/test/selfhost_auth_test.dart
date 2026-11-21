@@ -241,19 +241,6 @@ void main() {
       responses.add('${request.method} ${request.url.path}');
       return switch (request.url.path) {
         '/auth/v1/recover' => reply({}),
-        '/auth/v1/verify' => (() {
-          expect(request.url.hasQuery, isFalse);
-          expect(jsonDecode(request.body), {
-            'type': 'recovery',
-            'token_hash': 'test-recovery-hash',
-          });
-          return reply(token('recovery-session'));
-        })(),
-        '/auth/v1/user' => (() {
-          expect(request.headers['authorization'], 'Bearer recovery-session');
-          expect(jsonDecode(request.body), {'password': password});
-          return reply(user());
-        })(),
         '/auth/v1/token' => reply(token('authenticated')),
         '/auth/v1/logout' => (() {
           expect(request.headers['authorization'], 'Bearer authenticated');
@@ -264,8 +251,6 @@ void main() {
       };
     });
     await client.requestRecovery(email: email);
-    final grant = await client.verifyRecovery('test-recovery-hash');
-    await client.updateRecoveredPassword(grant, password);
     final session = await client.signInPassword(
       email: email,
       password: password,
@@ -273,8 +258,6 @@ void main() {
     await client.signOut(session);
     expect(responses, [
       'POST /auth/v1/recover',
-      'POST /auth/v1/verify',
-      'PUT /auth/v1/user',
       'POST /auth/v1/token',
       'POST /auth/v1/logout',
     ]);
@@ -301,7 +284,7 @@ void main() {
       'recovery_expired',
     ]) {
       await expectLater(
-        client.verifyRecovery('test-recovery-hash'),
+        client.signInPassword(email: email, password: password),
         throwsA(
           isA<SelfhostAuthFailure>()
               .having((error) => error.kind, 'kind', kind)
@@ -474,6 +457,170 @@ void main() {
     );
     expect(auth.identity, isNull);
   });
+
+  test(
+    'browser Google exchanges a bound authorization code through the API',
+    () async {
+      final auth = SelfhostAccountAuth(
+        now: () => clock,
+        client: api((request) async {
+          expect(request.url.queryParameters, {'grant_type': 'pkce'});
+          expect(jsonDecode(request.body), {
+            'auth_code': 'one-time',
+            'code_verifier': 'verifier',
+          });
+          return reply(token('web-account'));
+        }),
+        googleOAuth: (accessToken) async {
+          expect(accessToken, isNull);
+          return {'auth_code': 'one-time', 'code_verifier': 'verifier'};
+        },
+      );
+      addTearDown(auth.dispose);
+      await auth.signInGoogle();
+      expect(auth.identity?.uid, userId);
+      expect(await auth.scannerAuth.token(), 'web-account');
+    },
+  );
+
+  test(
+    'Google reauthentication mismatch cannot delete or select another library',
+    () async {
+      var privateDeleted = false, localDeleted = false, revokedOther = false;
+      final auth = SelfhostAccountAuth(
+        now: () => clock,
+        client: api((request) async {
+          if (request.url.path.endsWith('/logout')) {
+            expect(
+              request.headers['authorization'],
+              'Bearer other-google-account',
+            );
+            revokedOther = true;
+            return http.Response('', 204);
+          }
+          if (request.url.queryParameters['grant_type'] == 'id_token') {
+            return reply(token('other-google-account', id: nextGuestId));
+          }
+          return reply(token('owner'));
+        }),
+        googleIdToken: () async => 'synthetic-google-id-token',
+      );
+      addTearDown(auth.dispose);
+      await auth.signIn(email, password);
+      await expectLater(
+        auth.deleteAccount(
+          deletePrivateData: (_, _) async {
+            privateDeleted = true;
+          },
+          deleteLocalData: () async {
+            localDeleted = true;
+          },
+        ),
+        throwsA(
+          isA<AppFailure>().having(
+            (e) => e.kind,
+            'kind',
+            'reauthentication_mismatch',
+          ),
+        ),
+      );
+      expect(privateDeleted || localDeleted, isFalse);
+      expect(revokedOther, isTrue);
+      expect(auth.identity?.uid, userId);
+      expect(await auth.token(userId), 'owner');
+    },
+  );
+
+  test('account deletion requires fresh password and preserves local data if the API fails', () async {
+    var privateCalls = 0, localCalls = 0;
+    var fail = true;
+    final auth = account(
+      api((request) async {
+        expect(request.url.queryParameters['grant_type'], 'password');
+        return reply(token('fresh-owner'));
+      }),
+    );
+    await auth.signIn(email, password);
+    Future<void> remove() => auth.deleteAccount(
+      password: password,
+      deletePrivateData: (uid, access) async {
+        expect(uid, userId);
+        expect(access, 'fresh-owner');
+        privateCalls++;
+        if (fail) {
+          throw const AppFailure(
+            'account_delete_unavailable',
+            'Synthetic failure',
+          );
+        }
+      },
+      deleteLocalData: () async {
+        localCalls++;
+      },
+    );
+    await expectLater(remove(), throwsA(isA<AppFailure>()));
+    expect(localCalls, 0);
+    expect(auth.identity?.uid, userId);
+    fail = false;
+    await remove();
+    expect(privateCalls, 2);
+    expect(localCalls, 1);
+    expect(auth.identity, isNull);
+  });
+
+  test(
+    'password change reauthenticates and rotates only the same account',
+    () async {
+      var signins = 0;
+      final auth = account(
+        api((request) async {
+          if (request.method == 'PUT') {
+            expect(request.headers['authorization'], 'Bearer reauthenticated');
+            expect(jsonDecode(request.body), {'password': 'NewPassword123!'});
+            return reply(user());
+          }
+          if (request.url.queryParameters['grant_type'] == 'refresh_token') {
+            expect(jsonDecode(request.body), {
+              'refresh_token': 'refresh-reauthenticated',
+            });
+            return reply(token('rotated-after-password'));
+          }
+          signins++;
+          return reply(token(signins == 1 ? 'owner' : 'reauthenticated'));
+        }),
+      );
+      await auth.signIn(email, password);
+      await auth.changePassword(password, 'NewPassword123!');
+      expect(signins, 2);
+      expect(auth.identity?.uid, userId);
+      expect(await auth.token(userId), 'rotated-after-password');
+    },
+  );
+
+  test(
+    'recovery links use the web password form rather than the sign-in return',
+    () async {
+      final auth = SelfhostAccountAuth(
+        client: api((request) async {
+          expect(request.url.path, '/auth/v1/recover');
+          expect(
+            request.url.queryParameters['redirect_to'],
+            'https://frontend.example.test/account-recovery.html',
+          );
+          return reply({});
+        }),
+        emailRedirect: Uri.parse(
+          'https://frontend.example.test/#/account-signin',
+        ),
+        recoveryRedirect: Uri.parse(
+          'https://frontend.example.test/account-recovery.html',
+        ),
+      );
+      addTearDown(auth.dispose);
+      await auth.resetPassword(email);
+      expect(auth.identity, isNull);
+    },
+  );
 }
 
 final class MemorySelfhostAccountSessionStorage

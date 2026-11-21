@@ -12,14 +12,22 @@ final class SelfhostAccountAuth extends AccountAuth {
   SelfhostAccountAuth({
     required this._client,
     this._googleIdToken,
+    this._googleOAuth,
+    this._prepareGoogleOAuth,
+    this._cancelGoogleOAuth,
     this._emailRedirect,
+    this._recoveryRedirect,
     this._sessionStorage,
     DateTime Function()? now,
   }) : _now = now ?? DateTime.now;
 
   final SelfhostAuthClient _client;
   final Future<String> Function()? _googleIdToken;
+  final Future<Map<String, Object?>> Function(String? token)? _googleOAuth;
+  final void Function()? _prepareGoogleOAuth;
+  final void Function()? _cancelGoogleOAuth;
   final Uri? _emailRedirect;
+  final Uri? _recoveryRedirect;
   final SelfhostAccountSessionStorage? _sessionStorage;
   final DateTime Function() _now;
   late final ScannerAuth scannerAuth = SingleFlightScannerAuth(
@@ -28,6 +36,8 @@ final class SelfhostAccountAuth extends AccountAuth {
   SelfhostAuthSession? _account;
   SelfhostAuthSession? _guest;
   Future<SelfhostAuthSession>? _accountRefresh;
+  Future<void>? _startup;
+  bool _starting = false;
   bool _busy = false;
   bool _signingOut = false;
   bool _disposed = false;
@@ -42,12 +52,33 @@ final class SelfhostAccountAuth extends AccountAuth {
             uid: user.id,
             email: user.email,
             displayName: user.displayName,
+            photoUrl: user.photoUrl,
+            googleEmail: user.providers.contains('google.com')
+                ? user.email
+                : null,
+            googleDisplayName: user.providers.contains('google.com')
+                ? user.displayName
+                : null,
+            googlePhotoUrl: user.providers.contains('google.com')
+                ? user.photoUrl
+                : null,
             providers: user.providers,
           );
   }
 
   @override
-  Future<void> start() async {
+  Future<void> start() => _startup ??= _restoreSession();
+
+  Future<void> _restoreSession() async {
+    _starting = true;
+    try {
+      await _restoreStoredSession();
+    } finally {
+      _starting = false;
+    }
+  }
+
+  Future<void> _restoreStoredSession() async {
     final storage = _sessionStorage;
     if (storage == null) return;
     final saved = await storage.read();
@@ -115,6 +146,16 @@ final class SelfhostAccountAuth extends AccountAuth {
   @override
   Future<void> signInGoogle() => _mutate(() async {
     _requireGuest();
+    await _activate(await _googleSession());
+  });
+
+  Future<SelfhostAuthSession> _googleSession({
+    SelfhostAuthSession? link,
+  }) async {
+    final oauth = _googleOAuth;
+    if (oauth != null) {
+      return _client.exchangeGoogleCode(await oauth(link?.accessToken));
+    }
     final google = _googleIdToken;
     if (google == null) {
       throw const AppFailure(
@@ -124,12 +165,184 @@ final class SelfhostAccountAuth extends AccountAuth {
     }
     final idToken = await google();
     if (_disposed) throw _accountChanged;
-    await _activate(await _client.signInGoogle(idToken: idToken));
+    return link == null
+        ? _client.signInGoogle(idToken: idToken)
+        : _client.linkGoogleToken(link, idToken);
+  }
+
+  SelfhostAuthSession _requireAccount() {
+    final session = _account;
+    if (session == null || _disposed || _signingOut) throw _accountChanged;
+    return session;
+  }
+
+  Future<void> _activateOwner(SelfhostAuthSession session, String uid) async {
+    if (_account?.user.id != uid || session.user.id != uid) {
+      // A different Google selection must never select another private library.
+      try {
+        await _client.signOut(session);
+      } catch (_) {}
+      throw const AppFailure(
+        'reauthentication_mismatch',
+        'Choose the sign-in account already connected to this Unlabel account.',
+      );
+    }
+    await _activate(session);
+  }
+
+  Future<SelfhostAuthSession> _reauthenticate([String? password]) async {
+    final current = _requireAccount();
+    final fresh =
+        password != null && current.user.providers.contains('password')
+        ? await _client.signInPassword(
+            email: current.user.email!,
+            password: password,
+          )
+        : await _googleSession();
+    await _activateOwner(fresh, current.user.id);
+    return fresh;
+  }
+
+  Future<void> _reloadOwner(SelfhostAuthSession session) async {
+    await _activateOwner(await _client.refresh(session), session.user.id);
+  }
+
+  @override
+  Future<void> linkGoogle() => _mutate(() async {
+    final current = await _validAccountSession(_requireAccount());
+    if (current.user.providers.contains('google.com')) throw _providerLinked;
+    await _activateOwner(await _googleSession(link: current), current.user.id);
+  }, prepareGoogle: true);
+
+  @override
+  Future<void> linkPassword(String email, String password) => _mutate(() async {
+    final current = _requireAccount();
+    if (current.user.providers.contains('password')) throw _providerLinked;
+    if (email.trim().toLowerCase() != current.user.email?.toLowerCase()) {
+      throw const AppFailure(
+        'invalid_email',
+        'Use the email address connected to this account.',
+      );
+    }
+    final fresh = await _reauthenticate();
+    await _client.updateUser(fresh, password: password);
+    await _reloadOwner(fresh);
   });
 
   @override
+  Future<void> unlinkGoogle({required String password}) => _mutate(() async {
+    final current = _requireAccount();
+    if (!current.user.providers.contains('password')) {
+      throw const AppFailure(
+        'provider_required',
+        'Add email and password before disconnecting Google.',
+      );
+    }
+    final fresh = await _reauthenticate(password);
+    final identities = await _client.identities(fresh);
+    final google = identities.where((value) => value['provider'] == 'google');
+    if (google.isEmpty) throw _accountChanged;
+    await _client.unlinkIdentity(fresh, google.single['identity_id'] as String);
+    await _reloadOwner(fresh);
+  });
+
+  @override
+  Future<void> unlinkPassword() => _mutate(() async {
+    final current = _requireAccount();
+    if (!current.user.providers.contains('google.com')) {
+      throw const AppFailure(
+        'provider_required',
+        'Connect Google before disconnecting email and password.',
+      );
+    }
+    final fresh = await _reauthenticate();
+    final identities = await _client.identities(fresh);
+    final email = identities.where((value) => value['provider'] == 'email');
+    if (email.isEmpty) throw _accountChanged;
+    await _client.unlinkIdentity(fresh, email.single['identity_id'] as String);
+    await _reloadOwner(fresh);
+  });
+
+  @override
+  Future<void> changeGoogleAccount({required String password}) => _mutate(
+    () async {
+      final current = _requireAccount();
+      if (!current.user.providers.contains('password')) throw _accountChanged;
+      final fresh = await _reauthenticate(password);
+      // Link the replacement first. A collision/cancel keeps the old provider intact.
+      final identities = await _client.identities(fresh);
+      final old = identities
+          .where((value) => value['provider'] == 'google')
+          .toList();
+      final linked = await _googleSession(link: fresh);
+      await _activateOwner(linked, current.user.id);
+      final after = await _client.identities(linked);
+      if (!after.any(
+        (value) =>
+            value['provider'] == 'google' &&
+            !old.any(
+              (previous) => previous['identity_id'] == value['identity_id'],
+            ),
+      )) {
+        throw const AppFailure(
+          'provider_linked',
+          'Choose a different Google account to replace this one.',
+        );
+      }
+      for (final previous in old) {
+        await _client.unlinkIdentity(linked, previous['identity_id'] as String);
+      }
+      await _reloadOwner(linked);
+    },
+    prepareGoogle: true,
+  );
+
+  @override
+  Future<void> changeEmail(String email, String currentPassword) => _mutate(
+    () async {
+      final fresh = await _reauthenticate(currentPassword);
+      await _client.updateUser(fresh, email: email, redirectTo: _emailRedirect);
+      await _reloadOwner(fresh);
+      if (_account?.user.email?.toLowerCase() != email.trim().toLowerCase()) {
+        throw const AppFailure(
+          'email_confirmation_pending',
+          'Check your inbox to confirm the email change. Your current address still works until confirmation.',
+        );
+      }
+    },
+  );
+
+  @override
+  Future<void> changePassword(String currentPassword, String newPassword) =>
+      _mutate(() async {
+        final fresh = await _reauthenticate(currentPassword);
+        await _client.updateUser(fresh, password: newPassword);
+        await _reloadOwner(fresh);
+      });
+
+  @override
+  Future<void> deleteAccount({
+    String? password,
+    required Future<void> Function(String uid, String token) deletePrivateData,
+    required Future<void> Function() deleteLocalData,
+  }) => _mutate(() async {
+    final fresh = await _reauthenticate(password);
+    await deletePrivateData(fresh.user.id, fresh.accessToken);
+    await deleteLocalData();
+    await _clearAccount();
+  });
+
+  static const _providerLinked = AppFailure(
+    'provider_linked',
+    'This sign-in method is already connected to your account.',
+  );
+
+  @override
   Future<void> resetPassword(String email) => _mutate(
-    () => _client.requestRecovery(email: email, redirectTo: _emailRedirect),
+    () => _client.requestRecovery(
+      email: email,
+      redirectTo: _recoveryRedirect ?? _emailRedirect,
+    ),
   );
 
   @override
@@ -216,9 +429,12 @@ final class SelfhostAccountAuth extends AccountAuth {
     return guest.accessToken;
   }
 
-  Future<void> _mutate(Future<void> Function() operation) async {
+  Future<void> _mutate(
+    Future<void> Function() operation, {
+    bool prepareGoogle = false,
+  }) async {
     if (_disposed) throw _accountChanged;
-    if (_busy) {
+    if (_busy || _starting) {
       throw const AppFailure(
         'account_busy',
         'Wait for the current sign-in action to finish.',
@@ -226,6 +442,7 @@ final class SelfhostAccountAuth extends AccountAuth {
     }
     _busy = true;
     try {
+      if (prepareGoogle) _prepareGoogleOAuth?.call();
       await operation();
     } on GoogleSignInException catch (error) {
       if (error.code == GoogleSignInExceptionCode.canceled) {
@@ -246,6 +463,11 @@ final class SelfhostAccountAuth extends AccountAuth {
         'Sign-in could not finish. Your local reports are still available.',
       );
     } finally {
+      if (prepareGoogle) {
+        try {
+          _cancelGoogleOAuth?.call();
+        } catch (_) {}
+      }
       _busy = false;
     }
   }
@@ -259,6 +481,7 @@ final class SelfhostAccountAuth extends AccountAuth {
     await _persist(session);
     if (_disposed) throw _accountChanged;
     _generation++;
+    _accountRefresh = null;
     _account = session;
     notifyListeners();
   }

@@ -166,7 +166,7 @@ class ReleaseGuardTests(unittest.TestCase):
         with patch(
             "backend_target.urllib.request.urlopen",
             return_value=response(
-                b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
+                  b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"],"account_contract":"selfhost-account-v2"}'
             ),
         ) as open_url:
             validate_backend_target("https://selfhost.example.test", True)
@@ -183,6 +183,20 @@ class ReleaseGuardTests(unittest.TestCase):
         with (
             patch("backend_target.urllib.request.urlopen", return_value=result),
             self.assertRaisesRegex(ValueError, "dependencies are not ready"),
+        ):
+            validate_backend_target("https://selfhost.example.test", True)
+
+    def test_old_account_backend_cannot_publish_the_new_client(self):
+        result = Mock()
+        result.__enter__ = Mock(return_value=result)
+        result.__exit__ = Mock(return_value=False)
+        result.status = 200
+        result.read.return_value = (
+            b'{"status":"ready","dependencies":["postgresql","mongodb","redis","identity"]}'
+        )
+        with (
+            patch("backend_target.urllib.request.urlopen", return_value=result),
+            self.assertRaisesRegex(ValueError, "account migration is not deployed"),
         ):
             validate_backend_target("https://selfhost.example.test", True)
 

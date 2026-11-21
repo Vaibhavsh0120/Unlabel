@@ -1,0 +1,78 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const { webcrypto } = require('node:crypto');
+const source = fs.readFileSync(path.join(__dirname, '../web/account-oauth.js'), 'utf8');
+
+function boot({ blocked = false, providerUrl } = {}) {
+  const listeners = new Map();
+  const locations = [];
+  const requests = [];
+  const popup = { closed: false, close() { this.closed = true; }, location: {
+    replace(url) {
+      locations.push(url);
+      const listener = listeners.get('message');
+      listener({ origin: 'https://attacker.invalid', source: popup,
+        data: { type: 'unlabel-oauth', code: 'injected' } });
+      listener({ origin: 'https://unlabel.example', source: {},
+        data: { type: 'unlabel-oauth', code: 'injected' } });
+      listener({ origin: 'https://unlabel.example', source: popup,
+        data: { type: 'unlabel-oauth', code: 'bound-code' } });
+    }
+  } };
+  const window = { open: () => blocked ? null : popup,
+    addEventListener: (name, fn) => listeners.set(name, fn),
+    removeEventListener: name => listeners.delete(name) };
+  vm.runInNewContext(source, { window, location: { origin: 'https://unlabel.example' },
+    URL, URLSearchParams, crypto: webcrypto, TextEncoder, Uint8Array, btoa,
+    AbortSignal, setTimeout, clearTimeout, setInterval, clearInterval,
+    fetch: async (url, options) => { requests.push({ url, options });
+      return { ok: true, json: async () => ({ url: providerUrl }) }; } });
+  return { window, popup, locations, requests, listeners };
+}
+
+test('Google uses S256 PKCE and accepts a code only from its own same-origin popup', async () => {
+  const app = boot();
+  const grant = JSON.parse(await app.window.unlabelGoogleOAuth('https://api.example'));
+  const target = new URL(app.locations[0]);
+  assert.equal(target.origin, 'https://api.example');
+  assert.equal(target.pathname, '/auth/v1/authorize');
+  assert.equal(target.searchParams.get('provider'), 'google');
+  assert.equal(target.searchParams.get('redirect_to'), 'https://unlabel.example/auth-callback.html');
+  assert.equal(target.searchParams.get('code_challenge_method'), 's256');
+  const hash = await webcrypto.subtle.digest('SHA-256', new TextEncoder().encode(grant.code_verifier));
+  assert.equal(target.searchParams.get('code_challenge'), Buffer.from(hash).toString('base64url'));
+  assert.equal(grant.auth_code, 'bound-code');
+  assert.equal(app.popup.closed, true);
+  assert.equal(app.listeners.size, 0);
+});
+
+test('blocked popup and untrusted link destination fail without a credential-bearing navigation', async () => {
+  await assert.rejects(boot({ blocked: true }).window.unlabelGoogleOAuth('https://api.example'), /popup_blocked/);
+  const app = boot({ providerUrl: 'https://attacker.invalid/' });
+  await assert.rejects(app.window.unlabelGoogleOAuth('https://api.example', 'synthetic-token'));
+  assert.equal(app.locations.length, 0);
+  assert.equal(app.requests[0].options.headers.Authorization, 'Bearer synthetic-token');
+  assert.equal(app.requests[0].options.redirect, 'error');
+  assert.equal(app.popup.closed, true);
+});
+
+test('explicit linking carries the owner bearer but no credential in the OAuth URL', async () => {
+  const app = boot({ providerUrl: 'https://accounts.google.com/o/oauth2/v2/auth?state=signed' });
+  await app.window.unlabelGoogleOAuth('https://api.example', 'synthetic-token');
+  assert.equal(app.requests[0].url.pathname, '/auth/v1/user/identities/authorize');
+  assert.equal(app.requests[0].url.searchParams.get('skip_http_redirect'), 'true');
+  assert.ok(!app.locations[0].includes('synthetic-token'));
+});
+
+test('provider replacement can reserve its popup before waiting for password proof', async () => {
+  const app = boot();
+  app.window.unlabelPrepareGoogleOAuth();
+  await new Promise(resolve => setImmediate(resolve));
+  const grant = JSON.parse(await app.window.unlabelGoogleOAuth('https://api.example'));
+  assert.equal(grant.auth_code, 'bound-code');
+  assert.equal(app.locations.length, 1);
+  assert.equal(app.popup.closed, true);
+});

@@ -1,7 +1,7 @@
 # Stable identity service security rebuild
 
-`../auth.Dockerfile` rebuilds Supabase Auth **v2.197.0**, retaining its application
-source and migrations. It uses Go **1.27.4** and explicitly reviewed dependency
+`../auth.Dockerfile` rebuilds Supabase Auth **v2.197.0**, retaining its migrations
+and applying the bounded [account policy patch](account-policy.patch). It uses Go **1.27.4** and explicitly reviewed dependency
 updates rather than switching production to an upstream release candidate.
 The exact commit, acquired archive checksum/size, MIT license and patched module
 lock hashes are in [provenance.json](provenance.json). The upstream license text
@@ -22,6 +22,15 @@ verify downloaded module checksums and use `-mod=readonly` for tests/builds.
 Application source is fetched from an immutable commit and SHA-256 checked before
 extraction; no upstream source archive or generated executable is committed.
 
+The `.2` image refuses automatic external-provider linking based on a matching
+email. Linking must instead prove the current owner and use GoTrue's explicit
+link operation; a credential owned by another user remains a collision. Removing
+an email identity clears its password verifier in the same transaction, while
+the upstream rule still requires another identity to remain. The patch applies
+only to the pinned upstream source and is checked before compilation. The
+historical `local_build` receipt in provenance describes `.1`; it is not proof
+that `.2` has built, started or passed account acceptance.
+
 The final `scratch` image contains the static auth and healthcheck executables,
 CA roots from the pinned builder, Go timezone data, migrations and licenses.
 It runs as numeric user/group 10001 and contains no shell, package manager,
@@ -41,7 +50,7 @@ docker buildx create --name unlabel-auth-build --driver docker-container \
   --driver-opt memory=2g,memory-swap=2g,cpu-period=100000,cpu-quota=100000
 docker buildx build --builder unlabel-auth-build --platform linux/arm64 \
   --load --target runtime --file infrastructure/docker/auth.Dockerfile \
-  --tag unlabel-auth:v2.197.0-unlabel.1 .
+  --tag unlabel-auth:v2.197.0-unlabel.2 .
 ```
 
 The Docker healthcheck executes `/healthcheck`; it needs no shell, curl or wget.

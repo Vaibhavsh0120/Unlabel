@@ -82,6 +82,7 @@ class Resources:
     def health(self):
         with self.pool.connection() as connection:
             connection.execute("SELECT id FROM accounts.users LIMIT 0")
+            connection.execute("SELECT avatar_preference FROM accounts.profiles LIMIT 0")
             connection.execute("SELECT id FROM operations.push_subscriptions LIMIT 0")
             if self.settings.community_enabled:
                 connection.execute("SELECT revision_id FROM community.revisions LIMIT 0")
@@ -92,7 +93,10 @@ class Resources:
             raise ValueError("Catalogue imports are incomplete")
         self.mongo.command("ping")
         self.cache.ping()
-        self.identity.get("/health").raise_for_status()
+        identity = self.identity.get("/health")
+        identity.raise_for_status()
+        if identity.json().get("version") != "v2.197.0-unlabel.2":
+            raise ValueError("Identity account policy is not ready")
 
     def cached(self, key):
         try:

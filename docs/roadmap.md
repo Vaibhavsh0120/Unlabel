@@ -39,6 +39,39 @@ completed hosting migration.
 | Release | Canonical versions/contracts are now 1.0; web builds require healthy API dependencies but do not gate on `cutover_ready`. Complete hosted flows and device acceptance; keep source, artifact and physical-device proof separate. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
+## Authentication corrections being verified
+
+The self-hosted client had no web Google implementation, its proxy rejected
+`authorize`/`callback`, signed-in profile media had no repository, and account
+settings inherited unavailable operations. The prepared replacement adds a
+same-origin Google popup with S256 PKCE, owner-checked account operations,
+PostgreSQL profile media and an Unlabel password-recovery page. Recovery never
+activates a scanner account. Existing Firebase passwords are not migrated.
+
+Deployment requires the following in order:
+
+1. Apply migration `0008_profile_avatar_preference.sql` with the maintained
+   checksum migration runner. Preserve explicit Automatic/Default/Google choices.
+2. Build and verify identity image `v2.197.0-unlabel.2`. Its pinned source patch
+   refuses automatic email-based identity linking and removes the password
+   verifier when disconnecting email. Enable manual linking and email-identity
+   creation on password set; retain email confirmation and recent-auth checks.
+3. Install the web Google client secret in the private identity service and
+   authorize `https://unlabel.duckdns.org/auth/v1/callback` for that web client.
+   The inspected Coolify environment had no `GOTRUE_EXTERNAL_GOOGLE_SECRET`.
+4. Deploy the API, then the frontend; verify actual email signup/login, Google,
+   recovery, expiry, provider collision, profile CAS and deletion with synthetic
+   accounts. Source tests and a container health badge do not complete this gate.
+
+The Google clients currently use project number `122855940292`, also used by
+the Firebase project. Do not delete that Google Cloud project while its OAuth
+clients are required. Move/recreate and verify the OAuth clients first, or retire
+only the Firebase-specific resources while retaining the Google project.
+
+Community/AI persistence, the evidence projector, recurring off-VM recovery and
+physical-device acceptance remain separate production gates. No legacy resource
+has been retired by this source preparation.
+
 Existing Firebase accounts/data may be discarded at verified cutover. Public
 source bundles, licenses, contract fixtures, historical tags and device-local
 guest records are outside that scope.

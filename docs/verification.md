@@ -68,6 +68,13 @@ browser previews are complementary evidence.
 
 ## Self-hosted integration
 
+CI now has a separate disposable-PostgreSQL job for the self-hosted profile,
+community and worker suites, plus an identity-source image build. Its outcome
+must be checked on the pushed commit. Local skips without PostgreSQL do not count
+as passing integration tests. Browser-script tests cover popup origin/source
+binding, PKCE, recovery-token handling and callback URL clearing; they do not
+prove Google consent, SMTP delivery or native SDK behavior.
+
 Use disposable test databases and synthetic identities. Never supply production
 credentials to a generic test command. Tests requiring an explicit database
 connection may skip without one; a skipped test is an unverified gate.

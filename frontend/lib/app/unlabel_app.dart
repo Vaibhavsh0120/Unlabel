@@ -14,6 +14,8 @@ import '../core/accounts/profile_media.dart';
 import '../core/accounts/selfhost_account_auth.dart';
 import '../core/accounts/selfhost_auth_client.dart';
 import '../core/accounts/selfhost_account_session_storage.dart';
+import '../core/accounts/web_google_provider.dart';
+import '../core/accounts/selfhost_profile_media.dart';
 import '../core/interaction/ui_feedback.dart';
 import '../core/notifications/notification_controller.dart';
 import '../core/network/scanner_auth.dart';
@@ -167,6 +169,17 @@ class _UnlabelAppState extends State<UnlabelApp> {
       final account = SelfhostAccountAuth(
         client: auth,
         googleIdToken: google?.idToken,
+        googleOAuth: kIsWeb
+            ? (token) => googleOAuth(BuildInfo.backendBaseUrl, token: token)
+            : null,
+        prepareGoogleOAuth: kIsWeb ? prepareGoogleOAuth : null,
+        cancelGoogleOAuth: kIsWeb ? cancelGoogleOAuth : null,
+        emailRedirect: Uri.parse(
+          'https://unlabel-india.vercel.app/account-confirmation.html',
+        ),
+        recoveryRedirect: Uri.parse(
+          'https://unlabel-india.vercel.app/account-recovery.html',
+        ),
         sessionStorage: SecureSelfhostAccountSessionStorage(
           const FlutterSecureStorage(
             webOptions: WebOptions(useSessionStorage: true),
@@ -203,8 +216,18 @@ class _UnlabelAppState extends State<UnlabelApp> {
     }
   }
 
-  FirebaseProfileMediaRepository? _profileRepository() {
-    if (BuildInfo.selfhostAuth) return null;
+  ProfileMediaRepository? _profileRepository() {
+    if (BuildInfo.selfhostAuth) {
+      final auth = _selfhostAccountAuth;
+      final client = _selfhostHttp;
+      return auth == null || client == null
+          ? null
+          : SelfhostProfileMediaRepository(
+              origin: Uri.parse(BuildInfo.backendBaseUrl),
+              auth: auth,
+              client: client,
+            );
+    }
     try {
       return FirebaseProfileMediaRepository(
         options: UnlabelFirebaseOptions.currentPlatform,

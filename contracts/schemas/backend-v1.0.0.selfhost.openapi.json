@@ -8456,6 +8456,17 @@
             "title": "Gender",
             "default": "unset"
           },
+          "avatar_preference": {
+            "type": "string",
+            "enum": [
+              "automatic",
+              "defaultAvatar",
+              "google",
+              "custom"
+            ],
+            "title": "Avatar Preference",
+            "default": "automatic"
+          },
           "avatar_png_base64": {
             "anyOf": [
               {
@@ -8532,6 +8543,17 @@
             ],
             "title": "Gender",
             "default": "unset"
+          },
+          "avatar_preference": {
+            "type": "string",
+            "enum": [
+              "automatic",
+              "defaultAvatar",
+              "google",
+              "custom"
+            ],
+            "title": "Avatar Preference",
+            "default": "automatic"
           },
           "avatar_png_base64": {
             "anyOf": [

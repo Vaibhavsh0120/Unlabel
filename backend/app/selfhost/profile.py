@@ -103,6 +103,7 @@ class ProfileModel(BaseModel):
     schema_version: Literal["1"] = "1"
     display_name: DisplayName | None = None
     gender: Literal["unset", "male", "female"] = "unset"
+    avatar_preference: Literal["automatic", "defaultAvatar", "google", "custom"] = "automatic"
     avatar_png_base64: str | None = Field(default=None, max_length=131072, repr=False)
 
     @field_validator("avatar_png_base64")
@@ -114,6 +115,12 @@ class ProfileModel(BaseModel):
 
 class ProfileUpdate(ProfileModel):
     expected_revision: Revision
+
+    @model_validator(mode="after")
+    def custom_photo_required(self):
+        if self.avatar_preference == "custom" and self.avatar_png_base64 is None:
+            raise ValueError("A custom avatar requires a thumbnail")
+        return self
 
 
 class ProfileSnapshot(ProfileModel):

@@ -26,10 +26,14 @@
   "lock_sha256": {
     "go.mod": "daf999da3c39e35efa0971aa0d29d5fb74b2da72310c4b91f2e16097116e8426",
     "go.sum": "8cbf3b6a941f4cf6e0dba1f2be33dcee41d53c3e0030f9736fb476a6e93c6088",
-    "LICENSE": "68c80ef00664ea62a2c6f38c0ef044497caacc6648a8bd92eec7fdb81e01f904"
+    "LICENSE": "68c80ef00664ea62a2c6f38c0ef044497caacc6648a8bd92eec7fdb81e01f904",
+    "account-policy.patch": "dbb56282d3cb696a834ee9bcfe8ae75fde2480171775c122497b06a153ac78c3"
   },
-  "application_source_changes": false,
-  "image_version": "v2.197.0-unlabel.1",
+  "application_source_changes": [
+    "Reject automatic email-based external-provider linking; require explicit owner linking.",
+    "Clear the password verifier transactionally when the email identity is disconnected."
+  ],
+  "image_version": "v2.197.0-unlabel.2",
   "verified_on": "2026-11-15",
   "acceptance": "Source/toolchain/dependency identities verified. Build, integration, delivery and vulnerability scan evidence are recorded separately in README.md.",
   "local_build": {
@@ -47,5 +51,7 @@
     ],
     "container_integration": "pending",
     "image_scan": "pending"
-  }
+  },
+  "local_build_image_version": "v2.197.0-unlabel.1",
+  "current_image_acceptance": "Pending .2 image build, integration and scan. local_build describes the historical .1 image."
 }

@@ -21,20 +21,24 @@ backend bundles from committed public sources; runs synthetic backend tests; and
 analyzes/tests/compiles the Flutter web client. It uses standard Ubuntu runners,
 locked Python dependencies and the Flutter pin in `scripts/config/workspace.json`.
 Provider credentials and Firebase deployment remain outside maintenance CI.
+The self-hosted integration lane uses disposable PostgreSQL, and the identity
+lane checks the pinned account-policy patch and compilation. These are ordinary
+push/PR/manual checks. No workflow uses a recurring cron schedule.
 Only the native release lane restores the private registered demo signing key.
 
 [frontend-release.yml](frontend-release.yml) automatically runs on main pushes that
 change `frontend/pubspec.yaml`. Its version gate skips dependency-only edits and
 requires an increased build number without lowering SemVer. Automatic native
 publication is deferred with a warning until the selected Oracle API passes its
-cutover readiness check; a push cannot publish a client against an unaccepted
-backend. The pushed SHA is built and published automatically after that gate
+dependency/account-compatibility check. Overall cutover acceptance remains a
+separate hosted/device gate. The pushed SHA is built and published after that check
 passes; no repeated manual dispatch is needed.
 **Run workflow** remains available for deliberate retries/drafts.
 Its inputs are `source_ref` (default `main`), `backend_url` (default
 `https://unlabel.duckdns.org`), `self_hosted_auth` (default `true`) and
 `publish_release` (default `true`). Self-hosted auth requires ready dependency
-health and the API's explicit `cutover_ready` signal before building.
+health and the `selfhost-account-v2` contract before building; `cutover_ready`
+does not substitute for deployment or device evidence.
 `frontend/pubspec.yaml` supplies the version and build number; the same metadata
 goes into Android, iOS, Dart runtime and the release manifest. There are no manual
 version overrides or duplicated version defaults. The source must have the same

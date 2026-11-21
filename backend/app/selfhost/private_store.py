@@ -69,6 +69,7 @@ class PostgresProfileStore:
                 else None,
                 avatar_source=row[4],
                 updated_at=row[5],
+                avatar_preference=row[6],
             )
         except (ValueError, TypeError):
             raise StoreUnavailable() from None
@@ -77,7 +78,7 @@ class PostgresProfileStore:
         with owner_connection(self.pool, owner) as connection:
             identifier = owner_user(connection, owner)
             row = connection.execute(
-                """SELECT revision,display_name,gender,avatar_png,avatar_source,updated_at
+                """SELECT revision,display_name,gender,avatar_png,avatar_source,updated_at,avatar_preference
                 FROM accounts.profiles WHERE owner_id=%s""",
                 (identifier,),
             ).fetchone()
@@ -101,13 +102,15 @@ class PostgresProfileStore:
                 source = "google"  # Preserve only a previously trusted provider avatar.
             row = connection.execute(
                 """INSERT INTO accounts.profiles
-                    (owner_id,revision,display_name,gender,avatar_png,avatar_source)
-                VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT(owner_id) DO UPDATE SET
+                    (owner_id,revision,display_name,gender,avatar_png,avatar_source,avatar_preference)
+                VALUES(%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(owner_id) DO UPDATE SET
                     revision=excluded.revision,display_name=excluded.display_name,
                     gender=excluded.gender,avatar_png=excluded.avatar_png,
-                    avatar_source=excluded.avatar_source,updated_at=now()
-                RETURNING revision,display_name,gender,avatar_png,avatar_source,updated_at""",
-                (identifier, revision + 1, body.display_name, body.gender, binary, source),
+                    avatar_source=excluded.avatar_source,avatar_preference=excluded.avatar_preference,
+                    updated_at=now()
+                RETURNING revision,display_name,gender,avatar_png,avatar_source,updated_at,avatar_preference""",
+                (identifier, revision + 1, body.display_name, body.gender, binary, source,
+                 "custom" if binary else body.avatar_preference),
             ).fetchone()
             return self.snapshot(row)
 

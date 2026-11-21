@@ -630,10 +630,7 @@ void main() {
     expect(controller.resets, 2);
     expect(controller.signIns + controller.creates, 0);
     expect(find.textContaining('If this email has an account'), findsOneWidget);
-    expect(
-      find.text('Choose a password on Firebase’s secure page'),
-      findsOneWidget,
-    );
+    expect(find.text('Choose a new password on Unlabel'), findsOneWidget);
     expect(find.byType(TextFormField), findsNothing);
     await _tap(tester, find.widgetWithText(FilledButton, 'Back to sign in'));
     expect(

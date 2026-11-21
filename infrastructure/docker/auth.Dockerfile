@@ -9,10 +9,12 @@ RUN curl --fail --location --proto '=https' --tlsv1.2 \
     && tar --extract --gzip --file /tmp/auth.tar.gz --strip-components=1 \
     && rm /tmp/auth.tar.gz
 COPY infrastructure/docker/auth-source/go.mod infrastructure/docker/auth-source/go.sum ./
+COPY infrastructure/docker/auth-source/account-policy.patch /tmp/account-policy.patch
+RUN git apply --check /tmp/account-policy.patch && git apply /tmp/account-policy.patch
 RUN go mod download && go mod verify
 RUN go test -mod=readonly -p 1 ./internal/crypto
 RUN go build -mod=readonly -p 1 -trimpath -buildvcs=false \
-      -ldflags '-s -w -X github.com/supabase/auth/internal/utilities.Version=v2.197.0-unlabel.1' \
+      -ldflags '-s -w -X github.com/supabase/auth/internal/utilities.Version=v2.197.0-unlabel.2' \
       -o /out/auth .
 COPY infrastructure/docker/auth-source/healthcheck.go /health/healthcheck.go
 COPY infrastructure/docker/auth-source/healthcheck_test.go /health/healthcheck_test.go
@@ -22,7 +24,7 @@ RUN go test -mod=readonly -p 1 /health/healthcheck.go /health/healthcheck_test.g
 
 FROM scratch AS runtime
 LABEL org.opencontainers.image.title="Unlabel identity service - Supabase Auth" \
-      org.opencontainers.image.version="v2.197.0-unlabel.1" \
+      org.opencontainers.image.version="v2.197.0-unlabel.2" \
       org.opencontainers.image.source="https://github.com/supabase/auth" \
       org.opencontainers.image.revision="4eee58f296d9698a1c2c0ae14d7a0b379c7622d3" \
       org.opencontainers.image.licenses="MIT"

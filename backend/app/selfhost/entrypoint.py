@@ -156,6 +156,7 @@ def create_platform_app(settings=None, *, identity_transport=None):
             return {
                 "status": "ready",
                 "dependencies": ["postgresql", "mongodb", "redis", "identity"],
+                "account_contract": "selfhost-account-v2",
             }
         except Exception:
             return JSONResponse({"status": "unavailable"}, status_code=503)
@@ -204,8 +205,10 @@ def create_platform_app(settings=None, *, identity_transport=None):
         "verify": {"GET", "POST"},
         "resend": {"POST"},
         "reauthenticate": {"GET"},
+        "authorize": {"GET"},
+        "callback": {"GET"},
         "user": {"GET", "PUT"},
-        "user/identities": {"GET", "POST"},
+        "user/identities/authorize": {"GET"},
     }
     queries = {
         "signup": {"redirect_to"},
@@ -214,6 +217,12 @@ def create_platform_app(settings=None, *, identity_transport=None):
         "recover": {"redirect_to"},
         "verify": {"token", "token_hash", "type", "redirect_to"},
         "resend": {"redirect_to"},
+        "user": {"redirect_to"},
+        "authorize": {"provider", "redirect_to", "code_challenge", "code_challenge_method", "prompt"},
+        "callback": {"code", "state", "error", "error_description", "scope", "authuser", "prompt", "hd"},
+        "user/identities/authorize": {
+            "provider", "redirect_to", "code_challenge", "code_challenge_method", "skip_http_redirect", "prompt"
+        },
     }
 
     @application.api_route(
@@ -242,6 +251,14 @@ def create_platform_app(settings=None, *, identity_transport=None):
             )
         ):
             return JSONResponse({"error": "invalid_query"}, status_code=422)
+        if path in {"authorize", "user/identities/authorize"} and (
+            request.query_params.get("provider") != "google"
+            or request.query_params.get("code_challenge_method") != "s256"
+            or re.fullmatch(r"[A-Za-z0-9_-]{43}", request.query_params.get("code_challenge", ""))
+            is None
+            or "redirect_to" not in request.query_params
+        ):
+            return JSONResponse({"error": "invalid_oauth_request"}, status_code=422)
         payload = await request.body()
         if len(payload) > 131072:
             return JSONResponse({"error": "request_too_large"}, status_code=413)
@@ -291,7 +308,19 @@ def create_platform_app(settings=None, *, identity_transport=None):
         response_headers = {"Cache-Control": "no-store"}
         if "location" in result.headers:
             location = result.headers["location"]
-            if not safe_redirect(location, platform.frontend_url):
+            google_redirect = False
+            if path in {"authorize", "user/identities/authorize"} and len(location) <= 8192:
+                try:
+                    provider = urlsplit(location)
+                    google_redirect = (
+                        provider.scheme == "https"
+                        and provider.netloc == "accounts.google.com"
+                        and provider.path in {"/o/oauth2/v2/auth", "/o/oauth2/auth"}
+                        and not any(ord(c) < 32 or ord(c) == 127 for c in location)
+                    )
+                except ValueError:
+                    pass
+            if not google_redirect and not safe_redirect(location, platform.frontend_url):
                 return JSONResponse({"error": "invalid_redirect"}, status_code=502)
             response_headers["Location"] = location
         return Response(
