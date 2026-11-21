@@ -10,6 +10,10 @@ function boot({ blocked = false, providerUrl } = {}) {
   const listeners = new Map();
   const locations = [];
   const requests = [];
+  const storage = new Map();
+  const redirects = [];
+  const sessionStorage = { getItem: key => storage.get(key) ?? null,
+    setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) };
   const popup = { closed: false, close() { this.closed = true; }, location: {
     replace(url) {
       locations.push(url);
@@ -25,13 +29,50 @@ function boot({ blocked = false, providerUrl } = {}) {
   const window = { open: () => blocked ? null : popup,
     addEventListener: (name, fn) => listeners.set(name, fn),
     removeEventListener: name => listeners.delete(name) };
-  vm.runInNewContext(source, { window, location: { origin: 'https://unlabel.example' },
+  vm.runInNewContext(source, { window, sessionStorage, location: { origin: 'https://unlabel.example',
+    assign: value => redirects.push(value) },
     URL, URLSearchParams, crypto: webcrypto, TextEncoder, Uint8Array, btoa,
     AbortSignal, setTimeout, clearTimeout, setInterval, clearInterval,
     fetch: async (url, options) => { requests.push({ url, options });
       return { ok: true, json: async () => ({ url: providerUrl }) }; } });
-  return { window, popup, locations, requests, listeners };
+  return { window, popup, locations, requests, listeners, storage, sessionStorage, redirects };
 }
+
+test('ordinary login redirects this tab and consumes its bound PKCE return once', async () => {
+  const app = boot({blocked: true});
+  app.window.open = () => { throw new Error('Login must not open a popup'); };
+  app.window.unlabelGoogleLoginRedirect('https://api.example');
+  await new Promise(resolve => setImmediate(resolve));
+  const destination = new URL(app.redirects[0]);
+  assert.equal(destination.origin, 'https://api.example');
+  assert.equal(destination.searchParams.get('code_challenge_method'), 's256');
+  const saved = JSON.parse(app.storage.get('unlabel.google.redirect.v1'));
+  const callback = fs.readFileSync(path.join(__dirname, '../web/auth-callback.js'), 'utf8');
+  const navigations = [];
+  const cleared = [];
+  vm.runInNewContext(callback, {window: {}, sessionStorage: app.sessionStorage,
+    location: {search: '?code=bound-return', origin: 'https://unlabel.example',
+      replace: value => navigations.push(value)},
+    history: {replaceState: (...args) => cleared.push(args)}, URLSearchParams,
+    document: {getElementById: () => { throw new Error('Valid callback must complete'); }}});
+  assert.equal(cleared[0][2], '/auth-callback.html');
+  assert.deepEqual(navigations, ['/#/account-signin']);
+  assert.deepEqual(JSON.parse(app.window.unlabelTakeGoogleRedirect()), {
+    auth_code: 'bound-return', code_verifier: saved.verifier,
+  });
+  assert.equal(app.window.unlabelTakeGoogleRedirect(), null);
+  assert.equal(app.storage.size, 0);
+});
+
+test('stale and malformed redirect grants are discarded', () => {
+  const app = boot();
+  for (const createdAt of [Date.now() - 300001, Date.now() + 10000, undefined]) {
+    app.storage.set('unlabel.google.grant.v1', JSON.stringify({
+      auth_code: 'code', code_verifier: 'a'.repeat(64), createdAt,
+    }));
+    assert.equal(app.window.unlabelTakeGoogleRedirect(), null);
+  }
+});
 
 test('Google uses S256 PKCE and accepts a code only from its own same-origin popup', async () => {
   const app = boot();

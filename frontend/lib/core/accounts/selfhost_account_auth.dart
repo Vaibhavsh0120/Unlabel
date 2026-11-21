@@ -13,6 +13,8 @@ final class SelfhostAccountAuth extends AccountAuth {
     required this._client,
     this._googleIdToken,
     this._googleOAuth,
+    this._googleLoginRedirect,
+    this._takeGoogleRedirect,
     this._prepareGoogleOAuth,
     this._cancelGoogleOAuth,
     this._emailRedirect,
@@ -24,6 +26,8 @@ final class SelfhostAccountAuth extends AccountAuth {
   final SelfhostAuthClient _client;
   final Future<String> Function()? _googleIdToken;
   final Future<Map<String, Object?>> Function(String? token)? _googleOAuth;
+  final Future<void> Function()? _googleLoginRedirect;
+  final Map<String, Object?>? Function()? _takeGoogleRedirect;
   final void Function()? _prepareGoogleOAuth;
   final void Function()? _cancelGoogleOAuth;
   final Uri? _emailRedirect;
@@ -73,6 +77,10 @@ final class SelfhostAccountAuth extends AccountAuth {
     _starting = true;
     try {
       await _restoreStoredSession();
+      final grant = _takeGoogleRedirect?.call();
+      if (_account == null && grant != null) {
+        await _activate(await _client.exchangeGoogleCode(grant));
+      }
     } finally {
       _starting = false;
     }
@@ -146,8 +154,13 @@ final class SelfhostAccountAuth extends AccountAuth {
   @override
   Future<void> signInGoogle() => _mutate(() async {
     _requireGuest();
+    final redirect = _googleLoginRedirect;
+    if (redirect != null) {
+      await redirect();
+      return;
+    }
     await _activate(await _googleSession());
-  }, prepareGoogle: true);
+  }, prepareGoogle: _googleLoginRedirect == null);
 
   Future<SelfhostAuthSession> _googleSession({
     SelfhostAuthSession? link,

@@ -168,6 +168,10 @@ class _UnlabelAppState extends State<UnlabelApp> {
       final account = SelfhostAccountAuth(
         client: auth,
         googleIdToken: google?.idToken,
+        googleLoginRedirect: kIsWeb
+            ? () => startGoogleRedirect(BuildInfo.backendBaseUrl)
+            : null,
+        takeGoogleRedirect: kIsWeb ? takeGoogleRedirect : null,
         googleOAuth: kIsWeb
             ? (token) => googleOAuth(BuildInfo.backendBaseUrl, token: token)
             : null,

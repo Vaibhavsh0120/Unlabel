@@ -51,8 +51,9 @@ application containers never receive the database-owner credential.
 | `GOTRUE_EXPERIMENTAL_CREATE_EMAIL_IDENTITY_ON_PASSWORD_SET_ENABLED` | `true` |
 
 Google's authorized redirect must exactly match the callback above. A client ID
-or Browser API key is not an OAuth client secret. The frontend uses a same-origin
-popup callback and S256 PKCE; native Google uses the platform SDK's ID token.
+or Browser API key is not an OAuth client secret. Ordinary web login uses a same-tab Google redirect and S256 PKCE, with a
+five-minute verifier in session storage. Its callback clears the code from the
+URL before returning to Unlabel. Native Google uses the platform SDK's ID token.
 Retain the pinned `.2` identity policy that prevents automatic email-based merges.
 
 Email signup immediately activates the account and sends no verification email.

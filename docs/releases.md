@@ -5,7 +5,7 @@ Release from a reviewed source commit on `main`. Complete the relevant
 and physical-device acceptance are separate results.
 
 The current repair is v1.1.1 (frontend build 20): immediate email signup,
-separate welcome mail, corrected Google OAuth setup and popup preparation,
+separate welcome mail, corrected Google OAuth setup and popup-free login,
 shared search/product navigation, sourced search thumbnails and a shorter web
 deployment pipeline. Hosted signup/profile/isolation/deletion checks passed.
 Google consent, inbox receipt and published native assets require their own

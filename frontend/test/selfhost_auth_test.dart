@@ -487,6 +487,41 @@ void main() {
     },
   );
 
+  test('redirected Google login resumes without opening a popup', () async {
+    var redirectStarted = false;
+    var exchanges = 0;
+    final auth = SelfhostAccountAuth(
+      client: api((request) async {
+        expect(request.url.queryParameters['grant_type'], 'pkce');
+        exchanges++;
+        return reply(token('redirect-session'));
+      }),
+      googleLoginRedirect: () async {
+        redirectStarted = true;
+      },
+      prepareGoogleOAuth: () => fail('Login must not prepare a popup'),
+    );
+    addTearDown(auth.dispose);
+    await auth.signInGoogle();
+    expect(redirectStarted, isTrue);
+    expect(auth.identity, isNull);
+    final resumed = SelfhostAccountAuth(
+      client: api((request) async {
+        expect(request.url.queryParameters['grant_type'], 'pkce');
+        exchanges++;
+        return reply(token('redirect-session'));
+      }),
+      takeGoogleRedirect: () => {
+        'auth_code': 'code',
+        'code_verifier': 'verifier',
+      },
+    );
+    addTearDown(resumed.dispose);
+    await resumed.start();
+    expect(resumed.identity?.uid, userId);
+    expect(exchanges, 1);
+  });
+
   test(
     'Google reauthentication mismatch cannot delete or select another library',
     () async {

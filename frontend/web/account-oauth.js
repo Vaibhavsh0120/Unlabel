@@ -3,6 +3,43 @@
   'use strict';
   let pending = false;
   let prepared = null;
+  const redirectKey = 'unlabel.google.redirect.v1';
+  const grantKey = 'unlabel.google.grant.v1';
+  // Ordinary login leaves this tab; it never depends on popup permission.
+  window.unlabelGoogleLoginRedirect = async backend => {
+    const api = new URL(backend);
+    if (api.protocol !== 'https:' || api.username || api.password || api.pathname !== '/') {
+      throw new Error('account_unavailable');
+    }
+    const encode = value => btoa(String.fromCharCode(...value))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const verifier = encode(crypto.getRandomValues(new Uint8Array(48)));
+    const challenge = encode(new Uint8Array(await crypto.subtle.digest(
+      'SHA-256', new TextEncoder().encode(verifier))));
+    const url = new URL('/auth/v1/authorize', api);
+    url.search = new URLSearchParams({ provider: 'google',
+      redirect_to: new URL('/auth-callback.html', location.origin).href,
+      prompt: 'select_account', code_challenge: challenge,
+      code_challenge_method: 's256' }).toString();
+    sessionStorage.removeItem(grantKey);
+    sessionStorage.setItem(redirectKey, JSON.stringify({verifier, createdAt: Date.now()}));
+    location.assign(url.href);
+    // Keep the form busy until navigation replaces this document.
+    return new Promise(() => {});
+  };
+  window.unlabelTakeGoogleRedirect = () => {
+    const raw = sessionStorage.getItem(grantKey);
+    sessionStorage.removeItem(grantKey);
+    if (!raw) return null;
+    try {
+      const grant = JSON.parse(raw);
+      const age = Date.now() - grant.createdAt;
+      if (!Number.isFinite(age) || age < 0 || age > 300000 ||
+          !/^[A-Za-z0-9_-]{64}$/.test(grant.code_verifier) ||
+          !/^[A-Za-z0-9_-]{1,4096}$/.test(grant.auth_code)) return null;
+      return JSON.stringify({auth_code: grant.auth_code, code_verifier: grant.code_verifier});
+    } catch { return null; }
+  };
   window.unlabelPrepareGoogleOAuth = () => {
     if (pending || (prepared && !prepared.closed)) throw new Error('account_busy');
     prepared = window.open('about:blank', '_blank', 'popup,width=520,height=700');

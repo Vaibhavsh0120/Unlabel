@@ -46,7 +46,8 @@ signs in: `GOTRUE_EXTERNAL_EMAIL_ENABLED=true` and
 Brevo after successful signup. Mail failure does not block account activation.
 Password recovery and email changes still use their own secure links.
 
-Web Google uses the web OAuth client secret in the sign-in service, with
+Web Google login uses a same-tab redirect, PKCE and the web OAuth client secret
+in the sign-in service, with
 `https://unlabel.duckdns.org/auth/v1/callback` as its exact Google callback.
 A browser API key and a client ID cannot replace that secret. Keep explicit
 provider linking and the pinned `.2` identity policy.

@@ -12,6 +12,30 @@ external void _prepareGoogleOAuth();
 @JS('unlabelCancelGoogleOAuth')
 external void _cancelGoogleOAuth();
 
+@JS('unlabelGoogleLoginRedirect')
+external JSPromise<JSAny?> _startGoogleRedirect(JSString backend);
+
+@JS('unlabelTakeGoogleRedirect')
+external JSString? _takeGoogleRedirect();
+
+Future<void> startGoogleRedirect(String backend) async {
+  try {
+    await _startGoogleRedirect(backend.toJS).toDart;
+  } catch (_) {
+    throw const AppFailure(
+      'account_unavailable',
+      'Google sign-in could not open. Please try again.',
+    );
+  }
+}
+
+Map<String, Object?>? takeGoogleRedirect() {
+  final raw = _takeGoogleRedirect()?.toDart;
+  if (raw == null) return null;
+  final value = jsonDecode(raw);
+  return value is Map<String, Object?> ? value : null;
+}
+
 void cancelGoogleOAuth() => _cancelGoogleOAuth();
 
 void prepareGoogleOAuth() {

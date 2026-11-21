@@ -17,11 +17,12 @@ The application database owns private profiles and libraries. Runtime app roles
 cannot read password hashes. Native refresh credentials use platform secure
 storage; web credentials use the existing secure session-storage adapter.
 
-Web Google sign-in uses a popup and S256 PKCE. The same-origin callback returns
-only a one-time code to the initiating window; origin and window identity are
-checked before exchange. Native Google sign-in uses the platform SDK's ID token.
-Initial web login reserves the popup during the click, as linking already does,
-before asynchronous account work can consume the browser's user activation.
+Ordinary web Google login redirects the current tab to Google. A five-minute
+PKCE verifier stays in tab-scoped session storage. The same-origin callback
+clears its URL, stores the one-time bound code and returns to Unlabel, which
+exchanges it and restores the account. This login opens no popup. Explicit
+provider linking and Google proof for sensitive account operations retain their
+owner-checked popup flow. Native Google sign-in uses the platform SDK's ID token.
 Only identity scopes are requested; Google gender is never requested or inferred.
 
 The `.2` identity policy rejects automatic linking based on equal emails.
