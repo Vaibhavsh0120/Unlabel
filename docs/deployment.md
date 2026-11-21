@@ -42,6 +42,7 @@ application containers never receive the database-owner credential.
 | --- | --- |
 | `GOTRUE_EXTERNAL_EMAIL_ENABLED` | `true` |
 | `GOTRUE_MAILER_AUTOCONFIRM` | `true`: immediate email/password signup |
+| `GOTRUE_JWT_DEFAULT_GROUP_NAME` | `authenticated`: required scanner token role |
 | `GOTRUE_EXTERNAL_GOOGLE_ENABLED` | `true` |
 | `GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID` | Existing web client first, then native audiences |
 | `GOTRUE_EXTERNAL_GOOGLE_SECRET` | Web OAuth client secret; runtime only |
@@ -75,6 +76,10 @@ checks that `/health/dependencies` reports PostgreSQL, MongoDB, Redis and identi
 ready. It does not depend on a temporary migration app or an account-migration
 marker. Runtime health checks still verify the actual profile schema and identity
 policy. `/v1/platform` records broader acceptance separately.
+
+Vercel restores pinned dependencies, checks bundled assets, analyzes and compiles.
+Full browser-script/Flutter suites belong to the existing maintenance/release CI
+and affected local checks, avoiding a duplicate full test run on each deploy.
 
 Schema updates through `0010_ai_persistence.sql` were applied on 21 November with
 transaction, advisory-lock and checksum verification. Future schema updates use

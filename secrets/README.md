@@ -45,6 +45,12 @@ then commit and push the updated ciphertext and index.
 
 ## Included files and Git boundaries
 
+The 21 November refresh includes the replacement Google web OAuth secret in
+`infrastructure/production/.secrets/google-oauth`. It was recovered from the
+running sign-in service without displaying its value. Coolify keeps it runtime
+only; the authenticated project bundle and public index include its recovery
+input. SMTP settings are shared by identity recovery mail and API welcome mail.
+
 The public [manifest](manifest.json) covers backend/frontend/root environment
 files, local Android signing files and project service-account files, plus the
 development/production `.secrets` directories and `secrets/local`. The public

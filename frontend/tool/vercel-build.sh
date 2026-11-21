@@ -30,18 +30,10 @@ python3 ../scripts/release/backend_target.py \
 flutter pub get --enforce-lockfile
 python3 ../scripts/release/generate_app_icons.py --check
 python3 ../scripts/release/vendor_web_ocr.py --check
-node --test test/*_web_test.cjs ../infrastructure/firebase/auth-bridge.test.cjs
 flutter analyze
-# Keep passing negative-case test names out of the deployment error filter.
-# Preserve the command's exit status and all diagnostics on an actual failure.
-test_log="$PWD/.vercel/flutter-tests.log"
-if flutter test --reporter expanded > "$test_log" 2>&1; then
-  tail -n 1 "$test_log"
-else
-  cat "$test_log" >&2
-  exit 1
-fi
-flutter build web --release \
+# Test suites run in maintenance/release CI and during affected local checks.
+# Deployments only validate inputs, analyze and compile the exact source.
+flutter build web --release --no-pub \
   --dart-define="BACKEND_BASE_URL=$BACKEND_BASE_URL" \
   --dart-define="UNLABEL_SELF_HOSTED_AUTH=$UNLABEL_SELF_HOSTED_AUTH" \
   --dart-define="COMMIT_SHA=${VERCEL_GIT_COMMIT_SHA:-local}"
