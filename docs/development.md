@@ -60,6 +60,8 @@ SQLite indexes remain part of legacy local development; they are not the databas
 design selected for the new Coolify backend. The production runner mode starts a
 local frontend against the currently configured hosted API and starts no local
 backend. Read [deployment](deployment.md) before testing the migration endpoint.
+The launcher prints build progress while Flutter compiles, then prints the
+clickable local preview address. Keep that terminal running while using the app.
 
 Default ports come from workspace configuration. The runner prints the actual
 frontend and API addresses, rejects occupied ports and stops its own process trees

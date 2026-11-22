@@ -251,8 +251,8 @@ try:
   with psycopg.connect(p['postgres']) as c, MongoClient(p['mongo'],serverSelectionTimeoutMS=5000) as m:
    result=import_research(c,m.get_database('unlabel_evidence'),Path('/app'),directory=d,expected_base_sha=p['base'])
   print(json.dumps(result))
-except Exception:
- print('Research import rejected; credentials and internal diagnostics withheld.',file=sys.stderr)
+except Exception as error:
+ print('Research import rejected: '+type(error).__name__+' '+str(getattr(error,'sqlstate','') or getattr(error,'code','')),file=sys.stderr)
  sys.exit(1)
 """
 
@@ -306,7 +306,8 @@ def apply_snapshot(directory, receipt, *, ssh=None):
     )
     if result.returncode:
         raise ValueError(
-            "Research import failed; active snapshot not confirmed. Credentials withheld."
+            "Research import failed; active snapshot not confirmed. "
+            + next((line for line in result.stderr.splitlines() if line.startswith("Research import rejected:")), "Credentials withheld.")
         )
     return json.loads(result.stdout)
 

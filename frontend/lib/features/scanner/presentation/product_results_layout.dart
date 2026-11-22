@@ -350,7 +350,8 @@ class ResultsIdentityCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(brand!, style: theme.textTheme.bodyLarge),
         ],
-        if (variant != null && variant != name) Text(variant!),
+        if (variant != null && variant != name)
+          Text(variant!, style: theme.textTheme.bodyMedium),
         Text(
           quantity ?? 'Pack size unknown',
           style: theme.textTheme.bodyMedium,

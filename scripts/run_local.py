@@ -240,6 +240,10 @@ def main() -> int:
             wait_for_api(backend, f"http://127.0.0.1:{args.backend_port}")
             print(f"Backend ready: {backend_url}/docs", flush=True)
         if flutter is not None:
+            print(
+                "Building the Flutter web preview. The first build can take a few minutes...",
+                flush=True,
+            )
             command = [
                 flutter,
                 "build",
@@ -251,11 +255,16 @@ def main() -> int:
             ]
             build = spawn(command, ROOT / "frontend", dict(os.environ))
             processes.append(build)
+            next_progress = time.monotonic() + 10
             while build.poll() is None:
                 time.sleep(0.2)
+                if time.monotonic() >= next_progress:
+                    print("Flutter preview build is still running...", flush=True)
+                    next_progress = time.monotonic() + 10
             if build.returncode != 0:
                 raise ValueError("Flutter preview build failed.")
             processes.remove(build)
+            print("Flutter build complete; starting the preview server...", flush=True)
             if network:
                 assert caddy is not None
                 caddy_config, caddy_environment, certificate = prepare_https(

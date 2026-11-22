@@ -399,6 +399,7 @@ void main() {
         ),
         findsOneWidget,
       );
+      await _tapVisible(tester, find.byKey(const Key('studio-tab-overview')));
       await _tapVisible(tester, find.byKey(const Key('save-report')));
       expect(
         (await store.saved()).single.report.name,
@@ -553,7 +554,10 @@ void main() {
     );
     await tester.pumpAndSettle();
     for (final text in ['Nutrition snapshot', 'Ingredients & allergens']) {
-      await tester.ensureVisible(find.text(text));
+      await Scrollable.ensureVisible(
+        tester.element(find.text(text, skipOffstage: false)),
+        alignment: .2,
+      );
       await tester.pumpAndSettle();
       expect(find.text(text).hitTestable(), findsOneWidget);
       expect(tester.takeException(), isNull);
@@ -574,11 +578,11 @@ void main() {
     expect(tester.takeException(), isNull);
     // Source rows inside the expanded nutrient disclosure share their label;
     // target the page section explicitly to verify it remains reachable.
-    final sourceHeading = find.widgetWithText(
-      SectionTitle,
-      'Source references',
+    final sourceHeading = find.text('Source references').last;
+    await Scrollable.ensureVisible(
+      tester.element(sourceHeading),
+      alignment: .2,
     );
-    await tester.ensureVisible(sourceHeading);
     await tester.pumpAndSettle();
     expect(sourceHeading.hitTestable(), findsOneWidget);
     expect(tester.takeException(), isNull);

@@ -206,9 +206,12 @@ def import_research(connection, mongo, root, *, directory=None, expected_base_sh
         )
     if len(rows) != metadata["observation_count"] or len({row["_id"] for row in rows}) != len(rows):
         raise ValueError("Research count differs from its immutable receipt")
-    mongo.research_observations.create_index("eligible_barcode")
-    mongo.research_observations.create_index("tokens")
-    mongo.research_observations.create_index([("name_sort", 1), ("_id", 1)])
+    if expected_base_sha is None:
+        # Initial provisioning owns index creation. Reviewed updates use the
+        # existing indexes and the restricted append-only writer credential.
+        mongo.research_observations.create_index("eligible_barcode")
+        mongo.research_observations.create_index("tokens")
+        mongo.research_observations.create_index([("name_sort", 1), ("_id", 1)])
     append_documents(mongo.research_observations, rows)
     image_file = directory / "image_sources.json"
     images = load_images(
