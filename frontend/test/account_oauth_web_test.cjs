@@ -12,6 +12,8 @@ function boot({ blocked = false, providerUrl, isolated = false } = {}) {
   const requests = [];
   const storage = new Map();
   const redirects = [];
+  let resolveRedirect;
+  const redirected = new Promise(resolve => { resolveRedirect = resolve; });
   const sessionStorage = { getItem: key => storage.get(key) ?? null,
     setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) };
   const popup = { sessionStorage, closed: false, close() { this.closed = true; }, location: {
@@ -35,7 +37,7 @@ function boot({ blocked = false, providerUrl, isolated = false } = {}) {
     addEventListener: (name, fn) => listeners.set(name, fn),
     removeEventListener: name => listeners.delete(name) };
   vm.runInNewContext(source, { window, sessionStorage, location: { origin: 'https://unlabel.example',
-    assign: value => redirects.push(value) },
+    assign: value => { redirects.push(value); resolveRedirect(); } },
     URL, URLSearchParams, crypto: webcrypto, TextEncoder, Uint8Array, btoa,
     AbortSignal, setTimeout, clearTimeout, setInterval, clearInterval,
     ...(isolated ? {BroadcastChannel: class {
@@ -44,14 +46,14 @@ function boot({ blocked = false, providerUrl, isolated = false } = {}) {
     }} : {}),
     fetch: async (url, options) => { requests.push({ url, options });
       return { ok: true, json: async () => ({ url: providerUrl }) }; } });
-  return { window, popup, locations, requests, listeners, storage, sessionStorage, redirects };
+  return { window, popup, locations, requests, listeners, storage, sessionStorage, redirects, redirected };
 }
 
 test('ordinary login redirects this tab and consumes its bound PKCE return once', async () => {
   const app = boot({blocked: true});
   app.window.open = () => { throw new Error('Login must not open a popup'); };
-  app.window.unlabelGoogleLoginRedirect('https://api.example');
-  await new Promise(resolve => setImmediate(resolve));
+  const navigation = app.window.unlabelGoogleLoginRedirect('https://api.example');
+  await Promise.race([app.redirected, navigation]);
   const destination = new URL(app.redirects[0]);
   assert.equal(destination.origin, 'https://api.example');
   assert.equal(destination.searchParams.get('code_challenge_method'), 's256');

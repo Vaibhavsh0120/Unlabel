@@ -18,6 +18,11 @@ Use `main` for changes. Update relevant docs, run affected checks, push, deploy
 API changes before the frontend, and check the deployed commit and public flows.
 Resource UUIDs are identifiers, not credentials.
 
+Browser access permits only the configured frontend origin. Keep `GET`, `POST`,
+`PUT` and `DELETE` in the API CORS method list: web password/profile updates use
+`PUT` and require an unauthenticated preflight with Authorization/Content-Type.
+Direct API tests alone do not prove the browser can send those updates.
+
 ## Active services
 
 | Component | Responsibility |

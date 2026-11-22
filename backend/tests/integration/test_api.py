@@ -124,6 +124,24 @@ def test_exact_origin_cors_does_not_treat_cors_as_auth():
         assert preflight.status_code == 200
 
 
+@pytest.mark.parametrize("path", ["/auth/v1/user", "/v1/account/profile"])
+def test_browser_password_and_profile_updates_allow_put_preflight_only_for_frontend(path):
+    with client_with(httpx.Response(404)) as client:
+        headers = {
+            "Origin": "https://unlabel.example",
+            "Access-Control-Request-Method": "PUT",
+            "Access-Control-Request-Headers": "authorization,content-type",
+        }
+        response = client.options(path, headers=headers)
+        assert response.status_code == 200
+        assert response.headers["access-control-allow-origin"] == "https://unlabel.example"
+        assert "PUT" in response.headers["access-control-allow-methods"]
+        assert "access-control-allow-credentials" not in response.headers
+        response = client.options(path, headers={**headers, "Origin": "https://other.example"})
+        assert response.status_code == 400
+        assert "access-control-allow-origin" not in response.headers
+
+
 @pytest.mark.parametrize(
     "origins",
     [

@@ -106,6 +106,10 @@ and account deletion confirmation. Sign-in methods and Add a password open as
 normal pages with a single app-bar title and back navigation, not modal windows.
 Their content scrolls once within the page, with bounded desktop widths and
 keyboard-safe password actions. Back navigation is disabled during mutations.
+Notifications uses one compact reminder title/switch row with its time below.
+The switch is also the unsubscribe control. Inbox entries use short rows, and
+Clear notifications stays beside the inbox controls with an explicit confirmation.
+Clearing removes only inbox messages, never reports or reminder preferences.
 Unset/male uses the approved
 male default, female uses its own new default. [Profile/storage contract](../docs/architecture/ACCOUNT_PROFILE.md).
 

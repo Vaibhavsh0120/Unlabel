@@ -152,6 +152,57 @@ void main() {
     expect(c.error, isNotNull);
     c.dispose();
   });
+  testWidgets(
+    'compact phone reminder and clear notifications preserve reminder settings',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final repository = _Repository(), gateway = _Gateway();
+      addTearDown(repository.close);
+      final c = NotificationController(
+        preferences: _Preferences(),
+        repository: repository,
+        gateway: gateway,
+      );
+      addTearDown(c.dispose);
+      await c.start(() {});
+      await c.refresh();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: UnlabelTheme.forBrightness(Brightness.light),
+          home: NotificationsPage(controller: c),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        tester
+            .getSize(find.byKey(const ValueKey('daily-reminder-card')))
+            .height,
+        lessThan(160),
+      );
+      await c.setReminder(true);
+      await tester.pumpAndSettle();
+      final clear = find.text('Clear notifications');
+      await tester.ensureVisible(clear);
+      await tester.tap(clear);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithText(FilledButton, 'Clear notifications'),
+      );
+      await tester.pumpAndSettle();
+      expect(c.entries, isEmpty);
+      expect(c.unread, 0);
+      expect(c.reminderEnabled, isTrue);
+      expect(gateway.cancellations, 0);
+      await c.refresh();
+      expect(c.entries, isEmpty);
+      expect(find.text('You’re all caught up'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   for (final size in [
     const Size(320, 700),
     const Size(390, 844),
@@ -190,7 +241,7 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
-        final unsubscribe = find.text('Unsubscribe from reminders');
+        final unsubscribe = find.byKey(const ValueKey('daily-reminder-toggle'));
         await tester.ensureVisible(unsubscribe);
         await tester.pumpAndSettle();
         await tester.tap(unsubscribe);

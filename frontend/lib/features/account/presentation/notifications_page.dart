@@ -23,6 +23,31 @@ class NotificationsPage extends StatelessWidget {
     }
   }
 
+  Future<void> _clear(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear notifications?'),
+        content: const Text(
+          'Remove messages from this device. Your reports and reminder settings stay saved.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Clear notifications'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      await _run(context, controller.clear);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: controller,
@@ -47,38 +72,40 @@ class NotificationsPage extends StatelessWidget {
           children: [
             if (c.loading) const LinearProgressIndicator(),
             SectionCard(
+              key: const ValueKey('daily-reminder-card'),
+              padding: MediaQuery.sizeOf(context).width < 600 ? 16 : 24,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Daily label-reading reminder',
-                    style: theme.textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    c.gateway.webPush
-                        ? 'A gentle reminder around $window each day. Delivered by your browser, even when this page is closed.'
-                        : 'A gentle reminder at $time each day. Scheduled on this device, with no internet needed.',
-                  ),
-                  const SizedBox(height: 16),
-                  if (c.gateway.supported)
-                    SwitchListTile.adaptive(
-                      contentPadding: EdgeInsets.zero,
-                      title: const Text('Daily reminder'),
-                      subtitle: Text(
-                        c.reminderEnabled
-                            ? 'On for this device'
-                            : 'Off for this device',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Daily label reminder',
+                          style: theme.textTheme.titleMedium,
+                        ),
                       ),
-                      value: c.reminderEnabled,
-                      onChanged: c.busy || c.loading
-                          ? null
-                          : (value) => c.setReminder(value),
-                    )
-                  else
-                    const Text(
-                      'To enable reminders on iPhone or iPad, add Unlabel to the Home Screen and open it there. Other devices need a browser that supports notifications.',
-                    ),
+                      if (c.gateway.supported)
+                        Semantics(
+                          label: 'Daily label reminder',
+                          child: Switch.adaptive(
+                            key: const ValueKey('daily-reminder-toggle'),
+                            value: c.reminderEnabled,
+                            onChanged: c.busy || c.loading
+                                ? null
+                                : (value) => c.setReminder(value),
+                          ),
+                        ),
+                    ],
+                  ),
+                  Text(
+                    !c.gateway.supported
+                        ? 'For iPhone or iPad, open Unlabel from your Home Screen to enable reminders.'
+                        : c.gateway.webPush
+                        ? '${c.reminderEnabled ? "On" : "Off"} · Around $window daily'
+                        : '${c.reminderEnabled ? "On" : "Off"} · $time daily, on this device',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                   if (c.reminderEnabled && c.gateway.supported) ...[
                     const SizedBox(height: 8),
                     Wrap(
@@ -110,21 +137,12 @@ class NotificationsPage extends StatelessWidget {
                           ),
                         OutlinedButton.icon(
                           icon: const Icon(Icons.notifications_active_outlined),
-                          label: const Text('Send test notification'),
+                          label: const Text('Test reminder'),
                           onPressed: c.busy ? null : c.test,
                         ),
                       ],
                     ),
                   ],
-                  if (c.reminderEnabled)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
-                        icon: const Icon(Icons.notifications_off_outlined),
-                        label: const Text('Unsubscribe from reminders'),
-                        onPressed: c.busy ? null : () => c.setReminder(false),
-                      ),
-                    ),
                   if (c.busy) ...[
                     const SizedBox(height: 12),
                     const LinearProgressIndicator(),
@@ -149,7 +167,7 @@ class NotificationsPage extends StatelessWidget {
               spacing: 16,
               runSpacing: 8,
               children: [
-                Text('Your inbox', style: theme.textTheme.headlineSmall),
+                Text('Inbox', style: theme.textTheme.headlineSmall),
                 Wrap(
                   spacing: 4,
                   children: [
@@ -163,14 +181,15 @@ class NotificationsPage extends StatelessWidget {
                         onPressed: () => _run(context, () => c.markRead()),
                         child: const Text('Mark all read'),
                       ),
+                    if (c.entries.isNotEmpty)
+                      TextButton.icon(
+                        onPressed: () => _clear(context),
+                        icon: const Icon(Icons.clear_all),
+                        label: const Text('Clear notifications'),
+                      ),
                   ],
                 ),
               ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'App updates and scan activity stay in this browser or app. No label photos or product details are included.',
-              style: theme.textTheme.bodySmall,
             ),
             if (c.feedError != null) ...[
               const SizedBox(height: 12),
@@ -198,87 +217,50 @@ class NotificationsPage extends StatelessWidget {
               ),
             for (final entry in c.entries) ...[
               SectionCard(
-                padding: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                padding: 16,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          entry.read
-                              ? Icons.notifications_none
-                              : Icons.notifications_active_outlined,
-                          color: entry.read
-                              ? theme.colorScheme.onSurfaceVariant
-                              : theme.colorScheme.primary,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            entry.title,
-                            style: theme.textTheme.titleMedium,
-                          ),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Icon(
+                        entry.read
+                            ? Icons.notifications_none
+                            : Icons.notifications_active_outlined,
+                        color: entry.read
+                            ? theme.colorScheme.onSurfaceVariant
+                            : theme.colorScheme.primary,
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    Text(entry.body),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 12,
-                      children: [
-                        Text(
-                          MaterialLocalizations.of(context)
-                              .formatMediumDate(entry.at.toLocal()),
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        if (!entry.read)
-                          TextButton(
-                            onPressed: () =>
-                                _run(context, () => c.markRead(entry.id)),
-                            child: const Text('Mark read'),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(entry.title, style: theme.textTheme.titleMedium),
+                          const SizedBox(height: 4),
+                          Text(entry.body),
+                          const SizedBox(height: 8),
+                          Text(
+                            MaterialLocalizations.of(context)
+                                .formatMediumDate(entry.at.toLocal()),
+                            style: theme.textTheme.bodySmall,
                           ),
-                      ],
+                        ],
+                      ),
                     ),
+                    if (!entry.read)
+                      IconButton(
+                        tooltip: 'Mark read',
+                        onPressed: () =>
+                            _run(context, () => c.markRead(entry.id)),
+                        icon: const Icon(Icons.done),
+                      ),
                   ],
                 ),
               ),
               const SizedBox(height: 12),
             ],
-            if (c.entries.isNotEmpty)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () async {
-                    final confirmed = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Clear this inbox?'),
-                        content: const Text(
-                          'Remove these messages from this device. Your reports and reminder settings stay as they are.',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
-                          ),
-                          FilledButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Clear inbox'),
-                          ),
-                        ],
-                      ),
-                    );
-                    if (confirmed == true && context.mounted) {
-                      await _run(context, c.clear);
-                    }
-                  },
-                  child: const Text('Clear inbox'),
-                ),
-              ),
           ],
         ),
       );
