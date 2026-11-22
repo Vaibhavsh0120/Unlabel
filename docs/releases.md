@@ -15,6 +15,11 @@ the original licensed source bundle remain intact. See
 [optional sources](architecture/OPTIONAL_SOURCES.md) and
 [research updates](architecture/CATALOGUE.md#reviewed-research-updates).
 
+Opening a scan no longer creates a scan-ready inbox item. Previously stored
+scan-ready activity entries are hidden on inbox load; saved-report notices,
+reminders and app updates remain available. Local preview startup now reports
+Flutter build progress before printing its ready URL.
+
 Release from a reviewed source commit on `main`. Complete the relevant
 [verification](verification.md) first. Source push, deployment, native publication
 and physical-device acceptance are separate results.

@@ -130,6 +130,9 @@ SSH stdin, never shell arguments or logs. Local deployments can instead set
 `UNLABEL_RESEARCH_DATABASE_URL` and `UNLABEL_RESEARCH_MONGO_URL` and omit `--ssh`.
 Do not use the API's read-only catalogue credentials for imports. The hosted API
 must include the current importer before publishing a new batch.
+Initial production setup grants research-only find/insert access with
+`python infrastructure/production/configure_research_writer.py`; it preserves
+the writer's existing roles and grants no evidence update/delete permission.
 
 The command replaces the active current record for the same barcode, or the
 exact name/brand/variant/quantity/India identity when no barcode is known. A

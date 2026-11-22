@@ -68,7 +68,7 @@ class _ReportContentState extends State<_ReportContent> {
       if (!mounted) return;
       setState(() => _saved = !_saved);
       if (_saved) {
-        unawaited(NotificationScope.maybeOf(context)?.activity(saved: true));
+        unawaited(NotificationScope.maybeOf(context)?.reportSaved());
       }
       unawaited(UiFeedback.confirmed());
       widget.onChanged();

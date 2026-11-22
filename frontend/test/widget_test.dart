@@ -13,7 +13,6 @@ import 'package:unlabel/core/accounts/account_sync_api.dart';
 import 'package:unlabel/core/network/unlabel_repository.dart';
 import 'package:unlabel/core/storage/local_store.dart';
 import 'package:unlabel/features/scanner/presentation/product_info_page.dart';
-import 'package:unlabel/features/scanner/presentation/ui_components.dart';
 
 class MemoryPreferences implements PreferencesAdapter {
   final values = <String, String>{};

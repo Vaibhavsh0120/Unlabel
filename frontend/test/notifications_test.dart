@@ -97,7 +97,7 @@ void main() {
     await c.clear();
     await c.refresh();
     expect(c.entries, isEmpty);
-    await c.activity(saved: true);
+    await c.reportSaved();
     expect(c.entries.single.title, 'Report saved');
     expect(
       jsonDecode(

@@ -109,6 +109,11 @@ class NotificationController extends ChangeNotifier {
         if (rows.length > 50) throw const FormatException('Oversize inbox');
         _entries = rows
             .map((row) => InboxEntry.fromJson(row as Map<String, dynamic>))
+            .where(
+              (entry) =>
+                  !(entry.id.startsWith('activity-') &&
+                      entry.destination == 'scan'),
+            )
             .toList();
         _seen = (value['seen'] as List).whereType<String>().take(100).toSet();
         reminderEnabled = value['reminder'] == true;
@@ -223,16 +228,14 @@ class NotificationController extends ChangeNotifier {
     }
   }
 
-  Future<void> activity({required bool saved}) => _serial(() async {
+  Future<void> reportSaved() => _serial(() async {
     if (loading) return;
     final now = clock();
     final entry = InboxEntry(
       id: 'activity-${now.microsecondsSinceEpoch}',
-      title: saved ? 'Report saved' : 'Your scan report is ready',
-      body: saved
-          ? 'Find it in Saved whenever you want to read it again.'
-          : 'Review the available facts and their sources in History.',
-      destination: saved ? 'saved' : 'scan',
+      title: 'Report saved',
+      body: 'Find it in Saved whenever you want to read it again.',
+      destination: 'saved',
       at: now,
     );
     final old = _entries;

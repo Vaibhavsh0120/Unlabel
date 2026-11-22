@@ -620,9 +620,6 @@ class _ClientHomeState extends State<_ClientHome> with WidgetsBindingObserver {
     }
     try {
       await widget.store.record(report);
-      if (mounted) {
-        unawaited(NotificationScope.maybeOf(context)?.activity(saved: false));
-      }
       _changed();
     } on AppFailure catch (error) {
       if (mounted) {
