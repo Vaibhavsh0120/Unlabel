@@ -17,9 +17,6 @@ class _Repository extends UnlabelRepository {
   }
 
   @override
-  Future<LiveProductLookup> liveProduct(String barcode) async =>
-      const LiveProductLookup('disabled');
-  @override
   Future<MachineProductLookup> machineProduct(String barcode) async =>
       const MachineProductLookup([], []);
 }

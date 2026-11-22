@@ -14,7 +14,6 @@ def settings(**values):
         _env_file=None,
         gemini_api_key=None,
         openai_api_key=None,
-        nutrigraph_api_key=None,
         ai_fallback_credentials_json=None,
         **values,
     )
@@ -23,12 +22,10 @@ def settings(**values):
 def test_no_credentials_disable_keyed_sources_while_service_still_starts():
     config = settings()
     assert config.ai_enabled is False
-    assert config.nutrigraph_enabled is False
     with TestClient(create_app(config)) as client:
         assert client.get("/v1/health").status_code == 200
         meta = client.get("/v1/meta").json()
         assert meta["capabilities"]["ai_extraction"] is False
-        assert meta["capabilities"]["live_nutrigraph"] is False
     assert Settings(_env_file=None, ai_fallback_credentials_json='[]').ai_enabled is False
 
 
@@ -36,14 +33,11 @@ def test_keys_auto_enable_and_explicit_off_wins():
     config = Settings(
         _env_file=None,
         openai_api_key="synthetic-openai-private-key",
-        nutrigraph_api_key="synthetic-nutrigraph-key",
     )
     assert config.ai_enabled is True
-    assert config.nutrigraph_enabled is True
-    disabled = config.model_copy(update={"ai_enabled": False, "nutrigraph_enabled": False})
-    assert disabled.ai_enabled is False and disabled.nutrigraph_enabled is False
+    disabled = config.model_copy(update={"ai_enabled": False})
+    assert disabled.ai_enabled is False
     assert Settings(_env_file=None, ai_enabled=True).ai_enabled is False
-    assert Settings(_env_file=None, nutrigraph_enabled=True).nutrigraph_enabled is False
 
 
 @pytest.mark.asyncio

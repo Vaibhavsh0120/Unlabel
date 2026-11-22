@@ -48,7 +48,7 @@ class _ResearchContent extends StatelessWidget {
           message: 'Dated website facts for this product and variant.',
           qualification: 'Check your package. No health score is assigned.',
         ),
-        const SectionTitle('Evidence at a glance'),
+        const StudioSectionTitle(StudioSection.sources, 'Evidence at a glance'),
         ResultsFactsGrid(
           children: [
             ResultsFact(
@@ -90,7 +90,21 @@ class _ResearchContent extends StatelessWidget {
             ),
           ],
         ),
-        const SectionTitle('Nutrition snapshot'),
+        const StudioSectionTitle(StudioSection.nutrition, 'Nutrition snapshot'),
+        if (product.tables.isNotEmpty)
+          ResultsNutrientGrid(
+            rows: (product.tables.first['rows'] as List)
+                .map((row) => Map<String, dynamic>.from(row as Map))
+                .toList(),
+            basis: basisDescription(
+              product.tables.first['basis'],
+              product.tables.first['preparation'],
+            ),
+          ),
+        const StudioSectionTitle(
+          StudioSection.nutrition,
+          'Full nutrition tables',
+        ),
         SectionCard(
           padding: 16,
           child: Column(
@@ -159,6 +173,10 @@ class _ResearchContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Ingredients & allergens',
+        ),
         ResultsAllergenNotice(
           contains: product.section('contains'),
           mayContain: product.section('may_contain'),
@@ -190,7 +208,7 @@ class _ResearchContent extends StatelessWidget {
             ],
           ),
         ),
-        const SectionTitle('Source'),
+        const StudioSectionTitle(StudioSection.sources, 'Source'),
         _selectable(product.sourceUrl),
         TextButton.icon(
           onPressed: () async {

@@ -45,7 +45,9 @@ def test_disabled_community_endpoints_are_typed_unavailable_without_breaking_exi
         assert meta["capabilities"]["resolved_product_lookup"] is False
         assert client.get("/v1/health").status_code == 200
         assert client.get("/v1/claims/rules").status_code == 200
-    assert len(client.get("/openapi.json").json()["paths"]) == 34
+    paths = client.get("/openapi.json").json()["paths"]
+    assert "/v1/community/contributions" in paths
+    assert not any(path.startswith("/v1/live-products/") for path in paths)
 
 
 def test_community_secrets_are_typed_and_short_actor_secrets_are_rejected():

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'ui_components.dart';
-import '../../../core/widgets/brand_mark.dart';
+import 'label_studio_layout.dart';
+import 'app_shell.dart';
 
 /// One responsive composition for confirmed, researched and machine-read facts.
 /// The views supply their own evidence status; this layout invents no scores.
@@ -12,17 +13,16 @@ class ProductResultsLayout extends StatelessWidget {
     required this.main,
     required this.aside,
     this.mobile,
+    this.asideSection = StudioSection.sources,
     super.key,
   });
   final List<Widget> main, aside;
   final List<Widget>? mobile;
+  final StudioSection asideSection;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final wide =
-          constraints.maxWidth >= 1080 &&
-          MediaQuery.textScalerOf(context).scale(16) < 26;
       final base = Theme.of(context);
       final body = base.textTheme.apply(fontFamily: 'Inter');
       final compact = constraints.maxWidth < 600;
@@ -40,44 +40,161 @@ class ProductResultsLayout extends StatelessWidget {
         ),
         titleSmall: body.titleSmall?.copyWith(
           fontFamily: 'Manrope',
-          fontSize: compact ? 12 : 14,
+          fontSize: compact ? 14 : 14,
         ),
-        bodyLarge: body.bodyLarge?.copyWith(fontSize: compact ? 12 : 16),
-        bodyMedium: body.bodyMedium?.copyWith(fontSize: compact ? 12 : 14),
-        bodySmall: body.bodySmall?.copyWith(fontSize: compact ? 11 : 12),
+        bodyLarge: body.bodyLarge?.copyWith(fontSize: compact ? 14 : 16),
+        bodyMedium: body.bodyMedium?.copyWith(fontSize: compact ? 14 : 14),
+        bodySmall: body.bodySmall?.copyWith(fontSize: compact ? 12 : 12),
       );
       return Theme(
         data: base.copyWith(textTheme: typography),
-        child: Material(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).colorScheme.surface
-              : const Color(0xfff3fbf8),
-          child: PageBody(
-            maxWidth: 1480,
-            children: [
-              if (wide)
-                Row(
-                  key: const Key('results-desktop-columns'),
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 7, child: _column(main)),
-                    const SizedBox(width: 24),
-                    Expanded(flex: 4, child: _column(aside)),
-                  ],
-                )
-              else
-                _column(mobile ?? [...main, ...aside]),
-            ],
-          ),
-        ),
+        child: Material(color: base.colorScheme.surface, child: _studio()),
       );
     },
   );
 
-  Widget _column(List<Widget> children) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: children,
-  );
+  Widget _studio() {
+    final blocks = <StudioBlock>[];
+    Widget? header;
+    void collect(
+      List<Widget> widgets,
+      StudioSection initial,
+      String initialTitle,
+    ) {
+      var section = initial;
+      var title = initialTitle;
+      var children = <Widget>[];
+      void flush() {
+        if (children.any((w) => w is! SizedBox)) {
+          blocks.add(StudioBlock(section, title, children));
+        }
+        children = <Widget>[];
+      }
+
+      for (final widget in widgets) {
+        if (widget is ResultsIdentityCard && header == null) {
+          header = widget;
+          continue;
+        }
+        if (widget is StudioSectionTitle) {
+          flush();
+          section = widget.section;
+          title = widget.title;
+        } else {
+          children.add(widget);
+        }
+      }
+      flush();
+    }
+
+    collect(main, StudioSection.overview, 'Evidence summary');
+    collect(
+      aside,
+      asideSection,
+      asideSection == StudioSection.ingredients
+          ? 'Ingredients'
+          : 'More product context',
+    );
+    return LabelStudioLayout(
+      header: header ?? const SizedBox.shrink(),
+      blocks: blocks,
+    );
+  }
+}
+
+/// A single table only: original units, qualifiers and basis remain attached.
+class ResultsNutrientGrid extends StatelessWidget {
+  const ResultsNutrientGrid({
+    required this.rows,
+    required this.basis,
+    super.key,
+  });
+  final List<Map<String, dynamic>> rows;
+  final String basis;
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SectionCard(
+      padding: 12,
+      child: LayoutBuilder(
+        builder: (context, area) {
+          final count = MediaQuery.textScalerOf(context).scale(16) >= 25
+              ? 1
+              : 2;
+          final width = (area.maxWidth - 10 * (count - 1)) / count;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  for (final (key, title, icon) in const [
+                    ('energy', 'Energy', Icons.local_fire_department_outlined),
+                    ('protein', 'Protein', Icons.fitness_center_outlined),
+                    ('sugars', 'Total sugars', Icons.view_in_ar_outlined),
+                    ('fat', 'Fat', Icons.water_drop_outlined),
+                  ])
+                    SizedBox(
+                      width: width,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer.withValues(
+                            alpha: .45,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: theme.colorScheme.outlineVariant,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              icon,
+                              size: 21,
+                              color: theme.colorScheme.primary,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _value(key),
+                              style: theme.textTheme.titleLarge,
+                            ),
+                            Text(title),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(basis, style: theme.textTheme.bodySmall),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  String _value(String key) {
+    final matching = rows.where((row) => row['nutrient'] == key).toList();
+    if (matching.length != 1 ||
+        matching.single['value'] == null ||
+        matching.single['qualifier'] == 'unknown') {
+      return 'Unknown';
+    }
+    final row = matching.single;
+    final prefix = switch (row['qualifier']) {
+      'less_than' => '< ',
+      'less_than_or_equal' => '≤ ',
+      'greater_than' => '> ',
+      'greater_than_or_equal' => '≥ ',
+      'approximate' => '≈ ',
+      _ => '',
+    };
+    return '$prefix${row['value']} ${row['unit'] ?? ''}'.trim();
+  }
 }
 
 class ResultsIdentityCard extends StatelessWidget {
@@ -100,18 +217,69 @@ class ResultsIdentityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final base = Theme.of(context);
+    final theme = base.copyWith(
+      colorScheme: base.colorScheme.copyWith(
+        onSurface: Colors.white,
+        onSurfaceVariant: const Color(0xffd8f4e8),
+        primary: Colors.white,
+      ),
+      textTheme: base.textTheme.apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
+      ),
+    );
     final compact = MediaQuery.sizeOf(context).width < 600;
+    final navigation = AppShellScope.maybeOf(context);
+    final controls = <Widget>[
+      ?actions,
+      if (navigation != null)
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: const Color(0xff155b4b),
+          ),
+          onPressed: () => navigation.onSelect(2),
+          icon: const Icon(Icons.compare_arrows),
+          label: const Text('Compare'),
+        ),
+    ];
+    final combinedActions = controls.isEmpty
+        ? null
+        : compact && MediaQuery.textScalerOf(context).scale(16) < 25
+        ? Row(
+            children: [
+              for (var i = 0; i < controls.length; i++) ...[
+                if (i > 0) const SizedBox(width: 10),
+                Expanded(child: controls[i]),
+              ],
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (var i = 0; i < controls.length; i++) ...[
+                if (i > 0) const SizedBox(height: 8),
+                controls[i],
+              ],
+            ],
+          );
     final fallback = Semantics(
       label: 'Product photo unavailable',
-      child: const Center(child: FeatureIcon('document-text', size: 36)),
+      child: const Center(
+        child: Icon(
+          Icons.inventory_2_outlined,
+          size: 36,
+          color: Color(0xff155b4b),
+        ),
+      ),
     );
     final image = ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: SizedBox.square(
         dimension: compact ? 80 : 176,
         child: ColoredBox(
-          color: theme.colorScheme.surfaceContainerLow,
+          color: const Color(0xfff4f8f6),
           child: photo != null
               ? Image.memory(
                   photo!,
@@ -190,83 +358,90 @@ class ResultsIdentityCard extends StatelessWidget {
         if (!compact && barcodeLine != null) barcodeLine,
       ],
     );
-    return ResultsSurface(
-      padding: compact ? 16 : 20,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final stack =
-                  constraints.maxWidth < 290 ||
-                  MediaQuery.textScalerOf(context).scale(16) >= 28;
-              final identity = stack
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [image, const SizedBox(height: 12), copy],
-                    )
-                  : Row(
-                      children: [
-                        image,
-                        const SizedBox(width: 16),
-                        Expanded(child: copy),
-                      ],
-                    );
-              if (actions == null) {
-                return compact && barcodeLine != null
+    return Theme(
+      data: theme,
+      child: Container(
+        padding: EdgeInsets.all(compact ? 16 : 24),
+        decoration: BoxDecoration(
+          color: const Color(0xff155b4b),
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final stack =
+                    constraints.maxWidth < 290 ||
+                    MediaQuery.textScalerOf(context).scale(16) >= 28;
+                final identity = stack
                     ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [image, const SizedBox(height: 12), copy],
+                      )
+                    : Row(
+                        children: [
+                          image,
+                          const SizedBox(width: 16),
+                          Expanded(child: copy),
+                        ],
+                      );
+                if (combinedActions == null) {
+                  return compact && barcodeLine != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            identity,
+                            const SizedBox(height: 8),
+                            barcodeLine,
+                          ],
+                        )
+                      : identity;
+                }
+                if (compact &&
+                    !stack &&
+                    barcodeLine != null &&
+                    MediaQuery.textScalerOf(context).scale(16) < 23) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      identity,
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(flex: 6, child: barcodeLine),
+                          const SizedBox(width: 10),
+                          Expanded(flex: 5, child: combinedActions),
+                        ],
+                      ),
+                    ],
+                  );
+                }
+                return constraints.maxWidth >= 680 && !stack
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(child: identity),
+                          const SizedBox(width: 16),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 220),
+                            child: combinedActions,
+                          ),
+                        ],
+                      )
+                    : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           identity,
-                          const SizedBox(height: 8),
-                          barcodeLine,
+                          if (compact && barcodeLine != null) barcodeLine,
+                          const SizedBox(height: 12),
+                          combinedActions,
                         ],
-                      )
-                    : identity;
-              }
-              if (compact &&
-                  !stack &&
-                  barcodeLine != null &&
-                  MediaQuery.textScalerOf(context).scale(16) < 23) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    identity,
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(flex: 6, child: barcodeLine),
-                        const SizedBox(width: 10),
-                        Expanded(flex: 5, child: actions!),
-                      ],
-                    ),
-                  ],
-                );
-              }
-              return constraints.maxWidth >= 680 && !stack
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(child: identity),
-                        const SizedBox(width: 16),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 220),
-                          child: actions!,
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        identity,
-                        if (compact && barcodeLine != null) barcodeLine,
-                        const SizedBox(height: 12),
-                        actions!,
-                      ],
-                    );
-            },
-          ),
-        ],
+                      );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -286,150 +461,32 @@ class ResultsSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
-    final ink = dark ? const Color(0xffd3f5e5) : const Color(0xff10483b);
-    final accent = dark ? const Color(0xff20efc3) : theme.colorScheme.primary;
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final compact = constraints.maxWidth < 600;
-        final largeText = MediaQuery.textScalerOf(context).scale(16) >= 24;
-        final ring = Semantics(
-          label:
-              '$count recorded nutrition ${count == 1 ? 'value' : 'values'}. This is a fact count.',
-          child: ExcludeSemantics(
-            child: Container(
-              width: compact ? 56 : 100,
-              height: compact ? 56 : 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: accent, width: compact ? 6 : 8),
+    return ResultsSurface(
+      padding: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.fact_check_outlined, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(heading, style: theme.textTheme.titleMedium),
               ),
-              child: Center(
-                child: BrandLeaf(size: compact ? 30 : 46, color: accent),
-              ),
-            ),
+            ],
           ),
-        );
-        final headingRow = Wrap(
-          spacing: compact ? 8 : 16,
-          runSpacing: 6,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              '$count ${count == 1 ? 'value' : 'values'}',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: ink,
-                fontSize: compact ? 26 : 40,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: dark ? const Color(0xff0e4a40) : const Color(0xffd7f5e3),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: accent.withValues(alpha: .25)),
-              ),
-              child: Text(
-                heading,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: ink,
-                  fontSize: compact ? 11 : 13,
-                ),
-              ),
-            ),
-          ],
-        );
-        final copy = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              message,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: ink,
-                fontSize: compact ? 12 : 16,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              qualification,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: ink,
-                fontSize: compact ? 11 : 13,
-              ),
-            ),
-          ],
-        );
-        final artwork = ExcludeSemantics(
-          child: Image.asset(
-            'assets/artwork/product-botanical-v2.webp',
-            width: compact ? 44 : 116,
-            height: compact ? 56 : 116,
-            fit: BoxFit.contain,
-          ),
-        );
-        return Container(
-          padding: EdgeInsets.all(compact ? 16 : 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: LinearGradient(
-              colors: dark
-                  ? [const Color(0xff045949), const Color(0xff102620)]
-                  : [const Color(0xffd6f5e9), const Color(0xffedf9f2)],
-            ),
-            border: Border.all(color: accent.withValues(alpha: .4)),
-          ),
-          child: compact || largeText
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (largeText) ...[
-                      ring,
-                      const SizedBox(height: 12),
-                      headingRow,
-                    ] else
-                      Row(
-                        children: [
-                          ring,
-                          const SizedBox(width: 12),
-                          Expanded(child: headingRow),
-                        ],
-                      ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(child: copy),
-                        const SizedBox(width: 8),
-                        artwork,
-                      ],
-                    ),
-                  ],
-                )
-              : Row(
-                  children: [
-                    ring,
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          headingRow,
-                          const SizedBox(height: 10),
-                          copy,
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    artwork,
-                  ],
-                ),
-        );
-      },
+          const SizedBox(height: 12),
+          Text(message),
+          const SizedBox(height: 8),
+          Text('$count recorded facts', style: theme.textTheme.labelMedium),
+          const Divider(height: 24),
+          Text(qualification, style: theme.textTheme.bodySmall),
+        ],
+      ),
     );
   }
 }
 
-/// Shared bordered surface; no blur or continuously animated decoration.
 class ResultsSurface extends StatelessWidget {
   const ResultsSurface({required this.child, this.padding = 16, super.key});
   final Widget child;

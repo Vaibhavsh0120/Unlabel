@@ -226,17 +226,17 @@ class _ReportContentState extends State<_ReportContent> {
       identity,
       const SizedBox(height: 16),
       _ReportSummary(report: report),
-      const SectionTitle('Evidence at a glance'),
+      const StudioSectionTitle(StudioSection.sources, 'Evidence at a glance'),
       _EvidenceOverview(report: report),
-      const SectionTitle('Nutrition snapshot'),
+      const StudioSectionTitle(StudioSection.nutrition, 'Nutrition snapshot'),
       nutrition,
     ];
     final lower = <Widget>[
       if (report.sugar != null) ...[
-        const SectionTitle('Sugar reality'),
+        const StudioSectionTitle(StudioSection.sugar, 'Sugar reality'),
         _SugarReality(sugar: report.sugar!),
       ],
-      const SectionTitle('Claim check'),
+      const StudioSectionTitle(StudioSection.claims, 'Claim check'),
       claims,
     ];
     final supporting = <Widget>[
@@ -252,7 +252,7 @@ class _ReportContentState extends State<_ReportContent> {
           barcode: report.barcode!,
         ),
       if (!report.isHistorical) ...[
-        const SectionTitle('Catalogue update'),
+        const StudioSectionTitle(StudioSection.sources, 'Catalogue update'),
         StatusNotice(
           title: _storageTitle(report.storageStatus),
           message: _storageMessage(report.storageStatus),
@@ -260,28 +260,62 @@ class _ReportContentState extends State<_ReportContent> {
       ],
     ];
     return ProductResultsLayout(
+      asideSection: StudioSection.ingredients,
       main: [...core, ...lower],
       aside: [
+        ResultsSurface(
+          padding: 16,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(report.ingredients.text ?? 'Not declared in this source'),
+              const SizedBox(height: 12),
+              Text(
+                'Check the current package.',
+                style: theme.textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Ingredient-function glossary',
+        ),
         _IngredientPreview(report: report),
         const SizedBox(height: 14),
         allergen,
-        const SectionTitle('Ingredients & allergens', topSpacing: 16),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Ingredients & allergens',
+          topSpacing: 16,
+        ),
         ingredients,
         const SizedBox(height: 14),
         unknown,
-        const SectionTitle('Source references', topSpacing: 16),
+        const StudioSectionTitle(
+          StudioSection.sources,
+          'Source references',
+          topSpacing: 16,
+        ),
         sources,
         ...supporting,
       ],
       mobile: [
         ...core,
-        const SectionTitle('Ingredients & allergens'),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Ingredients & allergens',
+        ),
         ingredients,
         const SizedBox(height: 12),
         allergen,
         const SizedBox(height: 14),
         unknown,
-        const SectionTitle('Source references', topSpacing: 16),
+        const StudioSectionTitle(
+          StudioSection.sources,
+          'Source references',
+          topSpacing: 16,
+        ),
         sources,
         const SizedBox(height: 16),
         _IngredientPreview(report: report),
@@ -385,7 +419,9 @@ class _UnknownFactsState extends State<_UnknownFacts> {
                   vertical: 7,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHigh,
+                  color: theme.brightness == Brightness.dark
+                      ? const Color(0xff1d332b)
+                      : const Color(0xffeaf7f1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: theme.colorScheme.outlineVariant),
                 ),
@@ -592,10 +628,8 @@ class _NutritionSnapshot extends StatelessWidget {
     for (final names in const [
       ['energy'],
       ['protein'],
-      ['carbohydrates', 'carbohydrates_total'],
-      ['fat'],
-      ['sodium'],
       ['sugars'],
+      ['fat'],
     ]) {
       final matching = nutrients.where((item) => names.contains(item.name));
       selected.add(
@@ -625,10 +659,8 @@ class _NutritionSnapshot extends StatelessWidget {
             final largeText = MediaQuery.textScalerOf(context).scale(14) > 21;
             final columns = largeText
                 ? 1
-                : constraints.maxWidth >= 760
-                ? 6
-                : constraints.maxWidth >= 330
-                ? 3
+                : constraints.maxWidth >= 800
+                ? 4
                 : 2;
             final width = (constraints.maxWidth - 8 * (columns - 1)) / columns;
             return Wrap(
@@ -675,50 +707,52 @@ class _SnapshotValue extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
-    final (symbol, tint) = switch (nutrient.name) {
-      'energy' => (
-        Icons.local_fire_department_rounded,
-        const Color(0xffffa958),
-      ),
-      'protein' => (Icons.fitness_center_rounded, const Color(0xffa78bee)),
-      'carbohydrates' ||
-      'carbohydrates_total' => (Icons.grain_rounded, const Color(0xffffce56)),
-      'fat' => (Icons.water_drop_rounded, const Color(0xfff58daf)),
-      'sodium' => (Icons.scatter_plot_rounded, const Color(0xff6fcdf3)),
-      _ => (Icons.view_in_ar_rounded, const Color(0xff70dfbc)),
+    final symbol = switch (nutrient.name) {
+      'energy' => Icons.local_fire_department_outlined,
+      'protein' => Icons.fitness_center_outlined,
+      'fat' => Icons.water_drop_outlined,
+      _ => Icons.view_in_ar_outlined,
     };
     return Container(
       key: Key('report-nutrient-$index'),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHigh,
+        color: dark ? const Color(0xff1d332b) : const Color(0xffeaf7f1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            symbol,
-            size: 28,
-            color: dark ? tint : Color.lerp(tint, Colors.black, .4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(symbol, size: 22, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      nutrient.value == null
+                          ? 'Unknown'
+                          : '${_number(nutrient.value!)} ${nutrient.unit}',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      _human(nutrient.name),
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
-          Text(
-            nutrient.value == null
-                ? _human(nutrient.state)
-                : '${_number(nutrient.value!)} ${nutrient.unit}',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontSize: MediaQuery.sizeOf(context).width < 600 ? 17 : 20,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            _human(nutrient.name),
-            style: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
-          ),
-          const SizedBox(height: 5),
           Text(
             nutrient.basisLabel,
             style: theme.textTheme.labelSmall?.copyWith(
@@ -911,7 +945,10 @@ class IngredientPage extends StatelessWidget {
           message: 'These entries explain technological functions such as thickening or emulsifying. They do not establish health effects, allergy safety or permission for an Indian food category.',
           icon: Icons.menu_book_outlined,
         ),
-        const SectionTitle('Matched ingredient functions'),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Matched ingredient functions',
+        ),
         if (report.ingredientInsights.isEmpty)
           const StatusNotice(
             title: 'No glossary match for this label',
@@ -1011,7 +1048,10 @@ class IngredientPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
           ],
-        const SectionTitle('Printed ingredient declaration'),
+        const StudioSectionTitle(
+          StudioSection.ingredients,
+          'Printed ingredient declaration',
+        ),
         SectionCard(child: _Declaration('Ingredients', report.ingredients)),
       ],
     ),

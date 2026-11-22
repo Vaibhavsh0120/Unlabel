@@ -1,0 +1,35 @@
+{
+  "schema_version": "1",
+  "products": [
+    {
+      "observation": {
+        "source": {
+          "provider": "manufacturer",
+          "url": "REPLACE_WITH_VERIFIED_HTTPS_PRODUCT_PAGE",
+          "retrieved_at": "REPLACE_WITH_ACTUAL_UTC_RETRIEVAL_TIME",
+          "source_updated_at": null,
+          "license": {
+            "database": null,
+            "contents": null,
+            "images": null,
+            "note": "Record the source's actual reuse terms and attribution.",
+            "reuse_status": "unknown"
+          }
+        },
+        "identity": {
+          "barcode": null,
+          "name": "REPLACE_WITH_EXACT_PRODUCT_NAME",
+          "brand": "REPLACE_WITH_BRAND",
+          "variant": "REPLACE_WITH_VARIANT",
+          "quantity": "REPLACE_WITH_PACK_QUANTITY",
+          "market": "india",
+          "match": "identity_unconfirmed",
+          "barcode_evidence_url": null
+        },
+        "sections": {},
+        "nutrition": {},
+        "metadata": {}
+      }
+    }
+  ]
+}

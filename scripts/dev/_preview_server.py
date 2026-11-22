@@ -32,7 +32,6 @@ GET_ROUTES = (
     r"/v1/notifications(?:/push-config)?",
     r"/v1/ai/active",
     rf"/v1/ai/observations/{BARCODE}",
-    rf"/v1/live-products/nutrigraph/{BARCODE}",
 )
 POST_ROUTES = (
     r"/v1/(?:nutrition/normalize|claims/check|claims/catalogue-check|community/contributions|reports/check|reports/compare|account/sync)",

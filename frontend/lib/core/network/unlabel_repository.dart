@@ -483,39 +483,6 @@ class UnlabelRepository {
   }
 
   /// Read-only supplements never enter persisted report/cache/library objects.
-  Future<LiveProductLookup> liveProduct(String barcode) async {
-    if (!validProductBarcode(barcode)) {
-      return const LiveProductLookup('unsupported_barcode');
-    }
-    final metadata = await _serviceMetadata();
-    if ((metadata['capabilities'] as JsonMap)['live_nutrigraph'] != true) {
-      return const LiveProductLookup('disabled');
-    }
-    final token = await _auth.token().timeout(authTimeout);
-    if (token == null || token.isEmpty) {
-      throw const AppFailure(
-        'authentication',
-        'Live product lookup is unavailable. Try again.',
-      );
-    }
-    try {
-      return LiveProductLookup.fromJson(
-        await _request(
-          'GET',
-          '/v1/live-products/nutrigraph/$barcode',
-          token: token,
-        ),
-        barcode,
-        _clock().toUtc(),
-      );
-    } on AppFailure catch (error) {
-      if (error.kind == 'not_found') {
-        return const LiveProductLookup('not_found');
-      }
-      rethrow;
-    }
-  }
-
   Future<MachineProductLookup> machineProduct(String barcode) async {
     if (!validProductBarcode(barcode)) {
       return const MachineProductLookup([], []);

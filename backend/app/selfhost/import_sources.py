@@ -180,8 +180,8 @@ def import_bulk(connection, mongo, root):
     return counts
 
 
-def import_research(connection, mongo, root):
-    directory = root / "data/catalogue/popular-india-v1"
+def import_research(connection, mongo, root, *, directory=None, expected_base_sha=None):
+    directory = directory or root / "data/catalogue/popular-india-v1"
     metadata = json.loads((directory / "manifest.json").read_text())
     decoded = checked_source(directory / metadata["dataset_file"], metadata)
     rows = []
@@ -210,8 +210,22 @@ def import_research(connection, mongo, root):
     mongo.research_observations.create_index("tokens")
     mongo.research_observations.create_index([("name_sort", 1), ("_id", 1)])
     append_documents(mongo.research_observations, rows)
-    images = load_images(root / "backend/app/research_catalogue/image_sources.json")
+    image_file = directory / "image_sources.json"
+    images = load_images(
+        image_file
+        if image_file.exists()
+        else root / "backend/app/research_catalogue/image_sources.json"
+    )
     with connection.transaction():
+        connection.execute("SELECT pg_advisory_xact_lock(842317226)")
+        if expected_base_sha is not None:
+            current = connection.execute(
+                "SELECT source_sha256 FROM catalogue.dataset_receipts WHERE dataset_id='research-v1'"
+            ).fetchone()
+            if current is None or current[0] not in {expected_base_sha, metadata["decoded_sha256"]}:
+                raise ValueError(
+                    "Research snapshot changed; prepare the batch against the current snapshot"
+                )
         connection.execute(
             """INSERT INTO catalogue.research_datasets(sha256,receipt)
             VALUES(%s,%s) ON CONFLICT(sha256) DO NOTHING""",
@@ -246,8 +260,10 @@ def import_research(connection, mongo, root):
                 ON CONFLICT(descriptor_id) DO NOTHING""",
                 (entry_id, image.url, Jsonb(image.model_dump(mode="json")), image.retrieved_at),
             )
-        if connection.execute("SELECT count(*) FROM catalogue.image_descriptors").fetchone()[
-            0
-        ] != len(images):
-            raise ValueError("Separate image descriptor count differs from its source")
+            stored = connection.execute(
+                "SELECT source_reference FROM catalogue.image_descriptors WHERE descriptor_id=%s",
+                (entry_id,),
+            ).fetchone()
+            if stored is None or stored[0] != image.model_dump(mode="json"):
+                raise ValueError("Existing image descriptor differs from the reviewed source")
     return {"observations": len(rows), "image_descriptors": len(images)}

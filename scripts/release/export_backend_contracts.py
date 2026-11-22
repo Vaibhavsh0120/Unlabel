@@ -39,7 +39,6 @@ research = import_module("app.research_catalogue.models")
 ai = import_module("app.ai.models")
 ai_router = import_module("app.ai.router")
 machine_observations = import_module("app.ai.observations")
-live_products = import_module("app.live_products.models")
 notifications = import_module("app.notifications")
 compare = import_module("app.comparison.service").compare
 
@@ -132,7 +131,6 @@ def main():
         "ai-activate-response-v1.schema.json": ai_router.ActivationResponse,
         "machine-label-contribution-v1.schema.json": machine_observations.MachineContribution,
         "machine-label-lookup-v1.schema.json": machine_observations.MachineObservationLookup,
-        "live-product-lookup-v1.schema.json": live_products.LiveLookup,
     }.items():
         write("schemas", filename, model.model_json_schema())
 

@@ -727,9 +727,11 @@ void main() {
         expect(find.text('Partial declaration'), findsOneWidget);
         expect(find.text('Less than 9.5 g'), findsOneWidget);
         expect(find.text('Not declared in this source'), findsNWidgets(2));
-        await tester.ensureVisible(
-          find.text('Source notes and missing information'),
+        await Scrollable.ensureVisible(
+          tester.element(find.text('Source notes and missing information')),
+          alignment: .2,
         );
+        await tester.pumpAndSettle();
         await tester.tap(find.text('Source notes and missing information'));
         await tester.pumpAndSettle();
         expect(find.text('Alternative website values'), findsOneWidget);

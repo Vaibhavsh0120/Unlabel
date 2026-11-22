@@ -306,3 +306,20 @@ Remove the separate horizontal results navigation. Search replaces the content
 header with its input; choosing a shell destination closes search. Product info
 routes have zero desktop transition duration. Use validated source images in
 both search lists and details, with an HTML-image fallback for web CORS limits.
+
+
+## Approved Label Studio product results
+
+The user approved concept B on 22 November 2026: forest identity band with a
+neutral product-image inset, Save/Compare actions, sticky Overview/Nutrition/
+Ingredients/Claims/Sources navigation, four mint nutrient tiles and a responsive
+bento layout. Desktop retains the stationary shell; phone stacks the same facts
+above Home/Scan/Compare/Saved navigation. Large text may stack actions and cards.
+The calmer editorial concept A was considered; B was selected for direct section
+navigation and denser grouping. Existing source uncertainty, conflicting tables,
+allergen declarations, sugar basis and glossary evidence remain accessible.
+Typed section markers drive navigation independently of wording. Section tabs
+scroll within one result page; no whole-shell transition or hidden replacement
+of source facts is introduced. The concept's illustrative product, scores and
+claim labels never become runtime facts. Unknown stays unknown, and the sugar
+illustration uses the actual original basis and approximately 4 g per cube.

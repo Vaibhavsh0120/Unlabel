@@ -106,3 +106,49 @@ There is no scheduled refresh job. Git keeps old source versions and repository 
 The JSONL acquisition caps compressed transfer at 16 GiB, decoded stream at 160 GiB, source records at 16 MiB, projected records at 512 KiB, retained projection at 100 MiB and elapsed time at three hours. Older CSV acquisition retains its own smaller bounds. Bundle/source/SQLite limits remain 100 MiB; local immediate-work-directory defaults are 1 GiB. Check free disk separately for source and repository history. The backend bundles URL descriptors, without an image-byte cache.
 
 The hosted SQLite is an immutable function asset, not durable writable cloud storage. Actual v0.2.3 Vercel artifact size/read verification passed and is recorded separately from the local build. Backend-held facts avoid an upstream call but still need client-to-backend connectivity. Flutter integrates bulk/research lookup and bounded short-lived public read caches, separate from private libraries. Saved dated reports, local reminders and bundled Insights can be read locally after app loading; offline website restart needs separate caching/verification. The preserved confirmed-label claim subset does not consume snapshot facts automatically. Exact-source comparison and optional consented AI extraction are implemented independently; neither establishes product safety. [API contracts](../../contracts/README.md) · [20-group tracker](../roadmap.md).
+
+
+## Reviewed research updates
+
+Use `backend/.venv/Scripts/python.exe scripts/data/research_batch.py BATCH.json`
+to preview a reviewed batch and build a hashed replacement snapshot. Use the
+[packet template](../../data/catalogue/research-batches/template.json). Copy
+ingredients exactly; retain Contains/May contain separately. Each section may
+contain `text` and `completeness` (`complete`, `partial`, `unknown`). Nutrition
+uses separate `direct_tables`, each with source, original basis/preparation and
+qualified rows. See the existing research models and source bundle for full
+examples. Never copy generic composition into branded packet gaps.
+
+After reviewing the printed add/replace/changed-field plan, publish with:
+
+```powershell
+backend/.venv/Scripts/python.exe scripts/data/research_batch.py BATCH.json --apply --ssh Volcanica
+```
+
+This uses the encrypted inventory's dedicated importer/writer credentials over
+SSH stdin, never shell arguments or logs. Local deployments can instead set
+`UNLABEL_RESEARCH_DATABASE_URL` and `UNLABEL_RESEARCH_MONGO_URL` and omit `--ssh`.
+Do not use the API's read-only catalogue credentials for imports. The hosted API
+must include the current importer before publishing a new batch.
+
+The command replaces the active current record for the same barcode, or the
+exact name/brand/variant/quantity/India identity when no barcode is known. A
+different known variant/size is rejected; deliberate identity corrections can
+specify `replace_entry_ids`. Incoming duplicate products are rejected. Each new
+observation is a complete replacement: omitted facts become unknown rather than
+inheriting old facts. The plan exposes changed fields before publication.
+Source URLs, retrieval dates, provenance and licenses remain required. A new
+image descriptor must match the observation's source and reviewed image host.
+Compatible existing source descriptors follow the updated record; image bytes
+are never bundled.
+
+The original 243-observation bundle stays intact. New snapshots and their raw
+requests live under `data/catalogue/research-batches/<sha256>`; `current.json`
+advances only after successful publication. Old snapshots remain for recovery
+and existing saved source links. PostgreSQL switches the active search receipt
+transactionally under a lock and refuses a stale base, so a concurrent import
+cannot silently overwrite newer work. Repeating unchanged facts makes no write.
+Commit the new public batch directory and pointer after hosted verification.
+To restore an earlier snapshot, import its directory using `import_research`
+with the currently active SHA as `expected_base_sha`, verify lookup and update
+the tracked pointer. Do not delete historical source evidence.

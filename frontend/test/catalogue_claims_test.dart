@@ -54,9 +54,6 @@ class _Repository extends UnlabelRepository {
     List<String> claims,
   ) async => CatalogueClaimCheck.fromJson(response(), barcode, claims);
   @override
-  Future<LiveProductLookup> liveProduct(String barcode) async =>
-      const LiveProductLookup('disabled');
-  @override
   Future<MachineProductLookup> machineProduct(String barcode) async =>
       const MachineProductLookup([], []);
   @override
@@ -137,7 +134,8 @@ void main() {
         findsOneWidget,
       );
       final numbers = find.text('Sourced numbers and criteria');
-      await tester.ensureVisible(numbers);
+      await Scrollable.ensureVisible(tester.element(numbers), alignment: .2);
+      await tester.pumpAndSettle();
       await tester.tap(numbers);
       await tester.pumpAndSettle();
       expect(find.text('protein: 14 g'), findsOneWidget);

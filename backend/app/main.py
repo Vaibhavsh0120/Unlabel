@@ -37,8 +37,6 @@ from app.claims.knowledge import KnowledgeStore
 from app.community.auth import AuthenticationUnavailable, create_runtime
 from app.core.body_limit import RequestBodyLimit
 from app.core.config import Settings
-from app.live_products.nutrigraph import NutriGraphLookup
-from app.live_products.router import build_router as build_live_products_router
 from app.notifications import build_router as build_notifications_router
 from app.providers.products.nutrition import NutritionProvider
 from app.providers.products.open_food_facts import BARCODE_PATTERN, OpenFoodFactsProvider
@@ -57,7 +55,6 @@ def create_app(
     transport: httpx.AsyncBaseTransport | None = None,
     community_runtime: CommunityRuntimeProtocol | None = None,
     ai_transport: httpx.AsyncBaseTransport | None = None,
-    nutrigraph_transport: httpx.AsyncBaseTransport | None = None,
     data_runtime=None,
 ) -> FastAPI:
     config = settings or Settings()
@@ -113,7 +110,6 @@ def create_app(
             application.state.community_runtime = None
             application.state.ai_gateway = None
             application.state.ai_client = None
-            application.state.nutrigraph = None
             if (
                 community_runtime is not None
                 and config.community_actor_secret is not None
@@ -146,20 +142,6 @@ def create_app(
                         application.state.ai_client = ai_client
                     except ValueError:
                         await ai_client.aclose()
-            if (config.nutrigraph_enabled and config.nutrigraph_api_key is not None
-                and application.state.community_runtime is not None):
-                live_client = httpx.AsyncClient(
-                    timeout=httpx.Timeout(8, connect=3), trust_env=False,
-                    follow_redirects=False,
-                    limits=httpx.Limits(max_connections=2, max_keepalive_connections=1),
-                    transport=nutrigraph_transport,
-                )
-                application.state.nutrigraph = NutriGraphLookup(
-                    live_client, config.nutrigraph_api_key.get_secret_value(),
-                    lookup_url=config.nutrigraph_lookup_url,
-                    monthly_limit=config.nutrigraph_monthly_request_limit,
-                    sandbox_limit=config.nutrigraph_sandbox_request_limit,
-                )
             directory = config.catalogue_path()
             if data_runtime is not None:
                 application.state.catalogue = data_runtime.catalogue
@@ -180,8 +162,6 @@ def create_app(
             try:
                 yield
             finally:
-                if application.state.nutrigraph is not None:
-                    await application.state.nutrigraph.close()
                 if application.state.ai_client is not None:
                     await application.state.ai_client.aclose()
                 active = application.state.community_runtime
@@ -199,7 +179,6 @@ def create_app(
     )
     application.include_router(build_router(store=claim_store))
     application.include_router(build_notifications_router(config))
-    application.include_router(build_live_products_router(config))
     application.include_router(
         build_research_router(lambda request: request.app.state.research_catalogue)
     )
@@ -342,7 +321,6 @@ def create_app(
                 "notification_inbox": True,
                 "ai_extraction": request.app.state.ai_gateway is not None,
                 "ai_machine_observations": request.app.state.ai_gateway is not None,
-                "live_nutrigraph": request.app.state.nutrigraph is not None,
                 "product_lookup": config.off_enabled,
                 "nutrition_lookup": config.off_enabled,
                 "nutrition_normalization": True,

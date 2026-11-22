@@ -31,11 +31,11 @@ rescans deduplicate. Private staging and public machine observations have
 independent statuses. Raw photos, OCR, region geometry and account identities
 never enter that public stream. See the [current backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md).
 
-NutriGraph is independent of AI extraction and permanently stored data. Its
-optional authenticated live lookup uses a server-only key, documented UPC-12,
-a fixed HTTPS host, bounded no-store responses and at most 24-hour memory cache.
-It remains disabled without configuration. The vendor's account-wide free quota
-must apply across serverless processes. [Product Info source boundaries](PRODUCT_INFO.md).
+Gemini's image boxes use the provider's documented 0..1000 scale. The adapter
+requests that scale explicitly, converts once to the app's 0..1 coordinates and
+then enforces bounds, positive area and supplied photo slots. OpenAI retains its
+0..1 response contract. Neither conversion changes nutrition facts or evidence.
+The operator-requested NutriGraph removal leaves no current vendor route.
 
 ## Selection and replacement
 

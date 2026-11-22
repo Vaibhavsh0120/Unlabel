@@ -77,7 +77,6 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
     from app import __version__
     from app.ai.observations import MachineContribution, MachineObservationLookup
     from app.core.config import Settings
-    from app.live_products.models import LiveLookup
     from app.main import create_app
 
     saved = json.loads((CONTRACTS / f"schemas/backend-v{__version__}.openapi.json").read_text())
@@ -115,7 +114,6 @@ def test_current_openapi_and_all_current_schemas_match_runtime():
         "ai-activate-response-v1.schema.json": ActivationResponse,
         "machine-label-contribution-v1.schema.json": MachineContribution,
         "machine-label-lookup-v1.schema.json": MachineObservationLookup,
-        "live-product-lookup-v1.schema.json": LiveLookup,
     }.items():
         assert (
             json.loads((CONTRACTS / "schemas" / filename).read_text()) == model.model_json_schema()

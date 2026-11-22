@@ -8,7 +8,7 @@ from email.utils import format_datetime
 import httpx
 import pytest
 from app.ai import providers
-from app.ai.models import ExtractionRequest
+from app.ai.models import ExtractedLabel, ExtractionRequest
 from app.ai.providers import Credential, ProviderFailure, extract
 from pydantic import SecretStr, ValidationError
 from tests.unit.test_ai_models import extracted_dict, image_dict
@@ -33,7 +33,14 @@ def request():
 
 
 def envelope(provider="gemini", data=None):
-    text = json.dumps(extracted_dict() if data is None else data)
+    value = json.loads(json.dumps(extracted_dict() if data is None else data))
+    if provider == "gemini" and isinstance(value, dict):
+        for region in value.get("regions", []):
+            if isinstance(region, dict) and isinstance(region.get("box"), dict):
+                for key, coordinate in region["box"].items():
+                    if type(coordinate) in {int, float}:
+                        region["box"][key] = coordinate * 1000
+    text = json.dumps(value)
     if provider == "gemini":
         return {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": text}]}}]}
     return {
@@ -120,6 +127,7 @@ async def test_only_selected_fixed_origin_is_called_once_with_bounded_structured
     assert label.identity.barcode == "8901764051258"
     assert label.evidence == "machine_extracted_unverified"
     assert len(requests) == 1
+    assert label.regions[0].box == ExtractedLabel.model_validate(extracted_dict()).regions[0].box
 
 
 @pytest.mark.asyncio

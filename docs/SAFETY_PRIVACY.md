@@ -10,8 +10,7 @@ After cloud consent v2, exact-identity-compatible AI back-label facts may be
 shared automatically as unverified observations. No per-reading confirmation is
 required; this never establishes human confirmation, current-package safety or
 permission to replace original evidence. Provider/date and conflicts remain
-visible. NutriGraph facts are optional live display only, expire within 24 hours,
-and do not enter permanent catalogue, reports or account sync.
+visible. The retired NutriGraph provider is no longer queried.
 
 Confirmed current-label and historical source facts retain distinct evidence.
 Analysis needs no account; automatic storage failures change only their separate

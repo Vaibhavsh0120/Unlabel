@@ -27,7 +27,7 @@ historical releases and device-local libraries.
 | Work | Current state and acceptance gate |
 | --- | --- |
 | API | Coolify API and all dependencies are healthy. Hosted guest sessions, password login, profile writes/conflicts, account isolation, library reads and deletion passed. See release evidence for source identities; broader cutover remains separate. |
-| Community/AI | PostgreSQL adapters and the separate evidence archive worker are implemented. Preserve admission, conflicts, consent, quotas and provider boundaries; verify deployed extraction and queue processing. NutriGraph was removed from active sources after refreshed-key failures. |
+| Community/AI | PostgreSQL adapters and the separate evidence archive worker are implemented. Preserve admission, conflicts, consent, quotas and provider boundaries; verify deployed extraction/staging and queue processing. NutriGraph was removed completely after refreshed-key failures. |
 | Clients | Replace Firebase auth/profile access. Test web/native Google/email signup, linking collisions, recovery/expiry, sign-out, deletion and guest renewal. |
 | Reminders | Deploy the Oracle scheduler/worker. Test leases, deduplication, retry, failed jobs and unsubscribe. No app schedules in GitHub Actions. |
 | Canvas | Add actual API/worker/scheduler resources and labelled runtime connections with descriptions. |
@@ -35,7 +35,7 @@ historical releases and device-local libraries.
 | Recovery | Configure a recurring off-VM destination and repeat the verified restore process from that destination. |
 | Performance | Measure queries, pools, concurrency, queue recovery, memory and disk. One VM is one failure domain. |
 | UI | Ship prepared bell, recent-scan, Insights-height and sidebar fixes. Recheck themes, enlarged text and phone/tablet/desktop layouts. |
-| Release | Publish the current v1.1.1 auth repair from canonical component manifests. Web builds require healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
+| Release | Publish the current Label Studio and feature update from canonical component manifests. Web builds require healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
 ## Account deployment

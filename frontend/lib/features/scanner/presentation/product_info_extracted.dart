@@ -65,7 +65,10 @@ class _ExtractedContentState extends State<_ExtractedContent> {
               : 'Read from your package photos by the configured AI service.',
           qualification: 'Machine-read facts · check the photo. This is not a health score.',
         ),
-        const SectionTitle('Facts found on your package'),
+        const StudioSectionTitle(
+          StudioSection.sources,
+          'Facts found on your package',
+        ),
         ResultsFactsGrid(
           children: [
             ResultsFact(
@@ -86,7 +89,10 @@ class _ExtractedContentState extends State<_ExtractedContent> {
             ),
           ],
         ),
-        const SectionTitle('Claims found on product front'),
+        const StudioSectionTitle(
+          StudioSection.claims,
+          'Claims found on product front',
+        ),
         SectionCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,7 +116,19 @@ class _ExtractedContentState extends State<_ExtractedContent> {
             ],
           ),
         ),
-        const SectionTitle('Nutrition Snapshot'),
+        const StudioSectionTitle(StudioSection.nutrition, 'Nutrition Snapshot'),
+        if (tables.isNotEmpty)
+          ResultsNutrientGrid(
+            rows: (tables.first['rows'] as List)
+                .map((row) => Map<String, dynamic>.from(row as Map))
+                .toList(),
+            basis:
+                '${tables.first['basis']['printed_text']} · ${tables.first['preparation'].toString().replaceAll('_', ' ')}',
+          ),
+        const StudioSectionTitle(
+          StudioSection.nutrition,
+          'Full nutrition tables',
+        ),
         if (tables.isEmpty)
           const StatusNotice(
             title: 'Nutrition unknown',

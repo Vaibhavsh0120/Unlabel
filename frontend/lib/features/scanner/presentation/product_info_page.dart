@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/interaction/ui_feedback.dart';
 import '../../../core/notifications/notification_controller.dart';
 import '../../../core/network/unlabel_repository.dart';
 import '../../../core/storage/local_store.dart';
 import 'product_results_layout.dart';
+import 'label_studio_layout.dart';
 import 'report_presentation.dart';
 import 'ui_components.dart';
 import 'app_shell.dart';
@@ -104,7 +104,9 @@ class ProductInfoPage extends StatelessWidget {
       title: 'Product info',
       navigation: navigation,
       showMobileNavigation: true,
-      body: _content,
+      body: navigation == null
+          ? _content
+          : AppShellScope(navigation: navigation!, child: _content),
     ),
   );
 }

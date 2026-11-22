@@ -5,8 +5,7 @@ and [backend](../../backend/pyproject.toml) versions. The API has **30 paths /
 32 operations**. Barcode-first capture preserves camera framing, front-name
 matches require pack-size selection, and ProductInfoPage is the shared result
 destination. Automatic back-label observations remain machine-unverified and
-source-preserving. Optional NutriGraph facts are session-only and disabled
-pending a key. Local, hosted, native and device proof are recorded separately.
+source-preserving. The retired NutriGraph provider is no longer queried. Local, hosted, native and device proof are recorded separately.
 [Frontend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/FRONTEND_V0_10_0_REVIEW.md) ·
 [Backend review](https://github.com/Vaibhavsh0120/Unlabel/blob/f5fee2c/docs/planning/BACKEND_V0_14_0_REVIEW.md) ·
 [Product Info](PRODUCT_INFO.md) · [Live facts](LIVE_PRODUCT_FACTS.md).

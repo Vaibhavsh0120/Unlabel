@@ -1,5 +1,20 @@
 # Releases
 
+## Label Studio and feature update
+
+The current update redesigns product results with the approved forest/mint
+identity band, pinned section navigation and responsive nutrition/ingredient/
+evidence cards. It enables self-hosted AI and community persistence, deploys the
+separate evidence archive worker, and adds a responsive HTML welcome email with
+a plain-text alternative. Gemini's provider coordinates are converted explicitly
+before strict validation. NutriGraph was removed completely after refreshed-key
+failures, as requested by the operator. Reviewed packet research now has a
+previewable, overridable current-snapshot import command; recovery history and
+the original licensed source bundle remain intact. See
+[Product Info](architecture/PRODUCT_INFO.md),
+[optional sources](architecture/OPTIONAL_SOURCES.md) and
+[research updates](architecture/CATALOGUE.md#reviewed-research-updates).
+
 Release from a reviewed source commit on `main`. Complete the relevant
 [verification](verification.md) first. Source push, deployment, native publication
 and physical-device acceptance are separate results.

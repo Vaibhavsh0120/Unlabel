@@ -56,15 +56,6 @@ class Settings(BaseSettings):
     gemini_model: str = Field(default="gemini-3.5-flash-lite", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     openai_model: str = Field(default="gpt-4.1-mini", pattern=r"^[a-zA-Z0-9._-]{1,80}$")
     ai_fallback_credentials_json: SecretStr | None = Field(default=None, repr=False)
-    nutrigraph_enabled: bool | Literal["auto"] = "auto"
-    nutrigraph_api_key: SecretStr | None = Field(default=None, repr=False)
-    nutrigraph_lookup_url: str = Field(
-        default="https://d1vesbk2e1akwx.cloudfront.net/api/lookup",
-        pattern=r"^https://[a-zA-Z0-9.-]+/[a-zA-Z0-9._/-]+$",
-    )
-    nutrigraph_monthly_request_limit: int = Field(default=1000, ge=1, le=1000)
-    nutrigraph_sandbox_request_limit: int = Field(default=1000, ge=1, le=1000)
-
     def __init__(self, _env_file: DotenvType | None = ENV_FILE_SENTINEL, **values: Any) -> None:
         # Preserve BaseSettings' supported dotenv override in its typed signature.
         super().__init__(_env_file=_env_file, **values)
@@ -91,9 +82,6 @@ class Settings(BaseSettings):
             or fallback_keys
         )
         self.ai_enabled = self.ai_enabled is not False and ai_keys
-        self.nutrigraph_enabled = (
-            self.nutrigraph_enabled is not False and self.nutrigraph_api_key is not None
-        )
         return self
 
     def initial_ai_slot(self, available: tuple[str, ...]) -> str:
@@ -160,17 +148,6 @@ class Settings(BaseSettings):
     def bounded_ai_credentials(cls, value: SecretStr | None) -> SecretStr | None:
         if value is not None and len(value.get_secret_value().encode()) > 8192:
             raise ValueError("AI replacement configuration exceeds its bound")
-        return value
-
-    @field_validator("nutrigraph_api_key")
-    @classmethod
-    def bounded_nutrigraph_key(cls, value: SecretStr | None) -> SecretStr | None:
-        if value is not None:
-            key = value.get_secret_value()
-            if not key:
-                return None
-            if not 8 <= len(key) <= 512 or any(ord(c) < 33 or ord(c) > 126 for c in key):
-                raise ValueError("Invalid live product credential")
         return value
 
     @field_validator("ai_control_secret")

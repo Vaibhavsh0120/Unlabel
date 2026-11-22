@@ -9,11 +9,8 @@ class _ProductSupplements extends StatefulWidget {
   State<_ProductSupplements> createState() => _ProductSupplementsState();
 }
 
-class _ProductSupplementsState extends State<_ProductSupplements>
-    with WidgetsBindingObserver {
-  LiveProductLookup? _live;
+class _ProductSupplementsState extends State<_ProductSupplements> {
   MachineProductLookup? _machine;
-  Timer? _expiry;
   int _generation = 0;
   bool _loading = true;
   String? _error;
@@ -21,7 +18,6 @@ class _ProductSupplementsState extends State<_ProductSupplements>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     _load();
   }
 
@@ -30,8 +26,6 @@ class _ProductSupplementsState extends State<_ProductSupplements>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.barcode != widget.barcode ||
         oldWidget.repository != widget.repository) {
-      _expiry?.cancel();
-      _live = null;
       _machine = null;
       _error = null;
       _loading = true;
@@ -42,36 +36,13 @@ class _ProductSupplementsState extends State<_ProductSupplements>
   Future<void> _load() async {
     final generation = ++_generation;
     var failed = false;
-    // Independent sources must not suppress each other on a vendor outage.
-    await Future.wait([
-      () async {
-        try {
-          final value = await widget.repository.liveProduct(widget.barcode);
-          if (!mounted || generation != _generation) return;
-          _live = value;
-          final expires = value.product?.expiresAt;
-          if (expires != null) {
-            _expiry?.cancel();
-            final remaining = expires.difference(DateTime.now().toUtc());
-            if (remaining <= Duration.zero) {
-              _live = const LiveProductLookup('expired');
-            } else {
-              _expiry = Timer(remaining, _expire);
-            }
-          }
-        } catch (_) {
-          failed = true;
-        }
-      }(),
-      () async {
-        try {
-          final value = await widget.repository.machineProduct(widget.barcode);
-          if (mounted && generation == _generation) _machine = value;
-        } catch (_) {
-          failed = true;
-        }
-      }(),
-    ]);
+    try {
+      final value = await widget.repository.machineProduct(widget.barcode);
+      if (!mounted || generation != _generation) return;
+      _machine = value;
+    } catch (_) {
+      failed = true;
+    }
     if (!mounted || generation != _generation) return;
     setState(() {
       _loading = false;
@@ -81,32 +52,15 @@ class _ProductSupplementsState extends State<_ProductSupplements>
     });
   }
 
-  void _expire() {
-    if (!mounted) return;
-    // Drop all vendor fields, not merely their rendered text.
-    setState(() => _live = const LiveProductLookup('expired'));
-    _expiry?.cancel();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final expires = _live?.product?.expiresAt;
-    if (expires != null && !DateTime.now().toUtc().isBefore(expires)) _expire();
-  }
-
   @override
   void dispose() {
     _generation++;
-    _expiry?.cancel();
-    _live = null;
     _machine = null;
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final product = _live?.product;
     final readings = _machine?.readings ?? const <MachineProductReading>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -127,98 +81,6 @@ class _ProductSupplementsState extends State<_ProductSupplements>
               message: _error!,
             ),
           ),
-        if (product != null &&
-            DateTime.now().toUtc().isBefore(product.expiresAt)) ...[
-          const SectionTitle('Live product lookup'),
-          SectionCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Data by NutriGraphAPI',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    onPressed: () async {
-                      try {
-                        if (await launchUrl(
-                          Uri.parse('https://nutrigraphapi.com'),
-                          mode: LaunchMode.externalApplication,
-                        )) {
-                          return;
-                        }
-                      } catch (_) {
-                        // The selectable source URL below remains available.
-                      }
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Could not open the source. Copy its link to your browser.',
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Visit NutriGraphAPI'),
-                  ),
-                ),
-                const ResultsSelectableText('https://nutrigraphapi.com'),
-                const SizedBox(height: 8),
-                const Text(
-                  'Unverified provider facts. Check your current package. These facts are not saved.',
-                ),
-                if (product.name != null) Text(product.name!),
-                if (product.brand != null) Text(product.brand!),
-                for (final field in product.fields)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          field.label,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        ResultsSelectableText(field.value),
-                        if (field.sources.isNotEmpty)
-                          Text(
-                            field.sources.join('\n'),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                      ],
-                    ),
-                  ),
-                if (product.sources.isNotEmpty)
-                  ExpansionTile(
-                    title: const Text('Provider sources'),
-                    children: [
-                      ResultsSelectableText(product.sources.join('\n')),
-                    ],
-                  ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Missing allergen information does not mean allergen-free.',
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-        ] else if (const [
-          'rate_limited',
-          'unavailable',
-          'expired',
-        ].contains(_live?.status)) ...[
-          StatusNotice(
-            title: 'Live lookup unavailable',
-            message: _live?.status == 'rate_limited'
-                ? 'The provider request allowance has been reached. Local catalogue results remain available.'
-                : 'Live facts are unavailable or have expired. Reopen this product to try again.',
-          ),
-          const SizedBox(height: 16),
-        ],
         if (readings.isNotEmpty) ...[
           const SectionTitle('Additional label readings'),
           const Text(

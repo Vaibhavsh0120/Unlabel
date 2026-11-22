@@ -151,6 +151,9 @@ def _gemini_schema(value: dict[str, Any], definitions: dict[str, Any]) -> dict[s
             key: _gemini_schema(item, definitions) for key, item in value["properties"].items()
         }
         result["required"] = list(result["properties"])
+        if set(result["properties"]) == {"top", "left", "bottom", "right"}:
+            for coordinate in result["properties"].values():
+                coordinate["description"] = "Image coordinate normalized to 0..1000; 0 is top/left and 1000 is bottom/right."
     if "items" in value:
         result["items"] = _gemini_schema(value["items"], definitions)
     return result
@@ -158,7 +161,8 @@ def _gemini_schema(value: dict[str, Any], definitions: dict[str, Any]) -> dict[s
 
 def _payload(credential: Credential, request: ExtractionRequest) -> tuple[str, dict, dict]:
     if credential.provider == "gemini":
-        parts: list[dict[str, Any]] = [{"text": _INSTRUCTIONS}]
+        instructions = _INSTRUCTIONS.replace("normalized to 0..1", "normalized to 0..1000")
+        parts: list[dict[str, Any]] = [{"text": instructions}]
         for image in request.images:
             parts.extend(
                 [
@@ -213,6 +217,25 @@ def _payload(credential: Credential, request: ExtractionRequest) -> tuple[str, d
             },
         },
     )
+
+
+def _gemini_coordinates(value: Any) -> Any:
+    """Convert Gemini's documented 0..1000 image coordinate contract once.
+
+    This is provider-format conversion, never a guess based on an output's size.
+    Strict application validation still checks bounds, area and supplied slots.
+    """
+    if isinstance(value, dict) and isinstance(value.get("regions"), list):
+        for region in value["regions"]:
+            if not isinstance(region, dict) or not isinstance(region.get("box"), dict):
+                raise ValueError("Invalid Gemini region")
+            box = region["box"]
+            for key in ("top", "left", "bottom", "right"):
+                coordinate = box.get(key)
+                if type(coordinate) not in {int, float} or not 0 <= coordinate <= 1000:
+                    raise ValueError("Invalid Gemini coordinate")
+                box[key] = coordinate / 1000
+    return value
 
 
 def _retry_after(value: str | None) -> int:
@@ -365,7 +388,10 @@ async def extract(
         text = _text_response(credential.provider, body)
         if len(text.encode("utf-8")) > MAX_EXTRACTED_JSON_BYTES:
             raise ValueError("Extracted output exceeds the supported size")
-        label = ExtractedLabel.model_validate(_load_json(text))
+        raw = _load_json(text)
+        if credential.provider == "gemini":
+            raw = _gemini_coordinates(raw)
+        label = ExtractedLabel.model_validate(raw)
         supplied = {image.slot for image in checked.images}
         if any(region.slot not in supplied for region in label.regions):
             raise ValueError("A highlighted region refers to an absent photo")
