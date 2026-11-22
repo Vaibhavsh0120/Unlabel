@@ -3,7 +3,9 @@
 Backend v0.11 adds optional Gemini and OpenAI photo extraction. All AI operations
 must enter `AiGateway`; callers cannot supply keys, provider URLs, model names or
 choose a provider per task. The app has only scanner users, with anonymous,
-password or Google Firebase authentication. No reviewer/admin app role is introduced.
+password or Google authentication. The hosted API now verifies self-hosted
+identity sessions; Firebase references below describe the legacy implementation.
+No reviewer/admin app role is introduced.
 
 Published v0.12.0 adds bounded private structured machine proposals and an
 independent response storage status. Its READY deployment passed 389 read-only
@@ -37,8 +39,9 @@ must apply across serverless processes. [Product Info source boundaries](PRODUCT
 
 ## Selection and replacement
 
-`unlabel_service_configuration/ai-active` in the existing free `unlabel` Firestore
-database holds one slot ID, revision, configuration digest and bounded cooldowns.
+The self-hosted PostgreSQL `ai.documents` store holds the
+`unlabel_service_configuration/ai-active` record (legacy: Firestore). It contains
+one slot ID, revision, configuration digest and bounded cooldowns.
 It contains no credentials or photos. Every admitted AI operation reads this
 shared choice. A server restart/default setting never resets an existing choice.
 Requests already admitted before a switch may finish with their earlier key.

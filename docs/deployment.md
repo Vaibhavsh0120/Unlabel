@@ -73,6 +73,25 @@ existing Brevo settings. Sending happens after the response, retries once and
 logs only status. Delivery is best effort and never blocks account use.
 GoTrue retains its SMTP configuration for password recovery and email changes.
 
+Welcome mail includes a responsive forest/mint HTML template and plain-text
+alternative. Its application URL is escaped; it contains no remote images,
+tracking or scripts. The template ships as Python package data.
+
+## Feature services
+
+The API respects ordinary source flags and attaches the PostgreSQL AI store.
+Set `UNLABEL_COMMUNITY_ENABLED=true` for community admission. Cloud extraction
+uses the configured active provider, explicit transfer consent and bounded
+private staging. Deploy `infrastructure/docker/api.Dockerfile` with target
+`evidence-worker` as a separate private process, using the evidence PostgreSQL
+role and Mongo find/insert-only archive role. These credentials are in the
+encrypted project inventory. Its durable leases, replay checks and heartbeat
+health check are independent of the push worker and scheduler.
+
+Enable implemented providers only with usable credentials. Current provider
+limitations and the operator-requested NutriGraph removal are recorded in
+[optional sources](architecture/OPTIONAL_SOURCES.md).
+
 `account-recovery.html` clears the grant, accepts a new password, ends the recovery
 session and returns to ordinary sign-in. `account-confirmation.html` remains for
 verified email changes and older links. Existing Firebase passwords are not

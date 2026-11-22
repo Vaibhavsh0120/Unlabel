@@ -4,6 +4,8 @@ import logging
 import smtplib
 import ssl
 from email.message import EmailMessage
+from html import escape
+from pathlib import Path
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -21,6 +23,10 @@ def send_welcome(settings, email):
         "Search products, scan package labels, compare facts and save your reports.\n\n"
         f"Open Unlabel: {settings.frontend_url}\n\n"
         "If you did not create this account, you can ignore this email.\n\nThe Unlabel team\n"
+    )
+    template = (Path(__file__).with_name("templates") / "welcome.html").read_text(encoding="utf-8")
+    message.add_alternative(
+        template.replace("{{app_url}}", escape(settings.frontend_url, quote=True)), subtype="html"
     )
     for attempt in range(2):
         try:

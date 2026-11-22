@@ -283,7 +283,22 @@ class NutriGraphLookup:
                 ) as response:
                     is_json = "application/json" in response.headers.get("content-type", "").lower()
                     if response.status_code == 404 and is_json:
-                        result = LiveLookup(status="not_found", requested_barcode=barcode)
+                        body = bytearray()
+                        async for chunk in response.aiter_bytes(chunk_size=16384):
+                            if len(body) + len(chunk) > MAX_RESPONSE_BYTES:
+                                raise ValueError("Vendor response too large")
+                            body.extend(chunk)
+                        missing = json.loads(body)
+                        if isinstance(missing, dict) and any(
+                            str(missing.get(key, "")).lower() == "product not found"
+                            for key in ("error", "detail", "message")
+                        ):
+                            result = LiveLookup(status="not_found", requested_barcode=barcode)
+                        else:
+                            self._blocked_until = self._clock() + timedelta(minutes=5)
+                            self._blocked_status = "unavailable"
+                            result = LiveLookup(status="unavailable", requested_barcode=barcode,
+                                                retry_after=300)
                         seconds = 300
                     elif response.status_code == 404:
                         # Generic HTML 404s indicate a missing/broken endpoint,

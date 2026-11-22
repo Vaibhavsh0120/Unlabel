@@ -10,6 +10,7 @@ from pydantic import SecretStr
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
+from app.ai.observations import MachineObservation
 from app.community.models import CommunityRevision
 from app.community.store import _identifier
 from app.selfhost.catalogue import canonical
@@ -50,10 +51,33 @@ def archive_observation(collection, reference, document, digest):
             raise ValueError("Immutable community evidence differs") from None
 
 
+def archive_machine_observation(collection, reference, value):
+    """Only the strictly validated public observation enters the machine stream."""
+    _identifier(reference)
+    payload = value["payload_json"]
+    if hashlib.sha256(payload.encode()).hexdigest() != value["record_sha256"]:
+        raise ValueError("Invalid machine evidence digest")
+    observation = MachineObservation.model_validate_json(payload)
+    if observation.observation_id != reference:
+        raise ValueError("Machine evidence identity differs")
+    document = observation.model_dump(mode="json")
+    archived = {
+        "_id": reference,
+        "sha256": hashlib.sha256(canonical(document)).hexdigest(),
+        "observation": document,
+    }
+    try:
+        collection.insert_one(archived)
+    except DuplicateKeyError:
+        if collection.find_one({"_id": reference}) != archived:
+            raise ValueError("Immutable machine evidence differs") from None
+
+
 class EvidenceWorker(Worker):
-    def __init__(self, pool, settings, collection):
+    def __init__(self, pool, settings, collection, machine_collection=None):
         super().__init__(pool, settings, kind="evidence")
         self.collection = collection
+        self.machine_collection = machine_collection
 
     def tick(self):
         with self.pool.connection() as connection:
@@ -68,14 +92,26 @@ class EvidenceWorker(Worker):
         try:
             with self.lease(job):
                 reference = _identifier(job["payload"]["reference"])
-                with self.pool.connection() as connection:
-                    item = connection.execute(
-                        "SELECT document,sha256 FROM community.publication WHERE revision_id=%s",
-                        (reference,),
-                    ).fetchone()
-                if item is None:
-                    raise ValueError("Publication reference is absent")
-                archive_observation(self.collection, reference, *item)
+                stream = job["payload"].get("stream", "community")
+                if stream == "machine":
+                    with self.pool.connection() as connection:
+                        item = connection.execute(
+                            "SELECT value FROM ai.observations WHERE id=%s", (reference,)
+                        ).fetchone()
+                    if item is None or self.machine_collection is None:
+                        raise ValueError("Machine publication reference is absent")
+                    archive_machine_observation(self.machine_collection, reference, item[0])
+                elif stream == "community":
+                    with self.pool.connection() as connection:
+                        item = connection.execute(
+                            "SELECT document,sha256 FROM community.publication WHERE revision_id=%s",
+                            (reference,),
+                        ).fetchone()
+                    if item is None:
+                        raise ValueError("Publication reference is absent")
+                    archive_observation(self.collection, reference, *item)
+                else:
+                    raise ValueError("Unknown evidence stream")
             with self.pool.connection() as connection:
                 connection.execute(
                     "SELECT operations.complete_job(%s,%s,%s)",
@@ -114,7 +150,9 @@ def main():
             database.command("ping")
             if args.healthcheck:
                 return 0 if healthy(pool, settings, "evidence") else 1
-            worker = EvidenceWorker(pool, settings, database.community_observations)
+            worker = EvidenceWorker(
+                pool, settings, database.community_observations, database.machine_observations
+            )
             signal.signal(signal.SIGTERM, worker.stop)
             signal.signal(signal.SIGINT, worker.stop)
             worker.run()

@@ -25,11 +25,11 @@ def platform_app(monkeypatch, cutover_ready=False, transport=None):
     monkeypatch.setattr(
         entrypoint, "PostgresProfileStore", lambda _pool: object()
     )
-    monkeypatch.setattr(
-        entrypoint,
-        "create_app",
-        lambda *_args, **_kwargs: FastAPI(),
-    )
+    def capture_app(config, **_kwargs):
+        app = FastAPI()
+        app.state.settings = config
+        return app
+    monkeypatch.setattr(entrypoint, "create_app", capture_app)
     settings = SimpleNamespace(
         identity_url="https://identity.example.test",
         frontend_url="https://frontend.example.test",
@@ -50,6 +50,13 @@ def test_platform_metadata_defaults_to_staging(monkeypatch):
     assert response.status_code == 200
     assert response.json()["cutover_ready"] is False
     assert response.json()["release_channel"] == "next_major_staging"
+
+
+def test_platform_respects_configured_ai_instead_of_forcing_it_off(monkeypatch):
+    monkeypatch.setenv("AI_ENABLED", "true")
+    monkeypatch.setenv("OPENAI_API_KEY", "synthetic-platform-openai-key")
+    app = platform_app(monkeypatch)
+    assert app.state.settings.ai_enabled is True
 
 
 def test_platform_metadata_reports_production_only_after_explicit_enable(monkeypatch):

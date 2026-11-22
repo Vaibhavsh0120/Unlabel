@@ -27,7 +27,7 @@ historical releases and device-local libraries.
 | Work | Current state and acceptance gate |
 | --- | --- |
 | API | Coolify API and all dependencies are healthy. Hosted guest sessions, password login, profile writes/conflicts, account isolation, library reads and deletion passed. See release evidence for source identities; broader cutover remains separate. |
-| Community/AI | Replace legacy and unfinished persistence adapters. Preserve admission, conflicts, immutable receipts, consent, quotas and provider boundaries. |
+| Community/AI | PostgreSQL adapters and the separate evidence archive worker are implemented. Preserve admission, conflicts, consent, quotas and provider boundaries; verify deployed extraction and queue processing. NutriGraph was removed from active sources after refreshed-key failures. |
 | Clients | Replace Firebase auth/profile access. Test web/native Google/email signup, linking collisions, recovery/expiry, sign-out, deletion and guest renewal. |
 | Reminders | Deploy the Oracle scheduler/worker. Test leases, deduplication, retry, failed jobs and unsubscribe. No app schedules in GitHub Actions. |
 | Canvas | Add actual API/worker/scheduler resources and labelled runtime connections with descriptions. |

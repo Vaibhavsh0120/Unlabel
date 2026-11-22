@@ -26,6 +26,10 @@ FROM runtime AS reminder-scheduler
 HEALTHCHECK --interval=30s --timeout=15s --start-period=45s --retries=3 CMD python -m app.selfhost.worker scheduler --healthcheck
 CMD ["python", "-m", "app.selfhost.worker", "scheduler"]
 
+FROM runtime AS evidence-worker
+HEALTHCHECK --interval=30s --timeout=15s --start-period=45s --retries=3 CMD python -m app.selfhost.evidence_worker --healthcheck
+CMD ["python", "-m", "app.selfhost.evidence_worker"]
+
 FROM runtime AS migration-runner
 COPY backend/migrations/next_major ./migrations/next_major
 HEALTHCHECK --interval=5s --timeout=3s --start-period=15s --retries=6 CMD python -c "from pathlib import Path; assert Path('/tmp/unlabel-migrations-ready').read_text() == 'ready\n'"

@@ -54,7 +54,6 @@ def create_platform_app(settings=None, *, identity_transport=None):
         catalogue_directory="",
         community_enabled=getattr(platform, "community_enabled", False),
         account_sync_enabled=True,
-        ai_enabled=False,
         community_actor_secret=platform.actor_secret,
     )
     config.web_push_private_key = platform.web_push_private_key

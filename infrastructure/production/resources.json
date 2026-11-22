@@ -15,6 +15,7 @@
     "guest_cleanup_uuid": "0cuci2ngtlkp1bp2nh4duvom",
     "api_service_uuid": "lj9rwu2qjtro1xzhcefllvfm",
     "web_push_worker_uuid": "quu8tnu1v75l3tpdywdxyjl0",
-    "reminder_scheduler_uuid": "cnorvmr3dijbeadht3brzmpa"
+    "reminder_scheduler_uuid": "cnorvmr3dijbeadht3brzmpa",
+    "evidence_worker_uuid": "xqhq4x6mg2eukrzk9h7izry3"
   }
 }

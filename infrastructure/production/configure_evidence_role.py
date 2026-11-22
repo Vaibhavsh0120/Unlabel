@@ -22,7 +22,8 @@ def install_grants(connection, role):
         sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(
             sql.Identifier(connection.info.dbname), identifier
         ),
-        sql.SQL("GRANT USAGE ON SCHEMA operations, community TO {}").format(identifier),
+        sql.SQL("GRANT USAGE ON SCHEMA operations, community, ai TO {}").format(identifier),
+        sql.SQL("GRANT SELECT ON ai.observations TO {}").format(identifier),
         sql.SQL("GRANT SELECT ON community.publication TO {}").format(identifier),
         sql.SQL(
             "GRANT SELECT, INSERT, UPDATE(seen_at), DELETE ON operations.worker_heartbeats TO {}"

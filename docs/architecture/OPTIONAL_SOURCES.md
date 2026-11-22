@@ -14,13 +14,13 @@ An enabled/configured source is not proof that its upstream endpoint works.
 | --- | --- | --- | --- |
 | Open Food Facts live reads | `OFF_ENABLED` | No key; bounded application User-Agent is derived from the version | Enabled by default; `false` makes no OFF request |
 | Bundled OFF catalogue | `CATALOGUE_ENABLED` | Generated catalogue and `CATALOGUE_DIRECTORY` | Unavailable if absent; other sources still work |
-| Bundled research observations | `RESEARCH_CATALOGUE_ENABLED` | Generated research database | Unavailable if absent; tracked source observations remain untouched |
+| Research observations | `RESEARCH_CATALOGUE_ENABLED` | Imported Mongo evidence and PostgreSQL search projection on the hosted API; generated database for legacy local runtime | Unavailable if absent; tracked source observations remain untouched |
 | Reviewed claim knowledge | `CLAIMS_ENABLED` | Validated local/bundled knowledge | No reviewed claim results when disabled/unavailable |
 | Reviewed ingredient glossary | `GLOSSARY_ENABLED` | Bundled reviewed glossary | Ingredient declarations remain available without glossary explanations |
-| Gemini extraction | `AI_ENABLED=auto`, `GEMINI_ENABLED` | `GEMINI_API_KEY` plus Firebase prerequisites below | Slot absent; adding an OpenAI key does not require a Gemini key |
-| OpenAI extraction | `AI_ENABLED=auto`, `OPENAI_ENABLED` | `OPENAI_API_KEY` plus Firebase prerequisites below | Slot absent; adding a Gemini key does not require an OpenAI key |
-| NutriGraph live facts | `NUTRIGRAPH_ENABLED=auto` | `NUTRIGRAPH_API_KEY` plus Firebase prerequisites below | Disabled; local catalogue/report data stays available |
-| Community/authenticated machine observations | `COMMUNITY_ENABLED` | Project, service account, ownership secret and configured free Firebase database | Disabled; guest libraries stay on device |
+| Gemini extraction | `AI_ENABLED=auto`, `GEMINI_ENABLED` | Valid `GEMINI_API_KEY` and authenticated persistence below | Slot absent; OpenAI works independently |
+| OpenAI extraction | `AI_ENABLED=auto`, `OPENAI_ENABLED` | Valid `OPENAI_API_KEY` and authenticated persistence below | Slot absent; Gemini works independently |
+| NutriGraph live facts | `NUTRIGRAPH_ENABLED=auto` | Working vendor endpoint and key | Removed from active production sources after failed refreshed-key checks at the operator's request |
+| Community/authenticated machine observations | `UNLABEL_COMMUNITY_ENABLED` on self-hosted API (`COMMUNITY_ENABLED` for legacy runtime) | Verified identity, PostgreSQL admission/AI tables and separate evidence worker | Disabled; guest libraries stay on device |
 | Private account synchronization | `ACCOUNT_SYNC_ENABLED` | Configured community runtime and signed-in owner | Disabled; device-local workflows remain |
 
 The keyless source switches default to `true`. Community writes and private sync
@@ -39,14 +39,21 @@ credentials still requires the documented operator activation when shared state
 already exists. `GEMINI_ENABLED=false` or `OPENAI_ENABLED=false` also excludes
 that provider's replacement slots.
 
-Cloud extraction and finite-quota NutriGraph reads keep the existing authenticated
-backend boundary. Configure `COMMUNITY_ENABLED=true`, `COMMUNITY_PROJECT_ID`,
-`COMMUNITY_SERVICE_ACCOUNT_JSON`, and `COMMUNITY_ACTOR_SECRET` to enable the
-runtime that verifies scanner tokens and stores bounded admission/AI-selection
-metadata. Missing Firebase credentials never prevent the whole backend from
-starting. They leave dependent endpoints unavailable; no unauthenticated proxy
-is opened merely because a vendor key exists. No billing or card is required
-by this project setup. Vendor plans and quotas remain the operator's choice.
+Cloud extraction keeps the authenticated backend boundary. The self-hosted API
+verifies identity sessions and uses PostgreSQL for admission, quotas, private
+staging and active-provider state. Community and compatible machine publication
+enqueue a durable job; the evidence worker archives strictly validated public
+facts into separate Mongo collections with find/insert-only credentials. It
+never archives photos, raw OCR or account identifiers. Firebase configuration
+below applies only to the legacy runtime: `COMMUNITY_ENABLED=true`,
+`COMMUNITY_PROJECT_ID`, `COMMUNITY_SERVICE_ACCOUNT_JSON` and
+`COMMUNITY_ACTOR_SECRET`. No unauthenticated vendor proxy is opened.
+
+Production enables OFF, the licensed catalogue, research, claims, glossary,
+community, private synchronization, notifications and OpenAI photo extraction.
+The current Gemini credential is rejected upstream, so OpenAI is the active slot.
+`ai_explanations:false` is an unimplemented reserved capability, not a disabled
+screen; reviewed ingredient explanations come from the enabled glossary.
 
 Check `/v1/meta` for actual initialized capabilities and source status. It never
 returns API keys. A disabled provider cannot be selected by a client request.
@@ -69,6 +76,9 @@ the account-wide quota authority. An upstream 429 stops new requests for that
 process; generic HTML 404 responses report provider unavailability rather than
 claiming that a food is absent.
 
-Both the supplied UPC and vendor documentation sample returned HTML 404 on
-26 October. Credentials and encryption are configured; successful live lookup
-and India coverage are unverified. No sample response is fabricated.
+The refreshed vendor key was checked on 22 November using its supplied UPC.
+`/api/lookup` returned JSON 404 `Not Found`; the documented `/fetch` alias
+returned 401 `Unauthorized`. The operator requested removal if it failed;
+production therefore sets `NUTRIGRAPH_ENABLED=false`. Integration code and
+historical provenance remain available for a future verified vendor repair.
+No successful lookup or regional India coverage is claimed.

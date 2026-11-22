@@ -11,6 +11,7 @@ from app.accounts.store import owner_hash
 from app.community.auth import AuthenticationInvalid, AuthenticationUnavailable
 from app.community.service import actor_hash
 from app.community.store import StoreUnavailable
+from app.selfhost.ai_store import PostgresAiSelectionStore
 from app.selfhost.community_store import PostgresContributionStore
 from app.selfhost.private_store import PostgresNotifications, PostgresPersonalStore
 
@@ -25,6 +26,7 @@ class IdentityRuntime:
             lambda uid: actor_hash(uid, resources.settings.actor_secret.get_secret_value()),
         )
         self.notification_store = PostgresNotifications(self.pool)
+        self.ai_store = PostgresAiSelectionStore(self.pool)
         if getattr(resources.settings, "community_enabled", False):
             self.store = PostgresContributionStore(self.pool)
 

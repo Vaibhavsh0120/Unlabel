@@ -97,6 +97,9 @@ class Resources:
             or self.research.status()["observation_count"] < 1
         ):
             raise ValueError("Catalogue imports are incomplete")
+        with self.pool.connection() as connection:
+            connection.execute("SELECT collection,key FROM ai.documents LIMIT 0")
+            connection.execute("SELECT id FROM ai.observations LIMIT 0")
         self.mongo.command("ping")
         self.cache.ping()
         identity = self.identity.get("/health")

@@ -180,9 +180,11 @@ async def test_vendor_429_does_not_assume_sandbox_renews_next_month():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("is_json,expected", [(False, "unavailable"), (True, "not_found")])
+@pytest.mark.parametrize("is_json,expected", [(False, "unavailable"), (True, "not_found"), ("generic", "unavailable")])
 async def test_endpoint_html_404_is_not_misreported_as_missing_food(is_json, expected):
     def respond(request):
+        if is_json == "generic":
+            return httpx.Response(404, json={"detail": "Not Found"})
         return (httpx.Response(404, json={"error": "Product not found"}) if is_json
                 else httpx.Response(404, text="Generic endpoint not found"))
 
