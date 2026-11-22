@@ -18,6 +18,10 @@ Use `main` for changes. Update relevant docs, run affected checks, push, deploy
 API changes before the frontend, and check the deployed commit and public flows.
 Resource UUIDs are identifiers, not credentials.
 
+The Coolify API tracks `main` with `git_commit_sha=HEAD`. Check the resolved SHA
+in each deployment: pinning an older SHA makes redeploy reuse the old image even
+after source changes have been pushed. Rollbacks are separate deliberate actions.
+
 Browser access permits only the configured frontend origin. Keep `GET`, `POST`,
 `PUT` and `DELETE` in the API CORS method list: web password/profile updates use
 `PUT` and require an unauthenticated preflight with Authorization/Content-Type.

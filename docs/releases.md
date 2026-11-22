@@ -20,7 +20,8 @@ passed passwordless-session password setup, same-UID password login/change,
 refresh, logout revocation and recovery. Device Google account selection and
 inbox receipt remain separate from these automated checks.
 
-This build also puts Clear notifications beside the inbox controls, shortens the
+This build also groups Clear all with the read controls below an aligned inbox
+heading, shortens the
 phone reminder card, and uses compact inbox rows. Clearing remains device-local,
 preserves reminder settings/reports and keeps cleared app updates dismissed.
 The API repair explicitly permits browser `PUT` preflights for password/profile

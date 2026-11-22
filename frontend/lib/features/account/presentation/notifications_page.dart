@@ -160,37 +160,37 @@ class NotificationsPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 28),
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 16,
-              runSpacing: 8,
+            const SizedBox(height: 20),
+            Row(
               children: [
-                Text('Inbox', style: theme.textTheme.headlineSmall),
-                Wrap(
-                  spacing: 4,
-                  children: [
-                    IconButton(
-                      tooltip: 'Refresh app updates',
-                      onPressed: c.loading ? null : c.refresh,
-                      icon: const Icon(Icons.refresh),
-                    ),
-                    if (c.unread > 0)
-                      TextButton(
-                        onPressed: () => _run(context, () => c.markRead()),
-                        child: const Text('Mark all read'),
-                      ),
-                    if (c.entries.isNotEmpty)
-                      TextButton.icon(
-                        onPressed: () => _clear(context),
-                        icon: const Icon(Icons.clear_all),
-                        label: const Text('Clear notifications'),
-                      ),
-                  ],
+                Expanded(
+                  child: Text('Inbox', style: theme.textTheme.headlineSmall),
+                ),
+                IconButton(
+                  tooltip: 'Refresh app updates',
+                  onPressed: c.loading ? null : c.refresh,
+                  icon: const Icon(Icons.refresh),
                 ),
               ],
             ),
+            if (c.entries.isNotEmpty)
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  if (c.unread > 0)
+                    TextButton.icon(
+                      onPressed: () => _run(context, () => c.markRead()),
+                      icon: const Icon(Icons.done_all, size: 18),
+                      label: const Text('Mark all read'),
+                    ),
+                  TextButton.icon(
+                    onPressed: () => _clear(context),
+                    icon: const Icon(Icons.clear_all, size: 18),
+                    label: const Text('Clear all'),
+                  ),
+                ],
+              ),
             if (c.feedError != null) ...[
               const SizedBox(height: 12),
               Text(c.feedError!),
@@ -199,7 +199,7 @@ class NotificationsPage extends StatelessWidget {
                 child: const Text('Retry app updates'),
               ),
             ],
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             if (c.entries.isEmpty)
               const SectionCard(
                 child: Column(

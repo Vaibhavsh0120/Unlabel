@@ -184,7 +184,7 @@ void main() {
       );
       await c.setReminder(true);
       await tester.pumpAndSettle();
-      final clear = find.text('Clear notifications');
+      final clear = find.text('Clear all');
       await tester.ensureVisible(clear);
       await tester.tap(clear);
       await tester.pumpAndSettle();
