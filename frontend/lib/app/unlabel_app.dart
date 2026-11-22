@@ -159,6 +159,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
               defaultTargetPlatform == TargetPlatform.iOS);
       final google = nativeGoogle
           ? NativeGoogleAccountProvider(
+              useNonce: true,
               clientId: defaultTargetPlatform == TargetPlatform.iOS
                   ? UnlabelFirebaseOptions.ios.iosClientId
                   : null,
@@ -168,6 +169,7 @@ class _UnlabelAppState extends State<UnlabelApp> {
       final account = SelfhostAccountAuth(
         client: auth,
         googleIdToken: google?.idToken,
+        googleNonce: google == null ? null : () => google.nonce,
         googleLoginRedirect: kIsWeb
             ? () => startGoogleRedirect(BuildInfo.backendBaseUrl)
             : null,

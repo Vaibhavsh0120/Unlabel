@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 /// Used only when creating a password or setting a new one. Existing passwords
 /// remain valid sign-in inputs, including those created under an older policy.
 String? validateNewPassword(String value) {
   if (value.length < 8) return 'Use at least 8 characters.';
+  if (utf8.encode(value).length > 72) return 'Use at most 72 bytes.';
   if (!RegExp(r'[A-Za-z]').hasMatch(value) ||
       !RegExp(r'[0-9]').hasMatch(value)) {
     return 'Include a letter and a number.';

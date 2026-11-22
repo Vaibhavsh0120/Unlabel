@@ -102,7 +102,11 @@ Google/email linking keeps one
 UID/library. The photo editor has explicit crop/save and separate source choices;
 optional gender never comes from name/photo inference. Sign-in methods use the
 supplied two-provider card composition, last-method protection, explicit changes
-and account deletion confirmation. Unset/male uses the approved
+and account deletion confirmation. Sign-in methods and Add a password open as
+normal pages with a single app-bar title and back navigation, not modal windows.
+Their content scrolls once within the page, with bounded desktop widths and
+keyboard-safe password actions. Back navigation is disabled during mutations.
+Unset/male uses the approved
 male default, female uses its own new default. [Profile/storage contract](../docs/architecture/ACCOUNT_PROFILE.md).
 
 Historical 9 October Insights references were implemented in frontend v0.7.0+11: one featured

@@ -21,8 +21,19 @@ Ordinary web Google login redirects the current tab to Google. A five-minute
 PKCE verifier stays in tab-scoped session storage. The same-origin callback
 clears its URL, stores the one-time bound code and returns to Unlabel, which
 exchanges it and restores the account. This login opens no popup. Explicit
-provider linking and Google proof for sensitive account operations retain their
-owner-checked popup flow. Native Google sign-in uses the platform SDK's ID token.
+provider linking and Google proof for sensitive account operations use a normal
+account-selection tab, reserved before asynchronous credential checks. A random
+same-origin BroadcastChannel returns the one-time code even when Google's opener
+isolation disconnects the tabs. The verifier stays in the initiating document;
+neither access tokens nor passwords enter the Google navigation URL. Returns are
+bounded to three minutes and each callback removes its URL grant before handling it.
+
+Native Google sign-in uses the platform SDK's ID token. The SDK initializes once
+with a random hashed nonce. When the token contains that hash, the client sends
+the matching raw nonce to GoTrue. Platforms returning no nonce omit the proof;
+unexpected nonce claims fail closed. Server signature, audience and nonce checks
+remain enabled. Android uses the web server client ID and the release workflow
+checks the registered package's signing certificate before publishing the APK.
 Only identity scopes are requested; Google gender is never requested or inferred.
 
 The `.2` identity policy rejects automatic linking based on equal emails.
@@ -31,6 +42,13 @@ and library. A credential owned by another user is a conflict, never permission
 to merge accounts. Disconnecting a method requires another remaining method and
 fresh authentication. Disconnecting email also clears its password verifier.
 Changing Google links the replacement before removing the prior identity.
+
+Sign-in methods and Add a password are normal routed pages, with busy-state back
+protection. Adding the first password uses the current authenticated Google owner
+session and GoTrue's secure password policy, then proves password login returns
+the same UID. It does not launch a second Google prompt. An expired recent-auth
+window asks the owner to sign out and back in before retrying. New password forms
+enforce the backend's 72-byte maximum, including multibyte characters.
 
 Email and password changes prove the current credential. Email changes remain
 pending until GoTrue completes its verification. Authentication mutations are

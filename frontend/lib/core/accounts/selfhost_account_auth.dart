@@ -12,6 +12,7 @@ final class SelfhostAccountAuth extends AccountAuth {
   SelfhostAccountAuth({
     required this._client,
     this._googleIdToken,
+    this._googleNonce,
     this._googleOAuth,
     this._googleLoginRedirect,
     this._takeGoogleRedirect,
@@ -25,6 +26,7 @@ final class SelfhostAccountAuth extends AccountAuth {
 
   final SelfhostAuthClient _client;
   final Future<String> Function()? _googleIdToken;
+  final String? Function()? _googleNonce;
   final Future<Map<String, Object?>> Function(String? token)? _googleOAuth;
   final Future<void> Function()? _googleLoginRedirect;
   final Map<String, Object?>? Function()? _takeGoogleRedirect;
@@ -179,8 +181,8 @@ final class SelfhostAccountAuth extends AccountAuth {
     final idToken = await google();
     if (_disposed) throw _accountChanged;
     return link == null
-        ? _client.signInGoogle(idToken: idToken)
-        : _client.linkGoogleToken(link, idToken);
+        ? _client.signInGoogle(idToken: idToken, nonce: _googleNonce?.call())
+        : _client.linkGoogleToken(link, idToken, nonce: _googleNonce?.call());
   }
 
   SelfhostAuthSession _requireAccount() {
@@ -237,9 +239,17 @@ final class SelfhostAccountAuth extends AccountAuth {
         'Use the email address connected to this account.',
       );
     }
-    final fresh = await _reauthenticate();
+    // Adding the first password uses the verified current owner session. GoTrue
+    // retains its own password-change/reauthentication policy; no popup is needed.
+    final fresh = await _validAccountSession(current);
     await _client.updateUser(fresh, password: password);
-    await _reloadOwner(fresh);
+    await _activateOwner(
+      await _client.signInPassword(
+        email: current.user.email!,
+        password: password,
+      ),
+      current.user.id,
+    );
   });
 
   @override
@@ -274,7 +284,7 @@ final class SelfhostAccountAuth extends AccountAuth {
     if (email.isEmpty) throw _accountChanged;
     await _client.unlinkIdentity(fresh, email.single['identity_id'] as String);
     await _reloadOwner(fresh);
-  });
+  }, prepareGoogle: true);
 
   @override
   Future<void> changeGoogleAccount({required String password}) => _mutate(
@@ -343,7 +353,7 @@ final class SelfhostAccountAuth extends AccountAuth {
     await deletePrivateData(fresh.user.id, fresh.accessToken);
     await deleteLocalData();
     await _clearAccount();
-  });
+  }, prepareGoogle: password == null);
 
   static const _providerLinked = AppFailure(
     'provider_linked',

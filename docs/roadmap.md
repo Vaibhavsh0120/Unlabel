@@ -35,7 +35,7 @@ historical releases and device-local libraries.
 | Recovery | Configure a recurring off-VM destination and repeat the verified restore process from that destination. |
 | Performance | Measure queries, pools, concurrency, queue recovery, memory and disk. One VM is one failure domain. |
 | UI | Ship prepared bell, recent-scan, Insights-height and sidebar fixes. Recheck themes, enlarged text and phone/tablet/desktop layouts. |
-| Release | Prepare v1.1.1 from canonical component manifests. Web builds require healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
+| Release | Publish the current v1.1.1 auth repair from canonical component manifests. Web builds require healthy API dependencies. Complete hosted flows and device acceptance before release; keep source, artifact and physical-device proof separate. |
 | Retirement | After tested cutover and recovery proof, remove the old Vercel backend, Firebase resources/adapters and stale configuration. Preserve the frontend and required Google OAuth clients. |
 
 ## Account deployment

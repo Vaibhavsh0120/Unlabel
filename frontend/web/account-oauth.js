@@ -42,7 +42,7 @@
   };
   window.unlabelPrepareGoogleOAuth = () => {
     if (pending || (prepared && !prepared.closed)) throw new Error('account_busy');
-    prepared = window.open('about:blank', '_blank', 'popup,width=520,height=700');
+    prepared = window.open('about:blank', '_blank');
     if (!prepared) throw new Error('popup_blocked');
   };
   window.unlabelCancelGoogleOAuth = () => {
@@ -54,12 +54,12 @@
     if (api.protocol !== 'https:' || api.username || api.password || api.pathname !== '/') {
       throw new Error('account_unavailable');
     }
-    // Open before the first await so Safari and Chromium retain user activation.
-    const popup = prepared || window.open('about:blank', '_blank', 'popup,width=520,height=700');
+    // Reserve a normal tab before any network wait so user activation is retained.
+    const popup = prepared || window.open('about:blank', '_blank');
     prepared = null;
     if (!popup) throw new Error('popup_blocked');
     pending = true;
-    let timer, closed, listener;
+    let timer, listener, channel;
     try {
       const bytes = crypto.getRandomValues(new Uint8Array(48));
       const encode = value => btoa(String.fromCharCode(...value))
@@ -67,6 +67,15 @@
       const verifier = encode(bytes);
       const challenge = encode(new Uint8Array(await crypto.subtle.digest(
         'SHA-256', new TextEncoder().encode(verifier))));
+      const channelId = encode(crypto.getRandomValues(new Uint8Array(24)));
+      // COOP can sever window.opener on Google navigation. A same-origin channel
+      // returns only the one-time code; the PKCE verifier stays in this document.
+      popup.sessionStorage.setItem('unlabel.google.tab.v1', JSON.stringify({
+        channel: channelId, createdAt: Date.now(),
+      }));
+      if (typeof BroadcastChannel !== 'undefined') {
+        channel = new BroadcastChannel('unlabel-google-' + channelId);
+      }
       const redirect = new URL('/auth-callback.html', location.origin).href;
       const url = new URL(accessToken ? '/auth/v1/user/identities/authorize' : '/auth/v1/authorize', api);
       url.search = new URLSearchParams({ provider: 'google', redirect_to: redirect, prompt: 'select_account',
@@ -84,25 +93,28 @@
             provider.pathname !== '/o/oauth2/v2/auth') throw new Error('account_unavailable');
       }
       const code = await new Promise((resolve, reject) => {
-        listener = event => {
-          if (event.origin !== location.origin || event.source !== popup ||
-              event.data?.type !== 'unlabel-oauth') return;
-          const result = event.data;
+        const accept = result => {
+          if (result?.type !== 'unlabel-oauth') return;
           if (typeof result.code !== 'string' || !/^[A-Za-z0-9_-]{1,4096}$/.test(result.code)) {
             reject(new Error('account_cancelled'));
           } else resolve(result.code);
         };
+        if (channel) channel.onmessage = event => accept(event.data);
+        listener = event => {
+          if (event.origin !== location.origin || event.source !== popup ||
+              event.data?.type !== 'unlabel-oauth') return;
+          accept(event.data);
+        };
         window.addEventListener('message', listener);
         timer = setTimeout(() => reject(new Error('account_timeout')), 180000);
-        closed = setInterval(() => {
-          if (popup.closed) reject(new Error('account_cancelled'));
-        }, 500);
+        // A COOP-isolated tab reports closed even while Google is open.
+        // The bounded timeout also handles a tab the user actually closes.
         popup.location.replace(destination);
       });
       return JSON.stringify({ auth_code: code, code_verifier: verifier });
     } finally {
       clearTimeout(timer);
-      clearInterval(closed);
+      channel?.close();
       if (listener) window.removeEventListener('message', listener);
       popup.close();
       pending = false;

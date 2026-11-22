@@ -487,6 +487,109 @@ void main() {
     },
   );
 
+  test(
+    'native Google nonce reaches the token exchange on iOS and Android',
+    () async {
+      String? nonce;
+      final auth = SelfhostAccountAuth(
+        client: api((request) async {
+          expect(request.url.queryParameters['grant_type'], 'id_token');
+          final body = jsonDecode(request.body) as Map;
+          expect(body['id_token'], 'synthetic-token');
+          expect(body.containsKey('nonce'), nonce != null);
+          expect(body['nonce'], nonce);
+          return reply(token('native'));
+        }),
+        googleIdToken: () async => 'synthetic-token',
+        googleNonce: () => nonce,
+      );
+      addTearDown(auth.dispose);
+      // The first exchange covers Android when it returns no nonce claim.
+      await auth.signInGoogle();
+      expect(auth.identity?.uid, userId);
+      // A second fresh adapter covers iOS's matching raw nonce proof.
+      nonce = 'raw-random-challenge';
+      final ios = SelfhostAccountAuth(
+        client: api((request) async {
+          expect(jsonDecode(request.body)['nonce'], nonce);
+          return reply(token('ios'));
+        }),
+        googleIdToken: () async => 'synthetic-token',
+        googleNonce: () => nonce,
+      );
+      addTearDown(ios.dispose);
+      await ios.signInGoogle();
+      expect(ios.identity?.uid, userId);
+    },
+  );
+
+  test(
+    'first password uses current Google owner without another Google prompt',
+    () async {
+      var googleCalls = 0, updates = 0, passwords = 0;
+      var linked = false;
+      Map<String, Object?> owner() => user()
+        ..['app_metadata'] = {
+          'providers': ['google', if (linked) 'email'],
+        };
+      final auth = SelfhostAccountAuth(
+        client: api((request) async {
+          if (request.method == 'PUT') {
+            updates++;
+            expect(request.headers['authorization'], 'Bearer google-owner');
+            expect(jsonDecode(request.body), {'password': password});
+            linked = true;
+            return reply(owner());
+          }
+          final grant = request.url.queryParameters['grant_type'];
+          if (grant == 'password') {
+            passwords++;
+            expect(jsonDecode(request.body), {
+              'email': email,
+              'password': password,
+            });
+          } else {
+            expect(grant, 'id_token');
+          }
+          return reply(
+            token(linked ? 'password-owner' : 'google-owner')
+              ..['user'] = owner(),
+          );
+        }),
+        googleIdToken: () async {
+          googleCalls++;
+          return 'synthetic-token';
+        },
+        now: () => clock,
+      );
+      addTearDown(auth.dispose);
+      await auth.signInGoogle();
+      expect(auth.identity?.hasPassword, false);
+      await auth.linkPassword(email, password);
+      expect(auth.identity?.uid, userId);
+      expect(auth.identity?.providers, {'google.com', 'password'});
+      expect(googleCalls, 1);
+      expect(updates, 1);
+      expect(passwords, 1);
+    },
+  );
+
+  test('profile update rejects a response from a different owner', () async {
+    final client = api(
+      (request) async => request.method == 'PUT'
+          ? reply(user(id: nextGuestId))
+          : reply(token('owner')),
+    );
+    final session = await client.signInPassword(
+      email: email,
+      password: password,
+    );
+    await expectLater(
+      client.updateUser(session, password: password),
+      throwsA(isA<SelfhostAuthFailure>()),
+    );
+  });
+
   test('redirected Google login resumes without opening a popup', () async {
     var redirectStarted = false;
     var exchanges = 0;

@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const { webcrypto } = require('node:crypto');
 const source = fs.readFileSync(path.join(__dirname, '../web/account-oauth.js'), 'utf8');
 
-function boot({ blocked = false, providerUrl } = {}) {
+function boot({ blocked = false, providerUrl, isolated = false } = {}) {
   const listeners = new Map();
   const locations = [];
   const requests = [];
@@ -14,9 +14,14 @@ function boot({ blocked = false, providerUrl } = {}) {
   const redirects = [];
   const sessionStorage = { getItem: key => storage.get(key) ?? null,
     setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) };
-  const popup = { closed: false, close() { this.closed = true; }, location: {
+  const popup = { sessionStorage, closed: false, close() { this.closed = true; }, location: {
     replace(url) {
       locations.push(url);
+      if (isolated) {
+        this.closed = true;
+        listeners.get('channel')({data: {type: 'unlabel-oauth', code: 'isolated-code'}});
+        return;
+      }
       const listener = listeners.get('message');
       listener({ origin: 'https://attacker.invalid', source: popup,
         data: { type: 'unlabel-oauth', code: 'injected' } });
@@ -26,13 +31,17 @@ function boot({ blocked = false, providerUrl } = {}) {
         data: { type: 'unlabel-oauth', code: 'bound-code' } });
     }
   } };
-  const window = { open: () => blocked ? null : popup,
+  const window = { open: (url, target, features) => { assert.equal(features, undefined, 'Google must use a normal tab'); return blocked ? null : popup; },
     addEventListener: (name, fn) => listeners.set(name, fn),
     removeEventListener: name => listeners.delete(name) };
   vm.runInNewContext(source, { window, sessionStorage, location: { origin: 'https://unlabel.example',
     assign: value => redirects.push(value) },
     URL, URLSearchParams, crypto: webcrypto, TextEncoder, Uint8Array, btoa,
     AbortSignal, setTimeout, clearTimeout, setInterval, clearInterval,
+    ...(isolated ? {BroadcastChannel: class {
+      set onmessage(fn) { listeners.set('channel', fn); }
+      close() { listeners.delete('channel'); }
+    }} : {}),
     fetch: async (url, options) => { requests.push({ url, options });
       return { ok: true, json: async () => ({ url: providerUrl }) }; } });
   return { window, popup, locations, requests, listeners, storage, sessionStorage, redirects };
@@ -74,7 +83,7 @@ test('stale and malformed redirect grants are discarded', () => {
   }
 });
 
-test('Google uses S256 PKCE and accepts a code only from its own same-origin popup', async () => {
+test('Google uses S256 PKCE and accepts a code only from its own same-origin tab', async () => {
   const app = boot();
   const grant = JSON.parse(await app.window.unlabelGoogleOAuth('https://api.example'));
   const target = new URL(app.locations[0]);
@@ -90,7 +99,7 @@ test('Google uses S256 PKCE and accepts a code only from its own same-origin pop
   assert.equal(app.listeners.size, 0);
 });
 
-test('blocked popup and untrusted link destination fail without a credential-bearing navigation', async () => {
+test('blocked tab and untrusted link destination fail without a credential-bearing navigation', async () => {
   await assert.rejects(boot({ blocked: true }).window.unlabelGoogleOAuth('https://api.example'), /popup_blocked/);
   const app = boot({ providerUrl: 'https://attacker.invalid/' });
   await assert.rejects(app.window.unlabelGoogleOAuth('https://api.example', 'synthetic-token'));
@@ -108,7 +117,7 @@ test('explicit linking carries the owner bearer but no credential in the OAuth U
   assert.ok(!app.locations[0].includes('synthetic-token'));
 });
 
-test('provider replacement can reserve its popup before waiting for password proof', async () => {
+test('provider replacement can reserve its tab before waiting for password proof', async () => {
   const app = boot();
   app.window.unlabelPrepareGoogleOAuth();
   await new Promise(resolve => setImmediate(resolve));
@@ -116,4 +125,31 @@ test('provider replacement can reserve its popup before waiting for password pro
   assert.equal(grant.auth_code, 'bound-code');
   assert.equal(app.locations.length, 1);
   assert.equal(app.popup.closed, true);
+});
+
+test('Google return uses the tab channel when COOP removes window.opener', () => {
+  const callback = fs.readFileSync(path.join(__dirname, '../web/auth-callback.js'), 'utf8');
+  const app = boot();
+  app.storage.set('unlabel.google.tab.v1', JSON.stringify({channel: 'c'.repeat(32), createdAt: Date.now()}));
+  const messages = [];
+  let closed = false;
+  class Channel {
+    constructor(name) { assert.equal(name, 'unlabel-google-' + 'c'.repeat(32)); }
+    postMessage(value) { messages.push(value); }
+    close() {}
+  }
+  vm.runInNewContext(callback, {window: {opener: null, close: () => {closed = true;}},
+    BroadcastChannel: Channel, setTimeout: fn => fn(), sessionStorage: app.sessionStorage,
+    location: {search: '?code=isolated-code', origin: 'https://unlabel.example'},
+    history: {replaceState() {}}, URLSearchParams, document: {getElementById: () => ({textContent: ''})}});
+  assert.deepEqual(JSON.parse(JSON.stringify(messages)), [{type: 'unlabel-oauth', code: 'isolated-code'}]);
+  assert.equal(closed, true);
+  assert.equal(app.storage.has('unlabel.google.tab.v1'), false);
+});
+
+test('initiating tab accepts channel result despite a COOP-isolated window proxy', async () => {
+  const app = boot({isolated: true});
+  const grant = JSON.parse(await app.window.unlabelGoogleOAuth('https://api.example'));
+  assert.equal(grant.auth_code, 'isolated-code');
+  assert.equal(app.listeners.size, 0);
 });

@@ -161,329 +161,271 @@ class SignInMethodsView extends StatelessWidget {
 
     return PopScope(
       canPop: !busy,
-      child: Dialog(
+      child: Scaffold(
         key: const ValueKey('profile-sign-in-methods'),
-        backgroundColor: colors.surface,
-        insetPadding: EdgeInsets.all(mobile ? 0 : 24),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(mobile ? 0 : 24),
+        appBar: AppBar(
+          title: const Text('Sign-in methods'),
+          leading: IconButton(
+            tooltip: 'Back to Profile',
+            onPressed: busy ? null : onClose,
+            icon: const Icon(Icons.arrow_back),
+          ),
         ),
-        child: SizedBox(
-          width: mobile ? double.infinity : 860,
-          height: mobile
-              ? double.infinity
-              : math.min(820, MediaQuery.sizeOf(context).height - 48),
-          child: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(mobile ? 8 : 20, 8, 12, 4),
-                  child: Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: busy ? null : onClose,
-                        icon: const Icon(Icons.arrow_back_ios_new, size: 19),
-                        label: Text(mobile ? 'Back' : 'Profile'),
-                      ),
-                      if (mobile)
+        body: SafeArea(
+          top: false,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(mobile ? 16 : 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Expanded(
-                          child: Center(
-                            child: Text(
-                              'Sign-in methods',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              subtitle(
+                                'Choose how you want to sign in. You can keep one or both methods enabled.',
                               ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        ExcludeSemantics(
+                          child: SizedBox(
+                            width: mobile ? 72 : 106,
+                            height: mobile ? 85 : 100,
+                            child: CustomPaint(
+                              painter: _MethodsCloud(mint, colors.onSurface),
                             ),
                           ),
                         ),
-                      if (mobile)
-                        const SizedBox(width: 64)
-                      else ...[
-                        const Spacer(),
-                        IconButton(
-                          tooltip: 'Close sign-in methods',
-                          onPressed: busy ? null : onClose,
-                          icon: const Icon(Icons.close),
-                        ),
                       ],
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.fromLTRB(
-                      mobile ? 16 : 30,
-                      mobile ? 24 : 8,
-                      mobile ? 16 : 30,
-                      24,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
+                    const SizedBox(height: 24),
+                    card(
+                      providerRow(
+                        Icon(
+                          Icons.mark_email_read_outlined,
+                          color: colors.onSurface,
+                          size: 27,
+                        ),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Sign-in methods',
-                                    style: theme.textTheme.headlineMedium
-                                        ?.copyWith(
-                                          fontSize: mobile ? 25 : 30,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  subtitle(
-                                    'Choose how you want to sign in. You can keep one or both methods enabled.',
-                                  ),
-                                ],
-                              ),
+                            title('Email & password'),
+                            const SizedBox(height: 5),
+                            subtitle(
+                              'Sign in with your email address and password.',
                             ),
-                            const SizedBox(width: 8),
-                            ExcludeSemantics(
-                              child: SizedBox(
-                                width: mobile ? 72 : 106,
-                                height: mobile ? 85 : 100,
-                                child: CustomPaint(
-                                  painter: _MethodsCloud(
-                                    mint,
-                                    colors.onSurface,
-                                  ),
-                                ),
+                            if (!hasPassword)
+                              TextButton(
+                                onPressed: locked ? null : onPassword,
+                                child: const Text('Add email and password'),
                               ),
-                            ),
                           ],
                         ),
-                        const SizedBox(height: 24),
-                        card(
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Semantics(
+                              label: 'Email & password sign-in',
+                              child: Switch.adaptive(
+                                key: const ValueKey('sign-in-password-toggle'),
+                                value: hasPassword,
+                                activeTrackColor: green,
+                                onChanged: locked || (hasPassword && !hasGoogle)
+                                    ? null
+                                    : (_) => onPassword(),
+                              ),
+                            ),
+                            if (hasPassword)
+                              options('Email and password options', {
+                                'Change email': onChangeEmail,
+                                'Change password': onChangePassword,
+                              }),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    card(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           providerRow(
-                            Icon(
-                              Icons.mark_email_read_outlined,
-                              color: colors.onSurface,
-                              size: 27,
+                            SvgPicture.asset(
+                              'assets/brand/google-g.svg',
+                              width: 28,
+                              height: 28,
+                              excludeFromSemantics: true,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                title('Email & password'),
+                                title('Google account'),
                                 const SizedBox(height: 5),
                                 subtitle(
-                                  'Sign in with your email address and password.',
+                                  'Sign in with your Google account for a faster and easier experience.',
                                 ),
-                                if (!hasPassword)
-                                  TextButton(
-                                    onPressed: locked ? null : onPassword,
-                                    child: const Text('Add email and password'),
-                                  ),
                               ],
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Semantics(
-                                  label: 'Email & password sign-in',
-                                  child: Switch.adaptive(
-                                    key: const ValueKey(
-                                      'sign-in-password-toggle',
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: hasGoogle
+                                        ? colors.error
+                                        : green,
+                                    backgroundColor: hasGoogle
+                                        ? colors.errorContainer.withValues(
+                                            alpha: .4,
+                                          )
+                                        : mint,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
                                     ),
-                                    value: hasPassword,
-                                    activeTrackColor: green,
-                                    onChanged:
-                                        locked || (hasPassword && !hasGoogle)
-                                        ? null
-                                        : (_) => onPassword(),
+                                    minimumSize: const Size(0, 44),
+                                  ),
+                                  onPressed:
+                                      locked || (hasGoogle && !hasPassword)
+                                      ? null
+                                      : onGoogle,
+                                  child: Text(
+                                    hasGoogle ? 'Disconnect' : 'Connect Google',
                                   ),
                                 ),
-                                if (hasPassword)
-                                  options('Email and password options', {
-                                    'Change email': onChangeEmail,
-                                    'Change password': onChangePassword,
+                                if (hasGoogle && hasPassword)
+                                  options('Google account options', {
+                                    'Switch account': onSwitchGoogle,
                                   }),
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 14),
-                        card(
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              providerRow(
-                                SvgPicture.asset(
-                                  'assets/brand/google-g.svg',
-                                  width: 28,
-                                  height: 28,
-                                  excludeFromSemantics: true,
+                          if (hasGoogle) ...[
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              child: Divider(height: 1),
+                            ),
+                            Row(
+                              children: [
+                                iconCircle(Icon(Icons.check, color: green)),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Connected',
+                                        style: TextStyle(
+                                          color: green,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 3),
+                                      subtitle(masked),
+                                    ],
+                                  ),
                                 ),
-                                Column(
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    info(
+                      heading: 'Both methods can be active at once',
+                      body: 'You can sign in with either method whenever you like.',
+                      icon: Icons.auto_awesome_outlined,
+                      background: mint,
+                      foreground: green,
+                    ),
+                    const SizedBox(height: 12),
+                    info(
+                      heading: 'Keep your account secure',
+                      body: 'At least one sign-in method must remain active at all times.',
+                      icon: Icons.shield_outlined,
+                      background: colors.surfaceContainerLow,
+                      foreground: colors.onSurface,
+                    ),
+                    const SizedBox(height: 14),
+                    Material(
+                      color: colors.errorContainer.withValues(alpha: .16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        side: BorderSide(
+                          color: colors.error.withValues(alpha: .22),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: locked ? null : onDelete,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              iconCircle(
+                                Icon(
+                                  Icons.delete_outline,
+                                  color: colors.error,
+                                  size: 29,
+                                ),
+                                color: colors.errorContainer.withValues(
+                                  alpha: .4,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    title('Google account'),
+                                    Text(
+                                      'Delete account',
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(color: colors.error),
+                                    ),
                                     const SizedBox(height: 5),
                                     subtitle(
-                                      'Sign in with your Google account for a faster and easier experience.',
+                                      'Permanently delete your account and private library. This cannot be undone.',
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: hasGoogle
-                                            ? colors.error
-                                            : green,
-                                        backgroundColor: hasGoogle
-                                            ? colors.errorContainer.withValues(
-                                                alpha: .4,
-                                              )
-                                            : mint,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 14,
-                                        ),
-                                        minimumSize: const Size(0, 44),
-                                      ),
-                                      onPressed:
-                                          locked || (hasGoogle && !hasPassword)
-                                          ? null
-                                          : onGoogle,
-                                      child: Text(
-                                        hasGoogle
-                                            ? 'Disconnect'
-                                            : 'Connect Google',
-                                      ),
-                                    ),
-                                    if (hasGoogle && hasPassword)
-                                      options('Google account options', {
-                                        'Switch account': onSwitchGoogle,
-                                      }),
                                   ],
                                 ),
                               ),
-                              if (hasGoogle) ...[
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 14),
-                                  child: Divider(height: 1),
-                                ),
-                                Row(
-                                  children: [
-                                    iconCircle(Icon(Icons.check, color: green)),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Connected',
-                                            style: TextStyle(
-                                              color: green,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 3),
-                                          subtitle(masked),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              const SizedBox(width: 8),
+                              Icon(Icons.chevron_right, color: muted),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 18),
-                        info(
-                          heading: 'Both methods can be active at once',
-                          body: 'You can sign in with either method whenever you like.',
-                          icon: Icons.auto_awesome_outlined,
-                          background: mint,
-                          foreground: green,
-                        ),
-                        const SizedBox(height: 12),
-                        info(
-                          heading: 'Keep your account secure',
-                          body: 'At least one sign-in method must remain active at all times.',
-                          icon: Icons.shield_outlined,
-                          background: colors.surfaceContainerLow,
-                          foreground: colors.onSurface,
-                        ),
-                        const SizedBox(height: 14),
-                        Material(
-                          color: colors.errorContainer.withValues(alpha: .16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            side: BorderSide(
-                              color: colors.error.withValues(alpha: .22),
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: InkWell(
-                            onTap: locked ? null : onDelete,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  iconCircle(
-                                    Icon(
-                                      Icons.delete_outline,
-                                      color: colors.error,
-                                      size: 29,
-                                    ),
-                                    color: colors.errorContainer.withValues(
-                                      alpha: .4,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Delete account',
-                                          style: theme.textTheme.titleMedium
-                                              ?.copyWith(color: colors.error),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        subtitle(
-                                          'Permanently delete your account and private library. This cannot be undone.',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(Icons.chevron_right, color: muted),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (busy)
-                          const Padding(
-                            padding: EdgeInsets.only(top: 14),
-                            child: LinearProgressIndicator(),
-                          ),
-                        if (error != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 14),
-                            child: Semantics(
-                              liveRegion: true,
-                              child: Text(
-                                error!,
-                                style: TextStyle(color: colors.error),
-                              ),
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
-                  ),
+                    if (busy)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 14),
+                        child: LinearProgressIndicator(),
+                      ),
+                    if (error != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 14),
+                        child: Semantics(
+                          liveRegion: true,
+                          child: Text(
+                            error!,
+                            style: TextStyle(color: colors.error),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

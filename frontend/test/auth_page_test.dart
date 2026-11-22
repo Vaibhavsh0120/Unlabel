@@ -202,6 +202,9 @@ void main() {
       'Choose a less common password.',
     );
     expect(validateNewPassword('UniqueField42'), isNull);
+    expect(validateNewPassword('${'a' * 72}1'), 'Use at most 72 bytes.');
+    expect(validateNewPassword('${'é' * 36}A1'), 'Use at most 72 bytes.');
+    expect(validateNewPassword('${'a' * 70}A1'), isNull);
   });
 
   for (final size in [

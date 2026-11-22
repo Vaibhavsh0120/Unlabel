@@ -44,7 +44,7 @@ void prepareGoogleOAuth() {
   } catch (_) {
     throw const AppFailure(
       'popup_blocked',
-      'Allow the Google sign-in window and try again.',
+      'Allow Unlabel to open a Google sign-in tab, then try again.',
     );
   }
 }
@@ -61,7 +61,7 @@ Future<Map<String, Object?>> googleOAuth(
   } catch (_) {
     throw const AppFailure(
       'account_unavailable',
-      'Google sign-in did not finish. Allow the sign-in window and try again.',
+      'Google sign-in did not finish. Return to its tab to finish, or try again.',
     );
   }
   throw const AppFailure(

@@ -90,14 +90,19 @@ test('mismatch and weak passwords do not mutate identity; leaving clears secret 
   assert.equal(app.elements.password.value, '');
 });
 
-test('callback sends only a unique code to the same-origin opener after scrubbing its URL', () => {
+test('reserved tab returns only a unique code after scrubbing its URL', () => {
   const source = fs.readFileSync(path.join(__dirname, '../web/auth-callback.js'), 'utf8');
   for (const search of ['?code=one-time', '?code=one&code=two', '?error=denied']) {
     const events = [];
     vm.runInNewContext(source, { URLSearchParams,
+      sessionStorage: {
+        getItem: () => JSON.stringify({channel: 'a'.repeat(32), createdAt: Date.now()}),
+        removeItem() {},
+      },
+      document: {getElementById: () => ({textContent: ''})},
       location: { search, origin: 'https://unlabel.example' },
       history: { replaceState: () => events.push('scrub') },
-      window: { opener: { postMessage: (data, origin) => events.push({ data, origin }) } } });
+      window: { close() {}, opener: { postMessage: (data, origin) => events.push({ data, origin }) } } });
     assert.equal(events[0], 'scrub');
     assert.equal(events[1].origin, 'https://unlabel.example');
     assert.equal(events[1].data.type, 'unlabel-oauth');

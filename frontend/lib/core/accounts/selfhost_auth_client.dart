@@ -204,8 +204,9 @@ final class SelfhostAuthClient {
 
   Future<SelfhostAuthSession> linkGoogleToken(
     SelfhostAuthSession session,
-    String idToken,
-  ) async => _session(
+    String idToken, {
+    String? nonce,
+  }) async => _session(
     await _request(
       'POST',
       '/token',
@@ -215,6 +216,7 @@ final class SelfhostAuthClient {
         'provider': 'google',
         'id_token': _requestToken(idToken, 16384),
         'link_identity': true,
+        if (nonce != null) 'nonce': _requestToken(nonce, 512),
       },
     ),
     anonymous: false,
@@ -225,18 +227,22 @@ final class SelfhostAuthClient {
     String? email,
     String? password,
     Uri? redirectTo,
-  }) async => SelfhostAuthUser._parse(
-    await _request(
-      'PUT',
-      '/user',
-      token: session.accessToken,
-      query: _redirectQuery(redirectTo),
-      body: {
-        if (email != null) 'email': _email(email),
-        if (password != null) 'password': _password(password),
-      },
-    ),
-  );
+  }) async {
+    final updated = SelfhostAuthUser._parse(
+      await _request(
+        'PUT',
+        '/user',
+        token: session.accessToken,
+        query: _redirectQuery(redirectTo),
+        body: {
+          if (email != null) 'email': _email(email),
+          if (password != null) 'password': _password(password),
+        },
+      ),
+    );
+    if (updated.id != session.user.id) throw _invalidResponse;
+    return updated;
+  }
 
   Future<List<Map<String, Object?>>> identities(
     SelfhostAuthSession session,
@@ -461,6 +467,24 @@ final class SelfhostAuthClient {
       'weak_password' => const SelfhostAuthFailure(
         'weak_password',
         'Choose a stronger password and try again.',
+      ),
+      'identity_already_exists' ||
+      'email_exists' ||
+      'user_already_exists' => const SelfhostAuthFailure(
+        'credential_in_use',
+        'An account already uses this email or sign-in method. Sign in with its existing method, then connect Google in Profile.',
+      ),
+      'same_password' => const SelfhostAuthFailure(
+        'same_password',
+        'Choose a different password from your current password.',
+      ),
+      'single_identity_not_deletable' => const SelfhostAuthFailure(
+        'provider_required',
+        'Keep at least one sign-in method connected to your account.',
+      ),
+      'reauthentication_needed' => const SelfhostAuthFailure(
+        'reauthentication_required',
+        'Sign out and sign in again, then retry this change.',
       ),
       'otp_expired' => const SelfhostAuthFailure(
         'recovery_expired',

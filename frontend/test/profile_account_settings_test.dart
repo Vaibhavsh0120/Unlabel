@@ -356,7 +356,12 @@ void main() {
       expect(fixture.account.authBusy, isTrue);
       expect(
         tester
-            .widget<TextButton>(find.widgetWithText(TextButton, 'Back'))
+            .widget<IconButton>(
+              find.byWidgetPredicate(
+                (widget) =>
+                    widget is IconButton && widget.tooltip == 'Back to Profile',
+              ),
+            )
             .onPressed,
         isNull,
       );
@@ -402,6 +407,7 @@ void main() {
       expect(find.text('Connect Google'), findsNothing);
       await _tap(tester, find.text('Add email and password'));
       expect(find.text('Add a password'), findsOneWidget);
+      expect(find.byType(Dialog), findsNothing);
       final password = find.widgetWithText(TextFormField, 'New password');
       final confirm = find.widgetWithText(TextFormField, 'Confirm password');
       await tester.enterText(password, 'password123');
@@ -427,7 +433,7 @@ void main() {
               find.byWidgetPredicate(
                 (widget) =>
                     widget is IconButton &&
-                    widget.tooltip == 'Close Add a password',
+                    widget.tooltip == 'Back from Add a password',
               ),
             )
             .onPressed,
@@ -500,7 +506,14 @@ void main() {
         ]) {
           expect(find.text(window.$1), findsOneWidget, reason: window.$1);
           await _tap(tester, find.text(window.$1));
-          expect(find.byType(Dialog), findsOneWidget);
+          expect(
+            find.byType(Dialog),
+            window.$1 == 'Sign-in methods' ? findsNothing : findsOneWidget,
+          );
+          if (window.$1 == 'Sign-in methods') {
+            await _tap(tester, find.byTooltip('Back to Profile'));
+            continue;
+          }
           final footer = find.ancestor(
             of: find.text(window.$2),
             matching: find.byWidgetPredicate(

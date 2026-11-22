@@ -295,9 +295,10 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       return;
     }
-    await showDialog<void>(
-      context: context,
-      builder: (context) => _SignInMethodsDialog(controller: controller),
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => _SignInMethodsPage(controller: controller),
+      ),
     );
   }
 
@@ -1530,14 +1531,14 @@ class _ProfileWindow extends StatelessWidget {
   }
 }
 
-class _SignInMethodsDialog extends StatefulWidget {
-  const _SignInMethodsDialog({required this.controller});
+class _SignInMethodsPage extends StatefulWidget {
+  const _SignInMethodsPage({required this.controller});
   final AccountController controller;
   @override
-  State<_SignInMethodsDialog> createState() => _SignInMethodsDialogState();
+  State<_SignInMethodsPage> createState() => _SignInMethodsPageState();
 }
 
-class _SignInMethodsDialogState extends State<_SignInMethodsDialog> {
+class _SignInMethodsPageState extends State<_SignInMethodsPage> {
   String? _error;
 
   Future<void> _run(Future<void> Function() action) async {
@@ -1603,10 +1604,11 @@ class _SignInMethodsDialogState extends State<_SignInMethodsDialog> {
         },
         onPassword: () {
           if (identity?.hasPassword != true) {
-            showDialog<void>(
-              context: context,
-              builder: (_) =>
-                  _LinkPasswordDialog(controller: widget.controller),
+            Navigator.of(context).push<void>(
+              MaterialPageRoute(
+                builder: (_) =>
+                    _LinkPasswordPage(controller: widget.controller),
+              ),
             );
           } else if (identity?.hasGoogle == true) {
             _confirm(
@@ -1844,14 +1846,64 @@ class _ChangeCredentialDialogState extends State<_ChangeCredentialDialog> {
   );
 }
 
-class _LinkPasswordDialog extends StatefulWidget {
-  const _LinkPasswordDialog({required this.controller});
-  final AccountController controller;
+class _AccountFormPage extends StatelessWidget {
+  const _AccountFormPage({
+    required this.title,
+    required this.canDismiss,
+    required this.content,
+    required this.actions,
+  });
+  final String title;
+  final bool canDismiss;
+  final Widget content;
+  final List<Widget> actions;
+
   @override
-  State<_LinkPasswordDialog> createState() => _LinkPasswordDialogState();
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text(title),
+      leading: IconButton(
+        tooltip: 'Back from $title',
+        onPressed: canDismiss ? () => Navigator.pop(context) : null,
+        icon: const Icon(Icons.arrow_back),
+      ),
+    ),
+    body: SafeArea(
+      top: false,
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 640),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                content,
+                const SizedBox(height: 24),
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: actions,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
-class _LinkPasswordDialogState extends State<_LinkPasswordDialog> {
+class _LinkPasswordPage extends StatefulWidget {
+  const _LinkPasswordPage({required this.controller});
+  final AccountController controller;
+  @override
+  State<_LinkPasswordPage> createState() => _LinkPasswordPageState();
+}
+
+class _LinkPasswordPageState extends State<_LinkPasswordPage> {
   final _form = GlobalKey<FormState>();
   late final _email = TextEditingController(
     text: widget.controller.identity?.email,
@@ -1879,6 +1931,10 @@ class _LinkPasswordDialogState extends State<_LinkPasswordDialog> {
       if (mounted) Navigator.pop(context);
     } on AppFailure catch (error) {
       if (mounted) setState(() => _error = error.userMessage);
+    } catch (_) {
+      if (mounted) {
+        setState(() => _error = 'Could not add the password. Try again.');
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -1887,10 +1943,9 @@ class _LinkPasswordDialogState extends State<_LinkPasswordDialog> {
   @override
   Widget build(BuildContext context) => PopScope(
     canPop: !_busy,
-    child: _ProfileWindow(
+    child: _AccountFormPage(
       title: 'Add a password',
       canDismiss: !_busy,
-      icon: Icons.lock_outline_rounded,
       content: Form(
         key: _form,
         child: AutofillGroup(

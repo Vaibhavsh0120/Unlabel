@@ -4,12 +4,21 @@ Release from a reviewed source commit on `main`. Complete the relevant
 [verification](verification.md) first. Source push, deployment, native publication
 and physical-device acceptance are separate results.
 
-The current repair is v1.1.1 (frontend build 20): immediate email signup,
+The current repair is v1.1.1 (frontend build 21): immediate email signup,
 separate welcome mail, corrected Google OAuth setup and popup-free login,
 shared search/product navigation, sourced search thumbnails and a shorter web
 deployment pipeline. Hosted signup/profile/isolation/deletion checks passed.
 Google consent, inbox receipt and published native assets require their own
 observed evidence; the version number alone does not establish them.
+
+Build 21 fixes the native Google nonce exchange and the first-password flow for
+Google accounts. Account methods/password setup are pages; explicit Google
+security actions use a normal tab with an opener-independent callback. The auth
+review also adds owner checks on update responses, useful credential-conflict
+messages and the backend's password byte limit in forms. Hosted synthetic checks
+passed passwordless-session password setup, same-UID password login/change,
+refresh, logout revocation and recovery. Device Google account selection and
+inbox receipt remain separate from these automated checks.
 
 ## Canonical metadata
 
